@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -81,20 +81,20 @@ public class RSAKeyValueTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "No credentials were found");
         
         Credential credential = iter.next();
-        AssertJUnit.assertNotNull("Credential was null", credential);
-        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
-        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof BasicCredential);
+        Assert.assertNotNull(credential, "Credential was null");
+        Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
+        Assert.assertTrue(credential instanceof BasicCredential, "Credential is not of the expected type");
         
         
-        AssertJUnit.assertNotNull("Public key was null", credential.getPublicKey());
-        AssertJUnit.assertEquals("Expected public key value not found", pubKey, credential.getPublicKey());
+        Assert.assertNotNull(credential.getPublicKey(), "Public key was null");
+        Assert.assertEquals(credential.getPublicKey(), pubKey, "Expected public key value not found");
         
-        AssertJUnit.assertEquals("Wrong number of key names", 2, credential.getKeyNames().size());
-        AssertJUnit.assertTrue("Expected key name value not found", credential.getKeyNames().contains("Foo"));
-        AssertJUnit.assertTrue("Expected key name value not found", credential.getKeyNames().contains("Bar"));
+        Assert.assertEquals(credential.getKeyNames().size(), 2, "Wrong number of key names");
+        Assert.assertTrue(credential.getKeyNames().contains("Foo"), "Expected key name value not found");
+        Assert.assertTrue(credential.getKeyNames().contains("Bar"), "Expected key name value not found");
     }
     
 

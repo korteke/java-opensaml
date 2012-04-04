@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -99,16 +99,16 @@ public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("RequestedAuthnContext", rac);
-        AssertJUnit.assertNull("Comparison", rac.getComparison());
+        Assert.assertNotNull(rac, "RequestedAuthnContext");
+        Assert.assertNull(rac.getComparison(), "Comparison");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(singleElementOptionalAttributesFile);
-        AssertJUnit.assertNotNull("Comparison", rac.getComparison());
-        AssertJUnit.assertEquals("The unmarshalled Comparison attribute was not the expected value", expectedComparison.toString(), rac.getComparison().toString());
+        Assert.assertNotNull(rac.getComparison(), "Comparison");
+        Assert.assertEquals(rac.getComparison().toString(), expectedComparison.toString(), "The unmarshalled Comparison attribute was not the expected value");
     }
 
     /** {@inheritDoc} */
@@ -116,6 +116,6 @@ public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(childElementsFile);
        
-        AssertJUnit.assertEquals("AuthnContextClassRef", expectedNumClassRefs, rac.getAuthnContextClassRefs().size());
+        Assert.assertEquals(rac.getAuthnContextClassRefs().size(), expectedNumClassRefs, "AuthnContextClassRef");
     }
 }

@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -86,9 +86,9 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         IDPList list = (IDPList) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("IDPList", list);
-        AssertJUnit.assertEquals("IDPEntry count", 0, list.getIDPEntrys().size());
-        AssertJUnit.assertNull("GetComplete", list.getGetComplete());
+        Assert.assertNotNull(list, "IDPList");
+        Assert.assertEquals(list.getIDPEntrys().size(), 0, "IDPEntry count");
+        Assert.assertNull(list.getGetComplete(), "GetComplete");
     }
 
     /** {@inheritDoc} */
@@ -96,7 +96,7 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         IDPList list = (IDPList) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("IDPEntry count", expectedNumIDPEntryChildren, list.getIDPEntrys().size());
-        AssertJUnit.assertNotNull("GetComplete", list.getGetComplete());
+        Assert.assertEquals(list.getIDPEntrys().size(), expectedNumIDPEntryChildren, "IDPEntry count");
+        Assert.assertNotNull(list.getGetComplete(), "GetComplete");
     }
 }

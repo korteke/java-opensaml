@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -50,7 +50,7 @@ public class ProxyRestrictionTest extends XMLObjectProviderBaseTestCase {
         ProxyRestriction proxyRestriction = (ProxyRestriction) unmarshallElement(singleElementFile);
 
         int count = proxyRestriction.getProxyCount();
-        AssertJUnit.assertEquals("ProxyCount not as expected", expectedCount, count);
+        Assert.assertEquals(count, expectedCount, "ProxyCount not as expected");
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class ProxyRestrictionTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         ProxyRestriction proxyRestriction = (ProxyRestriction) unmarshallElement(childElementsFile);
-        AssertJUnit.assertEquals("Audience Count", expectedAudienceCount, proxyRestriction.getAudiences().size());
+        Assert.assertEquals(proxyRestriction.getAudiences().size(), expectedAudienceCount, "Audience Count");
     }
 
     /** {@inheritDoc} */

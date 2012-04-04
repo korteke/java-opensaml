@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -63,8 +63,8 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("KeyDescriptor", keyDescriptor);
-        AssertJUnit.assertEquals("Unexpected use attribute value", UsageType.UNSPECIFIED, keyDescriptor.getUse());
+        Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
+        Assert.assertEquals(keyDescriptor.getUse(), UsageType.UNSPECIFIED, "Unexpected use attribute value");
 
     }
 
@@ -73,8 +73,8 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("KeyDescriptor", keyDescriptor);
-        AssertJUnit.assertEquals("Use attribute", expectedUse, keyDescriptor.getUse());
+        Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
+        Assert.assertEquals(keyDescriptor.getUse(), expectedUse, "Use attribute");
     }
 
     /** {@inheritDoc} */
@@ -82,10 +82,10 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("KeyDescriptor", keyDescriptor);
-        AssertJUnit.assertNotNull("KeyInfo Child element", keyDescriptor.getKeyInfo());
-        AssertJUnit.assertEquals("# of EncryptionMethod child elements", expectedNumEncMethods,
-                keyDescriptor.getEncryptionMethods().size());
+        Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
+        Assert.assertNotNull(keyDescriptor.getKeyInfo(), "KeyInfo Child element");
+        Assert.assertEquals(keyDescriptor.getEncryptionMethods().size(), expectedNumEncMethods,
+                "# of EncryptionMethod child elements");
    }
 
     /** {@inheritDoc} */

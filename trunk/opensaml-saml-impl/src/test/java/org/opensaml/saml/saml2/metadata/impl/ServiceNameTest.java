@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -52,8 +52,8 @@ public class ServiceNameTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         ServiceName name = (ServiceName) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("xml:lamg was not expected value", expectLang, name.getXMLLang());
-        AssertJUnit.assertEquals("Name was not expected value", expectValue, name.getValue());
+        Assert.assertEquals(name.getXMLLang(), expectLang, "xml:lamg was not expected value");
+        Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
     }
 
     /** {@inheritDoc} */

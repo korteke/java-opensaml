@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,7 +51,7 @@ public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
         AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) unmarshallElement(singleElementFile);
 
         String declRef = authnContextDeclRef.getAuthnContextDeclRef();
-        AssertJUnit.assertEquals("Declartion Reference was " + declRef + ", expected " + expectedDeclRef, expectedDeclRef, declRef);
+        Assert.assertEquals(declRef, expectedDeclRef, "Declartion Reference was " + declRef + ", expected " + expectedDeclRef);
     }
 
     /** {@inheritDoc} */

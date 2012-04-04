@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.metadata.provider;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -138,10 +138,10 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         XMLObject xmlObject = 
             unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
-        AssertJUnit.assertTrue(xmlObject instanceof EntityDescriptor);
+        Assert.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
-        AssertJUnit.assertTrue(ed.isSigned());
-        AssertJUnit.assertNotNull("Signature was null", ed.getSignature());
+        Assert.assertTrue(ed.isSigned());
+        Assert.assertNotNull(ed.getSignature(), "Signature was null");
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
@@ -162,10 +162,10 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject = 
             unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
-        AssertJUnit.assertTrue(xmlObject instanceof EntityDescriptor);
+        Assert.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
-        AssertJUnit.assertTrue(ed.isSigned());
-        AssertJUnit.assertNotNull("Signature was null", ed.getSignature());
+        Assert.assertTrue(ed.isSigned());
+        Assert.assertNotNull(ed.getSignature(), "Signature was null");
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {

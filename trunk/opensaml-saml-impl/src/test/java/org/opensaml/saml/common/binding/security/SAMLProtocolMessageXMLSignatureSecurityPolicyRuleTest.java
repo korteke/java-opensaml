@@ -19,7 +19,7 @@ package org.opensaml.saml.common.binding.security;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -155,9 +155,9 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
         
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver");
         SAMLMessageContext samlContext = messageContext;
-        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        AssertJUnit.assertTrue("Unexpected value for context authentication state", 
-                samlContext.isInboundSAMLMessageAuthenticated());
+        Assert.assertEquals(samlContext.getInboundMessageIssuer(), issuer, "Unexpected value for Issuer found");
+        Assert.assertTrue(samlContext.isInboundSAMLMessageAuthenticated(), 
+                "Unexpected value for context authentication state");
     }
     
     /**

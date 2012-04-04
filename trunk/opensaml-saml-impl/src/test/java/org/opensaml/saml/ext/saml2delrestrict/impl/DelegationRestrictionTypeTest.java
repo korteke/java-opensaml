@@ -19,7 +19,7 @@ package org.opensaml.saml.ext.saml2delrestrict.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -51,7 +51,7 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     public void testSingleElementUnmarshall() {
         DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(drt);
+        Assert.assertNotNull(drt);
     }
     
     /** {@inheritDoc} */
@@ -59,9 +59,9 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     public void testChildElementsUnmarshall() {
         DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull(drt);
+        Assert.assertNotNull(drt);
         
-        AssertJUnit.assertEquals("Incorrect # of Delegate Children", expectedDelegateChildren, drt.getDelegates().size());
+        Assert.assertEquals(drt.getDelegates().size(), expectedDelegateChildren, "Incorrect # of Delegate Children");
     }
 
     /** {@inheritDoc} */

@@ -23,7 +23,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
@@ -82,8 +82,8 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertEquals("Supported protocols not equal to expected value", expectedSupportedProtocol, descriptor
-                .getSupportedProtocols());
+        Assert.assertEquals(descriptor
+                .getSupportedProtocols(), expectedSupportedProtocol, "Supported protocols not equal to expected value");
     }
 
     /** {@inheritDoc} */
@@ -91,10 +91,10 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("Cache duration was not expected value", expectedCacheDuration, descriptor.getCacheDuration()
-                .longValue());
-        AssertJUnit.assertEquals("ValidUntil was not expected value", expectedValidUntil, descriptor.getValidUntil());
-        AssertJUnit.assertEquals("ErrorURL was not expected value", expectedErrorURL, descriptor.getErrorURL());
+        Assert.assertEquals(descriptor.getCacheDuration()
+                .longValue(), expectedCacheDuration, "Cache duration was not expected value");
+        Assert.assertEquals(descriptor.getValidUntil(), expectedValidUntil, "ValidUntil was not expected value");
+        Assert.assertEquals(descriptor.getErrorURL(), expectedErrorURL, "ErrorURL was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -102,12 +102,12 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("<Extensions>", descriptor.getExtensions());
-        AssertJUnit.assertEquals("KeyDescriptor", 0, descriptor.getKeyDescriptors().size());
+        Assert.assertNotNull(descriptor.getExtensions(), "<Extensions>");
+        Assert.assertEquals(descriptor.getKeyDescriptors().size(), 0, "KeyDescriptor");
 
-        AssertJUnit.assertEquals("AuthzService count", 3, descriptor.getAuthzServices().size());
-        AssertJUnit.assertEquals("AssertionIDRequestService count", 2, descriptor.getAssertionIDRequestServices().size());
-        AssertJUnit.assertEquals("NameIDFormat count", 1, descriptor.getNameIDFormats().size());
+        Assert.assertEquals(descriptor.getAuthzServices().size(), 3, "AuthzService count");
+        Assert.assertEquals(descriptor.getAssertionIDRequestServices().size(), 2, "AssertionIDRequestService count");
+        Assert.assertEquals(descriptor.getNameIDFormats().size(), 1, "NameIDFormat count");
     }
 
     /** {@inheritDoc} */

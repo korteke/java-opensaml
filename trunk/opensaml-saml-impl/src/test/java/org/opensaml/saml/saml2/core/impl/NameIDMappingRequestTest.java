@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -99,7 +99,7 @@ public class NameIDMappingRequestTest extends RequestTestBase {
     public void testSingleElementUnmarshall() {
         NameIDMappingRequest req = (NameIDMappingRequest) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("NameIDMappingRequest was null", req);
+        Assert.assertNotNull(req, "NameIDMappingRequest was null");
         super.helperTestSingleElementUnmarshall(req);
     }
 
@@ -108,7 +108,7 @@ public class NameIDMappingRequestTest extends RequestTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIDMappingRequest req = (NameIDMappingRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("NameIDMappingRequest was null", req);
+        Assert.assertNotNull(req, "NameIDMappingRequest was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
 
@@ -117,8 +117,8 @@ public class NameIDMappingRequestTest extends RequestTestBase {
     public void testChildElementsUnmarshall() {
         NameIDMappingRequest req = (NameIDMappingRequest) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("Identifier was null", req.getNameID());
-        AssertJUnit.assertNotNull("NameIDPolicy was null", req.getNameIDPolicy());
+        Assert.assertNotNull(req.getNameID(), "Identifier was null");
+        Assert.assertNotNull(req.getNameIDPolicy(), "NameIDPolicy was null");
         super.helperTestChildElementsUnmarshall(req);
     }
 

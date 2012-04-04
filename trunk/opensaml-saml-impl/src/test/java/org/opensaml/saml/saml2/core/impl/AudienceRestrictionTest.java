@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,7 +46,7 @@ public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AudienceRestriction audienceRestriction = (AudienceRestriction) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(audienceRestriction);
+        Assert.assertNotNull(audienceRestriction);
     }
 
     /** {@inheritDoc} */
@@ -74,7 +74,7 @@ public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         AudienceRestriction audienceRestriction = (AudienceRestriction) unmarshallElement(childElementsFile);
-        AssertJUnit.assertEquals("Audience Count", expectedAudienceCount, audienceRestriction.getAudiences().size());
+        Assert.assertEquals(audienceRestriction.getAudiences().size(), expectedAudienceCount, "Audience Count");
     }
 
     /** {@inheritDoc} */

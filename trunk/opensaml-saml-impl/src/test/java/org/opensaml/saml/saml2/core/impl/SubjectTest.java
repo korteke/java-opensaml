@@ -24,7 +24,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -46,7 +46,7 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Subject subject = (Subject) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(subject);
+        Assert.assertNotNull(subject);
     }
 
     /** {@inheritDoc} */
@@ -74,9 +74,9 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         Subject subject = (Subject) unmarshallElement(childElementsFile);
-        AssertJUnit.assertNotNull("Identifier element not present", subject.getNameID());
-        AssertJUnit.assertEquals("SubjectConfirmation Count not as expected", expectedSubjectConfirmationCount, subject
-                .getSubjectConfirmations().size());
+        Assert.assertNotNull(subject.getNameID(), "Identifier element not present");
+        Assert.assertEquals(subject
+                .getSubjectConfirmations().size(), expectedSubjectConfirmationCount, "SubjectConfirmation Count not as expected");
     }
 
     /** {@inheritDoc} */

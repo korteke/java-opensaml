@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.KeyName;
 
@@ -51,8 +51,8 @@ public class KeyNameTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         KeyName keyName = (KeyName) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("KeyName", keyName);
-        AssertJUnit.assertEquals("KeyName value", keyName.getValue(), expectedStringContent);
+        Assert.assertNotNull(keyName, "KeyName");
+        Assert.assertEquals(expectedStringContent, keyName.getValue(), "KeyName value");
     }
 
     /** {@inheritDoc} */

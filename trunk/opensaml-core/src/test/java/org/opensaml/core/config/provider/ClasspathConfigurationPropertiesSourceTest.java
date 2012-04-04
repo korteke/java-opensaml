@@ -20,7 +20,7 @@ package org.opensaml.core.config.provider;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.File;
 import java.util.Properties;
 
@@ -66,10 +66,10 @@ public class ClasspathConfigurationPropertiesSourceTest {
     public void testSource() {
         source = new ClasspathConfigurationPropertiesSource();
         Properties props = source.getProperties();
-        AssertJUnit.assertNotNull("Properties was null", props);
+        Assert.assertNotNull(props, "Properties was null");
         
-        AssertJUnit.assertEquals("Incorrect property value", "myapp", props.getProperty("opensaml.config.partitionName"));
-        AssertJUnit.assertEquals("Incorrect property value", "true", props.getProperty("opensaml.initializer.foo.flag"));
+        Assert.assertEquals(props.getProperty("opensaml.config.partitionName"), "myapp", "Incorrect property value");
+        Assert.assertEquals(props.getProperty("opensaml.initializer.foo.flag"), "true", "Incorrect property value");
     }
 
 }

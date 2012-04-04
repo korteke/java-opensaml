@@ -18,7 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectBuilder;
@@ -60,54 +60,54 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
     public void testUnmarshall() {
         Response response = (Response) unmarshallElement(elementFile);
         
-        AssertJUnit.assertNotNull("Response was null", response);
-        AssertJUnit.assertEquals("Response ID", "_c7055387-af61-4fce-8b98-e2927324b306", response.getID());
-        AssertJUnit.assertEquals("InResponseTo", "_abcdef123456", response.getInResponseTo());
-        AssertJUnit.assertEquals("Version", SAMLVersion.VERSION_20.toString(), response.getVersion().toString());
-        AssertJUnit.assertEquals("IssueInstant", new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), response.getIssueInstant());
-        AssertJUnit.assertEquals("Issuer/@Format", "urn:oasis:names:tc:SAML:2.0:nameid-format:entity", response.getIssuer().getFormat());
-        AssertJUnit.assertEquals("Status/Statuscode/@Value", "urn:oasis:names:tc:SAML:2.0:status:Success", response.getStatus().getStatusCode().getValue());
+        Assert.assertNotNull(response, "Response was null");
+        Assert.assertEquals(response.getID(), "_c7055387-af61-4fce-8b98-e2927324b306", "Response ID");
+        Assert.assertEquals(response.getInResponseTo(), "_abcdef123456", "InResponseTo");
+        Assert.assertEquals(response.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Version");
+        Assert.assertEquals(response.getIssueInstant(), new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), "IssueInstant");
+        Assert.assertEquals(response.getIssuer().getFormat(), "urn:oasis:names:tc:SAML:2.0:nameid-format:entity", "Issuer/@Format");
+        Assert.assertEquals(response.getStatus().getStatusCode().getValue(), "urn:oasis:names:tc:SAML:2.0:status:Success", "Status/Statuscode/@Value");
         
         Assertion assertion = (Assertion) response.getAssertions().get(0);
-        AssertJUnit.assertNotNull("Assertion[0] was null", assertion);
-        AssertJUnit.assertEquals("Assertion ID", "_a75adf55-01d7-40cc-929f-dbd8372ebdfc", assertion.getID());
-        AssertJUnit.assertEquals("Assertion/@IssueInstant", new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), assertion.getIssueInstant());
-        AssertJUnit.assertEquals("Assertion/@Version", SAMLVersion.VERSION_20.toString(), assertion.getVersion().toString());
-        AssertJUnit.assertEquals("Assertion/Issuer/@Format", "urn:oasis:names:tc:SAML:2.0:nameid-format:entity", assertion.getIssuer().getFormat());
-        AssertJUnit.assertEquals("Assertion/Subject/NameID/@Format", "urn:oasis:names:tc:SAML:2.0:nameid-format:transient", assertion.getSubject().getNameID().getFormat());
-        AssertJUnit.assertEquals("Assertion/Subject/NameID contents", "_820d2843-2342-8236-ad28-8ac94fb3e6a1", assertion.getSubject().getNameID().getValue());
+        Assert.assertNotNull(assertion, "Assertion[0] was null");
+        Assert.assertEquals(assertion.getID(), "_a75adf55-01d7-40cc-929f-dbd8372ebdfc", "Assertion ID");
+        Assert.assertEquals(assertion.getIssueInstant(), new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), "Assertion/@IssueInstant");
+        Assert.assertEquals(assertion.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Assertion/@Version");
+        Assert.assertEquals(assertion.getIssuer().getFormat(), "urn:oasis:names:tc:SAML:2.0:nameid-format:entity", "Assertion/Issuer/@Format");
+        Assert.assertEquals(assertion.getSubject().getNameID().getFormat(), "urn:oasis:names:tc:SAML:2.0:nameid-format:transient", "Assertion/Subject/NameID/@Format");
+        Assert.assertEquals(assertion.getSubject().getNameID().getValue(), "_820d2843-2342-8236-ad28-8ac94fb3e6a1", "Assertion/Subject/NameID contents");
         SubjectConfirmation sc = assertion.getSubject().getSubjectConfirmations().get(0);
-        AssertJUnit.assertEquals("Assertion/Subject/SubjectConfirmation/@Method", "urn:oasis:names:tc:SAML:2.0:cm:bearer", sc.getMethod());
-        AssertJUnit.assertEquals("Assertion/Condition/@NotBefore", new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), assertion.getConditions().getNotBefore());
-        AssertJUnit.assertEquals("Assertion/Condition/@NotOnOrAfter", new DateTime(2006, 1, 26, 13, 45, 5, 0, ISOChronology.getInstanceUTC()), assertion.getConditions().getNotOnOrAfter());
+        Assert.assertEquals(sc.getMethod(), "urn:oasis:names:tc:SAML:2.0:cm:bearer", "Assertion/Subject/SubjectConfirmation/@Method");
+        Assert.assertEquals(assertion.getConditions().getNotBefore(), new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), "Assertion/Condition/@NotBefore");
+        Assert.assertEquals(assertion.getConditions().getNotOnOrAfter(), new DateTime(2006, 1, 26, 13, 45, 5, 0, ISOChronology.getInstanceUTC()), "Assertion/Condition/@NotOnOrAfter");
         Audience audience = (Audience) assertion.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
-        AssertJUnit.assertEquals("Assertion/Conditions/AudienceRestriction/Audience contents", "https://sp.example.org", audience.getAudienceURI());
+        Assert.assertEquals(audience.getAudienceURI(), "https://sp.example.org", "Assertion/Conditions/AudienceRestriction/Audience contents");
         
         AuthnStatement authnStatement = (AuthnStatement) assertion.getAuthnStatements().get(0);
-        AssertJUnit.assertEquals("Assertion/AuthnStatement/@AuthnInstant", new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), authnStatement.getAuthnInstant());
-        AssertJUnit.assertEquals("Assertion/AuthnStatement/AuthnContext/AuthnContextClassRef contents", "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", authnStatement.getAuthnContext().getAuthnContextClassRef().getAuthnContextClassRef());
+        Assert.assertEquals(authnStatement.getAuthnInstant(), new DateTime(2006, 1, 26, 13, 35, 5, 0, ISOChronology.getInstanceUTC()), "Assertion/AuthnStatement/@AuthnInstant");
+        Assert.assertEquals(authnStatement.getAuthnContext().getAuthnContextClassRef().getAuthnContextClassRef(), "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", "Assertion/AuthnStatement/AuthnContext/AuthnContextClassRef contents");
         
         AttributeStatement  attribStatement = (AttributeStatement) assertion.getAttributeStatements().get(0);
         Attribute attrib = null;
         XSString value = null;
         
         attrib = attribStatement.getAttributes().get(0);
-        AssertJUnit.assertEquals("Attribute/@FriendlyName", "fooAttrib", attrib.getFriendlyName());
-        AssertJUnit.assertEquals("Attribute/@Name", "urn:foo:attrib", attrib.getName());
-        AssertJUnit.assertEquals("Attribute/@NameFormat", "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", attrib.getNameFormat());
-        AssertJUnit.assertEquals("Number of fooAttrib AttributeValues", 2, attrib.getAttributeValues().size());
+        Assert.assertEquals(attrib.getFriendlyName(), "fooAttrib", "Attribute/@FriendlyName");
+        Assert.assertEquals(attrib.getName(), "urn:foo:attrib", "Attribute/@Name");
+        Assert.assertEquals(attrib.getNameFormat(), "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", "Attribute/@NameFormat");
+        Assert.assertEquals(attrib.getAttributeValues().size(), 2, "Number of fooAttrib AttributeValues");
         value = (XSString) attrib.getAttributeValues().get(0);
-        AssertJUnit.assertEquals("Attribute content", "SomeValue", value.getValue());
+        Assert.assertEquals(value.getValue(), "SomeValue", "Attribute content");
         value = (XSString) attrib.getAttributeValues().get(1);
-        AssertJUnit.assertEquals("Attribute content", "SomeOtherValue", value.getValue());
+        Assert.assertEquals(value.getValue(), "SomeOtherValue", "Attribute content");
         
         attrib = attribStatement.getAttributes().get(1);
-        AssertJUnit.assertEquals("Attribute/@FriendlyName", "eduPersonPrincipalName", attrib.getFriendlyName());
-        AssertJUnit.assertEquals("Attribute/@Name", "urn:oid:1.3.6.1.4.1.5923.1.1.1.6", attrib.getName());
-        AssertJUnit.assertEquals("Attribute/@NameFormat", "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", attrib.getNameFormat());
-        AssertJUnit.assertEquals("Number of ldapAttrib AttributeValues", 1, attrib.getAttributeValues().size());
+        Assert.assertEquals(attrib.getFriendlyName(), "eduPersonPrincipalName", "Attribute/@FriendlyName");
+        Assert.assertEquals(attrib.getName(), "urn:oid:1.3.6.1.4.1.5923.1.1.1.6", "Attribute/@Name");
+        Assert.assertEquals(attrib.getNameFormat(), "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", "Attribute/@NameFormat");
+        Assert.assertEquals(attrib.getAttributeValues().size(), 1, "Number of ldapAttrib AttributeValues");
         value = (XSString) attrib.getAttributeValues().get(0);
-        AssertJUnit.assertEquals("Attribute content", "j.doe@idp.example.org", value.getValue());
+        Assert.assertEquals(value.getValue(), "j.doe@idp.example.org", "Attribute content");
     }
 
     /** {@inheritDoc} */

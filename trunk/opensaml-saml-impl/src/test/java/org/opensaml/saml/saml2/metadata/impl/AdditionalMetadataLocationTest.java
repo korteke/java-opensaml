@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -58,10 +58,10 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
         AdditionalMetadataLocation locationObj = (AdditionalMetadataLocation) unmarshallElement(singleElementFile);
 
         String location = locationObj.getLocationURI();
-        AssertJUnit.assertEquals("Location URI was " + location + ", expected " + expectedContent, expectedContent, location);
+        Assert.assertEquals(location, expectedContent, "Location URI was " + location + ", expected " + expectedContent);
 
         String namespace = locationObj.getNamespaceURI();
-        AssertJUnit.assertEquals("Namepsace URI was " + namespace + ", expected " + expectedNamespace, expectedNamespace, namespace);
+        Assert.assertEquals(namespace, expectedNamespace, "Namepsace URI was " + namespace + ", expected " + expectedNamespace);
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -68,7 +68,7 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
         NameID nameID = (NameID) unmarshallElement(singleElementFile);
 
         String name = nameID.getValue();
-        AssertJUnit.assertEquals("Name not as expected", name, expectedName);
+        Assert.assertEquals(expectedName, name, "Name not as expected");
     }
 
     /** {@inheritDoc} */
@@ -77,19 +77,19 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
         NameID nameID = (NameID) unmarshallElement(singleElementOptionalAttributesFile);
 
         String name = nameID.getValue();
-        AssertJUnit.assertEquals("Name not as expected", name, expectedName);
+        Assert.assertEquals(expectedName, name, "Name not as expected");
 
         String nameQualifier = nameID.getNameQualifier();
-        AssertJUnit.assertEquals("NameQualifier not as expected", nameQualifier, expectedNameQualifier);
+        Assert.assertEquals(expectedNameQualifier, nameQualifier, "NameQualifier not as expected");
 
         String spNameQualifier = nameID.getSPNameQualifier();
-        AssertJUnit.assertEquals("SPNameQualifier not as expected", spNameQualifier, expectedSPNameQualifier);
+        Assert.assertEquals(expectedSPNameQualifier, spNameQualifier, "SPNameQualifier not as expected");
 
         String format = nameID.getFormat();
-        AssertJUnit.assertEquals("Format not as expected", format, expectedFormat);
+        Assert.assertEquals(expectedFormat, format, "Format not as expected");
 
         String spProvidedID = nameID.getSPProvidedID();
-        AssertJUnit.assertEquals("SPProviderID not as expected", spProvidedID, expectedSPID);
+        Assert.assertEquals(expectedSPID, spProvidedID, "SPProviderID not as expected");
     }
 
     /** {@inheritDoc} */

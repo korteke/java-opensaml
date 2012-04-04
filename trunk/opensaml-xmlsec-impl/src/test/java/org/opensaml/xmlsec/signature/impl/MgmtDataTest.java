@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.MgmtData;
 
@@ -51,8 +51,8 @@ public class MgmtDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         MgmtData keyName = (MgmtData) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("MgmtData", keyName);
-        AssertJUnit.assertEquals("MgmtData value", keyName.getValue(), expectedStringContent);
+        Assert.assertNotNull(keyName, "MgmtData");
+        Assert.assertEquals(expectedStringContent, keyName.getValue(), "MgmtData value");
     }
 
     /** {@inheritDoc} */

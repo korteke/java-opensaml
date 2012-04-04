@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.Transforms;
@@ -55,9 +55,9 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("RetrievalMethod", rm);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, rm.getURI());
-        AssertJUnit.assertNull("Transforms child element", rm.getTransforms());
+        Assert.assertNotNull(rm, "RetrievalMethod");
+        Assert.assertEquals(rm.getURI(), expectedURI, "URI attribute");
+        Assert.assertNull(rm.getTransforms(), "Transforms child element");
     }
     
     
@@ -67,10 +67,10 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("RetrievalMethod", rm);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, rm.getURI());
-        AssertJUnit.assertEquals("Type attribute", expectedType, rm.getType());
-        AssertJUnit.assertNull("Transforms child element", rm.getTransforms());
+        Assert.assertNotNull(rm, "RetrievalMethod");
+        Assert.assertEquals(rm.getURI(), expectedURI, "URI attribute");
+        Assert.assertEquals(rm.getType(), expectedType, "Type attribute");
+        Assert.assertNull(rm.getTransforms(), "Transforms child element");
     }
 
     /** {@inheritDoc} */
@@ -78,9 +78,9 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         RetrievalMethod rm = (RetrievalMethod) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("RetrievalMethod", rm);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, rm.getURI());
-        AssertJUnit.assertNotNull("Transforms child element", rm.getTransforms());
+        Assert.assertNotNull(rm, "RetrievalMethod");
+        Assert.assertEquals(rm.getURI(), expectedURI, "URI attribute");
+        Assert.assertNotNull(rm.getTransforms(), "Transforms child element");
     }
 
     /** {@inheritDoc} */

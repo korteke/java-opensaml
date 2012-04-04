@@ -19,7 +19,7 @@ package org.opensaml.core.xml.schema;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -81,8 +81,8 @@ public class XSURITest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSURI xsURI = (XSURI) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSURI QName", expectedXMLObjectQName, xsURI.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSURI schema type", XSURI.TYPE_NAME, xsURI.getSchemaType());
-        AssertJUnit.assertEquals("Unexpected value of XSURI", xsURI.getValue(), expectedValue);
+        Assert.assertEquals(xsURI.getElementQName(), expectedXMLObjectQName, "Unexpected XSURI QName");
+        Assert.assertEquals(xsURI.getSchemaType(), XSURI.TYPE_NAME, "Unexpected XSURI schema type");
+        Assert.assertEquals(expectedValue, xsURI.getValue(), "Unexpected value of XSURI");
     }
 }

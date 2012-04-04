@@ -20,7 +20,7 @@ package org.opensaml.security.credential.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -152,11 +152,11 @@ public class ChainingCredentialResolverTest {
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 5, cred1, cred2, cred3, cred4, cred5);
         
-        AssertJUnit.assertEquals("Credential found out-of-order", cred4, resolved.get(0));
-        AssertJUnit.assertEquals("Credential found out-of-order", cred5, resolved.get(1));
-        AssertJUnit.assertEquals("Credential found out-of-order", cred3, resolved.get(2));
-        AssertJUnit.assertEquals("Credential found out-of-order", cred1, resolved.get(3));
-        AssertJUnit.assertEquals("Credential found out-of-order", cred2, resolved.get(4));
+        Assert.assertEquals(resolved.get(0), cred4, "Credential found out-of-order");
+        Assert.assertEquals(resolved.get(1), cred5, "Credential found out-of-order");
+        Assert.assertEquals(resolved.get(2), cred3, "Credential found out-of-order");
+        Assert.assertEquals(resolved.get(3), cred1, "Credential found out-of-order");
+        Assert.assertEquals(resolved.get(4), cred2, "Credential found out-of-order");
     }
     
     /**
@@ -182,7 +182,7 @@ public class ChainingCredentialResolverTest {
         chainingResolver.getResolverChain().add(staticResolver12);
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
-        AssertJUnit.assertTrue("Iterator was empty", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "Iterator was empty");
         iter.next();
         try {
             iter.remove();
@@ -203,14 +203,14 @@ public class ChainingCredentialResolverTest {
         chainingResolver.getResolverChain().add(staticResolver3);
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
-        AssertJUnit.assertTrue("Should have next member", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "Should have next member");
         iter.next();
-        AssertJUnit.assertTrue("Should have next member", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "Should have next member");
         iter.next();
-        AssertJUnit.assertTrue("Should have next member", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "Should have next member");
         iter.next();
         
-        AssertJUnit.assertFalse("Should NOT have next member", iter.hasNext());
+        Assert.assertFalse(iter.hasNext(), "Should NOT have next member");
         try {
             iter.next();
             Assert.fail("Should have thrown exception due to next() call with no more members");
@@ -242,9 +242,9 @@ public class ChainingCredentialResolverTest {
      * @param expectedCreds the vararg list of the credentials expected
      */
     private void checkResolved(List<Credential> resolved, int expectedNum, Credential... expectedCreds) {
-        AssertJUnit.assertEquals("Unexpected number of matches", expectedNum, resolved.size());
+        Assert.assertEquals(resolved.size(), expectedNum, "Unexpected number of matches");
         for (Credential expectedCred : expectedCreds) {
-            AssertJUnit.assertTrue("Expected member not found: " + expectedCred, resolved.contains(expectedCred));
+            Assert.assertTrue(resolved.contains(expectedCred), "Expected member not found: " + expectedCred);
         }
     }
     

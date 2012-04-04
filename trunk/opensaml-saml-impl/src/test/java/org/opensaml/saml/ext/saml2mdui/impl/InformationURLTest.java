@@ -21,7 +21,7 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,8 +51,8 @@ public class InformationURLTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         InformationURL url = (InformationURL) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertEquals("URI was not expected value", expectValue, url.getValue());
-        AssertJUnit.assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
+        Assert.assertEquals(url.getValue(), expectValue, "URI was not expected value");
+        Assert.assertEquals(url.getXMLLang(), expectLang, "xml:lang was not expected value");
 
     }
 

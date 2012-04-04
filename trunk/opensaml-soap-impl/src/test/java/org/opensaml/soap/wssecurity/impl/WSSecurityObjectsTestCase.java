@@ -18,7 +18,7 @@
 package org.opensaml.soap.wssecurity.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.List;
 
 import org.custommonkey.xmlunit.Diff;
@@ -65,7 +65,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         token.setValue("Base64Encoded_X509_CERTIFICATE...");
         token.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
         // check default encoding type
-        AssertJUnit.assertEquals(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY, token.getEncodingType());
+        Assert.assertEquals(token.getEncodingType(), BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY);
     
         marshallAndUnmarshall(token);
     
@@ -132,7 +132,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         Password password= buildXMLObject(Password.ELEMENT_NAME);
         password.setValue("test");
         // check default
-        AssertJUnit.assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
+        Assert.assertEquals(password.getType(), Password.TYPE_PASSWORD_TEXT);
         marshallAndUnmarshall(password);
     }
 
@@ -210,11 +210,11 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         // check default password type
         Password password= (Password) usernameToken.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
-        AssertJUnit.assertNotNull(password);
-        AssertJUnit.assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
+        Assert.assertNotNull(password);
+        Assert.assertEquals(password.getType(), Password.TYPE_PASSWORD_TEXT);
 
         List<XMLObject> children= usernameToken.getOrderedChildren();
-        AssertJUnit.assertEquals(3, children.size());
+        Assert.assertEquals(children.size(), 3);
 
         marshallAndUnmarshall(usernameToken);
 
@@ -235,12 +235,12 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         // unmarshall directly from file
         UsernameToken ut= unmarshallElement("/data/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
-        AssertJUnit.assertEquals("test", ut.getUsername().getValue());
+        Assert.assertEquals(ut.getUsername().getValue(), "test");
         Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
-        AssertJUnit.assertNotNull(utPassword);
-        AssertJUnit.assertEquals("test", utPassword.getValue());
+        Assert.assertNotNull(utPassword);
+        Assert.assertEquals(utPassword.getValue(), "test");
         Created utCreated = (Created) ut.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
-        AssertJUnit.assertNotNull(utCreated);
+        Assert.assertNotNull(utCreated);
         DateTime created= utCreated.getDateTime();
         System.out.println(created);
 

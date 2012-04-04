@@ -19,7 +19,7 @@ package org.opensaml.saml.ext.saml1md.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml1md.SourceID;
 import org.opensaml.saml.ext.saml1md.impl.SourceIDBuilder;
@@ -61,7 +61,7 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         SourceID sourceID = (SourceID) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(sourceID);
-        AssertJUnit.assertEquals(expectedValue, sourceID.getValue());
+        Assert.assertNotNull(sourceID);
+        Assert.assertEquals(sourceID.getValue(), expectedValue);
     }
 }

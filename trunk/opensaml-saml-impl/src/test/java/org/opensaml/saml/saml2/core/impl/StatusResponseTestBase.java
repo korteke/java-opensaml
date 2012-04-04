@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -145,34 +145,34 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     protected void helperTestSingleElementUnmarshall(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
         
-        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, sr.getID());
-        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), sr.getVersion().toString());
-        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant.compareTo(sr.getIssueInstant()));
+        Assert.assertEquals(sr.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
+        Assert.assertEquals(sr.getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        Assert.assertEquals(expectedIssueInstant.compareTo(sr.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
         
-        AssertJUnit.assertNull("InResponseTo was not null", sr.getInResponseTo());
-        AssertJUnit.assertNull("Consent was not null", sr.getConsent());
-        AssertJUnit.assertNull("Destination was not null", sr.getDestination());
+        Assert.assertNull(sr.getInResponseTo(), "InResponseTo was not null");
+        Assert.assertNull(sr.getConsent(), "Consent was not null");
+        Assert.assertNull(sr.getDestination(), "Destination was not null");
         
     }
     
     protected void helperTestSingleElementOptionalAttributesUnmarshall(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
         
-        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, sr.getID());
-        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), sr.getVersion().toString());
-        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant.compareTo(sr.getIssueInstant()));
+        Assert.assertEquals(sr.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
+        Assert.assertEquals(sr.getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        Assert.assertEquals(expectedIssueInstant.compareTo(sr.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
         
-        AssertJUnit.assertEquals("Unmarshalled InResponseTo attribute was not the expected value", expectedInResponseTo, sr.getInResponseTo());
-        AssertJUnit.assertEquals("Unmarshalled Consent attribute was not the expected value", expectedConsent, sr.getConsent());
-        AssertJUnit.assertEquals("Unmarshalled Destination attribute was not the expected value", expectedDestination, sr.getDestination());
+        Assert.assertEquals(sr.getInResponseTo(), expectedInResponseTo, "Unmarshalled InResponseTo attribute was not the expected value");
+        Assert.assertEquals(sr.getConsent(), expectedConsent, "Unmarshalled Consent attribute was not the expected value");
+        Assert.assertEquals(sr.getDestination(), expectedDestination, "Unmarshalled Destination attribute was not the expected value");
         
     }
 
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
         
-        AssertJUnit.assertNotNull("Issuer was null", sr.getIssuer());
-        AssertJUnit.assertNotNull("Status was null", sr.getIssuer());
+        Assert.assertNotNull(sr.getIssuer(), "Issuer was null");
+        Assert.assertNotNull(sr.getIssuer(), "Status was null");
     }
 
 }

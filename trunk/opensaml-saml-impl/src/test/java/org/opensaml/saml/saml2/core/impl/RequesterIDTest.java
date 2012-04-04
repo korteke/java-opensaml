@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.RequesterID;
 
@@ -55,7 +55,7 @@ public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         RequesterID reqID = (RequesterID) unmarshallElement(singleElementFile);
         
-       AssertJUnit.assertEquals("Unmarshalled requester ID was not the expected value", expectedRequesterID, reqID.getRequesterID()); 
+       Assert.assertEquals(reqID.getRequesterID(), expectedRequesterID, "Unmarshalled requester ID was not the expected value"); 
     }
 
     /** {@inheritDoc} */

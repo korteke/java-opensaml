@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -99,7 +99,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         // Unmarshall to XMLObject
         XMLObject signedXMLObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
-        AssertJUnit.assertTrue(signedXMLObject instanceof SignableSimpleXMLObject);
+        Assert.assertTrue(signedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) signedXMLObject;
 
         // Encrypt object
@@ -116,14 +116,14 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         tempfile.delete();
         Element encDataElement = document.getDocumentElement();
         XMLObject encryptedXMLObject = unmarshallerFactory.getUnmarshaller(encDataElement).unmarshall(encDataElement);
-        AssertJUnit.assertTrue(encryptedXMLObject instanceof EncryptedData);
+        Assert.assertTrue(encryptedXMLObject instanceof EncryptedData);
         EncryptedData encryptedData2 = (EncryptedData) encryptedXMLObject;
 
         // Decrypt object. Use 2-arg variant to make decrypted element
         // the root of a new Document.
         Decrypter decrypter = new Decrypter(encKeyResolver, null, null);
         XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData2, true);
-        AssertJUnit.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
+        Assert.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject decryptedSXO = (SignableSimpleXMLObject) decryptedXMLObject;
 
         Signature decryptedSignature = decryptedSXO.getSignature();
@@ -132,9 +132,9 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         // is working correctly
         Element apacheResolvedElement = IdResolver.getElementById(decryptedSignature.getDOM().getOwnerDocument(),
                 idValue);
-        AssertJUnit.assertNotNull("Apache ID resolver found no element", apacheResolvedElement);
-        AssertJUnit.assertTrue("Apache ID resolver found different element", decryptedSXO.getDOM()
-                .isSameNode(apacheResolvedElement));
+        Assert.assertNotNull(apacheResolvedElement, "Apache ID resolver found no element");
+        Assert.assertTrue(decryptedSXO.getDOM()
+                .isSameNode(apacheResolvedElement), "Apache ID resolver found different element");
 
         // Verify signature of the decrypted content - this is where bug was reported.
         SignatureValidator sigValidator = new SignatureValidator(signingCredential);
@@ -148,7 +148,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Element signedElement = getSignedElement();
 
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
-        AssertJUnit.assertTrue(xmlObject instanceof SignableSimpleXMLObject);
+        Assert.assertTrue(xmlObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
 
         SignatureValidator sigValidator = new SignatureValidator(signingCredential);

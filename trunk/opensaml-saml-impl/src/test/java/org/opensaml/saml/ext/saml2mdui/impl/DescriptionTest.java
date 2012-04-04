@@ -21,7 +21,7 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -52,8 +52,8 @@ public class DescriptionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Description name = (Description) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Name was not expected value", expectValue, name.getValue());
-        AssertJUnit.assertEquals("xml:lang was not expected value", expectLang, name.getXMLLang());
+        Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
+        Assert.assertEquals(name.getXMLLang(), expectLang, "xml:lang was not expected value");
     }
 
     /** {@inheritDoc} */

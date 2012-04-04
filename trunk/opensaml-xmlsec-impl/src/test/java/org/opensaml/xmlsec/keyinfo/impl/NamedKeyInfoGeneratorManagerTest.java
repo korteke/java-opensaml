@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.Collection;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -68,16 +68,16 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         manager.registerFactory(nameFoo, x509FactoryFoo);
         
         KeyInfoGeneratorManager fooManager = manager.getManager(nameFoo);
-        AssertJUnit.assertNotNull("Expected named manager not present/created", fooManager);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, fooManager.getFactories().size());
+        Assert.assertNotNull(fooManager, "Expected named manager not present/created");
+        Assert.assertEquals(fooManager.getFactories().size(), 2, "Unexpected # of managed factories");
         
-        AssertJUnit.assertTrue("Expected factory not found", fooManager.getFactories().contains(basicFactoryFoo));
-        AssertJUnit.assertTrue("Expected factory not found", fooManager.getFactories().contains(x509FactoryFoo));
+        Assert.assertTrue(fooManager.getFactories().contains(basicFactoryFoo), "Expected factory not found");
+        Assert.assertTrue(fooManager.getFactories().contains(x509FactoryFoo), "Expected factory not found");
         
         // basicFactoryFoo2 should replace basicFactoryFoo
         manager.registerFactory(nameFoo, basicFactoryFoo2);
-        AssertJUnit.assertFalse("Unexpected factory found", fooManager.getFactories().contains(basicFactoryFoo));
-        AssertJUnit.assertTrue("Expected factory not found", fooManager.getFactories().contains(basicFactoryFoo2));
+        Assert.assertFalse(fooManager.getFactories().contains(basicFactoryFoo), "Unexpected factory found");
+        Assert.assertTrue(fooManager.getFactories().contains(basicFactoryFoo2), "Expected factory not found");
     }
     
     /** Test factory de-registration. */
@@ -87,12 +87,12 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         manager.registerFactory(nameFoo, x509FactoryFoo);
         
         KeyInfoGeneratorManager fooManager = manager.getManager(nameFoo);
-        AssertJUnit.assertNotNull("Expected named manager not present/created", fooManager);
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, fooManager.getFactories().size());
+        Assert.assertNotNull(fooManager, "Expected named manager not present/created");
+        Assert.assertEquals(fooManager.getFactories().size(), 2, "Unexpected # of managed factories");
         
         manager.deregisterFactory(nameFoo, x509FactoryFoo);
-        AssertJUnit.assertTrue("Expected factory not found", fooManager.getFactories().contains(basicFactoryFoo));
-        AssertJUnit.assertFalse("Unexpected factory found", fooManager.getFactories().contains(x509FactoryFoo));
+        Assert.assertTrue(fooManager.getFactories().contains(basicFactoryFoo), "Expected factory not found");
+        Assert.assertFalse(fooManager.getFactories().contains(x509FactoryFoo), "Unexpected factory found");
         
         try {
             manager.deregisterFactory("BAZ", x509FactoryFoo);
@@ -106,15 +106,15 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetManagerNames() {
         Collection<String> names = manager.getManagerNames();
-        AssertJUnit.assertTrue("Names was not empty", names.isEmpty());
+        Assert.assertTrue(names.isEmpty(), "Names was not empty");
         
         manager.registerFactory(nameFoo, basicFactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
         names = manager.getManagerNames();
-        AssertJUnit.assertEquals("Unexpected # of manager names", 2, names.size());
+        Assert.assertEquals(names.size(), 2, "Unexpected # of manager names");
         
-        AssertJUnit.assertTrue("Expected manager name not found", names.contains(nameFoo));
-        AssertJUnit.assertTrue("Expected manager name not found", names.contains(nameBar));
+        Assert.assertTrue(names.contains(nameFoo), "Expected manager name not found");
+        Assert.assertTrue(names.contains(nameBar), "Expected manager name not found");
         
         try {
             names.remove(basicFactoryFoo);
@@ -131,14 +131,14 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         manager.registerFactory(nameFoo, basicFactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
         Collection<String> names = manager.getManagerNames();
-        AssertJUnit.assertEquals("Unexpected # of manager names", 2, names.size());
+        Assert.assertEquals(names.size(), 2, "Unexpected # of manager names");
         
-        AssertJUnit.assertNotNull("Failed to find manager by name", manager.getManager(nameFoo));
-        AssertJUnit.assertNotNull("Failed to find manager by name", manager.getManager(nameBar));
+        Assert.assertNotNull(manager.getManager(nameFoo), "Failed to find manager by name");
+        Assert.assertNotNull(manager.getManager(nameBar), "Failed to find manager by name");
         
-        AssertJUnit.assertFalse("Non-existent manager name found in name set", names.contains("BAZ"));
-        AssertJUnit.assertNotNull("Failed to create new manager", manager.getManager("BAZ"));
-        AssertJUnit.assertTrue("Expected manager name not found", names.contains("BAZ"));
+        Assert.assertFalse(names.contains("BAZ"), "Non-existent manager name found in name set");
+        Assert.assertNotNull(manager.getManager("BAZ"), "Failed to create new manager");
+        Assert.assertTrue(names.contains("BAZ"), "Expected manager name not found");
     }
     
     /** Remove a manager by name. */
@@ -148,41 +148,41 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         manager.registerFactory(nameFoo, x509FactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
         Collection<String> names = manager.getManagerNames();
-        AssertJUnit.assertEquals("Unexpected # of manager names", 2, names.size());
+        Assert.assertEquals(names.size(), 2, "Unexpected # of manager names");
         
-        AssertJUnit.assertNotNull("Failed to find manager by name", manager.getManager(nameFoo));
-        AssertJUnit.assertNotNull("Failed to find manager by name", manager.getManager(nameBar));
-        AssertJUnit.assertTrue("Expected manager name not found", names.contains(nameFoo));
-        AssertJUnit.assertTrue("Expected manager name not found", names.contains(nameBar));
+        Assert.assertNotNull(manager.getManager(nameFoo), "Failed to find manager by name");
+        Assert.assertNotNull(manager.getManager(nameBar), "Failed to find manager by name");
+        Assert.assertTrue(names.contains(nameFoo), "Expected manager name not found");
+        Assert.assertTrue(names.contains(nameBar), "Expected manager name not found");
         
         manager.removeManager(nameFoo);
-        AssertJUnit.assertEquals("Unexpected # of manager names", 1, names.size());
-        AssertJUnit.assertNotNull("Failed to find manager by name", manager.getManager(nameBar));
-        AssertJUnit.assertFalse("Unexpected manager name found", names.contains(nameFoo));
-        AssertJUnit.assertTrue("Expected manager name not found", names.contains(nameBar));
+        Assert.assertEquals(names.size(), 1, "Unexpected # of manager names");
+        Assert.assertNotNull(manager.getManager(nameBar), "Failed to find manager by name");
+        Assert.assertFalse(names.contains(nameFoo), "Unexpected manager name found");
+        Assert.assertTrue(names.contains(nameBar), "Expected manager name not found");
     }
     
     /** Test registering a factory in the default unnamed manager. */
     @Test
     public void testRegisterDefaultFactory() {
         KeyInfoGeneratorManager defaultManager = manager.getDefaultManager();
-        AssertJUnit.assertEquals("Unexpected # of default factories", 0, defaultManager.getFactories().size());
+        Assert.assertEquals(defaultManager.getFactories().size(), 0, "Unexpected # of default factories");
         manager.registerDefaultFactory(basicFactoryFoo);
         manager.registerDefaultFactory(x509FactoryFoo);
-        AssertJUnit.assertEquals("Unexpected # of default factories", 2, defaultManager.getFactories().size());
+        Assert.assertEquals(defaultManager.getFactories().size(), 2, "Unexpected # of default factories");
     }
     
     /** Test de-registering a factory in the default unnamed manager. */
     @Test
     public void testDeregisterDefaultFactory() {
         KeyInfoGeneratorManager defaultManager = manager.getDefaultManager();
-        AssertJUnit.assertEquals("Unexpected # of default factories", 0, defaultManager.getFactories().size());
+        Assert.assertEquals(defaultManager.getFactories().size(), 0, "Unexpected # of default factories");
         manager.registerDefaultFactory(basicFactoryFoo);
         manager.registerDefaultFactory(x509FactoryFoo);
-        AssertJUnit.assertEquals("Unexpected # of default factories", 2, defaultManager.getFactories().size());
+        Assert.assertEquals(defaultManager.getFactories().size(), 2, "Unexpected # of default factories");
         
         manager.deregisterDefaultFactory(x509FactoryFoo);
-        AssertJUnit.assertEquals("Unexpected # of default factories", 1, defaultManager.getFactories().size());
+        Assert.assertEquals(defaultManager.getFactories().size(), 1, "Unexpected # of default factories");
     }
     
     /** Test lookup of factory from manager based on a credential instance. */
@@ -193,31 +193,31 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         manager.registerFactory(nameBar, basicFactoryBar);
         manager.registerFactory(nameBar, x509FactoryBar);
         manager.getManager("BAZ");
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getManager(nameFoo).getFactories().size());
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 2, manager.getManager(nameBar).getFactories().size());
-        AssertJUnit.assertEquals("Unexpected # of managed factories", 0, manager.getManager("BAZ").getFactories().size());
-        AssertJUnit.assertEquals("Unexpected # of manager names", 3, manager.getManagerNames().size());
+        Assert.assertEquals(manager.getManager(nameFoo).getFactories().size(), 2, "Unexpected # of managed factories");
+        Assert.assertEquals(manager.getManager(nameBar).getFactories().size(), 2, "Unexpected # of managed factories");
+        Assert.assertEquals(manager.getManager("BAZ").getFactories().size(), 0, "Unexpected # of managed factories");
+        Assert.assertEquals(manager.getManagerNames().size(), 3, "Unexpected # of manager names");
         
         Credential basicCred = new BasicCredential();
         X509Credential x509Cred = new BasicX509Credential();
         
-        AssertJUnit.assertNotNull("Failed to find factory based on manager name and credential", 
-                manager.getFactory(nameFoo, basicCred));
-        AssertJUnit.assertTrue("Found incorrect factory based on name and credential", 
-                basicFactoryFoo == manager.getFactory(nameFoo, basicCred));
+        Assert.assertNotNull(manager.getFactory(nameFoo, basicCred), 
+                "Failed to find factory based on manager name and credential");
+        Assert.assertTrue(basicFactoryFoo == manager.getFactory(nameFoo, basicCred), 
+                "Found incorrect factory based on name and credential");
         
-        AssertJUnit.assertNotNull("Failed to find factory based on manager name and credential", 
-                manager.getFactory(nameFoo, x509Cred));
-        AssertJUnit.assertTrue("Found incorrect factory based on name and credential", 
-                x509FactoryFoo == manager.getFactory(nameFoo, x509Cred));
+        Assert.assertNotNull(manager.getFactory(nameFoo, x509Cred), 
+                "Failed to find factory based on manager name and credential");
+        Assert.assertTrue(x509FactoryFoo == manager.getFactory(nameFoo, x509Cred), 
+                "Found incorrect factory based on name and credential");
         
-        AssertJUnit.assertNotNull("Failed to find factory based on manager name and credential", 
-                manager.getFactory(nameBar, x509Cred));
-        AssertJUnit.assertTrue("Found incorrect factory based on name and credential", 
-                x509FactoryBar == manager.getFactory(nameBar, x509Cred));
+        Assert.assertNotNull(manager.getFactory(nameBar, x509Cred), 
+                "Failed to find factory based on manager name and credential");
+        Assert.assertTrue(x509FactoryBar == manager.getFactory(nameBar, x509Cred), 
+                "Found incorrect factory based on name and credential");
         
-        AssertJUnit.assertNull("Found non-existent factory based on name and credential", 
-                manager.getFactory("BAZ", x509Cred));
+        Assert.assertNull(manager.getFactory("BAZ", x509Cred), 
+                "Found non-existent factory based on name and credential");
         try {
             manager.getFactory("ABC123", x509Cred);
             Assert.fail("Use of non-existent manager name should have caused an exception");
@@ -237,13 +237,13 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         
         manager.setUseDefaultManager(true);
         
-        AssertJUnit.assertNotNull("Failed to find factory based on manager name and credential", 
-                manager.getFactory(nameFoo, x509Cred));
-        AssertJUnit.assertTrue("Found incorrect factory based on name and credential", 
-                defaultX509Factory == manager.getFactory(nameFoo, x509Cred));
+        Assert.assertNotNull(manager.getFactory(nameFoo, x509Cred), 
+                "Failed to find factory based on manager name and credential");
+        Assert.assertTrue(defaultX509Factory == manager.getFactory(nameFoo, x509Cred), 
+                "Found incorrect factory based on name and credential");
         
         manager.setUseDefaultManager(false);
-        AssertJUnit.assertNull("Found factory in default manager even though useDefaultManager option set to false",
-                manager.getFactory(nameFoo, x509Cred));
+        Assert.assertNull(manager.getFactory(nameFoo, x509Cred),
+                "Found factory in default manager even though useDefaultManager option set to false");
     }
 }

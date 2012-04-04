@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -95,7 +95,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     public void testSingleElementUnmarshall() {
         NameIDMappingResponse resp = (NameIDMappingResponse) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("NameIDMappingResponse was null", resp);
+        Assert.assertNotNull(resp, "NameIDMappingResponse was null");
         super.helperTestSingleElementUnmarshall(resp);
     }
 
@@ -104,7 +104,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIDMappingResponse resp = (NameIDMappingResponse) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("NameIDMappingResponse was null", resp);
+        Assert.assertNotNull(resp, "NameIDMappingResponse was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(resp);
     }
 
@@ -113,7 +113,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     public void testChildElementsUnmarshall() {
         NameIDMappingResponse resp = (NameIDMappingResponse) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("Identifier was null", resp.getNameID());
+        Assert.assertNotNull(resp.getNameID(), "Identifier was null");
         super.helperTestChildElementsUnmarshall(resp);
     }
 

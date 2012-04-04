@@ -21,7 +21,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -57,7 +57,7 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNull("Contents of Confirmation Method", confirmationMethod.getConfirmationMethod());
+        Assert.assertNull(confirmationMethod.getConfirmationMethod(), "Contents of Confirmation Method");
 
     }
 
@@ -67,7 +67,7 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("Contents of Confirmation Method", expectedConfirmationMethod, confirmationMethod.getConfirmationMethod());
+        Assert.assertEquals(confirmationMethod.getConfirmationMethod(), expectedConfirmationMethod, "Contents of Confirmation Method");
     }
 
     /** {@inheritDoc} */

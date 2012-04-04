@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -68,7 +68,7 @@ public class RequestedAttributeTest extends XMLObjectProviderBaseTestCase {
         RequestedAttribute attribute = (RequestedAttribute) unmarshallElement(singleElementFile);
 
         String name = attribute.getName();
-        AssertJUnit.assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
+        Assert.assertEquals(name, expectedName, "Name was " + name + ", expected " + expectedName);
 
     }
 
@@ -78,19 +78,19 @@ public class RequestedAttributeTest extends XMLObjectProviderBaseTestCase {
         RequestedAttribute requestedAttribute = (RequestedAttribute) unmarshallElement(singleElementOptionalAttributesFile);
 
         String name = requestedAttribute.getName();
-        AssertJUnit.assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
+        Assert.assertEquals(name, expectedName, "Name was " + name + ", expected " + expectedName);
 
         String nameFormat = requestedAttribute.getNameFormat();
-        AssertJUnit.assertEquals("NameFormat was " + nameFormat + ", expected " + expectedNameFormat, expectedNameFormat,
-                nameFormat);
+        Assert.assertEquals(nameFormat, expectedNameFormat,
+                "NameFormat was " + nameFormat + ", expected " + expectedNameFormat);
 
         String friendlyName = requestedAttribute.getFriendlyName();
-        AssertJUnit.assertEquals("FriendlyName was " + friendlyName + ", expected " + expectedFriendlyName, expectedFriendlyName,
-                friendlyName);
+        Assert.assertEquals(friendlyName, expectedFriendlyName,
+                "FriendlyName was " + friendlyName + ", expected " + expectedFriendlyName);
 
         boolean isRequired = requestedAttribute.isRequired().booleanValue();
-        AssertJUnit.assertEquals("Is Required was " + isRequired + ", expected " + expectedIsRequired, expectedIsRequired,
-                requestedAttribute.isRequiredXSBoolean());
+        Assert.assertEquals(requestedAttribute.isRequiredXSBoolean(), expectedIsRequired,
+                "Is Required was " + isRequired + ", expected " + expectedIsRequired);
     }
 
     /** {@inheritDoc} */
@@ -128,21 +128,21 @@ public class RequestedAttributeTest extends XMLObjectProviderBaseTestCase {
         
         // isRequired attribute
         attrib.setIsRequired(Boolean.TRUE);
-        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, attrib.isRequired());
-        AssertJUnit.assertNotNull("XSBooleanValue was null", attrib.isRequiredXSBoolean());
-        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
-                attrib.isRequiredXSBoolean());
-        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", attrib.isRequiredXSBoolean().toString());
+        Assert.assertEquals(attrib.isRequired(), Boolean.TRUE, "Unexpected value for boolean attribute found");
+        Assert.assertNotNull(attrib.isRequiredXSBoolean(), "XSBooleanValue was null");
+        Assert.assertEquals(attrib.isRequiredXSBoolean(), new XSBooleanValue(Boolean.TRUE, false),
+                "XSBooleanValue was unexpected value");
+        Assert.assertEquals(attrib.isRequiredXSBoolean().toString(), "true", "XSBooleanValue string was unexpected value");
         
         attrib.setIsRequired(Boolean.FALSE);
-        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, attrib.isRequired());
-        AssertJUnit.assertNotNull("XSBooleanValue was null", attrib.isRequiredXSBoolean());
-        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
-                attrib.isRequiredXSBoolean());
-        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", attrib.isRequiredXSBoolean().toString());
+        Assert.assertEquals(attrib.isRequired(), Boolean.FALSE, "Unexpected value for boolean attribute found");
+        Assert.assertNotNull(attrib.isRequiredXSBoolean(), "XSBooleanValue was null");
+        Assert.assertEquals(attrib.isRequiredXSBoolean(), new XSBooleanValue(Boolean.FALSE, false),
+                "XSBooleanValue was unexpected value");
+        Assert.assertEquals(attrib.isRequiredXSBoolean().toString(), "false", "XSBooleanValue string was unexpected value");
         
         attrib.setIsRequired((Boolean) null);
-        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, attrib.isRequired());
-        AssertJUnit.assertNull("XSBooleanValue was not null", attrib.isRequiredXSBoolean());
+        Assert.assertEquals(attrib.isRequired(), Boolean.FALSE, "Unexpected default value for boolean attribute found");
+        Assert.assertNull(attrib.isRequiredXSBoolean(), "XSBooleanValue was not null");
     }
 }

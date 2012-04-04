@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.KeyReference;
@@ -55,9 +55,9 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         ReferenceList rl = (ReferenceList) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("ReferenceList", rl);
-        AssertJUnit.assertEquals("# of DataReference children", 0, rl.getDataReferences().size());
-        AssertJUnit.assertEquals("# of KeyReference children", 0, rl.getKeyReferences().size());
+        Assert.assertNotNull(rl, "ReferenceList");
+        Assert.assertEquals(rl.getDataReferences().size(), 0, "# of DataReference children");
+        Assert.assertEquals(rl.getKeyReferences().size(), 0, "# of KeyReference children");
     }
 
     /** {@inheritDoc} */
@@ -65,9 +65,9 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         ReferenceList rl = (ReferenceList) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("ReferenceList", rl);
-        AssertJUnit.assertEquals("# of DataReference children", expectedNumDataRefs, rl.getDataReferences().size());
-        AssertJUnit.assertEquals("# of KeyReference children", expectedNumKeyRefs, rl.getKeyReferences().size());
+        Assert.assertNotNull(rl, "ReferenceList");
+        Assert.assertEquals(rl.getDataReferences().size(), expectedNumDataRefs, "# of DataReference children");
+        Assert.assertEquals(rl.getKeyReferences().size(), expectedNumKeyRefs, "# of KeyReference children");
     }
 
     /** {@inheritDoc} */

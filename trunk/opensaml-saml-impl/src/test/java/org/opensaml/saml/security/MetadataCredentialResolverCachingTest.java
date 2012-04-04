@@ -20,7 +20,7 @@ package org.opensaml.saml.security;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -93,7 +93,7 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
         if (mdFile.exists()) {
             mdFile.delete();
         }
-        AssertJUnit.assertFalse(mdFile.exists());
+        Assert.assertFalse(mdFile.exists());
         
         simulateWorkaround = false;
     }
@@ -121,7 +121,7 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
             throws IOException, MetadataProviderException, SecurityException, InterruptedException, ResolverException {
         
         copyFile(mdFileUnspec, mdFile);
-        AssertJUnit.assertTrue(mdFile.exists());
+        Assert.assertTrue(mdFile.exists());
         
         FilesystemMetadataProvider fsProvider = new FilesystemMetadataProvider(mdFile);
         fsProvider.setParserPool(parserPool);
@@ -135,11 +135,11 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
         Credential cred = null;
         
         cred = mdResolver.resolveSingle(criteriaSet);
-        AssertJUnit.assertNotNull("Initial query", cred);
+        Assert.assertNotNull(cred, "Initial query");
         
         Thread.sleep(1000);
         cred = mdResolver.resolveSingle(criteriaSet);
-        AssertJUnit.assertNotNull("Cached query", cred);
+        Assert.assertNotNull(cred, "Cached query");
         
         Thread.sleep(1000);
         copyFile(mdFileEncryption, mdFile);
@@ -166,7 +166,7 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
             throws IOException, MetadataProviderException, SecurityException, InterruptedException, ResolverException {
         
         copyFile(mdFileEncryption, mdFile);
-        AssertJUnit.assertTrue(mdFile.exists());
+        Assert.assertTrue(mdFile.exists());
         
         FilesystemMetadataProvider fsProvider = new FilesystemMetadataProvider(mdFile);
         fsProvider.setParserPool(parserPool);
@@ -180,11 +180,11 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
         Credential cred = null;
         
         cred = mdResolver.resolveSingle(criteriaSet);
-        AssertJUnit.assertNull("Initial query", cred);
+        Assert.assertNull(cred, "Initial query");
         
         Thread.sleep(1000);
         cred = mdResolver.resolveSingle(criteriaSet);
-        AssertJUnit.assertNull("Cached query", cred);
+        Assert.assertNull(cred, "Cached query");
         
         Thread.sleep(1000);
         copyFile(mdFileUnspec, mdFile);

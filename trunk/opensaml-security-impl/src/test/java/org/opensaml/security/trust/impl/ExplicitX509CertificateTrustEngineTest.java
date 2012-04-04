@@ -19,7 +19,7 @@ package org.opensaml.security.trust.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -164,7 +164,7 @@ public class ExplicitX509CertificateTrustEngineTest {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitX509CertificateTrustEngine engine = new ExplicitX509CertificateTrustEngine(resolver);
         
-        AssertJUnit.assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
+        Assert.assertTrue(engine.validate(entityX509Cred, criteriaSet), "Entity X509 credential was not trusted");
     }
     
     @Test
@@ -172,7 +172,7 @@ public class ExplicitX509CertificateTrustEngineTest {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitX509CertificateTrustEngine engine = new ExplicitX509CertificateTrustEngine(resolver);
         
-        AssertJUnit.assertFalse("Entity X509 credential was trusted", engine.validate(entityX509Cred, criteriaSet));
+        Assert.assertFalse(engine.validate(entityX509Cred, criteriaSet), "Entity X509 credential was trusted");
     }
 
     @Test
@@ -182,6 +182,6 @@ public class ExplicitX509CertificateTrustEngineTest {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitX509CertificateTrustEngine engine = new ExplicitX509CertificateTrustEngine(resolver);
         
-        AssertJUnit.assertFalse("Entity X509 credential was trusted", engine.validate(entityX509Cred, criteriaSet));
+        Assert.assertFalse(engine.validate(entityX509Cred, criteriaSet), "Entity X509 credential was trusted");
     }
 }

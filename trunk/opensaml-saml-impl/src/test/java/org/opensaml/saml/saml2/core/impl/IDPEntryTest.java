@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.IDPEntry;
 
@@ -93,7 +93,7 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         IDPEntry entry = (IDPEntry) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("The unmarshalled ProviderID attribute was not the expected value", expectedProviderID, entry.getProviderID());
+        Assert.assertEquals(entry.getProviderID(), expectedProviderID, "The unmarshalled ProviderID attribute was not the expected value");
 
     }
 
@@ -103,7 +103,7 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         IDPEntry entry = (IDPEntry) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("The unmarshalled Name attribute was not the expected value", expectedName, entry.getName());
-        AssertJUnit.assertEquals("The unmarshalled Loc (location) attribute was not the expected value", expectedLocation, entry.getLoc());
+        Assert.assertEquals(entry.getName(), expectedName, "The unmarshalled Name attribute was not the expected value");
+        Assert.assertEquals(entry.getLoc(), expectedLocation, "The unmarshalled Loc (location) attribute was not the expected value");
     }
 }

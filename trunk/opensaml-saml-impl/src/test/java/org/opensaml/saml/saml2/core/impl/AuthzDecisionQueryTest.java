@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -114,8 +114,8 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     public void testSingleElementUnmarshall() {
         AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("AuthzDecisionQuery was null", query);
-        AssertJUnit.assertEquals("Unmarshalled Resource attribute was not the expected value", expectedResource, query.getResource());
+        Assert.assertNotNull(query, "AuthzDecisionQuery was null");
+        Assert.assertEquals(query.getResource(), expectedResource, "Unmarshalled Resource attribute was not the expected value");
         super.helperTestSingleElementUnmarshall(query);
 
     }
@@ -133,8 +133,8 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     public void testChildElementsUnmarshall() {
         AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("Action count", expectedNumActions, query.getActions().size());
-        AssertJUnit.assertNotNull("Evidence was null", query.getEvidence());
+        Assert.assertEquals(query.getActions().size(), expectedNumActions, "Action count");
+        Assert.assertNotNull(query.getEvidence(), "Evidence was null");
         super.helperTestChildElementsUnmarshall(query);
     }
 }

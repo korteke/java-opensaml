@@ -18,7 +18,7 @@
 package org.opensaml.core.xml;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -52,8 +52,8 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        AssertJUnit.assertNull(sxObject.isNilXSBoolean());
-        AssertJUnit.assertFalse("Expected isNil() false", sxObject.isNil());
+        Assert.assertNull(sxObject.isNilXSBoolean());
+        Assert.assertFalse(sxObject.isNil(), "Expected isNil() false");
     }
     
     @Test
@@ -64,8 +64,8 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        AssertJUnit.assertNotNull(sxObject.isNilXSBoolean());
-        AssertJUnit.assertTrue("Expected isNil() true", sxObject.isNil());
+        Assert.assertNotNull(sxObject.isNilXSBoolean());
+        Assert.assertTrue(sxObject.isNil(), "Expected isNil() true");
     }
     
     @Test
@@ -90,7 +90,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        AssertJUnit.assertEquals("Incorrect xsi:schemaLocation value", expectedValue, sxObject.getSchemaLocation());
+        Assert.assertEquals(sxObject.getSchemaLocation(), expectedValue, "Incorrect xsi:schemaLocation value");
     }
     
     @Test
@@ -116,7 +116,7 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        AssertJUnit.assertEquals("Incorrect xsi:noNamespaceSchemaLocation value", expectedValue, sxObject.getNoNamespaceSchemaLocation());
+        Assert.assertEquals(sxObject.getNoNamespaceSchemaLocation(), expectedValue, "Incorrect xsi:noNamespaceSchemaLocation value");
     }
     
     @Test

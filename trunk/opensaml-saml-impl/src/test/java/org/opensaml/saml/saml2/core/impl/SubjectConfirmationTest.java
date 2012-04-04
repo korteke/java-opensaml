@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -62,7 +62,7 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(singleElementFile);
 
         String method = subjectConfirmation.getMethod();
-        AssertJUnit.assertEquals("Method not as expected", expectedMethod, method);
+        Assert.assertEquals(method, expectedMethod, "Method not as expected");
     }
 
     /** {@inheritDoc} */
@@ -92,8 +92,8 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Identifier elemement not present", subjectConfirmation.getNameID());
-        AssertJUnit.assertNotNull("SubjectConfirmationData element not present", subjectConfirmation.getSubjectConfirmationData());
+        Assert.assertNotNull(subjectConfirmation.getNameID(), "Identifier elemement not present");
+        Assert.assertNotNull(subjectConfirmation.getSubjectConfirmationData(), "SubjectConfirmationData element not present");
     }
 
     /** {@inheritDoc} */
@@ -116,10 +116,10 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsWithEncryptedIDUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(childElementsWithEncryptedIDFile);
 
-        AssertJUnit.assertNull("BaseID element present", subjectConfirmation.getBaseID());
-        AssertJUnit.assertNull("NameID element present", subjectConfirmation.getNameID());
-        AssertJUnit.assertNotNull("EncryptedID element not present", subjectConfirmation.getEncryptedID());
-        AssertJUnit.assertNotNull("SubjectConfirmationData element not present", subjectConfirmation.getSubjectConfirmationData());
+        Assert.assertNull(subjectConfirmation.getBaseID(), "BaseID element present");
+        Assert.assertNull(subjectConfirmation.getNameID(), "NameID element present");
+        Assert.assertNotNull(subjectConfirmation.getEncryptedID(), "EncryptedID element not present");
+        Assert.assertNotNull(subjectConfirmation.getSubjectConfirmationData(), "SubjectConfirmationData element not present");
     }
 
     /** {@inheritDoc} 

@@ -18,7 +18,7 @@
 package org.opensaml.soap;
 
 
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
@@ -49,12 +49,12 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         object.releaseDOM();
         object.releaseChildrenDOM(true);
         Element element= marshaller.marshall(object);
-        AssertJUnit.assertNotNull(element);
+        Assert.assertNotNull(element);
 
         System.out.println(SerializeSupport.nodeToString(element));
 
         T object2= (T) unmarshaller.unmarshall(element);
-        AssertJUnit.assertNotNull(object2);
+        Assert.assertNotNull(object2);
 
         // Have to release the DOM before re-marshalling, otherwise the already cached
         // Element just gets adopted into a new Document, and the test below
@@ -63,7 +63,7 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         object2.releaseDOM();
         object2.releaseChildrenDOM(true);
         Element element2= marshaller.marshall(object2);
-        AssertJUnit.assertNotNull(element2);
+        Assert.assertNotNull(element2);
 
         System.out.println(SerializeSupport.nodeToString(element2));
 

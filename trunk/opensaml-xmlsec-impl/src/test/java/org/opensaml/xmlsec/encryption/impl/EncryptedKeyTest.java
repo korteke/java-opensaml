@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.CipherData;
@@ -70,13 +70,13 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("EncryptedKey", ek);
-        AssertJUnit.assertNull("EncryptionMethod child", ek.getEncryptionMethod());
-        AssertJUnit.assertNull("KeyInfo child", ek.getKeyInfo());
-        AssertJUnit.assertNull("CipherData child", ek.getCipherData());
-        AssertJUnit.assertNull("EncryptionProperties child", ek.getEncryptionProperties());
-        AssertJUnit.assertNull("ReferenceList child", ek.getReferenceList());
-        AssertJUnit.assertNull("CarriedKeyName child", ek.getCarriedKeyName());
+        Assert.assertNotNull(ek, "EncryptedKey");
+        Assert.assertNull(ek.getEncryptionMethod(), "EncryptionMethod child");
+        Assert.assertNull(ek.getKeyInfo(), "KeyInfo child");
+        Assert.assertNull(ek.getCipherData(), "CipherData child");
+        Assert.assertNull(ek.getEncryptionProperties(), "EncryptionProperties child");
+        Assert.assertNull(ek.getReferenceList(), "ReferenceList child");
+        Assert.assertNull(ek.getCarriedKeyName(), "CarriedKeyName child");
     }
 
     /** {@inheritDoc} */
@@ -84,13 +84,13 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("EncryptedKey", ek);
-        AssertJUnit.assertNotNull("EncryptionMethod child", ek.getEncryptionMethod());
-        AssertJUnit.assertNotNull("KeyInfo child", ek.getKeyInfo());
-        AssertJUnit.assertNotNull("CipherData child", ek.getCipherData());
-        AssertJUnit.assertNotNull("EncryptionProperties child", ek.getEncryptionProperties());
-        AssertJUnit.assertNotNull("ReferenceList child", ek.getReferenceList());
-        AssertJUnit.assertNotNull("CarriedKeyName child", ek.getCarriedKeyName());
+        Assert.assertNotNull(ek, "EncryptedKey");
+        Assert.assertNotNull(ek.getEncryptionMethod(), "EncryptionMethod child");
+        Assert.assertNotNull(ek.getKeyInfo(), "KeyInfo child");
+        Assert.assertNotNull(ek.getCipherData(), "CipherData child");
+        Assert.assertNotNull(ek.getEncryptionProperties(), "EncryptionProperties child");
+        Assert.assertNotNull(ek.getReferenceList(), "ReferenceList child");
+        Assert.assertNotNull(ek.getCarriedKeyName(), "CarriedKeyName child");
     }
 
     /** {@inheritDoc} */
@@ -98,14 +98,14 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("EncryptedKey", ek);
-        AssertJUnit.assertEquals("Id attribute", expectedId, ek.getID());
-        AssertJUnit.assertEquals("Type attribute", expectedType, ek.getType());
-        AssertJUnit.assertEquals("MimeType attribute", expectedMimeType, ek.getMimeType());
-        AssertJUnit.assertEquals("Encoding attribute", expectedEncoding, ek.getEncoding());
-        AssertJUnit.assertEquals("Recipient attribute", expectedRecipient, ek.getRecipient());
+        Assert.assertNotNull(ek, "EncryptedKey");
+        Assert.assertEquals(ek.getID(), expectedId, "Id attribute");
+        Assert.assertEquals(ek.getType(), expectedType, "Type attribute");
+        Assert.assertEquals(ek.getMimeType(), expectedMimeType, "MimeType attribute");
+        Assert.assertEquals(ek.getEncoding(), expectedEncoding, "Encoding attribute");
+        Assert.assertEquals(ek.getRecipient(), expectedRecipient, "Recipient attribute");
         
-        AssertJUnit.assertEquals("ID lookup failed", ek, ek.resolveID(expectedId));
+        Assert.assertEquals(ek.resolveID(expectedId), ek, "ID lookup failed");
     }
 
     /** {@inheritDoc} */

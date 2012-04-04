@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
@@ -70,10 +70,10 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertEquals("Non zero number of child ConfirmationMethods elements", 0, subjectConfirmation
-                .getConfirmationMethods().size());
-        AssertJUnit.assertNull("Non zero number of child SubjectConfirmationData elements", subjectConfirmation
-                .getSubjectConfirmationData());
+        Assert.assertEquals(subjectConfirmation
+                .getConfirmationMethods().size(), 0, "Non zero number of child ConfirmationMethods elements");
+        Assert.assertNull(subjectConfirmation
+                .getSubjectConfirmationData(), "Non zero number of child SubjectConfirmationData elements");
     }
 
     /** {@inheritDoc} */
@@ -89,8 +89,8 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     public void testFullElementsUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(fullElementsFile);
 
-        AssertJUnit.assertEquals("Number of ConfirmationMethods", 2, subjectConfirmation.getConfirmationMethods().size());
-        AssertJUnit.assertNotNull("Zero child SubjectConfirmationData elements", subjectConfirmation.getSubjectConfirmationData());
+        Assert.assertEquals(subjectConfirmation.getConfirmationMethods().size(), 2, "Number of ConfirmationMethods");
+        Assert.assertNotNull(subjectConfirmation.getSubjectConfirmationData(), "Zero child SubjectConfirmationData elements");
     }
 
     /** {@inheritDoc} */

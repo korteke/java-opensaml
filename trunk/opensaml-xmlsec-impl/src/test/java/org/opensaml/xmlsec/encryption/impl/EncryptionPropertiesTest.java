@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptionProperties;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
@@ -56,9 +56,9 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("EncryptionProperties", ep);
-        AssertJUnit.assertNull("Id attribute", ep.getID());
-        AssertJUnit.assertEquals("# of EncryptionProperty children", 0, ep.getEncryptionProperties().size());
+        Assert.assertNotNull(ep, "EncryptionProperties");
+        Assert.assertNull(ep.getID(), "Id attribute");
+        Assert.assertEquals(ep.getEncryptionProperties().size(), 0, "# of EncryptionProperty children");
     }
 
     /** {@inheritDoc} */
@@ -66,11 +66,11 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("EncryptionProperties", ep);
-        AssertJUnit.assertEquals("Id attribute", expectedID, ep.getID());
-        AssertJUnit.assertEquals("# of EncryptionProperty children", 0, ep.getEncryptionProperties().size());
+        Assert.assertNotNull(ep, "EncryptionProperties");
+        Assert.assertEquals(ep.getID(), expectedID, "Id attribute");
+        Assert.assertEquals(ep.getEncryptionProperties().size(), 0, "# of EncryptionProperty children");
         
-        AssertJUnit.assertEquals("ID lookup failed", ep, ep.resolveID(expectedID));
+        Assert.assertEquals(ep.resolveID(expectedID), ep, "ID lookup failed");
     }
 
     /** {@inheritDoc} */
@@ -78,9 +78,9 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         EncryptionProperties ep = (EncryptionProperties) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("EncryptionProperties", ep);
-        AssertJUnit.assertNull("Id attribute", ep.getID());
-        AssertJUnit.assertEquals("# of EncryptionProperty children", expectedNumEncProps, ep.getEncryptionProperties().size());
+        Assert.assertNotNull(ep, "EncryptionProperties");
+        Assert.assertNull(ep.getID(), "Id attribute");
+        Assert.assertEquals(ep.getEncryptionProperties().size(), expectedNumEncProps, "# of EncryptionProperty children");
     }
 
     /** {@inheritDoc} */

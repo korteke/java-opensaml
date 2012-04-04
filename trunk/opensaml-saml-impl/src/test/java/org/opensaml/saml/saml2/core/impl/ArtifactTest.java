@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Artifact;
 
@@ -53,7 +53,7 @@ public class ArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Artifact artifact = (Artifact) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Artifact content is not the expected value", expectedContent, artifact.getArtifact());
+        Assert.assertEquals(artifact.getArtifact(), expectedContent, "Artifact content is not the expected value");
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -73,14 +73,14 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementFile);
 
         String ownerId = descriptor.getOwnerID();
-        AssertJUnit.assertEquals("entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID,
-                expectedOwnerID, ownerId);
+        Assert.assertEquals(ownerId,
+                expectedOwnerID, "entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID);
 
         Long duration = descriptor.getCacheDuration();
-        AssertJUnit.assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
+        Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
         DateTime validUntil = descriptor.getValidUntil();
-        AssertJUnit.assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
+        Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
     }
 
     /** {@inheritDoc} */
@@ -89,19 +89,19 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         String ownerId = descriptor.getOwnerID();
-        AssertJUnit.assertEquals("entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID,
-                expectedOwnerID, ownerId);
+        Assert.assertEquals(ownerId,
+                expectedOwnerID, "entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID);
 
         String id = descriptor.getID();
-        AssertJUnit.assertEquals("ID attribute has a value of " + id + ", expected a value of " + expectedID, expectedID, id);
+        Assert.assertEquals(id, expectedID, "ID attribute has a value of " + id + ", expected a value of " + expectedID);
 
         long duration = descriptor.getCacheDuration().longValue();
-        AssertJUnit.assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
-                + expectedCacheDuration, expectedCacheDuration, duration);
+        Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
+                        + expectedCacheDuration);
 
         DateTime validUntil = descriptor.getValidUntil();
-        AssertJUnit.assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
-                .compareTo(validUntil));
+        Assert.assertEquals(expectedValidUntil
+                .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
     }
 
     /** {@inheritDoc} */
@@ -109,10 +109,10 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Extensions", descriptor.getExtensions());
-        AssertJUnit.assertNotNull("Signature", descriptor.getSignature());
-        AssertJUnit.assertEquals("KeyDescriptor count", 0, descriptor.getKeyDescriptors().size());
-        AssertJUnit.assertEquals("Affiliate Member count ", 3, descriptor.getMembers().size());
+        Assert.assertNotNull(descriptor.getExtensions(), "Extensions");
+        Assert.assertNotNull(descriptor.getSignature(), "Signature");
+        Assert.assertEquals(descriptor.getKeyDescriptors().size(), 0, "KeyDescriptor count");
+        Assert.assertEquals(descriptor.getMembers().size(), 3, "Affiliate Member count ");
     }
 
     /** {@inheritDoc} */

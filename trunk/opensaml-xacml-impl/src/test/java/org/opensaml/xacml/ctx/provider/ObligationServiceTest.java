@@ -19,7 +19,7 @@ package org.opensaml.xacml.ctx.provider;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
@@ -94,7 +94,7 @@ public class ObligationServiceTest extends XMLObjectBaseTestCase {
 
         obligSrvc.processObligations(processingCtx);
 
-        AssertJUnit.assertEquals(8, count);
+        Assert.assertEquals(count, 8);
     }
 
     public class AdditiveObligationHandler extends BaseObligationHandler {

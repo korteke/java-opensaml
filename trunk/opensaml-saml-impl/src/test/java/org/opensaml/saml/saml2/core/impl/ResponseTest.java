@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -108,7 +108,7 @@ public class ResponseTest extends StatusResponseTestBase {
     public void testSingleElementUnmarshall() {
         Response resp = (Response) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Response was null", resp);
+        Assert.assertNotNull(resp, "Response was null");
         super.helperTestSingleElementUnmarshall(resp);
     }
 
@@ -117,7 +117,7 @@ public class ResponseTest extends StatusResponseTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Response resp = (Response) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("Response was null", resp);
+        Assert.assertNotNull(resp, "Response was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(resp);
     }
 
@@ -126,8 +126,8 @@ public class ResponseTest extends StatusResponseTestBase {
     public void testChildElementsUnmarshall() {
         Response resp = (Response) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertEquals("Assertion count", expectedNumAssertions, resp.getAssertions().size());
-        AssertJUnit.assertEquals("EncryptedAssertion count", expectedNumEncryptedAssertions, resp.getEncryptedAssertions().size());
+        Assert.assertEquals(resp.getAssertions().size(), expectedNumAssertions, "Assertion count");
+        Assert.assertEquals(resp.getEncryptedAssertions().size(), expectedNumEncryptedAssertions, "EncryptedAssertion count");
         super.helperTestChildElementsUnmarshall(resp);
     }
 

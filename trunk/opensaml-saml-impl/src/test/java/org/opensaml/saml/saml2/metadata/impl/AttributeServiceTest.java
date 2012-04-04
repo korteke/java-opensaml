@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -60,8 +60,8 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AttributeService service = (AttributeService) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
+        Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -69,9 +69,9 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeService service = (AttributeService) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        AssertJUnit.assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());;
+        Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
+        Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
+        Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
     }
 
     /** {@inheritDoc} */

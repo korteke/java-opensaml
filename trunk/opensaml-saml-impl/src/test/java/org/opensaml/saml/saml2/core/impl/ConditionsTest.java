@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -69,7 +69,7 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
         Conditions conditions = (Conditions) unmarshallElement(singleElementFile);
 
         DateTime notBefore = conditions.getNotBefore();
-        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
     }
 
     /** {@inheritDoc} */
@@ -78,11 +78,11 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
         Conditions conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime notBefore = conditions.getNotBefore();
-        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
 
         DateTime notOnOrAfter = conditions.getNotOnOrAfter();
-        AssertJUnit.assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
-                notOnOrAfter);
+        Assert.assertEquals(notOnOrAfter, expectedNotOnOrAfter,
+                "NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter);
     }
 
     /** {@inheritDoc} */
@@ -111,9 +111,9 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         Conditions conditions = (Conditions) unmarshallElement(childElementsFile);
-        AssertJUnit.assertEquals("Condition count not as expected", conditionCount, conditions.getConditions().size());
-        AssertJUnit.assertNotNull("OneTimeUse absent", conditions.getOneTimeUse());
-        AssertJUnit.assertNotNull("ProxyRestriction absent", conditions.getProxyRestriction());
+        Assert.assertEquals(conditions.getConditions().size(), conditionCount, "Condition count not as expected");
+        Assert.assertNotNull(conditions.getOneTimeUse(), "OneTimeUse absent");
+        Assert.assertNotNull(conditions.getProxyRestriction(), "ProxyRestriction absent");
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.provider;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -59,8 +59,8 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetMetadata() throws MetadataProviderException {
         EntitiesDescriptor descriptor = (EntitiesDescriptor) metadataProvider.getMetadata();
-        AssertJUnit.assertNotNull("Retrieved metadata was null", descriptor);
-        AssertJUnit.assertEquals("EntitiesDescriptor name was not expected value", entitiesDescriptorName, descriptor.getName());
+        Assert.assertNotNull(descriptor, "Retrieved metadata was null");
+        Assert.assertEquals(descriptor.getName(), entitiesDescriptorName, "EntitiesDescriptor name was not expected value");
     }
     
     /**
@@ -69,8 +69,8 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetEntitiesDescriptor() throws MetadataProviderException{
         EntitiesDescriptor descriptor = (EntitiesDescriptor) metadataProvider.getEntitiesDescriptor(entitiesDescriptorName);
-        AssertJUnit.assertNotNull("Retrieved metadata was null", descriptor);
-        AssertJUnit.assertEquals("EntitiesDescriptor name was not expected value", entitiesDescriptorName, descriptor.getName());
+        Assert.assertNotNull(descriptor, "Retrieved metadata was null");
+        Assert.assertEquals(descriptor.getName(), entitiesDescriptorName, "EntitiesDescriptor name was not expected value");
     }
     
     /**
@@ -79,8 +79,8 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetEntityDescriptor() throws MetadataProviderException{
         EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
-        AssertJUnit.assertNotNull("Retrieved entity descriptor was null", descriptor);
-        AssertJUnit.assertEquals("Entity's ID does not match requested ID", entityID, descriptor.getEntityID());
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
     /**
@@ -89,8 +89,8 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetRole() throws MetadataProviderException{
         List<RoleDescriptor> roles = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        AssertJUnit.assertNotNull("Roles for entity descriptor was null", roles);
-        AssertJUnit.assertEquals("Unexpected number of roles", 1, roles.size());
+        Assert.assertNotNull(roles, "Roles for entity descriptor was null");
+        Assert.assertEquals(roles.size(), 1, "Unexpected number of roles");
     }
     
     /**
@@ -99,6 +99,6 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException{
         RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME, supportedProtocol);
-        AssertJUnit.assertNotNull("Roles for entity descriptor was null", role);
+        Assert.assertNotNull(role, "Roles for entity descriptor was null");
     }
 }

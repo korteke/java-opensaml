@@ -19,7 +19,7 @@ package org.opensaml.security.credential.criteria.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.cert.X509Certificate;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
@@ -103,41 +103,41 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterionTest {
     @Test
     public void testSatifsy() {
         EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setSubjectKeyIdentifier("abcdef123456".getBytes());
         EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() {
         BasicCredential basicCred = new BasicCredential();
         EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(basicCred));
+        Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyNoCert() {
         credential.setEntityCertificate(null);
         EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
-        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         credential.setEntityCertificate(entityCertNoSKI);
         EvaluableX509SubjectKeyIdentifierCredentialCriterion evalCrit = new EvaluableX509SubjectKeyIdentifierCredentialCriterion(criteria);
-        AssertJUnit.assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
+        Assert.assertNull(evalCrit.evaluate(credential), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        AssertJUnit.assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
-        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
+        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
 }

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -50,7 +50,7 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
         AffiliateMember member = (AffiliateMember)unmarshallElement(singleElementFile);
         
         String memberID = member.getID();
-        AssertJUnit.assertEquals("Affiliation memeber ID was " + memberID + ", expected " + expectedMemberID, expectedMemberID, memberID);
+        Assert.assertEquals(memberID, expectedMemberID, "Affiliation memeber ID was " + memberID + ", expected " + expectedMemberID);
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -56,7 +56,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
         Action action = (Action) unmarshallElement(singleElementFile);
 
         String actionname = action.getAction();
-        AssertJUnit.assertEquals("Action was " + actionname + ", expected " + expectedAction, expectedAction, actionname);
+        Assert.assertEquals(actionname, expectedAction, "Action was " + actionname + ", expected " + expectedAction);
     }
 
     /** {@inheritDoc} */
@@ -65,10 +65,10 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
         Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
 
         String actionname = action.getAction();
-        AssertJUnit.assertEquals("Action was " + actionname + ", expected " + expectedAction, expectedAction, actionname);
+        Assert.assertEquals(actionname, expectedAction, "Action was " + actionname + ", expected " + expectedAction);
 
         String namespace = action.getNamespace();
-        AssertJUnit.assertEquals("Namespace was " + namespace + ", expected " + expectedNamespace, expectedNamespace, namespace);
+        Assert.assertEquals(namespace, expectedNamespace, "Namespace was " + namespace + ", expected " + expectedNamespace);
     }
 
     /** {@inheritDoc} */

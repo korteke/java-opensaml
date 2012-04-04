@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
@@ -57,8 +57,8 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("<Subject> element present", attributeStatement.getSubject());
-        AssertJUnit.assertEquals("Non zero count of <Attribute> elements", 0, attributeStatement.getAttributes().size());
+        Assert.assertNull(attributeStatement.getSubject(), "<Subject> element present");
+        Assert.assertEquals(attributeStatement.getAttributes().size(), 0, "Non zero count of <Attribute> elements");
     }
 
     /** {@inheritDoc} */
@@ -67,14 +67,14 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("<Subject> element not present", attributeStatement.getSubject());
-        AssertJUnit.assertNotNull("<AuthorityBinding> elements not present", attributeStatement.getAttributes());
-        AssertJUnit.assertEquals("count of <AuthorityBinding> elements", 5, attributeStatement.getAttributes().size());
+        Assert.assertNotNull(attributeStatement.getSubject(), "<Subject> element not present");
+        Assert.assertNotNull(attributeStatement.getAttributes(), "<AuthorityBinding> elements not present");
+        Assert.assertEquals(attributeStatement.getAttributes().size(), 5, "count of <AuthorityBinding> elements");
 
         Attribute attribute = attributeStatement.getAttributes().get(0);
         attributeStatement.getAttributes().remove(attribute);
-        AssertJUnit.assertEquals("count of <AttributeStatement> elements after single remove", 4, attributeStatement
-                .getAttributes().size());
+        Assert.assertEquals(attributeStatement
+                .getAttributes().size(), 4, "count of <AttributeStatement> elements after single remove");
 
         ArrayList<Attribute> list = new ArrayList<Attribute>(2);
 
@@ -83,8 +83,8 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
 
         attributeStatement.getAttributes().removeAll(list);
 
-        AssertJUnit.assertEquals("count of <AttributeStatement> elements after double remove", 2, attributeStatement
-                .getAttributes().size());
+        Assert.assertEquals(attributeStatement
+                .getAttributes().size(), 2, "count of <AttributeStatement> elements after double remove");
     }
 
     /** {@inheritDoc} */

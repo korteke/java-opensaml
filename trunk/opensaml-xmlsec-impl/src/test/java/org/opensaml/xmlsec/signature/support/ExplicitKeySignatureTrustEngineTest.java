@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -199,7 +199,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         SignableXMLObject signableXO = getValidSignedObject();
         Signature signature = signableXO.getSignature();
-        AssertJUnit.assertTrue("Signature was valid and signing cred was trusted", engine.validate(signature, criteriaSet));
+        Assert.assertTrue(engine.validate(signature, criteriaSet), "Signature was valid and signing cred was trusted");
     }
     
     /**
@@ -211,7 +211,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testUntrustedCredential() throws SecurityException {
         SignableXMLObject signableXO = getValidSignedObject();
         Signature signature = signableXO.getSignature();
-        AssertJUnit.assertFalse("Signature was valid, but signing cred was untrusted", engine.validate(signature, criteriaSet));
+        Assert.assertFalse(engine.validate(signature, criteriaSet), "Signature was valid, but signing cred was untrusted");
     }
     
     /**
@@ -225,7 +225,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         SignableXMLObject signableXO = getInvalidSignedObject();
         Signature signature = signableXO.getSignature();
-        AssertJUnit.assertFalse("Signature was invalid due to document modification", engine.validate(signature, criteriaSet));
+        Assert.assertFalse(engine.validate(signature, criteriaSet), "Signature was invalid due to document modification");
         
     }
     
@@ -238,13 +238,13 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testRawSuccess() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        AssertJUnit.assertTrue("Raw Signature was valid and supplied candidate signing cred was trusted", 
-                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
-                        criteriaSet, signingX509Cred));
+        Assert.assertTrue(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, signingX509Cred), 
+                "Raw Signature was valid and supplied candidate signing cred was trusted");
         
-        AssertJUnit.assertTrue("Raw Signature was valid and non-supplied candidate signing cred was in trusted set", 
-                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
-                        criteriaSet, null));
+        Assert.assertTrue(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, null), 
+                "Raw Signature was valid and non-supplied candidate signing cred was in trusted set");
     }
     
     /**
@@ -255,13 +255,13 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     @Test
     public void testRawUntrustedCredential() throws SecurityException {
         
-        AssertJUnit.assertFalse("Raw Signature was valid, but supplied candidate signing cred was untrusted", 
-                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
-                        criteriaSet, signingX509Cred));
+        Assert.assertFalse(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, signingX509Cred), 
+                "Raw Signature was valid, but supplied candidate signing cred was untrusted");
         
-        AssertJUnit.assertFalse("Raw Signature was valid and the signing cred was not present in trusted set", 
-                engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
-                        criteriaSet, null));
+        Assert.assertFalse(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, null), 
+                "Raw Signature was valid and the signing cred was not present in trusted set");
     }
     
     /**
@@ -275,9 +275,9 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         String tamperedData = rawData + "HAHA All your base are belong to us";
         
-        AssertJUnit.assertFalse("Raw Signature was invalid due to data tampering, supplied candidate signing cred was trusted", 
-                engine.validate(rawControlSignature, tamperedData.getBytes(), rawAlgorithmURI, 
-                        criteriaSet, signingX509Cred));
+        Assert.assertFalse(engine.validate(rawControlSignature, tamperedData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, signingX509Cred), 
+                "Raw Signature was invalid due to data tampering, supplied candidate signing cred was trusted");
     }
     
     /**

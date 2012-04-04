@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.Modulus;
@@ -45,9 +45,9 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("RSAKeyValue", keyValue);
-        AssertJUnit.assertNull("Modulus child element", keyValue.getModulus());
-        AssertJUnit.assertNull("Exponent child element", keyValue.getExponent());
+        Assert.assertNotNull(keyValue, "RSAKeyValue");
+        Assert.assertNull(keyValue.getModulus(), "Modulus child element");
+        Assert.assertNull(keyValue.getExponent(), "Exponent child element");
     }
 
     /** {@inheritDoc} */
@@ -55,9 +55,9 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("RSAKeyValue", keyValue);
-        AssertJUnit.assertNotNull("Modulus child element", keyValue.getModulus());
-        AssertJUnit.assertNotNull("Exponent child element", keyValue.getExponent());
+        Assert.assertNotNull(keyValue, "RSAKeyValue");
+        Assert.assertNotNull(keyValue.getModulus(), "Modulus child element");
+        Assert.assertNotNull(keyValue.getExponent(), "Exponent child element");
     }
 
     /** {@inheritDoc} */

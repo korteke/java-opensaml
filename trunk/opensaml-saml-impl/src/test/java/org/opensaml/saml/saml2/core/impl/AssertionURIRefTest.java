@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,8 +51,8 @@ public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
         AssertionURIRef assertionURIRef = (AssertionURIRef) unmarshallElement(singleElementFile);
 
         String assertionURI = assertionURIRef.getAssertionURI();
-        AssertJUnit.assertEquals("AssertionURI was " + assertionURI + ", expected " + expectedAssertionURI, expectedAssertionURI,
-                assertionURI);
+        Assert.assertEquals(assertionURI, expectedAssertionURI,
+                "AssertionURI was " + assertionURI + ", expected " + expectedAssertionURI);
     }
 
     /** {@inheritDoc} */

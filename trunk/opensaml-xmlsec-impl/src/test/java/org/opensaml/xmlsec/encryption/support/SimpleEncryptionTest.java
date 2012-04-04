@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -151,13 +151,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         }
         
-        AssertJUnit.assertNotNull(encData);
-        AssertJUnit.assertEquals("Type attribute", EncryptionConstants.TYPE_ELEMENT, encData.getType());
-        AssertJUnit.assertEquals("Algorithm attribute", algoURI, encData.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertNotNull("KeyInfo", encData.getKeyInfo());
-        AssertJUnit.assertEquals("KeyName", expectedKeyName, encData.getKeyInfo().getKeyNames().get(0).getValue());
+        Assert.assertNotNull(encData);
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
+        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
+        Assert.assertEquals(encData.getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, "KeyName");
         
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 0, encData.getKeyInfo().getEncryptedKeys().size());
+        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 0, "Number of EncryptedKeys");
     }
     
     /**
@@ -176,13 +176,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         }
         
-        AssertJUnit.assertNotNull(encData);
-        AssertJUnit.assertEquals("Type attribute", EncryptionConstants.TYPE_ELEMENT, encData.getType());
-        AssertJUnit.assertEquals("Algorithm attribute", algoURI, encData.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertNotNull("KeyInfo", encData.getKeyInfo());
+        Assert.assertNotNull(encData);
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
+        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
         
         List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 1, encData.getKeyInfo().getEncryptedKeys().size());
+        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
     }
     
@@ -206,13 +206,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         }
         
-        AssertJUnit.assertNotNull(encData);
-        AssertJUnit.assertEquals("Type attribute", EncryptionConstants.TYPE_ELEMENT, encData.getType());
-        AssertJUnit.assertEquals("Algorithm attribute", algoURI, encData.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertNotNull("KeyInfo", encData.getKeyInfo());
+        Assert.assertNotNull(encData);
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
+        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
         
         List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 2, encData.getKeyInfo().getEncryptedKeys().size());
+        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 2, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
         checkKEKAES(encKeys.get(1), true);
     }
@@ -234,13 +234,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         }
         
-        AssertJUnit.assertNotNull(encData);
-        AssertJUnit.assertEquals("Type attribute", EncryptionConstants.TYPE_CONTENT, encData.getType());
-        AssertJUnit.assertEquals("Algorithm attribute", algoURI, encData.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertNotNull("KeyInfo", encData.getKeyInfo());
-        AssertJUnit.assertEquals("KeyName", expectedKeyName, encData.getKeyInfo().getKeyNames().get(0).getValue());
+        Assert.assertNotNull(encData);
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_CONTENT, "Type attribute");
+        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
+        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
+        Assert.assertEquals(encData.getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, "KeyName");
         
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 0, encData.getKeyInfo().getEncryptedKeys().size());
+        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 0, "Number of EncryptedKeys");
     }
     
     /**
@@ -259,13 +259,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         }
         
-        AssertJUnit.assertNotNull(encData);
-        AssertJUnit.assertEquals("Type attribute", EncryptionConstants.TYPE_CONTENT, encData.getType());
-        AssertJUnit.assertEquals("Algorithm attribute", algoURI, encData.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertNotNull("KeyInfo", encData.getKeyInfo());
+        Assert.assertNotNull(encData);
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_CONTENT, "Type attribute");
+        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
+        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
         
         List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 1, encData.getKeyInfo().getEncryptedKeys().size());
+        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
     }
     
@@ -289,13 +289,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         }
         
-        AssertJUnit.assertNotNull(encData);
-        AssertJUnit.assertEquals("Type attribute", EncryptionConstants.TYPE_CONTENT, encData.getType());
-        AssertJUnit.assertEquals("Algorithm attribute", algoURI, encData.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertNotNull("KeyInfo", encData.getKeyInfo());
+        Assert.assertNotNull(encData);
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_CONTENT, "Type attribute");
+        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
+        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
         
         List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 2, encData.getKeyInfo().getEncryptedKeys().size());
+        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 2, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
         checkKEKAES(encKeys.get(1), true);
     }
@@ -354,7 +354,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         }
         
         
-        AssertJUnit.assertEquals("Number of EncryptedKeys", 2, encKeys.size());
+        Assert.assertEquals(encKeys.size(), 2, "Number of EncryptedKeys");
         checkKEKAES(encKeys.get(0), true);
         checkKEKRSA(encKeys.get(1), true);
     }
@@ -381,7 +381,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
-        AssertJUnit.assertNotNull(encData);
+        Assert.assertNotNull(encData);
         
         // try with multiple KEK
         try {
@@ -389,7 +389,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
-        AssertJUnit.assertNotNull(encData);
+        Assert.assertNotNull(encData);
     }
     
     /**
@@ -448,13 +448,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         } 
         
-        AssertJUnit.assertFalse("EncryptedKey/EncryptionMethod/DigestMethod list was empty",
-                encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty());
+        Assert.assertFalse(encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty(),
+                "EncryptedKey/EncryptionMethod/DigestMethod list was empty");
         DigestMethod dm = 
                 (DigestMethod) encKey.getEncryptionMethod()
                 .getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).get(0);
-        AssertJUnit.assertEquals("DigestMethod algorithm URI had unexpected value", 
-                SignatureConstants.ALGO_ID_DIGEST_SHA1, dm.getAlgorithm());
+        Assert.assertEquals(dm.getAlgorithm(), 
+                SignatureConstants.ALGO_ID_DIGEST_SHA1, "DigestMethod algorithm URI had unexpected value");
     }
     
     /**
@@ -482,8 +482,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Object encryption failed: " + e);
         } 
         
-        AssertJUnit.assertTrue("EncryptedKey/EncryptionMethod/DigestMethod list was NOT empty",
-                encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty());
+        Assert.assertTrue(encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty(),
+                "EncryptedKey/EncryptionMethod/DigestMethod list was NOT empty");
     }
     
     /**
@@ -515,17 +515,17 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @param hasKeyInfo flag indicating expectation of KeyInfo presence
      */
     private void checkKEKAES(EncryptedKey encKey, boolean hasKeyInfo) {
-        AssertJUnit.assertNotNull("EncryptedKey was null", encKey);
-        AssertJUnit.assertEquals("Algorithm attribute", kekURIAES, encKey.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertEquals("Recipient attribute", expectedRecipientAES, encKey.getRecipient());
+        Assert.assertNotNull(encKey, "EncryptedKey was null");
+        Assert.assertEquals(encKey.getEncryptionMethod().getAlgorithm(), kekURIAES, "Algorithm attribute");
+        Assert.assertEquals(encKey.getRecipient(), expectedRecipientAES, "Recipient attribute");
         if (! hasKeyInfo) {
-            AssertJUnit.assertNull("Unexpected KeyInfo was present", encKey.getKeyInfo());
+            Assert.assertNull(encKey.getKeyInfo(), "Unexpected KeyInfo was present");
             return;
         } else {
-            AssertJUnit.assertNotNull("KeyInfo was not present", encKey.getKeyInfo());
-            AssertJUnit.assertNotNull("KeyName was not present", encKey.getKeyInfo().getKeyNames().get(0));
-            AssertJUnit.assertEquals("Unexpected KEK KeyName", expectedKEKKeyNameAES, 
-                    encKey.getKeyInfo().getKeyNames().get(0).getValue());
+            Assert.assertNotNull(encKey.getKeyInfo(), "KeyInfo was not present");
+            Assert.assertNotNull(encKey.getKeyInfo().getKeyNames().get(0), "KeyName was not present");
+            Assert.assertEquals(encKey.getKeyInfo().getKeyNames().get(0).getValue(), expectedKEKKeyNameAES, 
+                    "Unexpected KEK KeyName");
         }
     }
  
@@ -536,17 +536,17 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @param hasKeyInfo flag indicating expectation of KeyInfo presence
      */
     private void checkKEKRSA(EncryptedKey encKey, boolean hasKeyInfo) {
-        AssertJUnit.assertNotNull("EncryptedKey was null", encKey);
-        AssertJUnit.assertEquals("Algorithm attribute", kekURIRSA, encKey.getEncryptionMethod().getAlgorithm());
-        AssertJUnit.assertEquals("Recipient attribute", expectedRecipientRSA, encKey.getRecipient());
+        Assert.assertNotNull(encKey, "EncryptedKey was null");
+        Assert.assertEquals(encKey.getEncryptionMethod().getAlgorithm(), kekURIRSA, "Algorithm attribute");
+        Assert.assertEquals(encKey.getRecipient(), expectedRecipientRSA, "Recipient attribute");
         if (! hasKeyInfo) {
-            AssertJUnit.assertNull("Unexpected KeyInfo was present", encKey.getKeyInfo());
+            Assert.assertNull(encKey.getKeyInfo(), "Unexpected KeyInfo was present");
             return;
         } else {
-            AssertJUnit.assertNotNull("KeyInfo was not present", encKey.getKeyInfo());
-            AssertJUnit.assertNotNull("KeyName was not present", encKey.getKeyInfo().getKeyNames().get(0));
-            AssertJUnit.assertEquals("Unexpected KEK KeyName", expectedKEKKeyNameRSA, 
-                    encKey.getKeyInfo().getKeyNames().get(0).getValue());
+            Assert.assertNotNull(encKey.getKeyInfo(), "KeyInfo was not present");
+            Assert.assertNotNull(encKey.getKeyInfo().getKeyNames().get(0), "KeyName was not present");
+            Assert.assertEquals(encKey.getKeyInfo().getKeyNames().get(0).getValue(), expectedKEKKeyNameRSA, 
+                    "Unexpected KEK KeyName");
         }
     }
     

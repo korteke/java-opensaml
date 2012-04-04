@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Transform;
 import org.opensaml.xmlsec.signature.Transforms;
@@ -52,8 +52,8 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Transforms em = (Transforms) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Transforms", em);
-        AssertJUnit.assertEquals("Transform children", 0, em.getTransforms().size());
+        Assert.assertNotNull(em, "Transforms");
+        Assert.assertEquals(em.getTransforms().size(), 0, "Transform children");
     }
 
     /** {@inheritDoc} */
@@ -61,8 +61,8 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Transforms em = (Transforms) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("Transforms", em);
-        AssertJUnit.assertEquals("Transform children", expectedNumTransforms, em.getTransforms().size());
+        Assert.assertNotNull(em, "Transforms");
+        Assert.assertEquals(em.getTransforms().size(), expectedNumTransforms, "Transform children");
     }
 
     /** {@inheritDoc} */

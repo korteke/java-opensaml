@@ -18,7 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -51,22 +51,22 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
     public void testUnmarshall() {
         AuthnRequest request = (AuthnRequest) unmarshallElement(elementFile);
         
-        AssertJUnit.assertNotNull("AuthnRequest was null", request);
-        AssertJUnit.assertEquals("ForceAuthn", true, request.isForceAuthn().booleanValue());
-        AssertJUnit.assertEquals("AssertionConsumerServiceURL", "http://www.example.com/", request.getAssertionConsumerServiceURL());
-        AssertJUnit.assertEquals("AttributeConsumingServiceIndex", 0, request.getAttributeConsumingServiceIndex().intValue());
-        AssertJUnit.assertEquals("ProviderName", "SomeProvider", request.getProviderName());
-        AssertJUnit.assertEquals("ID", "abe567de6", request.getID());
-        AssertJUnit.assertEquals("Version", SAMLVersion.VERSION_20.toString(), request.getVersion().toString());
-        AssertJUnit.assertEquals("IssueInstant", new DateTime(2005, 1, 31, 12, 0, 0, 0, ISOChronology.getInstanceUTC()), request.getIssueInstant());
-        AssertJUnit.assertEquals("Destination", "http://www.example.com/", request.getDestination());
-        AssertJUnit.assertEquals("Consent", "urn:oasis:names:tc:SAML:2.0:consent:obtained", request.getConsent());
-        AssertJUnit.assertEquals("Subject/NameID/@NameIdFormat", "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress", request.getSubject().getNameID().getFormat());
-        AssertJUnit.assertEquals("Subject/NameID contents", "j.doe@company.com", request.getSubject().getNameID().getValue());
+        Assert.assertNotNull(request, "AuthnRequest was null");
+        Assert.assertEquals(request.isForceAuthn().booleanValue(), true, "ForceAuthn");
+        Assert.assertEquals(request.getAssertionConsumerServiceURL(), "http://www.example.com/", "AssertionConsumerServiceURL");
+        Assert.assertEquals(request.getAttributeConsumingServiceIndex().intValue(), 0, "AttributeConsumingServiceIndex");
+        Assert.assertEquals(request.getProviderName(), "SomeProvider", "ProviderName");
+        Assert.assertEquals(request.getID(), "abe567de6", "ID");
+        Assert.assertEquals(request.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Version");
+        Assert.assertEquals(request.getIssueInstant(), new DateTime(2005, 1, 31, 12, 0, 0, 0, ISOChronology.getInstanceUTC()), "IssueInstant");
+        Assert.assertEquals(request.getDestination(), "http://www.example.com/", "Destination");
+        Assert.assertEquals(request.getConsent(), "urn:oasis:names:tc:SAML:2.0:consent:obtained", "Consent");
+        Assert.assertEquals(request.getSubject().getNameID().getFormat(), "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress", "Subject/NameID/@NameIdFormat");
+        Assert.assertEquals(request.getSubject().getNameID().getValue(), "j.doe@company.com", "Subject/NameID contents");
         Audience audience = request.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
-        AssertJUnit.assertEquals("Conditions/AudienceRestriction[1]/Audience[1] contents", "urn:foo:sp.example.org", audience.getAudienceURI());
+        Assert.assertEquals(audience.getAudienceURI(), "urn:foo:sp.example.org", "Conditions/AudienceRestriction[1]/Audience[1] contents");
         AuthnContextClassRef classRef = (AuthnContextClassRef) request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0);
-        AssertJUnit.assertEquals("RequestedAuthnContext/AuthnContextClassRef[1] contents", "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", classRef.getAuthnContextClassRef());
+        Assert.assertEquals(classRef.getAuthnContextClassRef(), "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", "RequestedAuthnContext/AuthnContextClassRef[1] contents");
     }
 
     /** {@inheritDoc} */

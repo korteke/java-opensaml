@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.encryption.DataReference;
@@ -54,9 +54,9 @@ public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         DataReference ref = (DataReference) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("DataReference", ref);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, ref.getURI());
-        AssertJUnit.assertEquals("Unknown children", 0, ref.getUnknownXMLObjects().size());
+        Assert.assertNotNull(ref, "DataReference");
+        Assert.assertEquals(ref.getURI(), expectedURI, "URI attribute");
+        Assert.assertEquals(ref.getUnknownXMLObjects().size(), 0, "Unknown children");
     }
 
     /** {@inheritDoc} */
@@ -64,9 +64,9 @@ public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         DataReference ref = (DataReference) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("DataReference", ref);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, ref.getURI());
-        AssertJUnit.assertEquals("Unknown children", expectedNumUnknownChildren, ref.getUnknownXMLObjects().size());
+        Assert.assertNotNull(ref, "DataReference");
+        Assert.assertEquals(ref.getURI(), expectedURI, "URI attribute");
+        Assert.assertEquals(ref.getUnknownXMLObjects().size(), expectedNumUnknownChildren, "Unknown children");
     }
 
     /** {@inheritDoc} */

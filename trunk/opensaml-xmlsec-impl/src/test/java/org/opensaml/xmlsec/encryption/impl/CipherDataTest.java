@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
@@ -45,9 +45,9 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         CipherData cipherData = (CipherData) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("CipherData", cipherData);
-        AssertJUnit.assertNull("CipherValue child element", cipherData.getCipherValue());
-        AssertJUnit.assertNull("CipherReference child element", cipherData.getCipherReference());
+        Assert.assertNotNull(cipherData, "CipherData");
+        Assert.assertNull(cipherData.getCipherValue(), "CipherValue child element");
+        Assert.assertNull(cipherData.getCipherReference(), "CipherReference child element");
     }
 
     /** {@inheritDoc} */
@@ -55,9 +55,9 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         CipherData cipherData = (CipherData) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("CipherData", cipherData);
-        AssertJUnit.assertNotNull("CipherValue child element", cipherData.getCipherValue());
-        AssertJUnit.assertNotNull("CipherReference child element", cipherData.getCipherReference());
+        Assert.assertNotNull(cipherData, "CipherData");
+        Assert.assertNotNull(cipherData.getCipherValue(), "CipherValue child element");
+        Assert.assertNotNull(cipherData.getCipherReference(), "CipherReference child element");
     }
 
     /** {@inheritDoc} */

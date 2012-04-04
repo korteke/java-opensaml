@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.binding.security;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
@@ -220,8 +220,8 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
 
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver");
         SAMLMessageContext samlContext = messageContext;
-        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        AssertJUnit.assertTrue("Unexpected value for context authentication state", samlContext.isInboundSAMLMessageAuthenticated());
+        Assert.assertEquals(samlContext.getInboundMessageIssuer(), issuer, "Unexpected value for Issuer found");
+        Assert.assertTrue(samlContext.isInboundSAMLMessageAuthenticated(), "Unexpected value for context authentication state");
     }
 
     /**
@@ -268,8 +268,8 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
 
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver, no request KeyInfo");
         SAMLMessageContext samlContext = messageContext;
-        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        AssertJUnit.assertTrue("Unexpected value for context authentication state", samlContext.isInboundSAMLMessageAuthenticated());
+        Assert.assertEquals(samlContext.getInboundMessageIssuer(), issuer, "Unexpected value for Issuer found");
+        Assert.assertTrue(samlContext.isInboundSAMLMessageAuthenticated(), "Unexpected value for context authentication state");
     }
 
     /**

@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -131,7 +131,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of EncryptedKey: " + e);
         }
         
-        AssertJUnit.assertEquals("Decrypted EncryptedKey", decryptedKey, encKey);
+        Assert.assertEquals(encKey, decryptedKey, "Decrypted EncryptedKey");
         
     }
     
@@ -256,7 +256,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         } catch (DecryptionException e) {
             //fail("Error on decryption of EncryptedData to element content: " + e);
             //Currently this will fail, not yet supporting decryption of element content.
-            AssertJUnit.assertTrue("Decryption of element content not yet supported", true);
+            Assert.assertTrue(true, "Decryption of element content not yet supported");
         }
         
     }

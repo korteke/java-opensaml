@@ -19,7 +19,7 @@ package org.opensaml.saml.common.binding.artifact;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;
@@ -48,19 +48,19 @@ public class BasicSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase 
     @Test
     public void testNoParent() {
         SAMLArtifactMapEntry entry = factory.newEntry("the-artifact", "the-issuer", "the-rp", samlObject, 60*60*1000);
-        AssertJUnit.assertTrue("Parent-less SAMLObject resulted in different object in entry", 
-                samlObject == entry.getSamlMessage());
+        Assert.assertTrue(samlObject == entry.getSamlMessage(), 
+                "Parent-less SAMLObject resulted in different object in entry");
     }
     
     @Test
     public void testWithParent() {
         Response response = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         response.getAssertions().add((Assertion)samlObject);
-        AssertJUnit.assertTrue(samlObject.hasParent());
+        Assert.assertTrue(samlObject.hasParent());
         
         SAMLArtifactMapEntry entry = factory.newEntry("the-artifact", "the-issuer", "the-rp", samlObject, 60*60*1000);
-        AssertJUnit.assertFalse("Parent-ed SAMLObject resulted in the same object in entry", 
-                samlObject == entry.getSamlMessage());
+        Assert.assertFalse(samlObject == entry.getSamlMessage(), 
+                "Parent-ed SAMLObject resulted in the same object in entry");
     }
     
     @Test
@@ -68,7 +68,7 @@ public class BasicSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase 
         factory.setSerializeMessage(false);
         SAMLArtifactMapEntry entry = factory.newEntry("the-artifact", "the-issuer", "the-rp", samlObject, 60*60*1000);
         BasicSAMLArtifactMapEntry basicEntry = (BasicSAMLArtifactMapEntry) entry;
-        AssertJUnit.assertNull("Serialized data was not null", basicEntry.getSerializedMessage());
+        Assert.assertNull(basicEntry.getSerializedMessage(), "Serialized data was not null");
     }
     
     @Test
@@ -76,7 +76,7 @@ public class BasicSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase 
         factory.setSerializeMessage(true);
         SAMLArtifactMapEntry entry = factory.newEntry("the-artifact", "the-issuer", "the-rp", samlObject, 60*60*1000);
         BasicSAMLArtifactMapEntry basicEntry = (BasicSAMLArtifactMapEntry) entry;
-        AssertJUnit.assertNotNull("Serialized data was null", basicEntry.getSerializedMessage());
+        Assert.assertNotNull(basicEntry.getSerializedMessage(), "Serialized data was null");
     }
 
 }

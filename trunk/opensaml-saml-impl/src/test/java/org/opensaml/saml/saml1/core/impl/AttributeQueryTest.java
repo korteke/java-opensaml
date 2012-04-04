@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -62,9 +62,9 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("Resource attribute present", attributeQuery.getResource());
-        AssertJUnit.assertNull("Subject element present", attributeQuery.getSubject());
-        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, attributeQuery.getAttributeDesignators().size());
+        Assert.assertNull(attributeQuery.getResource(), "Resource attribute present");
+        Assert.assertNull(attributeQuery.getSubject(), "Subject element present");
+        Assert.assertEquals(attributeQuery.getAttributeDesignators().size(), 0, "Count of AttributeDesignator elements");
     }
 
     /** {@inheritDoc} */
@@ -73,9 +73,9 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("Resource attribute", expectedResource, attributeQuery.getResource());
-        AssertJUnit.assertNull("Subject element present", attributeQuery.getSubject());
-        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, attributeQuery.getAttributeDesignators().size());
+        Assert.assertEquals(attributeQuery.getResource(), expectedResource, "Resource attribute");
+        Assert.assertNull(attributeQuery.getSubject(), "Subject element present");
+        Assert.assertEquals(attributeQuery.getAttributeDesignators().size(), 0, "Count of AttributeDesignator elements");
     }
 
     /** {@inheritDoc} */
@@ -84,8 +84,8 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Subject element present", attributeQuery.getSubject());
-        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 4, attributeQuery.getAttributeDesignators().size());
+        Assert.assertNotNull(attributeQuery.getSubject(), "Subject element present");
+        Assert.assertEquals(attributeQuery.getAttributeDesignators().size(), 4, "Count of AttributeDesignator elements");
     }
 
     /** {@inheritDoc} */

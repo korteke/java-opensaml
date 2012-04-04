@@ -19,7 +19,7 @@ package org.opensaml.security.trust.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -164,9 +164,9 @@ public class ExplicitKeyTrustEngineTest {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitKeyTrustEngine engine = new ExplicitKeyTrustEngine(resolver);
         
-        AssertJUnit.assertTrue("Entity RSA public key credential was not trusted", engine.validate(entityRSACred, criteriaSet));
+        Assert.assertTrue(engine.validate(entityRSACred, criteriaSet), "Entity RSA public key credential was not trusted");
         
-        AssertJUnit.assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
+        Assert.assertTrue(engine.validate(entityX509Cred, criteriaSet), "Entity X509 credential was not trusted");
     }
 
     @Test
@@ -175,9 +175,9 @@ public class ExplicitKeyTrustEngineTest {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitKeyTrustEngine engine = new ExplicitKeyTrustEngine(resolver);
         
-        AssertJUnit.assertTrue("Entity RSA public key credential was not trusted", engine.validate(entityRSACred, criteriaSet));
+        Assert.assertTrue(engine.validate(entityRSACred, criteriaSet), "Entity RSA public key credential was not trusted");
         
-        AssertJUnit.assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
+        Assert.assertTrue(engine.validate(entityX509Cred, criteriaSet), "Entity X509 credential was not trusted");
     }
     
     @Test
@@ -185,9 +185,9 @@ public class ExplicitKeyTrustEngineTest {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitKeyTrustEngine engine = new ExplicitKeyTrustEngine(resolver);
         
-        AssertJUnit.assertFalse("Entity RSA public key credential was trusted", engine.validate(entityRSACred, criteriaSet));
+        Assert.assertFalse(engine.validate(entityRSACred, criteriaSet), "Entity RSA public key credential was trusted");
         
-        AssertJUnit.assertFalse("Entity X509 credential was trusted", engine.validate(entityX509Cred, criteriaSet));
+        Assert.assertFalse(engine.validate(entityX509Cred, criteriaSet), "Entity X509 credential was trusted");
     }
 
 }

@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -66,11 +66,11 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         EncryptedData ed = (EncryptedData) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("EncryptedData", ed);
-        AssertJUnit.assertNull("EncryptionMethod child", ed.getEncryptionMethod());
-        AssertJUnit.assertNull("KeyInfo child", ed.getKeyInfo());
-        AssertJUnit.assertNull("CipherData child", ed.getCipherData());
-        AssertJUnit.assertNull("EncryptionProperties child", ed.getEncryptionProperties());
+        Assert.assertNotNull(ed, "EncryptedData");
+        Assert.assertNull(ed.getEncryptionMethod(), "EncryptionMethod child");
+        Assert.assertNull(ed.getKeyInfo(), "KeyInfo child");
+        Assert.assertNull(ed.getCipherData(), "CipherData child");
+        Assert.assertNull(ed.getEncryptionProperties(), "EncryptionProperties child");
     }
 
     /** {@inheritDoc} */
@@ -78,11 +78,11 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         EncryptedData ed = (EncryptedData) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("EncryptedData", ed);
-        AssertJUnit.assertNotNull("EncryptionMethod child", ed.getEncryptionMethod());
-        AssertJUnit.assertNotNull("KeyInfo child", ed.getKeyInfo());
-        AssertJUnit.assertNotNull("CipherData child", ed.getCipherData());
-        AssertJUnit.assertNotNull("EncryptionProperties child", ed.getEncryptionProperties());
+        Assert.assertNotNull(ed, "EncryptedData");
+        Assert.assertNotNull(ed.getEncryptionMethod(), "EncryptionMethod child");
+        Assert.assertNotNull(ed.getKeyInfo(), "KeyInfo child");
+        Assert.assertNotNull(ed.getCipherData(), "CipherData child");
+        Assert.assertNotNull(ed.getEncryptionProperties(), "EncryptionProperties child");
     }
 
     /** {@inheritDoc} */
@@ -90,13 +90,13 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         EncryptedData ed = (EncryptedData) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("EncryptedData", ed);
-        AssertJUnit.assertEquals("Id attribute", expectedId, ed.getID());
-        AssertJUnit.assertEquals("Type attribute", expectedType, ed.getType());
-        AssertJUnit.assertEquals("MimeType attribute", expectedMimeType, ed.getMimeType());
-        AssertJUnit.assertEquals("Encoding attribute", expectedEncoding, ed.getEncoding());
+        Assert.assertNotNull(ed, "EncryptedData");
+        Assert.assertEquals(ed.getID(), expectedId, "Id attribute");
+        Assert.assertEquals(ed.getType(), expectedType, "Type attribute");
+        Assert.assertEquals(ed.getMimeType(), expectedMimeType, "MimeType attribute");
+        Assert.assertEquals(ed.getEncoding(), expectedEncoding, "Encoding attribute");
         
-        AssertJUnit.assertEquals("ID lookup failed", ed, ed.resolveID(expectedId));
+        Assert.assertEquals(ed.resolveID(expectedId), ed, "ID lookup failed");
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -53,7 +53,7 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall(){
         AttributeProfile profile = (AttributeProfile) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertEquals("Profile URI has a value of " + profile.getProfileURI() + ", expected a value of " + expectedProfileURI, expectedProfileURI, profile.getProfileURI());
+        Assert.assertEquals(profile.getProfileURI(), expectedProfileURI, "Profile URI has a value of " + profile.getProfileURI() + ", expected a value of " + expectedProfileURI);
     }
 
     /** {@inheritDoc} */

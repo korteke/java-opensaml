@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
@@ -57,12 +57,12 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AgreementMethod am = (AgreementMethod) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("AgreementMethod", am);
-        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, am.getAlgorithm());
-        AssertJUnit.assertNull("KA-Nonce child element", am.getKANonce());
-        AssertJUnit.assertEquals("Unknown children", 0, am.getUnknownXMLObjects().size());
-        AssertJUnit.assertNull("OriginatorKeyInfo child element", am.getOriginatorKeyInfo());
-        AssertJUnit.assertNull("RecipientKeyInfo child element", am.getRecipientKeyInfo());
+        Assert.assertNotNull(am, "AgreementMethod");
+        Assert.assertEquals(am.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
+        Assert.assertNull(am.getKANonce(), "KA-Nonce child element");
+        Assert.assertEquals(am.getUnknownXMLObjects().size(), 0, "Unknown children");
+        Assert.assertNull(am.getOriginatorKeyInfo(), "OriginatorKeyInfo child element");
+        Assert.assertNull(am.getRecipientKeyInfo(), "RecipientKeyInfo child element");
     }
 
     /** {@inheritDoc} */
@@ -70,12 +70,12 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         AgreementMethod am = (AgreementMethod) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("AgreementMethod", am);
-        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, am.getAlgorithm());
-        AssertJUnit.assertNotNull("KA-Nonce child element", am.getKANonce());
-        AssertJUnit.assertEquals("Unknown children", expectedNumUnknownChildren, am.getUnknownXMLObjects().size());
-        AssertJUnit.assertNotNull("OriginatorKeyInfo child element", am.getOriginatorKeyInfo());
-        AssertJUnit.assertNotNull("RecipientKeyInfo child element", am.getRecipientKeyInfo());
+        Assert.assertNotNull(am, "AgreementMethod");
+        Assert.assertEquals(am.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
+        Assert.assertNotNull(am.getKANonce(), "KA-Nonce child element");
+        Assert.assertEquals(am.getUnknownXMLObjects().size(), expectedNumUnknownChildren, "Unknown children");
+        Assert.assertNotNull(am.getOriginatorKeyInfo(), "OriginatorKeyInfo child element");
+        Assert.assertNotNull(am.getRecipientKeyInfo(), "RecipientKeyInfo child element");
     }
 
     /** {@inheritDoc} */

@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -142,28 +142,28 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "No credentials were found");
         
         Credential credential = iter.next();
-        AssertJUnit.assertNotNull("Credential was null", credential);
-        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
+        Assert.assertNotNull(credential, "Credential was null");
+        Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
+        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
         X509Credential x509Credential = (X509Credential) credential;
         
-        AssertJUnit.assertNotNull("Public key was null", x509Credential.getPublicKey());
-        AssertJUnit.assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
+        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
+        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
         
-        AssertJUnit.assertEquals("Wrong number of key names", 2, x509Credential.getKeyNames().size());
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Foo"));
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Bar"));
+        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
         
-        AssertJUnit.assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
-        AssertJUnit.assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
+        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
+        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
         
-        AssertJUnit.assertEquals("Wrong number of certs in cert chain found", 2, x509Credential.getEntityCertificateChain().size());
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(entityCert));
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(caCert));
+        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
     }
     
     /**
@@ -179,28 +179,28 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "No credentials were found");
         
         Credential credential = iter.next();
-        AssertJUnit.assertNotNull("Credential was null", credential);
-        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
+        Assert.assertNotNull(credential, "Credential was null");
+        Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
+        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
         X509Credential x509Credential = (X509Credential) credential;
         
-        AssertJUnit.assertNotNull("Public key was null", x509Credential.getPublicKey());
-        AssertJUnit.assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
+        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
+        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
         
-        AssertJUnit.assertEquals("Wrong number of key names", 2, x509Credential.getKeyNames().size());
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Foo"));
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Bar"));
+        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
         
-        AssertJUnit.assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
-        AssertJUnit.assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
+        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
+        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
         
-        AssertJUnit.assertEquals("Wrong number of certs in cert chain found", 2, x509Credential.getEntityCertificateChain().size());
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(entityCert));
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(caCert));
+        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
     }
     
     /**
@@ -216,28 +216,28 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "No credentials were found");
         
         Credential credential = iter.next();
-        AssertJUnit.assertNotNull("Credential was null", credential);
-        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
+        Assert.assertNotNull(credential, "Credential was null");
+        Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
+        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
         X509Credential x509Credential = (X509Credential) credential;
         
-        AssertJUnit.assertNotNull("Public key was null", x509Credential.getPublicKey());
-        AssertJUnit.assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
+        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
+        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
         
-        AssertJUnit.assertEquals("Wrong number of key names", 2, x509Credential.getKeyNames().size());
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Foo"));
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Bar"));
+        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
         
-        AssertJUnit.assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
-        AssertJUnit.assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
+        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
+        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
         
-        AssertJUnit.assertEquals("Wrong number of certs in cert chain found", 2, x509Credential.getEntityCertificateChain().size());
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(entityCert));
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(caCert));
+        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
     }
     
     /**
@@ -253,28 +253,28 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
+        Assert.assertTrue(iter.hasNext(), "No credentials were found");
         
         Credential credential = iter.next();
-        AssertJUnit.assertNotNull("Credential was null", credential);
-        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
+        Assert.assertNotNull(credential, "Credential was null");
+        Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
+        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
         X509Credential x509Credential = (X509Credential) credential;
         
-        AssertJUnit.assertNotNull("Public key was null", x509Credential.getPublicKey());
-        AssertJUnit.assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
+        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
+        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
         
-        AssertJUnit.assertEquals("Wrong number of key names", 2, x509Credential.getKeyNames().size());
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Foo"));
-        AssertJUnit.assertTrue("Expected key name value not found", x509Credential.getKeyNames().contains("Bar"));
+        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
         
-        AssertJUnit.assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
-        AssertJUnit.assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
+        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
+        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
         
-        AssertJUnit.assertEquals("Wrong number of certs in cert chain found", 2, x509Credential.getEntityCertificateChain().size());
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(entityCert));
-        AssertJUnit.assertTrue("Cert not found in cert chain", x509Credential.getEntityCertificateChain().contains(caCert));
+        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
     }
 
 }

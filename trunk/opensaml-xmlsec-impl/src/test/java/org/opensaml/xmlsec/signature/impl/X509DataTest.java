@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.X509CRL;
@@ -49,8 +49,8 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         X509Data x509Data = (X509Data) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("X509Data", x509Data);
-        AssertJUnit.assertEquals("Total # of XMLObject child elements", 0, x509Data.getXMLObjects().size());
+        Assert.assertNotNull(x509Data, "X509Data");
+        Assert.assertEquals(x509Data.getXMLObjects().size(), 0, "Total # of XMLObject child elements");
     }
 
     /** {@inheritDoc} */
@@ -58,14 +58,14 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         X509Data x509Data = (X509Data) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("X509Data", x509Data);
-        AssertJUnit.assertEquals("Total # of XMLObject child elements", 11, x509Data.getXMLObjects().size());
-        AssertJUnit.assertEquals("# of X509IssuerSerial child elements", 1, x509Data.getX509IssuerSerials().size());
-        AssertJUnit.assertEquals("# of X509SKI child elements", 1, x509Data.getX509SKIs().size());
-        AssertJUnit.assertEquals("# of X509SubjectName child elements", 2, x509Data.getX509SubjectNames().size());
-        AssertJUnit.assertEquals("# of X509Certificate child elements", 3, x509Data.getX509Certificates().size());
-        AssertJUnit.assertEquals("# of X509CRL child elements", 2, x509Data.getX509CRLs().size());
-        AssertJUnit.assertEquals("# of SimpleElement child elements", 2, x509Data.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        Assert.assertNotNull(x509Data, "X509Data");
+        Assert.assertEquals(x509Data.getXMLObjects().size(), 11, "Total # of XMLObject child elements");
+        Assert.assertEquals(x509Data.getX509IssuerSerials().size(), 1, "# of X509IssuerSerial child elements");
+        Assert.assertEquals(x509Data.getX509SKIs().size(), 1, "# of X509SKI child elements");
+        Assert.assertEquals(x509Data.getX509SubjectNames().size(), 2, "# of X509SubjectName child elements");
+        Assert.assertEquals(x509Data.getX509Certificates().size(), 3, "# of X509Certificate child elements");
+        Assert.assertEquals(x509Data.getX509CRLs().size(), 2, "# of X509CRL child elements");
+        Assert.assertEquals(x509Data.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size(), 2, "# of SimpleElement child elements");
     }
 
     /** {@inheritDoc} */

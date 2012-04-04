@@ -19,7 +19,7 @@ package org.opensaml.security.x509;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.PrivateKey;
@@ -315,7 +315,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         certs.add(entityCert1AltNameDNS);
         certs.add(entityCert);
 
-        AssertJUnit.assertTrue(X509Util.determineEntityCertificate(certs, entityPrivateKey).equals(entityCert));
+        Assert.assertTrue(X509Util.determineEntityCertificate(certs, entityPrivateKey).equals(entityCert));
     }
 
     /**
@@ -329,16 +329,16 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         X509Certificate cert = entityCert1AltNameDNS;
         // Sanity checks
         byte[] extensionValue = cert.getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeDNS);
 
         List altNames = getAltNames(cert, nameTypes);
-        AssertJUnit.assertNotNull("X509Util.getAltNames() returned null", altNames);
+        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
 
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameDNS));
+        Assert.assertTrue(altNames.contains(altNameDNS), "Failed to find expected KeyName value");
     }
 
     /**
@@ -352,16 +352,16 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         X509Certificate cert = entityCert1AltNameURN;
         // Sanity checks
         byte[] extensionValue = cert.getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeURI);
 
         List altNames = getAltNames(cert, nameTypes);
-        AssertJUnit.assertNotNull("X509Util.getAltNames() returned null", altNames);
+        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
 
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameURN));
+        Assert.assertTrue(altNames.contains(altNameURN), "Failed to find expected KeyName value");
     }
 
     /**
@@ -375,16 +375,16 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         X509Certificate cert = entityCert1AltNameURL;
         // Sanity checks
         byte[] extensionValue = cert.getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeURI);
 
         List altNames = getAltNames(cert, nameTypes);
-        AssertJUnit.assertNotNull("X509Util.getAltNames() returned null", altNames);
+        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
 
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameURL));
+        Assert.assertTrue(altNames.contains(altNameURL), "Failed to find expected KeyName value");
     }
 
     /**
@@ -398,16 +398,16 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         X509Certificate cert = entityCert1AltNameIP;
         // Sanity checks
         byte[] extensionValue = cert.getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
-        AssertJUnit.assertNotNull("X509Util.getAltNames() returned null", altNames);
+        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
 
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameIP));
+        Assert.assertTrue(altNames.contains(altNameIP), "Failed to find expected KeyName value");
     }
 
     /**
@@ -421,8 +421,8 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         X509Certificate cert = entityCert3AltNamesDNS_URL_IP;
         // Sanity checks
         byte[] extensionValue = cert.getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeDNS);
@@ -430,11 +430,11 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
-        AssertJUnit.assertNotNull("X509Util.getAltNames() returned null", altNames);
+        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
 
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameDNS));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameURL));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameIP));
+        Assert.assertTrue(altNames.contains(altNameDNS), "Failed to find expected KeyName value");
+        Assert.assertTrue(altNames.contains(altNameURL), "Failed to find expected KeyName value");
+        Assert.assertTrue(altNames.contains(altNameIP), "Failed to find expected KeyName value");
     }
 
     /**
@@ -448,8 +448,8 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         X509Certificate cert = entityCert3AltNamesDNS_URN_IP;
         // Sanity checks
         byte[] extensionValue = cert.getExtensionValue(subjectAltNameExtensionOID);
-        AssertJUnit.assertNotNull("Entity cert's Java native getExtensionValue() was null", extensionValue);
-        AssertJUnit.assertTrue("Entity cert's extension value was empty", extensionValue.length > 0);
+        Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
+        Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
         Set<Integer> nameTypes = new HashSet<Integer>();
         nameTypes.add(altNameTypeDNS);
@@ -457,11 +457,11 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
-        AssertJUnit.assertNotNull("X509Util.getAltNames() returned null", altNames);
+        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
 
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameDNS));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameURN));
-        AssertJUnit.assertTrue("Failed to find expected KeyName value", altNames.contains(altNameIP));
+        Assert.assertTrue(altNames.contains(altNameDNS), "Failed to find expected KeyName value");
+        Assert.assertTrue(altNames.contains(altNameURN), "Failed to find expected KeyName value");
+        Assert.assertTrue(altNames.contains(altNameIP), "Failed to find expected KeyName value");
     }
 
     /** Test decoding a PEM encoded cert. */
@@ -473,8 +473,8 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         certInS.read(certBytes);
 
         Collection<X509Certificate> certs = X509Util.decodeCertificate(certBytes);
-        AssertJUnit.assertNotNull(certs);
-        AssertJUnit.assertEquals(2, certs.size());
+        Assert.assertNotNull(certs);
+        Assert.assertEquals(certs.size(), 2);
     }
 
     /** Test decoding a DER encoded cert. */
@@ -486,8 +486,8 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         certInS.read(certBytes);
 
         Collection<X509Certificate> certs = X509Util.decodeCertificate(certBytes);
-        AssertJUnit.assertNotNull(certs);
-        AssertJUnit.assertEquals(1, certs.size());
+        Assert.assertNotNull(certs);
+        Assert.assertEquals(certs.size(), 1);
     }
 
     /** Test decoding a PEM encoded CRL. */
@@ -499,8 +499,8 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         crlInS.read(crlBytes);
 
         Collection<X509CRL> crls = X509Util.decodeCRLs(crlBytes);
-        AssertJUnit.assertNotNull(crls);
-        AssertJUnit.assertEquals(1, crls.size());
+        Assert.assertNotNull(crls);
+        Assert.assertEquals(crls.size(), 1);
     }
 
     /** Test decoding a DER encoded CRL. */
@@ -512,8 +512,8 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         crlInS.read(crlBytes);
 
         Collection<X509CRL> crls = X509Util.decodeCRLs(crlBytes);
-        AssertJUnit.assertNotNull(crls);
-        AssertJUnit.assertEquals(1, crls.size());
+        Assert.assertNotNull(crls);
+        Assert.assertEquals(crls.size(), 1);
     }
 
     /**

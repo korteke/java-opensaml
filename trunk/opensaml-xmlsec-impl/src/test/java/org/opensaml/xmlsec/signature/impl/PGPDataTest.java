@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.PGPData;
@@ -47,10 +47,10 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         PGPData pgpData = (PGPData) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("PGPData", pgpData);
-        AssertJUnit.assertNull("PGPKeyID child element", pgpData.getPGPKeyID());
-        AssertJUnit.assertNull("PGPKeyPacket child element", pgpData.getPGPKeyPacket());
-        AssertJUnit.assertEquals("# of other XMLObject children", 0, pgpData.getUnknownXMLObjects().size());
+        Assert.assertNotNull(pgpData, "PGPData");
+        Assert.assertNull(pgpData.getPGPKeyID(), "PGPKeyID child element");
+        Assert.assertNull(pgpData.getPGPKeyPacket(), "PGPKeyPacket child element");
+        Assert.assertEquals(pgpData.getUnknownXMLObjects().size(), 0, "# of other XMLObject children");
     }
 
     /** {@inheritDoc} */
@@ -58,10 +58,10 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         PGPData pgpData = (PGPData) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("PGPData", pgpData);
-        AssertJUnit.assertNotNull("PGPKeyID child element", pgpData.getPGPKeyID());
-        AssertJUnit.assertNotNull("PGPKeyPacket child element", pgpData.getPGPKeyPacket());
-        AssertJUnit.assertEquals("# of other XMLObject children", 2, pgpData.getUnknownXMLObjects().size());
+        Assert.assertNotNull(pgpData, "PGPData");
+        Assert.assertNotNull(pgpData.getPGPKeyID(), "PGPKeyID child element");
+        Assert.assertNotNull(pgpData.getPGPKeyPacket(), "PGPKeyPacket child element");
+        Assert.assertEquals(pgpData.getUnknownXMLObjects().size(), 2, "# of other XMLObject children");
     }
 
     /** {@inheritDoc} */

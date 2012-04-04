@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.PublicKey;
@@ -278,11 +278,11 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         } catch (CertificateException e) {
             Assert.fail("Conversion from XML X509Certificate format to java.security.cert.X509Certificate failed: " + e);
         }
-        AssertJUnit.assertNotNull("Cert1 was null, failed to convert from XML to Java representation", javaCert);
-        AssertJUnit.assertEquals("Cert1 SubjectDN", cert1SubjectDN,
-                javaCert.getSubjectX500Principal().getName(X500Principal.RFC2253));
-        AssertJUnit.assertEquals("Java cert was not the expected value", SecurityHelper.buildJavaX509Cert(xmlCert1.getValue()),
-                javaCert);
+        Assert.assertNotNull(javaCert, "Cert1 was null, failed to convert from XML to Java representation");
+        Assert.assertEquals(javaCert.getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
+                "Cert1 SubjectDN");
+        Assert.assertEquals(javaCert, SecurityHelper.buildJavaX509Cert(xmlCert1.getValue()),
+                "Java cert was not the expected value");
 
         List<java.security.cert.X509Certificate> javaCertList = null;
 
@@ -291,22 +291,22 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         } catch (CertificateException e) {
             Assert.fail("Obtaining certs from X509Data failed: " + e);
         }
-        AssertJUnit.assertEquals("# of certs returned", numExpectedCerts, javaCertList.size());
-        AssertJUnit.assertEquals("Cert1 SubjectDN", cert1SubjectDN,
-                javaCertList.get(0).getSubjectX500Principal().getName(X500Principal.RFC2253));
-        AssertJUnit.assertEquals("Cert2 SubjectDN", cert2SubjectDN,
-                javaCertList.get(1).getSubjectX500Principal().getName(X500Principal.RFC2253));
+        Assert.assertEquals(javaCertList.size(), numExpectedCerts, "# of certs returned");
+        Assert.assertEquals(javaCertList.get(0).getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
+                "Cert1 SubjectDN");
+        Assert.assertEquals(javaCertList.get(1).getSubjectX500Principal().getName(X500Principal.RFC2253), cert2SubjectDN,
+                "Cert2 SubjectDN");
 
         try {
             javaCertList = KeyInfoHelper.getCertificates(keyInfo);
         } catch (CertificateException e) {
             Assert.fail("Obtaining certs from KeyInfo failed: " + e);
         }
-        AssertJUnit.assertEquals("# of certs returned", numExpectedCerts, javaCertList.size());
-        AssertJUnit.assertEquals("Cert1 SubjectDN", cert1SubjectDN,
-                javaCertList.get(0).getSubjectX500Principal().getName(X500Principal.RFC2253));
-        AssertJUnit.assertEquals("Cert2 SubjectDN", cert2SubjectDN,
-                javaCertList.get(1).getSubjectX500Principal().getName(X500Principal.RFC2253));
+        Assert.assertEquals(javaCertList.size(), numExpectedCerts, "# of certs returned");
+        Assert.assertEquals(javaCertList.get(0).getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
+                "Cert1 SubjectDN");
+        Assert.assertEquals(javaCertList.get(1).getSubjectX500Principal().getName(X500Principal.RFC2253), cert2SubjectDN,
+                "Cert2 SubjectDN");
     }
 
     /**
@@ -323,10 +323,10 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         } catch (CRLException e) {
             Assert.fail("Conversion from XML X509CRL format to java.security.cert.X509CRL failed: " + e);
         }
-        AssertJUnit.assertNotNull("CRL was null, failed to convert from XML to Java representation", javaCRL);
-        AssertJUnit.assertEquals("CRL IssuerDN", crl1IssuerDN, javaCRL.getIssuerX500Principal().getName(X500Principal.RFC2253));
-        AssertJUnit.assertEquals("Java CRL was not the expected value", SecurityHelper.buildJavaX509CRL(xmlCRL1.getValue()),
-                javaCRL);
+        Assert.assertNotNull(javaCRL, "CRL was null, failed to convert from XML to Java representation");
+        Assert.assertEquals(javaCRL.getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN, "CRL IssuerDN");
+        Assert.assertEquals(javaCRL, SecurityHelper.buildJavaX509CRL(xmlCRL1.getValue()),
+                "Java CRL was not the expected value");
 
         List<java.security.cert.X509CRL> javaCRLList = null;
 
@@ -335,18 +335,18 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         } catch (CRLException e) {
             Assert.fail("Obtaining CRLs from X509Data failed: " + e);
         }
-        AssertJUnit.assertEquals("# of CRLs returned", numExpectedCRLs, javaCRLList.size());
-        AssertJUnit.assertEquals("CRL IssuerDN", crl1IssuerDN,
-                javaCRLList.get(0).getIssuerX500Principal().getName(X500Principal.RFC2253));
+        Assert.assertEquals(javaCRLList.size(), numExpectedCRLs, "# of CRLs returned");
+        Assert.assertEquals(javaCRLList.get(0).getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN,
+                "CRL IssuerDN");
 
         try {
             javaCRLList = KeyInfoHelper.getCRLs(keyInfo);
         } catch (CRLException e) {
             Assert.fail("Obtaining CRLs from KeInfo failed: " + e);
         }
-        AssertJUnit.assertEquals("# of CRLs returned", numExpectedCRLs, javaCRLList.size());
-        AssertJUnit.assertEquals("CRL IssuerDN", crl1IssuerDN,
-                javaCRLList.get(0).getIssuerX500Principal().getName(X500Principal.RFC2253));
+        Assert.assertEquals(javaCRLList.size(), numExpectedCRLs, "# of CRLs returned");
+        Assert.assertEquals(javaCRLList.get(0).getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN,
+                "CRL IssuerDN");
 
     }
 
@@ -364,8 +364,8 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("Conversion from Java X509Certificate to XMLObject failed: " + e);
         }
 
-        AssertJUnit.assertEquals("Java X509Certificate encoding to XMLObject failed", javaCert1,
-                SecurityHelper.buildJavaX509Cert(xmlCert.getValue()));
+        Assert.assertEquals(SecurityHelper.buildJavaX509Cert(xmlCert.getValue()), javaCert1,
+                "Java X509Certificate encoding to XMLObject failed");
     }
 
     /**
@@ -383,8 +383,8 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("Conversion from Java X509CRL to XMLObject failed: " + e);
         }
 
-        AssertJUnit.assertEquals("Java X509CRL encoding to XMLObject failed", javaCRL1,
-                SecurityHelper.buildJavaX509CRL(xmlCRL.getValue()));
+        Assert.assertEquals(SecurityHelper.buildJavaX509CRL(xmlCRL.getValue()), javaCRL1,
+                "Java X509CRL encoding to XMLObject failed");
     }
 
     /** Test conversion of DSA public keys from XML to Java security native type. */
@@ -399,8 +399,8 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("DSA key conversion XML to Java failed: " + e);
         }
         dsaKey = (DSAPublicKey) key;
-        AssertJUnit.assertNotNull("Generated key was not an instance of DSAPublicKey", dsaKey);
-        AssertJUnit.assertEquals("Generated key was not the expected value", javaDSAPubKey1, dsaKey);
+        Assert.assertNotNull(dsaKey, "Generated key was not an instance of DSAPublicKey");
+        Assert.assertEquals(dsaKey, javaDSAPubKey1, "Generated key was not the expected value");
 
         try {
             key = KeyInfoHelper.getDSAKey(xmlDSAKeyValue1NoParams, javaDSAParams1);
@@ -408,8 +408,8 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("DSA key conversion XML to Java failed: " + e);
         }
         dsaKey = (DSAPublicKey) key;
-        AssertJUnit.assertNotNull("Generated key was not an instance of DSAPublicKey", dsaKey);
-        AssertJUnit.assertEquals("Generated key was not the expected value", javaDSAPubKey1, dsaKey);
+        Assert.assertNotNull(dsaKey, "Generated key was not an instance of DSAPublicKey");
+        Assert.assertEquals(dsaKey, javaDSAPubKey1, "Generated key was not the expected value");
 
         try {
             key = KeyInfoHelper.getDSAKey(xmlDSAKeyValue1NoParams);
@@ -431,34 +431,34 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("RSA key conversion XML to Java failed: " + e);
         }
         rsaKey = (RSAPublicKey) key;
-        AssertJUnit.assertNotNull("Generated key was not an instance of RSAPublicKey", rsaKey);
-        AssertJUnit.assertEquals("Generated key was not the expected value", javaRSAPubKey1, rsaKey);
+        Assert.assertNotNull(rsaKey, "Generated key was not an instance of RSAPublicKey");
+        Assert.assertEquals(rsaKey, javaRSAPubKey1, "Generated key was not the expected value");
     }
 
     /** Test conversion of DSA public keys from Java security native type to XML. */
     @Test
     public void testDSAConversionJavaToXML() {
         DSAKeyValue dsaKeyValue = KeyInfoHelper.buildDSAKeyValue(javaDSAPubKey1);
-        AssertJUnit.assertNotNull("Generated DSAKeyValue was null");
-        AssertJUnit.assertEquals("Generated DSAKeyValue Y component was not the expected value", javaDSAPubKey1.getY(), dsaKeyValue
-                .getY().getValueBigInt());
-        AssertJUnit.assertEquals("Generated DSAKeyValue P component was not the expected value", javaDSAPubKey1.getParams().getP(),
-                dsaKeyValue.getP().getValueBigInt());
-        AssertJUnit.assertEquals("Generated DSAKeyValue Q component was not the expected value", javaDSAPubKey1.getParams().getQ(),
-                dsaKeyValue.getQ().getValueBigInt());
-        AssertJUnit.assertEquals("Generated DSAKeyValue G component was not the expected value", javaDSAPubKey1.getParams().getG(),
-                dsaKeyValue.getG().getValueBigInt());
+        Assert.assertNotNull("Generated DSAKeyValue was null");
+        Assert.assertEquals(dsaKeyValue
+                .getY().getValueBigInt(), javaDSAPubKey1.getY(), "Generated DSAKeyValue Y component was not the expected value");
+        Assert.assertEquals(dsaKeyValue.getP().getValueBigInt(), javaDSAPubKey1.getParams().getP(),
+                "Generated DSAKeyValue P component was not the expected value");
+        Assert.assertEquals(dsaKeyValue.getQ().getValueBigInt(), javaDSAPubKey1.getParams().getQ(),
+                "Generated DSAKeyValue Q component was not the expected value");
+        Assert.assertEquals(dsaKeyValue.getG().getValueBigInt(), javaDSAPubKey1.getParams().getG(),
+                "Generated DSAKeyValue G component was not the expected value");
     }
 
     /** Test conversion of RSA public keys from Java security native type to XML. */
     @Test
     public void testRSAConversionJavaToXML() {
         RSAKeyValue rsaKeyValue = KeyInfoHelper.buildRSAKeyValue(javaRSAPubKey1);
-        AssertJUnit.assertNotNull("Generated RSAKeyValue was null");
-        AssertJUnit.assertEquals("Generated RSAKeyValue modulus component was not the expected value", javaRSAPubKey1.getModulus(),
-                rsaKeyValue.getModulus().getValueBigInt());
-        AssertJUnit.assertEquals("Generated RSAKeyValue exponent component was not the expected value",
-                javaRSAPubKey1.getPublicExponent(), rsaKeyValue.getExponent().getValueBigInt());
+        Assert.assertNotNull("Generated RSAKeyValue was null");
+        Assert.assertEquals(rsaKeyValue.getModulus().getValueBigInt(), javaRSAPubKey1.getModulus(),
+                "Generated RSAKeyValue modulus component was not the expected value");
+        Assert.assertEquals(rsaKeyValue.getExponent().getValueBigInt(),
+                javaRSAPubKey1.getPublicExponent(), "Generated RSAKeyValue exponent component was not the expected value");
     }
 
     /** Tests extracting a DSA public key from a KeyValue. */
@@ -474,9 +474,9 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         } catch (KeyException e) {
             Assert.fail("Extraction of key from KeyValue failed: " + e);
         }
-        AssertJUnit.assertTrue("Generated key was not an instance of DSAPublicKey", pk instanceof DSAPublicKey);
+        Assert.assertTrue(pk instanceof DSAPublicKey, "Generated key was not an instance of DSAPublicKey");
         dsaKey = (DSAPublicKey) pk;
-        AssertJUnit.assertEquals("Generated key was not the expected value", javaDSAPubKey1, dsaKey);
+        Assert.assertEquals(dsaKey, javaDSAPubKey1, "Generated key was not the expected value");
 
         keyValue.setDSAKeyValue(null);
     }
@@ -494,9 +494,9 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         } catch (KeyException e) {
             Assert.fail("Extraction of key from KeyValue failed: " + e);
         }
-        AssertJUnit.assertTrue("Generated key was not an instance of RSAPublicKey", pk instanceof RSAPublicKey);
+        Assert.assertTrue(pk instanceof RSAPublicKey, "Generated key was not an instance of RSAPublicKey");
         rsaKey = (RSAPublicKey) pk;
-        AssertJUnit.assertEquals("Generated key was not the expected value", javaRSAPubKey1, rsaKey);
+        Assert.assertEquals(rsaKey, javaRSAPubKey1, "Generated key was not the expected value");
 
         keyValue.setRSAKeyValue(null);
     }
@@ -508,9 +508,9 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
 
         KeyInfoHelper.addPublicKey(keyInfo, javaDSAPubKey1);
         KeyValue kv = keyInfo.getKeyValues().get(0);
-        AssertJUnit.assertNotNull("KeyValue was null", kv);
+        Assert.assertNotNull(kv, "KeyValue was null");
         DSAKeyValue dsaKeyValue = kv.getDSAKeyValue();
-        AssertJUnit.assertNotNull("DSAKeyValue was null", dsaKeyValue);
+        Assert.assertNotNull(dsaKeyValue, "DSAKeyValue was null");
 
         DSAPublicKey javaKey = null;
         try {
@@ -519,7 +519,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("Extraction of Java key failed: " + e);
         }
 
-        AssertJUnit.assertEquals("Inserted DSA public key was not the expected value", javaDSAPubKey1, javaKey);
+        Assert.assertEquals(javaKey, javaDSAPubKey1, "Inserted DSA public key was not the expected value");
 
         keyInfo.getKeyValues().clear();
     }
@@ -531,9 +531,9 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
 
         KeyInfoHelper.addPublicKey(keyInfo, javaRSAPubKey1);
         KeyValue kv = keyInfo.getKeyValues().get(0);
-        AssertJUnit.assertNotNull("KeyValue was null", kv);
+        Assert.assertNotNull(kv, "KeyValue was null");
         RSAKeyValue rsaKeyValue = kv.getRSAKeyValue();
-        AssertJUnit.assertNotNull("RSAKeyValue was null", rsaKeyValue);
+        Assert.assertNotNull(rsaKeyValue, "RSAKeyValue was null");
 
         RSAPublicKey javaKey = null;
         try {
@@ -542,7 +542,7 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
             Assert.fail("Extraction of Java key failed: " + e);
         }
 
-        AssertJUnit.assertEquals("Inserted RSA public key was not the expected value", javaRSAPubKey1, javaKey);
+        Assert.assertEquals(javaKey, javaRSAPubKey1, "Inserted RSA public key was not the expected value");
 
         keyInfo.getKeyValues().clear();
     }
@@ -558,14 +558,14 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
 
         KeyInfoHelper.addCertificate(keyInfo, javaCert1);
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertNotNull("X509Data was null", x509Data);
+        Assert.assertNotNull(x509Data, "X509Data was null");
         X509Certificate x509Cert = x509Data.getX509Certificates().get(0);
-        AssertJUnit.assertNotNull("X509Certificate was null", x509Cert);
+        Assert.assertNotNull(x509Cert, "X509Certificate was null");
 
         java.security.cert.X509Certificate javaCert = null;
         javaCert = (java.security.cert.X509Certificate) KeyInfoHelper.getCertificate(x509Cert);
 
-        AssertJUnit.assertEquals("Inserted X509Certificate was not the expected value", javaCert1, javaCert);
+        Assert.assertEquals(javaCert, javaCert1, "Inserted X509Certificate was not the expected value");
 
         keyInfo.getX509Datas().clear();
     }
@@ -581,14 +581,14 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
 
         KeyInfoHelper.addCRL(keyInfo, javaCRL1);
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        AssertJUnit.assertNotNull("X509Data was null", x509Data);
+        Assert.assertNotNull(x509Data, "X509Data was null");
         X509CRL x509CRL = x509Data.getX509CRLs().get(0);
-        AssertJUnit.assertNotNull("X509CRL was null", x509CRL);
+        Assert.assertNotNull(x509CRL, "X509CRL was null");
 
         java.security.cert.X509CRL javaCRL = null;
         javaCRL = (java.security.cert.X509CRL) KeyInfoHelper.getCRL(x509CRL);
 
-        AssertJUnit.assertEquals("Inserted X509CRL was not the expected value", javaCRL1, javaCRL);
+        Assert.assertEquals(javaCRL, javaCRL1, "Inserted X509CRL was not the expected value");
 
         keyInfo.getX509Datas().clear();
     }
@@ -598,8 +598,8 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
     public void testBuildSubjectName() {
         String name = "cn=foobar.example.org, o=Internet2";
         X509SubjectName xmlSubjectName = KeyInfoHelper.buildX509SubjectName(name);
-        AssertJUnit.assertNotNull("Constructed X509SubjectName was null", xmlSubjectName);
-        AssertJUnit.assertEquals("Unexpected subject name value", name, xmlSubjectName.getValue());
+        Assert.assertNotNull(xmlSubjectName, "Constructed X509SubjectName was null");
+        Assert.assertEquals(xmlSubjectName.getValue(), name, "Unexpected subject name value");
     }
 
     /** Tests building a new X509IssuerSerial. */
@@ -608,13 +608,13 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
         String name = "cn=CA.example.org, o=Internet2";
         BigInteger serialNumber = new BigInteger("42");
         X509IssuerSerial xmlIssuerSerial = KeyInfoHelper.buildX509IssuerSerial(name, serialNumber);
-        AssertJUnit.assertNotNull("Constructed X509IssuerSerial was null", xmlIssuerSerial);
+        Assert.assertNotNull(xmlIssuerSerial, "Constructed X509IssuerSerial was null");
 
-        AssertJUnit.assertNotNull("Constructed X509IssuerName was null", xmlIssuerSerial.getX509IssuerName());
-        AssertJUnit.assertEquals("Unexpected issuer name value", name, xmlIssuerSerial.getX509IssuerName().getValue());
+        Assert.assertNotNull(xmlIssuerSerial.getX509IssuerName(), "Constructed X509IssuerName was null");
+        Assert.assertEquals(xmlIssuerSerial.getX509IssuerName().getValue(), name, "Unexpected issuer name value");
 
-        AssertJUnit.assertNotNull("Constructed X509SerialNumber was null", xmlIssuerSerial.getX509SerialNumber());
-        AssertJUnit.assertEquals("Unexpected serial number", serialNumber, xmlIssuerSerial.getX509SerialNumber().getValue());
+        Assert.assertNotNull(xmlIssuerSerial.getX509SerialNumber(), "Constructed X509SerialNumber was null");
+        Assert.assertEquals(xmlIssuerSerial.getX509SerialNumber().getValue(), serialNumber, "Unexpected serial number");
     }
 
     /**
@@ -626,16 +626,16 @@ public class KeyInfoHelperTest extends XMLObjectBaseTestCase {
     public void testBuildSubjectKeyIdentifier() throws CertificateException {
         byte[] skiValue = Base64Support.decode(cert1SKIPlainBase64);
         X509SKI xmlSKI = KeyInfoHelper.buildX509SKI(javaCert1);
-        AssertJUnit.assertNotNull("Constructed X509SKI was null", xmlSKI);
-        AssertJUnit.assertFalse("SKI value was empty", Strings.isNullOrEmpty(xmlSKI.getValue()));
+        Assert.assertNotNull(xmlSKI, "Constructed X509SKI was null");
+        Assert.assertFalse(Strings.isNullOrEmpty(xmlSKI.getValue()), "SKI value was empty");
         byte[] xmlValue = Base64Support.decode(xmlSKI.getValue());
-        AssertJUnit.assertNotNull("Decoded XML SKI value was null", xmlValue);
-        AssertJUnit.assertTrue("Incorrect SKI value", Arrays.equals(skiValue, xmlValue));
+        Assert.assertNotNull(xmlValue, "Decoded XML SKI value was null");
+        Assert.assertTrue(Arrays.equals(skiValue, xmlValue), "Incorrect SKI value");
 
         // Test that a cert with no SKI produces null
         java.security.cert.X509Certificate noExtCert = SecurityHelper.buildJavaX509Cert(certNoExtensions);
-        AssertJUnit.assertNotNull(noExtCert);
+        Assert.assertNotNull(noExtCert);
         X509SKI noExtXMLSKI = KeyInfoHelper.buildX509SKI(noExtCert);
-        AssertJUnit.assertNull("Building X509SKI from cert without SKI should have generated null", noExtXMLSKI);
+        Assert.assertNull(noExtXMLSKI, "Building X509SKI from cert without SKI should have generated null");
     }
 }

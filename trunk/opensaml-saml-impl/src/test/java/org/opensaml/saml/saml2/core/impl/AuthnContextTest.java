@@ -26,7 +26,7 @@ import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnContextDecl;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -48,7 +48,7 @@ public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AuthnContext authnContext = (AuthnContext) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNotNull(authnContext);
+        Assert.assertNotNull(authnContext);
     }
 
     /** {@inheritDoc} */
@@ -77,11 +77,11 @@ public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         AuthnContext authnContext = (AuthnContext) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("AuthnContextClassRef element not present", authnContext.getAuthnContextClassRef());
-        AssertJUnit.assertNotNull("AuthnContextDecl element not present", authnContext.getAuthContextDecl());
-        AssertJUnit.assertNotNull("AuthnContextDeclRef element not present", authnContext.getAuthnContextDeclRef());
-        AssertJUnit.assertEquals("AuthenticatingAuthorityCount Count", expectedAuthenticatingAuthorityCount, authnContext
-                .getAuthenticatingAuthorities().size());
+        Assert.assertNotNull(authnContext.getAuthnContextClassRef(), "AuthnContextClassRef element not present");
+        Assert.assertNotNull(authnContext.getAuthContextDecl(), "AuthnContextDecl element not present");
+        Assert.assertNotNull(authnContext.getAuthnContextDeclRef(), "AuthnContextDeclRef element not present");
+        Assert.assertEquals(authnContext
+                .getAuthenticatingAuthorities().size(), expectedAuthenticatingAuthorityCount, "AuthenticatingAuthorityCount Count");
     }
 
     /** {@inheritDoc} */

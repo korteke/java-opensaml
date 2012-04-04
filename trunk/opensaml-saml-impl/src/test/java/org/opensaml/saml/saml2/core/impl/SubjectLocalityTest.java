@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -56,7 +56,7 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
         String address = subjectLocality.getAddress();
 
-        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
 
     }
 
@@ -66,10 +66,10 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
 
         String address = subjectLocality.getAddress();
-        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
 
         String dnsName = subjectLocality.getDNSName();
-        AssertJUnit.assertEquals("DNSName was " + dnsName + ", expected " + expectedDNSName, expectedDNSName, dnsName);
+        Assert.assertEquals(dnsName, expectedDNSName, "DNSName was " + dnsName + ", expected " + expectedDNSName);
     }
 
     /** {@inheritDoc} */

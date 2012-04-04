@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -72,12 +72,12 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("AuthenticationMethod attribute present", authenticationStatement.getAuthenticationMethod());
-        AssertJUnit.assertNull("AuthenticationInstant attribute present", authenticationStatement.getAuthenticationInstant());
+        Assert.assertNull(authenticationStatement.getAuthenticationMethod(), "AuthenticationMethod attribute present");
+        Assert.assertNull(authenticationStatement.getAuthenticationInstant(), "AuthenticationInstant attribute present");
 
-        AssertJUnit.assertNull("<Subject> element present", authenticationStatement.getSubject());
-        AssertJUnit.assertNull("<SubjectLocailty> element present", authenticationStatement.getSubjectLocality());
-        AssertJUnit.assertEquals("Non zero count of <AuthorityBinding> elements", 0, authenticationStatement.getAuthorityBindings().size());
+        Assert.assertNull(authenticationStatement.getSubject(), "<Subject> element present");
+        Assert.assertNull(authenticationStatement.getSubjectLocality(), "<SubjectLocailty> element present");
+        Assert.assertEquals(authenticationStatement.getAuthorityBindings().size(), 0, "Non zero count of <AuthorityBinding> elements");
     }
 
     /** {@inheritDoc} */
@@ -86,9 +86,9 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("AuthenticationMethod", expectedAuthenticationMethod, authenticationStatement
-                .getAuthenticationMethod());
-        AssertJUnit.assertEquals("AuthenticationInstant", expectedAuthenticationInstant, authenticationStatement.getAuthenticationInstant());
+        Assert.assertEquals(authenticationStatement
+                .getAuthenticationMethod(), expectedAuthenticationMethod, "AuthenticationMethod");
+        Assert.assertEquals(authenticationStatement.getAuthenticationInstant(), expectedAuthenticationInstant, "AuthenticationInstant");
     }
 
     /**
@@ -99,15 +99,15 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("<Subject> element not present", authenticationStatement.getSubject());
+        Assert.assertNotNull(authenticationStatement.getSubject(), "<Subject> element not present");
 
-        AssertJUnit.assertNotNull("<SubjectLocality> element not present", authenticationStatement.getSubjectLocality());
-        AssertJUnit.assertNotNull("<AuthorityBinding> elements not present", authenticationStatement.getAuthorityBindings());
-        AssertJUnit.assertEquals("count of <AuthorityBinding> elements", 2, authenticationStatement.getAuthorityBindings().size());
+        Assert.assertNotNull(authenticationStatement.getSubjectLocality(), "<SubjectLocality> element not present");
+        Assert.assertNotNull(authenticationStatement.getAuthorityBindings(), "<AuthorityBinding> elements not present");
+        Assert.assertEquals(authenticationStatement.getAuthorityBindings().size(), 2, "count of <AuthorityBinding> elements");
 
         AuthorityBinding authorityBinding = authenticationStatement.getAuthorityBindings().get(0);
         authenticationStatement.getAuthorityBindings().remove(authorityBinding);
-        AssertJUnit.assertEquals("count of <AuthorityBinding> elements", 1, authenticationStatement.getAuthorityBindings().size());
+        Assert.assertEquals(authenticationStatement.getAuthorityBindings().size(), 1, "count of <AuthorityBinding> elements");
     }
 
     /** {@inheritDoc} */

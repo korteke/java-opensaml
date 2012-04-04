@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.Generator;
 
@@ -51,8 +51,8 @@ public class GeneratorTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Generator cbType = (Generator) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Generator", cbType);
-        AssertJUnit.assertEquals("Generator value", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "Generator");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Generator value");
     }
 
     /** {@inheritDoc} */

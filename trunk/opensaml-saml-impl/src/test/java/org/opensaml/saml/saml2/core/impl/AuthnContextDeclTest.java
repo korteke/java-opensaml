@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,8 +51,8 @@ public class AuthnContextDeclTest extends XMLObjectProviderBaseTestCase {
         AuthnContextDecl authnContextDecl = (AuthnContextDecl) unmarshallElement(singleElementFile);
 
         String declaration = authnContextDecl.getTextContent();
-        AssertJUnit.assertEquals("Declartion was " + declaration + ", expected " + expectedDeclartion, expectedDeclartion,
-                declaration);
+        Assert.assertEquals(declaration, expectedDeclartion,
+                "Declartion was " + declaration + ", expected " + expectedDeclartion);
     }
 
     /** {@inheritDoc} */

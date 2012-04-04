@@ -22,7 +22,7 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -64,9 +64,9 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementFile);
 
-        AssertJUnit.assertNull("AttributeName", attribute.getAttributeName());
-        AssertJUnit.assertNull("AttributeNamespace", attribute.getAttributeNamespace());
-        AssertJUnit.assertEquals("<AttributeValue> subelement found", 0, attribute.getAttributeValues().size());
+        Assert.assertNull(attribute.getAttributeName(), "AttributeName");
+        Assert.assertNull(attribute.getAttributeNamespace(), "AttributeNamespace");
+        Assert.assertEquals(attribute.getAttributeValues().size(), 0, "<AttributeValue> subelement found");
     }
 
     /** {@inheritDoc} */
@@ -74,8 +74,8 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementOptionalAttributesFile);
 
-        AssertJUnit.assertEquals("AttributeName", expectedAttributeName, attribute.getAttributeName());
-        AssertJUnit.assertEquals("AttributeNamespace", expectedAttributeNamespace, attribute.getAttributeNamespace());
+        Assert.assertEquals(attribute.getAttributeName(), expectedAttributeName, "AttributeName");
+        Assert.assertEquals(attribute.getAttributeNamespace(), expectedAttributeNamespace, "AttributeNamespace");
     }
 
     /** {@inheritDoc} */
@@ -83,8 +83,8 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("<AttributeValue> subelement not found", attribute.getAttributeValues());
-        AssertJUnit.assertEquals("Number of <AttributeValue> subelement not found", 4, attribute.getAttributeValues().size());
+        Assert.assertNotNull(attribute.getAttributeValues(), "<AttributeValue> subelement not found");
+        Assert.assertEquals(attribute.getAttributeValues().size(), 4, "Number of <AttributeValue> subelement not found");
     }
 
     /** {@inheritDoc} */

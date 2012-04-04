@@ -17,7 +17,7 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import javax.xml.namespace.QName;
@@ -170,13 +170,13 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     public void testDelegatable() throws Exception {
         Delegatable delegatable= buildXMLObject(Delegatable.ELEMENT_NAME);
         XSBooleanValue value= delegatable.getValue();
-        AssertJUnit.assertFalse(value.getValue());
+        Assert.assertFalse(value.getValue());
         marshallAndUnmarshall(delegatable);
 
         delegatable= buildXMLObject(Delegatable.ELEMENT_NAME);
         delegatable.setValue(new XSBooleanValue(true, false));
         value= delegatable.getValue();
-        AssertJUnit.assertTrue(value.getValue());
+        Assert.assertTrue(value.getValue());
         marshallAndUnmarshall(delegatable);
     }
 

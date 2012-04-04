@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -94,7 +94,7 @@ public class ArtifactResolveTest extends RequestTestBase {
     public void testSingleElementUnmarshall() {
         ArtifactResolve ar = (ArtifactResolve) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("ArtifactResolve was null", ar);
+        Assert.assertNotNull(ar, "ArtifactResolve was null");
         super.helperTestSingleElementUnmarshall(ar);
     }
     
@@ -103,7 +103,7 @@ public class ArtifactResolveTest extends RequestTestBase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         ArtifactResolve ar = (ArtifactResolve) unmarshallElement(singleElementOptionalAttributesFile);
         
-        AssertJUnit.assertNotNull("ArtifactResolve was null", ar);
+        Assert.assertNotNull(ar, "ArtifactResolve was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(ar);
     }
 
@@ -113,7 +113,7 @@ public class ArtifactResolveTest extends RequestTestBase {
     public void testChildElementsUnmarshall() {
         ArtifactResolve ar = (ArtifactResolve) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("Artifact was null", ar.getArtifact());
+        Assert.assertNotNull(ar.getArtifact(), "Artifact was null");
         super.helperTestChildElementsUnmarshall(ar);
     }
 }

@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.encryption.support;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,24 +51,24 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     public void testSingleEKNoRecipient() {
         String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        AssertJUnit.assertNotNull(sxo);
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        AssertJUnit.assertNotNull(encData.getKeyInfo());
-        AssertJUnit.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        AssertJUnit.assertFalse(allKeys.isEmpty());
+        Assert.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().clear();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
-        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
     /** One recipients specified to resolver, one EncryptedKey in instance. */
@@ -76,24 +76,24 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     public void testSingleEKWithRecipient() {
         String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        AssertJUnit.assertNotNull(sxo);
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        AssertJUnit.assertNotNull(encData.getKeyInfo());
-        AssertJUnit.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        AssertJUnit.assertFalse(allKeys.isEmpty());
+        Assert.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
-        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
     /** One recipients specified to resolver, RetrievalMethod has Transforms, so should fail. */
@@ -102,22 +102,22 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
         String filename =  
             "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingleWithTransforms.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        AssertJUnit.assertNotNull(sxo);
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        AssertJUnit.assertNotNull(encData.getKeyInfo());
-        AssertJUnit.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        AssertJUnit.assertFalse(allKeys.isEmpty());
+        Assert.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 0, resolved.size());
+        Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
     }
     
     /** One recipients specified to resolver, three EncryptedKeys in instance, 
@@ -126,24 +126,24 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     public void testMultiEKWithOneRecipient() {
         String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        AssertJUnit.assertNotNull(sxo);
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        AssertJUnit.assertNotNull(encData.getKeyInfo());
-        AssertJUnit.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        AssertJUnit.assertFalse(allKeys.isEmpty());
+        Assert.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
-        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
     /** Two recipients specified to resolver, three EncryptedKeys in instance, 
@@ -152,26 +152,26 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     public void testMultiEKWithTwoRecipients() {
         String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        AssertJUnit.assertNotNull(sxo);
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        AssertJUnit.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        AssertJUnit.assertNotNull(encData.getKeyInfo());
-        AssertJUnit.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        AssertJUnit.assertFalse(allKeys.isEmpty());
+        Assert.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         resolver.getRecipients().add("baz");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 2, resolved.size());
+        Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
         
-        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
-        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(2));
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
+        Assert.assertTrue(resolved.get(1) == allKeys.get(2), "Unexpected EncryptedKey instance found");
     }
     
     /**

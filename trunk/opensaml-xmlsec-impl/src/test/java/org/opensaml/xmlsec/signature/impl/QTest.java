@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Q;
 
@@ -51,8 +51,8 @@ public class QTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Q cbType = (Q) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("Q", cbType);
-        AssertJUnit.assertEquals("Q value", cbType.getValue(), expectedCryptoBinaryContent);
+        Assert.assertNotNull(cbType, "Q");
+        Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Q value");
     }
 
     /** {@inheritDoc} */

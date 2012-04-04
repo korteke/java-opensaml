@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.Transforms;
@@ -52,9 +52,9 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         CipherReference cr = (CipherReference) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("CipherReference", cr);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, cr.getURI());
-        AssertJUnit.assertNull("Transforms child", cr.getTransforms());
+        Assert.assertNotNull(cr, "CipherReference");
+        Assert.assertEquals(cr.getURI(), expectedURI, "URI attribute");
+        Assert.assertNull(cr.getTransforms(), "Transforms child");
     }
 
     /** {@inheritDoc} */
@@ -62,9 +62,9 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         CipherReference cr = (CipherReference) unmarshallElement(childElementsFile);
         
-        AssertJUnit.assertNotNull("CipherReference", cr);
-        AssertJUnit.assertEquals("URI attribute", expectedURI, cr.getURI());
-        AssertJUnit.assertNotNull("Transforms child", cr.getTransforms());
+        Assert.assertNotNull(cr, "CipherReference");
+        Assert.assertEquals(cr.getURI(), expectedURI, "URI attribute");
+        Assert.assertNotNull(cr.getTransforms(), "Transforms child");
     }
 
     /** {@inheritDoc} */

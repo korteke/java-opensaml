@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.encryption;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
@@ -179,7 +179,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of EncryptedAssertion: " + e);
         }
         
-        AssertJUnit.assertNotNull("Decrypted Assertion was null", decryptedAssertion);
+        Assert.assertNotNull(decryptedAssertion, "Decrypted Assertion was null");
         
         assertXMLEquals(targetDOM, decryptedAssertion);
         

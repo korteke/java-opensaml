@@ -19,7 +19,7 @@ package org.opensaml.core.xml.util;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,18 +44,18 @@ public class XMLObjectChildrenListTest {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
 
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
-        AssertJUnit.assertEquals("XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements", 0,
-                objectList.size());
+        Assert.assertEquals(objectList.size(), 0,
+                "XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements");
 
         objectList.add(null);
-        AssertJUnit.assertEquals("XMLObject list allowed a null element to be added", 0, objectList.size());
+        Assert.assertEquals(objectList.size(), 0, "XMLObject list allowed a null element to be added");
 
         // Test adding a single element
         SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
-                objectList.size());
-        AssertJUnit.assertEquals("Child 1 did not have the correct parent object", parentObject, child1.getParent());
+        Assert.assertEquals(objectList.size(), 1,
+                "XMLObject list was supposed to have 1 element but instead had " + objectList.size());
+        Assert.assertEquals(child1.getParent(), parentObject, "Child 1 did not have the correct parent object");
 
         // Test adding an collection of children
         List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
@@ -65,10 +65,10 @@ public class XMLObjectChildrenListTest {
         childList.add(child3);
 
         objectList.addAll(childList);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 3 element but instead had " + objectList.size(), 3,
-                objectList.size());
-        AssertJUnit.assertEquals("Child 2 did not have the correct parent object", parentObject, child2.getParent());
-        AssertJUnit.assertEquals("Child 3 did not have the correct parent object", parentObject, child3.getParent());
+        Assert.assertEquals(objectList.size(), 3,
+                "XMLObject list was supposed to have 3 element but instead had " + objectList.size());
+        Assert.assertEquals(child2.getParent(), parentObject, "Child 2 did not have the correct parent object");
+        Assert.assertEquals(child3.getParent(), parentObject, "Child 3 did not have the correct parent object");
     }
 
     /**
@@ -79,32 +79,32 @@ public class XMLObjectChildrenListTest {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
 
         XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
-        AssertJUnit.assertEquals("XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements", 0,
-                objectList.size());
+        Assert.assertEquals(objectList.size(), 0,
+                "XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements");
 
         // Test adding a single element
         SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
-                objectList.size());
-        AssertJUnit.assertEquals("Child 1 did not have the correct parent object", parentObject, child1.getParent());
+        Assert.assertEquals(objectList.size(), 1,
+                "XMLObject list was supposed to have 1 element but instead had " + objectList.size());
+        Assert.assertEquals(child1.getParent(), parentObject, "Child 1 did not have the correct parent object");
 
         objectList.set(0, null);
-        AssertJUnit.assertNotNull("XMLObject list allowed a null element to be set", objectList.get(0));
+        Assert.assertNotNull(objectList.get(0), "XMLObject list allowed a null element to be set");
 
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         SimpleXMLObject replacedChild = objectList.set(0, child2);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
-                objectList.size());
+        Assert.assertEquals(objectList.size(), 1,
+                "XMLObject list was supposed to have 1 element but instead had " + objectList.size());
 
         // Make sure Child 2 got it's parent set correctly and that the element now in the list is Child 2
-        AssertJUnit.assertEquals("Child 2 did not have the correct parent object", parentObject, child2.getParent());
-        AssertJUnit.assertEquals("Child element was not Child 2", child2, objectList.get(0));
+        Assert.assertEquals(child2.getParent(), parentObject, "Child 2 did not have the correct parent object");
+        Assert.assertEquals(objectList.get(0), child2, "Child element was not Child 2");
 
         // Make sure Child 1 got it's parent nulled out and is no longer in the list
-        AssertJUnit.assertNull("Replaced child element parent was not null", replacedChild.getParent());
-        AssertJUnit.assertFalse("Child1 still appears in the object list even though it should have been removed", objectList
-                .contains(child1));
+        Assert.assertNull(replacedChild.getParent(), "Replaced child element parent was not null");
+        Assert.assertFalse(objectList
+                .contains(child1), "Child1 still appears in the object list even though it should have been removed");
     }
 
     /**
@@ -118,13 +118,13 @@ public class XMLObjectChildrenListTest {
         // Test removing a single element
         SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 1 element but instead had " + objectList.size(), 1,
-                objectList.size());
+        Assert.assertEquals(objectList.size(), 1,
+                "XMLObject list was supposed to have 1 element but instead had " + objectList.size());
 
         objectList.remove(child1);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 0 element but instead had " + objectList.size(), 0,
-                objectList.size());
-        AssertJUnit.assertNull("Child 1 parent was not null", child1.getParent());
+        Assert.assertEquals(objectList.size(), 0,
+                "XMLObject list was supposed to have 0 element but instead had " + objectList.size());
+        Assert.assertNull(child1.getParent(), "Child 1 parent was not null");
 
         // Test removing an collection of children
         List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
@@ -134,14 +134,14 @@ public class XMLObjectChildrenListTest {
         childList.add(child3);
 
         objectList.addAll(childList);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 2 element but instead had " + objectList.size(), 2,
-                objectList.size());
+        Assert.assertEquals(objectList.size(), 2,
+                "XMLObject list was supposed to have 2 element but instead had " + objectList.size());
 
         objectList.removeAll(childList);
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 0 element but instead had " + objectList.size(), 0,
-                objectList.size());
-        AssertJUnit.assertNull("Child 2 parent was not null", child2.getParent());
-        AssertJUnit.assertNull("Child 3 parent was not null", child3.getParent());
+        Assert.assertEquals(objectList.size(), 0,
+                "XMLObject list was supposed to have 0 element but instead had " + objectList.size());
+        Assert.assertNull(child2.getParent(), "Child 2 parent was not null");
+        Assert.assertNull(child3.getParent(), "Child 3 parent was not null");
     }
 
     /**
@@ -161,14 +161,14 @@ public class XMLObjectChildrenListTest {
         Iterator<SimpleXMLObject> itr = objectList.iterator();
 
         SimpleXMLObject firstObject = itr.next();
-        AssertJUnit.assertNotNull("First iterator was null and should not have been", firstObject);
-        AssertJUnit.assertEquals("First iterator object should have been child 1 but was not", child1, firstObject);
+        Assert.assertNotNull(firstObject, "First iterator was null and should not have been");
+        Assert.assertEquals(firstObject, child1, "First iterator object should have been child 1 but was not");
 
         itr.next();
         itr.remove();
         SimpleXMLObject thirdObject = itr.next();
-        AssertJUnit.assertEquals("Third iterator object should have been child 3 but was not", child3, thirdObject);
-        AssertJUnit.assertNull("Child 2 parent was not null", child2.getParent());
+        Assert.assertEquals(thirdObject, child3, "Third iterator object should have been child 3 but was not");
+        Assert.assertNull(child2.getParent(), "Child 2 parent was not null");
 
         SimpleXMLObject child4 = sxoBuilder.buildObject();
         objectList.add(child4);
@@ -199,10 +199,10 @@ public class XMLObjectChildrenListTest {
         objectList.addAll(childList);
 
         objectList.clear();
-        AssertJUnit.assertEquals("XMLObject list was supposed to have 0 element buts instead had " + objectList.size(), 0,
-                objectList.size());
-        AssertJUnit.assertNull("Child 1 parent was not null", child1.getParent());
-        AssertJUnit.assertNull("Child 2 parent was not null", child2.getParent());
-        AssertJUnit.assertNull("Child 2 parent was not null", child3.getParent());
+        Assert.assertEquals(objectList.size(), 0,
+                "XMLObject list was supposed to have 0 element buts instead had " + objectList.size());
+        Assert.assertNull(child1.getParent(), "Child 1 parent was not null");
+        Assert.assertNull(child2.getParent(), "Child 2 parent was not null");
+        Assert.assertNull(child3.getParent(), "Child 2 parent was not null");
     }
 }

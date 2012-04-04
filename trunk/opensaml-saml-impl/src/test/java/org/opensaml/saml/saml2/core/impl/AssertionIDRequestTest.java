@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -118,6 +118,6 @@ public class AssertionIDRequestTest extends RequestTestBase {
         AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(childElementsFile);
         
         super.helperTestChildElementsUnmarshall(req);
-        AssertJUnit.assertEquals("AssertionIDRef count", expectedNumAssertionIDRefs, req.getAssertionIDRefs().size());
+        Assert.assertEquals(req.getAssertionIDRefs().size(), expectedNumAssertionIDRefs, "AssertionIDRef count");
     }
 }

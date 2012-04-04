@@ -19,7 +19,7 @@ package org.opensaml.core.xml.schema;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -86,11 +86,11 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
+        Assert.assertEquals(xsDateTime.getElementQName(), expectedXMLObjectQName, "Unexpected XSDate QName");
+        Assert.assertEquals(xsDateTime.getSchemaType(), XSDateTime.TYPE_NAME, "Unexpected XSDateTime schema type");
         // For equivalence testing of DateTime instances, need to make sure are in the same chronology
-        AssertJUnit.assertEquals("Unexpected value of XSDateTime", expectedValue, 
-                xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()));
+        Assert.assertEquals(xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()), expectedValue, 
+                "Unexpected value of XSDateTime");
     }
     
     /**
@@ -108,11 +108,11 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
+        Assert.assertEquals(xsDateTime.getElementQName(), expectedXMLObjectQName, "Unexpected XSDate QName");
+        Assert.assertEquals(xsDateTime.getSchemaType(), XSDateTime.TYPE_NAME, "Unexpected XSDateTime schema type");
         // For equivalence testing of DateTime instances, need to make sure are in the same chronology
-        AssertJUnit.assertEquals("Unexpected value of XSDateTime", expectedValue, 
-                xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()));
+        Assert.assertEquals(xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()), expectedValue, 
+                "Unexpected value of XSDateTime");
     }
     
     /**
@@ -131,10 +131,10 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
-        AssertJUnit.assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
-        AssertJUnit.assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
+        Assert.assertEquals(xsDateTime.getElementQName(), expectedXMLObjectQName, "Unexpected XSDate QName");
+        Assert.assertEquals(xsDateTime.getSchemaType(), XSDateTime.TYPE_NAME, "Unexpected XSDateTime schema type");
         // For equivalence testing of DateTime instances, need to make sure are in the same chronology
-        AssertJUnit.assertEquals("Unexpected value of XSDateTime", expectedValue, 
-                xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()));
+        Assert.assertEquals(xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()), expectedValue, 
+                "Unexpected value of XSDateTime");
     }
 }

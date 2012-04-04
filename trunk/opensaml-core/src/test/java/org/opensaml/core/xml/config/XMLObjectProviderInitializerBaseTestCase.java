@@ -18,7 +18,7 @@
 package org.opensaml.core.xml.config;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.ConfigurationService;
@@ -42,21 +42,21 @@ public abstract class XMLObjectProviderInitializerBaseTestCase extends Initializ
     @Test
     public void testProviderInit() throws InitializationException {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        AssertJUnit.assertNull("Registry was non-null", registry);
+        Assert.assertNull(registry, "Registry was non-null");
         
         Initializer initializer = getTestedInitializer();
         initializer.init();
         
         registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        AssertJUnit.assertNotNull("Registry was null", registry);
+        Assert.assertNotNull(registry, "Registry was null");
         
         for (QName providerName : getTestedProviders()) {
-            AssertJUnit.assertNotNull("Builder  for provider '" + providerName + "'was null",
-                    registry.getBuilderFactory().getBuilder(providerName));
-            AssertJUnit.assertNotNull("Unmarshaller  for provider '" + providerName + "'was null",
-                    registry.getUnmarshallerFactory().getUnmarshaller(providerName));
-            AssertJUnit.assertNotNull("Marshaller  for provider '" + providerName + "'was null",
-                    registry.getMarshallerFactory().getMarshaller(providerName));
+            Assert.assertNotNull(registry.getBuilderFactory().getBuilder(providerName),
+                    "Builder  for provider '" + providerName + "'was null");
+            Assert.assertNotNull(registry.getUnmarshallerFactory().getUnmarshaller(providerName),
+                    "Unmarshaller  for provider '" + providerName + "'was null");
+            Assert.assertNotNull(registry.getMarshallerFactory().getMarshaller(providerName),
+                    "Marshaller  for provider '" + providerName + "'was null");
         }
     }
     

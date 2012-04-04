@@ -22,7 +22,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.NewID;
 
@@ -54,7 +54,7 @@ public class NewIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         NewID newID = (NewID) unmarshallElement(singleElementFile);
         
-       AssertJUnit.assertEquals("The unmarshalled NewID was not the expected value", expectedNewID, newID.getNewID());
+       Assert.assertEquals(newID.getNewID(), expectedNewID, "The unmarshalled NewID was not the expected value");
     }
 
     /** {@inheritDoc} */

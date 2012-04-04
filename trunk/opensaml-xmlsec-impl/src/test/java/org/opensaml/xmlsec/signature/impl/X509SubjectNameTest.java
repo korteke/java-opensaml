@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509SubjectName;
 
@@ -51,8 +51,8 @@ public class X509SubjectNameTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         X509SubjectName x509Element = (X509SubjectName) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("X509SubjectName", x509Element);
-        AssertJUnit.assertEquals("X509SubjectName value", x509Element.getValue(), expectedStringContent);
+        Assert.assertNotNull(x509Element, "X509SubjectName");
+        Assert.assertEquals(expectedStringContent, x509Element.getValue(), "X509SubjectName value");
     }
 
     /** {@inheritDoc} */

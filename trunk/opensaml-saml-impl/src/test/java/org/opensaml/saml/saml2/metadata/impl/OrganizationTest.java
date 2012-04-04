@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -50,7 +50,7 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         Organization org = (Organization) unmarshallElement(singleElementFile);
-        AssertJUnit.assertEquals("Display names", 0, org.getDisplayNames().size());
+        Assert.assertEquals(org.getDisplayNames().size(), 0, "Display names");
     }
 
     /** {@inheritDoc} */
@@ -58,10 +58,10 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Organization org = (Organization) unmarshallElement(childElementsFile);
 
-        AssertJUnit.assertNotNull("Extensions", org.getExtensions());
-        AssertJUnit.assertEquals("OrganizationName count", 3, org.getOrganizationNames().size());
-        AssertJUnit.assertEquals("DisplayNames count", 2, org.getDisplayNames().size());
-        AssertJUnit.assertEquals("URL count", 1, org.getURLs().size());
+        Assert.assertNotNull(org.getExtensions(), "Extensions");
+        Assert.assertEquals(org.getOrganizationNames().size(), 3, "OrganizationName count");
+        Assert.assertEquals(org.getDisplayNames().size(), 2, "DisplayNames count");
+        Assert.assertEquals(org.getURLs().size(), 1, "URL count");
     }
 
     /** {@inheritDoc} */

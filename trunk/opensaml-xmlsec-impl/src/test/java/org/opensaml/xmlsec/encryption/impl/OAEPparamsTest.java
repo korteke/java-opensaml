@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 
@@ -51,8 +51,8 @@ public class OAEPparamsTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         OAEPparams oaep = (OAEPparams) unmarshallElement(singleElementFile);
         
-        AssertJUnit.assertNotNull("OAEPparams", oaep);
-        AssertJUnit.assertEquals("OAEPparams value", oaep.getValue(), expectedBase64Content);
+        Assert.assertNotNull(oaep, "OAEPparams");
+        Assert.assertEquals(expectedBase64Content, oaep.getValue(), "OAEPparams value");
     }
 
     /** {@inheritDoc} */

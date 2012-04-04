@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -127,36 +127,36 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     protected void helperTestSingleElementUnmarshall(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
 
-        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, req.getID());
-        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), req
-                .getVersion().toString());
-        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant
-                .compareTo(req.getIssueInstant()));
+        Assert.assertEquals(req.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
+        Assert.assertEquals(req
+                .getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        Assert.assertEquals(expectedIssueInstant
+                .compareTo(req.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
 
-        AssertJUnit.assertNull("Consent was not null", req.getConsent());
-        AssertJUnit.assertNull("Destination was not null", req.getDestination());
+        Assert.assertNull(req.getConsent(), "Consent was not null");
+        Assert.assertNull(req.getDestination(), "Destination was not null");
 
     }
 
     protected void helperTestSingleElementOptionalAttributesUnmarshall(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
 
-        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, req.getID());
-        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), req
-                .getVersion().toString());
-        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant
-                .compareTo(req.getIssueInstant()));
+        Assert.assertEquals(req.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
+        Assert.assertEquals(req
+                .getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        Assert.assertEquals(expectedIssueInstant
+                .compareTo(req.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
 
-        AssertJUnit.assertEquals("Unmarshalled Consent attribute was not the expected value", expectedConsent, req.getConsent());
-        AssertJUnit.assertEquals("Unmarshalled Destination attribute was not the expected value", expectedDestination, req
-                .getDestination());
+        Assert.assertEquals(req.getConsent(), expectedConsent, "Unmarshalled Consent attribute was not the expected value");
+        Assert.assertEquals(req
+                .getDestination(), expectedDestination, "Unmarshalled Destination attribute was not the expected value");
 
     }
 
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
 
-        AssertJUnit.assertNotNull("Issuer was null", req.getIssuer());
+        Assert.assertNotNull(req.getIssuer(), "Issuer was null");
 
     }
 }

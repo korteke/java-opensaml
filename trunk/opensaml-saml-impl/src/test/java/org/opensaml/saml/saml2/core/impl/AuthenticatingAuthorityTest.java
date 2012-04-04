@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import org.testng.AssertJUnit;
+import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -52,7 +52,7 @@ public class AuthenticatingAuthorityTest extends XMLObjectProviderBaseTestCase {
         AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) unmarshallElement(singleElementFile);
 
         String assertionURI = authenticatingAuthority.getURI();
-        AssertJUnit.assertEquals("URI was " + assertionURI + ", expected " + expectedURI, expectedURI, assertionURI);
+        Assert.assertEquals(assertionURI, expectedURI, "URI was " + assertionURI + ", expected " + expectedURI);
     }
 
     /** {@inheritDoc} */
