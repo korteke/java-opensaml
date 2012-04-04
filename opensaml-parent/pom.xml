@@ -19,26 +19,27 @@
     
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>../opensaml-util</module>
         <module>../opensaml-core</module>
         <module>../opensaml-security-api</module>
-        <module>../opensaml-security-impl</module>
         <module>../opensaml-xmlsec-api</module>
-        <module>../opensaml-xmlsec-impl</module>
         <module>../opensaml-messaging-api</module>
-        <module>../opensaml-messaging-impl</module>
         <module>../opensaml-temp</module>
         <module>../opensaml-soap-api</module>
-        <module>../opensaml-soap-impl</module>
         <module>../opensaml-saml-api</module>
-        <module>../opensaml-saml-impl</module>
         <module>../opensaml-xacml-api</module>
-        <module>../opensaml-xacml-impl</module>
         <module>../opensaml-xacml-saml-api</module>
+        
+        <module>../opensaml-security-impl</module>
+        <module>../opensaml-xmlsec-impl</module>
+        <module>../opensaml-messaging-impl</module>
+        <module>../opensaml-soap-impl</module>
+        <module>../opensaml-saml-impl</module>
+        <module>../opensaml-xacml-impl</module>        
         <module>../opensaml-xacml-saml-impl</module>
     </modules>
 
@@ -69,7 +70,6 @@
         <dependency>
             <groupId>net.shibboleth.utilities</groupId>
             <artifactId>java-support</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
