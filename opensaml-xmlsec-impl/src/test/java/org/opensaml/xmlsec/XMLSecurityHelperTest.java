@@ -94,7 +94,6 @@ public class XMLSecurityHelperTest {
 
 
     /** Generic key testing. */
-    @Test
     protected PrivateKey testPrivKey(String keyFile, char[] password, String algo) throws Exception {
         InputStream keyInS = XMLSecurityHelperTest.class.getResourceAsStream(keyFile);
 
