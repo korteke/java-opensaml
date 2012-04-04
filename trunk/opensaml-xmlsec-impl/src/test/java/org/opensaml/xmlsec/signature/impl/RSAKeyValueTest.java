@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.Modulus;
@@ -38,29 +41,27 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(singleElementFile);
         
-        assertNotNull("RSAKeyValue", keyValue);
-        assertNull("Modulus child element", keyValue.getModulus());
-        assertNull("Exponent child element", keyValue.getExponent());
+        AssertJUnit.assertNotNull("RSAKeyValue", keyValue);
+        AssertJUnit.assertNull("Modulus child element", keyValue.getModulus());
+        AssertJUnit.assertNull("Exponent child element", keyValue.getExponent());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(childElementsFile);
         
-        assertNotNull("RSAKeyValue", keyValue);
-        assertNotNull("Modulus child element", keyValue.getModulus());
-        assertNotNull("Exponent child element", keyValue.getExponent());
+        AssertJUnit.assertNotNull("RSAKeyValue", keyValue);
+        AssertJUnit.assertNotNull("Modulus child element", keyValue.getModulus());
+        AssertJUnit.assertNotNull("Exponent child element", keyValue.getExponent());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         RSAKeyValue keyValue = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         
@@ -68,6 +69,7 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         RSAKeyValue keyValue = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         

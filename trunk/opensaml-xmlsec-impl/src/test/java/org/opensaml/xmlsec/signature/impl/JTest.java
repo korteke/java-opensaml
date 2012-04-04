@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.J;
 
@@ -38,21 +41,22 @@ public class JTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedCryptoBinaryContent = "someCryptoBinaryValue";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         J cbType = (J) unmarshallElement(singleElementFile);
         
-        assertNotNull("J", cbType);
-        assertEquals("J value", cbType.getValue(), expectedCryptoBinaryContent);
+        AssertJUnit.assertNotNull("J", cbType);
+        AssertJUnit.assertEquals("J value", cbType.getValue(), expectedCryptoBinaryContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         J cbType = (J) buildXMLObject(J.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);

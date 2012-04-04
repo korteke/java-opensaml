@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.binding.encoding;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -41,6 +43,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testResponseEncoding() throws Exception {
         SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
@@ -79,10 +82,10 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.encode(messageContext);
 
-        assertEquals("Unexpected content type", "text/xml", response.getContentType());
-        assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        assertEquals("http://www.oasis-open.org/committees/security", response.getHeader("SOAPAction"));
-        assertEquals(2034125980, response.getContentAsString().hashCode());
+        AssertJUnit.assertEquals("Unexpected content type", "text/xml", response.getContentType());
+        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
+        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
+        AssertJUnit.assertEquals("http://www.oasis-open.org/committees/security", response.getHeader("SOAPAction"));
+        AssertJUnit.assertEquals(2034125980, response.getContentAsString().hashCode());
     }
 }

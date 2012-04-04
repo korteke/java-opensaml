@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.idpdisco.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
@@ -46,9 +49,8 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedBinding = "urn:binding:foo";
         expectedLocation = "example.org";
         expectedResponseLocation = "example.org/response";
@@ -57,26 +59,29 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         DiscoveryResponse service = (DiscoveryResponse) unmarshallElement(singleElementFile);
 
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        assertEquals("Index was not expected value", expectedIndex, service.getIndex());
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("Index was not expected value", expectedIndex, service.getIndex());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         DiscoveryResponse service = (DiscoveryResponse) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        assertEquals("Index was not expected value", expectedIndex, service.getIndex());
-        assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());
-        assertEquals("isDefault was not expected value", expectedIsDefault, service.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("Index was not expected value", expectedIndex, service.getIndex());
+        AssertJUnit.assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());
+        AssertJUnit.assertEquals("isDefault was not expected value", expectedIsDefault, service.isDefaultXSBoolean());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         DiscoveryResponse service = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
 
@@ -88,6 +93,7 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         DiscoveryResponse service = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
 
@@ -103,26 +109,27 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     /**
      * Test the proper behavior of the XSBooleanValue attributes.
      */
+    @Test
     public void testXSBooleanAttributes() {
         DiscoveryResponse acs = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
 
         // isDefault attribute
         acs.setIsDefault(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, acs.isDefault());
-        assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false), acs
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, acs.isDefault());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false), acs
                 .isDefaultXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true", acs.isDefaultXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", acs.isDefaultXSBoolean().toString());
 
         acs.setIsDefault(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, acs.isDefault());
-        assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false), acs
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, acs.isDefault());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false), acs
                 .isDefaultXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false", acs.isDefaultXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", acs.isDefaultXSBoolean().toString());
 
         acs.setIsDefault((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, acs.isDefault());
-        assertNull("XSBooleanValue was not null", acs.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, acs.isDefault());
+        AssertJUnit.assertNull("XSBooleanValue was not null", acs.isDefaultXSBoolean());
     }
 }

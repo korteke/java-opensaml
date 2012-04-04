@@ -24,7 +24,6 @@ import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 
-import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
@@ -33,6 +32,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -44,6 +44,8 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -51,7 +53,7 @@ import org.w3c.dom.Node;
 /**
  * Base test case class for tests that operate on XMLObjects.
  */
-public abstract class XMLObjectBaseTestCase extends TestCase {
+public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 
     /** Logger */
     private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
@@ -72,8 +74,8 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected static QName simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeClass
+	protected void initXMLObjectSupport() throws Exception {
         XMLUnit.setIgnoreWhitespace(true);
         
         InitializationService.initialize();
@@ -112,7 +114,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected void assertXMLEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
-            fail("Unable to locate marshaller for " + xmlObject.getElementQName()
+            Assert.fail("Unable to locate marshaller for " + xmlObject.getElementQName()
                     + " can not perform equality check assertion");
         }
 
@@ -123,7 +125,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
             }
             XMLAssert.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
         } catch (Exception e) {
-            fail("Marshalling failed with the following error: " + e);
+            Assert.fail("Marshalling failed with the following error: " + e);
         }
     }
 
@@ -137,10 +139,10 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected <T extends XMLObject> T buildXMLObject(QName name) {
         XMLObjectBuilder<T> builder = getBuilder(name);
         if (builder == null) {
-            fail("no builder registered for: " + name);
+            Assert.fail("no builder registered for: " + name);
         }
         T wsObj = builder.buildObject(name);
-        assertNotNull(wsObj);
+        Assert.assertNotNull(wsObj);
         return wsObj;
     }
     
@@ -155,12 +157,12 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
             Element element = doc.getDocumentElement();
             Unmarshaller unmarshaller = getUnmarshaller(element);
             T object = (T) unmarshaller.unmarshall(element);
-            assertNotNull(object);
+            Assert.assertNotNull(object);
             return object;
         } catch (XMLParserException e) {
-            fail("Unable to parse element file " + elementFile);
+            Assert.fail("Unable to parse element file " + elementFile);
         } catch (UnmarshallingException e) {
-            fail("Unmarshalling failed when parsing element file " + elementFile + ": " + e);
+            Assert.fail("Unmarshalling failed when parsing element file " + elementFile + ": " + e);
         }
 
         return null;
@@ -202,7 +204,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected XMLObjectBuilder getBuilder(QName qname) {
         XMLObjectBuilder builder = builderFactory.getBuilder(qname);
         if (builder == null) {
-            fail("no builder registered for " + qname);
+            Assert.fail("no builder registered for " + qname);
         }
         return builder;
     }
@@ -216,7 +218,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected Marshaller getMarshaller(QName qname) {
         Marshaller marshaller = marshallerFactory.getMarshaller(qname);
         if (marshaller == null) {
-            fail("no marshaller registered for " + qname);
+            Assert.fail("no marshaller registered for " + qname);
         }
         return marshaller;
     }
@@ -230,7 +232,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected Marshaller getMarshaller(XMLObject xmlObject) {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
-            fail("no marshaller registered for " + xmlObject.getClass().getName());
+            Assert.fail("no marshaller registered for " + xmlObject.getClass().getName());
         }
         return marshaller;
     }
@@ -244,7 +246,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected Unmarshaller getUnmarshaller(QName qname) {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(qname);
         if (unmarshaller == null) {
-            fail("no unmarshaller registered for " + qname);
+            Assert.fail("no unmarshaller registered for " + qname);
         }
         return unmarshaller;
     }
@@ -268,7 +270,7 @@ public abstract class XMLObjectBaseTestCase extends TestCase {
     protected Unmarshaller getUnmarshaller(Element element) {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
         if (unmarshaller == null) {
-            fail("no unmarshaller registered for " + QNameSupport.getNodeQName(element));
+            Assert.fail("no unmarshaller registered for " + QNameSupport.getNodeQName(element));
         }
         return unmarshaller;
     }

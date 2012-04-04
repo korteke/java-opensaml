@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509IssuerName;
 
@@ -38,21 +41,22 @@ public class X509IssuerNameTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "someX509IssuerName";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         X509IssuerName x509Element = (X509IssuerName) unmarshallElement(singleElementFile);
         
-        assertNotNull("X509IssuerName", x509Element);
-        assertEquals("X509IssuerName value", x509Element.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("X509IssuerName", x509Element);
+        AssertJUnit.assertEquals("X509IssuerName value", x509Element.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         X509IssuerName x509Element = (X509IssuerName) buildXMLObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
@@ -49,31 +52,29 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Evidence evidence = (Evidence) unmarshallElement(singleElementFile);
 
-        assertNotNull(evidence);
+        AssertJUnit.assertNotNull(evidence);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
 
-        assertEquals("AssertionIDRef count not as expected", assertionIDRefCount, evidence.getAssertionIDReferences()
+        AssertJUnit.assertEquals("AssertionIDRef count not as expected", assertionIDRefCount, evidence.getAssertionIDReferences()
                 .size());
-        assertEquals("AssertionURIRef count not as expected", assertionURIRefCount, evidence
+        AssertJUnit.assertEquals("AssertionURIRef count not as expected", assertionURIRefCount, evidence
                 .getAssertionURIReferences().size());
-        assertEquals("Assertion count not as expected", assertionCount, evidence.getAssertions().size());
-        assertEquals("EncryptedAssertion count not as expected", 
+        AssertJUnit.assertEquals("Assertion count not as expected", assertionCount, evidence.getAssertions().size());
+        AssertJUnit.assertEquals("EncryptedAssertion count not as expected", 
                 encryptedAssertionCount, evidence.getEncryptedAssertions().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Evidence evidence = (Evidence) buildXMLObject(Evidence.DEFAULT_ELEMENT_NAME);
 
@@ -81,6 +82,7 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Evidence evidence = (Evidence) buildXMLObject(Evidence.DEFAULT_ELEMENT_NAME);
         

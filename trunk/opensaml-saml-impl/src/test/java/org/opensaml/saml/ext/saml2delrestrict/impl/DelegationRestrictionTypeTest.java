@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -38,28 +41,31 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedDelegateChildren = 3;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(singleElementFile);
 
-        assertNotNull(drt);
+        AssertJUnit.assertNotNull(drt);
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(childElementsFile);
         
-        assertNotNull(drt);
+        AssertJUnit.assertNotNull(drt);
         
-        assertEquals("Incorrect # of Delegate Children", expectedDelegateChildren, drt.getDelegates().size());
+        AssertJUnit.assertEquals("Incorrect # of Delegate Children", expectedDelegateChildren, drt.getDelegates().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         SAMLObjectBuilder<DelegationRestrictionType> builder =
             (SAMLObjectBuilder<DelegationRestrictionType>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(DelegationRestrictionType.TYPE_NAME);
@@ -71,6 +77,7 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         SAMLObjectBuilder<DelegationRestrictionType> builder =
             (SAMLObjectBuilder<DelegationRestrictionType>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(DelegationRestrictionType.TYPE_NAME);

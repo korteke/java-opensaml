@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.SPKISexp;
 
@@ -38,21 +41,22 @@ public class SPKISexpTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "someSPKISexp";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SPKISexp spkiElement = (SPKISexp) unmarshallElement(singleElementFile);
         
-        assertNotNull("SPKISexp", spkiElement);
-        assertEquals("SPKISexp value", spkiElement.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("SPKISexp", spkiElement);
+        AssertJUnit.assertEquals("SPKISexp value", spkiElement.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         SPKISexp spkiElement = (SPKISexp) buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME);
         spkiElement.setValue(expectedStringContent);

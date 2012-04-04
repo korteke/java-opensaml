@@ -17,9 +17,11 @@
 
 package org.opensaml.core.config;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
@@ -27,11 +29,11 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
 /**
  * A class which provides basic testing for the InitializationService.
  */
-public class InitializationServiceTest extends TestCase {
+public class InitializationServiceTest {
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         Properties props = new Properties();
         
         props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
@@ -40,19 +42,20 @@ public class InitializationServiceTest extends TestCase {
     }
 
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
         ThreadLocalConfigurationPropertiesHolder.clear();
     }
 
+    @Test
     public void testProviderInit() throws InitializationException {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        assertNull("Registry was non-null", registry);        
+        AssertJUnit.assertNull("Registry was non-null", registry);        
         
         InitializationService.initialize();
         
         registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        assertNotNull("Registry was null", registry);        
+        AssertJUnit.assertNotNull("Registry was null", registry);        
     }
 
 }

@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.SPKIData;
@@ -38,29 +41,27 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SPKIData spkiData = (SPKIData) unmarshallElement(singleElementFile);
         
-        assertNotNull("SPKIData", spkiData);
-        assertEquals("Total # of XMLObject child elements", 0, spkiData.getXMLObjects().size());
+        AssertJUnit.assertNotNull("SPKIData", spkiData);
+        AssertJUnit.assertEquals("Total # of XMLObject child elements", 0, spkiData.getXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         SPKIData spkiData = (SPKIData) unmarshallElement(childElementsFile);
         
-        assertNotNull("SPKIData", spkiData);
-        assertEquals("Total # of XMLObject child elements", 4, spkiData.getXMLObjects().size());
-        assertEquals("# of SPKISexp child elements", 2, spkiData.getSPKISexps().size());
-        assertEquals("# of SimpleElement child elements", 2, spkiData.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        AssertJUnit.assertNotNull("SPKIData", spkiData);
+        AssertJUnit.assertEquals("Total # of XMLObject child elements", 4, spkiData.getXMLObjects().size());
+        AssertJUnit.assertEquals("# of SPKISexp child elements", 2, spkiData.getSPKISexps().size());
+        AssertJUnit.assertEquals("# of SimpleElement child elements", 2, spkiData.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
         
@@ -68,6 +69,7 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
         

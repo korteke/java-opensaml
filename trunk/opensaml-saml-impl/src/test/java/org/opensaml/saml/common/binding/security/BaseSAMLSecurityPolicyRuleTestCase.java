@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
@@ -43,8 +45,8 @@ public abstract class BaseSAMLSecurityPolicyRuleTestCase<InboundMessageType exte
     protected SAMLMessageContext<InboundMessageType, OutboundMessageType, NameIDType> messageContext;
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeMethod
+    protected void initSecurityPolicyRuleTest() throws Exception {
         messageContext = buildMessageContext();
         messageContext.setInboundMessageTransport( buildInTransport() );
         messageContext.setInboundMessage( buildInboundMessage() );
@@ -98,7 +100,7 @@ public abstract class BaseSAMLSecurityPolicyRuleTestCase<InboundMessageType exte
         try {
             rule.evaluate(messageContext);
         } catch (SecurityPolicyException e) {
-            fail("Security policy rule failed, expected success: " + msg + ": " + e);
+            Assert.fail("Security policy rule failed, expected success: " + msg + ": " + e);
         }
     }
     
@@ -112,7 +114,7 @@ public abstract class BaseSAMLSecurityPolicyRuleTestCase<InboundMessageType exte
     protected void assertRuleFailure(String msg) {
         try {
             rule.evaluate(messageContext);
-            fail("Security policy rule succeeded, expected failure: " + msg);
+            Assert.fail("Security policy rule succeeded, expected failure: " + msg);
         } catch (SecurityPolicyException e) {
             //do nothing, failure expected
             return;

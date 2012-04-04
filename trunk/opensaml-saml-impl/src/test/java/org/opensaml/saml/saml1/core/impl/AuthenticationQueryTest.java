@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -50,41 +52,46 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
 
         AuthenticationQuery authenticationQuery;
         
         authenticationQuery = (AuthenticationQuery) unmarshallElement(singleElementFile);
 
-        assertNull("AuthenticationQuery attribute present", authenticationQuery.getAuthenticationMethod());;
-        assertNull("Subject element present", authenticationQuery.getSubject());
+        AssertJUnit.assertNull("AuthenticationQuery attribute present", authenticationQuery.getAuthenticationMethod());;
+        AssertJUnit.assertNull("Subject element present", authenticationQuery.getSubject());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthenticationQuery authenticationQuery;
         
         authenticationQuery = (AuthenticationQuery) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("AuthenticationQuery attribute", expectedAuthenticationMethod, authenticationQuery.getAuthenticationMethod());;
-        assertNull("Subject element present", authenticationQuery.getSubject());
+        AssertJUnit.assertEquals("AuthenticationQuery attribute", expectedAuthenticationMethod, authenticationQuery.getAuthenticationMethod());;
+        AssertJUnit.assertNull("Subject element present", authenticationQuery.getSubject());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AuthenticationQuery authenticationQuery;
         
         authenticationQuery = (AuthenticationQuery) unmarshallElement(childElementsFile);
 
-        assertNotNull("No Subject element found", authenticationQuery.getSubject());
+        AssertJUnit.assertNotNull("No Subject element found", authenticationQuery.getSubject());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthenticationQuery authenticationQuery = (AuthenticationQuery) buildXMLObject(qname);
 
@@ -93,6 +100,7 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         AuthenticationQuery authenticationQuery = (AuthenticationQuery) buildXMLObject(qname);
 

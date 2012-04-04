@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -42,9 +46,8 @@ public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
     private String supportedProtocol;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         entityID = "urn:mace:incommon:washington.edu";
         entityID2 = "urn:mace:switch.ch:SWITCHaai:ethz.ch";
         supportedProtocol = "urn:oasis:names:tc:SAML:1.1:protocol";
@@ -69,56 +72,61 @@ public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
     }
 
     /** Test the {@link ChainingMetadataProvider#getMetadata()} method. */
+    @Test
     public void testGetMetadata() throws MetadataProviderException {
         EntitiesDescriptor descriptor1 = (EntitiesDescriptor) metadataProvider.getMetadata();
-        assertEquals(2, descriptor1.getEntitiesDescriptors().size());
-        assertEquals(0, descriptor1.getEntityDescriptors().size());
+        AssertJUnit.assertEquals(2, descriptor1.getEntitiesDescriptors().size());
+        AssertJUnit.assertEquals(0, descriptor1.getEntityDescriptors().size());
 
         EntitiesDescriptor descriptor2 = (EntitiesDescriptor) metadataProvider.getMetadata();
-        assertEquals(2, descriptor2.getEntitiesDescriptors().size());
-        assertEquals(0, descriptor2.getEntityDescriptors().size());
+        AssertJUnit.assertEquals(2, descriptor2.getEntitiesDescriptors().size());
+        AssertJUnit.assertEquals(0, descriptor2.getEntityDescriptors().size());
     }
 
     /** Tests the {@link ChainingMetadataProvider#getEntityDescriptor(String)} method. */
+    @Test
     public void testGetEntityDescriptor() throws MetadataProviderException {
         EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
-        assertNotNull("Retrieved entity descriptor was null", descriptor);
-        assertEquals("Entity's ID does not match requested ID", entityID, descriptor.getEntityID());
+        AssertJUnit.assertNotNull("Retrieved entity descriptor was null", descriptor);
+        AssertJUnit.assertEquals("Entity's ID does not match requested ID", entityID, descriptor.getEntityID());
 
         EntityDescriptor descriptor2 = metadataProvider.getEntityDescriptor(entityID2);
-        assertNotNull("Retrieved entity descriptor was null", descriptor2);
-        assertEquals("Entity's ID does not match requested ID", entityID2, descriptor2.getEntityID());
+        AssertJUnit.assertNotNull("Retrieved entity descriptor was null", descriptor2);
+        AssertJUnit.assertEquals("Entity's ID does not match requested ID", entityID2, descriptor2.getEntityID());
     }
 
     /** Tests the {@link ChainingMetadataProvider#getRole(String, javax.xml.namespace.QName) method.  */
+    @Test
     public void testGetRole() throws MetadataProviderException {
         List<RoleDescriptor> roles = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        assertNotNull("Roles for entity descriptor was null", roles);
-        assertEquals("Unexpected number of roles", 1, roles.size());
+        AssertJUnit.assertNotNull("Roles for entity descriptor was null", roles);
+        AssertJUnit.assertEquals("Unexpected number of roles", 1, roles.size());
 
         List<RoleDescriptor> roles2 = metadataProvider.getRole(entityID2, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        assertNotNull("Roles for entity descriptor was null", roles2);
-        assertEquals("Unexpected number of roles", 1, roles2.size());
+        AssertJUnit.assertNotNull("Roles for entity descriptor was null", roles2);
+        AssertJUnit.assertEquals("Unexpected number of roles", 1, roles2.size());
     }
 
     /** Test the {@link ChainingMetadataProvider#getRole(String, javax.xml.namespace.QName, String) method.  */
+    @Test
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException {
         RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 supportedProtocol);
-        assertNotNull("Roles for entity descriptor was null", role);
+        AssertJUnit.assertNotNull("Roles for entity descriptor was null", role);
 
         RoleDescriptor role2 = metadataProvider.getRole(entityID2, IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
                 supportedProtocol);
-        assertNotNull("Roles for entity descriptor was null", role2);
+        AssertJUnit.assertNotNull("Roles for entity descriptor was null", role2);
     }
 
     /** Tests that metadata filters are disallowed on the chaining provider. */
+    @Test
     public void testFilterDisallowed() {
         try {
             metadataProvider.setMetadataFilter(new SchemaValidationFilter(new String[] {}));
-            fail("Should fail with an UnsupportedOperationException");
+            Assert.fail("Should fail with an UnsupportedOperationException");
         } catch (MetadataProviderException e) {
-            fail("Should fail with an UnsupportedOperationException");
+            Assert.fail("Should fail with an UnsupportedOperationException");
         } catch (UnsupportedOperationException e) {
             // expected, do nothing
         }

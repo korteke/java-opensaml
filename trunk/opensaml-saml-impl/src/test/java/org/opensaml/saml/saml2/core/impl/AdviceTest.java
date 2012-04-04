@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -48,30 +51,28 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Advice advice = (Advice) unmarshallElement(singleElementFile);
 
-        assertNotNull(advice);
+        AssertJUnit.assertNotNull(advice);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Advice advice = (Advice) unmarshallElement(childElementsFile);
 
-        assertEquals("AssertionIDRef count not as expected", assertionIDRefCount, advice.getAssertionIDReferences()
+        AssertJUnit.assertEquals("AssertionIDRef count not as expected", assertionIDRefCount, advice.getAssertionIDReferences()
                 .size());
-        assertEquals("AssertionURIRef count not as expected", assertionURIRefCount, advice.getAssertionURIReferences()
+        AssertJUnit.assertEquals("AssertionURIRef count not as expected", assertionURIRefCount, advice.getAssertionURIReferences()
                 .size());
-        assertEquals("Assertion count not as expected", assertionCount, advice.getAssertions().size());
-        assertEquals("EncryptedAssertion count not as expected", encryptedAssertionCount, advice.getEncryptedAssertions().size());
+        AssertJUnit.assertEquals("Assertion count not as expected", assertionCount, advice.getAssertions().size());
+        AssertJUnit.assertEquals("EncryptedAssertion count not as expected", encryptedAssertionCount, advice.getEncryptedAssertions().size());
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Advice advice = (Advice) buildXMLObject(Advice.DEFAULT_ELEMENT_NAME);
 
@@ -79,6 +80,7 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Advice advice = (Advice) buildXMLObject(Advice.DEFAULT_ELEMENT_NAME);
         

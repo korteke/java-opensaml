@@ -1,6 +1,4 @@
 /*
- * Licensed to the University Corporation for Advanced Internet Development, 
- * Inc. (UCAID) under one or more contributor license agreements.  See the 
  * NOTICE file distributed with this work for additional information regarding
  * copyright ownership. The UCAID licenses this file to You under the Apache 
  * License, Version 2.0 (the "License"); you may not use this file except in 
@@ -18,6 +16,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.Q;
 
@@ -38,21 +39,22 @@ public class QTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedCryptoBinaryContent = "someCryptoBinaryValue";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Q cbType = (Q) unmarshallElement(singleElementFile);
         
-        assertNotNull("Q", cbType);
-        assertEquals("Q value", cbType.getValue(), expectedCryptoBinaryContent);
+        AssertJUnit.assertNotNull("Q", cbType);
+        AssertJUnit.assertEquals("Q value", cbType.getValue(), expectedCryptoBinaryContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Q cbType = (Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);

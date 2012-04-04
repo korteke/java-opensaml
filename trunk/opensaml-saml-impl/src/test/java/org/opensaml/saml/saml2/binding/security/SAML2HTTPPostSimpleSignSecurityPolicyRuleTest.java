@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.binding.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
@@ -187,9 +191,8 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         // Trust engine setup
         issuer = "SomeCoolIssuer";
 
@@ -211,18 +214,20 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
     /**
      * Test context issuer set, valid signature with trusted credential.
      */
+    @Test
     public void testSuccess() {
         trustedCredentials.add(signingX509Cred);
 
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver");
         SAMLMessageContext samlContext = messageContext;
-        assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        assertTrue("Unexpected value for context authentication state", samlContext.isInboundSAMLMessageAuthenticated());
+        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
+        AssertJUnit.assertTrue("Unexpected value for context authentication state", samlContext.isInboundSAMLMessageAuthenticated());
     }
 
     /**
      * Test context issuer set, valid signature with untrusted credential.
      */
+    @Test
     public void testUntrustedCredential() {
         assertRuleFailure("Protocol message was signed with credential unknown to trust engine resolver");
     }
@@ -230,6 +235,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
     /**
      * Test context issuer set, invalid signature with trusted credential.
      */
+    @Test
     public void testInvalidSignature() {
         trustedCredentials.add(signingX509Cred);
 
@@ -243,6 +249,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
     /**
      * Test context issuer set, valid signature with untrusted credential.
      */
+    @Test
     public void testNoContextIssuer() {
         messageContext.setInboundMessageIssuer(null);
         assertRuleFailure("Protocol message signature should have been unevaluable due to absence of context issuer");
@@ -251,6 +258,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
     /**
      * Test context issuer set, valid signature with trusted credential.
      */
+    @Test
     public void testSuccessNoKeyInfo() {
         trustedCredentials.add(signingX509Cred);
 
@@ -260,13 +268,14 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
 
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver, no request KeyInfo");
         SAMLMessageContext samlContext = messageContext;
-        assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        assertTrue("Unexpected value for context authentication state", samlContext.isInboundSAMLMessageAuthenticated());
+        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
+        AssertJUnit.assertTrue("Unexpected value for context authentication state", samlContext.isInboundSAMLMessageAuthenticated());
     }
 
     /**
      * Test context issuer set, valid signature with trusted credential.
      */
+    @Test
     public void testFailureNoKeyInfo() {
         HttpServletRequestAdapter inTransport = (HttpServletRequestAdapter) messageContext.getInboundMessageTransport();
         MockHttpServletRequest request = (MockHttpServletRequest) inTransport.getWrappedRequest();
@@ -308,7 +317,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
         try {
             encoder.encode(outboundMessgeContext);
         } catch (MessageEncodingException e) {
-            fail("Could not encode outbound message context");
+            Assert.fail("Could not encode outbound message context");
         }
 
         // Now populate the new "inbound" message context with the "outbound" encoded info
@@ -321,14 +330,14 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
         try {
             contentString = response.getContentAsString();
         } catch (UnsupportedEncodingException e) {
-            fail("Could not get content string from response object");
+            Assert.fail("Could not get content string from response object");
         }
         // System.out.println("Content String: " + contentString);
 
         try {
             populateRequest(request, contentString);
         } catch (Exception e) {
-            fail("Could not populate mock request with form data");
+            Assert.fail("Could not populate mock request with form data");
         }
 
         return inTransport;

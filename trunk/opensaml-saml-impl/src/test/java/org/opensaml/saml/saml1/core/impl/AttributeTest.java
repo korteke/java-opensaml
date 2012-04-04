@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -58,36 +60,41 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementFile);
 
-        assertNull("AttributeName", attribute.getAttributeName());
-        assertNull("AttributeNamespace", attribute.getAttributeNamespace());
-        assertEquals("<AttributeValue> subelement found", 0, attribute.getAttributeValues().size());
+        AssertJUnit.assertNull("AttributeName", attribute.getAttributeName());
+        AssertJUnit.assertNull("AttributeNamespace", attribute.getAttributeNamespace());
+        AssertJUnit.assertEquals("<AttributeValue> subelement found", 0, attribute.getAttributeValues().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("AttributeName", expectedAttributeName, attribute.getAttributeName());
-        assertEquals("AttributeNamespace", expectedAttributeNamespace, attribute.getAttributeNamespace());
+        AssertJUnit.assertEquals("AttributeName", expectedAttributeName, attribute.getAttributeName());
+        AssertJUnit.assertEquals("AttributeNamespace", expectedAttributeNamespace, attribute.getAttributeNamespace());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(childElementsFile);
 
-        assertNotNull("<AttributeValue> subelement not found", attribute.getAttributeValues());
-        assertEquals("Number of <AttributeValue> subelement not found", 4, attribute.getAttributeValues().size());
+        AssertJUnit.assertNotNull("<AttributeValue> subelement not found", attribute.getAttributeValues());
+        AssertJUnit.assertEquals("Number of <AttributeValue> subelement not found", 4, attribute.getAttributeValues().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Attribute attribute = (Attribute) buildXMLObject(qname);
 
@@ -97,6 +104,7 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall(){
         Attribute attribute = (Attribute) buildXMLObject(qname);
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -54,32 +57,34 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedPersonType = ContactPersonTypeEnumeration.TECHNICAL;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ContactPerson person = (ContactPerson) unmarshallElement(singleElementFile);
         
-        assertEquals("Contact type was not expected value", expectedPersonType, person.getType());
+        AssertJUnit.assertEquals("Contact type was not expected value", expectedPersonType, person.getType());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall()
     {
         ContactPerson person = (ContactPerson) unmarshallElement(childElementsFile);
         
-        assertNotNull("Extension Element not present", person.getExtensions());
-        assertNotNull("Company Element not present", person.getCompany());
-        assertNotNull("GivenName not present", person.getGivenName());
-        assertEquals("Email address count", emailAddressCount, person.getEmailAddresses().size());
-        assertEquals("Telephone Number count", telephoneNumberCount, person.getTelephoneNumbers().size());
+        AssertJUnit.assertNotNull("Extension Element not present", person.getExtensions());
+        AssertJUnit.assertNotNull("Company Element not present", person.getCompany());
+        AssertJUnit.assertNotNull("GivenName not present", person.getGivenName());
+        AssertJUnit.assertEquals("Email address count", emailAddressCount, person.getEmailAddresses().size());
+        AssertJUnit.assertEquals("Telephone Number count", telephoneNumberCount, person.getTelephoneNumbers().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
         
@@ -89,6 +94,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall()
     {
         ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);

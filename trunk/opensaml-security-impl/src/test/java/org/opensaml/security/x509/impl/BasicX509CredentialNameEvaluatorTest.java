@@ -17,6 +17,9 @@
 
 package org.opensaml.security.x509.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Set;
@@ -69,9 +72,8 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
     private String altNameDNS, altNameURL;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         entityCert3AltNamesDNS_URL_IP = SecurityHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URL_IPBase64);
         cred = SecurityHelper.getSimpleCredential(entityCert3AltNamesDNS_URL_IP, null);
         
@@ -92,6 +94,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.getSubjectAltNameTypes().add(X509Util.URI_ALT_NAME);
     }
     
+    @Test
     public void testCommonNameSuccess() {
         evaluator.setCheckSubjectAltNames(false);
         evaluator.setCheckSubjectDN(false);
@@ -102,6 +105,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateSuccess("Subject common name was valid", names, cred);
     }
     
+    @Test
     public void testCommonNameFail() {
         evaluator.setCheckSubjectAltNames(false);
         evaluator.setCheckSubjectDN(false);
@@ -112,6 +116,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("Subject common name was invalid", names, cred);
     }
     
+    @Test
     public void testSubjectDNSuccess() {
         evaluator.setCheckSubjectAltNames(false);
         evaluator.setCheckSubjectDN(true);
@@ -122,6 +127,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateSuccess("Subject DN was valid", names, cred);
     }
     
+    @Test
     public void testSubjectDNFail() {
         evaluator.setCheckSubjectAltNames(false);
         evaluator.setCheckSubjectDN(true);
@@ -132,6 +138,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("Subject DN was invalid", names, cred);
     }
     
+    @Test
     public void testSubjectDNInputNotDN() {
         evaluator.setCheckSubjectAltNames(false);
         evaluator.setCheckSubjectDN(true);
@@ -142,6 +149,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("Subject DN was invalid, was not in DN syntax", names, cred);
     }
     
+    @Test
     public void testDNSAltNameSuccess() {
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
@@ -154,6 +162,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateSuccess("DNS subject alt name was valid", names, cred);
     }
     
+    @Test
     public void testDNSAltNameFail() {
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
@@ -166,6 +175,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("DNS subject alt name was invalid", names, cred);
     }
  
+    @Test
     public void testURLAltNameSuccess() {
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
@@ -178,6 +188,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateSuccess("URL subject alt name was valid", names, cred);
     }
     
+    @Test
     public void testURLAltNameFail() {
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
@@ -190,6 +201,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("URL subject alt name was invalid", names, cred);
     }
     
+    @Test
     public void testAltNamesEnabledNoTypes() {
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
@@ -201,6 +213,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("Alt names were enabled but no types configured to be extracted", names, cred);
     }
     
+    @Test
     public void testAllOptionsEnabled() {
         names.clear();
         names.add(subjectCN);
@@ -224,6 +237,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("No trusted names were valid", names, cred);
     }
     
+    @Test
     public void testNameCheckNotActive() {
         evaluator.setCheckSubjectAltNames(false);
         evaluator.setCheckSubjectDN(false);
@@ -234,12 +248,14 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateSuccess("Name checking was not active", names, cred);
     }
     
+    @Test
     public void testNoTrustedNames() {
         names.clear();
         
         testEvaluateSuccess("Trusted name set was empty", names, cred);
     }
     
+    @Test
     public void testTrustedNamesNull() {
         names.clear();
         
@@ -250,23 +266,25 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
      * Helper methods.  *
      ********************/
     
+    @Test(enabled = false)
     private void testEvaluateSuccess(String message, Set<String> trustedNames, X509Credential untrustedCred) {
         try {
             if ( !evaluator.evaluate(untrustedCred, trustedNames) ) {
-                fail("Evaluation of X509Credential failed, success was expected: " + message);
+                Assert.fail("Evaluation of X509Credential failed, success was expected: " + message);
             }
         } catch (SecurityException e) {
-            fail("Evaluation failed due to processing exception: " + e.getMessage());
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
         }
     }
     
+    @Test(enabled = false)
     private void testEvaluateFailure(String message, Set<String> trustedNames, X509Credential untrustedCred) {
         try {
             if ( evaluator.evaluate(untrustedCred, trustedNames) ) {
-                fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
+                Assert.fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
             }
         } catch (SecurityException e) {
-            fail("Evaluation failed due to processing exception: " + e.getMessage());
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
         }
     }
 }

@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -70,44 +72,48 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Conditions conditions;
 
         conditions = (Conditions) unmarshallElement(singleElementFile);
 
         DateTime date = conditions.getNotBefore();
-        assertNull("NotBefore attribute has a value of " + date + ", expected no value", date);
+        AssertJUnit.assertNull("NotBefore attribute has a value of " + date + ", expected no value", date);
 
         date = conditions.getNotOnOrAfter();
-        assertNull("NotOnOrAfter attribute has a value of " + date + ", expected no value", date);
+        AssertJUnit.assertNull("NotOnOrAfter attribute has a value of " + date + ", expected no value", date);
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Conditions conditions;
 
         conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("NotBefore attribute ", expectedNotBeforeDate, conditions.getNotBefore());
-        assertEquals("NotOnOrAfter attribute ", expectedNotOnOfAfter, conditions.getNotOnOrAfter());
+        AssertJUnit.assertEquals("NotBefore attribute ", expectedNotBeforeDate, conditions.getNotBefore());
+        AssertJUnit.assertEquals("NotOnOrAfter attribute ", expectedNotOnOfAfter, conditions.getNotOnOrAfter());
     }
 
     /*
      * Test an XML file with children
      */
+    @Test
     public void testChildElementsUnmarshall() {
         Conditions conditions;
 
         conditions = (Conditions) unmarshallElement(childElementsFile);
 
-        assertEquals("Number of AudienceRestrictionCondition elements", 3, conditions
+        AssertJUnit.assertEquals("Number of AudienceRestrictionCondition elements", 3, conditions
                 .getAudienceRestrictionConditions().size());
-        assertEquals("Number of DoNotCacheCondition children", 1, conditions.getDoNotCacheConditions().size());
-        assertEquals("Wrong number of Condition children", 4, conditions.getConditions().size());
+        AssertJUnit.assertEquals("Number of DoNotCacheCondition children", 1, conditions.getDoNotCacheConditions().size());
+        AssertJUnit.assertEquals("Wrong number of Condition children", 4, conditions.getConditions().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Conditions conditions = (Conditions) buildXMLObject(qname);
 
@@ -116,6 +122,7 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Conditions conditions = (Conditions) buildXMLObject(qname);
 
@@ -126,6 +133,7 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
 
         Conditions conditions = (Conditions) buildXMLObject(qname);

@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -63,8 +67,8 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedNotBefore = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
         expectedNotOnOrAfter = new DateTime(1984, 8, 26, 10, 11, 30, 43, ISOChronology.getInstanceUTC());
         expectedRecipient = "recipient";
@@ -75,46 +79,50 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementFile);
-        assertNotNull("Object was null", kicd);
+        AssertJUnit.assertNotNull("Object was null", kicd);
         
-        assertEquals("Object xsi:type was not the expected value", expectedType, kicd.getSchemaType());
+        AssertJUnit.assertEquals("Object xsi:type was not the expected value", expectedType, kicd.getSchemaType());
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime notBefore = kicd.getNotBefore();
-        assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
 
         DateTime notOnOrAfter = kicd.getNotOnOrAfter();
-        assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
+        AssertJUnit.assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
                 notOnOrAfter);
 
         String recipient = kicd.getRecipient();
-        assertEquals("Recipient was " + recipient + ", expected " + expectedRecipient, expectedRecipient, recipient);
+        AssertJUnit.assertEquals("Recipient was " + recipient + ", expected " + expectedRecipient, expectedRecipient, recipient);
 
         String inResponseTo = kicd.getInResponseTo();
-        assertEquals("InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo, expectedInResponseTo,
+        AssertJUnit.assertEquals("InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo, expectedInResponseTo,
                 inResponseTo);
 
         String address = kicd.getAddress();
-        assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
         
-        assertEquals("Object xsi:type was not the expected value", expectedType, kicd.getSchemaType());
+        AssertJUnit.assertEquals("Object xsi:type was not the expected value", expectedType, kicd.getSchemaType());
     }
     
+    @Test
     public void testChildElementsUnmarshall() {
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(childElementsFile);
         
-        assertEquals("Unexpected number of KeyInfo children", 3, kicd.getKeyInfos().size());
-        assertEquals("Unexpected number of KeyInfo children", 3, kicd.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME).size());
+        AssertJUnit.assertEquals("Unexpected number of KeyInfo children", 3, kicd.getKeyInfos().size());
+        AssertJUnit.assertEquals("Unexpected number of KeyInfo children", 3, kicd.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME).size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         KeyInfoConfirmationDataType kicd = buildXMLObject();
 
@@ -122,6 +130,7 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         KeyInfoConfirmationDataType kicd = buildXMLObject();
 
@@ -135,6 +144,7 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         KeyInfoConfirmationDataType kicd = buildXMLObject();
         
@@ -152,7 +162,7 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
             (SAMLObjectBuilder) Configuration.getBuilderFactory().getBuilder(KeyInfoConfirmationDataType.TYPE_NAME);
         
         if(builder == null){
-            fail("Unable to retrieve builder for object QName " + KeyInfoConfirmationDataType.TYPE_NAME);
+            Assert.fail("Unable to retrieve builder for object QName " + KeyInfoConfirmationDataType.TYPE_NAME);
         }
         return (KeyInfoConfirmationDataType) builder.buildObject();
     }

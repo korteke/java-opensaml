@@ -22,10 +22,13 @@ import java.io.InputStream;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -42,18 +45,12 @@ public class MetadataTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /**
      * Tests unmarshalling an InCommon metadata document.
      * 
      * @throws XMLParserException
      * @throws UnmarshallingException
      */
+    @Test
     public void testInCommonUnmarshall() throws XMLParserException, UnmarshallingException {
         String inCommonMDFile = "/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml";
 
@@ -65,12 +62,12 @@ public class MetadataTest extends XMLObjectBaseTestCase {
 
             XMLObject inCommonMD = unmarshaller.unmarshall(inCommonMDDoc.getDocumentElement());
 
-            assertEquals("First element of InCommon data was not expected EntitiesDescriptor", "EntitiesDescriptor",
+            AssertJUnit.assertEquals("First element of InCommon data was not expected EntitiesDescriptor", "EntitiesDescriptor",
                     inCommonMD.getElementQName().getLocalPart());
         } catch (XMLParserException xe) {
-            fail("Unable to parse XML file: " + xe);
+            Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
-            fail("Unable to unmarshall XML: " + ue);
+            Assert.fail("Unable to unmarshall XML: " + ue);
         }
     }
 
@@ -80,6 +77,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      * @throws UnmarshallingException
      */
+    @Test
     public void testSWITCHUnmarshall() {
         String switchMDFile = "/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml";
 
@@ -91,12 +89,12 @@ public class MetadataTest extends XMLObjectBaseTestCase {
 
             XMLObject switchMD = unmarshaller.unmarshall(switchMDDoc.getDocumentElement());
 
-            assertEquals("First element of SWITCH data was not expected EntitiesDescriptor", "EntitiesDescriptor",
+            AssertJUnit.assertEquals("First element of SWITCH data was not expected EntitiesDescriptor", "EntitiesDescriptor",
                     switchMD.getElementQName().getLocalPart());
         } catch (XMLParserException xe) {
-            fail("Unable to parse XML file: " + xe);
+            Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
-            fail("Unable to unmarshall XML: " + ue);
+            Assert.fail("Unable to unmarshall XML: " + ue);
         }
     }
     
@@ -106,6 +104,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      * @throws UnmarshallingException
      */
+    @Test
     public void testUKFedUnmarshall() {
         String switchMDFile = "/data/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml";
 
@@ -116,12 +115,12 @@ public class MetadataTest extends XMLObjectBaseTestCase {
                     ukFedDoc.getDocumentElement());
             XMLObject ukFedMD = unmarshaller.unmarshall(ukFedDoc.getDocumentElement());
 
-            assertEquals("First element of UK Federation data was not expected EntitiesDescriptor", "EntitiesDescriptor",
+            AssertJUnit.assertEquals("First element of UK Federation data was not expected EntitiesDescriptor", "EntitiesDescriptor",
                     ukFedMD.getElementQName().getLocalPart());
         } catch (XMLParserException xe) {
-            fail("Unable to parse XML file: " + xe);
+            Assert.fail("Unable to parse XML file: " + xe);
         } catch (UnmarshallingException ue) {
-            fail("Unable to unmarshall XML: " + ue);
+            Assert.fail("Unable to unmarshall XML: " + ue);
         }
     }
 }

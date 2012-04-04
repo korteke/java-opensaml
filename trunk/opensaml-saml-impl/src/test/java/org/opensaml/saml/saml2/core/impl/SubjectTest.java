@@ -24,6 +24,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.SubjectImpl}.
@@ -40,23 +42,21 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Subject subject = (Subject) unmarshallElement(singleElementFile);
 
-        assertNotNull(subject);
+        AssertJUnit.assertNotNull(subject);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Subject subject = (Subject) buildXMLObject(qname);
@@ -65,19 +65,22 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Subject subject = (Subject) unmarshallElement(childElementsFile);
-        assertNotNull("Identifier element not present", subject.getNameID());
-        assertEquals("SubjectConfirmation Count not as expected", expectedSubjectConfirmationCount, subject
+        AssertJUnit.assertNotNull("Identifier element not present", subject.getNameID());
+        AssertJUnit.assertEquals("SubjectConfirmation Count not as expected", expectedSubjectConfirmationCount, subject
                 .getSubjectConfirmations().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Subject subject = (Subject) buildXMLObject(qname);

@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,19 +57,16 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Keywords name = (Keywords) unmarshallElement(singleElementFile);
         
-        assertEquals("Keyworks were not expected value", expectedWords, name.getKeywords());
-        assertEquals("Language was not expected value", expectedLang, name.getXMLLang());
+        AssertJUnit.assertEquals("Keyworks were not expected value", expectedWords, name.getKeywords());
+        AssertJUnit.assertEquals("Language was not expected value", expectedLang, name.getXMLLang());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 Keywords.DEFAULT_ELEMENT_LOCAL_NAME, 

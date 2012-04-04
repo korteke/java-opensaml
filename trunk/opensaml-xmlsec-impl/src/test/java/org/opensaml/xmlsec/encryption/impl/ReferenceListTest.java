@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.KeyReference;
@@ -41,32 +44,34 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedNumDataRefs = 2;
         expectedNumKeyRefs = 1;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ReferenceList rl = (ReferenceList) unmarshallElement(singleElementFile);
         
-        assertNotNull("ReferenceList", rl);
-        assertEquals("# of DataReference children", 0, rl.getDataReferences().size());
-        assertEquals("# of KeyReference children", 0, rl.getKeyReferences().size());
+        AssertJUnit.assertNotNull("ReferenceList", rl);
+        AssertJUnit.assertEquals("# of DataReference children", 0, rl.getDataReferences().size());
+        AssertJUnit.assertEquals("# of KeyReference children", 0, rl.getKeyReferences().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         ReferenceList rl = (ReferenceList) unmarshallElement(childElementsFile);
         
-        assertNotNull("ReferenceList", rl);
-        assertEquals("# of DataReference children", expectedNumDataRefs, rl.getDataReferences().size());
-        assertEquals("# of KeyReference children", expectedNumKeyRefs, rl.getKeyReferences().size());
+        AssertJUnit.assertNotNull("ReferenceList", rl);
+        AssertJUnit.assertEquals("# of DataReference children", expectedNumDataRefs, rl.getDataReferences().size());
+        AssertJUnit.assertEquals("# of KeyReference children", expectedNumKeyRefs, rl.getKeyReferences().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
         
@@ -74,6 +79,7 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
         

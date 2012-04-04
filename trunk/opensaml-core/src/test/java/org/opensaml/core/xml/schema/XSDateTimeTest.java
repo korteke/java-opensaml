@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -41,8 +44,8 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     private DateTime expectedValue;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception{
-        super.setUp();
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = new DateTime(2010, 04, 05, 18, 52, 42, 790, ISOChronology.getInstanceUTC());
     }
@@ -53,6 +56,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      * @throws XMLParserException 
      */
+    @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
         String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-basic.xml";
         
@@ -73,6 +77,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-basic.xml";
         
@@ -81,10 +86,10 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
-        assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
         // For equivalence testing of DateTime instances, need to make sure are in the same chronology
-        assertEquals("Unexpected value of XSDateTime", expectedValue, 
+        AssertJUnit.assertEquals("Unexpected value of XSDateTime", expectedValue, 
                 xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()));
     }
     
@@ -94,6 +99,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshallCanonical() throws XMLParserException, UnmarshallingException{
         String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-canonical.xml";
         
@@ -102,10 +108,10 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
-        assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
         // For equivalence testing of DateTime instances, need to make sure are in the same chronology
-        assertEquals("Unexpected value of XSDateTime", expectedValue, 
+        AssertJUnit.assertEquals("Unexpected value of XSDateTime", expectedValue, 
                 xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()));
     }
     
@@ -115,6 +121,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshallNoFractional() throws XMLParserException, UnmarshallingException{
         String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-nofractional.xml";
         expectedValue = expectedValue.withMillisOfSecond(0);
@@ -124,10 +131,10 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
-        assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected XSDate QName", expectedXMLObjectQName, xsDateTime.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSDateTime schema type", XSDateTime.TYPE_NAME, xsDateTime.getSchemaType());
         // For equivalence testing of DateTime instances, need to make sure are in the same chronology
-        assertEquals("Unexpected value of XSDateTime", expectedValue, 
+        AssertJUnit.assertEquals("Unexpected value of XSDateTime", expectedValue, 
                 xsDateTime.getValue().withChronology(ISOChronology.getInstanceUTC()));
     }
 }

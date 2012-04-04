@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
@@ -38,29 +41,27 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(singleElementFile);
         
-        assertNotNull("X509IssuerSerial", x509Element);
-        assertNull("X509IssuerName child element", x509Element.getX509IssuerName());
-        assertNull("X509SerialNumber child element", x509Element.getX509SerialNumber());
+        AssertJUnit.assertNotNull("X509IssuerSerial", x509Element);
+        AssertJUnit.assertNull("X509IssuerName child element", x509Element.getX509IssuerName());
+        AssertJUnit.assertNull("X509SerialNumber child element", x509Element.getX509SerialNumber());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(childElementsFile);
         
-        assertNotNull("X509IssuerSerial", x509Element);
-        assertNotNull("X509IssuerName child element", x509Element.getX509IssuerName());
-        assertNotNull("X509SerialNumber child element", x509Element.getX509SerialNumber());
+        AssertJUnit.assertNotNull("X509IssuerSerial", x509Element);
+        AssertJUnit.assertNotNull("X509IssuerName child element", x509Element.getX509IssuerName());
+        AssertJUnit.assertNotNull("X509SerialNumber child element", x509Element.getX509SerialNumber());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         
@@ -68,6 +69,7 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         

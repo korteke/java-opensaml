@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.common.binding.artifact;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.HashMap;
 
 import org.custommonkey.xmlunit.Diff;
@@ -50,9 +53,8 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     private Document origDocument;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
         origDocument = samlObject.getDOM().getOwnerDocument();
         // Drop the DOM for a more realistic test, usuallly the artifact SAMLObject will be built, not unmarshalled
@@ -64,19 +66,20 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         artifactMap = new BasicSAMLArtifactMap(storageService, lifetime);
     }
 
+    @Test
     public void testBasicPutGet() throws MarshallingException {
-        assertFalse(artifactMap.contains(artifact));
+        AssertJUnit.assertFalse(artifactMap.contains(artifact));
 
         artifactMap.put(artifact, rpId, issuerId, samlObject);
 
-        assertTrue(artifactMap.contains(artifact));
+        AssertJUnit.assertTrue(artifactMap.contains(artifact));
 
         SAMLArtifactMapEntry entry = artifactMap.get(artifact);
-        assertNotNull(entry);
+        AssertJUnit.assertNotNull(entry);
 
-        assertEquals("Invalid value for artifact", artifact, entry.getArtifact());
-        assertEquals("Invalid value for issuer ID", issuerId, entry.getIssuerId());
-        assertEquals("Invalid value for relying party ID", rpId, entry.getRelyingPartyId());
+        AssertJUnit.assertEquals("Invalid value for artifact", artifact, entry.getArtifact());
+        AssertJUnit.assertEquals("Invalid value for issuer ID", issuerId, entry.getIssuerId());
+        AssertJUnit.assertEquals("Invalid value for relying party ID", rpId, entry.getRelyingPartyId());
 
         // Test SAMLObject reconstitution
         SAMLObject retrievedObject = entry.getSamlMessage();
@@ -85,37 +88,39 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         XMLAssert.assertXMLIdentical(new Diff(origDocument, newDocument), true);
     }
 
+    @Test
     public void testRemove() throws MarshallingException {
-        assertFalse(artifactMap.contains(artifact));
+        AssertJUnit.assertFalse(artifactMap.contains(artifact));
 
         artifactMap.put(artifact, rpId, issuerId, samlObject);
 
-        assertTrue(artifactMap.contains(artifact));
+        AssertJUnit.assertTrue(artifactMap.contains(artifact));
 
         artifactMap.remove(artifact);
 
-        assertFalse(artifactMap.contains(artifact));
+        AssertJUnit.assertFalse(artifactMap.contains(artifact));
 
         SAMLArtifactMapEntry entry = artifactMap.get(artifact);
-        assertNull("Entry was removed", entry);
+        AssertJUnit.assertNull("Entry was removed", entry);
     }
 
+    @Test
     public void testEntryExpiration() throws MarshallingException, InterruptedException {
         // lifetime of 1 second should do it
         artifactMap = new BasicSAMLArtifactMap(storageService, 1000);
 
-        assertFalse(artifactMap.contains(artifact));
+        AssertJUnit.assertFalse(artifactMap.contains(artifact));
 
         artifactMap.put(artifact, rpId, issuerId, samlObject);
 
         // Hopefully this doesn't get deferred for more than 1000 milliseconds after the put()...
-        assertTrue(artifactMap.contains(artifact));
+        AssertJUnit.assertTrue(artifactMap.contains(artifact));
 
         // Sleep for 3 seconds, entry should expire
         Thread.sleep(3000);
 
         SAMLArtifactMapEntry entry = artifactMap.get(artifact);
-        assertNull("Entry should have expired", entry);
+        AssertJUnit.assertNull("Entry should have expired", entry);
     }
 
 }

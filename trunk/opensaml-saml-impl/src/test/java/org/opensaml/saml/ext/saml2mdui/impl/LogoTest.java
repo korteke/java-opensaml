@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -55,32 +58,30 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
         expectedWidth = new Integer(23);
         expectedLang = "logoLang";
     }
-    
-    /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();      
-    }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Logo logo = (Logo) unmarshallElement(singleElementFile);
         
-        assertEquals("URL was not expected value", expectedURL, logo.getURL());
-        assertEquals("height was not expected value", expectedHeight, logo.getHeight());
-        assertEquals("width was not expected value", expectedWidth, logo.getWidth());
+        AssertJUnit.assertEquals("URL was not expected value", expectedURL, logo.getURL());
+        AssertJUnit.assertEquals("height was not expected value", expectedHeight, logo.getHeight());
+        AssertJUnit.assertEquals("width was not expected value", expectedWidth, logo.getWidth());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Logo logo = (Logo) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("URL was not expected value", expectedURL, logo.getURL());
-        assertEquals("height was not expected value", expectedHeight, logo.getHeight());
-        assertEquals("width was not expected value", expectedWidth, logo.getWidth());
-        assertEquals("xml:lang was not the expected value", expectedLang, logo.getXMLLang());
+        AssertJUnit.assertEquals("URL was not expected value", expectedURL, logo.getURL());
+        AssertJUnit.assertEquals("height was not expected value", expectedHeight, logo.getHeight());
+        AssertJUnit.assertEquals("width was not expected value", expectedWidth, logo.getWidth());
+        AssertJUnit.assertEquals("xml:lang was not the expected value", expectedLang, logo.getXMLLang());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 Logo.DEFAULT_ELEMENT_LOCAL_NAME, 
@@ -96,6 +97,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 Logo.DEFAULT_ELEMENT_LOCAL_NAME, 

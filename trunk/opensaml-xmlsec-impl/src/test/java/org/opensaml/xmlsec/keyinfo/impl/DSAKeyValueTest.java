@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.keyinfo.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.interfaces.DSAPublicKey;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,9 +72,8 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
         "9sROg9YjyuhRV0b8xHo=";
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add(new DSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
@@ -84,24 +86,25 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
      * 
      * @throws ResolverException on error resolving credentials
      */
+    @Test
     public void testCredResolution() throws ResolverException {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(keyInfoFile);
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        assertTrue("No credentials were found", iter.hasNext());
+        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
         
         Credential credential = iter.next();
-        assertNotNull("Credential was null", credential);
-        assertFalse("Too many credentials returned", iter.hasNext());
-        assertTrue("Credential is not of the expected type", credential instanceof BasicCredential);
+        AssertJUnit.assertNotNull("Credential was null", credential);
+        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
+        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof BasicCredential);
         
-        assertNotNull("Public key was null", credential.getPublicKey());
-        assertEquals("Expected public key value not found", pubKey, credential.getPublicKey());
+        AssertJUnit.assertNotNull("Public key was null", credential.getPublicKey());
+        AssertJUnit.assertEquals("Expected public key value not found", pubKey, credential.getPublicKey());
         
-        assertEquals("Wrong number of key names", 2, credential.getKeyNames().size());
-        assertTrue("Expected key name value not found", credential.getKeyNames().contains("Foo"));
-        assertTrue("Expected key name value not found", credential.getKeyNames().contains("Bar"));
+        AssertJUnit.assertEquals("Wrong number of key names", 2, credential.getKeyNames().size());
+        AssertJUnit.assertTrue("Expected key name value not found", credential.getKeyNames().contains("Foo"));
+        AssertJUnit.assertTrue("Expected key name value not found", credential.getKeyNames().contains("Bar"));
     }
     
 

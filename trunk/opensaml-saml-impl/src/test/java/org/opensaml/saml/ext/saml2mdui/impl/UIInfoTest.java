@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -66,13 +69,9 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/UIInfo.xml";
         childElementsFile = "/data/org/opensaml/saml/ext/saml2mdui/UIInfoChildElements.xml";
     }
-    
-    /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();      
-    }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         UIInfo uiinfo = (UIInfo) unmarshallElement(singleElementFile);
         //
@@ -81,6 +80,7 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 UIInfo.DEFAULT_ELEMENT_LOCAL_NAME, 
@@ -92,22 +92,24 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall(){
         UIInfo uiinfo = (UIInfo) unmarshallElement(childElementsFile);
         
-        assertEquals("<DisplayName> count", expectedDisplayNamesCount, uiinfo.getDisplayNames().size());
-        assertEquals("<Descriptions> count", expectedDescriptionsCount, uiinfo.getDescriptions().size());
-        assertEquals("<Logos> count", expectedLogosCount, uiinfo.getLogos().size());
-        assertEquals("<Keywords> count", expectedKeywordsCount, uiinfo.getKeywords().size());
-        assertEquals("<InformationURLs> count", expectedInformationURLsCount, uiinfo.getInformationURLs().size());
-        assertEquals("<PrivacyStatementURLs> count", expectedPrivacyStatementURLsCount, 
+        AssertJUnit.assertEquals("<DisplayName> count", expectedDisplayNamesCount, uiinfo.getDisplayNames().size());
+        AssertJUnit.assertEquals("<Descriptions> count", expectedDescriptionsCount, uiinfo.getDescriptions().size());
+        AssertJUnit.assertEquals("<Logos> count", expectedLogosCount, uiinfo.getLogos().size());
+        AssertJUnit.assertEquals("<Keywords> count", expectedKeywordsCount, uiinfo.getKeywords().size());
+        AssertJUnit.assertEquals("<InformationURLs> count", expectedInformationURLsCount, uiinfo.getInformationURLs().size());
+        AssertJUnit.assertEquals("<PrivacyStatementURLs> count", expectedPrivacyStatementURLsCount, 
                                                      uiinfo.getPrivacyStatementURLs().size());
-        assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, uiinfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        AssertJUnit.assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, uiinfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
         
        
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall(){
         UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
         

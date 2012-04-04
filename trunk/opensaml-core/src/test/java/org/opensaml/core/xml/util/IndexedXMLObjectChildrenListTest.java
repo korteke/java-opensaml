@@ -17,11 +17,12 @@
 
 package org.opensaml.core.xml.util;
 
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -34,7 +35,7 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
  * {@link org.opensaml.core.xml.util.XMLObjectChildrenList} which has it's own test cases that works all the other methods.
  * 
  */
-public class IndexedXMLObjectChildrenListTest extends TestCase {
+public class IndexedXMLObjectChildrenListTest {
 
     private QName type1 = new QName("example.org/ns/type1", "Type1");
 
@@ -45,6 +46,7 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
     /**
      * Test the add method to make sure it creates the index correctly.
      */
+    @Test
     public void testAdd() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
         IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<SimpleXMLObject>(
@@ -52,22 +54,23 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
-        assertEquals("List gotten by element QName index should have had 1 element", 1, indexedList.get(
+        AssertJUnit.assertEquals("List gotten by element QName index should have had 1 element", 1, indexedList.get(
                 child1.getElementQName()).size());
-        assertEquals("List gotten by type QName index should have had 1 element", 1, indexedList.get(
+        AssertJUnit.assertEquals("List gotten by type QName index should have had 1 element", 1, indexedList.get(
                 child1.getSchemaType()).size());
 
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         indexedList.add(child2);
-        assertEquals("List gotten by element QName index should have had 1 element", 2, indexedList.get(
+        AssertJUnit.assertEquals("List gotten by element QName index should have had 1 element", 2, indexedList.get(
                 child1.getElementQName()).size());
-        assertEquals("List gotten by type QName index should have had 1 element", 1, indexedList.get(
+        AssertJUnit.assertEquals("List gotten by type QName index should have had 1 element", 1, indexedList.get(
                 child1.getSchemaType()).size());
     }
 
     /**
      * Test the set method to make sure it removes items that have been replaced from the index.
      */
+    @Test
     public void testSet() {
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
@@ -80,14 +83,15 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         indexedList.set(0, child2);
 
-        assertEquals("List gotten by element QName index should have had 1 element", 1, indexedList.get(
+        AssertJUnit.assertEquals("List gotten by element QName index should have had 1 element", 1, indexedList.get(
                 child1.getElementQName()).size());
-        assertNull("List gotten by type QName index should have been null", indexedList.get(child1.getSchemaType()));
+        AssertJUnit.assertNull("List gotten by type QName index should have been null", indexedList.get(child1.getSchemaType()));
     }
 
     /**
      * Test to ensure removed items are removed from the index.
      */
+    @Test
     public void testRemove() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
         IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<SimpleXMLObject>(
@@ -100,14 +104,15 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
         indexedList.add(child2);
 
         indexedList.remove(child1);
-        assertEquals("List gotten by element QName index should have had 1 element", 1, indexedList.get(
+        AssertJUnit.assertEquals("List gotten by element QName index should have had 1 element", 1, indexedList.get(
                 child1.getElementQName()).size());
-        assertNull("List gotten by type QName index should have been null", indexedList.get(child1.getSchemaType()));
+        AssertJUnit.assertNull("List gotten by type QName index should have been null", indexedList.get(child1.getSchemaType()));
     }
 
     /**
      * Tests the sublist functionality.
      */
+    @Test
     public void testSublist() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
         IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
@@ -135,32 +140,32 @@ public class IndexedXMLObjectChildrenListTest extends TestCase {
         List<SimpleXMLObject> type1SchemaSublist = (List<SimpleXMLObject>) indexedList.subList(type1);
         List<SimpleXMLObject> type2SchemaSublist = (List<SimpleXMLObject>) indexedList.subList(type2);
 
-        assertEquals("Element name index sublist did not have expected number of elements", 6, elementNameSublist
+        AssertJUnit.assertEquals("Element name index sublist did not have expected number of elements", 6, elementNameSublist
                 .size());
-        assertEquals("Schema Type1 index sublist did not have expected number of elements", 3, type1SchemaSublist
+        AssertJUnit.assertEquals("Schema Type1 index sublist did not have expected number of elements", 3, type1SchemaSublist
                 .size());
-        assertEquals("Schema Type2 index sublist did not have expected number of elements", 2, type2SchemaSublist
+        AssertJUnit.assertEquals("Schema Type2 index sublist did not have expected number of elements", 2, type2SchemaSublist
                 .size());
 
         SimpleXMLObject child7 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         type1SchemaSublist.add(child7);
-        assertTrue(type1SchemaSublist.contains(child7));
-        assertTrue(indexedList.contains(child7));
+        AssertJUnit.assertTrue(type1SchemaSublist.contains(child7));
+        AssertJUnit.assertTrue(indexedList.contains(child7));
 
         type1SchemaSublist.remove(child7);
-        assertFalse(type1SchemaSublist.contains(child7));
-        assertFalse(indexedList.contains(child7));
+        AssertJUnit.assertFalse(type1SchemaSublist.contains(child7));
+        AssertJUnit.assertFalse(indexedList.contains(child7));
 
         try {
             type1SchemaSublist.set(0, child7);
-            fail("Unsupported set operation did not throw proper exception");
+            Assert.fail("Unsupported set operation did not throw proper exception");
         } catch (UnsupportedOperationException e) {
 
         }
 
         try {
             type1SchemaSublist.remove(0);
-            fail("Unsupported remove operation did not throw proper exception");
+            Assert.fail("Unsupported remove operation did not throw proper exception");
         } catch (UnsupportedOperationException e) {
 
         }

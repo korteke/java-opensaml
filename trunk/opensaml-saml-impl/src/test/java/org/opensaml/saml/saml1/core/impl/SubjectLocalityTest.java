@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -54,30 +56,34 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
         
-        assertNull("IPAddress present", subjectLocality.getIPAddress());
-        assertNull("DNSAddress present", subjectLocality.getDNSAddress());
+        AssertJUnit.assertNull("IPAddress present", subjectLocality.getIPAddress());
+        AssertJUnit.assertNull("DNSAddress present", subjectLocality.getDNSAddress());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("IPAddress", expectedIPAddress, subjectLocality.getIPAddress());
-        assertEquals("DNSAddress", expectedDNSAddress, subjectLocality.getDNSAddress());
+        AssertJUnit.assertEquals("IPAddress", expectedIPAddress, subjectLocality.getIPAddress());
+        AssertJUnit.assertEquals("DNSAddress", expectedDNSAddress, subjectLocality.getDNSAddress());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) buildXMLObject(qname);
         

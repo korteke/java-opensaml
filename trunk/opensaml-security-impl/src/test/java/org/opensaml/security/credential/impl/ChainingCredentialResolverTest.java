@@ -17,6 +17,10 @@
 
 package org.opensaml.security.credential.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,14 +31,13 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.ChainingCredentialResolver;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 
-import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Testing the chaining credential resolver.
  */
-public class ChainingCredentialResolverTest extends TestCase {
+public class ChainingCredentialResolverTest {
     
     private ChainingCredentialResolver chainingResolver;
     private CriteriaSet criteriaSet;
@@ -48,9 +51,8 @@ public class ChainingCredentialResolverTest extends TestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         cred1 = new BasicCredential();
         cred2 = new BasicCredential();
         cred3 = new BasicCredential();
@@ -85,6 +87,7 @@ public class ChainingCredentialResolverTest extends TestCase {
      * Test a single chain member, which returns no credentials.
      * @throws ResolverException 
      */
+    @Test
     public void testOneEmptyMember() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         
@@ -96,6 +99,7 @@ public class ChainingCredentialResolverTest extends TestCase {
      * Test multiple chain members, all of which return no credentials.
      * @throws ResolverException 
      */
+    @Test
     public void testMultipleEmptyMember() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         chainingResolver.getResolverChain().add(staticResolverEmpty);
@@ -109,6 +113,7 @@ public class ChainingCredentialResolverTest extends TestCase {
      * Test one chain member, returning credentials.
      * @throws ResolverException 
      */
+    @Test
     public void testOneMember() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         
@@ -120,6 +125,7 @@ public class ChainingCredentialResolverTest extends TestCase {
      * Test multiple chain members, returning credentials.
      * @throws ResolverException 
      */
+    @Test
     public void testMultipleMembers() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         chainingResolver.getResolverChain().add(staticResolver3);
@@ -135,6 +141,7 @@ public class ChainingCredentialResolverTest extends TestCase {
      * based on the ordering in the resolver chain.
      * @throws ResolverException 
      */
+    @Test
     public void testOrderingMultipleMembers() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolverEmpty);
         chainingResolver.getResolverChain().add(staticResolver45);
@@ -145,21 +152,22 @@ public class ChainingCredentialResolverTest extends TestCase {
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 5, cred1, cred2, cred3, cred4, cred5);
         
-        assertEquals("Credential found out-of-order", cred4, resolved.get(0));
-        assertEquals("Credential found out-of-order", cred5, resolved.get(1));
-        assertEquals("Credential found out-of-order", cred3, resolved.get(2));
-        assertEquals("Credential found out-of-order", cred1, resolved.get(3));
-        assertEquals("Credential found out-of-order", cred2, resolved.get(4));
+        AssertJUnit.assertEquals("Credential found out-of-order", cred4, resolved.get(0));
+        AssertJUnit.assertEquals("Credential found out-of-order", cred5, resolved.get(1));
+        AssertJUnit.assertEquals("Credential found out-of-order", cred3, resolved.get(2));
+        AssertJUnit.assertEquals("Credential found out-of-order", cred1, resolved.get(3));
+        AssertJUnit.assertEquals("Credential found out-of-order", cred2, resolved.get(4));
     }
     
     /**
      * Test empty resolver chain, i.e. no underlying resolver members.
      * @throws ResolverException 
      */
+    @Test
     public void testEmptyResolverChain() throws ResolverException {
         try {
             chainingResolver.resolve(criteriaSet);
-            fail("Should have thrown an illegal state exception due to no chain members");
+            Assert.fail("Should have thrown an illegal state exception due to no chain members");
         } catch (IllegalStateException e) {
             // do nothing, expected to fail
         }
@@ -169,15 +177,16 @@ public class ChainingCredentialResolverTest extends TestCase {
      * Test exception on attempt to call remove() on iterator.
      * @throws ResolverException 
      */
+    @Test
     public void testRemove() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
-        assertTrue("Iterator was empty", iter.hasNext());
+        AssertJUnit.assertTrue("Iterator was empty", iter.hasNext());
         iter.next();
         try {
             iter.remove();
-            fail("Remove from iterator is unsupported, should have thrown exception");
+            Assert.fail("Remove from iterator is unsupported, should have thrown exception");
         } catch (UnsupportedOperationException e) {
             // do nothing, expected to fail
         }
@@ -188,22 +197,23 @@ public class ChainingCredentialResolverTest extends TestCase {
      * Test exception on attempt to call next() on iterator when no more members.
      * @throws ResolverException 
      */
+    @Test
     public void testNoMoreMembers() throws ResolverException {
         chainingResolver.getResolverChain().add(staticResolver12);
         chainingResolver.getResolverChain().add(staticResolver3);
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
-        assertTrue("Should have next member", iter.hasNext());
+        AssertJUnit.assertTrue("Should have next member", iter.hasNext());
         iter.next();
-        assertTrue("Should have next member", iter.hasNext());
+        AssertJUnit.assertTrue("Should have next member", iter.hasNext());
         iter.next();
-        assertTrue("Should have next member", iter.hasNext());
+        AssertJUnit.assertTrue("Should have next member", iter.hasNext());
         iter.next();
         
-        assertFalse("Should NOT have next member", iter.hasNext());
+        AssertJUnit.assertFalse("Should NOT have next member", iter.hasNext());
         try {
             iter.next();
-            fail("Should have thrown exception due to next() call with no more members");
+            Assert.fail("Should have thrown exception due to next() call with no more members");
         } catch (NoSuchElementException e) {
             // do nothing, expected to fail
         }
@@ -232,9 +242,9 @@ public class ChainingCredentialResolverTest extends TestCase {
      * @param expectedCreds the vararg list of the credentials expected
      */
     private void checkResolved(List<Credential> resolved, int expectedNum, Credential... expectedCreds) {
-        assertEquals("Unexpected number of matches", expectedNum, resolved.size());
+        AssertJUnit.assertEquals("Unexpected number of matches", expectedNum, resolved.size());
         for (Credential expectedCred : expectedCreds) {
-            assertTrue("Expected member not found: " + expectedCred, resolved.contains(expectedCred));
+            AssertJUnit.assertTrue("Expected member not found: " + expectedCred, resolved.contains(expectedCred));
         }
     }
     

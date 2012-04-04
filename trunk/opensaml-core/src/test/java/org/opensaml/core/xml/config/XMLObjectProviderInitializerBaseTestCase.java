@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.config;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.ConfigurationService;
@@ -37,22 +39,23 @@ public abstract class XMLObjectProviderInitializerBaseTestCase extends Initializ
      * 
      * @throws InitializationException if there is an error during provider init
      */
+    @Test
     public void testProviderInit() throws InitializationException {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        assertNull("Registry was non-null", registry);
+        AssertJUnit.assertNull("Registry was non-null", registry);
         
         Initializer initializer = getTestedInitializer();
         initializer.init();
         
         registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        assertNotNull("Registry was null", registry);
+        AssertJUnit.assertNotNull("Registry was null", registry);
         
         for (QName providerName : getTestedProviders()) {
-            assertNotNull("Builder  for provider '" + providerName + "'was null",
+            AssertJUnit.assertNotNull("Builder  for provider '" + providerName + "'was null",
                     registry.getBuilderFactory().getBuilder(providerName));
-            assertNotNull("Unmarshaller  for provider '" + providerName + "'was null",
+            AssertJUnit.assertNotNull("Unmarshaller  for provider '" + providerName + "'was null",
                     registry.getUnmarshallerFactory().getUnmarshaller(providerName));
-            assertNotNull("Marshaller  for provider '" + providerName + "'was null",
+            AssertJUnit.assertNotNull("Marshaller  for provider '" + providerName + "'was null",
                     registry.getMarshallerFactory().getMarshaller(providerName));
         }
     }

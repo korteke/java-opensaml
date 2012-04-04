@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -60,8 +63,8 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedID = "abc123";
         expectedSAMLVersion = SAMLVersion.VERSION_20;
         expectedIssueInstant = new DateTime(2006, 2, 21, 16, 40, 0, 0, ISOChronology.getInstanceUTC());
@@ -74,9 +77,11 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public abstract void testSingleElementUnmarshall();
 
     /** {@inheritDoc} */
+    @Test
     public abstract void testSingleElementMarshall();
 
     /**
@@ -122,28 +127,28 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     protected void helperTestSingleElementUnmarshall(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
 
-        assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, req.getID());
-        assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), req
+        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, req.getID());
+        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), req
                 .getVersion().toString());
-        assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant
+        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant
                 .compareTo(req.getIssueInstant()));
 
-        assertNull("Consent was not null", req.getConsent());
-        assertNull("Destination was not null", req.getDestination());
+        AssertJUnit.assertNull("Consent was not null", req.getConsent());
+        AssertJUnit.assertNull("Destination was not null", req.getDestination());
 
     }
 
     protected void helperTestSingleElementOptionalAttributesUnmarshall(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
 
-        assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, req.getID());
-        assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), req
+        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, req.getID());
+        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), req
                 .getVersion().toString());
-        assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant
+        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant
                 .compareTo(req.getIssueInstant()));
 
-        assertEquals("Unmarshalled Consent attribute was not the expected value", expectedConsent, req.getConsent());
-        assertEquals("Unmarshalled Destination attribute was not the expected value", expectedDestination, req
+        AssertJUnit.assertEquals("Unmarshalled Consent attribute was not the expected value", expectedConsent, req.getConsent());
+        AssertJUnit.assertEquals("Unmarshalled Destination attribute was not the expected value", expectedDestination, req
                 .getDestination());
 
     }
@@ -151,7 +156,7 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
 
-        assertNotNull("Issuer was null", req.getIssuer());
+        AssertJUnit.assertNotNull("Issuer was null", req.getIssuer());
 
     }
 }

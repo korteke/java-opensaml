@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.decoder;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.Collections;
 import java.util.Set;
 
@@ -49,9 +52,8 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
     private HandlerChain handlerChain;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         messageContext = new TestContext();
         decoder = new SOAP11Decoder();
         
@@ -65,6 +67,7 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
      * @throws MessageDecodingException
      * @throws SecurityException
      */
+    @Test
     public void testBasicNoHeaders() throws MessageDecodingException, SecurityException {
         String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
@@ -73,9 +76,9 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
         decoder.decode(messageContext);
         
         XMLObject msg = messageContext.getInboundMessage();
-        assertNotNull(msg);
+        AssertJUnit.assertNotNull(msg);
         
-        assertTrue(msg instanceof Envelope);
+        AssertJUnit.assertTrue(msg instanceof Envelope);
     }
     
     /**
@@ -140,6 +143,7 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
      * @throws SecurityException
      * @throws MessageDecodingException 
      */
+    @Test
     public void testHandlerChainInvocation() throws SecurityException, MessageDecodingException {
         String soapMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderNotMustUnderstand.xml";
         InputStreamInTransportAdapter inTransport = getInTransportResource(soapMessage);
@@ -150,8 +154,8 @@ public class SOAP11DecoderTest extends XMLObjectBaseTestCase {
         messageContext.setInboundMessageTransport(inTransport);
         decoder.decode(messageContext);
         
-        assertEquals("Invalid test header value", "5", messageContext.transaction);
-        assertNotNull("Context body message was null", messageContext.bodyMessage);
+        AssertJUnit.assertEquals("Invalid test header value", "5", messageContext.transaction);
+        AssertJUnit.assertNotNull("Context body message was null", messageContext.bodyMessage);
         
     }
     

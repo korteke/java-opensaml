@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
@@ -45,9 +48,8 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBinding = "urn:binding:foo";
         expectedLocation = "example.org";
         expectedResponseLocation = "example.org/response";
@@ -56,26 +58,29 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ArtifactResolutionService service = (ArtifactResolutionService) unmarshallElement(singleElementFile);
         
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        assertEquals("Index was not expected value", expectedIndex, service.getIndex());
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("Index was not expected value", expectedIndex, service.getIndex());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         ArtifactResolutionService service = (ArtifactResolutionService) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        assertEquals("Index was not expected value", expectedIndex, service.getIndex());
-        assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());
-        assertEquals("isDefault was not expected value", expectedIsDefault, service.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("Index was not expected value", expectedIndex, service.getIndex());
+        AssertJUnit.assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());
+        AssertJUnit.assertEquals("isDefault was not expected value", expectedIsDefault, service.isDefaultXSBoolean());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         
@@ -87,6 +92,7 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         
@@ -102,27 +108,28 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     /**
      * Test the proper behavior of the XSBooleanValue attributes.
      */
+    @Test
     public void testXSBooleanAttributes() {
         ArtifactResolutionService ars = 
             (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         
         // isDefault attribute
         ars.setIsDefault(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, ars.isDefault());
-        assertNotNull("XSBooleanValue was null", ars.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, ars.isDefault());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", ars.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
                 ars.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true", ars.isDefaultXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", ars.isDefaultXSBoolean().toString());
         
         ars.setIsDefault(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, ars.isDefault());
-        assertNotNull("XSBooleanValue was null", ars.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, ars.isDefault());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", ars.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
                 ars.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false", ars.isDefaultXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", ars.isDefaultXSBoolean().toString());
         
         ars.setIsDefault((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, ars.isDefault());
-        assertNull("XSBooleanValue was not null", ars.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, ars.isDefault());
+        AssertJUnit.assertNull("XSBooleanValue was not null", ars.isDefaultXSBoolean());
     }
 }

@@ -17,10 +17,12 @@
 
 package org.opensaml.core.config.provider;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 
@@ -29,7 +31,7 @@ import com.google.common.io.Files;
 /**
  * Test {@link AbstractFilesystemConfigurationPropertiesSource}.
  */
-public class FilesystemConfigurationPropertiesSourceTest extends TestCase {
+public class FilesystemConfigurationPropertiesSourceTest {
     
     /** The source test to test. */
     private ConfigurationPropertiesSource source;
@@ -49,14 +51,14 @@ public class FilesystemConfigurationPropertiesSourceTest extends TestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         Files.copy(masterFile, targetFile);
     }
 
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
         if (targetFile.exists()) {
             targetFile.delete();
         }
@@ -65,13 +67,14 @@ public class FilesystemConfigurationPropertiesSourceTest extends TestCase {
     /**
      *  Test basic retrieval of properties from properties source.
      */
+    @Test
     public void testSource() {
         source = new TestFilesystemConfigurationPropertiesSource();
         Properties props = source.getProperties();
-        assertNotNull("Properties was null", props);
+        AssertJUnit.assertNotNull("Properties was null", props);
         
-        assertEquals("Incorrect property value", "myapp", props.getProperty("opensaml.config.partitionName"));
-        assertEquals("Incorrect property value", "true", props.getProperty("opensaml.initializer.foo.flag"));
+        AssertJUnit.assertEquals("Incorrect property value", "myapp", props.getProperty("opensaml.config.partitionName"));
+        AssertJUnit.assertEquals("Incorrect property value", "true", props.getProperty("opensaml.initializer.foo.flag"));
     }
     
     /**

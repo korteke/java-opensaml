@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,9 +54,8 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedTarget = "urn:string:foo";
         expectedID = "someID";
         expectedNumUnknownChildren = 2;
@@ -66,42 +68,46 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EncryptionProperty ep = (EncryptionProperty) unmarshallElement(singleElementFile);
         
-        assertNotNull("EncryptionProperty", ep);
-        assertNull("Target attribute", ep.getTarget());
-        assertNull("Id attribute", ep.getID());
-        assertEquals("Unknown children", 0, ep.getUnknownXMLObjects().size());
-        assertNull("Unknown attribute 1", ep.getUnknownAttributes().get(expectedAttribName1));
-        assertNull("Unknown attribute 2", ep.getUnknownAttributes().get(expectedAttribName2));
+        AssertJUnit.assertNotNull("EncryptionProperty", ep);
+        AssertJUnit.assertNull("Target attribute", ep.getTarget());
+        AssertJUnit.assertNull("Id attribute", ep.getID());
+        AssertJUnit.assertEquals("Unknown children", 0, ep.getUnknownXMLObjects().size());
+        AssertJUnit.assertNull("Unknown attribute 1", ep.getUnknownAttributes().get(expectedAttribName1));
+        AssertJUnit.assertNull("Unknown attribute 2", ep.getUnknownAttributes().get(expectedAttribName2));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         EncryptionProperty ep = (EncryptionProperty) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("EncryptionProperty", ep);
-        assertEquals("Target attribute", expectedTarget, ep.getTarget());
-        assertEquals("Id attribute", expectedID, ep.getID());
-        assertEquals("Unknown children", 0, ep.getUnknownXMLObjects().size());
-        assertEquals("Unknown attribute 1", expectedAttribValue1, ep.getUnknownAttributes().get(expectedAttribName1));
-        assertEquals("Unknown attribute 2", expectedAttribValue2, ep.getUnknownAttributes().get(expectedAttribName2));
+        AssertJUnit.assertNotNull("EncryptionProperty", ep);
+        AssertJUnit.assertEquals("Target attribute", expectedTarget, ep.getTarget());
+        AssertJUnit.assertEquals("Id attribute", expectedID, ep.getID());
+        AssertJUnit.assertEquals("Unknown children", 0, ep.getUnknownXMLObjects().size());
+        AssertJUnit.assertEquals("Unknown attribute 1", expectedAttribValue1, ep.getUnknownAttributes().get(expectedAttribName1));
+        AssertJUnit.assertEquals("Unknown attribute 2", expectedAttribValue2, ep.getUnknownAttributes().get(expectedAttribName2));
         
-        assertEquals("ID lookup failed", ep, ep.resolveID(expectedID));
+        AssertJUnit.assertEquals("ID lookup failed", ep, ep.resolveID(expectedID));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EncryptionProperty ep = (EncryptionProperty) unmarshallElement(childElementsFile);
         
-        assertNotNull("EncryptionProperty", ep);
-        assertNull("Target attribute", ep.getTarget());
-        assertNull("Id attribute", ep.getID());
-        assertEquals("Unknown children", expectedNumUnknownChildren, ep.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("EncryptionProperty", ep);
+        AssertJUnit.assertNull("Target attribute", ep.getTarget());
+        AssertJUnit.assertNull("Id attribute", ep.getID());
+        AssertJUnit.assertEquals("Unknown children", expectedNumUnknownChildren, ep.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
         
@@ -109,6 +115,7 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
         
@@ -121,6 +128,7 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
         

@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.keyinfo.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.KeyException;
 import java.security.PublicKey;
 
@@ -57,9 +60,8 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         origKeyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         
         KeyName keyname1 = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
@@ -82,20 +84,21 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * @throws SecurityException
      * @throws KeyException
      */
+    @Test
     public void testSimple() throws SecurityException, KeyException {
-        assertNull("Original KeyInfo should NOT have parent", origKeyInfo.getParent());
+        AssertJUnit.assertNull("Original KeyInfo should NOT have parent", origKeyInfo.getParent());
         
         KeyInfo keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
+        AssertJUnit.assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
         
         keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
+        AssertJUnit.assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
         
         keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
+        AssertJUnit.assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
     }
     
     /**
@@ -104,24 +107,25 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * @throws SecurityException
      * @throws KeyException
      */
+    @Test
     public void testWithCloningNoDOMCache() throws SecurityException, KeyException {
         EncryptedData encData = (EncryptedData) buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         
-        assertNull("Original KeyInfo should not have a cached DOM", origKeyInfo.getDOM());
+        AssertJUnit.assertNull("Original KeyInfo should not have a cached DOM", origKeyInfo.getDOM());
         
         KeyInfo keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
+        AssertJUnit.assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
         
         encData.setKeyInfo(origKeyInfo);
-        assertNotNull("Original KeyInfo should have parent", origKeyInfo.getParent());
+        AssertJUnit.assertNotNull("Original KeyInfo should have parent", origKeyInfo.getParent());
         
         keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertFalse("KeyInfo instances should have differed due to cloning", origKeyInfo == keyInfo);
-        assertNotNull("Generated KeyInfo should have a cached DOM", keyInfo.getDOM());
+        AssertJUnit.assertFalse("KeyInfo instances should have differed due to cloning", origKeyInfo == keyInfo);
+        AssertJUnit.assertNotNull("Generated KeyInfo should have a cached DOM", keyInfo.getDOM());
         
-        assertNull("Original KeyInfo marshalled DOM should have been cleared after cloning", origKeyInfo.getDOM());
+        AssertJUnit.assertNull("Original KeyInfo marshalled DOM should have been cleared after cloning", origKeyInfo.getDOM());
     }
     
     /**
@@ -131,27 +135,28 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * @throws KeyException
      * @throws MarshallingException 
      */
+    @Test
     public void testWithCloningWithDOMCache() throws SecurityException, KeyException, MarshallingException {
         EncryptedData encData = (EncryptedData) buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         
         XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(origKeyInfo).marshall(origKeyInfo);
-        assertNotNull("Original KeyInfo should have a cached DOM", origKeyInfo.getDOM());
+        AssertJUnit.assertNotNull("Original KeyInfo should have a cached DOM", origKeyInfo.getDOM());
         Element origDOM = origKeyInfo.getDOM();
         
         KeyInfo keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
+        AssertJUnit.assertTrue("KeyInfo instances were not the same", origKeyInfo == keyInfo);
         
         encData.setKeyInfo(origKeyInfo);
-        assertNotNull("Original KeyInfo should have parent", origKeyInfo.getParent());
+        AssertJUnit.assertNotNull("Original KeyInfo should have parent", origKeyInfo.getParent());
         
         keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
-        assertFalse("KeyInfo instances should have differed due to cloning", origKeyInfo == keyInfo);
-        assertNull("Generated KeyInfo should NOT have a cached DOM", keyInfo.getDOM());
+        AssertJUnit.assertFalse("KeyInfo instances should have differed due to cloning", origKeyInfo == keyInfo);
+        AssertJUnit.assertNull("Generated KeyInfo should NOT have a cached DOM", keyInfo.getDOM());
         
-        assertNotNull("KeyInfo cached DOM should NOT have been cleared after cloning", origKeyInfo.getDOM());
-        assertTrue("DOM Elements were not the same", origDOM.isSameNode(origKeyInfo.getDOM()));
+        AssertJUnit.assertNotNull("KeyInfo cached DOM should NOT have been cleared after cloning", origKeyInfo.getDOM());
+        AssertJUnit.assertTrue("DOM Elements were not the same", origDOM.isSameNode(origKeyInfo.getDOM()));
     }
     
     /**
@@ -161,15 +166,15 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * @throws KeyException if there is an error extracting the Java key from the KeyInfo
      */
     private void checkKeyInfo(KeyInfo keyInfo) throws KeyException {
-        assertNotNull("KeyInfo was null", keyInfo);
+        AssertJUnit.assertNotNull("KeyInfo was null", keyInfo);
         
-        assertEquals("Number of KeyNames", 2, keyInfo.getKeyNames().size());
-        assertEquals("Unexpected value for KeyName", expectedKeyName1, keyInfo.getKeyNames().get(0).getValue());
-        assertEquals("Unexpected value for KeyName", expectedKeyName2, keyInfo.getKeyNames().get(1).getValue());
+        AssertJUnit.assertEquals("Number of KeyNames", 2, keyInfo.getKeyNames().size());
+        AssertJUnit.assertEquals("Unexpected value for KeyName", expectedKeyName1, keyInfo.getKeyNames().get(0).getValue());
+        AssertJUnit.assertEquals("Unexpected value for KeyName", expectedKeyName2, keyInfo.getKeyNames().get(1).getValue());
         
-        assertEquals("Number of KeyValues", 1, keyInfo.getKeyValues().size());
+        AssertJUnit.assertEquals("Number of KeyValues", 1, keyInfo.getKeyValues().size());
         PublicKey pubKey = KeyInfoHelper.getKey(keyInfo.getKeyValues().get(0));
-        assertEquals("Unexpected public key value", expectedKeyValue, pubKey);
+        AssertJUnit.assertEquals("Unexpected public key value", expectedKeyValue, pubKey);
     }
 
 }

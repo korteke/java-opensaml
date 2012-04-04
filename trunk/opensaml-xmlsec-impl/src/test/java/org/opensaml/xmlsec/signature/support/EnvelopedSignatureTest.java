@@ -17,6 +17,10 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -70,9 +74,8 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
@@ -90,6 +93,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * @throws ValidationException 
      * @throws SignatureException 
      */
+    @Test
     public void testSigningAndVerification() throws MarshallingException, ValidationException, SignatureException{
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
@@ -109,7 +113,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         try {
             sigValidator = new SignatureValidator(badCredential);
             sigValidator.validate(signature);
-            fail("Validated signature with improper public key");
+            Assert.fail("Validated signature with improper public key");
         } catch (SignatureException e) {
             // expected
         }
@@ -122,6 +126,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
      * @throws GeneralSecurityException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException, GeneralSecurityException {
         String envelopedSignatureFile = "/data/org/opensaml/xmlsec/signature/support/envelopedSignature.xml";
         InputStream ins = EnvelopedSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
@@ -131,16 +136,16 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
-        assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
+        AssertJUnit.assertEquals("Id attribute was not expected value", "FOO", sxo.getId());
 
         Signature signature = sxo.getSignature();
-        assertNotNull("Signature was null", signature);
+        AssertJUnit.assertNotNull("Signature was null", signature);
 
         KeyInfo keyInfo = signature.getKeyInfo();
-        assertNotNull("Signature's KeyInfo was null", keyInfo);
+        AssertJUnit.assertNotNull("Signature's KeyInfo was null", keyInfo);
         
         PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
-        assertNotNull("KeyInfo did not contain the verification key", pubKey);
+        AssertJUnit.assertNotNull("KeyInfo did not contain the verification key", pubKey);
     }
 
     /**

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -54,33 +57,36 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedNotBefore = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
         expectedNotOnOrAfter = new DateTime(1984, 8, 26, 10, 11, 30, 43, ISOChronology.getInstanceUTC());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Conditions conditions = (Conditions) unmarshallElement(singleElementFile);
 
         DateTime notBefore = conditions.getNotBefore();
-        assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Conditions conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime notBefore = conditions.getNotBefore();
-        assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
 
         DateTime notOnOrAfter = conditions.getNotOnOrAfter();
-        assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
+        AssertJUnit.assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
                 notOnOrAfter);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Conditions conditions = (Conditions) buildXMLObject(qname);
@@ -90,6 +96,7 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Conditions conditions = (Conditions) buildXMLObject(qname);
@@ -101,14 +108,16 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Conditions conditions = (Conditions) unmarshallElement(childElementsFile);
-        assertEquals("Condition count not as expected", conditionCount, conditions.getConditions().size());
-        assertNotNull("OneTimeUse absent", conditions.getOneTimeUse());
-        assertNotNull("ProxyRestriction absent", conditions.getProxyRestriction());
+        AssertJUnit.assertEquals("Condition count not as expected", conditionCount, conditions.getConditions().size());
+        AssertJUnit.assertNotNull("OneTimeUse absent", conditions.getOneTimeUse());
+        AssertJUnit.assertNotNull("ProxyRestriction absent", conditions.getProxyRestriction());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Conditions conditions = (Conditions) buildXMLObject(qname);

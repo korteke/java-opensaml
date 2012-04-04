@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
@@ -68,9 +71,8 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorChildElements.xml";
     }
 
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedSupportedProtocol = new ArrayList<String>();
         expectedSupportedProtocol.add("urn:foo:bar");
         expectedSupportedProtocol.add("urn:fooz:baz");
@@ -83,42 +85,46 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         expectedWantAuthnReqSigned = new XSBooleanValue(Boolean.TRUE, false);
     }
 
+    @Test
     public void testSingleElementUnmarshall() {
         IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementFile);
 
-        assertEquals("Supported protocols not equal to expected value", expectedSupportedProtocol, descriptor
+        AssertJUnit.assertEquals("Supported protocols not equal to expected value", expectedSupportedProtocol, descriptor
                 .getSupportedProtocols());
     }
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Cache duration was not expected value", expectedCacheDuration, descriptor.getCacheDuration()
+        AssertJUnit.assertEquals("Cache duration was not expected value", expectedCacheDuration, descriptor.getCacheDuration()
                 .longValue());
-        assertEquals("ValidUntil was not expected value", expectedValidUntil, descriptor.getValidUntil());
-        assertEquals("WantAuthnRequestsSigned attribute was not expected value", expectedWantAuthnReqSigned, descriptor
+        AssertJUnit.assertEquals("ValidUntil was not expected value", expectedValidUntil, descriptor.getValidUntil());
+        AssertJUnit.assertEquals("WantAuthnRequestsSigned attribute was not expected value", expectedWantAuthnReqSigned, descriptor
                 .getWantAuthnRequestsSignedXSBoolean());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(childElementsFile);
 
-        assertNotNull("Extensions", descriptor.getExtensions());
-        assertNotNull("Organization child", descriptor.getOrganization());
-        assertEquals("ContactPerson count", 2, descriptor.getContactPersons().size());
+        AssertJUnit.assertNotNull("Extensions", descriptor.getExtensions());
+        AssertJUnit.assertNotNull("Organization child", descriptor.getOrganization());
+        AssertJUnit.assertEquals("ContactPerson count", 2, descriptor.getContactPersons().size());
 
-        assertEquals("ArtifactResolutionService count", 1, descriptor.getArtifactResolutionServices().size());
-        assertEquals("SingleLogoutService count", 2, descriptor.getSingleLogoutServices().size());
-        assertEquals("ManageNameIDService count", 4, descriptor.getManageNameIDServices().size());
-        assertEquals("NameIDFormat count", 1, descriptor.getNameIDFormats().size());
+        AssertJUnit.assertEquals("ArtifactResolutionService count", 1, descriptor.getArtifactResolutionServices().size());
+        AssertJUnit.assertEquals("SingleLogoutService count", 2, descriptor.getSingleLogoutServices().size());
+        AssertJUnit.assertEquals("ManageNameIDService count", 4, descriptor.getManageNameIDServices().size());
+        AssertJUnit.assertEquals("NameIDFormat count", 1, descriptor.getNameIDFormats().size());
 
-        assertEquals("SingleSignOnService count", 3, descriptor.getSingleSignOnServices().size());
-        assertEquals("NameIDMappingService count", 2, descriptor.getNameIDMappingServices().size());
-        assertEquals("AssertionIDRequestService count", 3, descriptor.getAssertionIDRequestServices().size());
-        assertEquals("AttributeProfile count", 3, descriptor.getAttributeProfiles().size());
+        AssertJUnit.assertEquals("SingleSignOnService count", 3, descriptor.getSingleSignOnServices().size());
+        AssertJUnit.assertEquals("NameIDMappingService count", 2, descriptor.getNameIDMappingServices().size());
+        AssertJUnit.assertEquals("AssertionIDRequestService count", 3, descriptor.getAssertionIDRequestServices().size());
+        AssertJUnit.assertEquals("AttributeProfile count", 3, descriptor.getAttributeProfiles().size());
     }
 
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
@@ -131,6 +137,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         assertXMLEquals(expectedDOM, descriptor);
     }
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
@@ -148,6 +155,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
@@ -215,28 +223,29 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     /**
      * Test the proper behavior of the XSBooleanValue attributes.
      */
+    @Test
     public void testXSBooleanAttributes() {
         IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         
         descriptor.setWantAuthnRequestsSigned(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, descriptor.getWantAuthnRequestsSigned());
-        assertNotNull("XSBooleanValue was null", descriptor.getWantAuthnRequestsSignedXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, descriptor.getWantAuthnRequestsSigned());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", descriptor.getWantAuthnRequestsSignedXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
                 descriptor.getWantAuthnRequestsSignedXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true",
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true",
                 descriptor.getWantAuthnRequestsSignedXSBoolean().toString());
         
         descriptor.setWantAuthnRequestsSigned(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, descriptor.getWantAuthnRequestsSigned());
-        assertNotNull("XSBooleanValue was null", descriptor.getWantAuthnRequestsSignedXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, descriptor.getWantAuthnRequestsSigned());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", descriptor.getWantAuthnRequestsSignedXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
                 descriptor.getWantAuthnRequestsSignedXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false",
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false",
                 descriptor.getWantAuthnRequestsSignedXSBoolean().toString());
         
         descriptor.setWantAuthnRequestsSigned((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, descriptor.getWantAuthnRequestsSigned());
-        assertNull("XSBooleanValue was not null", descriptor.getWantAuthnRequestsSignedXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, descriptor.getWantAuthnRequestsSigned());
+        AssertJUnit.assertNull("XSBooleanValue was not null", descriptor.getWantAuthnRequestsSignedXSBoolean());
     }
 
 }

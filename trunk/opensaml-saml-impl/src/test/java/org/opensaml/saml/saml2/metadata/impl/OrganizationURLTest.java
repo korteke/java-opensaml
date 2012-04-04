@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,14 +48,16 @@ public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         OrganizationURL url = (OrganizationURL) unmarshallElement(singleElementFile);
         
-        assertEquals("URL was not expected value", expectValue, url.getValue());
-        assertEquals("langg was not expected value", expectLang, url.getXMLLang());
+        AssertJUnit.assertEquals("URL was not expected value", expectValue, url.getValue());
+        AssertJUnit.assertEquals("langg was not expected value", expectLang, url.getXMLLang());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         OrganizationURL url = (OrganizationURL) buildXMLObject(qname);

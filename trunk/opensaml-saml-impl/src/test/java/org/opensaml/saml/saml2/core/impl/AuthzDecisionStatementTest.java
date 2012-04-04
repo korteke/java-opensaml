@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -49,32 +52,35 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedResource = "resource name";
         expectedDecision = DecisionTypeEnumeration.DENY;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementFile);
 
         String resource = authzDecisionStatement.getResource();
-        assertEquals("Resource not as expected", expectedResource, resource);
+        AssertJUnit.assertEquals("Resource not as expected", expectedResource, resource);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementOptionalAttributesFile);
 
         String resource = authzDecisionStatement.getResource();
-        assertEquals("Resource not as expected", expectedResource, resource);
+        AssertJUnit.assertEquals("Resource not as expected", expectedResource, resource);
 
         DecisionTypeEnumeration decision = authzDecisionStatement.getDecision();
-        assertEquals("Decision not as expected", expectedDecision.toString(), decision.toString());
+        AssertJUnit.assertEquals("Decision not as expected", expectedDecision.toString(), decision.toString());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
@@ -84,6 +90,7 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
@@ -95,13 +102,15 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(childElementsFile);
-        assertEquals("Action Count", expectedActionCount, authzDecisionStatement.getActions().size());
-        assertNotNull("Evidence element not present", authzDecisionStatement.getEvidence());
+        AssertJUnit.assertEquals("Action Count", expectedActionCount, authzDecisionStatement.getActions().size());
+        AssertJUnit.assertNotNull("Evidence element not present", authzDecisionStatement.getEvidence());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);

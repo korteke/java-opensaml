@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -45,12 +48,14 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ManageNameIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ManageNameIDRequest req = (ManageNameIDRequest) buildXMLObject(qname);
@@ -61,6 +66,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ManageNameIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ManageNameIDRequest req = (ManageNameIDRequest) buildXMLObject(qname);
@@ -72,6 +78,7 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ManageNameIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ManageNameIDRequest req = (ManageNameIDRequest) buildXMLObject(qname);
@@ -88,27 +95,30 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(singleElementFile);
         
-        assertNotNull("ManageNameIDRequest was null", req);
+        AssertJUnit.assertNotNull("ManageNameIDRequest was null", req);
         super.helperTestSingleElementUnmarshall(req);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("ManageNameIDRequest was null", req);
+        AssertJUnit.assertNotNull("ManageNameIDRequest was null", req);
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(childElementsFile);
         
-        assertNotNull("NameID was null", req.getNameID());
-        assertNotNull("NewID was null", req.getNewID());
+        AssertJUnit.assertNotNull("NameID was null", req.getNameID());
+        AssertJUnit.assertNotNull("NewID was null", req.getNewID());
         super.helperTestChildElementsUnmarshall(req);
     }
 

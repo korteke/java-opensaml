@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.SchemaValidationFilter;
@@ -30,12 +32,12 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     private String inCommonMDURL;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         inCommonMDURL = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
     }
 
+    @Test
     public void test() throws Exception {
         HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
         metadataProvider.setParserPool(parserPool);

@@ -17,6 +17,10 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -149,9 +153,8 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         signingEntityID = "signing-entity-ID";
         signingCert = SecurityHelper.buildJavaX509Cert(signingCertBase64);
         signingPrivateKey = SecurityHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
@@ -190,12 +193,13 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * 
      * @throws SecurityException 
      */
+    @Test
     public void testSuccess() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
         SignableXMLObject signableXO = getValidSignedObject();
         Signature signature = signableXO.getSignature();
-        assertTrue("Signature was valid and signing cred was trusted", engine.validate(signature, criteriaSet));
+        AssertJUnit.assertTrue("Signature was valid and signing cred was trusted", engine.validate(signature, criteriaSet));
     }
     
     /**
@@ -203,10 +207,11 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * 
      * @throws SecurityException 
      */
+    @Test
     public void testUntrustedCredential() throws SecurityException {
         SignableXMLObject signableXO = getValidSignedObject();
         Signature signature = signableXO.getSignature();
-        assertFalse("Signature was valid, but signing cred was untrusted", engine.validate(signature, criteriaSet));
+        AssertJUnit.assertFalse("Signature was valid, but signing cred was untrusted", engine.validate(signature, criteriaSet));
     }
     
     /**
@@ -214,12 +219,13 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * 
      * @throws SecurityException 
      */
+    @Test
     public void testInvalidSignature() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
         SignableXMLObject signableXO = getInvalidSignedObject();
         Signature signature = signableXO.getSignature();
-        assertFalse("Signature was invalid due to document modification", engine.validate(signature, criteriaSet));
+        AssertJUnit.assertFalse("Signature was invalid due to document modification", engine.validate(signature, criteriaSet));
         
     }
     
@@ -228,14 +234,15 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * 
      * @throws SecurityException
      */
+    @Test
     public void testRawSuccess() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        assertTrue("Raw Signature was valid and supplied candidate signing cred was trusted", 
+        AssertJUnit.assertTrue("Raw Signature was valid and supplied candidate signing cred was trusted", 
                 engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
                         criteriaSet, signingX509Cred));
         
-        assertTrue("Raw Signature was valid and non-supplied candidate signing cred was in trusted set", 
+        AssertJUnit.assertTrue("Raw Signature was valid and non-supplied candidate signing cred was in trusted set", 
                 engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
                         criteriaSet, null));
     }
@@ -245,13 +252,14 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * 
      * @throws SecurityException
      */
+    @Test
     public void testRawUntrustedCredential() throws SecurityException {
         
-        assertFalse("Raw Signature was valid, but supplied candidate signing cred was untrusted", 
+        AssertJUnit.assertFalse("Raw Signature was valid, but supplied candidate signing cred was untrusted", 
                 engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
                         criteriaSet, signingX509Cred));
         
-        assertFalse("Raw Signature was valid and the signing cred was not present in trusted set", 
+        AssertJUnit.assertFalse("Raw Signature was valid and the signing cred was not present in trusted set", 
                 engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
                         criteriaSet, null));
     }
@@ -261,12 +269,13 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * 
      * @throws SecurityException
      */
+    @Test
     public void testRawInvalidSignature() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
         String tamperedData = rawData + "HAHA All your base are belong to us";
         
-        assertFalse("Raw Signature was invalid due to data tampering, supplied candidate signing cred was trusted", 
+        AssertJUnit.assertFalse("Raw Signature was invalid due to data tampering, supplied candidate signing cred was trusted", 
                 engine.validate(rawControlSignature, tamperedData.getBytes(), rawAlgorithmURI, 
                         criteriaSet, signingX509Cred));
     }
@@ -323,7 +332,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         try {
             keyInfo = kiFactory.newInstance().generate(signingX509Cred);
         } catch (SecurityException e) {
-            fail("Error generating KeyInfo from signing credential: " + e);
+            Assert.fail("Error generating KeyInfo from signing credential: " + e);
         }
         
         signature.setKeyInfo(keyInfo);
@@ -333,7 +342,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         try {
             XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo).marshall(sxo);
         } catch (MarshallingException e) {
-            fail("Error marshalling object for signing: " + e);
+            Assert.fail("Error marshalling object for signing: " + e);
         }
         
         Signer.signObject(signature);

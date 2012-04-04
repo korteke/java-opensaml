@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -69,26 +72,28 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
 
         AuthorizationDecisionStatement authorizationDecisionStatement;
         authorizationDecisionStatement = (AuthorizationDecisionStatement) unmarshallElement(singleElementFile);
 
-        assertNull("Decision attribute null", authorizationDecisionStatement.getDecision());
-        assertNull("Resource attribute null", authorizationDecisionStatement.getResource());
-        assertEquals("<Actions> elements present", 0, authorizationDecisionStatement.getActions().size());
-        assertNull("<Evidence> element present", authorizationDecisionStatement.getEvidence());
+        AssertJUnit.assertNull("Decision attribute null", authorizationDecisionStatement.getDecision());
+        AssertJUnit.assertNull("Resource attribute null", authorizationDecisionStatement.getResource());
+        AssertJUnit.assertEquals("<Actions> elements present", 0, authorizationDecisionStatement.getActions().size());
+        AssertJUnit.assertNull("<Evidence> element present", authorizationDecisionStatement.getEvidence());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
 
         AuthorizationDecisionStatement authorizationDecisionStatement;
         authorizationDecisionStatement = (AuthorizationDecisionStatement) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Resource attribute ", expectedResource, authorizationDecisionStatement.getResource());
-        assertEquals("Decision attribute ", expectedDecision.toString(), authorizationDecisionStatement.getDecision().toString());
+        AssertJUnit.assertEquals("Resource attribute ", expectedResource, authorizationDecisionStatement.getResource());
+        AssertJUnit.assertEquals("Decision attribute ", expectedDecision.toString(), authorizationDecisionStatement.getDecision().toString());
 
         try {
             Document doc = parserPool.parse(this.getClass().getResourceAsStream(illegalAttributesFile));
@@ -97,36 +102,39 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
             authorizationDecisionStatement = (AuthorizationDecisionStatement) new AuthorizationDecisionStatementUnmarshaller()
                     .unmarshall(samlElement);
 
-            fail("illegal attribute successfully parsed");
+            Assert.fail("illegal attribute successfully parsed");
         } catch (UnmarshallingException e) {
             ;
         } catch (XMLParserException e) {
-            fail("couldn't parse file" + e);
+            Assert.fail("couldn't parse file" + e);
             e.printStackTrace();
         }
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsUnmarshall() {
         AuthorizationDecisionStatement authorizationDecisionStatement;
 
         authorizationDecisionStatement = (AuthorizationDecisionStatement) unmarshallElement(childElementsFile);
 
-        assertNotNull("<Subject> element not present", authorizationDecisionStatement.getSubject());
-        assertNotNull("<Evidence> element not present", authorizationDecisionStatement.getEvidence());
-        assertNotNull("<Action> elements not present", authorizationDecisionStatement.getActions());
-        assertEquals("Count of <Action> elements ", 3, authorizationDecisionStatement.getActions().size());
+        AssertJUnit.assertNotNull("<Subject> element not present", authorizationDecisionStatement.getSubject());
+        AssertJUnit.assertNotNull("<Evidence> element not present", authorizationDecisionStatement.getEvidence());
+        AssertJUnit.assertNotNull("<Action> elements not present", authorizationDecisionStatement.getActions());
+        AssertJUnit.assertEquals("Count of <Action> elements ", 3, authorizationDecisionStatement.getActions().size());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthorizationDecisionStatement authorizationDecisionStatement;
 
@@ -139,6 +147,7 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
         AuthorizationDecisionStatement authorizationDecisionStatement;
 

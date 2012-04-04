@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.Transforms;
 import org.opensaml.xmlsec.signature.Transform;
@@ -39,29 +42,31 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedNumTransforms = 2;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Transforms em = (Transforms) unmarshallElement(singleElementFile);
         
-        assertNotNull("Transforms", em);
-        assertEquals("Transform children", 0, em.getTransforms().size());
+        AssertJUnit.assertNotNull("Transforms", em);
+        AssertJUnit.assertEquals("Transform children", 0, em.getTransforms().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Transforms em = (Transforms) unmarshallElement(childElementsFile);
         
-        assertNotNull("Transforms", em);
-        assertEquals("Transform children", expectedNumTransforms, em.getTransforms().size());
+        AssertJUnit.assertNotNull("Transforms", em);
+        AssertJUnit.assertEquals("Transform children", expectedNumTransforms, em.getTransforms().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
         
@@ -69,6 +74,7 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
         

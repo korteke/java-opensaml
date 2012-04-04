@@ -17,6 +17,11 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.io.File;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -39,9 +44,8 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     private FileBackedHTTPMetadataProvider metadataProvider;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         //mdUrl = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
         mdUrl="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml";
         badMDURL = "http://www.google.com/";
@@ -52,6 +56,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() {
         File backupFile = new File(backupFilePath);
         backupFile.delete();
@@ -60,13 +65,14 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     /**
      * Tests the {@link HTTPMetadataProvider#getMetadata()} method.
      */
+    @Test
     public void testGetMetadata() throws MetadataProviderException {
         EntitiesDescriptor descriptor = (EntitiesDescriptor) metadataProvider.getMetadata();
-        assertNotNull("Retrieved metadata was null", descriptor);
+        AssertJUnit.assertNotNull("Retrieved metadata was null", descriptor);
 
         File backupFile = new File(backupFilePath);
-        assertTrue("Backup file was not created", backupFile.exists());
-        assertTrue("Backup file contains no data", backupFile.length() > 0);
+        AssertJUnit.assertTrue("Backup file was not created", backupFile.exists());
+        AssertJUnit.assertTrue("Backup file contains no data", backupFile.length() > 0);
 
         // Test pulling it from the backup file
         FileBackedHTTPMetadataProvider badProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5,
@@ -75,7 +81,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
         
         try{
             badProvider.initialize();
-            fail("metadata provider claims to have parsed known invalid data");
+            Assert.fail("metadata provider claims to have parsed known invalid data");
         }catch(MetadataProviderException e){
             //expected this
         }

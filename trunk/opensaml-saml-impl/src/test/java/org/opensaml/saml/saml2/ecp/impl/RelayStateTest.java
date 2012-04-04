@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.ecp.RelayState;
 
@@ -36,9 +39,8 @@ public class RelayStateTest extends XMLObjectProviderBaseTestCase {
     }
  
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedContent = "ThisIsSomeRelayState";
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
@@ -47,17 +49,19 @@ public class RelayStateTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         RelayState relayState = (RelayState) unmarshallElement(singleElementFile);
         
-        assertNotNull(relayState);
+        AssertJUnit.assertNotNull(relayState);
         
-        assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, relayState.isSOAP11MustUnderstand());
-        assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, relayState.getSOAP11Actor());
-        assertEquals("Element content had unexpected value", expectedContent, relayState.getValue());
+        AssertJUnit.assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, relayState.isSOAP11MustUnderstand());
+        AssertJUnit.assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, relayState.getSOAP11Actor());
+        AssertJUnit.assertEquals("Element content had unexpected value", expectedContent, relayState.getValue());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         RelayState relayState = (RelayState) buildXMLObject(RelayState.DEFAULT_ELEMENT_NAME);
         

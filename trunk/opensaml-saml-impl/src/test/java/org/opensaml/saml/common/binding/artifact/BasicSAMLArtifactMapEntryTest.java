@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.common.binding.artifact;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -48,9 +51,8 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
     private Document origDocument;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
         origDocument = samlObject.getDOM().getOwnerDocument();
         // Drop the DOM for a more realistic test, usuallly the artifact SAMLObject will be built, not unmarshalled
@@ -58,6 +60,7 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
         samlObject.releaseDOM();
     }
 
+    @Test
     public void testSerialization() throws IOException, ClassNotFoundException, MarshallingException {
         
         BasicSAMLArtifactMapEntry origEntry = 
@@ -65,16 +68,16 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
         DateTime expectedExpiration = origEntry.getExpirationTime();
         
         Object newObject = serializeAndDeserialize(origEntry);
-        assertNotNull("Deserialized object was null", newObject);
-        assertTrue("Object was not instance of expected class",
+        AssertJUnit.assertNotNull("Deserialized object was null", newObject);
+        AssertJUnit.assertTrue("Object was not instance of expected class",
                 newObject instanceof BasicSAMLArtifactMapEntry);
         
         BasicSAMLArtifactMapEntry newEntry = (BasicSAMLArtifactMapEntry) newObject;
         
-        assertEquals("Invalid value for artifact", artifact, newEntry.getArtifact());
-        assertEquals("Invalid value for issuer ID", issuerId, newEntry.getIssuerId());
-        assertEquals("Invalid value for relying party ID", rpId, newEntry.getRelyingPartyId());
-        assertEquals("Invalid value for expiration time", expectedExpiration, newEntry.getExpirationTime());
+        AssertJUnit.assertEquals("Invalid value for artifact", artifact, newEntry.getArtifact());
+        AssertJUnit.assertEquals("Invalid value for issuer ID", issuerId, newEntry.getIssuerId());
+        AssertJUnit.assertEquals("Invalid value for relying party ID", rpId, newEntry.getRelyingPartyId());
+        AssertJUnit.assertEquals("Invalid value for expiration time", expectedExpiration, newEntry.getExpirationTime());
         
         // Test SAMLObject reconstitution
         // It will be unmarshalled and so should already have a DOM
@@ -83,15 +86,16 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
 
     }
     
+    @Test
     public void testMessageSerialization() {
         BasicSAMLArtifactMapEntry entry = 
             new BasicSAMLArtifactMapEntry(artifact, issuerId, rpId, samlObject, lifetime);
         
-        assertNull(entry.getSerializedMessage());
+        AssertJUnit.assertNull(entry.getSerializedMessage());
         
         entry.serializeMessage();
         
-        assertNotNull(entry.getSerializedMessage());
+        AssertJUnit.assertNotNull(entry.getSerializedMessage());
     }
 
     protected Object serializeAndDeserialize(Object origObject) throws IOException, ClassNotFoundException {

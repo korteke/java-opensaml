@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,14 +48,16 @@ public class PrivacyStatementURLTest extends XMLObjectProviderBaseTestCase {
     
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         PrivacyStatementURL url = (PrivacyStatementURL) unmarshallElement(singleElementFile);
         
-        assertEquals("URI was not expected value", expectValue, url.getValue());
-        assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
+        AssertJUnit.assertEquals("URI was not expected value", expectValue, url.getValue());
+        AssertJUnit.assertEquals("xml:lang was not expected value", expectLang, url.getXMLLang());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 

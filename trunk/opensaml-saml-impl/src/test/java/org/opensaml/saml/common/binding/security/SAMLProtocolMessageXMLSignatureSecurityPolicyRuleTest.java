@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -108,9 +111,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         issuer = "SomeCoolIssuer";
         
         signingCert = SecurityHelper.buildJavaX509Cert(signingCertBase64);
@@ -147,19 +149,21 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
     /**
      * Test context issuer set, valid signature with trusted credential.
      */
+    @Test
     public void testSuccess() {
         trustedCredentials.add(signingX509Cred);
         
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver");
         SAMLMessageContext samlContext = messageContext;
-        assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        assertTrue("Unexpected value for context authentication state", 
+        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
+        AssertJUnit.assertTrue("Unexpected value for context authentication state", 
                 samlContext.isInboundSAMLMessageAuthenticated());
     }
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
      */
+    @Test
     public void testUntrustedCredential() {
         assertRuleFailure("Protocol message was signed with credential unknown to trust engine resolver");
     }
@@ -167,6 +171,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
     /**
      * Test context issuer set, invalid signature with trusted credential.
      */
+    @Test
     public void testInvalidSignature() {
         trustedCredentials.add(signingX509Cred);
         
@@ -180,6 +185,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
     /**
      * Test context issuer set, valid signature with untrusted credential.
      */
+    @Test
     public void testNoContextIssuer() {
         messageContext.setInboundMessageIssuer(null);
         assertRuleFailure("Protocol message signature should have been unevaluable due to absence of context issuer");

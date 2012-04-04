@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.security.SAMLSignatureProfileValidator;
@@ -32,54 +35,62 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
     private SAMLSignatureProfileValidator validator;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         validator = new SAMLSignatureProfileValidator();
     }
 
 
+    @Test
     public void testValid() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-Valid.xml");
         assertValidationPass("Valid signature", sig);
     }
     
+    @Test
     public void testInvalidNoXMLSignature() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-Valid.xml");
         ((SignatureImpl)sig).setXMLSignature(null);
         assertValidationFail("Invalid signature - no XMLSignature", sig);
     }
     
+    @Test
     public void testInvalidTooManyReferences() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-TooManyReferences.xml");
         assertValidationFail("Invalid signature - too many References", sig);
     }
     
+    @Test
     public void testInvalidNonLocalURI() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-NonLocalURI.xml");
         assertValidationFail("Invalid signature - non-local Reference URI", sig);
     }
     
+    @Test
     public void testInvalidMissingID() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-MissingID.xml");
         assertValidationFail("Invalid signature - missing ID on parent object", sig);
     }
     
+    @Test
     public void testInvalidBadURIValue() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-BadURIValue.xml");
         assertValidationFail("Invalid signature - bad URI value", sig);
     }
     
+    @Test
     public void testInvalidTooManyTransforms() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-TooManyTransforms.xml");
         assertValidationFail("Invalid signature - too many Transforms", sig);
     }
     
+    @Test
     public void testInvalidBadTransform() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-BadTransform.xml");
         assertValidationFail("Invalid signature - bad Transform", sig);
     }
     
+    @Test
     public void testInvalidMissingEnvelopedTransform() {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-MissingEnvelopedTransform.xml");
         assertValidationFail("Invalid signature - missing Enveloped Transform", sig);
@@ -108,7 +119,7 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
        try {
            validator.validate(validateTarget);
        } catch (SignatureException e) {
-           fail(message + " : Expected success, but validation failure raised ValidationException: " + e.getMessage());
+           Assert.fail(message + " : Expected success, but validation failure raised ValidationException: " + e.getMessage());
        }
     }
     
@@ -122,7 +133,7 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
     protected void assertValidationFail(String message, Signature validateTarget) {
        try {
            validator.validate(validateTarget);
-           fail(message + " : Validation success, expected failure to raise ValidationException");
+           Assert.fail(message + " : Validation success, expected failure to raise ValidationException");
        } catch (SignatureException e) {
        }
     }

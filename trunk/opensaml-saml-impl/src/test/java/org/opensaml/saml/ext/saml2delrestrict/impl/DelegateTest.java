@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -41,44 +44,48 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedDelegationInstant = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
         expectedConfirmationMethod = "urn:oasis:names:tc:SAML:2.0:cm:bearer";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Delegate delegate = (Delegate) unmarshallElement(singleElementFile);
 
-        assertNotNull(delegate);
+        AssertJUnit.assertNotNull(delegate);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Delegate delegate = (Delegate) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull(delegate);
+        AssertJUnit.assertNotNull(delegate);
 
         DateTime instant = delegate.getDelegationInstant();
-        assertEquals("DelegationInstant was unexpected value", expectedDelegationInstant, instant);
+        AssertJUnit.assertEquals("DelegationInstant was unexpected value", expectedDelegationInstant, instant);
 
         String cm = delegate.getConfirmationMethod();
-        assertEquals("ConfirmationMethod was unexpected value", expectedConfirmationMethod, cm);
+        AssertJUnit.assertEquals("ConfirmationMethod was unexpected value", expectedConfirmationMethod, cm);
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Delegate delegate = (Delegate) unmarshallElement(childElementsFile);
         
-        assertNotNull(delegate);
+        AssertJUnit.assertNotNull(delegate);
         
-        assertNotNull("NameID was null", delegate.getNameID());
-        assertNull("BaseID was non-null", delegate.getBaseID());
-        assertNull("EncryptedID was non-null", delegate.getEncryptedID());
+        AssertJUnit.assertNotNull("NameID was null", delegate.getNameID());
+        AssertJUnit.assertNull("BaseID was non-null", delegate.getBaseID());
+        AssertJUnit.assertNull("EncryptedID was non-null", delegate.getEncryptedID());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
 
@@ -86,6 +93,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
         
@@ -98,6 +106,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
         

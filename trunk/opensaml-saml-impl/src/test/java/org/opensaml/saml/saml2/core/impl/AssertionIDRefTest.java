@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -37,27 +40,29 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedAssertionID = "assertion ID";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AssertionIDRef assertionIDRef = (AssertionIDRef) unmarshallElement(singleElementFile);
 
         String assertionID = assertionIDRef.getAssertionID();
-        assertEquals("AssertionID was " + assertionID + ", expected " + expectedAssertionID, expectedAssertionID,
+        AssertJUnit.assertEquals("AssertionID was " + assertionID + ", expected " + expectedAssertionID, expectedAssertionID,
                 assertionID);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, AssertionIDRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AssertionIDRef assertionIDRef = (AssertionIDRef) buildXMLObject(qname);
@@ -67,6 +72,7 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         // do nothing
     }

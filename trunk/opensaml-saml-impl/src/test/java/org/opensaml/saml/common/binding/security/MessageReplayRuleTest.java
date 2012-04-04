@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import java.util.HashMap;
 
 import org.opensaml.saml.common.binding.security.MessageReplayRule;
@@ -38,9 +40,8 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     private ReplayCache replayCache;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         messageID = "abc123";
 
         messageContext.setInboundMessageIssuer("issuer");
@@ -54,6 +55,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     /**
      * Test valid message ID.
      */
+    @Test
     public void testNoReplay() {
         assertRuleSuccess("Message ID was valid");
     }
@@ -61,6 +63,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     /**
      * Test valid message ID, distinct ID.
      */
+    @Test
     public void testNoReplayDistinctIDs() {
         assertRuleSuccess("Message ID was valid");
 
@@ -72,6 +75,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     /**
      * Test invalid replay of message ID.
      */
+    @Test
     public void testReplay() {
         assertRuleSuccess("Message ID was valid");
 
@@ -83,6 +87,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
      * 
      * @throws InterruptedException
      */
+    @Test
     public void testReplayValidWithExpiration() throws InterruptedException {
         // Set rule with 3 second expiration, with no clock skew
         ReplayCache replayCache = new ReplayCache(storageEngine, 1000 * 3);

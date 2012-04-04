@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.binding.security.IssueInstantRule;
 import org.opensaml.saml.saml2.core.AttributeQuery;
@@ -34,9 +36,8 @@ public class IssueInstantRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<Att
     private DateTime now;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         now = new DateTime();
         clockSkew = 60*5;
         expires = 60*10;
@@ -49,6 +50,7 @@ public class IssueInstantRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<Att
     /**
      *  Test valid issue instant.
      */
+    @Test
     public void testValid() {
         assertRuleSuccess("Message issue instant was valid");
     }
@@ -56,6 +58,7 @@ public class IssueInstantRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<Att
     /**
      * Test invalid when issued in future, beyond allowed clock skew.
      */
+    @Test
     public void testInvalidIssuedInFuture() {
         messageContext.setInboundSAMLMessageIssueInstant(now.plusSeconds(clockSkew + 5));
         assertRuleFailure("Message issue instant was in the future");
@@ -64,6 +67,7 @@ public class IssueInstantRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<Att
     /**
      *  Test valid when issued in future, but within allowed clock skew.
      */
+    @Test
     public void testValidIssuedInFutureWithinClockSkew() {
         messageContext.setInboundSAMLMessageIssueInstant(now.plusSeconds(clockSkew - 5));
         assertRuleSuccess("Message issue instant was in the future but within clock skew");
@@ -72,6 +76,7 @@ public class IssueInstantRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<Att
     /**
      * Test invalid when expired, beyond allowed clock skew.
      */
+    @Test
     public void testInvalidExpired() {
         messageContext.setInboundSAMLMessageIssueInstant(now.minusSeconds(expires + (clockSkew + 5)));
         assertRuleFailure("Message issue instant was expired");
@@ -80,6 +85,7 @@ public class IssueInstantRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<Att
     /**
      *  Test valid when expired, but within allowed clock skew.
      */
+    @Test
     public void testValidExpiredWithinClockSkew() {
         messageContext.setInboundSAMLMessageIssueInstant(now.minusSeconds(expires + (clockSkew - 5)));
         assertRuleSuccess("Message issue instant was expired but within clock skew");

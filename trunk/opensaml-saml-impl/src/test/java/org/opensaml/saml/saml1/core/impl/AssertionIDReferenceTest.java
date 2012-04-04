@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,33 +53,37 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         AssertionIDReference assertionIDReference;
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementFile);
 
-        assertNull("NCName was " + assertionIDReference.getReference() + " expected null", assertionIDReference
+        AssertJUnit.assertNull("NCName was " + assertionIDReference.getReference() + " expected null", assertionIDReference
                 .getReference());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AssertionIDReference assertionIDReference;
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("NCName ", expectedNCName, assertionIDReference.getReference());
+        AssertJUnit.assertEquals("NCName ", expectedNCName, assertionIDReference.getReference());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AssertionIDReference assertionIDReference = (AssertionIDReference) buildXMLObject(qname);
 

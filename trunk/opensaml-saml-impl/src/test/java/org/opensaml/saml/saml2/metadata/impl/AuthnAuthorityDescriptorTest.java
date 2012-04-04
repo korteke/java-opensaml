@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,9 +79,8 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedSupportedProtocols = new ArrayList<String>();
         expectedSupportedProtocols.add(SAMLConstants.SAML20P_NS);
         expectedCacheDuration = 90000;
@@ -95,62 +97,66 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AuthnAuthorityDescriptor authnAuthorityObj = (AuthnAuthorityDescriptor) unmarshallElement(singleElementFile);
 
         List<String> protoEnum = authnAuthorityObj.getSupportedProtocols();
-        assertEquals("Supported protocol enumeration was not equal to expected enumeration",
+        AssertJUnit.assertEquals("Supported protocol enumeration was not equal to expected enumeration",
                 expectedSupportedProtocols, protoEnum);
 
         Long duration = authnAuthorityObj.getCacheDuration();
-        assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
+        AssertJUnit.assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
 
         DateTime validUntil = authnAuthorityObj.getValidUntil();
-        assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
+        AssertJUnit.assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
 
         String errorURL = authnAuthorityObj.getErrorURL();
-        assertNull("errorURL attribute has a value of " + errorURL + ", expected no value", errorURL);
+        AssertJUnit.assertNull("errorURL attribute has a value of " + errorURL + ", expected no value", errorURL);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthnAuthorityDescriptor authnAuthorityObj = (AuthnAuthorityDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         List<String> protoEnum = authnAuthorityObj.getSupportedProtocols();
-        assertEquals("Supported protocol enumeration was not equal to expected enumeration",
+        AssertJUnit.assertEquals("Supported protocol enumeration was not equal to expected enumeration",
                 expectedSupportedProtocols, protoEnum);
 
         long duration = authnAuthorityObj.getCacheDuration().longValue();
-        assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
+        AssertJUnit.assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
                 + expectedCacheDuration, expectedCacheDuration, duration);
 
         DateTime validUntil = authnAuthorityObj.getValidUntil();
-        assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
+        AssertJUnit.assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
                 .compareTo(validUntil));
 
         String errorURL = authnAuthorityObj.getErrorURL();
-        assertEquals("errorURL attribute has a value of " + errorURL + ", expected a value of " + expectedErrorURL,
+        AssertJUnit.assertEquals("errorURL attribute has a value of " + errorURL + ", expected a value of " + expectedErrorURL,
                 expectedErrorURL, errorURL);
     }
     
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsUnmarshall()
     {
         AuthnAuthorityDescriptor authnAuthorityObj = (AuthnAuthorityDescriptor) unmarshallElement(childElementsFile);
 
-        assertNotNull("<Extensions>", authnAuthorityObj.getExtensions());
-        assertEquals("KeyDescriptor", 0, authnAuthorityObj.getKeyDescriptors().size());
+        AssertJUnit.assertNotNull("<Extensions>", authnAuthorityObj.getExtensions());
+        AssertJUnit.assertEquals("KeyDescriptor", 0, authnAuthorityObj.getKeyDescriptors().size());
 
-        assertEquals("KeyDescriptors count", expectedKeyDescriptors, authnAuthorityObj.getKeyDescriptors().size());
-        assertNotNull("Organization", authnAuthorityObj.getOrganization());
-        assertEquals("ContactPersons count", expectedContactPersons, authnAuthorityObj.getContactPersons().size());
-        assertEquals("AuthnQueryServices count", expectedAuthnQueryServices, authnAuthorityObj.getAuthnQueryServices().size());
-        assertEquals("AssertionIDRequestServices count", expectedAssertionIdRequestServices, authnAuthorityObj.getAssertionIDRequestServices().size());
-        assertEquals("NameIdFormats count", expectedNameIdFormats, authnAuthorityObj.getNameIDFormats().size());
+        AssertJUnit.assertEquals("KeyDescriptors count", expectedKeyDescriptors, authnAuthorityObj.getKeyDescriptors().size());
+        AssertJUnit.assertNotNull("Organization", authnAuthorityObj.getOrganization());
+        AssertJUnit.assertEquals("ContactPersons count", expectedContactPersons, authnAuthorityObj.getContactPersons().size());
+        AssertJUnit.assertEquals("AuthnQueryServices count", expectedAuthnQueryServices, authnAuthorityObj.getAuthnQueryServices().size());
+        AssertJUnit.assertEquals("AssertionIDRequestServices count", expectedAssertionIdRequestServices, authnAuthorityObj.getAssertionIDRequestServices().size());
+        AssertJUnit.assertEquals("NameIdFormats count", expectedNameIdFormats, authnAuthorityObj.getNameIDFormats().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AuthnAuthorityDescriptor descriptor = (AuthnAuthorityDescriptor) buildXMLObject(qname);
@@ -161,6 +167,7 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AuthnAuthorityDescriptor descriptor = (AuthnAuthorityDescriptor) buildXMLObject(qname);
@@ -175,6 +182,7 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AuthnAuthorityDescriptor descriptor = (AuthnAuthorityDescriptor) buildXMLObject(qname);

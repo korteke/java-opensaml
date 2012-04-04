@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
@@ -48,9 +51,8 @@ public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedFormat = "urn:string:format";
         expectedSPNameQualifer = "urn:string:spname";
         expectedAllowCreate = new XSBooleanValue(Boolean.TRUE, false);
@@ -58,6 +60,7 @@ public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         NameIDPolicy policy = (NameIDPolicy) buildXMLObject(NameIDPolicy.DEFAULT_ELEMENT_NAME);
         
@@ -65,6 +68,7 @@ public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         NameIDPolicy policy = (NameIDPolicy) buildXMLObject(NameIDPolicy.DEFAULT_ELEMENT_NAME);
         
@@ -76,44 +80,47 @@ public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         NameIDPolicy policy = (NameIDPolicy) unmarshallElement(singleElementFile);
         
-        assertNotNull(policy);
+        AssertJUnit.assertNotNull(policy);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIDPolicy policy = (NameIDPolicy) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Unmarshalled name Format URI attribute value was not the expected value", expectedFormat, policy.getFormat());
-        assertEquals("Unmarshalled SPNameQualifier URI attribute value was not the expected value", expectedSPNameQualifer, policy.getSPNameQualifier());
-        assertEquals("Unmarshalled AllowCreate attribute value was not the expected value", expectedAllowCreate, policy.getAllowCreateXSBoolean());
+        AssertJUnit.assertEquals("Unmarshalled name Format URI attribute value was not the expected value", expectedFormat, policy.getFormat());
+        AssertJUnit.assertEquals("Unmarshalled SPNameQualifier URI attribute value was not the expected value", expectedSPNameQualifer, policy.getSPNameQualifier());
+        AssertJUnit.assertEquals("Unmarshalled AllowCreate attribute value was not the expected value", expectedAllowCreate, policy.getAllowCreateXSBoolean());
     }
     
     /**
      * Test the proper behavior of the XSBooleanValue attributes.
      */
+    @Test
     public void testXSBooleanAttributes() {
         NameIDPolicy policy = (NameIDPolicy) buildXMLObject(NameIDPolicy.DEFAULT_ELEMENT_NAME);
         
         // AllowCreate attribute
         policy.setAllowCreate(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, policy.getAllowCreate());
-        assertNotNull("XSBooleanValue was null", policy.getAllowCreateXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, policy.getAllowCreate());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", policy.getAllowCreateXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
                 policy.getAllowCreateXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true", policy.getAllowCreateXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", policy.getAllowCreateXSBoolean().toString());
         
         policy.setAllowCreate(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, policy.getAllowCreate());
-        assertNotNull("XSBooleanValue was null", policy.getAllowCreateXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, policy.getAllowCreate());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", policy.getAllowCreateXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
                 policy.getAllowCreateXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false", policy.getAllowCreateXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", policy.getAllowCreateXSBoolean().toString());
         
         policy.setAllowCreate((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, policy.getAllowCreate());
-        assertNull("XSBooleanValue was not null", policy.getAllowCreateXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, policy.getAllowCreate());
+        AssertJUnit.assertNull("XSBooleanValue was not null", policy.getAllowCreateXSBoolean());
     }
 }

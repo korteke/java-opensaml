@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.ecp.Response;
 
@@ -36,9 +39,8 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     }
  
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedACSURL = "https://sp.example.org/acs";
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
@@ -47,17 +49,19 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Response response = (Response) unmarshallElement(singleElementFile);
         
-        assertNotNull(response);
+        AssertJUnit.assertNotNull(response);
         
-        assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, response.isSOAP11MustUnderstand());
-        assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, response.getSOAP11Actor());
-        assertEquals("ACS URL had unexpected value", expectedACSURL, response.getAssertionConsumerServiceURL());
+        AssertJUnit.assertEquals("SOAP mustUnderstand had unxpected value", expectedSOAP11MustUnderstand, response.isSOAP11MustUnderstand());
+        AssertJUnit.assertEquals("SOAP actor had unxpected value", expectedSOAP11Actor, response.getSOAP11Actor());
+        AssertJUnit.assertEquals("ACS URL had unexpected value", expectedACSURL, response.getAssertionConsumerServiceURL());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Response response = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         

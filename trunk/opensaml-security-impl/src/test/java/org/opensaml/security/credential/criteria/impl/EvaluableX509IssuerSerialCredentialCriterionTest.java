@@ -17,12 +17,13 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
-
-import junit.framework.TestCase;
 
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
@@ -35,7 +36,7 @@ import org.opensaml.security.x509.X509IssuerSerialCriterion;
 /**
  *
  */
-public class EvaluableX509IssuerSerialCredentialCriterionTest extends TestCase {
+public class EvaluableX509IssuerSerialCredentialCriterionTest {
     
     private BasicX509Credential credential;
     private BigInteger serialNumber;
@@ -72,9 +73,8 @@ public class EvaluableX509IssuerSerialCredentialCriterionTest extends TestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
         issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
         serialNumber = new BigInteger("49");
@@ -85,32 +85,37 @@ public class EvaluableX509IssuerSerialCredentialCriterionTest extends TestCase {
         criteria = new X509IssuerSerialCriterion(issuerName, serialNumber);
     }
     
+    @Test
     public void testSatifsy() {
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
+    @Test
     public void testNotSatisfy() {
         criteria.setSerialNumber(new BigInteger("100"));
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
+    @Test
     public void testNotSatisfyWrongCredType() {
         BasicCredential basicCred = new BasicCredential();
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(basicCred));
+        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(basicCred));
     }
     
+    @Test
     public void testNotSatisfyNoCert() {
         credential.setEntityCertificate(null);
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
+    @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
-        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
+        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 }

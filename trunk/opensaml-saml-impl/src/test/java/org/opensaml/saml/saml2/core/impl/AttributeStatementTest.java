@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeStatement;
@@ -41,27 +44,25 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(singleElementFile);
 
-        assertNotNull(attributeStatement);
+        AssertJUnit.assertNotNull(attributeStatement);
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(childElementsFile);
-        assertEquals("Attribute Count", expectedAttributeCount, attributeStatement.getAttributes().size());
-        assertEquals("EncryptedAttribute Count", 
+        AssertJUnit.assertEquals("Attribute Count", expectedAttributeCount, attributeStatement.getAttributes().size());
+        AssertJUnit.assertEquals("EncryptedAttribute Count", 
                 expectedEncryptedAttributeCount, attributeStatement.getEncryptedAttributes().size());
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         AttributeStatement attributeStatement = 
             (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);
@@ -70,6 +71,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         AttributeStatement attributeStatement = 
             (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);

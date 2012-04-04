@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -40,8 +43,8 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
     private String expectedValue;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception{
-        super.setUp();
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsBase64Binary.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = "abcdABCDE===";
@@ -52,6 +55,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      * @throws XMLParserException 
      */
+    @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
         XSBase64BinaryBuilder xsb64bBuilder = (XSBase64BinaryBuilder) builderFactory.getBuilder(XSBase64Binary.TYPE_NAME);
         XSBase64Binary xsb64b = xsb64bBuilder.buildObject(expectedXMLObjectQName, XSBase64Binary.TYPE_NAME);
@@ -70,14 +74,15 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSBase64BinaryTest.class.getResourceAsStream(testDocumentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSBase64Binary xsb64b = (XSBase64Binary) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSBase64Binary QName", expectedXMLObjectQName, xsb64b.getElementQName());
-        assertEquals("Unexpected XSBase64Binary schema type", XSBase64Binary.TYPE_NAME, xsb64b.getSchemaType());
-        assertEquals("Unexpected value of XSBase64Binary", xsb64b.getValue(), expectedValue);
+        AssertJUnit.assertEquals("Unexpected XSBase64Binary QName", expectedXMLObjectQName, xsb64b.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSBase64Binary schema type", XSBase64Binary.TYPE_NAME, xsb64b.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected value of XSBase64Binary", xsb64b.getValue(), expectedValue);
     }
 }

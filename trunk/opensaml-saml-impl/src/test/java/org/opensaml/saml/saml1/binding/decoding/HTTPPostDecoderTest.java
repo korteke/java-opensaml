@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml1.binding.decoding;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.KeyPair;
@@ -56,9 +60,8 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     private MockHttpServletRequest httpRequest;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         httpRequest = new MockHttpServletRequest();
         httpRequest.setMethod("POST");
         httpRequest.setParameter("TARGET", expectedRelayValue);
@@ -70,6 +73,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     }
 
     /** Test decoding message. */
+    @Test
     public void testDecode() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
@@ -81,11 +85,12 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         decoder.decode(messageContext);
 
-        assertTrue(messageContext.getInboundMessage() instanceof Response);
-        assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
-        assertEquals(expectedRelayValue, messageContext.getRelayState());
+        AssertJUnit.assertTrue(messageContext.getInboundMessage() instanceof Response);
+        AssertJUnit.assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
+        AssertJUnit.assertEquals(expectedRelayValue, messageContext.getRelayState());
     }
 
+    @Test
     public void testMessageEndpointGood() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
@@ -98,12 +103,13 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         try {
             decoder.decode(messageContext);
         } catch (SecurityException e) {
-            fail("Caught SecurityException: " + e.getMessage());
+            Assert.fail("Caught SecurityException: " + e.getMessage());
         } catch (MessageDecodingException e) {
-            fail("Caught MessageDecodingException: " + e.getMessage());
+            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
 
+    @Test
     public void testMessageEndpointGoodWithQueryParams() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
@@ -116,12 +122,13 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         try {
             decoder.decode(messageContext);
         } catch (SecurityException e) {
-            fail("Caught SecurityException: " + e.getMessage());
+            Assert.fail("Caught SecurityException: " + e.getMessage());
         } catch (MessageDecodingException e) {
-            fail("Caught MessageDecodingException: " + e.getMessage());
+            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
 
+    @Test
     public void testMessageEndpointInvalidURI() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
@@ -133,14 +140,15 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         try {
             decoder.decode(messageContext);
-            fail("Passed delivered endpoint check, should have failed");
+            Assert.fail("Passed delivered endpoint check, should have failed");
         } catch (SecurityException e) {
             // do nothing, failure expected
         } catch (MessageDecodingException e) {
-            fail("Caught MessageDecodingException: " + e.getMessage());
+            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
 
+    @Test
     public void testMessageEndpointInvalidHost() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
 
@@ -152,14 +160,15 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         try {
             decoder.decode(messageContext);
-            fail("Passed delivered endpoint check, should have failed");
+            Assert.fail("Passed delivered endpoint check, should have failed");
         } catch (SecurityException e) {
             // do nothing, failure expected
         } catch (MessageDecodingException e) {
-            fail("Caught MessageDecodingException: " + e.getMessage());
+            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
 
+    @Test
     public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
         samlResponse.setRecipient(null);
@@ -172,14 +181,15 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         try {
             decoder.decode(messageContext);
-            fail("Passed delivered endpoint check, should have failed, binding requires endpoint on unsigned message");
+            Assert.fail("Passed delivered endpoint check, should have failed, binding requires endpoint on unsigned message");
         } catch (SecurityException e) {
             // do nothing, failure expected
         } catch (MessageDecodingException e) {
-            fail("Caught MessageDecodingException: " + e.getMessage());
+            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
 
+    @Test
     public void testMessageEndpointMissingDestinationSigned() throws Exception {
         Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
         samlResponse.setRecipient(null);
@@ -201,11 +211,11 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         try {
             decoder.decode(messageContext);
-            fail("Passed delivered endpoint check, should have failed, binding requires endpoint on signed message");
+            Assert.fail("Passed delivered endpoint check, should have failed, binding requires endpoint on signed message");
         } catch (SecurityException e) {
             // do nothing, failure expected
         } catch (MessageDecodingException e) {
-            fail("Caught MessageDecodingException: " + e.getMessage());
+            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
         }
     }
 
@@ -214,7 +224,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         try {
             url = new URL(requestURL);
         } catch (MalformedURLException e) {
-            fail("Malformed URL: " + e.getMessage());
+            Assert.fail("Malformed URL: " + e.getMessage());
         }
         request.setScheme(url.getProtocol());
         request.setServerName(url.getHost());

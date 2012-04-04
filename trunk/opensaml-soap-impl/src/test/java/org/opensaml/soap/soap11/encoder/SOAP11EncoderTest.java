@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.encoder;
 
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -59,9 +62,8 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
     private HandlerChain handlerChain;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         messageContext = new TestContext();
         encoder = new SOAP11Encoder();
         
@@ -76,12 +78,13 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException
      * @throws MessageEncodingException
      */
+    @Test
     public void testBasicEncoding() throws XMLParserException, UnmarshallingException, MessageEncodingException {
         String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
         Envelope env = (Envelope) parseUnmarshallResource(soapMessage, true);
-        assertNull(env.getDOM());
+        AssertJUnit.assertNull(env.getDOM());
         
         XMLObject msg = env.getBody().getUnknownXMLObjects().get(0);
         msg.setParent(null);
@@ -92,7 +95,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.encode(messageContext);
         
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
-        assertNotNull(encodedEnv.getDOM());
+        AssertJUnit.assertNotNull(encodedEnv.getDOM());
         
         XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }
@@ -103,13 +106,14 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException
      * @throws MessageEncodingException
      */
+    @Test
     public void testEncodingWithHandler() throws XMLParserException, UnmarshallingException, MessageEncodingException {
         String controlMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(controlMessage, false);
         
         String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope env = (Envelope) parseUnmarshallResource(soapMessage, true);
-        assertNull(env.getDOM());
+        AssertJUnit.assertNull(env.getDOM());
         
         XMLObject msg = env.getBody().getUnknownXMLObjects().get(0);
         msg.setParent(null);
@@ -122,7 +126,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.encode(messageContext);
         
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
-        assertNotNull(encodedEnv.getDOM());
+        AssertJUnit.assertNotNull(encodedEnv.getDOM());
         
         XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }

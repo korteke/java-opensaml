@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml1.binding.encoding;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.joda.time.DateTime;
@@ -40,10 +43,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
     private VelocityEngine velocityEngine;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        super.setUp();
-
         velocityEngine = new VelocityEngine();
         velocityEngine.setProperty(RuntimeConstants.ENCODING_DEFAULT, "UTF-8");
         velocityEngine.setProperty(RuntimeConstants.OUTPUT_ENCODING, "UTF-8");
@@ -53,6 +55,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         velocityEngine.init();
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testEncoding() throws Exception {
         SAMLObjectBuilder<Response> requestBuilder = (SAMLObjectBuilder<Response>) builderFactory
@@ -80,9 +83,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         encoder.encode(messageContext);
 
-        assertEquals("Unexpected content type", "text/html", response.getContentType());
-        assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        assertEquals(212339730, response.getContentAsString().hashCode());
+        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
+        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
+        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
+        AssertJUnit.assertEquals(212339730, response.getContentAsString().hashCode());
     }
 }

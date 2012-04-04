@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
@@ -40,20 +43,21 @@ public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedNumber = "888.100.1212";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         TelephoneNumber number = (TelephoneNumber) unmarshallElement(singleElementFile);
         
-        assertEquals("Telephone number was not expected value", expectedNumber, number.getNumber());
+        AssertJUnit.assertEquals("Telephone number was not expected value", expectedNumber, number.getNumber());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         TelephoneNumber number = (TelephoneNumber) buildXMLObject(TelephoneNumber.DEFAULT_ELEMENT_NAME);
         

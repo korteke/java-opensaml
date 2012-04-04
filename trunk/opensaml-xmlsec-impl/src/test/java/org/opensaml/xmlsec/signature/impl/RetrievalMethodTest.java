@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.Transforms;
@@ -41,44 +44,47 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedURI = "urn:string:foo";
         expectedType = "someType";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementFile);
         
-        assertNotNull("RetrievalMethod", rm);
-        assertEquals("URI attribute", expectedURI, rm.getURI());
-        assertNull("Transforms child element", rm.getTransforms());
+        AssertJUnit.assertNotNull("RetrievalMethod", rm);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, rm.getURI());
+        AssertJUnit.assertNull("Transforms child element", rm.getTransforms());
     }
     
     
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("RetrievalMethod", rm);
-        assertEquals("URI attribute", expectedURI, rm.getURI());
-        assertEquals("Type attribute", expectedType, rm.getType());
-        assertNull("Transforms child element", rm.getTransforms());
+        AssertJUnit.assertNotNull("RetrievalMethod", rm);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, rm.getURI());
+        AssertJUnit.assertEquals("Type attribute", expectedType, rm.getType());
+        AssertJUnit.assertNull("Transforms child element", rm.getTransforms());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         RetrievalMethod rm = (RetrievalMethod) unmarshallElement(childElementsFile);
         
-        assertNotNull("RetrievalMethod", rm);
-        assertEquals("URI attribute", expectedURI, rm.getURI());
-        assertNotNull("Transforms child element", rm.getTransforms());
+        AssertJUnit.assertNotNull("RetrievalMethod", rm);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, rm.getURI());
+        AssertJUnit.assertNotNull("Transforms child element", rm.getTransforms());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
         
@@ -90,6 +96,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
         
@@ -100,6 +107,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
         

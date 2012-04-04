@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
@@ -46,9 +49,8 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedIndex = 1;
         expectedIsDefault = new XSBooleanValue(Boolean.TRUE, false);
         expectedServiceNameCount = 2;
@@ -58,32 +60,36 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AttributeConsumingService service = (AttributeConsumingService) unmarshallElement(singleElementFile);
         
-        assertEquals("Index was not expected value", expectedIndex, service.getIndex());
+        AssertJUnit.assertEquals("Index was not expected value", expectedIndex, service.getIndex());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeConsumingService service = (AttributeConsumingService) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Index was not expected value", expectedIndex, service.getIndex());
-        assertEquals("isDefault was not expected value", expectedIsDefault, service.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("Index was not expected value", expectedIndex, service.getIndex());
+        AssertJUnit.assertEquals("isDefault was not expected value", expectedIsDefault, service.isDefaultXSBoolean());
     }
     
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsUnmarshall(){
         AttributeConsumingService service = (AttributeConsumingService) unmarshallElement(childElementsFile);
         
-        assertEquals("<ServiceName> count", expectedServiceNameCount, service.getNames().size());
-        assertEquals("<ServiceDescription> count", expectedServiceDecsriptionCount, service.getDescriptions().size());
-        assertEquals("<ReqestAttribute> count", expectedRequestedAttributeCount, service.getRequestAttributes().size());
+        AssertJUnit.assertEquals("<ServiceName> count", expectedServiceNameCount, service.getNames().size());
+        AssertJUnit.assertEquals("<ServiceDescription> count", expectedServiceDecsriptionCount, service.getDescriptions().size());
+        AssertJUnit.assertEquals("<ReqestAttribute> count", expectedRequestedAttributeCount, service.getRequestAttributes().size());
        
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
         
@@ -93,6 +99,7 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
         
@@ -103,6 +110,7 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     }
     
 
+    @Test
     public void testChildElementsMarshall()
     {
         AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
@@ -126,27 +134,28 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     /**
      * Test the proper behavior of the XSBooleanValue attributes.
      */
+    @Test
     public void testXSBooleanAttributes() {
         AttributeConsumingService acs = 
             (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
         
         // isDefault attribute
         acs.setIsDefault(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, acs.isDefault());
-        assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, acs.isDefault());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
                 acs.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true", acs.isDefaultXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", acs.isDefaultXSBoolean().toString());
         
         acs.setIsDefault(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, acs.isDefault());
-        assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, acs.isDefault());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", acs.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
                 acs.isDefaultXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false", acs.isDefaultXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", acs.isDefaultXSBoolean().toString());
         
         acs.setIsDefault((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, acs.isDefault());
-        assertNull("XSBooleanValue was not null", acs.isDefaultXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, acs.isDefault());
+        AssertJUnit.assertNull("XSBooleanValue was not null", acs.isDefaultXSBoolean());
     }
 }

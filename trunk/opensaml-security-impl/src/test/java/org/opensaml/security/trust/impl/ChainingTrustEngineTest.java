@@ -17,7 +17,10 @@
 
 package org.opensaml.security.trust.impl;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -28,7 +31,7 @@ import org.opensaml.security.trust.impl.ChainingTrustEngine;
 /**
  * Test the chaining trust engine.
  */
-public class ChainingTrustEngineTest extends TestCase {
+public class ChainingTrustEngineTest {
     
     private CriteriaSet criteriaSet;
     
@@ -37,6 +40,7 @@ public class ChainingTrustEngineTest extends TestCase {
     private FooToken token;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         
         token = new FooToken();
@@ -47,30 +51,34 @@ public class ChainingTrustEngineTest extends TestCase {
         criteriaSet.add( new EntityIDCriterion("dummyEntityID") );
     }
     
+    @Test
     public void testFirstTrusted() throws SecurityException {
         engine.getChain().add( new FooEngine(Boolean.TRUE));
         engine.getChain().add( new FooEngine(Boolean.FALSE));
-        assertTrue("Engine # 1 evaled token as trusted", engine.validate(token, criteriaSet));
+        AssertJUnit.assertTrue("Engine # 1 evaled token as trusted", engine.validate(token, criteriaSet));
     }
 
+    @Test
     public void testSecondTrusted() throws SecurityException {
         engine.getChain().add( new FooEngine(Boolean.FALSE));
         engine.getChain().add( new FooEngine(Boolean.TRUE));
-        assertTrue("Engine # 2 evaled token as trusted", engine.validate(token, criteriaSet));
+        AssertJUnit.assertTrue("Engine # 2 evaled token as trusted", engine.validate(token, criteriaSet));
     }
     
+    @Test
     public void testNoneTrusted() throws SecurityException {
         engine.getChain().add( new FooEngine(Boolean.FALSE));
         engine.getChain().add( new FooEngine(Boolean.FALSE));
-        assertFalse("No engine evaled token as trusted", engine.validate(token, criteriaSet));
+        AssertJUnit.assertFalse("No engine evaled token as trusted", engine.validate(token, criteriaSet));
     }
     
+    @Test
     public void testException() {
         engine.getChain().add( new FooEngine(Boolean.FALSE));
         engine.getChain().add( new FooEngine(null));
         try {
             engine.validate(token, criteriaSet);
-            fail("Should have thrown security exception");
+            Assert.fail("Should have thrown security exception");
         } catch (SecurityException e) {
             // do nothing, expected
         }

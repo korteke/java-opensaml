@@ -17,6 +17,9 @@
 
 package org.opensaml.xacml.ctx.provider;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
@@ -33,9 +36,8 @@ public class ObligationServiceTest extends XMLObjectBaseTestCase {
     int count;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         count = 0;
 
         ResultType result = (ResultType) builderFactory.getBuilder(ResultType.TYPE_NAME).buildObject(
@@ -59,9 +61,9 @@ public class ObligationServiceTest extends XMLObjectBaseTestCase {
         
         obligation = (ObligationType) builderFactory.getBuilder(ObligationType.SCHEMA_TYPE_NAME)
         .buildObject(ObligationType.DEFAULT_ELEMENT_QNAME);
-obligation.setFulfillOn(EffectType.Permit);
-obligation.setObligationId("add2");
-obligations.getObligations().add(obligation);
+        obligation.setFulfillOn(EffectType.Permit);
+        obligation.setObligationId("add2");
+        obligations.getObligations().add(obligation);
 
         obligation = (ObligationType) builderFactory.getBuilder(ObligationType.SCHEMA_TYPE_NAME).buildObject(
                 ObligationType.DEFAULT_ELEMENT_QNAME);
@@ -78,6 +80,7 @@ obligations.getObligations().add(obligation);
         processingCtx = new ObligationProcessingContext(result);
     }
 
+    @Test
     public void testObligationService() throws Exception {
         ObligationService obligSrvc = new ObligationService();
 
@@ -91,7 +94,7 @@ obligations.getObligations().add(obligation);
 
         obligSrvc.processObligations(processingCtx);
 
-        assertEquals(8, count);
+        AssertJUnit.assertEquals(8, count);
     }
 
     public class AdditiveObligationHandler extends BaseObligationHandler {

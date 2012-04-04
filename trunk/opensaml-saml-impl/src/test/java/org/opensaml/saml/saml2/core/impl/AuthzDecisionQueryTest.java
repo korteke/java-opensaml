@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -51,6 +54,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
         expectedResource = "urn:string:resource";
@@ -58,6 +62,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
@@ -71,6 +76,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
@@ -85,6 +91,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
@@ -103,16 +110,18 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementFile);
         
-        assertNotNull("AuthzDecisionQuery was null", query);
-        assertEquals("Unmarshalled Resource attribute was not the expected value", expectedResource, query.getResource());
+        AssertJUnit.assertNotNull("AuthzDecisionQuery was null", query);
+        AssertJUnit.assertEquals("Unmarshalled Resource attribute was not the expected value", expectedResource, query.getResource());
         super.helperTestSingleElementUnmarshall(query);
 
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementOptionalAttributesFile);
         
@@ -120,11 +129,12 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(childElementsFile);
         
-        assertEquals("Action count", expectedNumActions, query.getActions().size());
-        assertNotNull("Evidence was null", query.getEvidence());
+        AssertJUnit.assertEquals("Action count", expectedNumActions, query.getActions().size());
+        AssertJUnit.assertNotNull("Evidence was null", query.getEvidence());
         super.helperTestChildElementsUnmarshall(query);
     }
 }

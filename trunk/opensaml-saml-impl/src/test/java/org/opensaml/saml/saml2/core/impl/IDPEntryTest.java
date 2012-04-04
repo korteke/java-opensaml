@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.IDPEntry;
 
@@ -50,8 +53,8 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedProviderID = "urn:string:providerid";
         expectedName = "Example IdP";
         expectedLocation = "http://idp.example.org/endpoint";
@@ -61,6 +64,7 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
         
@@ -72,6 +76,7 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
         
@@ -84,19 +89,21 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         IDPEntry entry = (IDPEntry) unmarshallElement(singleElementFile);
         
-        assertEquals("The unmarshalled ProviderID attribute was not the expected value", expectedProviderID, entry.getProviderID());
+        AssertJUnit.assertEquals("The unmarshalled ProviderID attribute was not the expected value", expectedProviderID, entry.getProviderID());
 
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         IDPEntry entry = (IDPEntry) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("The unmarshalled Name attribute was not the expected value", expectedName, entry.getName());
-        assertEquals("The unmarshalled Loc (location) attribute was not the expected value", expectedLocation, entry.getLoc());
+        AssertJUnit.assertEquals("The unmarshalled Name attribute was not the expected value", expectedName, entry.getName());
+        AssertJUnit.assertEquals("The unmarshalled Loc (location) attribute was not the expected value", expectedLocation, entry.getLoc());
     }
 }

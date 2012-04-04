@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -48,12 +51,14 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
     
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
         expectedNumAttributes = 4;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AttributeQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AttributeQuery query = (AttributeQuery) buildXMLObject(qname);
@@ -66,6 +71,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
     
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AttributeQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AttributeQuery query = (AttributeQuery) buildXMLObject(qname);
@@ -79,6 +85,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AttributeQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AttributeQuery query = (AttributeQuery) buildXMLObject(qname);
@@ -96,28 +103,31 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(singleElementFile);
         
-        assertNotNull("AttributeQuery was null", query);
+        AssertJUnit.assertNotNull("AttributeQuery was null", query);
         super.helperTestSingleElementUnmarshall(query);
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("AttributeQuery was null", query);
+        AssertJUnit.assertNotNull("AttributeQuery was null", query);
         super.helperTestSingleElementOptionalAttributesUnmarshall(query);
     }
     
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(childElementsFile);
         
-        assertEquals("Attribute count", expectedNumAttributes, query.getAttributes().size());
+        AssertJUnit.assertEquals("Attribute count", expectedNumAttributes, query.getAttributes().size());
         super.helperTestChildElementsUnmarshall(query);
     }
 }

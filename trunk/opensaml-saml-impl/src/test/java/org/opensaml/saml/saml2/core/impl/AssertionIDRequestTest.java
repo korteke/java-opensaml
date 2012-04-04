@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -46,6 +49,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
         expectedNumAssertionIDRefs = 3;
@@ -53,6 +57,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AssertionIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AssertionIDRequest req = (AssertionIDRequest) buildXMLObject(qname);
@@ -64,6 +69,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
     
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AssertionIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AssertionIDRequest req = (AssertionIDRequest) buildXMLObject(qname);
@@ -76,6 +82,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         AssertionIDRequestBuilder builder = (AssertionIDRequestBuilder) builderFactory.getBuilder(AssertionIDRequest.DEFAULT_ELEMENT_NAME);
         AssertionIDRequest req = builder.buildObject();
@@ -90,6 +97,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(singleElementFile);
         
@@ -97,6 +105,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
@@ -104,10 +113,11 @@ public class AssertionIDRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(childElementsFile);
         
         super.helperTestChildElementsUnmarshall(req);
-        assertEquals("AssertionIDRef count", expectedNumAssertionIDRefs, req.getAssertionIDRefs().size());
+        AssertJUnit.assertEquals("AssertionIDRef count", expectedNumAssertionIDRefs, req.getAssertionIDRefs().size());
     }
 }

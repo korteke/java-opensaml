@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509SKI;
 
@@ -38,21 +41,22 @@ public class X509SKITest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "someX509SKI";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         X509SKI x509Element = (X509SKI) unmarshallElement(singleElementFile);
         
-        assertNotNull("X509SKI", x509Element);
-        assertEquals("X509SKI value", x509Element.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("X509SKI", x509Element);
+        AssertJUnit.assertEquals("X509SKI value", x509Element.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         X509SKI x509Element = (X509SKI) buildXMLObject(X509SKI.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);

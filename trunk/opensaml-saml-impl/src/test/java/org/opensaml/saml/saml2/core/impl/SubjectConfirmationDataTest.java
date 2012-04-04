@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -53,8 +56,8 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedNotBefore = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
         expectedNotOnOrAfter = new DateTime(1984, 8, 26, 10, 11, 30, 43, ISOChronology.getInstanceUTC());
         expectedRecipient = "recipient";
@@ -63,36 +66,39 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementFile);
 
         DateTime notBefore = subjectCD.getNotBefore();
-        assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime notBefore = subjectCD.getNotBefore();
-        assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
+        AssertJUnit.assertEquals("NotBefore was " + notBefore + ", expected " + expectedNotBefore, expectedNotBefore, notBefore);
 
         DateTime notOnOrAfter = subjectCD.getNotOnOrAfter();
-        assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
+        AssertJUnit.assertEquals("NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter, expectedNotOnOrAfter,
                 notOnOrAfter);
 
         String recipient = subjectCD.getRecipient();
-        assertEquals("Recipient was " + recipient + ", expected " + expectedRecipient, expectedRecipient, recipient);
+        AssertJUnit.assertEquals("Recipient was " + recipient + ", expected " + expectedRecipient, expectedRecipient, recipient);
 
         String inResponseTo = subjectCD.getInResponseTo();
-        assertEquals("InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo, expectedInResponseTo,
+        AssertJUnit.assertEquals("InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo, expectedInResponseTo,
                 inResponseTo);
 
         String address = subjectCD.getAddress();
-        assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
@@ -103,6 +109,7 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);

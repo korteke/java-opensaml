@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -48,25 +51,28 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedMethod = "conf method";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(singleElementFile);
 
         String method = subjectConfirmation.getMethod();
-        assertEquals("Method not as expected", expectedMethod, method);
+        AssertJUnit.assertEquals("Method not as expected", expectedMethod, method);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) buildXMLObject(qname);
@@ -76,19 +82,22 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(childElementsFile);
 
-        assertNotNull("Identifier elemement not present", subjectConfirmation.getNameID());
-        assertNotNull("SubjectConfirmationData element not present", subjectConfirmation.getSubjectConfirmationData());
+        AssertJUnit.assertNotNull("Identifier elemement not present", subjectConfirmation.getNameID());
+        AssertJUnit.assertNotNull("SubjectConfirmationData element not present", subjectConfirmation.getSubjectConfirmationData());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) buildXMLObject(qname);
@@ -103,17 +112,19 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsWithEncryptedIDUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(childElementsWithEncryptedIDFile);
 
-        assertNull("BaseID element present", subjectConfirmation.getBaseID());
-        assertNull("NameID element present", subjectConfirmation.getNameID());
-        assertNotNull("EncryptedID element not present", subjectConfirmation.getEncryptedID());
-        assertNotNull("SubjectConfirmationData element not present", subjectConfirmation.getSubjectConfirmationData());
+        AssertJUnit.assertNull("BaseID element present", subjectConfirmation.getBaseID());
+        AssertJUnit.assertNull("NameID element present", subjectConfirmation.getNameID());
+        AssertJUnit.assertNotNull("EncryptedID element not present", subjectConfirmation.getEncryptedID());
+        AssertJUnit.assertNotNull("SubjectConfirmationData element not present", subjectConfirmation.getSubjectConfirmationData());
     }
 
     /** {@inheritDoc} 
      * @throws XMLParserException */
+    @Test
     public void testChildElementsWithEncryptedIDMarshall() throws XMLParserException {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) buildXMLObject(qname);

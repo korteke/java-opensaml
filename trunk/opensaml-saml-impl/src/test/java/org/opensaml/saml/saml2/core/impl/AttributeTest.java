@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,40 +49,42 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedName = "attribName";
         expectedNameFormat = "urn:string";
         expectedFriendlyName = "Attribute Name";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementFile);
 
         String name = attribute.getName();
-        assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
+        AssertJUnit.assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementOptionalAttributesFile);
 
         String name = attribute.getName();
-        assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
+        AssertJUnit.assertEquals("Name was " + name + ", expected " + expectedName, expectedName, name);
 
         String nameFormat = attribute.getNameFormat();
-        assertEquals("NameFormat was " + nameFormat + ", expected " + expectedNameFormat, expectedNameFormat,
+        AssertJUnit.assertEquals("NameFormat was " + nameFormat + ", expected " + expectedNameFormat, expectedNameFormat,
                 nameFormat);
 
         String friendlyName = attribute.getFriendlyName();
-        assertEquals("FriendlyName was " + friendlyName + ", expected " + expectedFriendlyName, expectedFriendlyName,
+        AssertJUnit.assertEquals("FriendlyName was " + friendlyName + ", expected " + expectedFriendlyName, expectedFriendlyName,
                 friendlyName);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Attribute.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Attribute attribute = (Attribute) buildXMLObject(qname);
@@ -90,6 +95,7 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Attribute.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Attribute attribute = (Attribute) buildXMLObject(qname);

@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -44,12 +47,14 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, NameIDMappingResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         NameIDMappingResponse resp = (NameIDMappingResponse) buildXMLObject(qname);
@@ -60,6 +65,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, NameIDMappingResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         NameIDMappingResponse resp = (NameIDMappingResponse) buildXMLObject(qname);
@@ -71,6 +77,7 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, NameIDMappingResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         NameIDMappingResponse req = (NameIDMappingResponse) buildXMLObject(qname);
@@ -84,26 +91,29 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         NameIDMappingResponse resp = (NameIDMappingResponse) unmarshallElement(singleElementFile);
         
-        assertNotNull("NameIDMappingResponse was null", resp);
+        AssertJUnit.assertNotNull("NameIDMappingResponse was null", resp);
         super.helperTestSingleElementUnmarshall(resp);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIDMappingResponse resp = (NameIDMappingResponse) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("NameIDMappingResponse was null", resp);
+        AssertJUnit.assertNotNull("NameIDMappingResponse was null", resp);
         super.helperTestSingleElementOptionalAttributesUnmarshall(resp);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         NameIDMappingResponse resp = (NameIDMappingResponse) unmarshallElement(childElementsFile);
         
-        assertNotNull("Identifier was null", resp.getNameID());
+        AssertJUnit.assertNotNull("Identifier was null", resp.getNameID());
         super.helperTestChildElementsUnmarshall(resp);
     }
 

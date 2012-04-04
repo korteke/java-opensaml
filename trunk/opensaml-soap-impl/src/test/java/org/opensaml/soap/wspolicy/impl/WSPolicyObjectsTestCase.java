@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -48,13 +50,14 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
     private static final QName TEST_ELEMENT_QNAME = new QName("urn:test:ns", "WildcardTest", "wct");
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         // register provider for Test supporting config
         XMLObjectProviderRegistrySupport.registerObjectProvider(TEST_ELEMENT_QNAME,  
                 new XSAnyBuilder(), new XSAnyMarshaller(), new XSAnyUnmarshaller());
     }
     
+    @Test
     public void testAll() throws Exception {
         All all = buildXMLObject(All.ELEMENT_NAME);
         
@@ -72,6 +75,7 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(all);
     }
     
+    @Test
     public void testAppliesTo() throws Exception {
         AppliesTo appliesTo = buildXMLObject(AppliesTo.ELEMENT_NAME);
         
@@ -91,6 +95,7 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(appliesTo);
     }
     
+    @Test
     public void testExactlyOne() throws Exception {
         ExactlyOne exactlyOne = buildXMLObject(ExactlyOne.ELEMENT_NAME);
         
@@ -107,6 +112,7 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(exactlyOne);
     }
     
+    @Test
     public void testPolicy() throws Exception {
         Policy policy = buildXMLObject(Policy.ELEMENT_NAME);
         
@@ -129,6 +135,7 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(policy);
     }
     
+    @Test
     public void testPolicyAttachment() throws Exception {
         PolicyAttachment policyAttachment = buildXMLObject(PolicyAttachment.ELEMENT_NAME);
         
@@ -156,6 +163,7 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(policyAttachment);
     }
     
+    @Test
     public void testPolicyReference() throws Exception {
         PolicyReference policyReference = buildXMLObject(PolicyReference.ELEMENT_NAME);
         

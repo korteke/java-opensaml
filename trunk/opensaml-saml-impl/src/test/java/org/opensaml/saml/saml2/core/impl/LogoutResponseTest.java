@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -42,11 +44,13 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
@@ -57,6 +61,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
@@ -68,6 +73,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
@@ -78,6 +84,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         LogoutResponse resp = (LogoutResponse) unmarshallElement(singleElementFile);
         
@@ -85,6 +92,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     }
  
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         LogoutResponse resp = (LogoutResponse) unmarshallElement(singleElementOptionalAttributesFile);
 
@@ -92,6 +100,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     }
  
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         LogoutResponse resp = (LogoutResponse) unmarshallElement(childElementsFile);
         

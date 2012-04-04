@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -60,30 +62,34 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementFile);
-        assertNull("AuthorityKind attribute present", authorityBinding.getAuthorityKind());
-        assertNull("Binding attribute present", authorityBinding.getBinding());
-        assertNull("Location attribute present", authorityBinding.getLocation());
+        AssertJUnit.assertNull("AuthorityKind attribute present", authorityBinding.getAuthorityKind());
+        AssertJUnit.assertNull("Binding attribute present", authorityBinding.getBinding());
+        AssertJUnit.assertNull("Location attribute present", authorityBinding.getLocation());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementOptionalAttributesFile);
-        assertEquals("AuthorityKind attribute", expectedAuthorityKind, authorityBinding.getAuthorityKind());
-        assertEquals("Binding attribute", expectedBinding, authorityBinding.getBinding());
-        assertEquals("Location attribute", expectedLocation, authorityBinding.getLocation());        
+        AssertJUnit.assertEquals("AuthorityKind attribute", expectedAuthorityKind, authorityBinding.getAuthorityKind());
+        AssertJUnit.assertEquals("Binding attribute", expectedBinding, authorityBinding.getBinding());
+        AssertJUnit.assertEquals("Location attribute", expectedLocation, authorityBinding.getLocation());        
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) buildXMLObject(qname);
         authorityBinding.setAuthorityKind(expectedAuthorityKind);

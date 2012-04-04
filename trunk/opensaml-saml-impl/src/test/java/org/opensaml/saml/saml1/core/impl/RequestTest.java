@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -59,62 +62,67 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Request request = (Request) unmarshallElement(singleElementFile);
 
         String id = request.getID();
-        assertNull("ID attribute has value " + id + "expected no value", id);
+        AssertJUnit.assertNull("ID attribute has value " + id + "expected no value", id);
         
         DateTime date = request.getIssueInstant();
-        assertNull("IssueInstant attribute has a value of " + date + ", expected no value", date);
+        AssertJUnit.assertNull("IssueInstant attribute has a value of " + date + ", expected no value", date);
 
-        assertNull("Query has value", request.getQuery());
-        assertEquals("AssertionArtifact present", 0, request.getAssertionArtifacts().size());
-        assertEquals("AssertionIDReferences present", 0, request.getAssertionIDReferences().size());
-        assertNull("IssueInstance has value", request.getIssueInstant());
+        AssertJUnit.assertNull("Query has value", request.getQuery());
+        AssertJUnit.assertEquals("AssertionArtifact present", 0, request.getAssertionArtifacts().size());
+        AssertJUnit.assertEquals("AssertionIDReferences present", 0, request.getAssertionIDReferences().size());
+        AssertJUnit.assertNull("IssueInstance has value", request.getIssueInstant());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("ID", expectedID, request.getID());
-        assertEquals("MinorVersion", expectedMinorVersion, request.getVersion().getMinorVersion());
-        assertEquals("IssueInstant", expectedIssueInstant, request.getIssueInstant());
+        AssertJUnit.assertEquals("ID", expectedID, request.getID());
+        AssertJUnit.assertEquals("MinorVersion", expectedMinorVersion, request.getVersion().getMinorVersion());
+        AssertJUnit.assertEquals("IssueInstant", expectedIssueInstant, request.getIssueInstant());
         
     }
     
     /**
      * Test a few Requests with children 
      */
+    @Test
     public void testSingleElementChildrenUnmarshall() {
         Request request; 
         
         request = (Request) unmarshallElement("/data/org/opensaml/saml/saml1/impl/RequestWithAssertionArtifact.xml");
         
-        assertNull("Query is not null", request.getQuery());
-        assertEquals("AssertionId count", 0, request.getAssertionIDReferences().size());
-        assertEquals("AssertionArtifact count", 2, request.getAssertionArtifacts().size());
+        AssertJUnit.assertNull("Query is not null", request.getQuery());
+        AssertJUnit.assertEquals("AssertionId count", 0, request.getAssertionIDReferences().size());
+        AssertJUnit.assertEquals("AssertionArtifact count", 2, request.getAssertionArtifacts().size());
         
         request = (Request) unmarshallElement("/data/org/opensaml/saml/saml1/impl/RequestWithQuery.xml");
         
-        assertNotNull("Query is null", request.getQuery());
-        assertEquals("AssertionId count", 0, request.getAssertionIDReferences().size());
-        assertEquals("AssertionArtifact count", 0, request.getAssertionArtifacts().size());
+        AssertJUnit.assertNotNull("Query is null", request.getQuery());
+        AssertJUnit.assertEquals("AssertionId count", 0, request.getAssertionIDReferences().size());
+        AssertJUnit.assertEquals("AssertionArtifact count", 0, request.getAssertionArtifacts().size());
         
         request = (Request) unmarshallElement("/data/org/opensaml/saml/saml1/impl/RequestWithAssertionIDReference.xml");
-        assertNull("Query is not null", request.getQuery());
-        assertNotNull("AssertionId", request.getAssertionIDReferences());
-        assertEquals("AssertionId count", 3, request.getAssertionIDReferences().size());
-        assertEquals("AssertionArtifact count", 0, request.getAssertionArtifacts().size());
+        AssertJUnit.assertNull("Query is not null", request.getQuery());
+        AssertJUnit.assertNotNull("AssertionId", request.getAssertionIDReferences());
+        AssertJUnit.assertEquals("AssertionId count", 3, request.getAssertionIDReferences().size());
+        AssertJUnit.assertEquals("AssertionArtifact count", 0, request.getAssertionArtifacts().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         
         Request request = (Request) buildXMLObject(qname);
@@ -127,6 +135,7 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /**
      * Test a few Requests with children 
      */
+    @Test
     public void testSingleElementChildrenMarshall() {
         QName oqname;
         Request request; 
@@ -155,30 +164,33 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
             assertXMLEquals(dom, request);
 
         } catch (XMLParserException e) {
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
     
+    @Test
     public void testSignatureUnmarshall() {
         Request request = (Request) unmarshallElement("/data/org/opensaml/saml/saml1/impl/RequestWithSignature.xml");
         
-        assertNotNull("Request was null", request);
-        assertNotNull("Signature was null", request.getSignature());
-        assertNotNull("KeyInfo was null", request.getSignature().getKeyInfo());
+        AssertJUnit.assertNotNull("Request was null", request);
+        AssertJUnit.assertNotNull("Signature was null", request.getSignature());
+        AssertJUnit.assertNotNull("KeyInfo was null", request.getSignature().getKeyInfo());
     }
     
+    @Test
     public void testDOMIDResolutionUnmarshall() {
         Request request = (Request) unmarshallElement("/data/org/opensaml/saml/saml1/impl/RequestWithSignature.xml");
         
-        assertNotNull("Request was null", request);
-        assertNotNull("Signature was null", request.getSignature());
+        AssertJUnit.assertNotNull("Request was null", request);
+        AssertJUnit.assertNotNull("Signature was null", request.getSignature());
         Document document = request.getSignature().getDOM().getOwnerDocument();
         Element idElem = request.getDOM();
         
-        assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
-        assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
+        AssertJUnit.assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
+        AssertJUnit.assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
     }
 
+    @Test
     public void testDOMIDResolutionMarshall() throws MarshallingException {
         Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
         request.setID(expectedID);
@@ -189,8 +201,8 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
         Document document = request.getQuery().getDOM().getOwnerDocument();
         Element idElem = request.getDOM();
         
-        assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
-        assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
+        AssertJUnit.assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
+        AssertJUnit.assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
     }
 
 }

@@ -17,6 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -66,9 +70,8 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     private String idValue;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         signingCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
@@ -88,6 +91,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * @throws IOException
      * @throws SignatureException 
      */
+    @Test
     public void testDecryptAndVerifySignedElement() throws MarshallingException, 
             UnmarshallingException, EncryptionException, DecryptionException, XMLParserException, IOException, SignatureException {
         // Get signed element
@@ -95,7 +99,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         // Unmarshall to XMLObject
         XMLObject signedXMLObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
-        assertTrue(signedXMLObject instanceof SignableSimpleXMLObject);
+        AssertJUnit.assertTrue(signedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) signedXMLObject;
 
         // Encrypt object
@@ -112,14 +116,14 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         tempfile.delete();
         Element encDataElement = document.getDocumentElement();
         XMLObject encryptedXMLObject = unmarshallerFactory.getUnmarshaller(encDataElement).unmarshall(encDataElement);
-        assertTrue(encryptedXMLObject instanceof EncryptedData);
+        AssertJUnit.assertTrue(encryptedXMLObject instanceof EncryptedData);
         EncryptedData encryptedData2 = (EncryptedData) encryptedXMLObject;
 
         // Decrypt object. Use 2-arg variant to make decrypted element
         // the root of a new Document.
         Decrypter decrypter = new Decrypter(encKeyResolver, null, null);
         XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData2, true);
-        assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
+        AssertJUnit.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject decryptedSXO = (SignableSimpleXMLObject) decryptedXMLObject;
 
         Signature decryptedSignature = decryptedSXO.getSignature();
@@ -128,8 +132,8 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         // is working correctly
         Element apacheResolvedElement = IdResolver.getElementById(decryptedSignature.getDOM().getOwnerDocument(),
                 idValue);
-        assertNotNull("Apache ID resolver found no element", apacheResolvedElement);
-        assertTrue("Apache ID resolver found different element", decryptedSXO.getDOM()
+        AssertJUnit.assertNotNull("Apache ID resolver found no element", apacheResolvedElement);
+        AssertJUnit.assertTrue("Apache ID resolver found different element", decryptedSXO.getDOM()
                 .isSameNode(apacheResolvedElement));
 
         // Verify signature of the decrypted content - this is where bug was reported.
@@ -139,18 +143,19 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
     /** Just a sanity check that unit test is set up correctly. 
      * @throws SignatureException */
+    @Test
     public void testPlainRoundTripSignature() throws MarshallingException, UnmarshallingException, SignatureException {
         Element signedElement = getSignedElement();
 
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
-        assertTrue(xmlObject instanceof SignableSimpleXMLObject);
+        AssertJUnit.assertTrue(xmlObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
 
         SignatureValidator sigValidator = new SignatureValidator(signingCredential);
         try {
             sigValidator.validate(sxo.getSignature());
         } catch (SignatureException e) {
-            fail("Signature validation failed: " + e);
+            Assert.fail("Signature validation failed: " + e);
         }
     }
 

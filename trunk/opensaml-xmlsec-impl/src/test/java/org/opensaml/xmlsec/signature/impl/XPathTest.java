@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.XPath;
 
@@ -38,21 +41,22 @@ public class XPathTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "someXPathValue";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         XPath xp = (XPath) unmarshallElement(singleElementFile);
         
-        assertNotNull("XPath", xp);
-        assertEquals("XPath value", xp.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("XPath", xp);
+        AssertJUnit.assertEquals("XPath value", xp.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         XPath xp = (XPath) buildXMLObject(XPath.DEFAULT_ELEMENT_NAME);
         xp.setValue(expectedStringContent);

@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 
@@ -38,21 +41,22 @@ public class PGPKeyIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "somePGPKeyID";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         PGPKeyID pgpElement = (PGPKeyID) unmarshallElement(singleElementFile);
         
-        assertNotNull("PGPKeyID", pgpElement);
-        assertEquals("PGPKeyID value", pgpElement.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("PGPKeyID", pgpElement);
+        AssertJUnit.assertEquals("PGPKeyID value", pgpElement.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         PGPKeyID pgpElement = (PGPKeyID) buildXMLObject(PGPKeyID.DEFAULT_ELEMENT_NAME);
         pgpElement.setValue(expectedStringContent);

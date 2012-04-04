@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -65,53 +68,57 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedFullDOM = parserPool.parse(this.getClass().getResourceAsStream(fullElementsFile));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
 
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(singleElementFile);
 
-        assertNull("Resource attribute present", authorizationDecisionQuery.getResource());
-        assertNull("Subject element present", authorizationDecisionQuery.getSubject());
-        assertEquals("Count of AttributeDesignator elements", 0, authorizationDecisionQuery.getActions().size());
-        assertNull("Evidence element present", authorizationDecisionQuery.getEvidence());
+        AssertJUnit.assertNull("Resource attribute present", authorizationDecisionQuery.getResource());
+        AssertJUnit.assertNull("Subject element present", authorizationDecisionQuery.getSubject());
+        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, authorizationDecisionQuery.getActions().size());
+        AssertJUnit.assertNull("Evidence element present", authorizationDecisionQuery.getEvidence());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Resource attribute", expectedResource, authorizationDecisionQuery.getResource());
-        assertNull("Subject element present", authorizationDecisionQuery.getSubject());
-        assertEquals("Count of AttributeDesignator elements", 0, authorizationDecisionQuery.getActions().size());
-        assertNull("Evidence element present", authorizationDecisionQuery.getEvidence());
+        AssertJUnit.assertEquals("Resource attribute", expectedResource, authorizationDecisionQuery.getResource());
+        AssertJUnit.assertNull("Subject element present", authorizationDecisionQuery.getSubject());
+        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, authorizationDecisionQuery.getActions().size());
+        AssertJUnit.assertNull("Evidence element present", authorizationDecisionQuery.getEvidence());
     }
 
     /**
      * Test an Response file with children
      */
+    @Test
     public void testFullElementsUnmarshall() {
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(fullElementsFile);
 
-        assertNotNull("Subject element present", authorizationDecisionQuery.getSubject());
-        assertEquals("Count of Action elements", 3, authorizationDecisionQuery.getActions().size());
-        assertNotNull("Evidence element present", authorizationDecisionQuery.getEvidence());
+        AssertJUnit.assertNotNull("Subject element present", authorizationDecisionQuery.getSubject());
+        AssertJUnit.assertEquals("Count of Action elements", 3, authorizationDecisionQuery.getActions().size());
+        AssertJUnit.assertNotNull("Evidence element present", authorizationDecisionQuery.getEvidence());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     } 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) buildXMLObject(qname);
@@ -124,6 +131,7 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
      * Test Marshalling up a file with children
      * 
      */
+    @Test
     public void testFullElementsMarshall() {
         AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) buildXMLObject(qname);

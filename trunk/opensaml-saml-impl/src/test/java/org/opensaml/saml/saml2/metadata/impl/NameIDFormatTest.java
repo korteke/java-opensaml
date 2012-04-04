@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
@@ -40,20 +43,21 @@ public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectFormat = "urn:name:format";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         NameIDFormat format = (NameIDFormat) unmarshallElement(singleElementFile);
         
-        assertEquals("Format was not expected value", expectFormat, format.getFormat());
+        AssertJUnit.assertEquals("Format was not expected value", expectFormat, format.getFormat());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         NameIDFormat format = (NameIDFormat) buildXMLObject(NameIDFormat.DEFAULT_ELEMENT_NAME);
         

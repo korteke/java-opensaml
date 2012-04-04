@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptionProperties;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
@@ -41,44 +44,47 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedID = "someID";
         expectedNumEncProps = 3;
         
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementFile);
         
-        assertNotNull("EncryptionProperties", ep);
-        assertNull("Id attribute", ep.getID());
-        assertEquals("# of EncryptionProperty children", 0, ep.getEncryptionProperties().size());
+        AssertJUnit.assertNotNull("EncryptionProperties", ep);
+        AssertJUnit.assertNull("Id attribute", ep.getID());
+        AssertJUnit.assertEquals("# of EncryptionProperty children", 0, ep.getEncryptionProperties().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("EncryptionProperties", ep);
-        assertEquals("Id attribute", expectedID, ep.getID());
-        assertEquals("# of EncryptionProperty children", 0, ep.getEncryptionProperties().size());
+        AssertJUnit.assertNotNull("EncryptionProperties", ep);
+        AssertJUnit.assertEquals("Id attribute", expectedID, ep.getID());
+        AssertJUnit.assertEquals("# of EncryptionProperty children", 0, ep.getEncryptionProperties().size());
         
-        assertEquals("ID lookup failed", ep, ep.resolveID(expectedID));
+        AssertJUnit.assertEquals("ID lookup failed", ep, ep.resolveID(expectedID));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EncryptionProperties ep = (EncryptionProperties) unmarshallElement(childElementsFile);
         
-        assertNotNull("EncryptionProperties", ep);
-        assertNull("Id attribute", ep.getID());
-        assertEquals("# of EncryptionProperty children", expectedNumEncProps, ep.getEncryptionProperties().size());
+        AssertJUnit.assertNotNull("EncryptionProperties", ep);
+        AssertJUnit.assertNull("Id attribute", ep.getID());
+        AssertJUnit.assertEquals("# of EncryptionProperty children", expectedNumEncProps, ep.getEncryptionProperties().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         
@@ -86,6 +92,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         
@@ -95,6 +102,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         

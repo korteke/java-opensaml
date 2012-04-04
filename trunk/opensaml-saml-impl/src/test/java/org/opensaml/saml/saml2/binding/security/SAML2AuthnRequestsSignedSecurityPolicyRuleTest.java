@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.binding.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import org.opensaml.saml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
 import org.opensaml.saml.saml2.binding.security.SAML2AuthnRequestsSignedRule;
 import org.opensaml.saml.saml2.core.AuthnRequest;
@@ -43,9 +45,8 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     private final String issuerSigningNotRequired = "urn:test:issuer:notrequired";
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         String mdfile = "/data/org/opensaml/saml/saml2/binding/Metadata-AuthnRequestsSigned.xml";
         Document mdDoc = parserPool.parse(SAML2AuthnRequestsSignedSecurityPolicyRuleTest.class.getResourceAsStream(mdfile));
         DOMMetadataProvider metadataProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
@@ -59,6 +60,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     /**
      * Test message not signed, signing not required.
      */
+    @Test
     public void testNotSignedAndNotRequired() {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
@@ -72,6 +74,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     /**
      * Test message not signed, signing required.
      */
+    @Test
     public void testNotSignedAndRequired() {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
@@ -84,6 +87,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     /**
      * Test message XML signed, signing not required.
      */
+    @Test
     public void testSignedAndNotRequired() {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
@@ -96,6 +100,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     /**
      * Test message XML signed, signing required.
      */
+    @Test
     public void testSignedAndRequired() {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
@@ -108,6 +113,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest
     /**
      * Test message simple signed, signing not required.
      */
+    @Test
     public void testSimpleSignedAndRequired() {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");

@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,27 +53,30 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
 
         Status status = (Status) unmarshallElement(singleElementFile);
 
-        assertNotNull("StatusCode", status.getStatusCode());
-        assertNull("StatusMessage", status.getStatusMessage());
-        assertNull("StatusDetail", status.getStatusDetail());
+        AssertJUnit.assertNotNull("StatusCode", status.getStatusCode());
+        AssertJUnit.assertNull("StatusMessage", status.getStatusMessage());
+        AssertJUnit.assertNull("StatusDetail", status.getStatusDetail());
     }
 
     /**
      * Test an Response file with children.
      */
+    @Test
     public void testChildElementsUnmarshall() {
         Status status = (Status) unmarshallElement(childElementsFile);
 
-        assertNotNull("StatusCode", status.getStatusCode());
-        assertNotNull("StatusMessage", status.getStatusMessage());
+        AssertJUnit.assertNotNull("StatusCode", status.getStatusCode());
+        AssertJUnit.assertNotNull("StatusMessage", status.getStatusMessage());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         Status status = (Status) buildXMLObject(qname);
 
@@ -84,6 +89,7 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
         Status status = (Status) buildXMLObject(qname);
 

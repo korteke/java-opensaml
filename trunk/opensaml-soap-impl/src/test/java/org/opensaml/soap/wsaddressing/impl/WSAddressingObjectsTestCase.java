@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import org.testng.annotations.Test;
 import org.opensaml.soap.WSBaseTestCase;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.Address;
@@ -34,18 +35,21 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
 
     public Logger log= LoggerFactory.getLogger(WSAddressingObjectsTestCase.class);
 
+    @Test
     public void testAction() throws Exception {
         Action action= buildXMLObject(Action.ELEMENT_NAME);
         action.setValue("urn:test:foo:bar");
         marshallAndUnmarshall(action);
     }
 
+    @Test
     public void testAddress() throws Exception {
         Address address= buildXMLObject(Address.ELEMENT_NAME);
         address.setValue(Address.ANONYMOUS);
         marshallAndUnmarshall(address);
     }
 
+    @Test
     public void testEndpointReference() throws Exception {
         EndpointReference epr= buildXMLObject(EndpointReference.ELEMENT_NAME);
         Address address= buildXMLObject(Address.ELEMENT_NAME);
@@ -58,18 +62,22 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(epr);
     }
     
+    @Test
     public void testFaultTo() {
         //TODO
     }
 
+    @Test
     public void testFrom() {
         //TODO
     }
 
+    @Test
     public void testMessageID() {
         //TODO
     }
 
+    @Test
     public void testMetadata() throws Exception {
         Metadata metadata= buildXMLObject(Metadata.ELEMENT_NAME);
         // TODO: add some child elements
@@ -77,40 +85,49 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(metadata);
     }
     
+    @Test
     public void testProblemAction() {
         //TODO
     }
 
+    @Test
     public void testProblemHeaderQName() {
         //TODO
     }
 
+    @Test
     public void testProblemIRI() {
         //TODO
     }
     
+    @Test
     public void testReferenceParameters() throws Exception {
         ReferenceParameters referenceParameters= buildXMLObject(ReferenceParameters.ELEMENT_NAME);
         // TODO: add some child elements
         marshallAndUnmarshall(referenceParameters);
     }
 
+    @Test
     public void testRelatesTo() {
         //TODO
     }
 
+    @Test
     public void testReplyTo() {
         //TODO
     }
 
+    @Test
     public void testRetryAfter() {
         //TODO
     }
 
+    @Test
     public void testSoapAction() {
         //TODO
     }
 
+    @Test
     public void testTo() {
         //TODO
     }

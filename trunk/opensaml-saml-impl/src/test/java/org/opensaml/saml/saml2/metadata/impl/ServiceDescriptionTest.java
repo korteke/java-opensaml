@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,14 +48,16 @@ public class ServiceDescriptionTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ServiceDescription description = (ServiceDescription) unmarshallElement(singleElementFile);
         
-        assertEquals("Description was not expected value", expectLocalizedDescription, description.getValue());
-        assertEquals("xml:lamg was not expected value", expectLang, description.getXMLLang());
+        AssertJUnit.assertEquals("Description was not expected value", expectLocalizedDescription, description.getValue());
+        AssertJUnit.assertEquals("xml:lamg was not expected value", expectLang, description.getXMLLang());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         ServiceDescription description = (ServiceDescription) buildXMLObject(qname);

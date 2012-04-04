@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -49,41 +52,44 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedUse = UsageType.ENCRYPTION;
         expectedNumEncMethods = 2;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementFile);
         
-        assertNotNull("KeyDescriptor", keyDescriptor);
-        assertEquals("Unexpected use attribute value", UsageType.UNSPECIFIED, keyDescriptor.getUse());
+        AssertJUnit.assertNotNull("KeyDescriptor", keyDescriptor);
+        AssertJUnit.assertEquals("Unexpected use attribute value", UsageType.UNSPECIFIED, keyDescriptor.getUse());
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("KeyDescriptor", keyDescriptor);
-        assertEquals("Use attribute", expectedUse, keyDescriptor.getUse());
+        AssertJUnit.assertNotNull("KeyDescriptor", keyDescriptor);
+        AssertJUnit.assertEquals("Use attribute", expectedUse, keyDescriptor.getUse());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(childElementsFile);
 
-        assertNotNull("KeyDescriptor", keyDescriptor);
-        assertNotNull("KeyInfo Child element", keyDescriptor.getKeyInfo());
-        assertEquals("# of EncryptionMethod child elements", expectedNumEncMethods,
+        AssertJUnit.assertNotNull("KeyDescriptor", keyDescriptor);
+        AssertJUnit.assertNotNull("KeyInfo Child element", keyDescriptor.getKeyInfo());
+        AssertJUnit.assertEquals("# of EncryptionMethod child elements", expectedNumEncMethods,
                 keyDescriptor.getEncryptionMethods().size());
    }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20MD_PREFIX);
@@ -93,6 +99,7 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20MD_PREFIX);
@@ -104,6 +111,7 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20MD_PREFIX);

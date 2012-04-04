@@ -17,6 +17,10 @@
 
 package org.opensaml.core.xml.util;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -61,14 +65,14 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         xsAnyBuilder = builderFactory.getBuilder(XSAny.TYPE_NAME);
         owner = xsAnyBuilder.buildObject(elementName);
         attributeMap = owner.getUnknownAttributes();
     }
     
+    @Test
     public void testClear() {
         QName attrName1 = new QName(ns1, "Attr1", ns1Prefix);
         QName attrName2 = new QName(ns2, "Attr2", ns2Prefix);
@@ -78,13 +82,14 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         attributeMap.put(attrName2, "foo");
         attributeMap.put(attrName3, "foo");
         
-        assertEquals("Wrong map size", 3, attributeMap.size());
+        AssertJUnit.assertEquals("Wrong map size", 3, attributeMap.size());
         
         owner.getUnknownAttributes().clear();
         
-        assertEquals("Wrong map size", 0, attributeMap.size());
+        AssertJUnit.assertEquals("Wrong map size", 0, attributeMap.size());
     }
     
+    @Test
     public void testAttributeMapQualifiedAttributes() {
         QName attrName1 = new QName(ns1, "Attr1", ns1Prefix);
         QName attrName2 = new QName(ns2, "Attr2", ns2Prefix);
@@ -111,6 +116,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         checkNamespaces(owner, 1, elementName);
     }
     
+    @Test
     public void testQNameAttributeValueAsString() {
         QName attrName = new QName(ns2, "Attr2", ns2Prefix);
         QName attrValue = new QName(ns3, "foo", ns3Prefix);
@@ -124,6 +130,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         checkNamespaces(owner, 3, elementName, attrName, attrValue);
     }
     
+    @Test
     public void testQNameAttributeValueAsQName() {
         QName attrName = new QName(ns2, "Attr2", ns2Prefix);
         QName attrValue = new QName(ns3, "foo", ns3Prefix);
@@ -153,7 +160,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         
         if (nsSize != null) {
             int size = nsSize.intValue();
-            assertEquals("Wrong number of unique namespaces", size, xo.getNamespaces().size());
+            AssertJUnit.assertEquals("Wrong number of unique namespaces", size, xo.getNamespaces().size());
         }
         
         outer: 
@@ -164,7 +171,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
                     continue outer;
                 }
             }
-            fail("Did not find expected namespace in object from QName: " +  name.toString());
+            Assert.fail("Did not find expected namespace in object from QName: " +  name.toString());
         }
         
     }

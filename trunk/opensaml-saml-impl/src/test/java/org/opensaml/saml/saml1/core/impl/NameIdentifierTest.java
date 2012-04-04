@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -53,32 +55,36 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementFile);
         
-        assertNull("Name Identifer contents present", nameIdentifier.getNameIdentifier());
-        assertNull("NameQualifier present", nameIdentifier.getNameQualifier());
-        assertNull("Format present", nameIdentifier.getFormat());
+        AssertJUnit.assertNull("Name Identifer contents present", nameIdentifier.getNameIdentifier());
+        AssertJUnit.assertNull("NameQualifier present", nameIdentifier.getNameQualifier());
+        AssertJUnit.assertNull("Format present", nameIdentifier.getFormat());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Name Identifier contents", expectedNameIdentifier, nameIdentifier.getNameIdentifier());
-        assertEquals("NameQualfier attribute", expectedNameQualifier, nameIdentifier.getNameQualifier());
-        assertEquals("Format attribute", expectedFormat, nameIdentifier.getFormat());
+        AssertJUnit.assertEquals("Name Identifier contents", expectedNameIdentifier, nameIdentifier.getNameIdentifier());
+        AssertJUnit.assertEquals("NameQualfier attribute", expectedNameQualifier, nameIdentifier.getNameQualifier());
+        AssertJUnit.assertEquals("Format attribute", expectedFormat, nameIdentifier.getFormat());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) buildXMLObject(qname);
         

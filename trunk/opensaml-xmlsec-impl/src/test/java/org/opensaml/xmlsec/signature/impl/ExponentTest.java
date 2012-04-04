@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.Exponent;
 
@@ -38,21 +41,22 @@ public class ExponentTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedCryptoBinaryContent = "someCryptoBinaryValue";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Exponent cbType = (Exponent) unmarshallElement(singleElementFile);
         
-        assertNotNull("Exponent", cbType);
-        assertEquals("Exponent value", cbType.getValue(), expectedCryptoBinaryContent);
+        AssertJUnit.assertNotNull("Exponent", cbType);
+        AssertJUnit.assertEquals("Exponent value", cbType.getValue(), expectedCryptoBinaryContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Exponent cbType = (Exponent) buildXMLObject(Exponent.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);

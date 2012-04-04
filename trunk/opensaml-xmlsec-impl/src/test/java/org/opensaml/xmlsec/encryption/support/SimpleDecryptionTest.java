@@ -17,6 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -82,9 +86,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encKey = encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
@@ -109,7 +112,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             encryptedData = encrypter.encryptElement(targetObject, encParams);
             encryptedContent = encrypter.encryptElementContent(targetObject, encParams);
         } catch (EncryptionException e) {
-            fail("Object encryption failed: " + e);
+            Assert.fail("Object encryption failed: " + e);
         }
         
     }
@@ -117,6 +120,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     /**
      * Test simple decryption of an EncryptedKey object.
      */
+    @Test
     public void testEncryptedKey() {
         Decrypter decrypter = new Decrypter(null, kekResolver, null);
        
@@ -124,16 +128,17 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedKey = decrypter.decryptKey(encryptedKey, encURI);
         } catch (DecryptionException e) {
-            fail("Error on decryption of EncryptedKey: " + e);
+            Assert.fail("Error on decryption of EncryptedKey: " + e);
         }
         
-        assertEquals("Decrypted EncryptedKey", decryptedKey, encKey);
+        AssertJUnit.assertEquals("Decrypted EncryptedKey", decryptedKey, encKey);
         
     }
     
     /**
      *  Test simple decryption of an EncryptedData object which is of type Element.
      */
+    @Test
     public void testEncryptedElement() {
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
         
@@ -141,7 +146,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedXMLObject = decrypter.decryptData(encryptedData);
         } catch (DecryptionException e) {
-            fail("Error on decryption of EncryptedData to element: " + e);
+            Assert.fail("Error on decryption of EncryptedData to element: " + e);
         }
         
         assertXMLEquals(targetDOM, decryptedXMLObject);
@@ -152,6 +157,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      *  Test decryption of an EncryptedData object which is of type Element, where the decryption
      *  key is found as an inline EncryptedKey within EncryptedData/KeyInfo.
      */
+    @Test
     public void testEncryptedElementWithEncryptedKeyInline() {
         KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         keyInfo.getEncryptedKeys().add(encryptedKey);
@@ -165,7 +171,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedXMLObject = decrypter.decryptData(encryptedData);
         } catch (DecryptionException e) {
-            fail("Error on decryption of EncryptedData to element: " + e);
+            Assert.fail("Error on decryption of EncryptedData to element: " + e);
         }
         
         assertXMLEquals(targetDOM, decryptedXMLObject);
@@ -175,12 +181,13 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     /**
      *  Test error condition of no resolvers configured.
      */
+    @Test
     public void testErrorNoResolvers() {
         Decrypter decrypter = new Decrypter(null, null, null);
         
         try {
             decrypter.decryptData(encryptedData);
-            fail("Decryption should have failed, no resolvers configured");
+            Assert.fail("Decryption should have failed, no resolvers configured");
         } catch (DecryptionException e) {
             // do nothing, should fail
         }
@@ -193,6 +200,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException 
      * @throws NoSuchAlgorithmException 
      */
+    @Test
     public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         Key badKey = XMLSecurityHelper.generateKeyFromURI(encURI);
         BasicCredential encCred = new BasicCredential();
@@ -203,7 +211,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         try {
             decrypter.decryptData(encryptedData);
-            fail("Decryption should have failed, invalid data decryption key");
+            Assert.fail("Decryption should have failed, invalid data decryption key");
         } catch (DecryptionException e) {
             // do nothing, should fail
         }
@@ -216,6 +224,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException 
      * @throws NoSuchAlgorithmException 
      */
+    @Test
     public void testErrorInvalidKeyDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair badKeyPair = XMLSecurityHelper.generateKeyPairFromURI(kekURI, 1024);
         BasicCredential kekCred = new BasicCredential();
@@ -227,7 +236,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         try {
             decrypter.decryptKey(encryptedKey, encURI);
-            fail("Decryption should have failed, invalid key decryption key");
+            Assert.fail("Decryption should have failed, invalid key decryption key");
         } catch (DecryptionException e) {
             // do nothing, should fail
         }
@@ -237,16 +246,17 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     /**
      *  Test simple decryption of an EncryptedData object which is of type Content.
      */
+    @Test
     public void testEncryptedContent() {
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
         
         try {
             decrypter.decryptData(encryptedContent);
-            fail("This should have failed, decryption of element content not yet supported");
+            Assert.fail("This should have failed, decryption of element content not yet supported");
         } catch (DecryptionException e) {
             //fail("Error on decryption of EncryptedData to element content: " + e);
             //Currently this will fail, not yet supporting decryption of element content.
-            assertTrue("Decryption of element content not yet supported", true);
+            AssertJUnit.assertTrue("Decryption of element content not yet supported", true);
         }
         
     }
