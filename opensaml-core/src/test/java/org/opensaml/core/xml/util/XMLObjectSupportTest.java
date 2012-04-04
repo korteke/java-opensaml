@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.util;
 
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -31,6 +34,7 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
 
     /** Tests cloning an XMLObject. */
+    @Test
     public void testXMLObjectClone() {
         SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
             .getBuilder(SimpleXMLObject.ELEMENT_NAME);
@@ -45,26 +49,27 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
         try {
             clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj);
         } catch (MarshallingException e) {
-            fail("Object cloning failed on marshalling: " + e.getMessage());
+            Assert.fail("Object cloning failed on marshalling: " + e.getMessage());
         } catch (UnmarshallingException e) {
-            fail("Object cloning failed on unmarshalling: " + e.getMessage());
+            Assert.fail("Object cloning failed on unmarshalling: " + e.getMessage());
         }
         
-        assertFalse("Parent XMLObjects were the same reference", origParentObj == clonedParentObj);
-        assertFalse("Parent DOM node was not cloned properly",
+        AssertJUnit.assertFalse("Parent XMLObjects were the same reference", origParentObj == clonedParentObj);
+        AssertJUnit.assertFalse("Parent DOM node was not cloned properly",
                 origParentObj.getDOM().isSameNode(clonedParentObj.getDOM()));
         
-        assertFalse("Cloned parent had no children", clonedParentObj.getSimpleXMLObjects().isEmpty());
+        AssertJUnit.assertFalse("Cloned parent had no children", clonedParentObj.getSimpleXMLObjects().isEmpty());
         SimpleXMLObject clonedChildObj = (SimpleXMLObject) clonedParentObj.getSimpleXMLObjects().get(0);
         
-        assertFalse("Child XMLObjects were the same reference", origChildObj == clonedChildObj);
-        assertFalse("Child DOM node was not cloned properly",
+        AssertJUnit.assertFalse("Child XMLObjects were the same reference", origChildObj == clonedChildObj);
+        AssertJUnit.assertFalse("Child DOM node was not cloned properly",
                 origChildObj.getDOM().isSameNode(clonedChildObj.getDOM()));
         
-        assertEquals("Text content of child was not the expected value", "FooBarBaz", clonedChildObj.getValue());
+        AssertJUnit.assertEquals("Text content of child was not the expected value", "FooBarBaz", clonedChildObj.getValue());
     }
     
     /** Tests cloning an XMLObject. */
+    @Test
     public void testXMLObjectCloneWithRootInNewDocument() {
         SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
             .getBuilder(SimpleXMLObject.ELEMENT_NAME);
@@ -79,28 +84,28 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
         try {
             clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj, true);
         } catch (MarshallingException e) {
-            fail("Object cloning failed on marshalling: " + e.getMessage());
+            Assert.fail("Object cloning failed on marshalling: " + e.getMessage());
         } catch (UnmarshallingException e) {
-            fail("Object cloning failed on unmarshalling: " + e.getMessage());
+            Assert.fail("Object cloning failed on unmarshalling: " + e.getMessage());
         }
         
-        assertFalse("Parent XMLObjects were the same reference", origParentObj == clonedParentObj);
-        assertFalse("Parent DOM node was not cloned properly",
+        AssertJUnit.assertFalse("Parent XMLObjects were the same reference", origParentObj == clonedParentObj);
+        AssertJUnit.assertFalse("Parent DOM node was not cloned properly",
                 origParentObj.getDOM().isSameNode(clonedParentObj.getDOM()));
         
-        assertFalse("Cloned parent had no children", clonedParentObj.getSimpleXMLObjects().isEmpty());
+        AssertJUnit.assertFalse("Cloned parent had no children", clonedParentObj.getSimpleXMLObjects().isEmpty());
         SimpleXMLObject clonedChildObj = (SimpleXMLObject) clonedParentObj.getSimpleXMLObjects().get(0);
         
-        assertFalse("Child XMLObjects were the same reference", origChildObj == clonedChildObj);
-        assertFalse("Child DOM node was not cloned properly",
+        AssertJUnit.assertFalse("Child XMLObjects were the same reference", origChildObj == clonedChildObj);
+        AssertJUnit.assertFalse("Child DOM node was not cloned properly",
                 origChildObj.getDOM().isSameNode(clonedChildObj.getDOM()));
         
-        assertEquals("Text content of child was not the expected value", "FooBarBaz", clonedChildObj.getValue());
+        AssertJUnit.assertEquals("Text content of child was not the expected value", "FooBarBaz", clonedChildObj.getValue());
         
         // Test rootInNewDocument requirements
-        assertFalse("Cloned objects DOM's were owned by the same Document", 
+        AssertJUnit.assertFalse("Cloned objects DOM's were owned by the same Document", 
                 origParentObj.getDOM().getOwnerDocument().isSameNode(clonedParentObj.getDOM().getOwnerDocument()));
-        assertTrue("Cloned object was not the new Document root", 
+        AssertJUnit.assertTrue("Cloned object was not the new Document root", 
                 clonedParentObj.getDOM().getOwnerDocument().getDocumentElement().isSameNode(clonedParentObj.getDOM()));
     }
     

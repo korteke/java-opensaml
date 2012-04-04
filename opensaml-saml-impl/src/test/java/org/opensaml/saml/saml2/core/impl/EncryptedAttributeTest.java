@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.EncryptedAttribute;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -37,30 +40,28 @@ public class EncryptedAttributeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EncryptedAttribute encElement = (EncryptedAttribute) unmarshallElement(singleElementFile);
 
-        assertNotNull(encElement);
-        assertNull("EncryptedData child element", encElement.getEncryptedData());
-        assertEquals("# of EncryptedKey children", 0, encElement.getEncryptedKeys().size());
+        AssertJUnit.assertNotNull(encElement);
+        AssertJUnit.assertNull("EncryptedData child element", encElement.getEncryptedData());
+        AssertJUnit.assertEquals("# of EncryptedKey children", 0, encElement.getEncryptedKeys().size());
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EncryptedAttribute encElement = (EncryptedAttribute) unmarshallElement(childElementsFile);
         
-        assertNotNull("EncryptedAttribute was null", encElement);
-        assertNotNull("EncryptedData child element", encElement.getEncryptedData());
-        assertEquals("# of EncryptedKey children", encryptedKeyCount, encElement.getEncryptedKeys().size());
+        AssertJUnit.assertNotNull("EncryptedAttribute was null", encElement);
+        AssertJUnit.assertNotNull("EncryptedData child element", encElement.getEncryptedData());
+        AssertJUnit.assertEquals("# of EncryptedKey children", encryptedKeyCount, encElement.getEncryptedKeys().size());
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EncryptedAttribute encElement = (EncryptedAttribute) buildXMLObject(EncryptedAttribute.DEFAULT_ELEMENT_NAME);
 
@@ -68,6 +69,7 @@ public class EncryptedAttributeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         EncryptedAttribute encElement = (EncryptedAttribute) buildXMLObject(EncryptedAttribute.DEFAULT_ELEMENT_NAME);
         

@@ -17,12 +17,14 @@
 
 package org.opensaml.security.trust.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -38,7 +40,7 @@ import org.opensaml.security.x509.BasicX509Credential;
 /**
  * Test the explicit key trust engine.
  */
-public class ExplicitKeyTrustEngineTest extends TestCase {
+public class ExplicitKeyTrustEngineTest {
     
     private RSAPublicKey entityPubKey;
     private final String rsaBase64 = 
@@ -125,6 +127,7 @@ public class ExplicitKeyTrustEngineTest extends TestCase {
     private CriteriaSet criteriaSet;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         entityPubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
         entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
@@ -155,33 +158,36 @@ public class ExplicitKeyTrustEngineTest extends TestCase {
         criteriaSet.add( new EntityIDCriterion("dummyEntityID") );
     }
     
+    @Test
     public void testKeyTrusted() throws SecurityException {
         credentials.add(entityRSACred);
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitKeyTrustEngine engine = new ExplicitKeyTrustEngine(resolver);
         
-        assertTrue("Entity RSA public key credential was not trusted", engine.validate(entityRSACred, criteriaSet));
+        AssertJUnit.assertTrue("Entity RSA public key credential was not trusted", engine.validate(entityRSACred, criteriaSet));
         
-        assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
+        AssertJUnit.assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
     }
 
+    @Test
     public void testCertTrusted() throws SecurityException {
         credentials.add(entityX509Cred);
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitKeyTrustEngine engine = new ExplicitKeyTrustEngine(resolver);
         
-        assertTrue("Entity RSA public key credential was not trusted", engine.validate(entityRSACred, criteriaSet));
+        AssertJUnit.assertTrue("Entity RSA public key credential was not trusted", engine.validate(entityRSACred, criteriaSet));
         
-        assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
+        AssertJUnit.assertTrue("Entity X509 credential was not trusted", engine.validate(entityX509Cred, criteriaSet));
     }
     
+    @Test
     public void testUntrusted() throws SecurityException {
         CredentialResolver resolver = new StaticCredentialResolver(credentials);
         ExplicitKeyTrustEngine engine = new ExplicitKeyTrustEngine(resolver);
         
-        assertFalse("Entity RSA public key credential was trusted", engine.validate(entityRSACred, criteriaSet));
+        AssertJUnit.assertFalse("Entity RSA public key credential was trusted", engine.validate(entityRSACred, criteriaSet));
         
-        assertFalse("Entity X509 credential was trusted", engine.validate(entityX509Cred, criteriaSet));
+        AssertJUnit.assertFalse("Entity X509 credential was trusted", engine.validate(entityX509Cred, criteriaSet));
     }
 
 }

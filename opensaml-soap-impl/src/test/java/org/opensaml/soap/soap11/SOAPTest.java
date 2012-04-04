@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -56,9 +59,8 @@ public class SOAPTest extends XMLObjectBaseTestCase {
     private String expectedFaultActor;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         soapMessage = "/data/org/opensaml/soap/soap11/SOAP.xml";
         soapFault = "/data/org/opensaml/soap/soap11/SOAPFault.xml";
         soapFaultMarshall = "/data/org/opensaml/soap/soap11/SOAPFaultMarshall.xml";
@@ -74,6 +76,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException thrown if the XML document can not be located or parsed into a DOM 
      * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
      */
+    @Test
     public void testSOAPMessage() throws XMLParserException, UnmarshallingException{
         Document soapDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapMessage));
         Element envelopeElem = soapDoc.getDocumentElement();
@@ -84,17 +87,17 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         // Check to make sure everything unmarshalled okay
         QName encodingStyleName = new QName("http://schemas.xmlsoap.org/soap/envelope/", "encodingStyle");
         String encodingStyleValue = envelope.getUnknownAttributes().get(encodingStyleName);
-        assertNotNull("Encoding style was null", encodingStyleValue);
-        assertEquals("Encoding style had unexpected value", 
+        AssertJUnit.assertNotNull("Encoding style was null", encodingStyleValue);
+        AssertJUnit.assertEquals("Encoding style had unexpected value", 
                 "http://schemas.xmlsoap.org/soap/encoding/", encodingStyleValue);
         
         Header header = envelope.getHeader();
-        assertNotNull("Header was null", header);
-        assertEquals("Unexpected number of Header children", 1, header.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("Header was null", header);
+        AssertJUnit.assertEquals("Unexpected number of Header children", 1, header.getUnknownXMLObjects().size());
         
         Body body = envelope.getBody();
-        assertNotNull("Body was null", body);
-        assertEquals("Unexpected number of Body children", 1, body.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("Body was null", body);
+        AssertJUnit.assertEquals("Unexpected number of Body children", 1, body.getUnknownXMLObjects().size());
         
         // Drop the DOM and remarshall, hopefully we get the same document back
         envelope.releaseDOM();
@@ -107,6 +110,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException thrown if the XML document can not be located or parsed into a DOM 
      * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
      */
+    @Test
     public void testSOAPFault() throws XMLParserException, UnmarshallingException{
         Document soapFaultDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapFault));
         Element envelopeElem = soapFaultDoc.getDocumentElement();
@@ -116,30 +120,30 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         
         // Check to make sure everything unmarshalled okay
         Header header = envelope.getHeader();
-        assertNull("Header was not null", header);
+        AssertJUnit.assertNull("Header was not null", header);
         
         Body body = envelope.getBody();
-        assertNotNull("Body was null", body);
-        assertEquals("Unexpected number of Body children", 1, body.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("Body was null", body);
+        AssertJUnit.assertEquals("Unexpected number of Body children", 1, body.getUnknownXMLObjects().size());
         
         Fault fault = (Fault) body.getUnknownXMLObjects().get(0);
-        assertNotNull("Fault was null", fault);
+        AssertJUnit.assertNotNull("Fault was null", fault);
         
         FaultActor actor = fault.getActor();
-        assertNotNull("FaultActor was null", actor);
-        assertEquals("FaultActor had unexpected value", expectedFaultActor, actor.getValue());
+        AssertJUnit.assertNotNull("FaultActor was null", actor);
+        AssertJUnit.assertEquals("FaultActor had unexpected value", expectedFaultActor, actor.getValue());
         
         FaultCode code = fault.getCode();
-        assertNotNull("FaultCode was null", code);
-        assertEquals("FaultCode had unexpected value", expectedFaultCode, code.getValue());
+        AssertJUnit.assertNotNull("FaultCode was null", code);
+        AssertJUnit.assertEquals("FaultCode had unexpected value", expectedFaultCode, code.getValue());
         
         FaultString message = fault.getMessage();
-        assertNotNull("FaultString was null", message);
-        assertEquals("FaultString had unexpected value", expectedFaultString, message.getValue());
+        AssertJUnit.assertNotNull("FaultString was null", message);
+        AssertJUnit.assertEquals("FaultString had unexpected value", expectedFaultString, message.getValue());
         
         Detail detail = fault.getDetail();
-        assertNotNull("Detail was null", detail);
-        assertEquals("Unexpected number of Body children", 1, detail.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("Detail was null", detail);
+        AssertJUnit.assertEquals("Unexpected number of Body children", 1, detail.getUnknownXMLObjects().size());
         
         // Drop the DOM and remarshall, hopefully we get the same document back
         envelope.releaseDOM();
@@ -153,6 +157,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException  if the DOM can not b marshalled
      * @throws XMLParserException 
      */
+    @Test
     public void testSOAPFaultConstructAndMarshall() throws MarshallingException, XMLParserException {
         Document soapDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapFaultMarshall));
         Element envelopeElem = soapDoc.getDocumentElement();
@@ -188,26 +193,27 @@ public class SOAPTest extends XMLObjectBaseTestCase {
     /**
      *  Test that the no-arg SOAP fault-related builders are operating correcting, i.e. not namespace-qualified.
      */
+    @Test
     public void testSOAPFaultBuilders() {
         
        DetailBuilder detailBuilder = (DetailBuilder) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME); 
        Detail detail = detailBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(detail.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(detail.getElementQName().getPrefix()));
+       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(detail.getElementQName().getNamespaceURI()));
+       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(detail.getElementQName().getPrefix()));
         
        FaultActorBuilder faultActorBuilder = (FaultActorBuilder) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME); 
        FaultActor faultActor = faultActorBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultActor.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultActor.getElementQName().getPrefix()));
+       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultActor.getElementQName().getNamespaceURI()));
+       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultActor.getElementQName().getPrefix()));
        
        FaultCodeBuilder faultCodeBuilder = (FaultCodeBuilder) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME); 
        FaultCode faultCode = faultCodeBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultCode.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultCode.getElementQName().getPrefix()));
+       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultCode.getElementQName().getNamespaceURI()));
+       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultCode.getElementQName().getPrefix()));
        
        FaultStringBuilder faultStringBuilder = (FaultStringBuilder) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME); 
        FaultString faultString = faultStringBuilder.buildObject();
-       assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultString.getElementQName().getNamespaceURI()));
-       assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultString.getElementQName().getPrefix()));
+       AssertJUnit.assertTrue("Namespace URI was not empty", Strings.isNullOrEmpty(faultString.getElementQName().getNamespaceURI()));
+       AssertJUnit.assertTrue("Namespace prefix was not empty", Strings.isNullOrEmpty(faultString.getElementQName().getPrefix()));
     }
 }

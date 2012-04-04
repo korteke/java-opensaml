@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
@@ -43,36 +46,38 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedAlgorithm = "urn:string:foo";
         expectedNumUnknownChildren = 2;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EncryptionMethod em = (EncryptionMethod) unmarshallElement(singleElementFile);
         
-        assertNotNull("EncryptionMethod", em);
-        assertEquals("Algorithm attribute", expectedAlgorithm, em.getAlgorithm());
-        assertNull("KeySize child", em.getKeySize());
-        assertNull("OAEPparams child", em.getOAEPparams());
-        assertEquals("Unknown children", 0, em.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("EncryptionMethod", em);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, em.getAlgorithm());
+        AssertJUnit.assertNull("KeySize child", em.getKeySize());
+        AssertJUnit.assertNull("OAEPparams child", em.getOAEPparams());
+        AssertJUnit.assertEquals("Unknown children", 0, em.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EncryptionMethod em = (EncryptionMethod) unmarshallElement(childElementsFile);
         
-        assertNotNull("EncryptionMethod", em);
-        assertEquals("Algorithm attribute", expectedAlgorithm, em.getAlgorithm());
-        assertNotNull("KeySize child", em.getKeySize());
-        assertNotNull("OAEPparams child", em.getOAEPparams());
-        assertEquals("Unknown children", expectedNumUnknownChildren, em.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("EncryptionMethod", em);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, em.getAlgorithm());
+        AssertJUnit.assertNotNull("KeySize child", em.getKeySize());
+        AssertJUnit.assertNotNull("OAEPparams child", em.getOAEPparams());
+        AssertJUnit.assertEquals("Unknown children", expectedNumUnknownChildren, em.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EncryptionMethod em = (EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
         
@@ -82,6 +87,7 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         EncryptionMethod em = (EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
         

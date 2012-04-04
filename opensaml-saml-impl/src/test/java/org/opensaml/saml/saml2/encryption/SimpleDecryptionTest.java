@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.encryption;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -72,9 +76,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
@@ -92,6 +95,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException  thrown if there is an error parsing the control XML file
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      */
+    @Test
     public void testEncryptedAssertion() throws XMLParserException, EncryptionException {
         String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
@@ -105,11 +109,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedTarget = decrypter.decrypt(encryptedTarget);
         } catch (DecryptionException e) {
-            fail("Error on decryption of encrypted SAML 2 type to element: " + e);
+            Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        assertNotNull("Decrypted target was null", decryptedTarget);
-        assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
+        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
+        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -120,6 +124,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException  thrown if there is an error parsing the control XML file
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      */
+    @Test
     public void testEncryptedAssertionAsID() throws XMLParserException, EncryptionException {
         String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
@@ -133,11 +138,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedTarget = decrypter.decrypt(encryptedTarget);
         } catch (DecryptionException e) {
-            fail("Error on decryption of encrypted SAML 2 type to element: " + e);
+            Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        assertNotNull("Decrypted target was null", decryptedTarget);
-        assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
+        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
+        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Assertion);
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -148,6 +153,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException  thrown if there is an error parsing the control XML file
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      */
+    @Test
     public void testEncryptedNameID() throws XMLParserException, EncryptionException {
         String filename = "/data/org/opensaml/saml/saml2/encryption/NameID.xml";
         Document targetDOM = getDOM(filename);
@@ -161,11 +167,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedTarget = decrypter.decrypt(encryptedTarget);
         } catch (DecryptionException e) {
-            fail("Error on decryption of encrypted SAML 2 type to element: " + e);
+            Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        assertNotNull("Decrypted target was null", decryptedTarget);
-        assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NameID);
+        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
+        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NameID);
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -176,6 +182,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException  thrown if there is an error parsing the control XML file
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      */
+    @Test
     public void testEncryptedNewID() throws XMLParserException, EncryptionException {
         String filename = "/data/org/opensaml/saml/saml2/encryption/NewID.xml";
         Document targetDOM = getDOM(filename);
@@ -189,11 +196,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedTarget = decrypter.decrypt(encryptedTarget);
         } catch (DecryptionException e) {
-            fail("Error on decryption of encrypted SAML 2 type to element: " + e);
+            Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        assertNotNull("Decrypted target was null", decryptedTarget);
-        assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NewID);
+        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
+        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof NewID);
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -204,6 +211,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException  thrown if there is an error parsing the control XML file
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      */
+    @Test
     public void testEncryptedAttribute() throws XMLParserException, EncryptionException {
         String filename = "/data/org/opensaml/saml/saml2/encryption/Attribute.xml";
         Document targetDOM = getDOM(filename);
@@ -217,11 +225,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         try {
             decryptedTarget = decrypter.decrypt(encryptedTarget);
         } catch (DecryptionException e) {
-            fail("Error on decryption of encrypted SAML 2 type to element: " + e);
+            Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        assertNotNull("Decrypted target was null", decryptedTarget);
-        assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Attribute);
+        AssertJUnit.assertNotNull("Decrypted target was null", decryptedTarget);
+        AssertJUnit.assertTrue("Decrypted target was not the expected type", decryptedTarget instanceof Attribute);
         
         assertXMLEquals(targetDOM, decryptedTarget);
     }
@@ -235,6 +243,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException security provider was invalid
      * @throws NoSuchAlgorithmException security/key algorithm was invalid
      */
+    @Test
     public void testErrorInvalidDataDecryptionKey() 
             throws XMLParserException, EncryptionException, NoSuchAlgorithmException, NoSuchProviderException {
         Key badKey = XMLSecurityHelper.generateKeyFromURI(encURI);
@@ -251,7 +260,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         try {
             decrypter.decrypt(encryptedTarget);
-            fail("Decryption should have failed due to bad decryption key");
+            Assert.fail("Decryption should have failed due to bad decryption key");
         } catch (DecryptionException e) {
             // do nothing, should faile
         }

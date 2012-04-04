@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml1md.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml1md.SourceID;
 import org.opensaml.saml.ext.saml1md.impl.SourceIDBuilder;
@@ -37,13 +40,13 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedValue = "9392kjc98";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         SourceIDBuilder builder = (SourceIDBuilder) builderFactory.getBuilder(SourceID.DEFAULT_ELEMENT_NAME);
 
@@ -54,10 +57,11 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SourceID sourceID = (SourceID) unmarshallElement(singleElementFile);
 
-        assertNotNull(sourceID);
-        assertEquals(expectedValue, sourceID.getValue());
+        AssertJUnit.assertNotNull(sourceID);
+        AssertJUnit.assertEquals(expectedValue, sourceID.getValue());
     }
 }

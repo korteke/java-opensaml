@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
@@ -40,20 +43,21 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedAddress = "foo@example.org";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EmailAddress address = (EmailAddress) unmarshallElement(singleElementFile);
         
-        assertEquals("Email address was not expected value", expectedAddress, address.getAddress());
+        AssertJUnit.assertEquals("Email address was not expected value", expectedAddress, address.getAddress());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EmailAddress address = (EmailAddress) buildXMLObject(EmailAddress.DEFAULT_ELEMENT_NAME);
         

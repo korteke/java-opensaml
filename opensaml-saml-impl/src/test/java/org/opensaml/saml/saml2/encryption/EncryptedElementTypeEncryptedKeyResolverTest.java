@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.encryption;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,157 +39,163 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     private EncryptedElementTypeEncryptedKeyResolver resolver;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         resolver = new EncryptedElementTypeEncryptedKeyResolver();
     }
 
     /** No recipients specified to resolver, one EncryptedKey in instance. */
+    @Test
     public void  testSingleEKNoRecipients() {
         String filename = 
             "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleNoRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().clear();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
         
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
     }
     
     /** Multiple recipients specified to resolver, one EncryptedKey in instance with no recipient. */
+    @Test
     public void  testSingleEKMultiRecipientWithImplicitMatch() {
         String filename = 
             "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleNoRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         resolver.getRecipients().add("bar");
         resolver.getRecipients().add("baz");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
         
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
     }
     
     /** One recipient specified to resolver, one matching EncryptedKey in instance. */
+    @Test
     public void  testSingleEKOneRecipientWithMatch() {
         String filename = 
             "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleWithRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 1, resolved.size());
         
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
     }
     
     /** One recipient specified to resolver, zero matching EncryptedKey in instance. */
+    @Test
     public void  testSingleEKOneRecipientNoMatch() {
         String filename = 
             "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleWithRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("bar");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 0, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 0, resolved.size());
     }
     
     /** No recipients specified to resolver. */
+    @Test
     public void  testMultiEKNoRecipients() {
         String filename = "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().clear();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 4, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 4, resolved.size());
         
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(1));
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(2) == allKeys.get(2));
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(3) == allKeys.get(3));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(1));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(2) == allKeys.get(2));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(3) == allKeys.get(3));
     }
     
     /** One recipient specified to resolver, one matching & and one recipient-less 
      *  EncryptedKey in instance. */
+    @Test
     public void  testMultiEKOneRecipientWithMatch() {
         String filename = "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().clear();
         
         resolver.getRecipients().add("foo");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 2, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 2, resolved.size());
         
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(2));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(2));
     }
     
     /** Multi recipient specified to resolver, several matching EncryptedKey in instance. */
+    @Test
     public void  testMultiEKOneRecipientWithMatches() {
         String filename = "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
-        assertNotNull(encAssertion.getEncryptedData());
+        AssertJUnit.assertNotNull(encAssertion.getEncryptedData());
         EncryptedData encData = encAssertion.getEncryptedData();
         
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
-        assertFalse(allKeys.isEmpty());
+        AssertJUnit.assertFalse(allKeys.isEmpty());
         
         resolver.getRecipients().add("foo");
         resolver.getRecipients().add("baz");
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
-        assertEquals("Incorrect number of resolved EncryptedKeys found", 3, resolved.size());
+        AssertJUnit.assertEquals("Incorrect number of resolved EncryptedKeys found", 3, resolved.size());
         
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(2));
-        assertTrue("Unexpected EncryptedKey instance found", resolved.get(2) == allKeys.get(3));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(0) == allKeys.get(0));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(1) == allKeys.get(2));
+        AssertJUnit.assertTrue("Unexpected EncryptedKey instance found", resolved.get(2) == allKeys.get(3));
     }
     
     /**

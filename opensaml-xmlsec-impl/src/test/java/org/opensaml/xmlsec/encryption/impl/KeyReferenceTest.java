@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.encryption.KeyReference;
@@ -40,32 +43,34 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedURI = "urn:string:foo";
         expectedNumUnknownChildren = 2;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KeyReference ref = (KeyReference) unmarshallElement(singleElementFile);
         
-        assertNotNull("KeyReference", ref);
-        assertEquals("URI attribute", expectedURI, ref.getURI());
-        assertEquals("Unknown children", 0, ref.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("KeyReference", ref);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, ref.getURI());
+        AssertJUnit.assertEquals("Unknown children", 0, ref.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         KeyReference ref = (KeyReference) unmarshallElement(childElementsFile);
         
-        assertNotNull("KeyReference", ref);
-        assertEquals("URI attribute", expectedURI, ref.getURI());
-        assertEquals("Unknown children", expectedNumUnknownChildren, ref.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("KeyReference", ref);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, ref.getURI());
+        AssertJUnit.assertEquals("Unknown children", expectedNumUnknownChildren, ref.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         KeyReference ref = (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME);
         
@@ -75,6 +80,7 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         KeyReference ref = (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME);
         

@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 
@@ -38,21 +41,22 @@ public class OAEPparamsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBase64Content = "someBase64==";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         OAEPparams oaep = (OAEPparams) unmarshallElement(singleElementFile);
         
-        assertNotNull("OAEPparams", oaep);
-        assertEquals("OAEPparams value", oaep.getValue(), expectedBase64Content);
+        AssertJUnit.assertNotNull("OAEPparams", oaep);
+        AssertJUnit.assertEquals("OAEPparams value", oaep.getValue(), expectedBase64Content);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         OAEPparams oaep = (OAEPparams) buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
         oaep.setValue(expectedBase64Content);

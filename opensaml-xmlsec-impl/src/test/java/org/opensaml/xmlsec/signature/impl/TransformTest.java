@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.Transform;
@@ -42,35 +45,37 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedAlgorithm = "urn:string:foo";
         expectedTotalChildren = 5;
         expectedXPathChildren = 2;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Transform transform = (Transform) unmarshallElement(singleElementFile);
         
-        assertNotNull("Transform", transform);
-        assertEquals("Algorithm attribute", expectedAlgorithm, transform.getAlgorithm());
-        assertEquals("Total children", 0, transform.getAllChildren().size());
-        assertEquals("XPath children", 0, transform.getXPaths().size());
+        AssertJUnit.assertNotNull("Transform", transform);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, transform.getAlgorithm());
+        AssertJUnit.assertEquals("Total children", 0, transform.getAllChildren().size());
+        AssertJUnit.assertEquals("XPath children", 0, transform.getXPaths().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Transform transform = (Transform) unmarshallElement(childElementsFile);
         
-        assertNotNull("Transform", transform);
-        assertEquals("Algorithm attribute", expectedAlgorithm, transform.getAlgorithm());
-        assertEquals("Total children", expectedTotalChildren, transform.getAllChildren().size());
-        assertEquals("XPath children", expectedXPathChildren, transform.getXPaths().size());
+        AssertJUnit.assertNotNull("Transform", transform);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, transform.getAlgorithm());
+        AssertJUnit.assertEquals("Total children", expectedTotalChildren, transform.getAllChildren().size());
+        AssertJUnit.assertEquals("XPath children", expectedXPathChildren, transform.getXPaths().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Transform transform = (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME);
         
@@ -80,6 +85,7 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Transform transform = (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME);
         

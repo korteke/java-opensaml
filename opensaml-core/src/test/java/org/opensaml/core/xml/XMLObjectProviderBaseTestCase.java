@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml;
 
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -45,9 +48,8 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     protected Document expectedChildElementsDOM;
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeClass
+	protected void initXMLObjectProviderTestingSupprt() throws Exception {
         if (singleElementFile != null) {
             expectedDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
                     .getResourceAsStream(singleElementFile));
@@ -64,48 +66,47 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
         }
     }
 
-    /** {@inheritDoc} */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     /**
      * Tests unmarshalling a document that contains a single element (no children) with no optional attributes.
      */
-    public abstract void testSingleElementUnmarshall();
+	public abstract void testSingleElementUnmarshall();
 
     /**
      * Tests unmarshalling a document that contains a single element (no children) with all that element's optional
      * attributes.
      */
-    public void testSingleElementOptionalAttributesUnmarshall() {
-        assertNull("No testSingleElementOptionalAttributesUnmarshall present", singleElementOptionalAttributesFile);
+    @Test
+	public void testSingleElementOptionalAttributesUnmarshall() {
+        Assert.assertNull(singleElementOptionalAttributesFile, "No testSingleElementOptionalAttributesUnmarshall present");
     }
 
     /**
      * Tests unmarshalling a document that contains a single element with children.
      */
-    public void testChildElementsUnmarshall() {
-        assertNull("No testSingleElementChildElementsUnmarshall present", childElementsFile);
+    @Test
+	public void testChildElementsUnmarshall() {
+        Assert.assertNull(childElementsFile, "No testSingleElementChildElementsUnmarshall present");
     }
 
     /**
      * Tests marshalling the contents of a single element, with no optional attributes, to a DOM document.
      */
-    public abstract void testSingleElementMarshall();
+	public abstract void testSingleElementMarshall();
 
     /**
      * Tests marshalling the contents of a single element, with all optional attributes, to a DOM document.
      */
-    public void testSingleElementOptionalAttributesMarshall() {
-        assertNull("No testSingleElementOptionalAttributesMarshall", expectedOptionalAttributesDOM);
+    @Test
+	public void testSingleElementOptionalAttributesMarshall() {
+        Assert.assertNull(expectedOptionalAttributesDOM, "No testSingleElementOptionalAttributesMarshall");
     }
 
     /**
      * Tests marshalling the contents of a single element with child elements to a DOM document.
      */
-    public void testChildElementsMarshall() {
-        assertNull("No testSingleElementChildElementsMarshall", expectedChildElementsDOM);
+    @Test
+	public void testChildElementsMarshall() {
+        Assert.assertNull(expectedChildElementsDOM, "No testSingleElementChildElementsMarshall");
     }
 
 }

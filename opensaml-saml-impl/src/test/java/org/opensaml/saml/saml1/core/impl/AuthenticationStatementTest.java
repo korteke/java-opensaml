@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -66,53 +68,58 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementFile);
 
-        assertNull("AuthenticationMethod attribute present", authenticationStatement.getAuthenticationMethod());
-        assertNull("AuthenticationInstant attribute present", authenticationStatement.getAuthenticationInstant());
+        AssertJUnit.assertNull("AuthenticationMethod attribute present", authenticationStatement.getAuthenticationMethod());
+        AssertJUnit.assertNull("AuthenticationInstant attribute present", authenticationStatement.getAuthenticationInstant());
 
-        assertNull("<Subject> element present", authenticationStatement.getSubject());
-        assertNull("<SubjectLocailty> element present", authenticationStatement.getSubjectLocality());
-        assertEquals("Non zero count of <AuthorityBinding> elements", 0, authenticationStatement.getAuthorityBindings().size());
+        AssertJUnit.assertNull("<Subject> element present", authenticationStatement.getSubject());
+        AssertJUnit.assertNull("<SubjectLocailty> element present", authenticationStatement.getSubjectLocality());
+        AssertJUnit.assertEquals("Non zero count of <AuthorityBinding> elements", 0, authenticationStatement.getAuthorityBindings().size());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("AuthenticationMethod", expectedAuthenticationMethod, authenticationStatement
+        AssertJUnit.assertEquals("AuthenticationMethod", expectedAuthenticationMethod, authenticationStatement
                 .getAuthenticationMethod());
-        assertEquals("AuthenticationInstant", expectedAuthenticationInstant, authenticationStatement.getAuthenticationInstant());
+        AssertJUnit.assertEquals("AuthenticationInstant", expectedAuthenticationInstant, authenticationStatement.getAuthenticationInstant());
     }
 
     /**
      * Test an XML file with children
      */
 
+    @Test
     public void testChildElementsUnmarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(childElementsFile);
 
-        assertNotNull("<Subject> element not present", authenticationStatement.getSubject());
+        AssertJUnit.assertNotNull("<Subject> element not present", authenticationStatement.getSubject());
 
-        assertNotNull("<SubjectLocality> element not present", authenticationStatement.getSubjectLocality());
-        assertNotNull("<AuthorityBinding> elements not present", authenticationStatement.getAuthorityBindings());
-        assertEquals("count of <AuthorityBinding> elements", 2, authenticationStatement.getAuthorityBindings().size());
+        AssertJUnit.assertNotNull("<SubjectLocality> element not present", authenticationStatement.getSubjectLocality());
+        AssertJUnit.assertNotNull("<AuthorityBinding> elements not present", authenticationStatement.getAuthorityBindings());
+        AssertJUnit.assertEquals("count of <AuthorityBinding> elements", 2, authenticationStatement.getAuthorityBindings().size());
 
         AuthorityBinding authorityBinding = authenticationStatement.getAuthorityBindings().get(0);
         authenticationStatement.getAuthorityBindings().remove(authorityBinding);
-        assertEquals("count of <AuthorityBinding> elements", 1, authenticationStatement.getAuthorityBindings().size());
+        AssertJUnit.assertEquals("count of <AuthorityBinding> elements", 1, authenticationStatement.getAuthorityBindings().size());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) buildXMLObject(qname);
 
@@ -123,6 +130,7 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
         AuthenticationStatement authenticationStatement = (AuthenticationStatement) buildXMLObject(qname);
 

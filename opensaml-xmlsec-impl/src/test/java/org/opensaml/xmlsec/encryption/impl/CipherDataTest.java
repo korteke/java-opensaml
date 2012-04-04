@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
@@ -38,29 +41,27 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         CipherData cipherData = (CipherData) unmarshallElement(singleElementFile);
         
-        assertNotNull("CipherData", cipherData);
-        assertNull("CipherValue child element", cipherData.getCipherValue());
-        assertNull("CipherReference child element", cipherData.getCipherReference());
+        AssertJUnit.assertNotNull("CipherData", cipherData);
+        AssertJUnit.assertNull("CipherValue child element", cipherData.getCipherValue());
+        AssertJUnit.assertNull("CipherReference child element", cipherData.getCipherReference());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         CipherData cipherData = (CipherData) unmarshallElement(childElementsFile);
         
-        assertNotNull("CipherData", cipherData);
-        assertNotNull("CipherValue child element", cipherData.getCipherValue());
-        assertNotNull("CipherReference child element", cipherData.getCipherReference());
+        AssertJUnit.assertNotNull("CipherData", cipherData);
+        AssertJUnit.assertNotNull("CipherValue child element", cipherData.getCipherValue());
+        AssertJUnit.assertNotNull("CipherReference child element", cipherData.getCipherReference());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
         
@@ -68,6 +69,7 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
         

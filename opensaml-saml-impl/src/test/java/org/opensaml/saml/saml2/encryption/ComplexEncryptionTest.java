@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.encryption;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,9 +81,8 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         Credential encCred = XMLSecurityHelper.generateKeyAndCredential(algoURI);
         Credential kekCredAES = XMLSecurityHelper.generateKeyAndCredential(kekURIAES);
         Credential kekCredRSA = XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 2048, false);
@@ -105,6 +108,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     /**
      * Test encryption with a single key encryption key with key placement inline.
      */
+    @Test
     public void testSingleKEKInline() {
         Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
@@ -122,44 +126,45 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         try {
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
-            fail("Object encryption failed: " + e);
+            Assert.fail("Object encryption failed: " + e);
         }
         
-        assertNotNull("Encrypted object was null", encObject);
-        assertTrue("Encrypted object was not an instance of the expected type", 
+        AssertJUnit.assertNotNull("Encrypted object was null", encObject);
+        AssertJUnit.assertTrue("Encrypted object was not an instance of the expected type", 
                 encObject instanceof EncryptedAssertion);
         encTarget = (EncryptedAssertion) encObject;
         
-        assertEquals("Number of inline EncryptedKeys", 1, 
+        AssertJUnit.assertEquals("Number of inline EncryptedKeys", 1, 
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
-        assertEquals("Number of peer EncryptedKeys", 0, 
+        AssertJUnit.assertEquals("Number of peer EncryptedKeys", 0, 
                 encTarget.getEncryptedKeys().size());
         
         
         EncryptedKey encKey = encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0);
-        assertNotNull("EncryptedKey was null", encKey);
+        AssertJUnit.assertNotNull("EncryptedKey was null", encKey);
         
-        assertEquals("Algorithm attribute", kekURIRSA, 
+        AssertJUnit.assertEquals("Algorithm attribute", kekURIRSA, 
                 encKey.getEncryptionMethod().getAlgorithm());
-        assertNotNull("KeyInfo", encKey.getKeyInfo());
-        assertEquals("KeyName", expectedKeyNameRSA, 
+        AssertJUnit.assertNotNull("KeyInfo", encKey.getKeyInfo());
+        AssertJUnit.assertEquals("KeyName", expectedKeyNameRSA, 
                 encKey.getKeyInfo().getKeyNames().get(0).getValue());
         
-        assertFalse("EncryptedKey ID attribute was empty",
+        AssertJUnit.assertFalse("EncryptedKey ID attribute was empty",
                 Strings.isNullOrEmpty(encKey.getID()));
         
         EncryptedData encData = encTarget.getEncryptedData();
-        assertNotNull("EncryptedData KeyInfo wasn't null", encData.getKeyInfo());
-        assertEquals("EncryptedData improperly contained a RetrievalMethod", 0,
+        AssertJUnit.assertNotNull("EncryptedData KeyInfo wasn't null", encData.getKeyInfo());
+        AssertJUnit.assertEquals("EncryptedData improperly contained a RetrievalMethod", 0,
                 encData.getKeyInfo().getRetrievalMethods().size());
         
-        assertNull("EncryptedKey ReferenceList wasn't null", encKey.getReferenceList());
-        assertNull("EncryptedKey CarriedKeyName wasn't null", encKey.getCarriedKeyName());
+        AssertJUnit.assertNull("EncryptedKey ReferenceList wasn't null", encKey.getReferenceList());
+        AssertJUnit.assertNull("EncryptedKey CarriedKeyName wasn't null", encKey.getCarriedKeyName());
     }
     
     /**
      * Test encryption with a single key encryption key with key placement as peer.
      */
+    @Test
     public void testSingleKEKPeer() {
         Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
@@ -177,52 +182,53 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         try {
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
-            fail("Object encryption failed: " + e);
+            Assert.fail("Object encryption failed: " + e);
         }
         
-        assertNotNull("Encrypted object was null", encObject);
-        assertTrue("Encrypted object was not an instance of the expected type", 
+        AssertJUnit.assertNotNull("Encrypted object was null", encObject);
+        AssertJUnit.assertTrue("Encrypted object was not an instance of the expected type", 
                 encObject instanceof EncryptedAssertion);
         encTarget = (EncryptedAssertion) encObject;
         
-        assertEquals("Number of inline EncryptedKeys", 0, 
+        AssertJUnit.assertEquals("Number of inline EncryptedKeys", 0, 
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
-        assertEquals("Number of peer EncryptedKeys", 1, 
+        AssertJUnit.assertEquals("Number of peer EncryptedKeys", 1, 
                 encTarget.getEncryptedKeys().size());
         
         
         EncryptedKey encKey = encTarget.getEncryptedKeys().get(0);
-        assertNotNull("EncryptedKey was null", encKey);
+        AssertJUnit.assertNotNull("EncryptedKey was null", encKey);
         
-        assertEquals("Algorithm attribute", kekURIRSA, 
+        AssertJUnit.assertEquals("Algorithm attribute", kekURIRSA, 
                 encKey.getEncryptionMethod().getAlgorithm());
-        assertNotNull("KeyInfo", encKey.getKeyInfo());
-        assertEquals("KeyName", expectedKeyNameRSA, 
+        AssertJUnit.assertNotNull("KeyInfo", encKey.getKeyInfo());
+        AssertJUnit.assertEquals("KeyName", expectedKeyNameRSA, 
                 encKey.getKeyInfo().getKeyNames().get(0).getValue());
         
-        assertFalse("EncryptedKey ID attribute was empty",
+        AssertJUnit.assertFalse("EncryptedKey ID attribute was empty",
                 Strings.isNullOrEmpty(encKey.getID()));
         
         EncryptedData encData = encTarget.getEncryptedData();
-        assertNotNull("EncryptedData KeyInfo wasn't null", encData.getKeyInfo());
-        assertEquals("EncryptedData contained invalid number RetrievalMethods", 1,
+        AssertJUnit.assertNotNull("EncryptedData KeyInfo wasn't null", encData.getKeyInfo());
+        AssertJUnit.assertEquals("EncryptedData contained invalid number RetrievalMethods", 1,
                 encData.getKeyInfo().getRetrievalMethods().size());
         RetrievalMethod rm = encData.getKeyInfo().getRetrievalMethods().get(0);
-        assertEquals("EncryptedData RetrievalMethod had incorrect type attribute",
+        AssertJUnit.assertEquals("EncryptedData RetrievalMethod had incorrect type attribute",
                 EncryptionConstants.TYPE_ENCRYPTED_KEY, rm.getType());
-        assertEquals("EncryptedData RetrievalMethod had incorrect URI value",
+        AssertJUnit.assertEquals("EncryptedData RetrievalMethod had incorrect URI value",
                 "#" + encKey.getID(), rm.getURI());
         
-        assertNotNull("EncryptedKey ReferenceList was null", encKey.getReferenceList());
-        assertEquals("EncryptedKey contained invalid number DataReferences", 1,
+        AssertJUnit.assertNotNull("EncryptedKey ReferenceList was null", encKey.getReferenceList());
+        AssertJUnit.assertEquals("EncryptedKey contained invalid number DataReferences", 1,
                 encKey.getReferenceList().getDataReferences().size());
         DataReference dr = encKey.getReferenceList().getDataReferences().get(0);
-        assertEquals("EncryptedKey DataReference had incorrect URI value",
+        AssertJUnit.assertEquals("EncryptedKey DataReference had incorrect URI value",
                 "#" + encData.getID(), dr.getURI());
-        assertNull("EncryptedKey CarriedKeyName wasn't null", encKey.getCarriedKeyName());
+        AssertJUnit.assertNull("EncryptedKey CarriedKeyName wasn't null", encKey.getCarriedKeyName());
     }
     
     /** Test encryption with multicast key encryption keys with key placement as peer. */
+    @Test
     public void testMulticastKEKPeer() {
         Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
@@ -245,72 +251,73 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         try {
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
-            fail("Object encryption failed: " + e);
+            Assert.fail("Object encryption failed: " + e);
         }
         
-        assertNotNull("Encrypted object was null", encObject);
-        assertTrue("Encrypted object was not an instance of the expected type", 
+        AssertJUnit.assertNotNull("Encrypted object was null", encObject);
+        AssertJUnit.assertTrue("Encrypted object was not an instance of the expected type", 
                 encObject instanceof EncryptedAssertion);
         encTarget = (EncryptedAssertion) encObject;
         
-        assertEquals("Number of inline EncryptedKeys", 0, 
+        AssertJUnit.assertEquals("Number of inline EncryptedKeys", 0, 
                 encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size());
-        assertEquals("Number of peer EncryptedKeys", 2, 
+        AssertJUnit.assertEquals("Number of peer EncryptedKeys", 2, 
                 encTarget.getEncryptedKeys().size());
         
         
         EncryptedKey encKeyRSA = encTarget.getEncryptedKeys().get(0);
         EncryptedKey encKeyAES = encTarget.getEncryptedKeys().get(1);
-        assertNotNull("EncryptedKey was null", encKeyRSA);
-        assertNotNull("EncryptedKey was null", encKeyAES);
+        AssertJUnit.assertNotNull("EncryptedKey was null", encKeyRSA);
+        AssertJUnit.assertNotNull("EncryptedKey was null", encKeyAES);
         
-        assertEquals("Algorithm attribute", kekURIRSA, 
+        AssertJUnit.assertEquals("Algorithm attribute", kekURIRSA, 
                 encKeyRSA.getEncryptionMethod().getAlgorithm());
-        assertEquals("Algorithm attribute", kekURIAES, 
+        AssertJUnit.assertEquals("Algorithm attribute", kekURIAES, 
                 encKeyAES.getEncryptionMethod().getAlgorithm());
         
-        assertFalse("EncryptedKey ID attribute was empty",
+        AssertJUnit.assertFalse("EncryptedKey ID attribute was empty",
                 Strings.isNullOrEmpty(encKeyRSA.getID()));
-        assertFalse("EncryptedKey ID attribute was empty",
+        AssertJUnit.assertFalse("EncryptedKey ID attribute was empty",
                 Strings.isNullOrEmpty(encKeyAES.getID()));
         
         EncryptedData encData = encTarget.getEncryptedData();
-        assertNotNull("EncryptedData KeyInfo wasn't null", encData.getKeyInfo());
-        assertEquals("EncryptedData contained invalid number RetrievalMethods", 0,
+        AssertJUnit.assertNotNull("EncryptedData KeyInfo wasn't null", encData.getKeyInfo());
+        AssertJUnit.assertEquals("EncryptedData contained invalid number RetrievalMethods", 0,
                 encData.getKeyInfo().getRetrievalMethods().size());
-        assertEquals("EncryptedData contained invalid number KeyNames", 1,
+        AssertJUnit.assertEquals("EncryptedData contained invalid number KeyNames", 1,
                 encData.getKeyInfo().getKeyNames().size());
         KeyName encDataKeyName = encData.getKeyInfo().getKeyNames().get(0);
-        assertEquals("EncryptedData KeyName value", multicastKeyNameValue, encDataKeyName.getValue());
+        AssertJUnit.assertEquals("EncryptedData KeyName value", multicastKeyNameValue, encDataKeyName.getValue());
         
         DataReference dr = null;
         
-        assertEquals("EncryptedKey recipient attribute had invalid value", expectedRecipientRSA,
+        AssertJUnit.assertEquals("EncryptedKey recipient attribute had invalid value", expectedRecipientRSA,
                 encKeyRSA.getRecipient());
-        assertNotNull("EncryptedKey ReferenceList was null", encKeyRSA.getReferenceList());
-        assertEquals("EncryptedKey contained invalid number DataReferences", 1,
+        AssertJUnit.assertNotNull("EncryptedKey ReferenceList was null", encKeyRSA.getReferenceList());
+        AssertJUnit.assertEquals("EncryptedKey contained invalid number DataReferences", 1,
                 encKeyRSA.getReferenceList().getDataReferences().size());
         dr = encKeyRSA.getReferenceList().getDataReferences().get(0);
-        assertEquals("EncryptedKey DataReference had incorrect URI value",
+        AssertJUnit.assertEquals("EncryptedKey DataReference had incorrect URI value",
                 "#" + encData.getID(), dr.getURI());
-        assertNotNull("EncryptedKey CarriedKeyName wasn't null", encKeyRSA.getCarriedKeyName());
-        assertEquals("EncrypteKey CarriedKeyName had incorrect value", multicastKeyNameValue,
+        AssertJUnit.assertNotNull("EncryptedKey CarriedKeyName wasn't null", encKeyRSA.getCarriedKeyName());
+        AssertJUnit.assertEquals("EncrypteKey CarriedKeyName had incorrect value", multicastKeyNameValue,
                 encKeyRSA.getCarriedKeyName().getValue());
         
-        assertEquals("EncryptedKey recipient attribute had invalid value", expectedRecipientAES,
+        AssertJUnit.assertEquals("EncryptedKey recipient attribute had invalid value", expectedRecipientAES,
                 encKeyAES.getRecipient());
-        assertNotNull("EncryptedKey ReferenceList was null", encKeyAES.getReferenceList());
-        assertEquals("EncryptedKey contained invalid number DataReferences", 1,
+        AssertJUnit.assertNotNull("EncryptedKey ReferenceList was null", encKeyAES.getReferenceList());
+        AssertJUnit.assertEquals("EncryptedKey contained invalid number DataReferences", 1,
                 encKeyAES.getReferenceList().getDataReferences().size());
         dr = encKeyAES.getReferenceList().getDataReferences().get(0);
-        assertEquals("EncryptedKey DataReference had incorrect URI value",
+        AssertJUnit.assertEquals("EncryptedKey DataReference had incorrect URI value",
                 "#" + encData.getID(), dr.getURI());
-        assertNotNull("EncryptedKey CarriedKeyName wasn't null", encKeyAES.getCarriedKeyName());
-        assertEquals("EncrypteKey CarriedKeyName had incorrect value", multicastKeyNameValue,
+        AssertJUnit.assertNotNull("EncryptedKey CarriedKeyName wasn't null", encKeyAES.getCarriedKeyName());
+        AssertJUnit.assertEquals("EncrypteKey CarriedKeyName had incorrect value", multicastKeyNameValue,
                 encKeyAES.getCarriedKeyName().getValue());
     }
     
     /** Test that reuse is allowed with same key encryption parameters. */
+    @Test
     public void testReuse() {
         Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
@@ -331,22 +338,22 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         try {
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
-            fail("Object encryption failed: " + e);
+            Assert.fail("Object encryption failed: " + e);
         }
         
-        assertNotNull("Encrypted object was null", encObject);
-        assertTrue("Encrypted object was not an instance of the expected type", 
+        AssertJUnit.assertNotNull("Encrypted object was null", encObject);
+        AssertJUnit.assertTrue("Encrypted object was not an instance of the expected type", 
                 encObject instanceof EncryptedAttribute);
         
         XMLObject encObject2 = null;
         try {
             encObject2 = encrypter.encrypt(target2);
         } catch (EncryptionException e) {
-            fail("Object encryption failed: " + e);
+            Assert.fail("Object encryption failed: " + e);
         }
         
-        assertNotNull("Encrypted object was null", encObject2);
-        assertTrue("Encrypted object was not an instance of the expected type", 
+        AssertJUnit.assertNotNull("Encrypted object was null", encObject2);
+        AssertJUnit.assertTrue("Encrypted object was not an instance of the expected type", 
                 encObject2 instanceof EncryptedAttribute);
     }
 

@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -44,12 +46,14 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
     
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResponse ar = (ArtifactResponse) buildXMLObject(qname);
@@ -60,6 +64,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResponse ar = (ArtifactResponse) buildXMLObject(qname);
@@ -72,6 +77,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResponse ar = (ArtifactResponse) buildXMLObject(qname);
@@ -83,6 +89,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ArtifactResponse ar = (ArtifactResponse) unmarshallElement(singleElementFile);
         
@@ -92,6 +99,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
   
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         ArtifactResponse ar = (ArtifactResponse) unmarshallElement(singleElementOptionalAttributesFile);
         
@@ -102,6 +110,7 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         ArtifactResponse ar = (ArtifactResponse) unmarshallElement(childElementsFile);
         

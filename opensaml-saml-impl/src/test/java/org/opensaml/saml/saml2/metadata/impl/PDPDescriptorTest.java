@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
@@ -62,9 +65,8 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedSupportedProtocol = new ArrayList<String>();
         expectedSupportedProtocol.add("urn:foo:bar");
         expectedSupportedProtocol.add("urn:fooz:baz");
@@ -76,36 +78,40 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(singleElementFile);
 
-        assertEquals("Supported protocols not equal to expected value", expectedSupportedProtocol, descriptor
+        AssertJUnit.assertEquals("Supported protocols not equal to expected value", expectedSupportedProtocol, descriptor
                 .getSupportedProtocols());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Cache duration was not expected value", expectedCacheDuration, descriptor.getCacheDuration()
+        AssertJUnit.assertEquals("Cache duration was not expected value", expectedCacheDuration, descriptor.getCacheDuration()
                 .longValue());
-        assertEquals("ValidUntil was not expected value", expectedValidUntil, descriptor.getValidUntil());
-        assertEquals("ErrorURL was not expected value", expectedErrorURL, descriptor.getErrorURL());
+        AssertJUnit.assertEquals("ValidUntil was not expected value", expectedValidUntil, descriptor.getValidUntil());
+        AssertJUnit.assertEquals("ErrorURL was not expected value", expectedErrorURL, descriptor.getErrorURL());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(childElementsFile);
 
-        assertNotNull("<Extensions>", descriptor.getExtensions());
-        assertEquals("KeyDescriptor", 0, descriptor.getKeyDescriptors().size());
+        AssertJUnit.assertNotNull("<Extensions>", descriptor.getExtensions());
+        AssertJUnit.assertEquals("KeyDescriptor", 0, descriptor.getKeyDescriptors().size());
 
-        assertEquals("AuthzService count", 3, descriptor.getAuthzServices().size());
-        assertEquals("AssertionIDRequestService count", 2, descriptor.getAssertionIDRequestServices().size());
-        assertEquals("NameIDFormat count", 1, descriptor.getNameIDFormats().size());
+        AssertJUnit.assertEquals("AuthzService count", 3, descriptor.getAuthzServices().size());
+        AssertJUnit.assertEquals("AssertionIDRequestService count", 2, descriptor.getAssertionIDRequestServices().size());
+        AssertJUnit.assertEquals("NameIDFormat count", 1, descriptor.getNameIDFormats().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);
@@ -118,6 +124,7 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);
@@ -134,6 +141,7 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);

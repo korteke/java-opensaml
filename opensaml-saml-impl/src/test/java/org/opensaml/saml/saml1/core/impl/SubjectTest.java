@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -49,30 +51,34 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Subject subject = (Subject) unmarshallElement(singleElementFile);
 
-        assertNull("Non zero number of child NameIdentifier elements", subject.getNameIdentifier());
-        assertNull("Non zero number of child SubjectConfirmation elements", subject.getSubjectConfirmation());
+        AssertJUnit.assertNull("Non zero number of child NameIdentifier elements", subject.getNameIdentifier());
+        AssertJUnit.assertNull("Non zero number of child SubjectConfirmation elements", subject.getSubjectConfirmation());
     }
 
     /**
      * Test an XML file with children
      */
+    @Test
     public void testChildElementsUnmarshall() {
         Subject subject = (Subject) unmarshallElement(childElementsFile);
 
-        assertNotNull("Zero child NameIdentifier elements", subject.getNameIdentifier());
-        assertNotNull("Zero child SubjectConfirmation elements", subject.getSubjectConfirmation());
+        AssertJUnit.assertNotNull("Zero child NameIdentifier elements", subject.getNameIdentifier());
+        AssertJUnit.assertNotNull("Zero child SubjectConfirmation elements", subject.getSubjectConfirmation());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
         Subject subject = (Subject) buildXMLObject(qname);
 

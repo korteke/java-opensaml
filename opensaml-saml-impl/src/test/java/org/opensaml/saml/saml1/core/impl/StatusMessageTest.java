@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -52,26 +54,30 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementFile);
-        assertNull("Contents", statusMessage.getMessage());
+        AssertJUnit.assertNull("Contents", statusMessage.getMessage());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementOptionalAttributesFile);
-        assertEquals("Contents", contents, statusMessage.getMessage());
+        AssertJUnit.assertEquals("Contents", contents, statusMessage.getMessage());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         StatusMessage statusMessage = (StatusMessage) buildXMLObject(qname);
 

@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -57,11 +60,7 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();      
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         DiscoHints hints = (DiscoHints) unmarshallElement(singleElementFile);
         //
@@ -71,6 +70,7 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 DiscoHints.DEFAULT_ELEMENT_LOCAL_NAME, 
@@ -82,16 +82,18 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall(){
         DiscoHints hints = (DiscoHints) unmarshallElement(childElementsFile);
         
-        assertEquals("<IPHint> count", expectedIPHintCount, hints.getIPHints().size());
-        assertEquals("<DomainHint> count", expectedDomainHintsCount, hints.getDomainHints().size());
-        assertEquals("<GeolocationHint> count", expectedGeolocationHintsCount, hints.getGeolocationHints().size());
-        assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, hints.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        AssertJUnit.assertEquals("<IPHint> count", expectedIPHintCount, hints.getIPHints().size());
+        AssertJUnit.assertEquals("<DomainHint> count", expectedDomainHintsCount, hints.getDomainHints().size());
+        AssertJUnit.assertEquals("<GeolocationHint> count", expectedGeolocationHintsCount, hints.getGeolocationHints().size());
+        AssertJUnit.assertEquals("<test:SimpleElement> count", expectedSimpleElementCount, hints.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall(){
         DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
         

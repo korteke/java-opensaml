@@ -30,6 +30,8 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
@@ -45,27 +47,25 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Organization org = (Organization) unmarshallElement(singleElementFile);
-        assertEquals("Display names", 0, org.getDisplayNames().size());
+        AssertJUnit.assertEquals("Display names", 0, org.getDisplayNames().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Organization org = (Organization) unmarshallElement(childElementsFile);
 
-        assertNotNull("Extensions", org.getExtensions());
-        assertEquals("OrganizationName count", 3, org.getOrganizationNames().size());
-        assertEquals("DisplayNames count", 2, org.getDisplayNames().size());
-        assertEquals("URL count", 1, org.getURLs().size());
+        AssertJUnit.assertNotNull("Extensions", org.getExtensions());
+        AssertJUnit.assertEquals("OrganizationName count", 3, org.getOrganizationNames().size());
+        AssertJUnit.assertEquals("DisplayNames count", 2, org.getDisplayNames().size());
+        AssertJUnit.assertEquals("URL count", 1, org.getURLs().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
@@ -75,6 +75,7 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
     /**
      * 
      */
+    @Test
     public void testChildElementsMarshall() {
         Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 

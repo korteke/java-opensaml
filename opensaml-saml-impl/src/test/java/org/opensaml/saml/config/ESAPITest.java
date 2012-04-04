@@ -17,8 +17,9 @@
 
 package org.opensaml.saml.config;
 
-import junit.framework.TestCase;
-
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.saml.config.DefaultBootstrap;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
@@ -27,23 +28,24 @@ import org.owasp.esapi.SecurityConfiguration;
 /**
  * Test that OWASPI ESAPI is initialized properly by the default bootstrap process.
  */
-public class ESAPITest extends TestCase {
+public class ESAPITest {
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         DefaultBootstrap.bootstrap();
     }
     
     /**
      *  Tests that basic initialization has happened.
      */
+    @Test
     public void testInit() {
         SecurityConfiguration sc = ESAPI.securityConfiguration();
-        assertNotNull("ESAPI SecurityConfiguration was null", sc);
+        AssertJUnit.assertNotNull("ESAPI SecurityConfiguration was null", sc);
         
         Encoder encoder = ESAPI.encoder();
-        assertNotNull("ESAPI Encoder was null", encoder);
+        AssertJUnit.assertNotNull("ESAPI Encoder was null", encoder);
     }
 
 }

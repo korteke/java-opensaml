@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -45,13 +48,13 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedValue = "urn:string";
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         StatusCode statusCode = (StatusCode) buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
         
@@ -62,6 +65,7 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         StatusCode statusCode = (StatusCode) buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
         
@@ -74,16 +78,18 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         StatusCode statusCode = (StatusCode) unmarshallElement(singleElementFile);
         
-        assertEquals("Unmarshalled status code URI value was not the expected value", expectedValue, statusCode.getValue());
+        AssertJUnit.assertEquals("Unmarshalled status code URI value was not the expected value", expectedValue, statusCode.getValue());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         StatusCode statusCode = (StatusCode) unmarshallElement(childElementsFile);
         
-        assertNotNull(statusCode.getStatusCode());
+        AssertJUnit.assertNotNull(statusCode.getStatusCode());
     }
 }

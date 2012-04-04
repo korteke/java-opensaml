@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherValue;
 
@@ -38,21 +41,22 @@ public class CipherValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBase64Content = "someBase64==";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         CipherValue cv = (CipherValue) unmarshallElement(singleElementFile);
         
-        assertNotNull("CipherValue", cv);
-        assertEquals("CipherValue value", cv.getValue(), expectedBase64Content);
+        AssertJUnit.assertNotNull("CipherValue", cv);
+        AssertJUnit.assertEquals("CipherValue value", cv.getValue(), expectedBase64Content);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         CipherValue cv = (CipherValue) buildXMLObject(CipherValue.DEFAULT_ELEMENT_NAME);
         cv.setValue(expectedBase64Content);

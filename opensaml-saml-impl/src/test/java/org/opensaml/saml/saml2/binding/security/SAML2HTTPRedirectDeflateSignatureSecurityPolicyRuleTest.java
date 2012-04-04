@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.binding.security;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.net.URI;
 import java.security.KeyException;
 import java.security.PrivateKey;
@@ -171,9 +175,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         // Trust engine setup
         issuer = "SomeCoolIssuer";
         
@@ -195,19 +198,21 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
     /**
      * Test context issuer set, valid signature with trusted credential.
      */
+    @Test
     public void testSuccess() {
         trustedCredentials.add(signingX509Cred);
         
         assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver");
         SAMLMessageContext samlContext = messageContext;
-        assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
-        assertTrue("Unexpected value for context authentication state", 
+        AssertJUnit.assertEquals("Unexpected value for Issuer found", issuer, samlContext.getInboundMessageIssuer());
+        AssertJUnit.assertTrue("Unexpected value for context authentication state", 
                 samlContext.isInboundSAMLMessageAuthenticated());
     }
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
      */
+    @Test
     public void testUntrustedCredential() {
         assertRuleFailure("Protocol message was signed with credential unknown to trust engine resolver");
     }
@@ -215,6 +220,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
     /**
      * Test context issuer set, invalid signature with trusted credential.
      */
+    @Test
     public void testInvalidSignature() {
         trustedCredentials.add(signingX509Cred);
         
@@ -231,6 +237,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
     /**
      * Test context issuer set, valid signature with untrusted credential.
      */
+    @Test
     public void testNoContextIssuer() {
         messageContext.setInboundMessageIssuer(null);
         assertRuleFailure("Protocol message signature should have been unevaluable due to absence of context issuer");
@@ -270,7 +277,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         try {
             encoder.encode(outboundMessgeContext);
         } catch (MessageEncodingException e) {
-            fail("Could not encode outbound message context");
+            Assert.fail("Could not encode outbound message context");
         }
         
         // Now populate the new "inbound" message context with the "outbound" encoded info

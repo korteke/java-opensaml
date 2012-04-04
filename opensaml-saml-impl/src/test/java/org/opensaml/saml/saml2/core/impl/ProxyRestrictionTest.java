@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -42,24 +45,22 @@ public class ProxyRestrictionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ProxyRestriction proxyRestriction = (ProxyRestriction) unmarshallElement(singleElementFile);
 
         int count = proxyRestriction.getProxyCount();
-        assertEquals("ProxyCount not as expected", expectedCount, count);
+        AssertJUnit.assertEquals("ProxyCount not as expected", expectedCount, count);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, ProxyRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         ProxyRestriction proxyRestriction = (ProxyRestriction) buildXMLObject(qname);
@@ -70,17 +71,20 @@ public class ProxyRestrictionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         ProxyRestriction proxyRestriction = (ProxyRestriction) unmarshallElement(childElementsFile);
-        assertEquals("Audience Count", expectedAudienceCount, proxyRestriction.getAudiences().size());
+        AssertJUnit.assertEquals("Audience Count", expectedAudienceCount, proxyRestriction.getAudiences().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, ProxyRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         ProxyRestriction proxyRestriction = (ProxyRestriction) buildXMLObject(qname);

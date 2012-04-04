@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -49,30 +51,34 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Advice advice = (Advice) unmarshallElement(singleElementFile);
 
-        assertEquals("Number of child AssertIDReference elements", 0, advice.getAssertionIDReferences().size());
-        assertEquals("Number of child Assertion elements", 0, advice.getAssertions().size());
+        AssertJUnit.assertEquals("Number of child AssertIDReference elements", 0, advice.getAssertionIDReferences().size());
+        AssertJUnit.assertEquals("Number of child Assertion elements", 0, advice.getAssertions().size());
     }
 
     /**
      * Test an XML file with children
      */
+    @Test
     public void testChildElementsUnmarshall() {
         Advice advice = (Advice) unmarshallElement(childElementsFile);
 
-        assertEquals("Number of child AssertIDReference elements", 2, advice.getAssertionIDReferences().size());
-        assertEquals("Number of child Assertion elements", 1, advice.getAssertions().size());
+        AssertJUnit.assertEquals("Number of child AssertIDReference elements", 2, advice.getAssertionIDReferences().size());
+        AssertJUnit.assertEquals("Number of child Assertion elements", 1, advice.getAssertions().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
         Advice advice = (Advice) buildXMLObject(qname);
         

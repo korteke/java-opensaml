@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.MgmtData;
 
@@ -38,21 +41,22 @@ public class MgmtDataTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "someMgmtData";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         MgmtData keyName = (MgmtData) unmarshallElement(singleElementFile);
         
-        assertNotNull("MgmtData", keyName);
-        assertEquals("MgmtData value", keyName.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("MgmtData", keyName);
+        AssertJUnit.assertEquals("MgmtData value", keyName.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         MgmtData keyName = (MgmtData) buildXMLObject(MgmtData.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedStringContent);

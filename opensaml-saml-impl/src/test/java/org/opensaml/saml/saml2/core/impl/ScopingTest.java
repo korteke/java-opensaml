@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -51,13 +54,14 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedProxyCount = 5;
         expectedNumRequestIDs = 3;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
@@ -66,6 +70,7 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
@@ -75,6 +80,7 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
@@ -90,30 +96,33 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Scoping scoping = (Scoping) unmarshallElement(singleElementFile);
         
-        assertNull("ProxyCount", scoping.getProxyCount());
-        assertNull("IDPList", scoping.getIDPList());
-        assertEquals("RequesterID count", 0 , scoping.getRequesterIDs().size());
+        AssertJUnit.assertNull("ProxyCount", scoping.getProxyCount());
+        AssertJUnit.assertNull("IDPList", scoping.getIDPList());
+        AssertJUnit.assertEquals("RequesterID count", 0 , scoping.getRequesterIDs().size());
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Scoping scoping = (Scoping) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("ProxyCount", scoping.getProxyCount());
-        assertNull("IDPList", scoping.getIDPList());
-        assertEquals("RequesterID count", 0, scoping.getRequesterIDs().size());
+        AssertJUnit.assertNotNull("ProxyCount", scoping.getProxyCount());
+        AssertJUnit.assertNull("IDPList", scoping.getIDPList());
+        AssertJUnit.assertEquals("RequesterID count", 0, scoping.getRequesterIDs().size());
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Scoping scoping = (Scoping) unmarshallElement(childElementsFile);
         
-        assertNull("ProxyCount", scoping.getProxyCount());
-        assertNotNull("IDPList", scoping.getIDPList());
-        assertEquals("RequesterID count", expectedNumRequestIDs, scoping.getRequesterIDs().size());
+        AssertJUnit.assertNull("ProxyCount", scoping.getProxyCount());
+        AssertJUnit.assertNotNull("IDPList", scoping.getIDPList());
+        AssertJUnit.assertEquals("RequesterID count", expectedNumRequestIDs, scoping.getRequesterIDs().size());
     }
 }

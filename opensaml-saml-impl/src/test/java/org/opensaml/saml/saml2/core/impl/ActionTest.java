@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -41,33 +44,35 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedAction = "action name";
         expectedNamespace = "ns";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementFile);
 
         String actionname = action.getAction();
-        assertEquals("Action was " + actionname + ", expected " + expectedAction, expectedAction, actionname);
+        AssertJUnit.assertEquals("Action was " + actionname + ", expected " + expectedAction, expectedAction, actionname);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
 
         String actionname = action.getAction();
-        assertEquals("Action was " + actionname + ", expected " + expectedAction, expectedAction, actionname);
+        AssertJUnit.assertEquals("Action was " + actionname + ", expected " + expectedAction, expectedAction, actionname);
 
         String namespace = action.getNamespace();
-        assertEquals("Namespace was " + namespace + ", expected " + expectedNamespace, expectedNamespace, namespace);
+        AssertJUnit.assertEquals("Namespace was " + namespace + ", expected " + expectedNamespace, expectedNamespace, namespace);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Action action = (Action) buildXMLObject(qname);
@@ -77,6 +82,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Action action = (Action) buildXMLObject(qname);

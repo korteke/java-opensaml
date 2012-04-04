@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -40,8 +43,8 @@ public class XSStringTest extends XMLObjectBaseTestCase {
     private String expectedValue;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception{
-        super.setUp();
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsString.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = "test";
@@ -52,6 +55,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      * @throws XMLParserException 
      */
+    @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
         XSStringBuilder xssBuilder = (XSStringBuilder) builderFactory.getBuilder(XSString.TYPE_NAME);
         XSString xsString = xssBuilder.buildObject(expectedXMLObjectQName, XSString.TYPE_NAME);
@@ -70,14 +74,15 @@ public class XSStringTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSStringTest.class.getResourceAsStream(testDocumentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSString xsString = (XSString) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSString QName", expectedXMLObjectQName, xsString.getElementQName());
-        assertEquals("Unexpected XSString schema type", XSString.TYPE_NAME, xsString.getSchemaType());
-        assertEquals("Unexpected value of XSString", xsString.getValue(), expectedValue);
+        AssertJUnit.assertEquals("Unexpected XSString QName", expectedXMLObjectQName, xsString.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSString schema type", XSString.TYPE_NAME, xsString.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected value of XSString", xsString.getValue(), expectedValue);
     }
 }

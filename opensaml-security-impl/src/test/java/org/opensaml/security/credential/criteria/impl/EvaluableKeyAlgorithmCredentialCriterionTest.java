@@ -17,8 +17,9 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
-import junit.framework.TestCase;
-
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
@@ -29,7 +30,7 @@ import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 /**
  *
  */
-public class EvaluableKeyAlgorithmCredentialCriterionTest extends TestCase {
+public class EvaluableKeyAlgorithmCredentialCriterionTest {
     
     private BasicCredential credential;
     private String keyAlgo;
@@ -40,35 +41,38 @@ public class EvaluableKeyAlgorithmCredentialCriterionTest extends TestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         credential = new BasicCredential();
         credential.setPublicKey(SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
         
         criteria = new KeyAlgorithmCriterion(keyAlgo);
     }
     
+    @Test
     public void testSatifsy() {
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
-        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 
+    @Test
     public void testNotSatisfy() {
         criteria.setKeyAlgorithm("SomeOtherKeyAlgo");
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
-        assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertFalse("Credential should NOT have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
     
+    @Test
     public void testCanNotEvaluate() {
         credential.setPublicKey(null);
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
-        assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
     }
     
+    @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
-        assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
+        AssertJUnit.assertNotNull("Evaluable criteria was unavailable from the registry", evalCrit);
+        AssertJUnit.assertTrue("Credential should have matched the evaluable criteria", evalCrit.evaluate(credential));
     }
 }

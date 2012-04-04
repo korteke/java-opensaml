@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -75,9 +78,8 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
     private RandomIdentifierGenerationStrategy idGenerator;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
         
@@ -101,6 +103,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException 
      * @throws SecurityException 
      */
+    @Test
     public void testAssertionSignature() 
         throws MarshallingException, SignatureException, UnmarshallingException, SecurityException{
         DateTime now = new DateTime();
@@ -141,7 +144,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
         ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIDCriterion("urn:example.org:issuer") );
-        assertTrue("Assertion signature was not valid",
+        AssertJUnit.assertTrue("Assertion signature was not valid",
                 trustEngine.validate(signedAssertion.getSignature(), criteriaSet));
     }
 }

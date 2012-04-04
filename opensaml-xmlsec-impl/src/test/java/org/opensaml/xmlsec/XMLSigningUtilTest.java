@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -29,8 +32,6 @@ import java.util.Arrays;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 
-import junit.framework.TestCase;
-
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
@@ -40,7 +41,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Test the SigningUtil operations for generating and verifying simple, raw signatures and MAC's.
  */
-public class XMLSigningUtilTest extends TestCase {
+public class XMLSigningUtilTest {
     
     private SecretKey secretKeyAES128;
     private KeyPair keyPairRSA;
@@ -67,64 +68,67 @@ public class XMLSigningUtilTest extends TestCase {
     }
     
 
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         secretKeyAES128 = SecurityHelper.generateKey("AES", 128, null);
         credAES = SecurityHelper.getSimpleCredential(secretKeyAES128);
         keyPairRSA = SecurityHelper.generateKeyPair("RSA", 1024, null);
         credRSA = SecurityHelper.getSimpleCredential(keyPairRSA.getPublic(), keyPairRSA.getPrivate());
         
         controlSignatureRSA = getControlSignature(data.getBytes(), keyPairRSA.getPrivate(), rsaJCAAlgorithm);
-        assertNotNull(controlSignatureRSA);
-        assertTrue(controlSignatureRSA.length > 0);
+        AssertJUnit.assertNotNull(controlSignatureRSA);
+        AssertJUnit.assertTrue(controlSignatureRSA.length > 0);
         
         controlSignatureHMAC = getControlSignature(data.getBytes(), secretKeyAES128, hmacJCAAlgorithm);
-        assertNotNull(controlSignatureHMAC);
-        assertTrue(controlSignatureHMAC.length > 0);
+        AssertJUnit.assertNotNull(controlSignatureHMAC);
+        AssertJUnit.assertTrue(controlSignatureHMAC.length > 0);
     }
 
+    @Test
     public void testSigningWithPrivateKey() throws SecurityException {
         byte[] signature = XMLSigningUtil.signWithURI(credRSA, rsaAlgorithmURI, data.getBytes());
-        assertNotNull(signature);
-        assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureRSA, signature));
+        AssertJUnit.assertNotNull(signature);
+        AssertJUnit.assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureRSA, signature));
     }
     
+    @Test
     public void testSigningWithHMAC() throws SecurityException {
         byte[] signature = XMLSigningUtil.signWithURI(credAES, hmacAlgorithmURI, data.getBytes());
-        assertNotNull(signature);
-        assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureHMAC, signature));
+        AssertJUnit.assertNotNull(signature);
+        AssertJUnit.assertTrue("Signature was not the expected value", Arrays.equals(controlSignatureHMAC, signature));
     }
     
+    @Test
     public void testVerificationWithPublicKey() throws SecurityException, NoSuchAlgorithmException, NoSuchProviderException {
-        assertTrue("Signature failed to verify, should have succeeded",
+        AssertJUnit.assertTrue("Signature failed to verify, should have succeeded",
                 XMLSigningUtil.verifyWithURI(credRSA, rsaAlgorithmURI, controlSignatureRSA, data.getBytes()));
         
         KeyPair badKP = SecurityHelper.generateKeyPair("RSA", 1024, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKP.getPublic(), badKP.getPrivate());
         
-        assertFalse("Signature verified successfully, should have failed due to wrong verification key",
+        AssertJUnit.assertFalse("Signature verified successfully, should have failed due to wrong verification key",
                 XMLSigningUtil.verifyWithURI(badCred, rsaAlgorithmURI, controlSignatureRSA, data.getBytes()));
         
         String tamperedData = data + "HAHA All your base are belong to us";
         
-        assertFalse("Signature verified successfully, should have failed due to tampered data",
+        AssertJUnit.assertFalse("Signature verified successfully, should have failed due to tampered data",
                 XMLSigningUtil.verifyWithURI(credRSA, rsaAlgorithmURI, controlSignatureRSA, tamperedData.getBytes()));
     }
 
+    @Test
     public void testVerificationWithHMAC() throws SecurityException, NoSuchAlgorithmException, NoSuchProviderException {
-        assertTrue("Signature failed to verify, should have succeeded",
+        AssertJUnit.assertTrue("Signature failed to verify, should have succeeded",
                 XMLSigningUtil.verifyWithURI(credAES, hmacAlgorithmURI, controlSignatureHMAC, data.getBytes()));
         
         SecretKey badKey = SecurityHelper.generateKey("AES", 128, null);
         Credential badCred = SecurityHelper.getSimpleCredential(badKey);
         
-        assertFalse("Signature verified successfully, should have failed due to wrong verification key",
+        AssertJUnit.assertFalse("Signature verified successfully, should have failed due to wrong verification key",
                 XMLSigningUtil.verifyWithURI(badCred, hmacAlgorithmURI, controlSignatureHMAC, data.getBytes()));
         
         String tamperedData = data + "HAHA All your base are belong to us";
         
-        assertFalse("Signature verified successfully, should have failed due to tampered data",
+        AssertJUnit.assertFalse("Signature verified successfully, should have failed due to tampered data",
                 XMLSigningUtil.verifyWithURI(credAES, hmacAlgorithmURI, controlSignatureHMAC, tamperedData.getBytes()));
         
     }

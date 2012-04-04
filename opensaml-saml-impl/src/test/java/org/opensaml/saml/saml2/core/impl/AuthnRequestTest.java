@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -72,6 +75,7 @@ public class AuthnRequestTest extends RequestTestBase {
     
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
         
@@ -87,6 +91,7 @@ public class AuthnRequestTest extends RequestTestBase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AuthnRequest req = (AuthnRequest) buildXMLObject(qname);
@@ -98,6 +103,7 @@ public class AuthnRequestTest extends RequestTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AuthnRequest req = (AuthnRequest) buildXMLObject(qname);
@@ -117,6 +123,7 @@ public class AuthnRequestTest extends RequestTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         AuthnRequest req = (AuthnRequest) buildXMLObject(qname);
@@ -142,46 +149,49 @@ public class AuthnRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AuthnRequest req = (AuthnRequest) unmarshallElement(singleElementFile);
         
-        assertNotNull("AuthnRequest was null", req);
-        assertEquals("ForceAuthn (empty) was not default value", Boolean.FALSE, req.isForceAuthn());
-        assertEquals("IsPassive (empty) was not default value", Boolean.FALSE, req.isPassive());
-        assertNull("ProtocolBinding was not null", req.getProtocolBinding());
-        assertNull("AssertionConsumerServiceIndex was not null", req.getAssertionConsumerServiceIndex());
-        assertNull("AssertionConsumerServiceURL was not null", req.getAssertionConsumerServiceURL());
-        assertNull("AttributeConsumingServiceIndex was not null", req.getAttributeConsumingServiceIndex());
-        assertNull("ProviderName was not null", req.getProviderName());
+        AssertJUnit.assertNotNull("AuthnRequest was null", req);
+        AssertJUnit.assertEquals("ForceAuthn (empty) was not default value", Boolean.FALSE, req.isForceAuthn());
+        AssertJUnit.assertEquals("IsPassive (empty) was not default value", Boolean.FALSE, req.isPassive());
+        AssertJUnit.assertNull("ProtocolBinding was not null", req.getProtocolBinding());
+        AssertJUnit.assertNull("AssertionConsumerServiceIndex was not null", req.getAssertionConsumerServiceIndex());
+        AssertJUnit.assertNull("AssertionConsumerServiceURL was not null", req.getAssertionConsumerServiceURL());
+        AssertJUnit.assertNull("AttributeConsumingServiceIndex was not null", req.getAttributeConsumingServiceIndex());
+        AssertJUnit.assertNull("ProviderName was not null", req.getProviderName());
         
         super.helperTestSingleElementUnmarshall(req);
 
     }
  
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthnRequest req = (AuthnRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Unmarshalled ForceAuthn was not the expected value", expectedForceAuthn, req.isForceAuthnXSBoolean());
-        assertEquals("Unmarshalled IsPassive was not the expected value", expectedIsPassive, req.isPassiveXSBoolean());
-        assertEquals("Unmarshalled ProtocolBinding was not the expected value", expectedProtocolBinding, req.getProtocolBinding());
-        assertEquals("Unmarshalled AssertionConsumerServiceIndex was not the expected value", expectedAssertionConsumerServiceIndex, req.getAssertionConsumerServiceIndex());
-        assertEquals("Unmarshalled AssertionConsumerServiceURL was not the expected value", expectedAssertionConsumerServiceURL, req.getAssertionConsumerServiceURL());
-        assertEquals("Unmarshalled AttributeConsumingServiceIndex was not the expected value", expectedAttributeConsumingServiceIndex, req.getAttributeConsumingServiceIndex());
-        assertEquals("Unmarshalled ProviderName was not the expected value", expectedProviderName, req.getProviderName());
+        AssertJUnit.assertEquals("Unmarshalled ForceAuthn was not the expected value", expectedForceAuthn, req.isForceAuthnXSBoolean());
+        AssertJUnit.assertEquals("Unmarshalled IsPassive was not the expected value", expectedIsPassive, req.isPassiveXSBoolean());
+        AssertJUnit.assertEquals("Unmarshalled ProtocolBinding was not the expected value", expectedProtocolBinding, req.getProtocolBinding());
+        AssertJUnit.assertEquals("Unmarshalled AssertionConsumerServiceIndex was not the expected value", expectedAssertionConsumerServiceIndex, req.getAssertionConsumerServiceIndex());
+        AssertJUnit.assertEquals("Unmarshalled AssertionConsumerServiceURL was not the expected value", expectedAssertionConsumerServiceURL, req.getAssertionConsumerServiceURL());
+        AssertJUnit.assertEquals("Unmarshalled AttributeConsumingServiceIndex was not the expected value", expectedAttributeConsumingServiceIndex, req.getAttributeConsumingServiceIndex());
+        AssertJUnit.assertEquals("Unmarshalled ProviderName was not the expected value", expectedProviderName, req.getProviderName());
         
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AuthnRequest req = (AuthnRequest) unmarshallElement(childElementsFile);
         
-        assertNotNull("Subject was null", req.getSubject());
-        assertNotNull("NameIDPolicy was null", req.getNameIDPolicy());
-        assertNotNull("Conditions was null", req.getConditions());
-        assertNotNull("RequestedAuthnContext was null", req.getRequestedAuthnContext());
-        assertNotNull("Scoping was null", req.getScoping());
+        AssertJUnit.assertNotNull("Subject was null", req.getSubject());
+        AssertJUnit.assertNotNull("NameIDPolicy was null", req.getNameIDPolicy());
+        AssertJUnit.assertNotNull("Conditions was null", req.getConditions());
+        AssertJUnit.assertNotNull("RequestedAuthnContext was null", req.getRequestedAuthnContext());
+        AssertJUnit.assertNotNull("Scoping was null", req.getScoping());
         
         super.helperTestChildElementsUnmarshall(req);
     }
@@ -189,47 +199,48 @@ public class AuthnRequestTest extends RequestTestBase {
     /**
      * Test the proper behavior of the XSBooleanValue attributes.
      */
+    @Test
     public void testXSBooleanAttributes() {
         AuthnRequest req = (AuthnRequest) buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME);
         
         // ForceAuthn attribute
         req.setForceAuthn(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, req.isForceAuthn());
-        assertNotNull("XSBooleanValue was null", req.isForceAuthnXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, req.isForceAuthn());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", req.isForceAuthnXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
                 req.isForceAuthnXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true", req.isForceAuthnXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", req.isForceAuthnXSBoolean().toString());
         
         req.setForceAuthn(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, req.isForceAuthn());
-        assertNotNull("XSBooleanValue was null", req.isForceAuthnXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, req.isForceAuthn());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", req.isForceAuthnXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
                 req.isForceAuthnXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false", req.isForceAuthnXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", req.isForceAuthnXSBoolean().toString());
         
         req.setForceAuthn((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, req.isForceAuthn());
-        assertNull("XSBooleanValue was not null", req.isForceAuthnXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, req.isForceAuthn());
+        AssertJUnit.assertNull("XSBooleanValue was not null", req.isForceAuthnXSBoolean());
         
         
         // IsPassive attribute
         req.setIsPassive(Boolean.TRUE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, req.isPassive());
-        assertNotNull("XSBooleanValue was null", req.isPassiveXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.TRUE, req.isPassive());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", req.isPassiveXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.TRUE, false),
                 req.isPassiveXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "true", req.isPassiveXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "true", req.isPassiveXSBoolean().toString());
         
         req.setIsPassive(Boolean.FALSE);
-        assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, req.isPassive());
-        assertNotNull("XSBooleanValue was null", req.isPassiveXSBoolean());
-        assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
+        AssertJUnit.assertEquals("Unexpected value for boolean attribute found", Boolean.FALSE, req.isPassive());
+        AssertJUnit.assertNotNull("XSBooleanValue was null", req.isPassiveXSBoolean());
+        AssertJUnit.assertEquals("XSBooleanValue was unexpected value", new XSBooleanValue(Boolean.FALSE, false),
                 req.isPassiveXSBoolean());
-        assertEquals("XSBooleanValue string was unexpected value", "false", req.isPassiveXSBoolean().toString());
+        AssertJUnit.assertEquals("XSBooleanValue string was unexpected value", "false", req.isPassiveXSBoolean().toString());
         
         req.setIsPassive((Boolean) null);
-        assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, req.isPassive());
-        assertNull("XSBooleanValue was not null", req.isPassiveXSBoolean());
+        AssertJUnit.assertEquals("Unexpected default value for boolean attribute found", Boolean.FALSE, req.isPassive());
+        AssertJUnit.assertNull("XSBooleanValue was not null", req.isPassiveXSBoolean());
     }
     
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -53,8 +55,8 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
     
     /** {@inheritDoc} 
      * @throws Exception */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         OrganizationBuilder orgBuilder = (OrganizationBuilder) Configuration.getBuilderFactory().getBuilder(Organization.TYPE_NAME);
         organization = orgBuilder.buildObject();            
 
@@ -89,6 +91,7 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException thrown if the object can't be marshalled
      * @throws UnmarshallingException thrown if hte object can't be unmarshalled
      */
+    @Test
     public void testRoundTrip() throws MarshallingException, UnmarshallingException{
 
         //Marshall the element

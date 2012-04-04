@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
@@ -37,31 +40,29 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KeyValue keyValue = (KeyValue) unmarshallElement(singleElementFile);
         
-        assertNotNull("KeyValue", keyValue);
-        assertNull("RSAKeyValue child element", keyValue.getRSAKeyValue());
-        assertNull("DSAKeyValue child element", keyValue.getDSAKeyValue());
-        assertNull("Wildcard child element", keyValue.getUnknownXMLObject());
+        AssertJUnit.assertNotNull("KeyValue", keyValue);
+        AssertJUnit.assertNull("RSAKeyValue child element", keyValue.getRSAKeyValue());
+        AssertJUnit.assertNull("DSAKeyValue child element", keyValue.getDSAKeyValue());
+        AssertJUnit.assertNull("Wildcard child element", keyValue.getUnknownXMLObject());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         KeyValue keyValue = (KeyValue) unmarshallElement(childElementsFile);
         
-        assertNotNull("KeyValue", keyValue);
-        assertNotNull("RSAKeyValue child element", keyValue.getRSAKeyValue());
-        assertNull("DSAKeyValue child element", keyValue.getDSAKeyValue());
-        assertNull("Wildcard child element", keyValue.getUnknownXMLObject());
+        AssertJUnit.assertNotNull("KeyValue", keyValue);
+        AssertJUnit.assertNotNull("RSAKeyValue child element", keyValue.getRSAKeyValue());
+        AssertJUnit.assertNull("DSAKeyValue child element", keyValue.getDSAKeyValue());
+        AssertJUnit.assertNull("Wildcard child element", keyValue.getUnknownXMLObject());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
         
@@ -69,6 +70,7 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
         

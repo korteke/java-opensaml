@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -47,49 +50,52 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedID = "abc123";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(singleElementFile);
         
-        assertNotNull("KeyInfo", keyInfo);
-        assertNull("Id attribute", keyInfo.getID());
-        assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
+        AssertJUnit.assertNotNull("KeyInfo", keyInfo);
+        AssertJUnit.assertNull("Id attribute", keyInfo.getID());
+        AssertJUnit.assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("KeyInfo", keyInfo);
-        assertEquals("Id attribute", expectedID, keyInfo.getID());
-        assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
+        AssertJUnit.assertNotNull("KeyInfo", keyInfo);
+        AssertJUnit.assertEquals("Id attribute", expectedID, keyInfo.getID());
+        AssertJUnit.assertEquals("Total # of XMLObject child elements", 0, keyInfo.getXMLObjects().size());
         
-        assertEquals("ID lookup failed", keyInfo, keyInfo.resolveID(expectedID));
+        AssertJUnit.assertEquals("ID lookup failed", keyInfo, keyInfo.resolveID(expectedID));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         KeyInfo keyInfo = (KeyInfo) unmarshallElement(childElementsFile);
         
-        assertNotNull("KeyInfo", keyInfo);
-        assertEquals("Total # of XMLObject child elements", 11, keyInfo.getXMLObjects().size());
-        assertEquals("# of KeyName child elements", 2, keyInfo.getKeyNames().size());
-        assertEquals("# of KeyValue child elements", 2, keyInfo.getKeyValues().size());
-        assertEquals("# of RetrievalMethod child elements", 1, keyInfo.getRetrievalMethods().size());
-        assertEquals("# of X509Data child elements", 2, keyInfo.getX509Datas().size());
-        assertEquals("# of PGPData child elements", 1, keyInfo.getPGPDatas().size());
-        assertEquals("# of SPKIData child elements", 1, keyInfo.getSPKIDatas().size());
-        assertEquals("# of MgmtData child elements", 1, keyInfo.getMgmtDatas().size());
-        assertEquals("# of SimpleElement child elements", 1, keyInfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
+        AssertJUnit.assertNotNull("KeyInfo", keyInfo);
+        AssertJUnit.assertEquals("Total # of XMLObject child elements", 11, keyInfo.getXMLObjects().size());
+        AssertJUnit.assertEquals("# of KeyName child elements", 2, keyInfo.getKeyNames().size());
+        AssertJUnit.assertEquals("# of KeyValue child elements", 2, keyInfo.getKeyValues().size());
+        AssertJUnit.assertEquals("# of RetrievalMethod child elements", 1, keyInfo.getRetrievalMethods().size());
+        AssertJUnit.assertEquals("# of X509Data child elements", 2, keyInfo.getX509Datas().size());
+        AssertJUnit.assertEquals("# of PGPData child elements", 1, keyInfo.getPGPDatas().size());
+        AssertJUnit.assertEquals("# of SPKIData child elements", 1, keyInfo.getSPKIDatas().size());
+        AssertJUnit.assertEquals("# of MgmtData child elements", 1, keyInfo.getMgmtDatas().size());
+        AssertJUnit.assertEquals("# of SimpleElement child elements", 1, keyInfo.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         
@@ -97,6 +103,7 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         
@@ -106,6 +113,7 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         KeyInfo keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         

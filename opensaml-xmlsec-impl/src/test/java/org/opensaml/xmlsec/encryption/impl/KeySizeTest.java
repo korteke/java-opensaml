@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.KeySize;
 
@@ -38,21 +41,22 @@ public class KeySizeTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedIntegerContent = 256;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KeySize keySize = (KeySize) unmarshallElement(singleElementFile);
         
-        assertNotNull("KeySize", keySize);
-        assertEquals("KeySize value", keySize.getValue(), expectedIntegerContent);
+        AssertJUnit.assertNotNull("KeySize", keySize);
+        AssertJUnit.assertEquals("KeySize value", keySize.getValue(), expectedIntegerContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         KeySize keySize = (KeySize) buildXMLObject(KeySize.DEFAULT_ELEMENT_NAME);
         keySize.setValue(expectedIntegerContent);

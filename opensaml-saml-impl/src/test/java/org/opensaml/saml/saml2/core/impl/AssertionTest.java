@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -67,38 +70,41 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedVersion = SAMLVersion.VERSION_20;
         expectedIssueInstant = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
         expectedID = "id";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(singleElementFile);
 
         DateTime notBefore = assertion.getIssueInstant();
-        assertEquals("IssueInstant was " + notBefore + ", expected " + expectedIssueInstant, expectedIssueInstant,
+        AssertJUnit.assertEquals("IssueInstant was " + notBefore + ", expected " + expectedIssueInstant, expectedIssueInstant,
                 notBefore);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime issueInstant = assertion.getIssueInstant();
-        assertEquals("IssueInstant was " + issueInstant + ", expected " + expectedIssueInstant, expectedIssueInstant,
+        AssertJUnit.assertEquals("IssueInstant was " + issueInstant + ", expected " + expectedIssueInstant, expectedIssueInstant,
                 issueInstant);
 
         String id = assertion.getID();
-        assertEquals("ID was " + id + ", expected " + expectedID, expectedID, id);
+        AssertJUnit.assertEquals("ID was " + id + ", expected " + expectedID, expectedID, id);
         
         SAMLVersion version = assertion.getVersion();
-        assertEquals("Version was " + version + ", expected " + expectedVersion, expectedVersion, version);
+        AssertJUnit.assertEquals("Version was " + version + ", expected " + expectedVersion, expectedVersion, version);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Assertion assertion = (Assertion) buildXMLObject(qname);
@@ -109,6 +115,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Assertion assertion = (Assertion) buildXMLObject(qname);
@@ -121,22 +128,24 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
 
-        assertNotNull("Issuer element not present", assertion.getIssuer());
-        assertNotNull("Subject element not present", assertion.getSubject());
-        assertNotNull("Conditions element not present", assertion.getConditions());
-        assertNotNull("Advice element not present", assertion.getAdvice());
-        assertEquals("Statement count not as expected", statementCount, assertion.getStatements().size());
-        assertEquals("AuthnStatement count not as expected", authnStatementCount, assertion.getAuthnStatements().size());
-        assertEquals("AuthzDecisionStatment count not as expected", authzDecisionStatementCount, assertion
+        AssertJUnit.assertNotNull("Issuer element not present", assertion.getIssuer());
+        AssertJUnit.assertNotNull("Subject element not present", assertion.getSubject());
+        AssertJUnit.assertNotNull("Conditions element not present", assertion.getConditions());
+        AssertJUnit.assertNotNull("Advice element not present", assertion.getAdvice());
+        AssertJUnit.assertEquals("Statement count not as expected", statementCount, assertion.getStatements().size());
+        AssertJUnit.assertEquals("AuthnStatement count not as expected", authnStatementCount, assertion.getAuthnStatements().size());
+        AssertJUnit.assertEquals("AuthzDecisionStatment count not as expected", authzDecisionStatementCount, assertion
                 .getAuthzDecisionStatements().size());
-        assertEquals("AttributeStatement count not as expected", attributeStatementCount, assertion
+        AssertJUnit.assertEquals("AttributeStatement count not as expected", attributeStatementCount, assertion
                 .getAttributeStatements().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Assertion assertion = (Assertion) buildXMLObject(qname);

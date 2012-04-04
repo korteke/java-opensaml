@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.Public;
 
@@ -38,21 +41,22 @@ public class PublicTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedCryptoBinaryContent = "someCryptoBinaryValue";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Public cbType = (Public) unmarshallElement(singleElementFile);
         
-        assertNotNull("Public", cbType);
-        assertEquals("Public", cbType.getValue(), expectedCryptoBinaryContent);
+        AssertJUnit.assertNotNull("Public", cbType);
+        AssertJUnit.assertEquals("Public", cbType.getValue(), expectedCryptoBinaryContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Public cbType = (Public) buildXMLObject(Public.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -36,21 +39,22 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedMemberID = "urn:example.org:members:foo";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AffiliateMember member = (AffiliateMember)unmarshallElement(singleElementFile);
         
         String memberID = member.getID();
-        assertEquals("Affiliation memeber ID was " + memberID + ", expected " + expectedMemberID, expectedMemberID, memberID);
+        AssertJUnit.assertEquals("Affiliation memeber ID was " + memberID + ", expected " + expectedMemberID, expectedMemberID, memberID);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AffiliateMember member = (AffiliateMember) buildXMLObject(qname);

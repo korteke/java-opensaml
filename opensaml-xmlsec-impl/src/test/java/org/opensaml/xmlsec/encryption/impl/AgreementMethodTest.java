@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
@@ -43,38 +46,40 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedAlgorithm = "urn:string:foo";
         expectedNumUnknownChildren = 2;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AgreementMethod am = (AgreementMethod) unmarshallElement(singleElementFile);
         
-        assertNotNull("AgreementMethod", am);
-        assertEquals("Algorithm attribute", expectedAlgorithm, am.getAlgorithm());
-        assertNull("KA-Nonce child element", am.getKANonce());
-        assertEquals("Unknown children", 0, am.getUnknownXMLObjects().size());
-        assertNull("OriginatorKeyInfo child element", am.getOriginatorKeyInfo());
-        assertNull("RecipientKeyInfo child element", am.getRecipientKeyInfo());
+        AssertJUnit.assertNotNull("AgreementMethod", am);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, am.getAlgorithm());
+        AssertJUnit.assertNull("KA-Nonce child element", am.getKANonce());
+        AssertJUnit.assertEquals("Unknown children", 0, am.getUnknownXMLObjects().size());
+        AssertJUnit.assertNull("OriginatorKeyInfo child element", am.getOriginatorKeyInfo());
+        AssertJUnit.assertNull("RecipientKeyInfo child element", am.getRecipientKeyInfo());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AgreementMethod am = (AgreementMethod) unmarshallElement(childElementsFile);
         
-        assertNotNull("AgreementMethod", am);
-        assertEquals("Algorithm attribute", expectedAlgorithm, am.getAlgorithm());
-        assertNotNull("KA-Nonce child element", am.getKANonce());
-        assertEquals("Unknown children", expectedNumUnknownChildren, am.getUnknownXMLObjects().size());
-        assertNotNull("OriginatorKeyInfo child element", am.getOriginatorKeyInfo());
-        assertNotNull("RecipientKeyInfo child element", am.getRecipientKeyInfo());
+        AssertJUnit.assertNotNull("AgreementMethod", am);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, am.getAlgorithm());
+        AssertJUnit.assertNotNull("KA-Nonce child element", am.getKANonce());
+        AssertJUnit.assertEquals("Unknown children", expectedNumUnknownChildren, am.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("OriginatorKeyInfo child element", am.getOriginatorKeyInfo());
+        AssertJUnit.assertNotNull("RecipientKeyInfo child element", am.getRecipientKeyInfo());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         AgreementMethod am = (AgreementMethod) buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         
@@ -84,6 +89,7 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         AgreementMethod am = (AgreementMethod) buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         

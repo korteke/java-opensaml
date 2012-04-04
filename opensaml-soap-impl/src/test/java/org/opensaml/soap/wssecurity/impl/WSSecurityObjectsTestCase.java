@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import java.util.List;
 
 import org.custommonkey.xmlunit.Diff;
@@ -56,22 +58,25 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         // TODO implementation
     }
 
+    @Test
     public void testBinarySecurityToken() throws Exception {
         BinarySecurityToken token= buildXMLObject(BinarySecurityToken.ELEMENT_NAME);
         token.setWSUId("BinarySecurityToken-" + System.currentTimeMillis());
         token.setValue("Base64Encoded_X509_CERTIFICATE...");
         token.setValueType("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3");
         // check default encoding type
-        assertEquals(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY, token.getEncodingType());
+        AssertJUnit.assertEquals(BinarySecurityToken.ENCODING_TYPE_BASE64_BINARY, token.getEncodingType());
     
         marshallAndUnmarshall(token);
     
     }
     
+    @Test
     public void testCreated() throws Exception {
         //TODO
     }
 
+    @Test
     public void testEmbedded() throws Exception {
         Embedded embedded= buildXMLObject(Embedded.ELEMENT_NAME);
     
@@ -85,6 +90,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
     
     }
 
+    @Test
     public void testEncryptedHeader() throws Exception {
         EncryptedHeader eh = buildXMLObject(EncryptedHeader.ELEMENT_NAME);
         eh.setWSUId("abc123");
@@ -96,35 +102,41 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(eh);
     }
 
+    @Test
     public void testExpires() throws Exception {
         //TODO
     }
 
+    @Test
     public void testIteration() throws Exception {
         Iteration iteration= buildXMLObject(Iteration.ELEMENT_NAME);
         iteration.setValue(new Integer(1000));
         marshallAndUnmarshall(iteration);
     }
     
+    @Test
     public void testKeyIdentifier() throws Exception {
         //TODO
     }
 
+    @Test
     public void testNonce() throws Exception {
         Nonce nonce= buildXMLObject(Nonce.ELEMENT_NAME);
         nonce.setValue("Base64EncodedValue...");
         marshallAndUnmarshall(nonce);
     }
 
+    @Test
     public void testPassword() throws Exception {
     
         Password password= buildXMLObject(Password.ELEMENT_NAME);
         password.setValue("test");
         // check default
-        assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
+        AssertJUnit.assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
         marshallAndUnmarshall(password);
     }
 
+    @Test
     public void testReference() throws Exception {
         Reference reference= buildXMLObject(Reference.ELEMENT_NAME);
     
@@ -134,24 +146,29 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(reference);
     }
 
+    @Test
     public void testSalt() throws Exception {
         Salt salt= buildXMLObject(Salt.ELEMENT_NAME);
         salt.setValue("Base64Encoded_Salt_VALUE...");
         marshallAndUnmarshall(salt);
     }
 
+    @Test
     public void testSecurity() throws Exception {
         //TODO
     }
     
+    @Test
     public void testSecurityTokenReference() throws Exception {
         //TODO
     }
     
+    @Test
     public void testSignatureConfirmation() throws Exception {
         //TODO
     }
 
+    @Test
     public void testTimestamp() throws Exception {
         Timestamp timestamp= buildXMLObject(Timestamp.ELEMENT_NAME);
         Created created= buildXMLObject(Created.ELEMENT_NAME);
@@ -168,16 +185,19 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         marshallAndUnmarshall(timestamp);
     }
     
+    @Test
     public void testTransformationParameters() throws Exception {
         //TODO
     }
 
+    @Test
     public void testUsername() throws Exception {
         Username username= buildXMLObject(Username.ELEMENT_NAME);
         username.setValue("test");
         marshallAndUnmarshall(username);
     }
 
+    @Test
     public void testUsernameToken() throws Exception {
         String refId= "UsernameToken-007";
         String refDateTimeStr= "2007-12-19T09:53:08.335Z";
@@ -190,11 +210,11 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         // check default password type
         Password password= (Password) usernameToken.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
-        assertNotNull(password);
-        assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
+        AssertJUnit.assertNotNull(password);
+        AssertJUnit.assertEquals(Password.TYPE_PASSWORD_TEXT, password.getType());
 
         List<XMLObject> children= usernameToken.getOrderedChildren();
-        assertEquals(3, children.size());
+        AssertJUnit.assertEquals(3, children.size());
 
         marshallAndUnmarshall(usernameToken);
 
@@ -215,12 +235,12 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         // unmarshall directly from file
         UsernameToken ut= unmarshallElement("/data/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
-        assertEquals("test", ut.getUsername().getValue());
+        AssertJUnit.assertEquals("test", ut.getUsername().getValue());
         Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
-        assertNotNull(utPassword);
-        assertEquals("test", utPassword.getValue());
+        AssertJUnit.assertNotNull(utPassword);
+        AssertJUnit.assertEquals("test", utPassword.getValue());
         Created utCreated = (Created) ut.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
-        assertNotNull(utCreated);
+        AssertJUnit.assertNotNull(utCreated);
         DateTime created= utCreated.getDateTime();
         System.out.println(created);
 

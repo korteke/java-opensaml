@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -56,9 +59,8 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorChildElements.xml";
     }
 
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedOwnerID = "urn:example.org";
         expectedID = "id";
         expectedCacheDuration = 90000;
@@ -66,51 +68,55 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementFile);
 
         String ownerId = descriptor.getOwnerID();
-        assertEquals("entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID,
+        AssertJUnit.assertEquals("entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID,
                 expectedOwnerID, ownerId);
 
         Long duration = descriptor.getCacheDuration();
-        assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
+        AssertJUnit.assertNull("cacheDuration attribute has a value of " + duration + ", expected no value", duration);
 
         DateTime validUntil = descriptor.getValidUntil();
-        assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
+        AssertJUnit.assertNull("validUntil attribute has a value of " + validUntil + ", expected no value", validUntil);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         String ownerId = descriptor.getOwnerID();
-        assertEquals("entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID,
+        AssertJUnit.assertEquals("entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID,
                 expectedOwnerID, ownerId);
 
         String id = descriptor.getID();
-        assertEquals("ID attribute has a value of " + id + ", expected a value of " + expectedID, expectedID, id);
+        AssertJUnit.assertEquals("ID attribute has a value of " + id + ", expected a value of " + expectedID, expectedID, id);
 
         long duration = descriptor.getCacheDuration().longValue();
-        assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
+        AssertJUnit.assertEquals("cacheDuration attribute has a value of " + duration + ", expected a value of "
                 + expectedCacheDuration, expectedCacheDuration, duration);
 
         DateTime validUntil = descriptor.getValidUntil();
-        assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
+        AssertJUnit.assertEquals("validUntil attribute value did not match expected value", 0, expectedValidUntil
                 .compareTo(validUntil));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(childElementsFile);
 
-        assertNotNull("Extensions", descriptor.getExtensions());
-        assertNotNull("Signature", descriptor.getSignature());
-        assertEquals("KeyDescriptor count", 0, descriptor.getKeyDescriptors().size());
-        assertEquals("Affiliate Member count ", 3, descriptor.getMembers().size());
+        AssertJUnit.assertNotNull("Extensions", descriptor.getExtensions());
+        AssertJUnit.assertNotNull("Signature", descriptor.getSignature());
+        AssertJUnit.assertEquals("KeyDescriptor count", 0, descriptor.getKeyDescriptors().size());
+        AssertJUnit.assertEquals("Affiliate Member count ", 3, descriptor.getMembers().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
@@ -122,6 +128,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
@@ -135,6 +142,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
     }
 
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);

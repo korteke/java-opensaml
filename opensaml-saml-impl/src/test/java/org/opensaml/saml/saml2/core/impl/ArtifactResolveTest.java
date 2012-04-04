@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -43,11 +46,13 @@ public class ArtifactResolveTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResolve.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResolve ar = (ArtifactResolve) buildXMLObject(qname);
@@ -58,6 +63,7 @@ public class ArtifactResolveTest extends RequestTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResolve.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResolve ar = (ArtifactResolve) buildXMLObject(qname);
@@ -69,6 +75,7 @@ public class ArtifactResolveTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResolve.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResolve ar = (ArtifactResolve) buildXMLObject(qname);
@@ -83,27 +90,30 @@ public class ArtifactResolveTest extends RequestTestBase {
  
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ArtifactResolve ar = (ArtifactResolve) unmarshallElement(singleElementFile);
         
-        assertNotNull("ArtifactResolve was null", ar);
+        AssertJUnit.assertNotNull("ArtifactResolve was null", ar);
         super.helperTestSingleElementUnmarshall(ar);
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         ArtifactResolve ar = (ArtifactResolve) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("ArtifactResolve was null", ar);
+        AssertJUnit.assertNotNull("ArtifactResolve was null", ar);
         super.helperTestSingleElementOptionalAttributesUnmarshall(ar);
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         ArtifactResolve ar = (ArtifactResolve) unmarshallElement(childElementsFile);
         
-        assertNotNull("Artifact was null", ar.getArtifact());
+        AssertJUnit.assertNotNull("Artifact was null", ar.getArtifact());
         super.helperTestChildElementsUnmarshall(ar);
     }
 }

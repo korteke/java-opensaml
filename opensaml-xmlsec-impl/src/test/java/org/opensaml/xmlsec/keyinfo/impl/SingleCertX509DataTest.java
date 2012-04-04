@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.keyinfo.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -80,9 +83,8 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
         providers.add(new InlineX509DataProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
@@ -96,26 +98,27 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
      * 
      * @throws ResolverException on error resolving credentials
      */
+    @Test
     public void testCredResolution() throws ResolverException {
         KeyInfo keyInfo = 
             (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/SingleX509Certificate.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
-        assertTrue("No credentials were found", iter.hasNext());
+        AssertJUnit.assertTrue("No credentials were found", iter.hasNext());
         
         Credential credential = iter.next();
-        assertNotNull("Credential was null", credential);
-        assertFalse("Too many credentials returned", iter.hasNext());
+        AssertJUnit.assertNotNull("Credential was null", credential);
+        AssertJUnit.assertFalse("Too many credentials returned", iter.hasNext());
         
-        assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
+        AssertJUnit.assertTrue("Credential is not of the expected type", credential instanceof X509Credential);
         X509Credential x509Credential = (X509Credential) credential;
         
-        assertNotNull("Public key was null", x509Credential.getPublicKey());
-        assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
+        AssertJUnit.assertNotNull("Public key was null", x509Credential.getPublicKey());
+        AssertJUnit.assertEquals("Expected public key value not found", pubKey, x509Credential.getPublicKey());
         
-        assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
-        assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
+        AssertJUnit.assertNotNull("Entity certificate was null", x509Credential.getEntityCertificate());
+        AssertJUnit.assertEquals("Expected X509Certificate value not found", entityCert, x509Credential.getEntityCertificate());
     }
     
 

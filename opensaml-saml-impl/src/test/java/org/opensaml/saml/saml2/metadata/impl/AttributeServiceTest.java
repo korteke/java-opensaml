@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -45,32 +48,34 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBinding = "urn:binding:foo";
         expectedLocation = "example.org";
         expectedResponseLocation = "example.org/response";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AttributeService service = (AttributeService) unmarshallElement(singleElementFile);
         
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeService service = (AttributeService) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());;
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AttributeService service = (AttributeService) buildXMLObject(qname);
@@ -82,6 +87,7 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AttributeService service = (AttributeService) buildXMLObject(qname);

@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -42,15 +45,18 @@ public abstract class SubjectQueryTestBase extends RequestTestBase {
     
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public abstract void testSingleElementUnmarshall();
 
     /** {@inheritDoc} */
+    @Test
     public abstract void testSingleElementMarshall();
 
 
@@ -81,7 +87,7 @@ public abstract class SubjectQueryTestBase extends RequestTestBase {
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
         SubjectQuery sq = (SubjectQuery) samlObject;
         super.helperTestChildElementsUnmarshall(sq);
-        assertNotNull("Subject", sq.getSubject());
+        AssertJUnit.assertNotNull("Subject", sq.getSubject());
     }
 
 

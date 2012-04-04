@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -73,80 +75,85 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
 
         Assertion assertion = (Assertion) unmarshallElement(singleElementFile);
 
-        assertNull("Issuer attribute", assertion.getIssuer());
-        assertNull("IssueInstant attribute", assertion.getIssueInstant());
-        assertNull("ID attribute", assertion.getID());
+        AssertJUnit.assertNull("Issuer attribute", assertion.getIssuer());
+        AssertJUnit.assertNull("IssueInstant attribute", assertion.getIssueInstant());
+        AssertJUnit.assertNull("ID attribute", assertion.getID());
 
-        assertNull("Conditions element", assertion.getConditions());
-        assertNull("Advice element", assertion.getAdvice());
-        assertNull("Signature element", assertion.getSignature());
+        AssertJUnit.assertNull("Conditions element", assertion.getConditions());
+        AssertJUnit.assertNull("Advice element", assertion.getAdvice());
+        AssertJUnit.assertNull("Signature element", assertion.getSignature());
 
-        assertEquals("Statement element count", 0, assertion.getStatements().size());
-        assertEquals("AttributeStatements element count", 0, assertion.getAttributeStatements().size());
-        assertEquals("SubjectStatements element count", 0, assertion.getSubjectStatements().size());
-        assertEquals("AuthenticationStatements element count", 0, assertion.getAuthenticationStatements().size());
-        assertEquals("AuthorizationDecisionStatements element count", 0, assertion.getAuthorizationDecisionStatements().size());
+        AssertJUnit.assertEquals("Statement element count", 0, assertion.getStatements().size());
+        AssertJUnit.assertEquals("AttributeStatements element count", 0, assertion.getAttributeStatements().size());
+        AssertJUnit.assertEquals("SubjectStatements element count", 0, assertion.getSubjectStatements().size());
+        AssertJUnit.assertEquals("AuthenticationStatements element count", 0, assertion.getAuthenticationStatements().size());
+        AssertJUnit.assertEquals("AuthorizationDecisionStatements element count", 0, assertion.getAuthorizationDecisionStatements().size());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Issuer attribute", expectedIssuer, assertion.getIssuer());
-        assertEquals("IssueInstant attribute", expectedIssueInstant, assertion.getIssueInstant());
-        assertEquals("ID attribute", expectedID, assertion.getID());
-        assertEquals("Issuer expectedMinorVersion", expectedMinorVersion, assertion.getMinorVersion());
+        AssertJUnit.assertEquals("Issuer attribute", expectedIssuer, assertion.getIssuer());
+        AssertJUnit.assertEquals("IssueInstant attribute", expectedIssueInstant, assertion.getIssueInstant());
+        AssertJUnit.assertEquals("ID attribute", expectedID, assertion.getID());
+        AssertJUnit.assertEquals("Issuer expectedMinorVersion", expectedMinorVersion, assertion.getMinorVersion());
 
-        assertNull("Conditions element", assertion.getConditions());
-        assertNull("Advice element", assertion.getAdvice());
-        assertNull("Signature element", assertion.getSignature());
+        AssertJUnit.assertNull("Conditions element", assertion.getConditions());
+        AssertJUnit.assertNull("Advice element", assertion.getAdvice());
+        AssertJUnit.assertNull("Signature element", assertion.getSignature());
 
-        assertEquals("Statement element count", 0, assertion.getStatements().size());
-        assertEquals("AttributeStatements element count", 0, assertion.getAttributeStatements().size());
-        assertEquals("SubjectStatements element count", 0, assertion.getSubjectStatements().size());
-        assertEquals("AuthenticationStatements element count", 0, assertion.getAuthenticationStatements().size());
-        assertEquals("AuthorizationDecisionStatements element count", 0, assertion.getAuthorizationDecisionStatements().size());
+        AssertJUnit.assertEquals("Statement element count", 0, assertion.getStatements().size());
+        AssertJUnit.assertEquals("AttributeStatements element count", 0, assertion.getAttributeStatements().size());
+        AssertJUnit.assertEquals("SubjectStatements element count", 0, assertion.getSubjectStatements().size());
+        AssertJUnit.assertEquals("AuthenticationStatements element count", 0, assertion.getAuthenticationStatements().size());
+        AssertJUnit.assertEquals("AuthorizationDecisionStatements element count", 0, assertion.getAuthorizationDecisionStatements().size());
     }
 
     /**
      * Test an XML file with children
      */
 
+    @Test
     public void testChildElementsUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
 
-        assertNull("Issuer attribute", assertion.getIssuer());
-        assertNull("ID attribute", assertion.getID());
-        assertNull("IssueInstant attribute", assertion.getIssueInstant());
+        AssertJUnit.assertNull("Issuer attribute", assertion.getIssuer());
+        AssertJUnit.assertNull("ID attribute", assertion.getID());
+        AssertJUnit.assertNull("IssueInstant attribute", assertion.getIssueInstant());
 
-        assertNotNull("Conditions element null", assertion.getConditions());
-        assertNotNull("Advice element null", assertion.getAdvice());
-        assertNull("Signature element", assertion.getSignature());
+        AssertJUnit.assertNotNull("Conditions element null", assertion.getConditions());
+        AssertJUnit.assertNotNull("Advice element null", assertion.getAdvice());
+        AssertJUnit.assertNull("Signature element", assertion.getSignature());
 
-        assertNotNull("No Authentication Statements", assertion.getAuthenticationStatements());
-        assertEquals("AuthenticationStatements element count", 2, assertion.getAuthenticationStatements().size());
+        AssertJUnit.assertNotNull("No Authentication Statements", assertion.getAuthenticationStatements());
+        AssertJUnit.assertEquals("AuthenticationStatements element count", 2, assertion.getAuthenticationStatements().size());
 
-        assertNotNull("No Attribute Statements", assertion.getAttributeStatements());
-        assertEquals("AttributeStatements element count", 3, assertion.getAttributeStatements().size());
+        AssertJUnit.assertNotNull("No Attribute Statements", assertion.getAttributeStatements());
+        AssertJUnit.assertEquals("AttributeStatements element count", 3, assertion.getAttributeStatements().size());
 
-        assertNotNull("No AuthorizationDecisionStatements ", assertion.getAuthorizationDecisionStatements());
-        assertEquals("AuthorizationDecisionStatements element count", 3, assertion.getAuthorizationDecisionStatements()
+        AssertJUnit.assertNotNull("No AuthorizationDecisionStatements ", assertion.getAuthorizationDecisionStatements());
+        AssertJUnit.assertEquals("AuthorizationDecisionStatements element count", 3, assertion.getAuthorizationDecisionStatements()
                 .size());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Assertion assertion = (Assertion) buildXMLObject(qname);
 
@@ -161,6 +168,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
      * @throws MarshallingException 
      */
 
+    @Test
     public void testChildElementsMarshall() {
         Assertion assertion = (Assertion) buildXMLObject(qname);
         
@@ -183,26 +191,29 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
         assertXMLEquals(expectedChildElementsDOM, assertion);
     }
     
+    @Test
     public void testSignatureUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
         
-        assertNotNull("Assertion was null", assertion);
-        assertNotNull("Signature was null", assertion.getSignature());
-        assertNotNull("KeyInfo was null", assertion.getSignature().getKeyInfo());
+        AssertJUnit.assertNotNull("Assertion was null", assertion);
+        AssertJUnit.assertNotNull("Signature was null", assertion.getSignature());
+        AssertJUnit.assertNotNull("KeyInfo was null", assertion.getSignature().getKeyInfo());
     }
     
+    @Test
     public void testDOMIDResolutionUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
         
-        assertNotNull("Assertion was null", assertion);
-        assertNotNull("Signature was null", assertion.getSignature());
+        AssertJUnit.assertNotNull("Assertion was null", assertion);
+        AssertJUnit.assertNotNull("Signature was null", assertion.getSignature());
         Document document = assertion.getSignature().getDOM().getOwnerDocument();
         Element idElem = assertion.getDOM();
         
-        assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
-        assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
+        AssertJUnit.assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
+        AssertJUnit.assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
     }
 
+    @Test
     public void testDOMIDResolutionMarshall() throws MarshallingException {
         Assertion assertion = (Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
         assertion.setID(expectedID);
@@ -213,8 +224,8 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
         Document document = assertion.getStatements().get(0).getDOM().getOwnerDocument();
         Element idElem = assertion.getDOM();
         
-        assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
-        assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
+        AssertJUnit.assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
+        AssertJUnit.assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
     }
     
 }

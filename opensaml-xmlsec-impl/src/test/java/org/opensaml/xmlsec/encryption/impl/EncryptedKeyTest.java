@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.CipherData;
@@ -53,9 +56,8 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedId = "abc123";
         expectedType = "someType";
         expectedMimeType = "someMimeType";
@@ -64,46 +66,50 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementFile);
         
-        assertNotNull("EncryptedKey", ek);
-        assertNull("EncryptionMethod child", ek.getEncryptionMethod());
-        assertNull("KeyInfo child", ek.getKeyInfo());
-        assertNull("CipherData child", ek.getCipherData());
-        assertNull("EncryptionProperties child", ek.getEncryptionProperties());
-        assertNull("ReferenceList child", ek.getReferenceList());
-        assertNull("CarriedKeyName child", ek.getCarriedKeyName());
+        AssertJUnit.assertNotNull("EncryptedKey", ek);
+        AssertJUnit.assertNull("EncryptionMethod child", ek.getEncryptionMethod());
+        AssertJUnit.assertNull("KeyInfo child", ek.getKeyInfo());
+        AssertJUnit.assertNull("CipherData child", ek.getCipherData());
+        AssertJUnit.assertNull("EncryptionProperties child", ek.getEncryptionProperties());
+        AssertJUnit.assertNull("ReferenceList child", ek.getReferenceList());
+        AssertJUnit.assertNull("CarriedKeyName child", ek.getCarriedKeyName());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(childElementsFile);
         
-        assertNotNull("EncryptedKey", ek);
-        assertNotNull("EncryptionMethod child", ek.getEncryptionMethod());
-        assertNotNull("KeyInfo child", ek.getKeyInfo());
-        assertNotNull("CipherData child", ek.getCipherData());
-        assertNotNull("EncryptionProperties child", ek.getEncryptionProperties());
-        assertNotNull("ReferenceList child", ek.getReferenceList());
-        assertNotNull("CarriedKeyName child", ek.getCarriedKeyName());
+        AssertJUnit.assertNotNull("EncryptedKey", ek);
+        AssertJUnit.assertNotNull("EncryptionMethod child", ek.getEncryptionMethod());
+        AssertJUnit.assertNotNull("KeyInfo child", ek.getKeyInfo());
+        AssertJUnit.assertNotNull("CipherData child", ek.getCipherData());
+        AssertJUnit.assertNotNull("EncryptionProperties child", ek.getEncryptionProperties());
+        AssertJUnit.assertNotNull("ReferenceList child", ek.getReferenceList());
+        AssertJUnit.assertNotNull("CarriedKeyName child", ek.getCarriedKeyName());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("EncryptedKey", ek);
-        assertEquals("Id attribute", expectedId, ek.getID());
-        assertEquals("Type attribute", expectedType, ek.getType());
-        assertEquals("MimeType attribute", expectedMimeType, ek.getMimeType());
-        assertEquals("Encoding attribute", expectedEncoding, ek.getEncoding());
-        assertEquals("Recipient attribute", expectedRecipient, ek.getRecipient());
+        AssertJUnit.assertNotNull("EncryptedKey", ek);
+        AssertJUnit.assertEquals("Id attribute", expectedId, ek.getID());
+        AssertJUnit.assertEquals("Type attribute", expectedType, ek.getType());
+        AssertJUnit.assertEquals("MimeType attribute", expectedMimeType, ek.getMimeType());
+        AssertJUnit.assertEquals("Encoding attribute", expectedEncoding, ek.getEncoding());
+        AssertJUnit.assertEquals("Recipient attribute", expectedRecipient, ek.getRecipient());
         
-        assertEquals("ID lookup failed", ek, ek.resolveID(expectedId));
+        AssertJUnit.assertEquals("ID lookup failed", ek, ek.resolveID(expectedId));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
@@ -111,6 +117,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
@@ -126,6 +133,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         

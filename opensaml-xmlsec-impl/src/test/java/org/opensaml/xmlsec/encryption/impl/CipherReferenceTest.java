@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.Transforms;
@@ -39,31 +42,33 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedURI = "urn:string:foo";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         CipherReference cr = (CipherReference) unmarshallElement(singleElementFile);
         
-        assertNotNull("CipherReference", cr);
-        assertEquals("URI attribute", expectedURI, cr.getURI());
-        assertNull("Transforms child", cr.getTransforms());
+        AssertJUnit.assertNotNull("CipherReference", cr);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, cr.getURI());
+        AssertJUnit.assertNull("Transforms child", cr.getTransforms());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         CipherReference cr = (CipherReference) unmarshallElement(childElementsFile);
         
-        assertNotNull("CipherReference", cr);
-        assertEquals("URI attribute", expectedURI, cr.getURI());
-        assertNotNull("Transforms child", cr.getTransforms());
+        AssertJUnit.assertNotNull("CipherReference", cr);
+        AssertJUnit.assertEquals("URI attribute", expectedURI, cr.getURI());
+        AssertJUnit.assertNotNull("Transforms child", cr.getTransforms());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         CipherReference cr = (CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME);
         
@@ -73,6 +78,7 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         CipherReference cr = (CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME);
         

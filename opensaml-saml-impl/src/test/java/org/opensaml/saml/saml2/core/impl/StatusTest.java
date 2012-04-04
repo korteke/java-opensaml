@@ -27,6 +27,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.StatusMessage;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -42,25 +44,17 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Status.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/StatusChildElements.xml";
     }
-
     
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        
-    }
-
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, status);
     }
     
-    
-    
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         
@@ -75,20 +69,22 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Status status = (Status) unmarshallElement(singleElementFile);
         
-        assertNotNull("Status", status);
-        assertNull("StatusCode child", status.getStatusCode());
-        assertNull("StatusMessage", status.getStatusMessage());
+        AssertJUnit.assertNotNull("Status", status);
+        AssertJUnit.assertNull("StatusCode child", status.getStatusCode());
+        AssertJUnit.assertNull("StatusMessage", status.getStatusMessage());
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Status status = (Status) unmarshallElement(childElementsFile);
         
-        assertNotNull("StatusCode of Status was null", status.getStatusCode());
-        assertNotNull("StatusMessage of Status was null", status.getStatusMessage());
+        AssertJUnit.assertNotNull("StatusCode of Status was null", status.getStatusCode());
+        AssertJUnit.assertNotNull("StatusMessage of Status was null", status.getStatusMessage());
     }
 }

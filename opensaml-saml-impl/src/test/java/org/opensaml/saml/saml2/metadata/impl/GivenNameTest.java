@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.GivenName;
 
@@ -40,20 +43,21 @@ public class GivenNameTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectName = "Bob";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         GivenName name = (GivenName) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectName, name.getName());
+        AssertJUnit.assertEquals("Name was not expected value", expectName, name.getName());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         GivenName name = (GivenName) buildXMLObject(GivenName.DEFAULT_ELEMENT_NAME);
         

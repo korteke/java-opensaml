@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -77,58 +79,63 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
 
         Response response = (Response) unmarshallElement(singleElementFile);
 
         String id = response.getID();
-        assertNull("ID attribute has value " + id + "expected no value", id);
+        AssertJUnit.assertNull("ID attribute has value " + id + "expected no value", id);
        
-        assertNull("IssueInstant attribute has a value of " + response.getIssueInstant() 
+        AssertJUnit.assertNull("IssueInstant attribute has a value of " + response.getIssueInstant() 
                 + ", expected no value", response.getIssueInstant());
 
-        assertEquals("Assertion elements count", 0, response.getAssertions().size());
+        AssertJUnit.assertEquals("Assertion elements count", 0, response.getAssertions().size());
 
         Status status;
         status = response.getStatus();
-        assertNull("Status element has a value of " + status + ", expected no value", status);
+        AssertJUnit.assertNull("Status element has a value of " + status + ", expected no value", status);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Response response;
         response = (Response) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("ID", expectedID, response.getID());
-        assertEquals("IssueInstant attribute ", expectedIssueInstant, response.getIssueInstant());
+        AssertJUnit.assertEquals("ID", expectedID, response.getID());
+        AssertJUnit.assertEquals("IssueInstant attribute ", expectedIssueInstant, response.getIssueInstant());
 
         String string = response.getInResponseTo();
-        assertEquals("InResponseTo attribute ", expectedInResponseTo, string);
+        AssertJUnit.assertEquals("InResponseTo attribute ", expectedInResponseTo, string);
 
         string = response.getRecipient();
-        assertEquals("Recipient attribute ", expectedRecipient, string);
+        AssertJUnit.assertEquals("Recipient attribute ", expectedRecipient, string);
 
         int i = response.getVersion().getMinorVersion();
-        assertEquals("MinorVersion attribute ", expectedMinorVersion, i);
+        AssertJUnit.assertEquals("MinorVersion attribute ", expectedMinorVersion, i);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Response response = (Response) unmarshallElement(childElementsFile);
 
-        assertEquals("No Assertion elements count", 1, response.getAssertions().size());
+        AssertJUnit.assertEquals("No Assertion elements count", 1, response.getAssertions().size());
 
         Status status;
         status = response.getStatus();
-        assertNotNull("No Status element found", status);
+        AssertJUnit.assertNotNull("No Status element found", status);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Response response = (Response) buildXMLObject(qname);
 
@@ -141,6 +148,7 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Response response = (Response) buildXMLObject(qname);
 
@@ -151,26 +159,29 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
 
     }
     
+    @Test
     public void testSignatureUnmarshall() {
         Response response = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/impl/ResponseWithSignature.xml");
         
-        assertNotNull("Response was null", response);
-        assertNotNull("Signature was null", response.getSignature());
-        assertNotNull("KeyInfo was null", response.getSignature().getKeyInfo());
+        AssertJUnit.assertNotNull("Response was null", response);
+        AssertJUnit.assertNotNull("Signature was null", response.getSignature());
+        AssertJUnit.assertNotNull("KeyInfo was null", response.getSignature().getKeyInfo());
     }
     
+    @Test
     public void testDOMIDResolutionUnmarshall() {
         Response response = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/impl/ResponseWithSignature.xml");
         
-        assertNotNull("Response was null", response);
-        assertNotNull("Signature was null", response.getSignature());
+        AssertJUnit.assertNotNull("Response was null", response);
+        AssertJUnit.assertNotNull("Signature was null", response.getSignature());
         Document document = response.getSignature().getDOM().getOwnerDocument();
         Element idElem = response.getDOM();
         
-        assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
-        assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
+        AssertJUnit.assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
+        AssertJUnit.assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
     }
 
+    @Test
     public void testDOMIDResolutionMarshall() throws MarshallingException {
         Response response = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         response.setID(expectedID);
@@ -181,8 +192,8 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
         Document document = response.getStatus().getDOM().getOwnerDocument();
         Element idElem = response.getDOM();
         
-        assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
-        assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
+        AssertJUnit.assertNotNull("DOM ID resolution returned null", document.getElementById(expectedID));
+        AssertJUnit.assertTrue("DOM elements were not equal", idElem.isSameNode(document.getElementById(expectedID)));
     }
 
 }

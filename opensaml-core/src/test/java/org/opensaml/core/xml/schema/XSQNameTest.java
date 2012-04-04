@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -40,8 +43,8 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
     private QName expectedValue;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception{
-        super.setUp();
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsQName.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = new QName("urn:example.org:baz", "SomeValue", "baz");
@@ -52,6 +55,7 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      * @throws XMLParserException 
      */
+    @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
         XSQNameBuilder xsQNameBuilder = (XSQNameBuilder) builderFactory.getBuilder(XSQName.TYPE_NAME);
         XSQName xsQName = xsQNameBuilder.buildObject(expectedXMLObjectQName, XSQName.TYPE_NAME);
@@ -70,14 +74,15 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSQNameTest.class.getResourceAsStream(testDocumentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSQName xsQName = (XSQName) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSQName QName", expectedXMLObjectQName, xsQName.getElementQName());
-        assertEquals("Unexpected XSQName schema type", XSQName.TYPE_NAME, xsQName.getSchemaType());
-        assertEquals("Unexpected value of XSQName", expectedValue, xsQName.getValue());
+        AssertJUnit.assertEquals("Unexpected XSQName QName", expectedXMLObjectQName, xsQName.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSQName schema type", XSQName.TYPE_NAME, xsQName.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected value of XSQName", expectedValue, xsQName.getValue());
     }
 }

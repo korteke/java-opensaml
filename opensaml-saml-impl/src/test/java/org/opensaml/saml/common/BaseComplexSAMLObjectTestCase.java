@@ -18,6 +18,8 @@
 package org.opensaml.saml.common;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -33,28 +35,24 @@ public abstract class BaseComplexSAMLObjectTestCase extends XMLObjectBaseTestCas
     protected Document expectedDOM;
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @BeforeClass
+    protected void initSAMLObjectTestSupport() throws Exception {
         if (elementFile != null) {
             expectedDOM = parserPool.parse(BaseComplexSAMLObjectTestCase.class
                     .getResourceAsStream(elementFile));
         }
     }
 
-    /** {@inheritDoc} */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     /**
      * Tests unmarshalling a document.
      */
+    @Test
     public abstract void testUnmarshall();
 
     /**
      * Tests marshalling the contents of a complex element to a DOM document.
      */
+    @Test
     public abstract void testMarshall();
 
 }

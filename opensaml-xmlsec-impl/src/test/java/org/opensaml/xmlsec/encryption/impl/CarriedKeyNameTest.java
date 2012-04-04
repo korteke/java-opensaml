@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 
@@ -38,21 +41,22 @@ public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedStringContent = "someKeyName";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         CarriedKeyName ckn = (CarriedKeyName) unmarshallElement(singleElementFile);
         
-        assertNotNull("CarriedKeyName", ckn);
-        assertEquals("CarriedKeyName value", ckn.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("CarriedKeyName", ckn);
+        AssertJUnit.assertEquals("CarriedKeyName value", ckn.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         CarriedKeyName ckn = (CarriedKeyName) buildXMLObject(CarriedKeyName.DEFAULT_ELEMENT_NAME);
         ckn.setValue(expectedStringContent);

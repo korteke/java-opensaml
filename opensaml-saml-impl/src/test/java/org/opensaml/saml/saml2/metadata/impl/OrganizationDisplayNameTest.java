@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 
@@ -42,22 +45,23 @@ public class OrganizationDisplayNameTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectValue = "MyOrg";
         expectLang = "Language";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         OrganizationDisplayName name = (OrganizationDisplayName) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectValue, name.getValue());
-        assertEquals("Name was not expected value", expectLang, name.getXMLLang());
+        AssertJUnit.assertEquals("Name was not expected value", expectValue, name.getValue());
+        AssertJUnit.assertEquals("Name was not expected value", expectLang, name.getXMLLang());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         OrganizationDisplayName name = (OrganizationDisplayName) buildXMLObject(OrganizationDisplayName.DEFAULT_ELEMENT_NAME);
         

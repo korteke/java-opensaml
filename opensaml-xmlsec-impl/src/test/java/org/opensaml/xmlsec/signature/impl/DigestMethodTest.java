@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -37,32 +40,34 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedAlgorithm = "urn:string:foo";
         expectedTotalChildren = 3;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         DigestMethod digestMethod = (DigestMethod) unmarshallElement(singleElementFile);
         
-        assertNotNull("DigestMethod", digestMethod);
-        assertEquals("Algorithm attribute", expectedAlgorithm, digestMethod.getAlgorithm());
-        assertEquals("Total children", 0, digestMethod.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("DigestMethod", digestMethod);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, digestMethod.getAlgorithm());
+        AssertJUnit.assertEquals("Total children", 0, digestMethod.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         DigestMethod digestMethod = (DigestMethod) unmarshallElement(childElementsFile);
         
-        assertNotNull("DigestMethod", digestMethod);
-        assertEquals("Algorithm attribute", expectedAlgorithm, digestMethod.getAlgorithm());
-        assertEquals("Total children", expectedTotalChildren, digestMethod.getUnknownXMLObjects().size());
+        AssertJUnit.assertNotNull("DigestMethod", digestMethod);
+        AssertJUnit.assertEquals("Algorithm attribute", expectedAlgorithm, digestMethod.getAlgorithm());
+        AssertJUnit.assertEquals("Total children", expectedTotalChildren, digestMethod.getUnknownXMLObjects().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         
@@ -72,6 +77,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         

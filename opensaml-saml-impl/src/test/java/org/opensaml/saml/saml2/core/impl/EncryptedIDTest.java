@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -37,30 +40,28 @@ public class EncryptedIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EncryptedID encElement = (EncryptedID) unmarshallElement(singleElementFile);
 
-        assertNotNull(encElement);
-        assertNull("EncryptedData child element", encElement.getEncryptedData());
-        assertEquals("# of EncryptedKey children", 0, encElement.getEncryptedKeys().size());
+        AssertJUnit.assertNotNull(encElement);
+        AssertJUnit.assertNull("EncryptedData child element", encElement.getEncryptedData());
+        AssertJUnit.assertEquals("# of EncryptedKey children", 0, encElement.getEncryptedKeys().size());
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EncryptedID encElement = (EncryptedID) unmarshallElement(childElementsFile);
         
-        assertNotNull("EncryptedID was null", encElement);
-        assertNotNull("EncryptedData child element", encElement.getEncryptedData());
-        assertEquals("# of EncryptedKey children", encryptedKeyCount, encElement.getEncryptedKeys().size());
+        AssertJUnit.assertNotNull("EncryptedID was null", encElement);
+        AssertJUnit.assertNotNull("EncryptedData child element", encElement.getEncryptedData());
+        AssertJUnit.assertEquals("# of EncryptedKey children", encryptedKeyCount, encElement.getEncryptedKeys().size());
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EncryptedID encElement = (EncryptedID) buildXMLObject(EncryptedID.DEFAULT_ELEMENT_NAME);
 
@@ -68,6 +69,7 @@ public class EncryptedIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         EncryptedID encElement = (EncryptedID) buildXMLObject(EncryptedID.DEFAULT_ELEMENT_NAME);
         

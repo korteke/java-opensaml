@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.G;
@@ -43,39 +46,37 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         DSAKeyValue keyValue = (DSAKeyValue) unmarshallElement(singleElementFile);
         
-        assertNotNull("DSAKeyValue", keyValue);
-        assertNull("P child element", keyValue.getP());
-        assertNull("Q child element", keyValue.getQ());
-        assertNull("G child element", keyValue.getG());
-        assertNull("Y child element", keyValue.getY());
-        assertNull("J child element", keyValue.getJ());
-        assertNull("Seed element", keyValue.getSeed());
-        assertNull("PgenCounter element", keyValue.getPgenCounter());
+        AssertJUnit.assertNotNull("DSAKeyValue", keyValue);
+        AssertJUnit.assertNull("P child element", keyValue.getP());
+        AssertJUnit.assertNull("Q child element", keyValue.getQ());
+        AssertJUnit.assertNull("G child element", keyValue.getG());
+        AssertJUnit.assertNull("Y child element", keyValue.getY());
+        AssertJUnit.assertNull("J child element", keyValue.getJ());
+        AssertJUnit.assertNull("Seed element", keyValue.getSeed());
+        AssertJUnit.assertNull("PgenCounter element", keyValue.getPgenCounter());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         DSAKeyValue keyValue = (DSAKeyValue) unmarshallElement(childElementsFile);
         
-        assertNotNull("DSAKeyValue", keyValue);
-        assertNotNull("P child element", keyValue.getP());
-        assertNotNull("Q child element", keyValue.getQ());
-        assertNotNull("G child element", keyValue.getG());
-        assertNotNull("Y child element", keyValue.getY());
-        assertNotNull("J child element", keyValue.getJ());
-        assertNotNull("Seed element", keyValue.getSeed());
-        assertNotNull("PgenCounter element", keyValue.getPgenCounter());
+        AssertJUnit.assertNotNull("DSAKeyValue", keyValue);
+        AssertJUnit.assertNotNull("P child element", keyValue.getP());
+        AssertJUnit.assertNotNull("Q child element", keyValue.getQ());
+        AssertJUnit.assertNotNull("G child element", keyValue.getG());
+        AssertJUnit.assertNotNull("Y child element", keyValue.getY());
+        AssertJUnit.assertNotNull("J child element", keyValue.getJ());
+        AssertJUnit.assertNotNull("Seed element", keyValue.getSeed());
+        AssertJUnit.assertNotNull("PgenCounter element", keyValue.getPgenCounter());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         
@@ -83,6 +84,7 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         

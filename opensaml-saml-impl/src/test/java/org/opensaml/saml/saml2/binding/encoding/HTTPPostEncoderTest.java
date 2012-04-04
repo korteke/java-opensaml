@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.binding.encoding;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.joda.time.DateTime;
@@ -43,10 +46,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
     private VelocityEngine velocityEngine;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        super.setUp();
-
         velocityEngine = new VelocityEngine();
         velocityEngine.setProperty(RuntimeConstants.ENCODING_DEFAULT, "UTF-8");
         velocityEngine.setProperty(RuntimeConstants.OUTPUT_ENCODING, "UTF-8");
@@ -61,6 +63,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testResponseEncoding() throws Exception {
         SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
@@ -100,12 +103,13 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         "/templates/saml2-post-binding.vm");
         encoder.encode(messageContext);
 
-        assertEquals("Unexpected content type", "text/html", response.getContentType());
-        assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        assertEquals(833802980, response.getContentAsString().hashCode());
+        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
+        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
+        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
+        AssertJUnit.assertEquals(833802980, response.getContentAsString().hashCode());
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testRequestEncoding() throws Exception {
         SAMLObjectBuilder<AuthnRequest> responseBuilder = (SAMLObjectBuilder<AuthnRequest>) builderFactory
@@ -134,9 +138,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         "/templates/saml2-post-binding.vm");
         encoder.encode(messageContext);
 
-        assertEquals("Unexpected content type", "text/html", response.getContentType());
-        assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        assertEquals(-1355812539, response.getContentAsString().hashCode());
+        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
+        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
+        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
+        AssertJUnit.assertEquals(-1355812539, response.getContentAsString().hashCode());
     }
 }

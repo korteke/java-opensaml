@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -40,8 +43,8 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
     private Integer expectedValue;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception{
-        super.setUp();
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsInteger.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = 1967;
@@ -52,6 +55,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      * @throws XMLParserException 
      */
+    @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
         XSIntegerBuilder xsintBuilder = (XSIntegerBuilder) builderFactory.getBuilder(XSInteger.TYPE_NAME);
         XSInteger xsInteger = xsintBuilder.buildObject(expectedXMLObjectQName, XSInteger.TYPE_NAME);
@@ -70,14 +74,15 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSIntegerTest.class.getResourceAsStream(testDocumentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSInteger xsInteger = (XSInteger) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSInteger QName", expectedXMLObjectQName, xsInteger.getElementQName());
-        assertEquals("Unexpected XSInteger schema type", XSInteger.TYPE_NAME, xsInteger.getSchemaType());
-        assertEquals("Unexpected value of XSInteger", xsInteger.getValue(), expectedValue);
+        AssertJUnit.assertEquals("Unexpected XSInteger QName", expectedXMLObjectQName, xsInteger.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSInteger schema type", XSInteger.TYPE_NAME, xsInteger.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected value of XSInteger", xsInteger.getValue(), expectedValue);
     }
 }

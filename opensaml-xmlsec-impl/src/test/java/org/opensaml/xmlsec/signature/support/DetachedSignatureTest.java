@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import java.security.KeyPair;
 
 import javax.xml.bind.ValidationException;
@@ -64,9 +67,8 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
         goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
@@ -88,6 +90,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws UnmarshallingException thrown if the signature can not be unmarshalled
      * @throws SignatureException 
      */
+    @Test
     public void testInternalSignatureAndVerification() throws MarshallingException, UnmarshallingException,
             SignatureException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
@@ -111,7 +114,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         try {
             sigValidator = new SignatureValidator(badCredential);
             sigValidator.validate(signature);
-            fail("Validated signature with improper public key");
+            Assert.fail("Validated signature with improper public key");
         } catch (SignatureException e) {
             // expected
         }
@@ -125,6 +128,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * @throws ValidationException thrown if the signature verification fails
      * @throws SignatureException 
      */
+    @Test
     public void testExternalSignatureAndVerification() throws MarshallingException, SignatureException {
         Signature signature = sigBuilder.buildObject();
         signature.setSigningCredential(goodCredential);

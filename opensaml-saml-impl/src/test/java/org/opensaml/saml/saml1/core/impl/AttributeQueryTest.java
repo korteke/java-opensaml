@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -54,41 +56,46 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
 
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(singleElementFile);
 
-        assertNull("Resource attribute present", attributeQuery.getResource());
-        assertNull("Subject element present", attributeQuery.getSubject());
-        assertEquals("Count of AttributeDesignator elements", 0, attributeQuery.getAttributeDesignators().size());
+        AssertJUnit.assertNull("Resource attribute present", attributeQuery.getResource());
+        AssertJUnit.assertNull("Subject element present", attributeQuery.getSubject());
+        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, attributeQuery.getAttributeDesignators().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("Resource attribute", expectedResource, attributeQuery.getResource());
-        assertNull("Subject element present", attributeQuery.getSubject());
-        assertEquals("Count of AttributeDesignator elements", 0, attributeQuery.getAttributeDesignators().size());
+        AssertJUnit.assertEquals("Resource attribute", expectedResource, attributeQuery.getResource());
+        AssertJUnit.assertNull("Subject element present", attributeQuery.getSubject());
+        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 0, attributeQuery.getAttributeDesignators().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(childElementsFile);
 
-        assertNotNull("Subject element present", attributeQuery.getSubject());
-        assertEquals("Count of AttributeDesignator elements", 4, attributeQuery.getAttributeDesignators().size());
+        AssertJUnit.assertNotNull("Subject element present", attributeQuery.getSubject());
+        AssertJUnit.assertEquals("Count of AttributeDesignator elements", 4, attributeQuery.getAttributeDesignators().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) buildXMLObject(qname);
@@ -98,6 +105,7 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         AttributeQuery attributeQuery = (AttributeQuery) buildXMLObject(qname);
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -50,9 +53,8 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedName = "id name";
         expectedNameQualifier = "nq";
         expectedSPNameQualifier = "spnq";
@@ -61,34 +63,37 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         NameID nameID = (NameID) unmarshallElement(singleElementFile);
 
         String name = nameID.getValue();
-        assertEquals("Name not as expected", name, expectedName);
+        AssertJUnit.assertEquals("Name not as expected", name, expectedName);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameID nameID = (NameID) unmarshallElement(singleElementOptionalAttributesFile);
 
         String name = nameID.getValue();
-        assertEquals("Name not as expected", name, expectedName);
+        AssertJUnit.assertEquals("Name not as expected", name, expectedName);
 
         String nameQualifier = nameID.getNameQualifier();
-        assertEquals("NameQualifier not as expected", nameQualifier, expectedNameQualifier);
+        AssertJUnit.assertEquals("NameQualifier not as expected", nameQualifier, expectedNameQualifier);
 
         String spNameQualifier = nameID.getSPNameQualifier();
-        assertEquals("SPNameQualifier not as expected", spNameQualifier, expectedSPNameQualifier);
+        AssertJUnit.assertEquals("SPNameQualifier not as expected", spNameQualifier, expectedSPNameQualifier);
 
         String format = nameID.getFormat();
-        assertEquals("Format not as expected", format, expectedFormat);
+        AssertJUnit.assertEquals("Format not as expected", format, expectedFormat);
 
         String spProvidedID = nameID.getSPProvidedID();
-        assertEquals("SPProviderID not as expected", spProvidedID, expectedSPID);
+        AssertJUnit.assertEquals("SPProviderID not as expected", spProvidedID, expectedSPID);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, NameID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         NameID nameID = (NameID) buildXMLObject(qname);
@@ -98,6 +103,7 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, NameID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         NameID nameID = (NameID) buildXMLObject(qname);

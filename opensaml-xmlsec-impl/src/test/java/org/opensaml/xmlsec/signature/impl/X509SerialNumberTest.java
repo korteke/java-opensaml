@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.math.BigInteger;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -40,21 +43,22 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBigIntegerContent = new BigInteger("123456789");
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         X509SerialNumber x509Element = (X509SerialNumber) unmarshallElement(singleElementFile);
         
-        assertNotNull("X509SerialNumber", x509Element);
-        assertEquals("X509SerialNumber value", x509Element.getValue(), expectedBigIntegerContent);
+        AssertJUnit.assertNotNull("X509SerialNumber", x509Element);
+        AssertJUnit.assertEquals("X509SerialNumber value", x509Element.getValue(), expectedBigIntegerContent);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         X509SerialNumber x509Element = (X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedBigIntegerContent);

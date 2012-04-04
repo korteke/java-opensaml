@@ -17,6 +17,9 @@
 
 package org.opensaml.security.x509.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -61,14 +64,14 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
     private String subjectCN;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         subjectCN = "foo.example.org";
         
         criteriaSet = new CriteriaSet( new EntityIDCriterion("dummy-entity-id") );
     }
     
+    @Test
     public void testGoodPathInAnchors() {
         cred = getCredential("foo-1A1-good.crt");
         engine = getEngine(
@@ -80,6 +83,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Entity cert was good, path in trust anchors set");
     }
     
+    @Test
     public void testGoodPathInCred() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -91,6 +95,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Entity cert was good, full path in cred");
     }
     
+    @Test
     public void testGoodPathNoTrustedNames() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -102,6 +107,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Entity cert was good, full path in cred, no trusted names");
     }
     
+    @Test
     public void testGoodPathBadTrustedName() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -114,6 +120,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateFailure("Entity cert was good, full path in cred, bad trusted names");
     }
     
+    @Test
     public void testCertRevoked() {
         cred = getCredential("foo-1A1-revoked.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -126,6 +133,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateFailure("Entity cert was revoked");
     }
     
+    @Test
     public void testCertExpired() {
         cred = getCredential("foo-1A1-expired.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -138,6 +146,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateFailure("Entity cert was expired");
     }
     
+    @Test
     public void testMissingAnchor() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -150,6 +159,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
         testValidateFailure("No path to entity cert, root CA trust anchor missing");
     }
     
+    @Test
     public void testNoAnchors() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         engine = getEngine(
@@ -167,23 +177,25 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
      * Helper methods.  *
      ********************/
     
+    @Test(enabled = false)
     private void testValidateSuccess(String message) {
         try {
             if ( !engine.validate(cred, criteriaSet) ) {
-                fail("Evaluation of X509Credential failed, success was expected: " + message);
+                Assert.fail("Evaluation of X509Credential failed, success was expected: " + message);
             }
         } catch (SecurityException e) {
-            fail("Evaluation failed due to processing exception: " + e.getMessage());
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
         }
     }
     
+    @Test(enabled = false)
     private void testValidateFailure(String message) {
         try {
             if ( engine.validate(cred, criteriaSet) ) {
-                fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
+                Assert.fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
             }
         } catch (SecurityException e) {
-            fail("Evaluation failed due to processing exception: " + e.getMessage());
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
         }
     }
     
@@ -243,7 +255,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
             ins.read(encoded);
             return X509Util.decodeCertificate(encoded).iterator().next();
         } catch (Exception e) {
-            fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
+            Assert.fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
         }
         return null;
     }
@@ -263,7 +275,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
             ins.read(encoded);
             return X509Util.decodeCRLs(encoded).iterator().next();
         } catch (Exception e) {
-            fail("Could not create CRL from file: " + fileName + ": " + e.getMessage());
+            Assert.fail("Could not create CRL from file: " + fileName + ": " + e.getMessage());
         }
         return null;
     }

@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -40,8 +43,8 @@ public class XSURITest extends XMLObjectBaseTestCase {
     private String expectedValue;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception{
-        super.setUp();
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsURI.xml";
         expectedXMLObjectQName = new QName("urn:oasis:names:tc:SAML:2.0:assertion", "AttributeValue", "saml");
         expectedValue = "urn:test:foo:bar:baz";
@@ -52,6 +55,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
      * @throws MarshallingException 
      * @throws XMLParserException 
      */
+    @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
         XSURIBuilder uriBuilder = (XSURIBuilder) builderFactory.getBuilder(XSURI.TYPE_NAME);
         XSURI xsURI = uriBuilder.buildObject(expectedXMLObjectQName, XSURI.TYPE_NAME);
@@ -70,14 +74,15 @@ public class XSURITest extends XMLObjectBaseTestCase {
      * @throws XMLParserException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSURITest.class.getResourceAsStream(testDocumentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         XSURI xsURI = (XSURI) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpected XSURI QName", expectedXMLObjectQName, xsURI.getElementQName());
-        assertEquals("Unexpected XSURI schema type", XSURI.TYPE_NAME, xsURI.getSchemaType());
-        assertEquals("Unexpected value of XSURI", xsURI.getValue(), expectedValue);
+        AssertJUnit.assertEquals("Unexpected XSURI QName", expectedXMLObjectQName, xsURI.getElementQName());
+        AssertJUnit.assertEquals("Unexpected XSURI schema type", XSURI.TYPE_NAME, xsURI.getSchemaType());
+        AssertJUnit.assertEquals("Unexpected value of XSURI", xsURI.getValue(), expectedValue);
     }
 }

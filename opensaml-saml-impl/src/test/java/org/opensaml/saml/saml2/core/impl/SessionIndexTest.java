@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
@@ -42,20 +45,22 @@ public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedSessionIndex = "Session1234";
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SessionIndex si = (SessionIndex) unmarshallElement(singleElementFile);
         
-        assertEquals("The unmarshalled session index as not the expected value", expectedSessionIndex, si.getSessionIndex());
+        AssertJUnit.assertEquals("The unmarshalled session index as not the expected value", expectedSessionIndex, si.getSessionIndex());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         SessionIndex si = (SessionIndex) buildXMLObject(SessionIndex.DEFAULT_ELEMENT_NAME);
         

@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -84,9 +88,8 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         "urPV4NvVcNaIQZJunHI=";
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         switchMDDocumentValid = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(switchMDFileValid));
         switchMDDocumentInvalid = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(switchMDFileInvalid));
         
@@ -97,6 +100,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
                 XMLSecurityHelper.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
     }
 
+    @Test
     public void testValidSWITCHStandalone() throws UnmarshallingException {
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentValid
                 .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
@@ -105,10 +109,11 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         try {
             filter.doFilter(xmlObject);
         } catch (FilterException e) {
-            fail("Filter failed validation, should have succeeded: " + e.getMessage());
+            Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
     }
     
+    @Test
     public void testInvalidSWITCHStandalone() throws UnmarshallingException {
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentInvalid
                 .getDocumentElement()).unmarshall(switchMDDocumentInvalid.getDocumentElement());
@@ -116,12 +121,13 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
         try {
             filter.doFilter(xmlObject);
-            fail("Filter passed validation, should have failed");
+            Assert.fail("Filter passed validation, should have failed");
         } catch (FilterException e) {
             // do nothing, should fail
         }
     }
     
+    @Test
     public void testEntityDescriptor() throws UnmarshallingException, CertificateException, XMLParserException {
         X509Certificate cert = SecurityHelper.buildJavaX509Cert(openIDCertBase64);
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
@@ -132,19 +138,20 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         XMLObject xmlObject = 
             unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
-        assertTrue(xmlObject instanceof EntityDescriptor);
+        AssertJUnit.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
-        assertTrue(ed.isSigned());
-        assertNotNull("Signature was null", ed.getSignature());
+        AssertJUnit.assertTrue(ed.isSigned());
+        AssertJUnit.assertNotNull("Signature was null", ed.getSignature());
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
             filter.doFilter(ed);
         } catch (FilterException e) {
-            fail("Filter failed validation, should have succeeded: " + e.getMessage());
+            Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
     }
     
+    @Test
     public void testEntityDescriptorInvalid() throws UnmarshallingException, CertificateException, XMLParserException {
         X509Certificate cert = SecurityHelper.buildJavaX509Cert(openIDCertBase64);
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
@@ -155,20 +162,21 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject = 
             unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
-        assertTrue(xmlObject instanceof EntityDescriptor);
+        AssertJUnit.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
-        assertTrue(ed.isSigned());
-        assertNotNull("Signature was null", ed.getSignature());
+        AssertJUnit.assertTrue(ed.isSigned());
+        AssertJUnit.assertNotNull("Signature was null", ed.getSignature());
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
             filter.doFilter(xmlObject);
-            fail("Filter passed validation, should have failed");
+            Assert.fail("Filter passed validation, should have failed");
         } catch (FilterException e) {
             // do nothing, should fail
         }
     }
     
+    @Test
     public void testEntityDescriptorWithProvider() throws CertificateException, XMLParserException, UnmarshallingException {
         X509Certificate cert = SecurityHelper.buildJavaX509Cert(openIDCertBase64);
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
@@ -186,15 +194,16 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         try {
             mdProvider.setMetadataFilter(filter);
         } catch (MetadataProviderException e) {
-            fail("Could not set metadata filter on provider");
+            Assert.fail("Could not set metadata filter on provider");
         }
         try {
             mdProvider.initialize();
         } catch (MetadataProviderException e) {
-            fail("Failed when initializing metadata provider");
+            Assert.fail("Failed when initializing metadata provider");
         }
     }
     
+    @Test
     public void testInvalidEntityDescriptorWithProvider() throws CertificateException, XMLParserException, UnmarshallingException {
         X509Certificate cert = SecurityHelper.buildJavaX509Cert(openIDCertBase64);
         X509Credential cred = SecurityHelper.getSimpleCredential(cert, null);
@@ -212,11 +221,11 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         try {
             mdProvider.setMetadataFilter(filter);
         } catch (MetadataProviderException e) {
-            fail("Could not set metadata filter on provider");
+            Assert.fail("Could not set metadata filter on provider");
         }
         try {
             mdProvider.initialize();
-            fail("Metadata signature was invalid, provider initialization should have failed");
+            Assert.fail("Metadata signature was invalid, provider initialization should have failed");
         } catch (MetadataProviderException e) {
             // do nothing, failure expected
         }

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -43,25 +46,26 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedNamespace = "http://example.org/xmlns";
         expectedContent = "http://example.org";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AdditionalMetadataLocation locationObj = (AdditionalMetadataLocation) unmarshallElement(singleElementFile);
 
         String location = locationObj.getLocationURI();
-        assertEquals("Location URI was " + location + ", expected " + expectedContent, expectedContent, location);
+        AssertJUnit.assertEquals("Location URI was " + location + ", expected " + expectedContent, expectedContent, location);
 
         String namespace = locationObj.getNamespaceURI();
-        assertEquals("Namepsace URI was " + namespace + ", expected " + expectedNamespace, expectedNamespace, namespace);
+        AssertJUnit.assertEquals("Namepsace URI was " + namespace + ", expected " + expectedNamespace, expectedNamespace, namespace);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AdditionalMetadataLocation location = (AdditionalMetadataLocation) buildXMLObject(qname);

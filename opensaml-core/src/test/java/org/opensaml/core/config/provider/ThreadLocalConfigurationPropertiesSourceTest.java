@@ -17,23 +17,25 @@
 
 package org.opensaml.core.config.provider;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 
 /**
  * Test {@link ThreadLocalConfigurationPropertiesSource}.
  */
-public class ThreadLocalConfigurationPropertiesSourceTest extends TestCase {
+public class ThreadLocalConfigurationPropertiesSourceTest {
     
     /** The source test to test. */
     private ConfigurationPropertiesSource source;
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         Properties props = new Properties();
         
         props.setProperty("opensaml.config.partitionName", "myapp-threadlocal");
@@ -43,21 +45,22 @@ public class ThreadLocalConfigurationPropertiesSourceTest extends TestCase {
     }
 
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
         ThreadLocalConfigurationPropertiesHolder.clear();
     }
     
     /**
      *  Test basic retrieval of properties from properties source.
      */
+    @Test
     public void testSource() {
         source = new ThreadLocalConfigurationPropertiesSource();
         Properties props = source.getProperties();
-        assertNotNull("Properties was null", props);
+        AssertJUnit.assertNotNull("Properties was null", props);
         
-        assertEquals("Incorrect property value", "myapp-threadlocal", props.getProperty("opensaml.config.partitionName"));
-        assertEquals("Incorrect property value", "false", props.getProperty("opensaml.initializer.foo.flag"));
+        AssertJUnit.assertEquals("Incorrect property value", "myapp-threadlocal", props.getProperty("opensaml.config.partitionName"));
+        AssertJUnit.assertEquals("Incorrect property value", "false", props.getProperty("opensaml.initializer.foo.flag"));
     }
 
 }

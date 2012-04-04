@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -34,23 +36,26 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         EntityAttributes attributes = (EntityAttributes) unmarshallElement(singleElementFile);
-        assertNotNull(attributes);
-        assertTrue(attributes.getAssertions().isEmpty());
-        assertTrue(attributes.getAttributes().isEmpty());
+        AssertJUnit.assertNotNull(attributes);
+        AssertJUnit.assertTrue(attributes.getAssertions().isEmpty());
+        AssertJUnit.assertTrue(attributes.getAttributes().isEmpty());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         EntityAttributes attributes = (EntityAttributes) unmarshallElement(childElementsFile);
-        assertNotNull(attributes);
+        AssertJUnit.assertNotNull(attributes);
 
-        assertEquals(2, attributes.getAssertions().size());
-        assertEquals(3, attributes.getAttributes().size());
+        AssertJUnit.assertEquals(2, attributes.getAssertions().size());
+        AssertJUnit.assertEquals(3, attributes.getAttributes().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         EntityAttributes attributes = (EntityAttributes) buildXMLObject(EntityAttributes.DEFAULT_ELEMENT_NAME);
 
@@ -58,6 +63,7 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Assertion assertion1 = (Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
         assertion1.setIssueInstant(new DateTime(1984, 8, 26, 10, 01, 30, 0, DateTimeZone.UTC));
@@ -78,7 +84,7 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
         attributes.getAttributes().add(attrib2);
         attributes.getAttributes().add(attrib3);
 
-        assertEquals(5, attributes.getOrderedChildren().size());
+        AssertJUnit.assertEquals(5, attributes.getOrderedChildren().size());
         assertXMLEquals(expectedChildElementsDOM, attributes);
     }
 }

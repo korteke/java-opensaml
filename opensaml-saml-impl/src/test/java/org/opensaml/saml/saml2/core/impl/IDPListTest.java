@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,13 +49,14 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedNumIDPEntryChildren = 3;
     }
 
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
 
@@ -61,6 +65,7 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
  
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
         
@@ -77,19 +82,21 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         IDPList list = (IDPList) unmarshallElement(singleElementFile);
         
-        assertNotNull("IDPList", list);
-        assertEquals("IDPEntry count", 0, list.getIDPEntrys().size());
-        assertNull("GetComplete", list.getGetComplete());
+        AssertJUnit.assertNotNull("IDPList", list);
+        AssertJUnit.assertEquals("IDPEntry count", 0, list.getIDPEntrys().size());
+        AssertJUnit.assertNull("GetComplete", list.getGetComplete());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         IDPList list = (IDPList) unmarshallElement(childElementsFile);
         
-        assertEquals("IDPEntry count", expectedNumIDPEntryChildren, list.getIDPEntrys().size());
-        assertNotNull("GetComplete", list.getGetComplete());
+        AssertJUnit.assertEquals("IDPEntry count", expectedNumIDPEntryChildren, list.getIDPEntrys().size());
+        AssertJUnit.assertNotNull("GetComplete", list.getGetComplete());
     }
 }

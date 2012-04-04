@@ -26,6 +26,8 @@ import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnContextDecl;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
+import org.testng.AssertJUnit;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextImpl}.
@@ -42,23 +44,21 @@ public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AuthnContext authnContext = (AuthnContext) unmarshallElement(singleElementFile);
 
-        assertNotNull(authnContext);
+        AssertJUnit.assertNotNull(authnContext);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContext.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthnContext authnContext = (AuthnContext) buildXMLObject(qname);
@@ -67,22 +67,25 @@ public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         // do nothing
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AuthnContext authnContext = (AuthnContext) unmarshallElement(childElementsFile);
 
-        assertNotNull("AuthnContextClassRef element not present", authnContext.getAuthnContextClassRef());
-        assertNotNull("AuthnContextDecl element not present", authnContext.getAuthContextDecl());
-        assertNotNull("AuthnContextDeclRef element not present", authnContext.getAuthnContextDeclRef());
-        assertEquals("AuthenticatingAuthorityCount Count", expectedAuthenticatingAuthorityCount, authnContext
+        AssertJUnit.assertNotNull("AuthnContextClassRef element not present", authnContext.getAuthnContextClassRef());
+        AssertJUnit.assertNotNull("AuthnContextDecl element not present", authnContext.getAuthContextDecl());
+        AssertJUnit.assertNotNull("AuthnContextDeclRef element not present", authnContext.getAuthnContextDeclRef());
+        AssertJUnit.assertEquals("AuthenticatingAuthorityCount Count", expectedAuthenticatingAuthorityCount, authnContext
                 .getAuthenticatingAuthorities().size());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContext.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthnContext authnContext = (AuthnContext) buildXMLObject(qname);

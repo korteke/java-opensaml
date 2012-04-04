@@ -17,6 +17,9 @@
 
 package org.opensaml.security.x509.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import java.io.InputStream;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -54,14 +57,14 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     private X509Credential cred;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         pkixEvaluator = new CertPathPKIXTrustEvaluator();
         info = null;
         cred = null;
     }
     
+    @Test
     public void testGood() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -72,6 +75,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Valid path was specified", info, cred);
     }
     
+    @Test
     public void testIncompletePath() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -82,6 +86,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Incomplete path was specified, missing issuing CA certificate", info, cred);
     }
     
+    @Test
     public void testNoAnchors() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -93,6 +98,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateProcessingError("No trust anchors specified", info, cred);
     }
     
+    @Test
     public void testNonRootIssuerAsTrustAnchor() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -105,6 +111,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Incomplete path was specified, missing (non-issuing) CA certificate in path", info, cred);
     }
     
+    @Test
     public void testRevokedV1() {
         cred = getCredential("foo-1A1-revoked.crt");
         info = getPKIXInfoSet(
@@ -123,6 +130,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Specified certificate was revoked, V1 CRL was processed", info, cred);
     }
     
+    @Test
     public void testRevokedV1CRLinCred() {
         cred = getCredential("foo-1A1-revoked.crt");
         info = getPKIXInfoSet(
@@ -142,6 +150,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Specified certificate was revoked, V1 CRL from credential was processed", info, cred);
     }
     
+    @Test
     public void testRevokedV2() {
         cred = getCredential("foo-1A1-revoked.crt");
         info = getPKIXInfoSet(
@@ -160,6 +169,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Specified certificate was revoked, V2 CRL was processed", info, cred);
     }
     
+    @Test
     public void testRevokedV2CRLinCred() {
         cred = getCredential("foo-1A1-revoked.crt");
         info = getPKIXInfoSet(
@@ -179,6 +189,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Specified certificate was revoked, V2 CRL from credential was processed", info, cred);
     }
     
+    @Test
     public void testEmptyCRL() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -191,6 +202,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Certificate was valid, empty V1 CRL was processed", info, cred);
     }
     
+    @Test
     public void testIncompleteCRLsForChain() {
         cred = getCredential("foo-1A1-good.crt", "inter1A1-ca.crt", "inter1A-ca.crt");
         ((BasicX509Credential)cred).setCRLs(getCRLS("inter1A1-v2.crl"));
@@ -204,6 +216,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Certificate was valid (non-revoked), V2 CRL for intermediate CA was processed, missing complete CRL info for chain", info, cred);
     }
     
+    @Test
     public void testExpiredCRL() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -215,6 +228,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Certificate was valid, expired V1 CRL was processed", info, cred);
     }
     
+    @Test
     public void testNonRevokedCertWithNonEmptyCRL() {
         cred = getCredential("foo-1A1-good.crt");
         info = getPKIXInfoSet(
@@ -225,6 +239,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Certificate was valid, V1 CRL containing other revolcations was processed", info, cred);
     }
     
+    @Test
     public void testEntityCertExpired() {
         cred = getCredential("foo-1A1-expired.crt");
         info = getPKIXInfoSet(
@@ -235,6 +250,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Specified certificate was expired", info, cred);
     }
     
+    @Test
     public void testGoodPathInCred() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         info = getPKIXInfoSet(
@@ -253,6 +269,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Valid path was specified, intermediate path in credential chain", info, cred);
     }
     
+    @Test
     public void testGoodPathInCredNoAnchors() {
         cred = getCredential("foo-1A1-good.crt", "inter1A1-ca.crt", "inter1A-ca.crt", "root1-ca.crt");
         info = getPKIXInfoSet(
@@ -263,6 +280,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Complete good path was specified in cred, but no relevant trust anchors", info, cred);
     }
       
+    @Test
     public void testIncompletePathInCred() {
         cred = getCredential("foo-1A1-good.crt", "inter1A1-ca.crt");
         info = getPKIXInfoSet(
@@ -273,6 +291,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Incomplete path was specified, neither contains required intermediate cert", info, cred);
     }
       
+    @Test
     public void testPathTooDeep() {
         cred = getCredential("foo-1A1-good.crt", "inter1A-ca.crt", "inter1A1-ca.crt");
         info = getPKIXInfoSet(
@@ -296,32 +315,35 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
      * Helper methods.  *
      ********************/
     
+    @Test(enabled = false)
     private void testValidateSuccess(String message, PKIXValidationInformation info, X509Credential cred) {
         try {
             if ( !pkixEvaluator.validate(info, cred) ) {
-                fail("Evaluation of X509Credential failed, success was expected: " + message);
+                Assert.fail("Evaluation of X509Credential failed, success was expected: " + message);
             }
         } catch (SecurityException e) {
-            fail("Evaluation failed due to processing exception: " + e.getMessage());
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
         }
     }
     
+    @Test(enabled = false)
     private void testValidateFailure(String message, PKIXValidationInformation info, X509Credential cred) {
         try {
             if ( pkixEvaluator.validate(info, cred) ) {
-                fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
+                Assert.fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
             }
         } catch (SecurityException e) {
-            fail("Evaluation failed due to processing exception: " + e.getMessage());
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
         }
     }
     
+    @Test(enabled = false)
     private void testValidateProcessingError(String message, PKIXValidationInformation info, X509Credential cred) {
         try {
             if ( pkixEvaluator.validate(info, cred) ) {
-                fail("Evaluation of X509Credential succeeded, processing failure was expected: " + message);
+                Assert.fail("Evaluation of X509Credential succeeded, processing failure was expected: " + message);
             } else {
-                fail("Evaluation of X509Credential failed, but processing failure was expected: " + message);
+                Assert.fail("Evaluation of X509Credential failed, but processing failure was expected: " + message);
             }
         } catch (SecurityException e) {
             // do nothing, failure expected
@@ -366,7 +388,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
             ins.read(encoded);
             return X509Util.decodeCertificate(encoded).iterator().next();
         } catch (Exception e) {
-            fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
+            Assert.fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
         }
         return null;
     }
@@ -386,7 +408,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
             ins.read(encoded);
             return X509Util.decodeCRLs(encoded).iterator().next();
         } catch (Exception e) {
-            fail("Could not create CRL from file: " + fileName + ": " + e.getMessage());
+            Assert.fail("Could not create CRL from file: " + fileName + ": " + e.getMessage());
         }
         return null;
     }

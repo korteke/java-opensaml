@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.encryption;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
@@ -79,9 +83,8 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
         encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
@@ -108,6 +111,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
      * @throws SignatureException 
      * @throws UnmarshallingException 
      */
+    @Test
     public void testEncryptedAssertionInResponse() throws XMLParserException, EncryptionException, 
             NoSuchAlgorithmException, NoSuchProviderException, SecurityException, MarshallingException, 
             SignatureException, UnmarshallingException {
@@ -159,7 +163,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         try {
             firstSigValidator.validate(newResponse.getSignature());
         } catch (SignatureException e1) {
-            fail("First Response signature validation failed");
+            Assert.fail("First Response signature validation failed");
         }
         
         // Decrypt Assertion
@@ -172,10 +176,10 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         try {
             decryptedAssertion = decrypter.decrypt(newEncryptedAssertion);
         } catch (DecryptionException e) {
-            fail("Error on decryption of EncryptedAssertion: " + e);
+            Assert.fail("Error on decryption of EncryptedAssertion: " + e);
         }
         
-        assertNotNull("Decrypted Assertion was null", decryptedAssertion);
+        AssertJUnit.assertNotNull("Decrypted Assertion was null", decryptedAssertion);
         
         assertXMLEquals(targetDOM, decryptedAssertion);
         
@@ -184,7 +188,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         try {
             secondSigValidator.validate(newResponse.getSignature());
         } catch (SignatureException e1) {
-            fail("Second Response signature validation failed");
+            Assert.fail("Second Response signature validation failed");
         }
         
     }

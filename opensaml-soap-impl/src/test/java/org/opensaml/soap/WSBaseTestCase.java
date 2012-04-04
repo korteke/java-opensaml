@@ -18,6 +18,7 @@
 package org.opensaml.soap;
 
 
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
@@ -37,7 +38,7 @@ import org.w3c.dom.Element;
 public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
 
     @SuppressWarnings("unchecked")
-    public <T extends XMLObject> T marshallAndUnmarshall(T object)
+    protected <T extends XMLObject> T marshallAndUnmarshall(T object)
             throws Exception {
         QName name= object.getElementQName();
 
@@ -48,12 +49,12 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         object.releaseDOM();
         object.releaseChildrenDOM(true);
         Element element= marshaller.marshall(object);
-        assertNotNull(element);
+        AssertJUnit.assertNotNull(element);
 
         System.out.println(SerializeSupport.nodeToString(element));
 
         T object2= (T) unmarshaller.unmarshall(element);
-        assertNotNull(object2);
+        AssertJUnit.assertNotNull(object2);
 
         // Have to release the DOM before re-marshalling, otherwise the already cached
         // Element just gets adopted into a new Document, and the test below
@@ -62,7 +63,7 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         object2.releaseDOM();
         object2.releaseChildrenDOM(true);
         Element element2= marshaller.marshall(object2);
-        assertNotNull(element2);
+        AssertJUnit.assertNotNull(element2);
 
         System.out.println(SerializeSupport.nodeToString(element2));
 

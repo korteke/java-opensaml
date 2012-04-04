@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -54,27 +56,31 @@ public class AttributeDesignatorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AttributeDesignator ad = (AttributeDesignator) unmarshallElement(singleElementFile);
 
-        assertNull("AttributeName", ad.getAttributeName());
-        assertNull("AttributeNamespace", ad.getAttributeNamespace());
+        AssertJUnit.assertNull("AttributeName", ad.getAttributeName());
+        AssertJUnit.assertNull("AttributeNamespace", ad.getAttributeNamespace());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeDesignator ad = (AttributeDesignator) unmarshallElement(singleElementOptionalAttributesFile);
 
-        assertEquals("AttributeName", expectedAttributeName, ad.getAttributeName());
-        assertEquals("AttributeNamespace", expectedAttributeNamespace, ad.getAttributeNamespace());
+        AssertJUnit.assertEquals("AttributeName", expectedAttributeName, ad.getAttributeName());
+        AssertJUnit.assertEquals("AttributeNamespace", expectedAttributeNamespace, ad.getAttributeNamespace());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AttributeDesignator ad = (AttributeDesignator) buildXMLObject(qname);
 

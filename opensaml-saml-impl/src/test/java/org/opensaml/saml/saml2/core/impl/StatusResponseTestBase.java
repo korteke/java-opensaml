@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -70,8 +73,8 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedID = "def456";
         expectedInResponseTo = "abc123";
         expectedSAMLVersion = SAMLVersion.VERSION_20;
@@ -87,9 +90,11 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     }
 
     /** {@inheritDoc} */
+    @Test
     public abstract void testSingleElementUnmarshall();
 
     /** {@inheritDoc} */
+    @Test
     public abstract void testSingleElementMarshall();
     
     
@@ -140,34 +145,34 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     protected void helperTestSingleElementUnmarshall(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
         
-        assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, sr.getID());
-        assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), sr.getVersion().toString());
-        assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant.compareTo(sr.getIssueInstant()));
+        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, sr.getID());
+        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), sr.getVersion().toString());
+        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant.compareTo(sr.getIssueInstant()));
         
-        assertNull("InResponseTo was not null", sr.getInResponseTo());
-        assertNull("Consent was not null", sr.getConsent());
-        assertNull("Destination was not null", sr.getDestination());
+        AssertJUnit.assertNull("InResponseTo was not null", sr.getInResponseTo());
+        AssertJUnit.assertNull("Consent was not null", sr.getConsent());
+        AssertJUnit.assertNull("Destination was not null", sr.getDestination());
         
     }
     
     protected void helperTestSingleElementOptionalAttributesUnmarshall(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
         
-        assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, sr.getID());
-        assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), sr.getVersion().toString());
-        assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant.compareTo(sr.getIssueInstant()));
+        AssertJUnit.assertEquals("Unmarshalled ID attribute was not the expected value", expectedID, sr.getID());
+        AssertJUnit.assertEquals("Unmarshalled Version attribute was not the expected value", expectedSAMLVersion.toString(), sr.getVersion().toString());
+        AssertJUnit.assertEquals("Unmarshalled IssueInstant attribute was not the expected value", 0, expectedIssueInstant.compareTo(sr.getIssueInstant()));
         
-        assertEquals("Unmarshalled InResponseTo attribute was not the expected value", expectedInResponseTo, sr.getInResponseTo());
-        assertEquals("Unmarshalled Consent attribute was not the expected value", expectedConsent, sr.getConsent());
-        assertEquals("Unmarshalled Destination attribute was not the expected value", expectedDestination, sr.getDestination());
+        AssertJUnit.assertEquals("Unmarshalled InResponseTo attribute was not the expected value", expectedInResponseTo, sr.getInResponseTo());
+        AssertJUnit.assertEquals("Unmarshalled Consent attribute was not the expected value", expectedConsent, sr.getConsent());
+        AssertJUnit.assertEquals("Unmarshalled Destination attribute was not the expected value", expectedDestination, sr.getDestination());
         
     }
 
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
         
-        assertNotNull("Issuer was null", sr.getIssuer());
-        assertNotNull("Status was null", sr.getIssuer());
+        AssertJUnit.assertNotNull("Issuer was null", sr.getIssuer());
+        AssertJUnit.assertNotNull("Status was null", sr.getIssuer());
     }
 
 }

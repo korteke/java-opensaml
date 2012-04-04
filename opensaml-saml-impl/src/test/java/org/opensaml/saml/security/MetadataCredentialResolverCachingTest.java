@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.security;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -72,9 +76,8 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
     
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         entityCriteria = new EntityIDCriterion(spEntityID);
         mdCriteria = new MetadataCriterion(spRole, protocolFoo);
         
@@ -90,15 +93,14 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
         if (mdFile.exists()) {
             mdFile.delete();
         }
-        assertFalse(mdFile.exists());
+        AssertJUnit.assertFalse(mdFile.exists());
         
         simulateWorkaround = false;
     }
    
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
-        
         if (mdFile.exists()) {
             mdFile.delete();
         }
@@ -114,11 +116,12 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
      * @throws InterruptedException
      * @throws ResolverException 
      */
+    @Test
     public void testSigning_UnspecToEncryption() 
             throws IOException, MetadataProviderException, SecurityException, InterruptedException, ResolverException {
         
         copyFile(mdFileUnspec, mdFile);
-        assertTrue(mdFile.exists());
+        AssertJUnit.assertTrue(mdFile.exists());
         
         FilesystemMetadataProvider fsProvider = new FilesystemMetadataProvider(mdFile);
         fsProvider.setParserPool(parserPool);
@@ -132,11 +135,11 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
         Credential cred = null;
         
         cred = mdResolver.resolveSingle(criteriaSet);
-        assertNotNull("Initial query", cred);
+        AssertJUnit.assertNotNull("Initial query", cred);
         
         Thread.sleep(1000);
         cred = mdResolver.resolveSingle(criteriaSet);
-        assertNotNull("Cached query", cred);
+        AssertJUnit.assertNotNull("Cached query", cred);
         
         Thread.sleep(1000);
         copyFile(mdFileEncryption, mdFile);
@@ -158,11 +161,12 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
      * @throws InterruptedException
      * @throws ResolverException 
      */
+    @Test
     public void testSigning_EncryptionToUnspec() 
             throws IOException, MetadataProviderException, SecurityException, InterruptedException, ResolverException {
         
         copyFile(mdFileEncryption, mdFile);
-        assertTrue(mdFile.exists());
+        AssertJUnit.assertTrue(mdFile.exists());
         
         FilesystemMetadataProvider fsProvider = new FilesystemMetadataProvider(mdFile);
         fsProvider.setParserPool(parserPool);
@@ -176,11 +180,11 @@ public class MetadataCredentialResolverCachingTest extends XMLObjectBaseTestCase
         Credential cred = null;
         
         cred = mdResolver.resolveSingle(criteriaSet);
-        assertNull("Initial query", cred);
+        AssertJUnit.assertNull("Initial query", cred);
         
         Thread.sleep(1000);
         cred = mdResolver.resolveSingle(criteriaSet);
-        assertNull("Cached query", cred);
+        AssertJUnit.assertNull("Cached query", cred);
         
         Thread.sleep(1000);
         copyFile(mdFileUnspec, mdFile);

@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
@@ -33,6 +35,7 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling unknown content into the element proxy.
      */
+    @Test
     public void testUnmarshallUnknownContent() throws XMLParserException, UnmarshallingException{
         String documentLocation = "/data/org/opensaml/core/xml/UnknownContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
@@ -40,7 +43,7 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertEquals("Unexpted root element name", "products", xmlobject.getElementQName().getLocalPart());
-        assertEquals("Unexpected number of children", 2, xmlobject.getOrderedChildren().size());
+        AssertJUnit.assertEquals("Unexpted root element name", "products", xmlobject.getElementQName().getLocalPart());
+        AssertJUnit.assertEquals("Unexpected number of children", 2, xmlobject.getOrderedChildren().size());
     }
 }

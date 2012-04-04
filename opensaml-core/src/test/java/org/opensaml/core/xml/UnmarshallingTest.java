@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -45,6 +47,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      * @throws UnmarshallingException
      */
+    @Test
     public void testUnmarshallingWithAttributes() throws XMLParserException, UnmarshallingException {
         String expectedId = "Firefly";
         String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
@@ -53,8 +56,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
-        assertEquals("ID was not expected value", expectedId, sxObject.getId());
+        AssertJUnit.assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
+        AssertJUnit.assertEquals("ID was not expected value", expectedId, sxObject.getId());
     }
 
     /**
@@ -63,6 +66,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      * @throws UnmarshallingException
      */
+    @Test
     public void testUnmarshallingWithElementContent() throws XMLParserException, UnmarshallingException {
         String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
@@ -70,25 +74,25 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
-        assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
+        AssertJUnit.assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
         
         List<SimpleXMLObject> children = sxObject.getSimpleXMLObjects();
-        assertEquals("Unexpected number of children", 3, children.size());
+        AssertJUnit.assertEquals("Unexpected number of children", 3, children.size());
         
         SimpleXMLObject child1 = children.get(0);
-        assertEquals("Unexpected value (text content) for child 1", "Content1", child1.getValue());
+        AssertJUnit.assertEquals("Unexpected value (text content) for child 1", "Content1", child1.getValue());
         
         SimpleXMLObject child2 = children.get(1);
-        assertEquals("Unexpected value (text content) for child 2", "Content2", child2.getValue());
+        AssertJUnit.assertEquals("Unexpected value (text content) for child 2", "Content2", child2.getValue());
         
         SimpleXMLObject child3 = children.get(2);
-        assertNull("Child had text content when it should not", child3.getValue());
+        AssertJUnit.assertNull("Child had text content when it should not", child3.getValue());
         
         List<SimpleXMLObject> grandChildren = child3.getSimpleXMLObjects();
-        assertEquals("Unexpected number of grandchildren (children for child 3)", 1, grandChildren.size());
+        AssertJUnit.assertEquals("Unexpected number of grandchildren (children for child 3)", 1, grandChildren.size());
         
         SimpleXMLObject grandChild1 = grandChildren.get(0);
-        assertEquals("Unexpected value (text content) for grandchild 1", "Content3", grandChild1.getValue());
+        AssertJUnit.assertEquals("Unexpected value (text content) for grandchild 1", "Content3", grandChild1.getValue());
     }
 
     /**
@@ -97,6 +101,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      * @throws XMLParserException
      * @throws MarshallingException
      */
+    @Test
     public void testUnmarshallingWithChildElements() throws XMLParserException, UnmarshallingException {
         String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
@@ -104,8 +109,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
-        assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
+        AssertJUnit.assertNotNull("DOM was not cached after unmarshalling", sxObject.getDOM());
         
-        assertEquals("Number of children elements was not expected value", 2, sxObject.getSimpleXMLObjects().size());
+        AssertJUnit.assertEquals("Number of children elements was not expected value", 2, sxObject.getSimpleXMLObjects().size());
     }
 }

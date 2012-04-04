@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.Terminate;
 
@@ -37,13 +39,15 @@ public class TerminateTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Terminate term = (Terminate) unmarshallElement(singleElementFile);
         
-        assertNotNull("Terminate", term);
+        AssertJUnit.assertNotNull("Terminate", term);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         Terminate term = (Terminate) buildXMLObject(Terminate.DEFAULT_ELEMENT_NAME);
         

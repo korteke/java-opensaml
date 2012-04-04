@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
@@ -37,12 +39,12 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     private String inCommonMDURL;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         inCommonMDURL = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
     }
 
+    @Test
     public void testWhiteListSPRole() throws Exception {
         ArrayList<QName> retainedRoles = new ArrayList<QName>();
         retainedRoles.add(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -55,6 +57,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         metadataProvider.getMetadata();
     }
     
+    @Test
     public void testWhiteListIdPRoles() throws Exception {
         ArrayList<QName> retainedRoles = new ArrayList<QName>();
         retainedRoles.add(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -68,6 +71,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         metadataProvider.getMetadata();
     }
     
+    @Test
     public void testWhiteListNoRole() throws Exception {
         ArrayList<QName> retainedRoles = new ArrayList<QName>();
 

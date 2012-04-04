@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -41,34 +44,36 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         expectedAddress = "ip address";
         expectedDNSName = "dns name";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
         String address = subjectLocality.getAddress();
 
-        assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
 
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
 
         String address = subjectLocality.getAddress();
-        assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
+        AssertJUnit.assertEquals("Address was " + address + ", expected " + expectedAddress, expectedAddress, address);
 
         String dnsName = subjectLocality.getDNSName();
-        assertEquals("DNSName was " + dnsName + ", expected " + expectedDNSName, expectedDNSName, dnsName);
+        AssertJUnit.assertEquals("DNSName was " + dnsName + ", expected " + expectedDNSName, expectedDNSName, dnsName);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         SubjectLocality subjectLocality = (SubjectLocality) buildXMLObject(qname);
@@ -78,6 +83,7 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         SubjectLocality subjectLocality = (SubjectLocality) buildXMLObject(qname);

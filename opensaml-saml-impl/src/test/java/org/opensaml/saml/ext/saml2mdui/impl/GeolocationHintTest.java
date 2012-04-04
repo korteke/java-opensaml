@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -43,19 +46,21 @@ public class GeolocationHintTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedHint = "geo:lat,long";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         GeolocationHint hint = (GeolocationHint) unmarshallElement(singleElementFile);
         
-        assertEquals("Name was not expected value", expectedHint, hint.getHint());
+        AssertJUnit.assertEquals("Name was not expected value", expectedHint, hint.getHint());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(UIInfo.MDUI_NS, 
                                 GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME, 

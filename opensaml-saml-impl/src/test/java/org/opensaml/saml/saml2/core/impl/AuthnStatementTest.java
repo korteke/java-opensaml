@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -46,40 +49,43 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         expectedAuthnInstant = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
         expectedSessionIndex = "index";
         expectedSessionNotOnOrAfter = new DateTime(1984, 8, 26, 10, 11, 30, 43, ISOChronology.getInstanceUTC());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(singleElementFile);
 
         DateTime authnInstant = authnStatement.getAuthnInstant();
-        assertEquals("AuthnInstant was " + authnInstant + ", expected " + expectedAuthnInstant, expectedAuthnInstant,
+        AssertJUnit.assertEquals("AuthnInstant was " + authnInstant + ", expected " + expectedAuthnInstant, expectedAuthnInstant,
                 authnInstant);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(singleElementOptionalAttributesFile);
 
         DateTime authnInstant = authnStatement.getAuthnInstant();
-        assertEquals("AuthnInstant was " + authnInstant + ", expected " + expectedAuthnInstant, expectedAuthnInstant,
+        AssertJUnit.assertEquals("AuthnInstant was " + authnInstant + ", expected " + expectedAuthnInstant, expectedAuthnInstant,
                 authnInstant);
 
         String sessionIndex = authnStatement.getSessionIndex();
-        assertEquals("SessionIndex was " + sessionIndex + ", expected " + expectedSessionIndex, expectedSessionIndex,
+        AssertJUnit.assertEquals("SessionIndex was " + sessionIndex + ", expected " + expectedSessionIndex, expectedSessionIndex,
                 sessionIndex);
 
         DateTime sessionNotOnOrAfter = authnStatement.getSessionNotOnOrAfter();
-        assertEquals("SessionNotOnOrAfter was " + sessionNotOnOrAfter + ", expected " + expectedSessionNotOnOrAfter,
+        AssertJUnit.assertEquals("SessionNotOnOrAfter was " + sessionNotOnOrAfter + ", expected " + expectedSessionNotOnOrAfter,
                 expectedSessionNotOnOrAfter, sessionNotOnOrAfter);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
@@ -88,6 +94,7 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
@@ -99,13 +106,15 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(childElementsFile);
-        assertNotNull("AuthnContext element not present", authnStatement.getAuthnContext());
-        assertNotNull("SubjectLocality element not present", authnStatement.getSubjectLocality());
+        AssertJUnit.assertNotNull("AuthnContext element not present", authnStatement.getAuthnContext());
+        AssertJUnit.assertNotNull("SubjectLocality element not present", authnStatement.getSubjectLocality());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 

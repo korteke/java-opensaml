@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.ManageNameIDService;
 
@@ -42,32 +45,34 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBinding = "urn:binding:foo";
         expectedLocation = "example.org";
         expectedResponseLocation = "example.org/response";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         ManageNameIDService service = (ManageNameIDService) unmarshallElement(singleElementFile);
         
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         ManageNameIDService service = (ManageNameIDService) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
-        assertEquals("Location was not expected value", expectedLocation, service.getLocation());
-        assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());;
+        AssertJUnit.assertEquals("Binding URI was not expected value", expectedBinding, service.getBinding());
+        AssertJUnit.assertEquals("Location was not expected value", expectedLocation, service.getLocation());
+        AssertJUnit.assertEquals("ResponseLocation was not expected value", expectedResponseLocation, service.getResponseLocation());;
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
         
@@ -78,6 +83,7 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
         

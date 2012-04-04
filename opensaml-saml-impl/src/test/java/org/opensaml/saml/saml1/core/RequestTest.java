@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core;
 
+import org.testng.annotations.Test;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 
 /**
@@ -34,6 +35,7 @@ public class RequestTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling a full request message.
      */
+    @Test
     public void testRequestUnmarshall(){
         //TODO
     }
@@ -41,6 +43,7 @@ public class RequestTest extends XMLObjectBaseTestCase {
     /**
      * Tests marshalling a full request message.
      */
+    @Test
     public void testRequestMarshall(){
         //TODO
     }

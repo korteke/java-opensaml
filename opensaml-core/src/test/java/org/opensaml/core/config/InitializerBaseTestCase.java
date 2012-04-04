@@ -17,9 +17,9 @@
 
 package org.opensaml.core.config;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
 
@@ -27,11 +27,11 @@ import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolde
  * An abstract base class for initializer tests which ensures are using a unique configuration
  * partition via a thread-local properties source.
  */
-public abstract class InitializerBaseTestCase extends TestCase {
+public abstract class InitializerBaseTestCase {
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
         Properties props = new Properties();
         
         props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
@@ -40,8 +40,8 @@ public abstract class InitializerBaseTestCase extends TestCase {
     }
 
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
         ThreadLocalConfigurationPropertiesHolder.clear();
     }
 

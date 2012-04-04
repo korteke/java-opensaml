@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
 
@@ -36,14 +39,14 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     private File metadataFile;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-
         URL mdURL = FilesystemMetadataProviderTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/simple-metadata.xml");
         metadataFile = new File(mdURL.toURI());
     }
 
+    @Test
     public void testRequiredValidUntil() throws Exception {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter();
 
@@ -53,10 +56,11 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
         } catch (MetadataProviderException e) {
-            fail("Filter disallowed metadata that contained a proper validUntil attribute");
+            Assert.fail("Filter disallowed metadata that contained a proper validUntil attribute");
         }
     }
 
+    @Test
     public void testRequiredValidUntilWithMaxValidity() throws Exception {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter(1);
 
@@ -66,13 +70,14 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
         try {
             metadataProvider.initialize();
-            fail("Filter accepted metadata with longer than allowed validity period.");
+            Assert.fail("Filter accepted metadata with longer than allowed validity period.");
         } catch (MetadataProviderException e) {
             // we expect this
             return;
         }
     }
     
+    @Test
     public void testRequiredValidUntilAlreadyPast() throws Exception {
         SAMLObjectBuilder<EntitiesDescriptor> entitiesDescriptorBuilder = (SAMLObjectBuilder<EntitiesDescriptor>) Configuration.getBuilderFactory().getBuilder(EntitiesDescriptor.TYPE_NAME);
         EntitiesDescriptor descriptor = entitiesDescriptorBuilder.buildObject();

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -45,28 +47,30 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
     
 
     /** {@inheritDoc} */
+    @Test
     public void testUnmarshall() {
         AuthnRequest request = (AuthnRequest) unmarshallElement(elementFile);
         
-        assertNotNull("AuthnRequest was null", request);
-        assertEquals("ForceAuthn", true, request.isForceAuthn().booleanValue());
-        assertEquals("AssertionConsumerServiceURL", "http://www.example.com/", request.getAssertionConsumerServiceURL());
-        assertEquals("AttributeConsumingServiceIndex", 0, request.getAttributeConsumingServiceIndex().intValue());
-        assertEquals("ProviderName", "SomeProvider", request.getProviderName());
-        assertEquals("ID", "abe567de6", request.getID());
-        assertEquals("Version", SAMLVersion.VERSION_20.toString(), request.getVersion().toString());
-        assertEquals("IssueInstant", new DateTime(2005, 1, 31, 12, 0, 0, 0, ISOChronology.getInstanceUTC()), request.getIssueInstant());
-        assertEquals("Destination", "http://www.example.com/", request.getDestination());
-        assertEquals("Consent", "urn:oasis:names:tc:SAML:2.0:consent:obtained", request.getConsent());
-        assertEquals("Subject/NameID/@NameIdFormat", "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress", request.getSubject().getNameID().getFormat());
-        assertEquals("Subject/NameID contents", "j.doe@company.com", request.getSubject().getNameID().getValue());
+        AssertJUnit.assertNotNull("AuthnRequest was null", request);
+        AssertJUnit.assertEquals("ForceAuthn", true, request.isForceAuthn().booleanValue());
+        AssertJUnit.assertEquals("AssertionConsumerServiceURL", "http://www.example.com/", request.getAssertionConsumerServiceURL());
+        AssertJUnit.assertEquals("AttributeConsumingServiceIndex", 0, request.getAttributeConsumingServiceIndex().intValue());
+        AssertJUnit.assertEquals("ProviderName", "SomeProvider", request.getProviderName());
+        AssertJUnit.assertEquals("ID", "abe567de6", request.getID());
+        AssertJUnit.assertEquals("Version", SAMLVersion.VERSION_20.toString(), request.getVersion().toString());
+        AssertJUnit.assertEquals("IssueInstant", new DateTime(2005, 1, 31, 12, 0, 0, 0, ISOChronology.getInstanceUTC()), request.getIssueInstant());
+        AssertJUnit.assertEquals("Destination", "http://www.example.com/", request.getDestination());
+        AssertJUnit.assertEquals("Consent", "urn:oasis:names:tc:SAML:2.0:consent:obtained", request.getConsent());
+        AssertJUnit.assertEquals("Subject/NameID/@NameIdFormat", "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress", request.getSubject().getNameID().getFormat());
+        AssertJUnit.assertEquals("Subject/NameID contents", "j.doe@company.com", request.getSubject().getNameID().getValue());
         Audience audience = request.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
-        assertEquals("Conditions/AudienceRestriction[1]/Audience[1] contents", "urn:foo:sp.example.org", audience.getAudienceURI());
+        AssertJUnit.assertEquals("Conditions/AudienceRestriction[1]/Audience[1] contents", "urn:foo:sp.example.org", audience.getAudienceURI());
         AuthnContextClassRef classRef = (AuthnContextClassRef) request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0);
-        assertEquals("RequestedAuthnContext/AuthnContextClassRef[1] contents", "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", classRef.getAuthnContextClassRef());
+        AssertJUnit.assertEquals("RequestedAuthnContext/AuthnContextClassRef[1] contents", "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", classRef.getAuthnContextClassRef());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testMarshall() {
         NameID nameid = (NameID) buildXMLObject(NameID.DEFAULT_ELEMENT_NAME);
         nameid.setFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress");

@@ -17,17 +17,19 @@
 
 package org.opensaml.core.config.provider;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 
 /**
  * Test {@link ClasspathConfigurationPropertiesSource}.
  */
-public class ClasspathConfigurationPropertiesSourceTest extends TestCase {
+public class ClasspathConfigurationPropertiesSourceTest {
     
     /** The source to test. */
     private ConfigurationPropertiesSource source;
@@ -45,14 +47,13 @@ public class ClasspathConfigurationPropertiesSourceTest extends TestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        //FileSupport.copyFile(masterFile, targetFile);
     }
 
     /** {@inheritDoc} */
+    @AfterMethod
     protected void tearDown() throws Exception {
-        super.tearDown();
         if (targetFile.exists()) {
             //targetFile.delete();
         }
@@ -61,13 +62,14 @@ public class ClasspathConfigurationPropertiesSourceTest extends TestCase {
     /**
      *  Test basic retrieval of properties from properties source.
      */
+    @Test
     public void testSource() {
         source = new ClasspathConfigurationPropertiesSource();
         Properties props = source.getProperties();
-        assertNotNull("Properties was null", props);
+        AssertJUnit.assertNotNull("Properties was null", props);
         
-        assertEquals("Incorrect property value", "myapp", props.getProperty("opensaml.config.partitionName"));
-        assertEquals("Incorrect property value", "true", props.getProperty("opensaml.initializer.foo.flag"));
+        AssertJUnit.assertEquals("Incorrect property value", "myapp", props.getProperty("opensaml.config.partitionName"));
+        AssertJUnit.assertEquals("Incorrect property value", "true", props.getProperty("opensaml.initializer.foo.flag"));
     }
 
 }

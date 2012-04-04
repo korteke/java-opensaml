@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -41,24 +43,27 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
 
         StatusCode code = (StatusCode) unmarshallElement(singleElementFile);
 
-        assertEquals("Single Element Value wrong", StatusCode.SUCCESS, code.getValue());
+        AssertJUnit.assertEquals("Single Element Value wrong", StatusCode.SUCCESS, code.getValue());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsUnmarshall() {
 
         StatusCode code = (StatusCode) unmarshallElement(childElementsFile);
 
-        assertNotNull("Child StatusCode", code.getStatusCode());
+        AssertJUnit.assertNotNull("Child StatusCode", code.getStatusCode());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         StatusCode code = (StatusCode) buildXMLObject(qname);
 
@@ -69,6 +74,7 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testChildElementsMarshall() {
 
         StatusCode code = (StatusCode) buildXMLObject(qname);

@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -52,6 +55,7 @@ public class ResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
         expectedNumAssertions = 3;
@@ -59,6 +63,7 @@ public class ResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = 
             new QName(SAMLConstants.SAML20P_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
@@ -70,6 +75,7 @@ public class ResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = 
             new QName(SAMLConstants.SAML20P_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
@@ -82,6 +88,7 @@ public class ResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         Response resp = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         
@@ -97,27 +104,30 @@ public class ResponseTest extends StatusResponseTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         Response resp = (Response) unmarshallElement(singleElementFile);
         
-        assertNotNull("Response was null", resp);
+        AssertJUnit.assertNotNull("Response was null", resp);
         super.helperTestSingleElementUnmarshall(resp);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Response resp = (Response) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertNotNull("Response was null", resp);
+        AssertJUnit.assertNotNull("Response was null", resp);
         super.helperTestSingleElementOptionalAttributesUnmarshall(resp);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         Response resp = (Response) unmarshallElement(childElementsFile);
         
-        assertEquals("Assertion count", expectedNumAssertions, resp.getAssertions().size());
-        assertEquals("EncryptedAssertion count", expectedNumEncryptedAssertions, resp.getEncryptedAssertions().size());
+        AssertJUnit.assertEquals("Assertion count", expectedNumAssertions, resp.getAssertions().size());
+        AssertJUnit.assertEquals("EncryptedAssertion count", expectedNumEncryptedAssertions, resp.getEncryptedAssertions().size());
         super.helperTestChildElementsUnmarshall(resp);
     }
 

@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.DHKeyValue;
 import org.opensaml.xmlsec.encryption.Generator;
@@ -42,37 +45,40 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         DHKeyValue keyValue = (DHKeyValue) unmarshallElement(singleElementFile);
         
-        assertNotNull("DHKeyValue", keyValue);
-        assertNull("P child element", keyValue.getP());
-        assertNull("Q child element", keyValue.getQ());
-        assertNull("Generator child element", keyValue.getGenerator());
-        assertNull("Public child element", keyValue.getPublic());
-        assertNull("seed element", keyValue.getSeed());
-        assertNull("pgenCounter element", keyValue.getPgenCounter());
+        AssertJUnit.assertNotNull("DHKeyValue", keyValue);
+        AssertJUnit.assertNull("P child element", keyValue.getP());
+        AssertJUnit.assertNull("Q child element", keyValue.getQ());
+        AssertJUnit.assertNull("Generator child element", keyValue.getGenerator());
+        AssertJUnit.assertNull("Public child element", keyValue.getPublic());
+        AssertJUnit.assertNull("seed element", keyValue.getSeed());
+        AssertJUnit.assertNull("pgenCounter element", keyValue.getPgenCounter());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         DHKeyValue keyValue = (DHKeyValue) unmarshallElement(childElementsFile);
         
-        assertNotNull("DHKeyValue", keyValue);
-        assertNotNull("P child element", keyValue.getP());
-        assertNotNull("Q child element", keyValue.getQ());
-        assertNotNull("Generator child element", keyValue.getGenerator());
-        assertNotNull("Public child element", keyValue.getPublic());
-        assertNotNull("seed element", keyValue.getSeed());
-        assertNotNull("pgenCounter element", keyValue.getPgenCounter());
+        AssertJUnit.assertNotNull("DHKeyValue", keyValue);
+        AssertJUnit.assertNotNull("P child element", keyValue.getP());
+        AssertJUnit.assertNotNull("Q child element", keyValue.getQ());
+        AssertJUnit.assertNotNull("Generator child element", keyValue.getGenerator());
+        AssertJUnit.assertNotNull("Public child element", keyValue.getPublic());
+        AssertJUnit.assertNotNull("seed element", keyValue.getSeed());
+        AssertJUnit.assertNotNull("pgenCounter element", keyValue.getPgenCounter());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
         
@@ -80,6 +86,7 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
         

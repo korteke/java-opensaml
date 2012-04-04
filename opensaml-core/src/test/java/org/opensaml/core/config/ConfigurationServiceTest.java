@@ -17,49 +17,52 @@
 
 package org.opensaml.core.config;
 
-import junit.framework.TestCase;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 
 /**
  * A class which provides basic testing for the ConfigurationService.
  */
-public class ConfigurationServiceTest extends TestCase {
+public class ConfigurationServiceTest {
     
     /**
      *  Test registering, retrieving and deregistering a config
      *  object referenced in the config service as a class impl.
      */
+    @Test
     public void testBasicRegistrationAndRetrievalAsClass() {
-        assertNull(ConfigurationService.get(BasicTestConfig.class));
+        AssertJUnit.assertNull(ConfigurationService.get(BasicTestConfig.class));
         
         BasicTestConfig config = new BasicTestConfig();
         config.setValue("test-value");
         ConfigurationService.register(BasicTestConfig.class, config);
         
-        assertNotNull(ConfigurationService.get(BasicTestConfig.class));
+        AssertJUnit.assertNotNull(ConfigurationService.get(BasicTestConfig.class));
         BasicTestConfig retrievedConfig = ConfigurationService.get(BasicTestConfig.class);
-        assertEquals("test-value", retrievedConfig.getValue());
+        AssertJUnit.assertEquals("test-value", retrievedConfig.getValue());
         
         ConfigurationService.deregister(BasicTestConfig.class);
-        assertNull(ConfigurationService.get(BasicTestConfig.class));
+        AssertJUnit.assertNull(ConfigurationService.get(BasicTestConfig.class));
     }
     
     /**
      *  Test registering, retrieving and deregistering a config
      *  object referenced in the config service as an interface.
      */
+    @Test
     public void testBasicRegistrationAndRetrievalAsInterface() {
-        assertNull(ConfigurationService.get(TestConfig.class));
+        AssertJUnit.assertNull(ConfigurationService.get(TestConfig.class));
         
         BasicTestConfig config = new BasicTestConfig();
         config.setValue("test-value");
         ConfigurationService.register(TestConfig.class, config);
         
-        assertNotNull(ConfigurationService.get(TestConfig.class));
+        AssertJUnit.assertNotNull(ConfigurationService.get(TestConfig.class));
         TestConfig retrievedConfig = ConfigurationService.get(TestConfig.class);
-        assertEquals("test-value", retrievedConfig.getValue());
+        AssertJUnit.assertEquals("test-value", retrievedConfig.getValue());
         
         ConfigurationService.deregister(TestConfig.class);
-        assertNull(ConfigurationService.get(TestConfig.class));
+        AssertJUnit.assertNull(ConfigurationService.get(TestConfig.class));
     }
     
     /**

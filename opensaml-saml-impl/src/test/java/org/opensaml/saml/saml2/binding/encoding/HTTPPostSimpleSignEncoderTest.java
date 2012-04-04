@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.binding.encoding;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import java.security.KeyPair;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -47,10 +50,9 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
     private VelocityEngine velocityEngine;
 
     /** {@inheritDoc} */
+    @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        super.setUp();
-
         velocityEngine = new VelocityEngine();
         velocityEngine.setProperty(RuntimeConstants.ENCODING_DEFAULT, "UTF-8");
         velocityEngine.setProperty(RuntimeConstants.OUTPUT_ENCODING, "UTF-8");
@@ -65,6 +67,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
      * 
      * @throws Exception
      */
+    @Test
     @SuppressWarnings("unchecked")
     public void testResponseEncoding() throws Exception {
         SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
@@ -104,12 +107,13 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         "/templates/saml2-post-simplesign-binding.vm");
         encoder.encode(messageContext);
 
-        assertEquals("Unexpected content type", "text/html", response.getContentType());
-        assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        assertEquals(637875160, response.getContentAsString().hashCode());
+        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
+        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
+        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
+        AssertJUnit.assertEquals(637875160, response.getContentAsString().hashCode());
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testRequestEncoding() throws Exception {
         SAMLObjectBuilder<AuthnRequest> responseBuilder = (SAMLObjectBuilder<AuthnRequest>) builderFactory
@@ -138,12 +142,13 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         "/templates/saml2-post-simplesign-binding.vm");
         encoder.encode(messageContext);
 
-        assertEquals("Unexpected content type", "text/html", response.getContentType());
-        assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
-        assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
-        assertEquals(-481805865, response.getContentAsString().hashCode());
+        AssertJUnit.assertEquals("Unexpected content type", "text/html", response.getContentType());
+        AssertJUnit.assertEquals("Unexpected character encoding", response.getCharacterEncoding(), "UTF-8");
+        AssertJUnit.assertEquals("Unexpected cache controls", "no-cache, no-store", response.getHeader("Cache-control"));
+        AssertJUnit.assertEquals(-481805865, response.getContentAsString().hashCode());
     }
     
+    @Test
     @SuppressWarnings("unchecked")
     public void testRequestEncodingWithSimpleSign() throws Exception {
         SAMLObjectBuilder<AuthnRequest> responseBuilder = (SAMLObjectBuilder<AuthnRequest>) builderFactory
@@ -181,13 +186,13 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         int start;
         
         start = form.indexOf("name=\"Signature\"");
-        assertTrue("Signature parameter not found in form control data", start != -1);
+        AssertJUnit.assertTrue("Signature parameter not found in form control data", start != -1);
         
         start = form.indexOf("name=\"SigAlg\"");
-        assertTrue("SigAlg parameter not found in form control data", start != -1);
+        AssertJUnit.assertTrue("SigAlg parameter not found in form control data", start != -1);
         
         start = form.indexOf("name=\"KeyInfo\"");
-        assertTrue("KeyInfo parameter not found in form control data", start != -1);
+        AssertJUnit.assertTrue("KeyInfo parameter not found in form control data", start != -1);
         
         // Note: to test that actual signature is cryptographically correct, really need a known good test vector.
         // Need to verify that we're signing over the right data in the right byte[] encoded form.

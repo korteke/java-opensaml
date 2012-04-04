@@ -17,6 +17,10 @@
 
 package org.opensaml.core.xml;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import org.testng.AssertJUnit;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -64,23 +68,25 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         xsAnyBuilder = builderFactory.getBuilder(XSAny.TYPE_NAME);
         xsAny = xsAnyBuilder.buildObject(elementName);
         nsManager = xsAny.getNamespaceManager();
     }
     
+    @Test
     public void testObjectName() {
         checkNamespaces(xsAny, 1, elementName);
     }
     
+    @Test
     public void testObjectType() {
         xsAny = xsAnyBuilder.buildObject(elementName, typeName);
         checkNamespaces(xsAny, 3, elementName, typeName, xsiTypeName);
     }
     
+    @Test
     public void testQNameElementContent() {
         QName content = new QName(ns2uri, "TestElementContent", ns2Prefix);
         
@@ -93,6 +99,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         checkNamespaces(xsAny, 1, elementName);
     }
     
+    @Test
     public void testQualifiedAttributes() {
         QName attrName1 = new QName(ns1uri, "Attr1", ns1Prefix);
         QName attrName2 = new QName(ns2uri, "Attr2", ns2Prefix);
@@ -113,6 +120,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         checkNamespaces(xsAny, 1, elementName);
     }
     
+    @Test
     public void testQNameAttributeValue() {
         QName attrName = new QName(ns1uri, "Attr1", ns1Prefix);
         QName attrValue1 = new QName(ns2uri, "Attr2", ns2Prefix);
@@ -129,63 +137,66 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         checkNamespaces(xsAny, 1, elementName);
     }
     
+    @Test
     public void testNSDeclaration() {
         Namespace ns1 = new Namespace(ns1uri, ns1Prefix);
         Namespace ns2 = new Namespace(ns2uri, ns2Prefix);
         
         //Will be there b/c it's the ns of the element
-        assertNotNull(findNamespace(nsManager, ns1));
-        assertEquals(1, nsManager.getNamespaces().size());
-        assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
+        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
+        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.registerNamespaceDeclaration(ns1);
-        assertEquals(1, nsManager.getNamespaces().size());
-        assertNotNull(findNamespace(nsManager, ns1));
-        assertTrue(findNamespace(nsManager, ns1).alwaysDeclare());
+        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
+        AssertJUnit.assertTrue(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.registerNamespaceDeclaration(ns2);
-        assertEquals(2, nsManager.getNamespaces().size());
-        assertNotNull(findNamespace(nsManager, ns2));
-        assertTrue(findNamespace(nsManager, ns2).alwaysDeclare());
+        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns2));
+        AssertJUnit.assertTrue(findNamespace(nsManager, ns2).alwaysDeclare());
         
         // Should still be there b/c of element name, but no longer always declared
         nsManager.deregisterNamespaceDeclaration(ns1);
-        assertEquals(2, nsManager.getNamespaces().size());
-        assertNotNull(findNamespace(nsManager, ns1));
-        assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
+        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.deregisterNamespaceDeclaration(ns2);
-        assertEquals(1, nsManager.getNamespaces().size());
-        assertNull(findNamespace(nsManager, ns2));
+        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
+        AssertJUnit.assertNull(findNamespace(nsManager, ns2));
     }
     
+    @Test
     public void testNSUnspecifiedUsage() {
         Namespace ns1 = new Namespace(ns1uri, ns1Prefix);
         Namespace ns2 = new Namespace(ns2uri, ns2Prefix);
         
-        assertEquals(1, nsManager.getNamespaces().size());
+        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
         
         nsManager.registerNamespace(ns1);
-        assertEquals(1, nsManager.getNamespaces().size());
-        assertNotNull(findNamespace(nsManager, ns1));
-        assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
+        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.registerNamespace(ns2);
-        assertEquals(2, nsManager.getNamespaces().size());
-        assertNotNull(findNamespace(nsManager, ns2));
-        assertFalse(findNamespace(nsManager, ns2).alwaysDeclare());
+        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns2));
+        AssertJUnit.assertFalse(findNamespace(nsManager, ns2).alwaysDeclare());
         
         // Should still be there b/c of element name
         nsManager.deregisterNamespace(ns1);
-        assertEquals(2, nsManager.getNamespaces().size());
-        assertNotNull(findNamespace(nsManager, ns1));
-        assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        AssertJUnit.assertEquals(2, nsManager.getNamespaces().size());
+        AssertJUnit.assertNotNull(findNamespace(nsManager, ns1));
+        AssertJUnit.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
         
         nsManager.deregisterNamespace(ns2);
-        assertEquals(1, nsManager.getNamespaces().size());
-        assertNull(findNamespace(nsManager, ns2));
+        AssertJUnit.assertEquals(1, nsManager.getNamespaces().size());
+        AssertJUnit.assertNull(findNamespace(nsManager, ns2));
     }
     
+    @Test
     public void testNonVisibleNamespacePrefixes() {
         QName name1 = new QName(ns1uri, "Test1", ns1Prefix);
         QName name2 = new QName(ns2uri, "Test2", ns2Prefix);
@@ -253,10 +264,10 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     private void checkPrefixes(NamespaceManager manager, String ... controlPrefixes) {
         Set<String> nonVisiblePrefixes = manager.getNonVisibleNamespacePrefixes();
         
-        assertEquals("Wrong number of not visible prefixes", controlPrefixes.length, nonVisiblePrefixes.size());
+        AssertJUnit.assertEquals("Wrong number of not visible prefixes", controlPrefixes.length, nonVisiblePrefixes.size());
         
         for (String prefix : controlPrefixes) {
-            assertTrue("Expected prefix not seen: " + prefix, nonVisiblePrefixes.contains(prefix));
+            AssertJUnit.assertTrue("Expected prefix not seen: " + prefix, nonVisiblePrefixes.contains(prefix));
         }
     }
     
@@ -273,7 +284,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         
         if (nsSize != null) {
             int size = nsSize.intValue();
-            assertEquals("Wrong number of unique namespaces", size, xo.getNamespaces().size());
+            AssertJUnit.assertEquals("Wrong number of unique namespaces", size, xo.getNamespaces().size());
         }
         
         outer: 
@@ -284,7 +295,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
                     continue outer;
                 }
             }
-            fail("Did not find expected namespace in object from QName: " +  name.toString());
+            Assert.fail("Did not find expected namespace in object from QName: " +  name.toString());
         }
         
     }

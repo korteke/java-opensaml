@@ -20,6 +20,9 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -55,6 +58,7 @@ public class LogoutRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
         expectedReason = "urn:string:reason";
@@ -63,6 +67,7 @@ public class LogoutRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutRequest req = (LogoutRequest) buildXMLObject(qname);
@@ -73,6 +78,7 @@ public class LogoutRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutRequest req = (LogoutRequest) buildXMLObject(qname);
@@ -86,6 +92,7 @@ public class LogoutRequestTest extends RequestTestBase {
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall() {
         QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutRequest req = (LogoutRequest) buildXMLObject(qname);
@@ -104,30 +111,33 @@ public class LogoutRequestTest extends RequestTestBase {
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(singleElementFile);
         
-        assertNotNull("LogoutRequest was null", req);
-        assertNull("Reason was not null", req.getReason());
-        assertNull("NotOnOrAfter was not null", req.getNotOnOrAfter());
+        AssertJUnit.assertNotNull("LogoutRequest was null", req);
+        AssertJUnit.assertNull("Reason was not null", req.getReason());
+        AssertJUnit.assertNull("NotOnOrAfter was not null", req.getNotOnOrAfter());
         super.helperTestSingleElementUnmarshall(req);
     }
  
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Unmarshalled Reason attribute was not the expectecd value", expectedReason, req.getReason());
-        assertEquals("Unmarshalled NotOnOrAfter attribute was not the expectecd value", 0, expectedNotOnOrAfter.compareTo(req.getNotOnOrAfter()));
+        AssertJUnit.assertEquals("Unmarshalled Reason attribute was not the expectecd value", expectedReason, req.getReason());
+        AssertJUnit.assertEquals("Unmarshalled NotOnOrAfter attribute was not the expectecd value", 0, expectedNotOnOrAfter.compareTo(req.getNotOnOrAfter()));
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
     
     /** {@inheritDoc} */
+    @Test
     public void testChildElementsUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(childElementsFile);
         
-        assertNotNull("Identifier was null", req.getNameID());
-        assertEquals("Number of unmarshalled SessionIndexes was not the expected value", expectedNumSessionIndexes, req.getSessionIndexes().size());
+        AssertJUnit.assertNotNull("Identifier was null", req.getNameID());
+        AssertJUnit.assertEquals("Number of unmarshalled SessionIndexes was not the expected value", expectedNumSessionIndexes, req.getSessionIndexes().size());
         super.helperTestChildElementsUnmarshall(req);
     }
     

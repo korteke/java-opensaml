@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.KANonce;
 
@@ -38,21 +41,22 @@ public class KANonceTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedBase64Content = "someBase64==";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall() {
         KANonce kan = (KANonce) unmarshallElement(singleElementFile);
         
-        assertNotNull("KANonce", kan);
-        assertEquals("KANonce value", kan.getValue(), expectedBase64Content);
+        AssertJUnit.assertNotNull("KANonce", kan);
+        AssertJUnit.assertEquals("KANonce value", kan.getValue(), expectedBase64Content);
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall() {
         KANonce kan = (KANonce) buildXMLObject(KANonce.DEFAULT_ELEMENT_NAME);
         kan.setValue(expectedBase64Content);

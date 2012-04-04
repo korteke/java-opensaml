@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509Certificate;
 
@@ -34,26 +37,26 @@ public class X509CertificateTest extends XMLObjectProviderBaseTestCase {
      */
     public X509CertificateTest() {
         singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509Certificate.xml";
-        
     }
 
     /** {@inheritDoc} */
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+    @BeforeMethod
+	protected void setUp() throws Exception {
         expectedStringContent = "someX509Certificate";
     }
 
     /** {@inheritDoc} */
-    public void testSingleElementUnmarshall() {
+    @Test
+	public void testSingleElementUnmarshall() {
         X509Certificate x509Element = (X509Certificate) unmarshallElement(singleElementFile);
         
-        assertNotNull("X509Certificate", x509Element);
-        assertEquals("X509Certificate value", x509Element.getValue(), expectedStringContent);
+        AssertJUnit.assertNotNull("X509Certificate", x509Element);
+        AssertJUnit.assertEquals("X509Certificate value", x509Element.getValue(), expectedStringContent);
     }
 
     /** {@inheritDoc} */
-    public void testSingleElementMarshall() {
+    @Test
+	public void testSingleElementMarshall() {
         X509Certificate x509Element = (X509Certificate) buildXMLObject(X509Certificate.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         

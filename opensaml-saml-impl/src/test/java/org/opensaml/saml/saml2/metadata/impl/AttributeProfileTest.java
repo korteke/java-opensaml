@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -40,20 +43,21 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     }
     
     /** {@inheritDoc} */
+    @BeforeMethod
     protected void setUp() throws Exception {
-        super.setUp();
-        
         expectedProfileURI = "http://example.org";
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementUnmarshall(){
         AttributeProfile profile = (AttributeProfile) unmarshallElement(singleElementFile);
         
-        assertEquals("Profile URI has a value of " + profile.getProfileURI() + ", expected a value of " + expectedProfileURI, expectedProfileURI, profile.getProfileURI());
+        AssertJUnit.assertEquals("Profile URI has a value of " + profile.getProfileURI() + ", expected a value of " + expectedProfileURI, expectedProfileURI, profile.getProfileURI());
     }
 
     /** {@inheritDoc} */
+    @Test
     public void testSingleElementMarshall(){
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeProfile.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         AttributeProfile profile = (AttributeProfile) buildXMLObject(qname);

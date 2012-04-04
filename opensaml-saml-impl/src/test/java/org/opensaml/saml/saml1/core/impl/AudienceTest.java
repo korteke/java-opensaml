@@ -20,6 +20,8 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -49,28 +51,32 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementUnmarshall() {
         Audience audience = (Audience) unmarshallElement(singleElementFile);
         
-        assertNull("Uri is non-null", audience.getUri());
+        AssertJUnit.assertNull("Uri is non-null", audience.getUri());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Audience audience = (Audience) unmarshallElement(singleElementOptionalAttributesFile);
         
-        assertEquals("Uri", expectedUri, audience.getUri());
+        AssertJUnit.assertEquals("Uri", expectedUri, audience.getUri());
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
 
+    @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Audience audience = (Audience) buildXMLObject(qname);
         
