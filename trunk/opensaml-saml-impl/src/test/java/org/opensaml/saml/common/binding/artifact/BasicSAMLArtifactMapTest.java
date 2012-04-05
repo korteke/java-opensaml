@@ -23,7 +23,7 @@ import org.testng.Assert;
 import java.util.HashMap;
 
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
@@ -85,7 +85,7 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         SAMLObject retrievedObject = entry.getSamlMessage();
         Document newDocument =
                 marshallerFactory.getMarshaller(retrievedObject).marshall(retrievedObject).getOwnerDocument();
-        XMLAssert.assertXMLIdentical(new Diff(origDocument, newDocument), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(origDocument, newDocument), true);
     }
 
     @Test

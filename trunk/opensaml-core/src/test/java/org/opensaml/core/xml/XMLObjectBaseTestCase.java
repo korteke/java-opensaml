@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.config.InitializationService;
@@ -123,7 +123,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
             if (log.isDebugEnabled()) {
                 log.debug("Marshalled DOM was " + SerializeSupport.nodeToString(generatedDOM));
             }
-            XMLAssert.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
+            XMLAssertTestNG.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
         } catch (Exception e) {
             Assert.fail("Marshalling failed with the following error: " + e);
         }
