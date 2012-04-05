@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -97,7 +97,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
         Assert.assertNotNull(encodedEnv.getDOM());
         
-        XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }
     
     /**
@@ -128,7 +128,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
         Envelope encodedEnv = (Envelope) getEncodedMessage(messageContext);
         Assert.assertNotNull(encodedEnv.getDOM());
         
-        XMLAssert.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
     }
     
     

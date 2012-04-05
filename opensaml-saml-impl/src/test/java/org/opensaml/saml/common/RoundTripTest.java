@@ -20,7 +20,7 @@ package org.opensaml.saml.common;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
@@ -104,7 +104,7 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
         org2.releaseDOM();
         org2.releaseChildrenDOM(true);
         Element orgElement2 = orgMarshaller.marshall(org2);
-        XMLAssert.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement2.getOwnerDocument()), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement2.getOwnerDocument()), true);
         
         // Unmarshall again
         Organization org3 = (Organization) orgUnmarshaller.unmarshall(orgElement2);
@@ -113,6 +113,6 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
         org3.releaseDOM();
         org3.releaseChildrenDOM(true);
         Element orgElement3 = orgMarshaller.marshall(org3);
-        XMLAssert.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement3.getOwnerDocument()), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement3.getOwnerDocument()), true);
     }
 }

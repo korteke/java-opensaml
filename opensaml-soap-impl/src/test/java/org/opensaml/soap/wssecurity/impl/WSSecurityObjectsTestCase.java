@@ -22,7 +22,7 @@ import org.testng.Assert;
 import java.util.List;
 
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Marshaller;
@@ -231,7 +231,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         Document document= element.getOwnerDocument();
 
         // compare with XMLUnit
-        XMLAssert.assertXMLIdentical(new Diff(refDocument, document), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(refDocument, document), true);
 
         // unmarshall directly from file
         UsernameToken ut= unmarshallElement("/data/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");

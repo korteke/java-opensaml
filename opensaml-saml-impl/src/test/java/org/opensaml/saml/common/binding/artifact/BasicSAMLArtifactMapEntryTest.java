@@ -28,7 +28,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -82,7 +82,7 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
         // Test SAMLObject reconstitution
         // It will be unmarshalled and so should already have a DOM
         Document newDocument = newEntry.getSamlMessage().getDOM().getOwnerDocument();
-        XMLAssert.assertXMLIdentical(new Diff(origDocument, newDocument), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(origDocument, newDocument), true);
 
     }
     

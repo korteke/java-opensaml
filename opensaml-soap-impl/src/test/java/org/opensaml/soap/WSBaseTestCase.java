@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLAssert;
+import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Marshaller;
@@ -72,7 +72,7 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         //System.out.println("Document equals: " + element.getOwnerDocument().isSameNode(element2.getOwnerDocument())); 
         
         // compare XML content
-        XMLAssert.assertXMLIdentical(new Diff(element.getOwnerDocument(), element2.getOwnerDocument()), true);
+        XMLAssertTestNG.assertXMLIdentical(new Diff(element.getOwnerDocument(), element2.getOwnerDocument()), true);
 
         return object2;
 
