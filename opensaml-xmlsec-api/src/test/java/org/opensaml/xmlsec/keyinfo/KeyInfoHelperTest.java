@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.keyinfo.impl;
+package org.opensaml.xmlsec.keyinfo;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;

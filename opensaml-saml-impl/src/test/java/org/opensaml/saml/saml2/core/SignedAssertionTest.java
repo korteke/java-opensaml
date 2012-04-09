@@ -46,11 +46,11 @@ import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.impl.ExplicitKeySignatureTrustEngine;
 import org.opensaml.xmlsec.signature.impl.SignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.Signer;
+import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
