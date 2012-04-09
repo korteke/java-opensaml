@@ -19,7 +19,6 @@ package org.opensaml.security;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -155,7 +154,6 @@ public class SecurityHelperTest {
     }
 
     /** Generic key testing. */
-    @Test
     protected PrivateKey testPrivKey(String keyFile, char[] password, String algo) throws Exception {
         InputStream keyInS = SecurityHelperTest.class.getResourceAsStream(keyFile);
 
