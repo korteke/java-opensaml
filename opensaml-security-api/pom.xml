@@ -27,11 +27,6 @@
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
         </dependency>
-        <!-- TODO this needs to go -->
-        <dependency>
-            <groupId>org.apache.commons.ssl</groupId>
-            <artifactId>not-yet-commons-ssl</artifactId>
-        </dependency>
 
         <!-- Provided Dependencies -->
 

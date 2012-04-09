@@ -30,6 +30,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +39,6 @@ import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.apache.commons.ssl.TrustMaterial;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERObjectIdentifier;
@@ -57,6 +57,8 @@ import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
 
+import edu.vt.middleware.crypt.CryptException;
+import edu.vt.middleware.crypt.io.X509CertificatesCredentialReader;
 import edu.vt.middleware.crypt.util.HexConverter;
 
 /**
@@ -322,12 +324,14 @@ public class X509Util {
      * 
      * @throws CertificateException thrown if the certificates can not be decoded
      */
-    @SuppressWarnings("unchecked")
     public static Collection<X509Certificate> decodeCertificate(byte[] certs) throws CertificateException {
+        X509CertificatesCredentialReader credReader = new X509CertificatesCredentialReader();
+        ByteArrayInputStream bais = new ByteArrayInputStream(certs);
         try {
-            TrustMaterial tm = new TrustMaterial(certs);
-            return tm.getCertificates();
-        } catch (Exception e) {
+            return Arrays.asList(credReader.read(bais));
+        } catch (IOException e) {
+            throw new CertificateException("Unable to decode X.509 certificates", e);
+        } catch (CryptException e) {
             throw new CertificateException("Unable to decode X.509 certificates", e);
         }
     }
