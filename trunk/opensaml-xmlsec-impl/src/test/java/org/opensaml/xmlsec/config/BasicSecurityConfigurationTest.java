@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec;
+package org.opensaml.xmlsec.config;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;

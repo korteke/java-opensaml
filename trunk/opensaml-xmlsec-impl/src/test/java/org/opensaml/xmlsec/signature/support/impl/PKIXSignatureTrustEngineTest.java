@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature.support;
+package org.opensaml.xmlsec.signature.support.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
@@ -54,11 +54,11 @@ import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.impl.PKIXSignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.Signer;
+import org.opensaml.xmlsec.signature.support.impl.PKIXSignatureTrustEngine;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 

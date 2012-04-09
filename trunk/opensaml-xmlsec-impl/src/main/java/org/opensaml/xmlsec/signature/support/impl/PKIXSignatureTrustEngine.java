@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature.impl;
+package org.opensaml.xmlsec.signature.support.impl;
 
 import java.util.Set;
 

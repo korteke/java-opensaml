@@ -55,8 +55,8 @@ import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.signature.impl.ExplicitKeySignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 

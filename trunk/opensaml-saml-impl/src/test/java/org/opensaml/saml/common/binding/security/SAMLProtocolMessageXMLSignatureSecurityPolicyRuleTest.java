@@ -39,7 +39,7 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.impl.ExplicitKeySignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 
 
 /**
