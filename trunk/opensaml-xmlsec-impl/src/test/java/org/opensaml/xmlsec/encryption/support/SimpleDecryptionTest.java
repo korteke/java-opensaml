@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;

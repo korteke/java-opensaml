@@ -101,12 +101,6 @@
     <dependencyManagement>
         <dependencies>
             <!-- Compile Dependencies -->
-            <!-- TODO remove this and replace rely exclusive vt-crypt -->
-            <dependency>
-                <groupId>org.apache.commons.ssl</groupId>
-                <artifactId>not-yet-commons-ssl</artifactId>
-                <version>0.3.9</version>
-            </dependency>
 
             <!-- Provided Dependencies -->
 

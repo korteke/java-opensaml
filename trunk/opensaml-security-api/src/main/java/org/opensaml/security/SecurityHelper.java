@@ -55,7 +55,6 @@ import javax.crypto.SecretKey;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
-import org.apache.commons.ssl.PKCS8Key;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.BasicX509Credential;
@@ -63,6 +62,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
+
+import edu.vt.middleware.crypt.CryptException;
+import edu.vt.middleware.crypt.io.PrivateKeyCredentialReader;
 
 /**
  * Helper methods for security-related requirements.
@@ -330,12 +332,19 @@ public final class SecurityHelper {
      * @throws KeyException thrown if the key can not be decoded
      */
     public static PrivateKey decodePrivateKey(byte[] key, char[] password) throws KeyException {
-        try {
-            PKCS8Key deocodedKey = new PKCS8Key(key, password);
-            return deocodedKey.getPrivateKey();
-        } catch (GeneralSecurityException e) {
-            throw new KeyException("Unable to decode private key", e);
-        }
+            PrivateKeyCredentialReader credReader = new PrivateKeyCredentialReader();
+            ByteArrayInputStream bais = new ByteArrayInputStream(key);
+            try {
+                if (password != null && password.length > 0) {
+                    return credReader.read(bais, password);
+                } else {
+                    return credReader.read(bais);
+                } 
+            } catch (IOException e) {
+                throw new KeyException("Unable to decode private key", e);
+            } catch (CryptException e) {
+                throw new KeyException("Unable to decode private key", e);
+            }
     }
 
     /**
@@ -440,7 +449,7 @@ public final class SecurityHelper {
      * @throws KeyException thrown if there is an error constructing key
      */
     public static PrivateKey buildJavaPrivateKey(String base64EncodedKey) throws KeyException {
-        return SecurityHelper.decodePrivateKey(Base64Support.decode(base64EncodedKey), null);
+        return decodePrivateKey(Base64Support.decode(base64EncodedKey), null);
     }
 
     /**
