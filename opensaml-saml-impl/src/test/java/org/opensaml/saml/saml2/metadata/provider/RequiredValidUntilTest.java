@@ -17,21 +17,18 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.saml.saml2.metadata.provider.RequiredValidUntilFilter;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /** Unit test for {@link RequiredValidUntilFilter}. */
 public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
@@ -79,7 +76,8 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testRequiredValidUntilAlreadyPast() throws Exception {
-        SAMLObjectBuilder<EntitiesDescriptor> entitiesDescriptorBuilder = (SAMLObjectBuilder<EntitiesDescriptor>) Configuration.getBuilderFactory().getBuilder(EntitiesDescriptor.TYPE_NAME);
+        SAMLObjectBuilder<EntitiesDescriptor> entitiesDescriptorBuilder = 
+                (SAMLObjectBuilder<EntitiesDescriptor>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(EntitiesDescriptor.TYPE_NAME);
         EntitiesDescriptor descriptor = entitiesDescriptorBuilder.buildObject();
         descriptor.setValidUntil(new DateTime(ISOChronology.getInstanceUTC()).minus(10000));
 

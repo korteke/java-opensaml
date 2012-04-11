@@ -24,7 +24,7 @@ package org.opensaml.saml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.w3c.dom.Element;
 
@@ -38,7 +38,7 @@ public class AuthnStatementMarshaller extends AbstractSAMLObjectMarshaller {
         AuthnStatement authnStatement = (AuthnStatement) samlObject;
 
         if (authnStatement.getAuthnInstant() != null) {
-            String authnInstantStr = Configuration.getSAMLDateFormatter().print(authnStatement.getAuthnInstant());
+            String authnInstantStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(authnStatement.getAuthnInstant());
             domElement.setAttributeNS(null, AuthnStatement.AUTHN_INSTANT_ATTRIB_NAME, authnInstantStr);
         }
 
@@ -47,7 +47,7 @@ public class AuthnStatementMarshaller extends AbstractSAMLObjectMarshaller {
         }
 
         if (authnStatement.getSessionNotOnOrAfter() != null) {
-            String sessionNotOnOrAfterStr = Configuration.getSAMLDateFormatter().print(
+            String sessionNotOnOrAfterStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(
                     authnStatement.getSessionNotOnOrAfter());
             domElement.setAttributeNS(null, AuthnStatement.SESSION_NOT_ON_OR_AFTER_ATTRIB_NAME, sessionNotOnOrAfterStr);
         }

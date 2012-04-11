@@ -23,13 +23,14 @@ import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
 /**
- * OpenSAML configuration singleton.
+ * Helper class for working with the registered instance of {@link SAMLConfiguration}, as obtained from
+ * the {@link ConfigurationService}.
  * 
- * The library must be initialized with a set of configurations prior to usage. This is often done by invoking
- * {@link DefaultBootstrap#bootstrap()} but may done in any manner so long as all the needed object providers and
- * artifact factory are created and registered with the configuration.
  */
-public class Configuration extends org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport {
+public final class SAMLConfigurationSupport {
+    
+    /** Constructor. */
+    private SAMLConfigurationSupport() {}
 
     /**
      * Gets the date format used to string'ify SAML's {@link org.joda.time.DateTime} objects.

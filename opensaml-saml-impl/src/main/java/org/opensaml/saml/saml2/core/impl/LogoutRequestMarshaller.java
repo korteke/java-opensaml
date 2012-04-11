@@ -23,7 +23,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.w3c.dom.Element;
 
@@ -41,7 +41,7 @@ public class LogoutRequestMarshaller extends RequestAbstractTypeMarshaller {
         }
 
         if (req.getNotOnOrAfter() != null) {
-            String noaStr = Configuration.getSAMLDateFormatter().print(req.getNotOnOrAfter());
+            String noaStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(req.getNotOnOrAfter());
             domElement.setAttributeNS(null, LogoutRequest.NOT_ON_OR_AFTER_ATTRIB_NAME, noaStr);
         }
 

@@ -25,7 +25,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.w3c.dom.Element;
@@ -51,7 +51,7 @@ public abstract class ResponseAbstractTypeMarshaller extends AbstractSAMLObjectM
         }
 
         if (response.getIssueInstant() != null) {
-            String date = Configuration.getSAMLDateFormatter().print(response.getIssueInstant());
+            String date = SAMLConfigurationSupport.getSAMLDateFormatter().print(response.getIssueInstant());
             domElement.setAttributeNS(null, ResponseAbstractType.ISSUEINSTANT_ATTRIB_NAME, date);
         }
 

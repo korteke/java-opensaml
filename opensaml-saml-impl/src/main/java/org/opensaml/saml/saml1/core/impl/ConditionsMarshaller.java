@@ -20,7 +20,7 @@ package org.opensaml.saml.saml1.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.w3c.dom.Element;
 
@@ -35,12 +35,12 @@ public class ConditionsMarshaller extends AbstractSAMLObjectMarshaller {
         Conditions conditions = (Conditions) samlElement;
 
         if (conditions.getNotBefore() != null) {
-            String date = Configuration.getSAMLDateFormatter().print(conditions.getNotBefore());
+            String date = SAMLConfigurationSupport.getSAMLDateFormatter().print(conditions.getNotBefore());
             domElement.setAttributeNS(null, Conditions.NOTBEFORE_ATTRIB_NAME, date);
         }
 
         if (conditions.getNotOnOrAfter() != null) {
-            String date = Configuration.getSAMLDateFormatter().print(conditions.getNotOnOrAfter());
+            String date = SAMLConfigurationSupport.getSAMLDateFormatter().print(conditions.getNotOnOrAfter());
             domElement.setAttributeNS(null, Conditions.NOTONORAFTER_ATTRIB_NAME, date);
         }
     }

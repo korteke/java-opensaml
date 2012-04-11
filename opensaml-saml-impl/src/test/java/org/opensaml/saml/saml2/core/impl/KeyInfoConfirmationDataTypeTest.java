@@ -26,9 +26,10 @@ import javax.xml.namespace.QName;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
@@ -159,7 +160,7 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     /** {@inheritDoc} */
     public KeyInfoConfirmationDataType buildXMLObject() {
         SAMLObjectBuilder builder = 
-            (SAMLObjectBuilder) Configuration.getBuilderFactory().getBuilder(KeyInfoConfirmationDataType.TYPE_NAME);
+            (SAMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyInfoConfirmationDataType.TYPE_NAME);
         
         if(builder == null){
             Assert.fail("Unable to retrieve builder for object QName " + KeyInfoConfirmationDataType.TYPE_NAME);

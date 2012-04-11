@@ -20,10 +20,10 @@ package org.opensaml.saml.saml1.binding.encoding;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.config.Configuration;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
@@ -106,7 +106,7 @@ public class HTTPSOAP11Encoder extends BaseSAML1MessageEncoder {
     @SuppressWarnings("unchecked")
     protected Envelope buildSOAPMessage(SAMLObject samlMessage) {
         log.debug("Building SOAP message");
-        XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
 
         SOAPObjectBuilder<Envelope> envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory
                 .getBuilder(Envelope.DEFAULT_ELEMENT_NAME);

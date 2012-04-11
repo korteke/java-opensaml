@@ -224,7 +224,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
         request.setSignature(signature);
         
         try {
-            Configuration.getMarshallerFactory().getMarshaller(request).marshall(request);
+            SAMLConfigurationSupport.getMarshallerFactory().getMarshaller(request).marshall(request);
         } catch (MarshallingException e) {
             fail("Error marshalling message for signing");
         }
