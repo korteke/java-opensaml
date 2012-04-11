@@ -29,9 +29,10 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
@@ -66,7 +67,7 @@ public class AffiliationDescriptorMarshaller extends AbstractSAMLObjectMarshalle
         // Set the validUntil attribute
         if (descriptor.getValidUntil() != null) {
             log.debug("Writting validUntil attribute to AffiliationDescriptor DOM element");
-            String validUntilStr = Configuration.getSAMLDateFormatter().print(descriptor.getValidUntil());
+            String validUntilStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(descriptor.getValidUntil());
             domElement.setAttributeNS(null, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME, validUntilStr);
         }
 
@@ -82,7 +83,7 @@ public class AffiliationDescriptorMarshaller extends AbstractSAMLObjectMarshalle
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
                     || descriptor.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }

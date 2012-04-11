@@ -26,9 +26,10 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -59,7 +60,7 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
         // Set the validUntil attribute
         if (roleDescriptor.getValidUntil() != null) {
             log.trace("Writting validUntil attribute to RoleDescriptor DOM element");
-            String validUntilStr = Configuration.getSAMLDateFormatter().print(roleDescriptor.getValidUntil());
+            String validUntilStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(roleDescriptor.getValidUntil());
             domElement.setAttributeNS(null, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME, validUntilStr);
         }
 
@@ -95,7 +96,7 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
                     || roleDescriptor.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }

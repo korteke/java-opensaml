@@ -24,7 +24,7 @@ package org.opensaml.saml.saml2.core.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.w3c.dom.Element;
 
@@ -55,7 +55,7 @@ public abstract class StatusResponseTypeMarshaller extends AbstractSAMLObjectMar
         }
 
         if (sr.getIssueInstant() != null) {
-            String iiStr = Configuration.getSAMLDateFormatter().print(sr.getIssueInstant());
+            String iiStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(sr.getIssueInstant());
             domElement.setAttributeNS(null, StatusResponseType.ISSUE_INSTANT_ATTRIB_NAME, iiStr);
         }
 

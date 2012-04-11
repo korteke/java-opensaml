@@ -19,7 +19,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
 import org.w3c.dom.Element;
 
@@ -38,7 +38,7 @@ public class AuthenticationStatementMarshaller extends SubjectStatementMarshalle
         }
 
         if (authenticationStatement.getAuthenticationInstant() != null) {
-            String value = Configuration.getSAMLDateFormatter().print(
+            String value = SAMLConfigurationSupport.getSAMLDateFormatter().print(
                     authenticationStatement.getAuthenticationInstant());
             domElement.setAttributeNS(null, AuthenticationStatement.AUTHENTICATIONINSTANT_ATTRIB_NAME, value);
         }

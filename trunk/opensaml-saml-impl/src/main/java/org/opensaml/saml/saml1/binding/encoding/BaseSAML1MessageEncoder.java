@@ -24,13 +24,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
-import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.security.SecurityException;
@@ -155,7 +155,7 @@ public abstract class BaseSAML1MessageEncoder extends BaseMessageEncoder impleme
             Credential signingCredential = messageContext.getOuboundSAMLMessageSigningCredential();
 
             XMLObjectBuilder<Signature> signatureBuilder =
-                    Configuration.getBuilderFactory().getBuilder(Signature.DEFAULT_ELEMENT_NAME);
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Signature.DEFAULT_ELEMENT_NAME);
             Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
             signature.setSigningCredential(signingCredential);
 
@@ -170,7 +170,8 @@ public abstract class BaseSAML1MessageEncoder extends BaseMessageEncoder impleme
             signableMessage.setSignature(signature);
 
             try {
-                Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(signableMessage);
+                Marshaller marshaller = 
+                        XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signableMessage);
                 marshaller.marshall(signableMessage);
                 Signer.signObject(signature);
             } catch (MarshallingException e) {

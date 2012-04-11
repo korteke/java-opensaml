@@ -28,12 +28,13 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLRuntimeException;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.util.storage.AbstractExpiringObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -210,7 +211,7 @@ public class BasicSAMLArtifactMapEntry extends AbstractExpiringObject implements
                 throw new XMLRuntimeException("Serialized SAML message data was not available for deserialization");
             }
             
-            ParserPool parserPool = Configuration.getParserPool();
+            ParserPool parserPool = XMLObjectProviderRegistrySupport.getParserPool();
             if (parserPool == null) {
                 throw new XMLRuntimeException(
                         "No ParserPool was available for parsing the deserialized artifact map entry");

@@ -17,18 +17,17 @@
 
 package org.opensaml.saml.common;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.custommonkey.xmlunit.Diff;
 import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
+
+import org.custommonkey.xmlunit.Diff;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.config.Configuration;
 import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
@@ -37,6 +36,8 @@ import org.opensaml.saml.saml2.metadata.impl.OrganizationBuilder;
 import org.opensaml.saml.saml2.metadata.impl.OrganizationDisplayNameBuilder;
 import org.opensaml.saml.saml2.metadata.impl.OrganizationNameBuilder;
 import org.opensaml.saml.saml2.metadata.impl.OrganizationURLBuilder;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 /**
@@ -57,31 +58,31 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
      * @throws Exception */
     @BeforeMethod
     protected void setUp() throws Exception {
-        OrganizationBuilder orgBuilder = (OrganizationBuilder) Configuration.getBuilderFactory().getBuilder(Organization.TYPE_NAME);
+        OrganizationBuilder orgBuilder = (OrganizationBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Organization.TYPE_NAME);
         organization = orgBuilder.buildObject();            
 
-        OrganizationNameBuilder orgNameBuilder = (OrganizationNameBuilder) Configuration.getBuilderFactory().getBuilder(OrganizationName.DEFAULT_ELEMENT_NAME);     
+        OrganizationNameBuilder orgNameBuilder = (OrganizationNameBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(OrganizationName.DEFAULT_ELEMENT_NAME);     
         OrganizationName newOrgName = orgNameBuilder.buildObject();
         newOrgName.setValue("OrgFullName");
         newOrgName.setXMLLang("en");
         organization.getOrganizationNames().add(newOrgName);
 
-        OrganizationDisplayNameBuilder orgDisplayNameBuilder = (OrganizationDisplayNameBuilder) Configuration.getBuilderFactory().getBuilder(OrganizationDisplayName.DEFAULT_ELEMENT_NAME); 
+        OrganizationDisplayNameBuilder orgDisplayNameBuilder = (OrganizationDisplayNameBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(OrganizationDisplayName.DEFAULT_ELEMENT_NAME); 
         OrganizationDisplayName newOrgDisplayName = orgDisplayNameBuilder.buildObject();
         newOrgDisplayName.setValue("OrgDisplayName");
         newOrgDisplayName.setXMLLang("en");
         organization.getDisplayNames().add(newOrgDisplayName);
 
-        OrganizationURLBuilder orgURLBuilder = (OrganizationURLBuilder) Configuration.getBuilderFactory().getBuilder(OrganizationURL.DEFAULT_ELEMENT_NAME);     
+        OrganizationURLBuilder orgURLBuilder = (OrganizationURLBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(OrganizationURL.DEFAULT_ELEMENT_NAME);     
         OrganizationURL newOrgURL = orgURLBuilder.buildObject();    
         newOrgURL.setValue("http://org.url.edu");
         newOrgURL.setXMLLang("en");
         organization.getURLs().add(newOrgURL);
         
-        MarshallerFactory marshallerFactory = Configuration.getMarshallerFactory();
+        MarshallerFactory marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
         orgMarshaller = marshallerFactory.getMarshaller(organization);
         
-        UnmarshallerFactory unmarshallerFactory = Configuration.getUnmarshallerFactory();
+        UnmarshallerFactory unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         orgUnmarshaller = unmarshallerFactory.getUnmarshaller(organization.getElementQName());
     }
 

@@ -28,9 +28,10 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -45,12 +46,12 @@ public class SubjectConfirmationDataMarshaller extends AbstractSAMLObjectMarshal
         SubjectConfirmationData subjectCD = (SubjectConfirmationData) samlObject;
 
         if (subjectCD.getNotBefore() != null) {
-            String notBeforeStr = Configuration.getSAMLDateFormatter().print(subjectCD.getNotBefore());
+            String notBeforeStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(subjectCD.getNotBefore());
             domElement.setAttributeNS(null, SubjectConfirmationData.NOT_BEFORE_ATTRIB_NAME, notBeforeStr);
         }
 
         if (subjectCD.getNotOnOrAfter() != null) {
-            String notOnOrAfterStr = Configuration.getSAMLDateFormatter().print(subjectCD.getNotOnOrAfter());
+            String notOnOrAfterStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(subjectCD.getNotOnOrAfter());
             domElement.setAttributeNS(null, SubjectConfirmationData.NOT_ON_OR_AFTER_ATTRIB_NAME, notOnOrAfterStr);
         }
 
@@ -72,7 +73,7 @@ public class SubjectConfirmationDataMarshaller extends AbstractSAMLObjectMarshal
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (Configuration.isIDAttribute(entry.getKey())
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
                     || subjectCD.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }

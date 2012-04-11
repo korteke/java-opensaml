@@ -24,13 +24,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
@@ -185,8 +186,8 @@ public abstract class BaseSAML2MessageEncoder extends BaseMessageEncoder impleme
         if (outboundSAML instanceof SignableSAMLObject && signingCredential != null) {
             SignableSAMLObject signableMessage = (SignableSAMLObject) outboundSAML;
 
-            XMLObjectBuilder<Signature> signatureBuilder = Configuration.getBuilderFactory().getBuilder(
-                    Signature.DEFAULT_ELEMENT_NAME);
+            XMLObjectBuilder<Signature> signatureBuilder = 
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Signature.DEFAULT_ELEMENT_NAME);
             Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
             
             signature.setSigningCredential(signingCredential);
@@ -201,7 +202,8 @@ public abstract class BaseSAML2MessageEncoder extends BaseMessageEncoder impleme
             signableMessage.setSignature(signature);
 
             try {
-                Marshaller marshaller = Configuration.getMarshallerFactory().getMarshaller(signableMessage);
+                Marshaller marshaller = 
+                        XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signableMessage);
                 if (marshaller == null) {
                     throw new MessageEncodingException("No marshaller registered for "
                             + signableMessage.getElementQName() + ", unable to marshall in preperation for signing");

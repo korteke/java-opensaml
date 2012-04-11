@@ -20,7 +20,7 @@ package org.opensaml.saml.ext.saml2delrestrict.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.w3c.dom.Element;
 
@@ -36,7 +36,7 @@ public class DelegateMarshaller extends AbstractSAMLObjectMarshaller {
         Delegate delegate = (Delegate) xmlObject;
         
         if (delegate.getDelegationInstant() != null) {
-            String delInstant = Configuration.getSAMLDateFormatter().print(delegate.getDelegationInstant());
+            String delInstant = SAMLConfigurationSupport.getSAMLDateFormatter().print(delegate.getDelegationInstant());
             domElement.setAttributeNS(null, Delegate.DELEGATION_INSTANT_ATTRIB_NAME, delInstant);
         }
         if (!Strings.isNullOrEmpty(delegate.getConfirmationMethod())) {

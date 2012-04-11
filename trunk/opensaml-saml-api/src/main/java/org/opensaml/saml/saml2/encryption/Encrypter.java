@@ -28,7 +28,8 @@ import net.shibboleth.utilities.java.support.security.RandomIdentifierGeneration
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.BaseID;
@@ -196,7 +197,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * Helper method for constructors.
      */
     private void init() {
-        builderFactory = Configuration.getBuilderFactory();
+        builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
         dataReferenceBuilder =
                 (XMLEncryptionBuilder<DataReference>) builderFactory.getBuilder(DataReference.DEFAULT_ELEMENT_NAME);

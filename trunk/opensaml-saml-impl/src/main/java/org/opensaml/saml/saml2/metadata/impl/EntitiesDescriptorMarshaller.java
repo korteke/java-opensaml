@@ -21,7 +21,7 @@ import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.config.Configuration;
+import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -52,7 +52,7 @@ public class EntitiesDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
         // Set the validUntil attribute
         if (entitiesDescriptor.getValidUntil() != null) {
             log.debug("Writting validUntil attribute to EntitiesDescriptor DOM element");
-            String validUntilStr = Configuration.getSAMLDateFormatter().print(entitiesDescriptor.getValidUntil());
+            String validUntilStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(entitiesDescriptor.getValidUntil());
             domElement.setAttributeNS(null, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME, validUntilStr);
         }
 
