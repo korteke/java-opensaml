@@ -33,7 +33,8 @@ import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -133,9 +134,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         messageContext.setPeerEntityEndpoint(samlEndpoint);
         messageContext.setRelayState("relay");
         
-        KeyPair kp = SecurityHelper.generateKeyPair("RSA", 1024, null);
+        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         messageContext.setOutboundSAMLMessageSigningCredential(
-                SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+                CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.encode(messageContext);

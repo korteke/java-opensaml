@@ -29,9 +29,9 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
@@ -78,7 +78,7 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
         providers.add(new DSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xmlsec/keyinfo/impl/DSAKeyValue.xml";
-        pubKey = SecurityHelper.buildJavaDSAPublicKey(dsaBase64);
+        pubKey = KeySupport.buildJavaDSAPublicKey(dsaBase64);
     }
     
     /**

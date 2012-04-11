@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.security;
+package org.opensaml.security.crypto;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -31,10 +31,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.cert.CRLException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
@@ -55,9 +51,7 @@ import javax.crypto.SecretKey;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
-import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.Credential;
-import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,83 +61,15 @@ import edu.vt.middleware.crypt.CryptException;
 import edu.vt.middleware.crypt.io.PrivateKeyCredentialReader;
 
 /**
- * Helper methods for security-related requirements.
+ * Helper methods for cryptographic keys and key pairs.
  */
-public final class SecurityHelper {
+public final class KeySupport {
 
     /** Maps key algorithms to the signing algorithm used in the key matching function. */
     private static Map<String, String> keyMatchAlgorithms;
 
     /** Constructor. */
-    private SecurityHelper() {
-    }
-
-    /**
-     * Extract the encryption key from the credential.
-     * 
-     * @param credential the credential containing the encryption key
-     * @return the encryption key (either a public key or a secret (symmetric) key
-     */
-    public static Key extractEncryptionKey(Credential credential) {
-        if (credential == null) {
-            return null;
-        }
-        if (credential.getPublicKey() != null) {
-            return credential.getPublicKey();
-        } else {
-            return credential.getSecretKey();
-        }
-    }
-
-    /**
-     * Extract the decryption key from the credential.
-     * 
-     * @param credential the credential containing the decryption key
-     * @return the decryption key (either a private key or a secret (symmetric) key
-     */
-    public static Key extractDecryptionKey(Credential credential) {
-        if (credential == null) {
-            return null;
-        }
-        if (credential.getPrivateKey() != null) {
-            return credential.getPrivateKey();
-        } else {
-            return credential.getSecretKey();
-        }
-    }
-
-    /**
-     * Extract the signing key from the credential.
-     * 
-     * @param credential the credential containing the signing key
-     * @return the signing key (either a private key or a secret (symmetric) key
-     */
-    public static Key extractSigningKey(Credential credential) {
-        if (credential == null) {
-            return null;
-        }
-        if (credential.getPrivateKey() != null) {
-            return credential.getPrivateKey();
-        } else {
-            return credential.getSecretKey();
-        }
-    }
-
-    /**
-     * Extract the verification key from the credential.
-     * 
-     * @param credential the credential containing the verification key
-     * @return the verification key (either a public key or a secret (symmetric) key
-     */
-    public static Key extractVerificationKey(Credential credential) {
-        if (credential == null) {
-            return null;
-        }
-        if (credential.getPublicKey() != null) {
-            return credential.getPublicKey();
-        } else {
-            return credential.getSecretKey();
-        }
+    private KeySupport() {
     }
 
     /**
@@ -161,55 +87,6 @@ public final class SecurityHelper {
         }
         log.debug("Unable to determine length in bits of specified Key instance");
         return null;
-    }
-
-    /**
-     * Get a simple, minimal credential containing a secret (symmetric) key.
-     * 
-     * @param secretKey the symmetric key to wrap
-     * @return a credential containing the secret key specified
-     */
-    public static BasicCredential getSimpleCredential(SecretKey secretKey) {
-        if (secretKey == null) {
-            throw new IllegalArgumentException("A secret key is required");
-        }
-        BasicCredential cred = new BasicCredential();
-        cred.setSecretKey(secretKey);
-        return cred;
-    }
-
-    /**
-     * Get a simple, minimal credential containing a public key, and optionally a private key.
-     * 
-     * @param publicKey the public key to wrap
-     * @param privateKey the private key to wrap, which may be null
-     * @return a credential containing the key(s) specified
-     */
-    public static BasicCredential getSimpleCredential(PublicKey publicKey, PrivateKey privateKey) {
-        if (publicKey == null) {
-            throw new IllegalArgumentException("A public key is required");
-        }
-        BasicCredential cred = new BasicCredential();
-        cred.setPublicKey(publicKey);
-        cred.setPrivateKey(privateKey);
-        return cred;
-    }
-
-    /**
-     * Get a simple, minimal credential containing an end-entity X.509 certificate, and optionally a private key.
-     * 
-     * @param cert the end-entity certificate to wrap
-     * @param privateKey the private key to wrap, which may be null
-     * @return a credential containing the certificate and key specified
-     */
-    public static BasicX509Credential getSimpleCredential(X509Certificate cert, PrivateKey privateKey) {
-        if (cert == null) {
-            throw new IllegalArgumentException("A certificate is required");
-        }
-        BasicX509Credential cred = new BasicX509Credential();
-        cred.setEntityCertificate(cert);
-        cred.setPrivateKey(privateKey);
-        return cred;
     }
 
     /**
@@ -257,51 +134,12 @@ public final class SecurityHelper {
     }
 
     /**
-     * Derives the public key from either a DSA or RSA private key.
-     * 
-     * @param key the private key to derive the public key from
-     * 
-     * @return the derived public key
-     * 
-     * @throws KeyException thrown if the given private key is not a DSA or RSA key or there is a problem generating the
-     *             public key
-     */
-    public static PublicKey derivePublicKey(PrivateKey key) throws KeyException {
-        KeyFactory factory;
-        if (key instanceof DSAPrivateKey) {
-            DSAPrivateKey dsaKey = (DSAPrivateKey) key;
-            DSAParams keyParams = dsaKey.getParams();
-            BigInteger y = keyParams.getQ().modPow(dsaKey.getX(), keyParams.getP());
-            DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, keyParams.getP(), keyParams.getQ(), keyParams.getG());
-
-            try {
-                factory = KeyFactory.getInstance("DSA");
-                return factory.generatePublic(pubKeySpec);
-            } catch (GeneralSecurityException e) {
-                throw new KeyException("Unable to derive public key from DSA private key", e);
-            }
-        } else if (key instanceof RSAPrivateCrtKey) {
-            RSAPrivateCrtKey rsaKey = (RSAPrivateCrtKey) key;
-            RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(rsaKey.getModulus(), rsaKey.getPublicExponent());
-
-            try {
-                factory = KeyFactory.getInstance("RSA");
-                return factory.generatePublic(pubKeySpec);
-            } catch (GeneralSecurityException e) {
-                throw new KeyException("Unable to derive public key from RSA private key", e);
-            }
-        } else {
-            throw new KeyException("Private key was not a DSA or RSA key");
-        }
-    }
-
-    /**
      * Decodes RSA/DSA private keys in DER, PEM, or PKCS#8 (encrypted or unencrypted) formats.
      * 
      * @param key encoded key
      * @param password decryption password or null if the key is not encrypted
      * 
-     * @return deocded private key
+     * @return decoded private key
      * 
      * @throws KeyException thrown if the key can not be decoded
      */
@@ -346,33 +184,44 @@ public final class SecurityHelper {
                 throw new KeyException("Unable to decode private key", e);
             }
     }
-
+    
     /**
-     * Build Java certificate from base64 encoding.
+     * Derives the public key from either a DSA or RSA private key.
      * 
-     * @param base64Cert base64-encoded certificate
-     * @return a native Java X509 certificate
-     * @throws CertificateException thrown if there is an error constructing certificate
+     * @param key the private key to derive the public key from
+     * 
+     * @return the derived public key
+     * 
+     * @throws KeyException thrown if the given private key is not a DSA or RSA key or there is a problem generating the
+     *             public key
      */
-    public static java.security.cert.X509Certificate buildJavaX509Cert(String base64Cert) throws CertificateException {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64Cert));
-        return (java.security.cert.X509Certificate) cf.generateCertificate(input);
-    }
+    public static PublicKey derivePublicKey(PrivateKey key) throws KeyException {
+        KeyFactory factory;
+        if (key instanceof DSAPrivateKey) {
+            DSAPrivateKey dsaKey = (DSAPrivateKey) key;
+            DSAParams keyParams = dsaKey.getParams();
+            BigInteger y = keyParams.getQ().modPow(dsaKey.getX(), keyParams.getP());
+            DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, keyParams.getP(), keyParams.getQ(), keyParams.getG());
 
-    /**
-     * Build Java CRL from base64 encoding.
-     * 
-     * @param base64CRL base64-encoded CRL
-     * @return a native Java X509 CRL
-     * @throws CertificateException thrown if there is an error constructing certificate
-     * @throws CRLException thrown if there is an error constructing CRL
-     */
-    public static java.security.cert.X509CRL buildJavaX509CRL(String base64CRL) throws CertificateException,
-            CRLException {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64CRL));
-        return (java.security.cert.X509CRL) cf.generateCRL(input);
+            try {
+                factory = KeyFactory.getInstance("DSA");
+                return factory.generatePublic(pubKeySpec);
+            } catch (GeneralSecurityException e) {
+                throw new KeyException("Unable to derive public key from DSA private key", e);
+            }
+        } else if (key instanceof RSAPrivateCrtKey) {
+            RSAPrivateCrtKey rsaKey = (RSAPrivateCrtKey) key;
+            RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(rsaKey.getModulus(), rsaKey.getPublicExponent());
+
+            try {
+                factory = KeyFactory.getInstance("RSA");
+                return factory.generatePublic(pubKeySpec);
+            } catch (GeneralSecurityException e) {
+                throw new KeyException("Unable to derive public key from RSA private key", e);
+            }
+        } else {
+            throw new KeyException("Private key was not a DSA or RSA key");
+        }
     }
 
     /**
@@ -559,7 +408,7 @@ public final class SecurityHelper {
      * @return a Logger instance
      */
     private static Logger getLogger() {
-        return LoggerFactory.getLogger(SecurityHelper.class);
+        return LoggerFactory.getLogger(KeySupport.class);
     }
 
     static {

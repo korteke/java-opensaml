@@ -30,9 +30,10 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
@@ -89,8 +90,8 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
         providers.add(new InlineX509DataProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         
-        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        pubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
     }
     
     /**

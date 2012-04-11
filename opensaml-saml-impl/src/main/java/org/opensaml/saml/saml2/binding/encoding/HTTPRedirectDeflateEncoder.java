@@ -38,15 +38,15 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.XMLSecurityHelper;
-import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.SecurityConfigurationSupport;
+import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -224,7 +224,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = XMLSecurityHelper.getGlobalXMLSecurityConfiguration();
+            secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
         }
 
         String signAlgo = secConfig.getSignatureAlgorithmURI(credential);
@@ -251,7 +251,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             throws MessageEncodingException {
 
         log.debug(String.format("Generating signature with key type '%s', algorithm URI '%s' over query string '%s'",
-                SecurityHelper.extractSigningKey(signingCredential).getAlgorithm(), algorithmURI, queryString));
+                CredentialSupport.extractSigningKey(signingCredential).getAlgorithm(), algorithmURI, queryString));
 
         String b64Signature = null;
         try {

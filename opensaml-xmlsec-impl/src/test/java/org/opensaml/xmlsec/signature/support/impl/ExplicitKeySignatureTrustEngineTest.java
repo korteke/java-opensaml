@@ -32,13 +32,14 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.XMLSecurityTestingHelper;
-import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
@@ -156,15 +157,15 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         signingEntityID = "signing-entity-ID";
-        signingCert = SecurityHelper.buildJavaX509Cert(signingCertBase64);
-        signingPrivateKey = SecurityHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
+        signingCert = X509Support.decodeCertificate(signingCertBase64);
+        signingPrivateKey = KeySupport.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
         
         signingX509Cred = new BasicX509Credential();
         signingX509Cred.setEntityCertificate(signingCert);
         signingX509Cred.setPrivateKey(signingPrivateKey);
         signingX509Cred.setEntityId(signingEntityID);
         
-        otherCert1 = SecurityHelper.buildJavaX509Cert(otherCert1Base64);
+        otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
         
         BasicX509Credential otherCred1 = new BasicX509Credential();
         otherCred1.setEntityCertificate(otherCert1);

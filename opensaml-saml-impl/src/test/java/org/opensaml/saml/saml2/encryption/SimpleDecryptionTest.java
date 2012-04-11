@@ -22,6 +22,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import org.testng.Assert;
 import java.security.Key;
+import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
@@ -43,7 +44,7 @@ import org.opensaml.saml.saml2.encryption.Decrypter;
 import org.opensaml.saml.saml2.encryption.Encrypter;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
@@ -78,7 +79,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
@@ -242,11 +243,12 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      * @throws NoSuchProviderException security provider was invalid
      * @throws NoSuchAlgorithmException security/key algorithm was invalid
+     * @throws KeyException 
      */
     @Test
     public void testErrorInvalidDataDecryptionKey() 
-            throws XMLParserException, EncryptionException, NoSuchAlgorithmException, NoSuchProviderException {
-        Key badKey = XMLSecurityHelper.generateKeyFromURI(encURI);
+            throws XMLParserException, EncryptionException, NoSuchAlgorithmException, NoSuchProviderException, KeyException {
+        Key badKey = AlgorithmSupport.generateSymmetricKey(encURI);
         BasicCredential encCred = new BasicCredential();
         encCred.setSecretKey((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);

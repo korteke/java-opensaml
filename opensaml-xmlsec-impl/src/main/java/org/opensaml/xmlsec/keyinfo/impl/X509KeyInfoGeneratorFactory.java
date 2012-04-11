@@ -33,9 +33,9 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
@@ -252,7 +252,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
      * The set of types of subject alternative names to process.
      * 
      * Name types are represented using the constant OID tag name values defined 
-     * in {@link X509Util}.
+     * in {@link X509Support}.
      * 
      * 
      * @return the modifiable set of alt name identifiers
@@ -431,7 +431,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             // The cert chain includes the entity cert, so don't add a duplicate
             if (options.emitEntityCertificate && ! options.emitEntityCertificateChain) {
                 try {
-                    X509Certificate xmlCert = KeyInfoHelper.buildX509Certificate(javaCert);
+                    X509Certificate xmlCert = KeyInfoSupport.buildX509Certificate(javaCert);
                     x509Data.getX509Certificates().add(xmlCert);
                 } catch (CertificateEncodingException e) {
                     throw new SecurityException("Error generating X509Certificate element " 
@@ -476,7 +476,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (options.emitX509SubjectName) {
                 String subjectNameValue = getSubjectName(cert);
                 if (! Strings.isNullOrEmpty(subjectNameValue)) {
-                    x509Data.getX509SubjectNames().add( KeyInfoHelper.buildX509SubjectName(subjectNameValue));
+                    x509Data.getX509SubjectNames().add( KeyInfoSupport.buildX509SubjectName(subjectNameValue));
                 }
             }
         }
@@ -493,7 +493,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
                 String issuerNameValue = getIssuerName(cert);
                 if (! Strings.isNullOrEmpty(issuerNameValue)) {
                     x509Data.getX509IssuerSerials().add( 
-                            KeyInfoHelper.buildX509IssuerSerial(issuerNameValue, cert.getSerialNumber()) );
+                            KeyInfoSupport.buildX509IssuerSerial(issuerNameValue, cert.getSerialNumber()) );
                 }
             }
         }
@@ -507,7 +507,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          */ 
         protected void processCertX509SKI(X509Data x509Data, java.security.cert.X509Certificate cert) {
             if (options.emitX509SKI) {
-                X509SKI xmlSKI = KeyInfoHelper.buildX509SKI(cert);
+                X509SKI xmlSKI = KeyInfoSupport.buildX509SKI(cert);
                 if (xmlSKI != null) {
                     x509Data.getX509SKIs().add(xmlSKI);
                 }
@@ -561,7 +561,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (options.emitSubjectDNAsKeyName) {
                 String subjectNameValue = getSubjectName(cert);
                 if (! Strings.isNullOrEmpty(subjectNameValue)) {
-                   KeyInfoHelper.addKeyName(keyInfo, subjectNameValue); 
+                   KeyInfoSupport.addKeyName(keyInfo, subjectNameValue); 
                 }
             }
         }
@@ -575,9 +575,9 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          */
         protected void processSubjectCNKeyName(KeyInfo keyInfo, java.security.cert.X509Certificate cert) {
             if (options.emitSubjectCNAsKeyName) {
-                for (String name : X509Util.getCommonNames(cert.getSubjectX500Principal())) {
+                for (String name : X509Support.getCommonNames(cert.getSubjectX500Principal())) {
                     if (! Strings.isNullOrEmpty(name)) {
-                        KeyInfoHelper.addKeyName(keyInfo, name);
+                        KeyInfoSupport.addKeyName(keyInfo, name);
                     }
                 }
             }
@@ -594,11 +594,11 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (options.emitSubjectAltNamesAsKeyNames && options.subjectAltNames.size() > 0) {
                 Integer[] nameTypes = new Integer[ options.subjectAltNames.size() ];
                 options.subjectAltNames.toArray(nameTypes);
-                for (Object altNameValue : X509Util.getAltNames(cert, nameTypes)) {
+                for (Object altNameValue : X509Support.getAltNames(cert, nameTypes)) {
                     // Each returned value should either be a String or a DER-encoded byte array.
                     // See X509Certificate#getSubjectAlternativeNames for the type rules.
                     if (altNameValue instanceof String) {
-                        KeyInfoHelper.addKeyName(keyInfo, (String) altNameValue);
+                        KeyInfoSupport.addKeyName(keyInfo, (String) altNameValue);
                     } else if (altNameValue instanceof byte[]){
                         log.warn("Certificate contained an alt name value as a DER-encoded byte[] (not supported)");
                     } else {
@@ -622,7 +622,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (options.emitEntityCertificateChain && credential.getEntityCertificateChain() != null) {
                 for (java.security.cert.X509Certificate javaCert : credential.getEntityCertificateChain()) {
                     try {
-                        X509Certificate xmlCert = KeyInfoHelper.buildX509Certificate(javaCert);
+                        X509Certificate xmlCert = KeyInfoSupport.buildX509Certificate(javaCert);
                         x509Data.getX509Certificates().add(xmlCert);
                     } catch (CertificateEncodingException e) {
                         throw new SecurityException("Error generating X509Certificate element " 
@@ -645,7 +645,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             if (options.emitCRLs && credential.getCRLs() != null) {
                 for (java.security.cert.X509CRL javaCRL : credential.getCRLs()) {
                     try {
-                        X509CRL xmlCRL = KeyInfoHelper.buildX509CRL(javaCRL);
+                        X509CRL xmlCRL = KeyInfoSupport.buildX509CRL(javaCRL);
                         x509Data.getX509CRLs().add(xmlCRL);
                     } catch (CRLException e) {
                         throw new SecurityException("Error generating X509CRL element " 

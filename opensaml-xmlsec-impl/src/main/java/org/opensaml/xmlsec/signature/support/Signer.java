@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.slf4j.Logger;
@@ -75,7 +75,7 @@ public class Signer {
                 throw new SignatureException("XMLObject does not have an XMLSignature instance, unable to compute signature");
             }
             log.debug("Computing signature over XMLSignature object");
-            xmlSignature.sign(SecurityHelper.extractSigningKey(signature.getSigningCredential()));
+            xmlSignature.sign(CredentialSupport.extractSigningKey(signature.getSigningCredential()));
         } catch (XMLSecurityException e) {
             log.error("An error occured computing the digital signature", e);
             throw new SignatureException("Signature computation error", e);

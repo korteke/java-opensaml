@@ -24,13 +24,13 @@ import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableX509SubjectNameCredentialCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509SubjectNameCriterion;
+import org.opensaml.security.x509.X509Support;
 
 /**
  *
@@ -73,7 +73,7 @@ public class EvaluableX509SubjectNameCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
         credential = new BasicX509Credential();

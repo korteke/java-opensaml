@@ -30,13 +30,14 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.XMLSecurityHelper;
-import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.SecurityConfigurationSupport;
+import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,7 +122,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         String formControlData = buildFormDataToSign(velocityContext, messageContext, sigAlgURI);
         velocityContext.put("Signature", generateSignature(signingCredential, sigAlgURI, formControlData));
 
-        KeyInfoGenerator kiGenerator = XMLSecurityHelper.getKeyInfoGenerator(signingCredential, null, null);
+        KeyInfoGenerator kiGenerator = KeyInfoSupport.getKeyInfoGenerator(signingCredential, null, null);
         if (kiGenerator != null) {
             String kiBase64 = buildKeyInfo(signingCredential, kiGenerator);
             if (!Strings.isNullOrEmpty(kiBase64)) {
@@ -229,7 +230,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         if (config != null) {
             secConfig = config;
         } else {
-            secConfig = XMLSecurityHelper.getGlobalXMLSecurityConfiguration();
+            secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
         }
 
         String signAlgo = secConfig.getSignatureAlgorithmURI(credential);
@@ -257,7 +258,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         log.debug(String.format(
                 "Generating signature with key type '%s', algorithm URI '%s' over form control string '%s'",
-                SecurityHelper.extractSigningKey(signingCredential).getAlgorithm(), algorithmURI, formData));
+                CredentialSupport.extractSigningKey(signingCredential).getAlgorithm(), algorithmURI, formData));
 
         String b64Signature = null;
         try {

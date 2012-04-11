@@ -36,9 +36,10 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
@@ -72,11 +73,11 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        signingCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
+        KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
+        signingCredential = CredentialSupport.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
         String encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionCredential(encCred);

@@ -44,7 +44,10 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.SecurityConfiguration;
+import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.G;
@@ -73,7 +76,7 @@ import com.google.common.base.Strings;
  * Methods are provided for converting the representation stored in the XMLTooling KeyInfo to Java java.security native
  * types, and for storing these Java native types inside a KeyInfo.
  */
-public class KeyInfoHelper {
+public class KeyInfoSupport {
 
     /**
      * Factory for {@link java.security.cert.X509Certificate} and {@link java.security.cert.X509CRL} creation.
@@ -81,7 +84,7 @@ public class KeyInfoHelper {
     private static CertificateFactory x509CertFactory;
 
     /** Constructor. */
-    protected KeyInfoHelper() {
+    protected KeyInfoSupport() {
 
     }
 
@@ -194,12 +197,7 @@ public class KeyInfoHelper {
             return null;
         }
 
-        Collection<X509Certificate> certs = X509Util.decodeCertificate(Base64Support.decode(xmlCert.getValue()));
-        if (certs != null && certs.iterator().hasNext()) {
-            return certs.iterator().next();
-        } else {
-            return null;
-        }
+        return X509Support.decodeCertificate(xmlCert.getValue());
     }
 
     /**
@@ -272,7 +270,7 @@ public class KeyInfoHelper {
             return null;
         }
 
-        Collection<X509CRL> crls = X509Util.decodeCRLs(Base64Support.decode(xmlCRL.getValue()));
+        Collection<X509CRL> crls = X509Support.decodeCRLs(Base64Support.decode(xmlCRL.getValue()));
         return crls.iterator().next();
     }
 
@@ -409,7 +407,7 @@ public class KeyInfoHelper {
      * @return a new X509SKI object, or null if the certificate did not contain the subject key identifier extension
      */
     public static X509SKI buildX509SKI(X509Certificate javaCert) {
-        byte[] skiPlainValue = X509Util.getSubjectKeyIdentifier(javaCert);
+        byte[] skiPlainValue = X509Support.getSubjectKeyIdentifier(javaCert);
         if (skiPlainValue == null || skiPlainValue.length == 0) {
             return null;
         }
@@ -692,11 +690,59 @@ public class KeyInfoHelper {
     }
 
     /**
+     * Obtains a {@link KeyInfoGenerator} for the specified {@link Credential}.
+     * 
+     * <p>
+     * The KeyInfoGenerator returned is based on the {@link NamedKeyInfoGeneratorManager} defined by the specified
+     * security configuration via {@link SecurityConfiguration#getKeyInfoGeneratorManager()}, and is determined by the
+     * type of the signing credential and an optional KeyInfo generator manager name. If the latter is ommited, the
+     * default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) of the security configuration's
+     * named generator manager will be used.
+     * </p>
+     * 
+     * <p>
+     * The generator is determined by the specified {@link SecurityConfiguration}. If a security configuration is not
+     * supplied, the global security configuration ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()}) will be
+     * used.
+     * </p>
+     * 
+     * @param credential the credential for which a generator is desired
+     * @param config the SecurityConfiguration to use (may be null)
+     * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
+     * @return a KeyInfoGenerator appropriate for the specified credential
+     */
+    public static KeyInfoGenerator getKeyInfoGenerator(Credential credential, SecurityConfiguration config,
+            String keyInfoGenName) {
+    
+        SecurityConfiguration secConfig;
+        if (config != null) {
+            secConfig = config;
+        } else {
+            secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
+        }
+    
+        NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();
+        if (kiMgr != null) {
+            KeyInfoGeneratorFactory kiFactory = null;
+            if (Strings.isNullOrEmpty(keyInfoGenName)) {
+                kiFactory = kiMgr.getDefaultManager().getFactory(credential);
+            } else {
+                kiFactory = kiMgr.getFactory(keyInfoGenName, credential);
+            }
+            if (kiFactory != null) {
+                return kiFactory.newInstance();
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Get an SLF4J Logger.
      * 
      * @return a Logger instance
      */
     private static Logger getLogger() {
-        return LoggerFactory.getLogger(KeyInfoHelper.class);
+        return LoggerFactory.getLogger(KeyInfoSupport.class);
     }
+
 }

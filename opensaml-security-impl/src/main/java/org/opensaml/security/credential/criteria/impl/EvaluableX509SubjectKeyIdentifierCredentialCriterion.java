@@ -23,7 +23,7 @@ import java.util.Arrays;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +81,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements Eva
             return Boolean.FALSE;
         }
         
-        byte[] credSKI = X509Util.getSubjectKeyIdentifier(entityCert);
+        byte[] credSKI = X509Support.getSubjectKeyIdentifier(entityCert);
         if (credSKI == null || credSKI.length == 0) {
             log.info("Could not evaluate criteria, certificate contained no subject key identifier extension");
             return null;

@@ -26,9 +26,9 @@ import java.util.Set;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.impl.BasicX509CredentialNameEvaluator;
 import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 
@@ -74,8 +74,8 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityCert3AltNamesDNS_URL_IP = SecurityHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URL_IPBase64);
-        cred = SecurityHelper.getSimpleCredential(entityCert3AltNamesDNS_URL_IP, null);
+        entityCert3AltNamesDNS_URL_IP = X509Support.decodeCertificate(entityCert3AltNamesDNS_URL_IPBase64);
+        cred = CredentialSupport.getSimpleCredential(entityCert3AltNamesDNS_URL_IP, null);
         
         subjectCN = "foobar.example.org";
         subjectDN = "cn=foobar.example.org, O=Internet2"; 
@@ -90,8 +90,8 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectDN(true);
         evaluator.setCheckSubjectDNCommonName(true);
         evaluator.getSubjectAltNameTypes().clear();
-        evaluator.getSubjectAltNameTypes().add(X509Util.DNS_ALT_NAME);
-        evaluator.getSubjectAltNameTypes().add(X509Util.URI_ALT_NAME);
+        evaluator.getSubjectAltNameTypes().add(X509Support.DNS_ALT_NAME);
+        evaluator.getSubjectAltNameTypes().add(X509Support.URI_ALT_NAME);
     }
     
     @Test
@@ -155,7 +155,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
         evaluator.getSubjectAltNameTypes().clear();
-        evaluator.getSubjectAltNameTypes().add(X509Util.DNS_ALT_NAME);
+        evaluator.getSubjectAltNameTypes().add(X509Support.DNS_ALT_NAME);
         
         names.add(altNameDNS);
         
@@ -168,7 +168,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
         evaluator.getSubjectAltNameTypes().clear();
-        evaluator.getSubjectAltNameTypes().add(X509Util.DNS_ALT_NAME);
+        evaluator.getSubjectAltNameTypes().add(X509Support.DNS_ALT_NAME);
         
         names.add("wacky.internet2.edu");
         
@@ -181,7 +181,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
         evaluator.getSubjectAltNameTypes().clear();
-        evaluator.getSubjectAltNameTypes().add(X509Util.URI_ALT_NAME);
+        evaluator.getSubjectAltNameTypes().add(X509Support.URI_ALT_NAME);
         
         names.add(altNameURL);
         
@@ -194,7 +194,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
         evaluator.getSubjectAltNameTypes().clear();
-        evaluator.getSubjectAltNameTypes().add(X509Util.URI_ALT_NAME);
+        evaluator.getSubjectAltNameTypes().add(X509Support.URI_ALT_NAME);
         
         names.add("http://wacky.internet2.edu/idp");
         

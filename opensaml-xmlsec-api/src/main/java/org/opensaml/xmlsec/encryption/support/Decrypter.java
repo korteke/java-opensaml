@@ -44,13 +44,13 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.EncryptedType;
@@ -624,7 +624,7 @@ public class Decrypter {
         try {
             for (Credential cred : kekResolver.resolve(criteriaSet)) {
                 try {
-                    return decryptKey(encryptedKey, algorithm, SecurityHelper.extractDecryptionKey(cred));
+                    return decryptKey(encryptedKey, algorithm, CredentialSupport.extractDecryptionKey(cred));
                 } catch (DecryptionException e) {
                     String msg = "Attempt to decrypt EncryptedKey using credential from KEK KeyInfo resolver failed: ";
                     log.debug(msg, e);
@@ -748,7 +748,7 @@ public class Decrypter {
             try {
                 for (Credential cred : resolver.resolve(criteriaSet)) {
                     try {
-                        return decryptDataToDOM(encryptedData, SecurityHelper.extractDecryptionKey(cred));
+                        return decryptDataToDOM(encryptedData, CredentialSupport.extractDecryptionKey(cred));
                     } catch (DecryptionException e) {
                         String msg = "Decryption attempt using credential from standard KeyInfo resolver failed: ";
                         log.debug(msg, e);
@@ -905,7 +905,7 @@ public class Decrypter {
             return null;
         }
 
-        String jcaKeyAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(encAlgorithmURI);
+        String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(encAlgorithmURI);
         if (!Strings.isNullOrEmpty(jcaKeyAlgorithm)) {
             return new KeyAlgorithmCriterion(jcaKeyAlgorithm);
         }
@@ -924,7 +924,7 @@ public class Decrypter {
             return null;
         }
 
-        Integer keyLength = XMLSecurityHelper.getKeyLengthFromURI(encAlgorithmURI);
+        Integer keyLength = AlgorithmSupport.getKeyLength(encAlgorithmURI);
         if (keyLength != null) {
             return new KeyLengthCriterion(keyLength);
         }

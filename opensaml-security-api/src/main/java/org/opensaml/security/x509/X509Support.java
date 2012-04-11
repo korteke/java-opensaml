@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -49,7 +50,7 @@ import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,13 +59,14 @@ import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
 
 import edu.vt.middleware.crypt.CryptException;
+import edu.vt.middleware.crypt.io.X509CertificateCredentialReader;
 import edu.vt.middleware.crypt.io.X509CertificatesCredentialReader;
 import edu.vt.middleware.crypt.util.HexConverter;
 
 /**
  * Utility class for working with X509 objects.
  */
-public class X509Util {
+public class X509Support {
 
     /** Encoding used to store a key or certificate in a file. */
     public static enum ENCODING_FORMAT {
@@ -105,7 +107,7 @@ public class X509Util {
     public static final Integer REGISTERED_ID_ALT_NAME = new Integer(8);
 
     /** Constructed. */
-    protected X509Util() {
+    protected X509Support() {
 
     }
     
@@ -129,7 +131,7 @@ public class X509Util {
         }
 
         for (X509Certificate certificate : certs) {
-            if (SecurityHelper.matchKeyPair(certificate.getPublicKey(), privateKey)) {
+            if (KeySupport.matchKeyPair(certificate.getPublicKey(), privateKey)) {
                 return certificate;
             }
         }
@@ -250,9 +252,9 @@ public class X509Util {
     public static List getSubjectNames(X509Certificate certificate, Integer[] altNameTypes) {
         List issuerNames = new LinkedList();
 
-        List<String> entityCertCNs = X509Util.getCommonNames(certificate.getSubjectX500Principal());
+        List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
         issuerNames.add(entityCertCNs.get(0));
-        issuerNames.addAll(X509Util.getAltNames(certificate, altNameTypes));
+        issuerNames.addAll(X509Support.getAltNames(certificate, altNameTypes));
 
         return issuerNames;
     }
@@ -299,7 +301,7 @@ public class X509Util {
      * 
      * @since 1.2
      */
-    public static Collection<X509Certificate> decodeCertificate(File certs) throws CertificateException{
+    public static Collection<X509Certificate> decodeCertificates(File certs) throws CertificateException{
         if(!certs.exists()){
             throw new CertificateException("Certificate file " + certs.getAbsolutePath() + " does not exist");
         }
@@ -309,7 +311,7 @@ public class X509Util {
         }
         
         try{
-            return decodeCertificate(Files.toByteArray(certs));
+            return decodeCertificates(Files.toByteArray(certs));
         }catch(IOException e){
             throw new CertificateException("Error reading certificate file " + certs.getAbsolutePath(), e);
         }
@@ -324,7 +326,7 @@ public class X509Util {
      * 
      * @throws CertificateException thrown if the certificates can not be decoded
      */
-    public static Collection<X509Certificate> decodeCertificate(byte[] certs) throws CertificateException {
+    public static Collection<X509Certificate> decodeCertificates(byte[] certs) throws CertificateException {
         X509CertificatesCredentialReader credReader = new X509CertificatesCredentialReader();
         ByteArrayInputStream bais = new ByteArrayInputStream(certs);
         try {
@@ -334,6 +336,65 @@ public class X509Util {
         } catch (CryptException e) {
             throw new CertificateException("Unable to decode X.509 certificates", e);
         }
+    }
+    
+    /**
+     * Decodes a single X.509 certificate in DER or PEM format.
+     * 
+     * @param cert encoded cert
+     * 
+     * @return decoded cert
+     * 
+     * @throws CertificateException thrown if the certificate can not be decoded
+     * 
+     * @since 1.2
+     */
+    public static X509Certificate decodeCertificate(File cert) throws CertificateException{
+        if(!cert.exists()){
+            throw new CertificateException("Certificate file " + cert.getAbsolutePath() + " does not exist");
+        }
+        
+        if(!cert.canRead()){
+            throw new CertificateException("Certificate file " + cert.getAbsolutePath() + " is not readable");
+        }
+        
+        try{
+            return decodeCertificate(Files.toByteArray(cert));
+        }catch(IOException e){
+            throw new CertificateException("Error reading certificate file " + cert.getAbsolutePath(), e);
+        }
+    }
+    
+    /**
+     * Decodes a single X.509 certificate in DER or PEM format.
+     * 
+     * @param cert encoded cert
+     * 
+     * @return decoded cert
+     * 
+     * @throws CertificateException thrown if the certificate can not be decoded
+     */
+    public static X509Certificate decodeCertificate(byte[] cert) throws CertificateException {
+        X509CertificateCredentialReader credReader = new X509CertificateCredentialReader();
+        ByteArrayInputStream bais = new ByteArrayInputStream(cert);
+        try {
+            return credReader.read(bais);
+        } catch (IOException e) {
+            throw new CertificateException("Unable to decode X.509 certificates", e);
+        } catch (CryptException e) {
+            throw new CertificateException("Unable to decode X.509 certificates", e);
+        }
+    }
+    
+    /**
+     * Decode a single Java certificate from base64 encoded form without PEM headers and footers.
+     * 
+     * @param base64Cert base64-encoded certificate
+     * @return a native Java X509 certificate
+     * @throws CertificateException thrown if there is an error constructing certificate
+     */
+    public static X509Certificate decodeCertificate(String base64Cert) throws CertificateException {
+        return decodeCertificate(Base64Support.decode(base64Cert));
     }
     
     /**
@@ -382,6 +443,20 @@ public class X509Util {
         } catch (GeneralSecurityException e) {
             throw new CRLException("Unable to decode X.509 certificates");
         }
+    }
+    
+    /**
+     * Decode CRL in base64 encoded form without PEM headers and footers.
+     * 
+     * @param base64CRL base64-encoded CRL
+     * @return a native Java X509 CRL
+     * @throws CertificateException thrown if there is an error constructing certificate
+     * @throws CRLException thrown if there is an error constructing CRL
+     */
+    public static X509CRL decodeCRL(String base64CRL) throws CertificateException, CRLException {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64CRL));
+        return (java.security.cert.X509CRL) cf.generateCRL(input);
     }
 
     /**
@@ -468,6 +543,7 @@ public class X509Util {
      * @return a Logger instance
      */
     private static Logger getLogger() {
-        return LoggerFactory.getLogger(X509Util.class);
+        return LoggerFactory.getLogger(X509Support.class);
     }
+    
 }

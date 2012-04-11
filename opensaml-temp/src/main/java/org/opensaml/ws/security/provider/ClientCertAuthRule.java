@@ -31,7 +31,7 @@ import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.ws.message.MessageContext;
 import org.opensaml.ws.security.SecurityPolicyException;
 import org.slf4j.Logger;
@@ -449,7 +449,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
      * @return the first CN value, or null if there are none
      */
     protected String getCommonName(X509Certificate cert) {
-        List<String> names = X509Util.getCommonNames(cert.getSubjectX500Principal());
+        List<String> names = X509Support.getCommonNames(cert.getSubjectX500Principal());
         if (names != null && !names.isEmpty()) {
             String name = names.get(0);
             log.debug("Extracted common name from certificate: {}", name);
@@ -491,7 +491,7 @@ public class ClientCertAuthRule extends BaseTrustEngineRule<X509Credential> {
     protected List<String> getAltNames(X509Certificate cert, Integer altNameType) {
         log.debug("Extracting alt names from certificate of type: {}", altNameType.toString());
         Integer[] nameTypes = new Integer[] {altNameType};
-        List altNames = X509Util.getAltNames(cert, nameTypes);
+        List altNames = X509Support.getAltNames(cert, nameTypes);
         List<String> names = new ArrayList<String>();
         for (Object altNameValue : altNames) {
             if (!(altNameValue instanceof String)) {

@@ -32,11 +32,11 @@ import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
@@ -115,7 +115,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
     protected void setUp() throws Exception {
         issuer = "SomeCoolIssuer";
         
-        signingCert = SecurityHelper.buildJavaX509Cert(signingCertBase64);
+        signingCert = X509Support.decodeCertificate(signingCertBase64);
         //signingPrivateKey = SecurityTestHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
         
         signingX509Cred = new BasicX509Credential();
@@ -123,7 +123,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
         signingX509Cred.setPrivateKey(signingPrivateKey);
         signingX509Cred.setEntityId(issuer);
         
-        otherCert1 = SecurityHelper.buildJavaX509Cert(otherCert1Base64);
+        otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
         
         BasicX509Credential otherCred1 = new BasicX509Credential();
         otherCred1.setEntityCertificate(otherCert1);

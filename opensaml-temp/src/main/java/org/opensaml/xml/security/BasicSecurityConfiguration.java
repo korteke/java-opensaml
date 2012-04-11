@@ -24,8 +24,9 @@ import java.util.Map;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
@@ -93,7 +94,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     
     /** {@inheritDoc} */
     public String getSignatureAlgorithmURI(Credential credential) {
-        Key key = SecurityHelper.extractSigningKey(credential);
+        Key key = CredentialSupport.extractSigningKey(credential);
         if (key == null) {
             log.debug("Could not extract signing key from credential, unable to map to algorithm URI");
             return null;
@@ -187,7 +188,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     
     /** {@inheritDoc} */
     public String getDataEncryptionAlgorithmURI(Credential credential) {
-        Key key = SecurityHelper.extractEncryptionKey(credential);
+        Key key = CredentialSupport.extractEncryptionKey(credential);
         if (key == null) {
             log.debug("Could not extract data encryption key from credential, unable to map to algorithm URI");
             return null;
@@ -195,7 +196,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
             log.debug("Data encryption key algorithm value was not available, unable to map to algorithm URI");
             return null;
         }
-        Integer length = SecurityHelper.getKeyLength(key);
+        Integer length = KeySupport.getKeyLength(key);
         return getDataEncryptionAlgorithmURI(key.getAlgorithm(), length);
     }
     
@@ -262,7 +263,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     
     /** {@inheritDoc} */
     public String getKeyTransportEncryptionAlgorithmURI(Credential credential, String wrappedKeyAlgorithm) {
-        Key key = SecurityHelper.extractEncryptionKey(credential);
+        Key key = CredentialSupport.extractEncryptionKey(credential);
         if (key == null) {
             log.debug("Could not extract key transport encryption key from credential, unable to map to algorithm URI");
             return null;
@@ -270,7 +271,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
             log.debug("Key transport encryption key algorithm value was not available, unable to map to algorithm URI");
             return null;
         }
-        Integer length = SecurityHelper.getKeyLength(key);
+        Integer length = KeySupport.getKeyLength(key);
         return getKeyTransportEncryptionAlgorithmURI(key.getAlgorithm(), length, wrappedKeyAlgorithm);
     }
 

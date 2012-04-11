@@ -37,7 +37,7 @@ import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
 import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
@@ -253,7 +253,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
-            return X509Util.decodeCertificate(encoded).iterator().next();
+            return X509Support.decodeCertificates(encoded).iterator().next();
         } catch (Exception e) {
             Assert.fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
         }
@@ -273,7 +273,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
-            return X509Util.decodeCRLs(encoded).iterator().next();
+            return X509Support.decodeCRLs(encoded).iterator().next();
         } catch (Exception e) {
             Assert.fail("Could not create CRL from file: " + fileName + ": " + e.getMessage());
         }

@@ -46,10 +46,11 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
@@ -166,15 +167,15 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
      * @throws Exception
      */
     public SAML2HTTPPostSimpleSignSecurityPolicyRuleTest() throws Exception {
-        signingCert = SecurityHelper.buildJavaX509Cert(signingCertBase64);
-        signingPrivateKey = SecurityHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
+        signingCert = X509Support.decodeCertificate(signingCertBase64);
+        signingPrivateKey = KeySupport.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
 
         signingX509Cred = new BasicX509Credential();
         signingX509Cred.setEntityCertificate(signingCert);
         signingX509Cred.setPrivateKey(signingPrivateKey);
         signingX509Cred.setEntityId(issuer);
 
-        otherCert1 = SecurityHelper.buildJavaX509Cert(otherCert1Base64);
+        otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
 
         otherCred1 = new BasicX509Credential();
         otherCred1.setEntityCertificate(otherCert1);

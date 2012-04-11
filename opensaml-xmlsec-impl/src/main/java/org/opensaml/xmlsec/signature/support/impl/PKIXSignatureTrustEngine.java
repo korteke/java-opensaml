@@ -24,8 +24,8 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.x509.PKIXTrustEngine;
 import org.opensaml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.security.x509.PKIXValidationInformation;
@@ -34,7 +34,7 @@ import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.impl.BasicX509CredentialNameEvaluator;
 import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 import org.opensaml.security.x509.impl.X509CredentialNameEvaluator;
-import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
@@ -169,7 +169,7 @@ public class PKIXSignatureTrustEngine extends
     public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
             Credential candidateCredential) throws SecurityException {
 
-        if (candidateCredential == null || SecurityHelper.extractVerificationKey(candidateCredential) == null) {
+        if (candidateCredential == null || CredentialSupport.extractVerificationKey(candidateCredential) == null) {
             log.debug("Candidate credential was either not supplied or did not contain verification key");
             log.debug("PKIX trust engine requires supplied key, skipping PKIX trust evaluation");
             return false;

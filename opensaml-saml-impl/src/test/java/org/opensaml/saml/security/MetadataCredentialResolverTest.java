@@ -44,14 +44,15 @@ import org.opensaml.saml.security.MetadataCredentialResolver;
 import org.opensaml.saml.security.MetadataCriterion;
 import org.opensaml.saml.security.SAMLMDCredentialContext;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.config.BasicSecurityConfiguration;
 import org.w3c.dom.Document;
 
@@ -162,10 +163,10 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        idpRSAPubKey = SecurityHelper.buildJavaRSAPublicKey(idpRSAPubKeyBase64);
-        idpDSACert = SecurityHelper.buildJavaX509Cert(idpDSACertBase64);
-        idpRSACert = SecurityHelper.buildJavaX509Cert(idpRSACertBase64);
-        SecurityHelper.buildJavaX509Cert(keyAuthorityCertBase64);
+        idpRSAPubKey = KeySupport.buildJavaRSAPublicKey(idpRSAPubKeyBase64);
+        idpDSACert = X509Support.decodeCertificate(idpDSACertBase64);
+        idpRSACert = X509Support.decodeCertificate(idpRSACertBase64);
+        X509Support.decodeCertificate(keyAuthorityCertBase64);
         
         Document mdDoc = parserPool.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
         
@@ -173,7 +174,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         mdProvider.initialize();
         
         //For testing, use default KeyInfo resolver from global security config, per metadata resolver constructor
-        origGlobalSecurityConfig = XMLSecurityHelper.getGlobalXMLSecurityConfiguration();
+        origGlobalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
         BasicSecurityConfiguration newSecConfig = new BasicSecurityConfiguration();
         newSecConfig.setDefaultKeyInfoCredentialResolver( SAMLTestHelper.buildBasicInlineKeyInfoResolver() );
         ConfigurationService.register(SecurityConfiguration.class, newSecConfig);

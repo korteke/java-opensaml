@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.security;
+package org.opensaml.security.crypto;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -27,12 +25,14 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.crypto.KeySupport;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
- * Unit test for {@link SecurityHelper}.
+ * Unit test for {@link KeySupport}.
  */
-public class SecurityHelperTest {
+public class KeySupportTest {
 
     /** Location of non-encrypted, PEM formatted, RSA private key. */
     private String rsaPrivKeyPEMNoEncrypt = "/data/rsa-privkey-nopass.pem";
@@ -95,13 +95,13 @@ public class SecurityHelperTest {
     @Test
     public void testDerivePublicKey() throws Exception{
         PrivateKey privKey = testPrivKey(rsaPrivKeyPEMNoEncrypt, null, "RSA");
-        PublicKey pubKey = SecurityHelper.derivePublicKey(privKey);
+        PublicKey pubKey = KeySupport.derivePublicKey(privKey);
         Assert.assertNotNull(pubKey);
         Assert.assertEquals(pubKey.getAlgorithm(), "RSA");
         
         pubKey = null;
         privKey = testPrivKey(dsaPrivKeyPEMNoEncrypt, null, "DSA");
-        pubKey = SecurityHelper.derivePublicKey(privKey);
+        pubKey = KeySupport.derivePublicKey(privKey);
         Assert.assertNotNull(pubKey);
         Assert.assertEquals(pubKey.getAlgorithm(), "DSA");
     }
@@ -114,24 +114,24 @@ public class SecurityHelperTest {
      * @throws SecurityException */
     @Test
     public void testKeyPairMatching() throws NoSuchAlgorithmException, NoSuchProviderException, SecurityException {
-        KeyPair kp1rsa = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        KeyPair kp2rsa = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        KeyPair kp1dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);
-        KeyPair kp2dsa = SecurityHelper.generateKeyPair("DSA", 1024, null);
+        KeyPair kp1rsa = KeySupport.generateKeyPair("RSA", 1024, null);
+        KeyPair kp2rsa = KeySupport.generateKeyPair("RSA", 1024, null);
+        KeyPair kp1dsa = KeySupport.generateKeyPair("DSA", 1024, null);
+        KeyPair kp2dsa = KeySupport.generateKeyPair("DSA", 1024, null);
         
-        Assert.assertTrue(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
-        Assert.assertTrue(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));
-        Assert.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2rsa.getPrivate()));
-        Assert.assertFalse(SecurityHelper.matchKeyPair(kp2rsa.getPublic(), kp1rsa.getPrivate()));
+        Assert.assertTrue(KeySupport.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
+        Assert.assertTrue(KeySupport.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));
+        Assert.assertFalse(KeySupport.matchKeyPair(kp1rsa.getPublic(), kp2rsa.getPrivate()));
+        Assert.assertFalse(KeySupport.matchKeyPair(kp2rsa.getPublic(), kp1rsa.getPrivate()));
         
-        Assert.assertTrue(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp1dsa.getPrivate()));
-        Assert.assertTrue(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp2dsa.getPrivate()));
-        Assert.assertFalse(SecurityHelper.matchKeyPair(kp1dsa.getPublic(), kp2dsa.getPrivate()));
-        Assert.assertFalse(SecurityHelper.matchKeyPair(kp2dsa.getPublic(), kp1dsa.getPrivate()));
+        Assert.assertTrue(KeySupport.matchKeyPair(kp1dsa.getPublic(), kp1dsa.getPrivate()));
+        Assert.assertTrue(KeySupport.matchKeyPair(kp2dsa.getPublic(), kp2dsa.getPrivate()));
+        Assert.assertFalse(KeySupport.matchKeyPair(kp1dsa.getPublic(), kp2dsa.getPrivate()));
+        Assert.assertFalse(KeySupport.matchKeyPair(kp2dsa.getPublic(), kp1dsa.getPrivate()));
         
         try {
             // key algorithm type mismatch, should be an error
-            Assert.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), kp2dsa.getPrivate()));
+            Assert.assertFalse(KeySupport.matchKeyPair(kp1rsa.getPublic(), kp2dsa.getPrivate()));
             Assert.fail("Key algorithm mismatch should have caused evaluation failure");
         } catch (SecurityException e) {
            // expected 
@@ -139,14 +139,14 @@ public class SecurityHelperTest {
         
         try {
             // null key, should be an error
-            Assert.assertFalse(SecurityHelper.matchKeyPair(kp1rsa.getPublic(), null));
+            Assert.assertFalse(KeySupport.matchKeyPair(kp1rsa.getPublic(), null));
             Assert.fail("Null key should have caused failure");
         } catch (SecurityException e) {
            // expected 
         }
         try {
             // null key, should be an error
-            Assert.assertFalse(SecurityHelper.matchKeyPair(null, kp1rsa.getPrivate()));
+            Assert.assertFalse(KeySupport.matchKeyPair(null, kp1rsa.getPrivate()));
             Assert.fail("Key algorithm mismatch should have caused evaluation failure");
         } catch (SecurityException e) {
             // expected
@@ -155,12 +155,12 @@ public class SecurityHelperTest {
 
     /** Generic key testing. */
     protected PrivateKey testPrivKey(String keyFile, char[] password, String algo) throws Exception {
-        InputStream keyInS = SecurityHelperTest.class.getResourceAsStream(keyFile);
+        InputStream keyInS = KeySupportTest.class.getResourceAsStream(keyFile);
 
         byte[] keyBytes = new byte[keyInS.available()];
         keyInS.read(keyBytes);
 
-        PrivateKey key = SecurityHelper.decodePrivateKey(keyBytes, password);
+        PrivateKey key = KeySupport.decodePrivateKey(keyBytes, password);
         Assert.assertNotNull(key);
         Assert.assertEquals(key.getAlgorithm(), algo);
         

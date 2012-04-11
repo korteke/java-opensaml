@@ -29,9 +29,9 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
@@ -67,7 +67,7 @@ public class RSAKeyValueTest extends XMLObjectBaseTestCase {
         providers.add(new RSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xmlsec/keyinfo/impl/RSAKeyValue.xml";
-        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
+        pubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
     }
     
     /**

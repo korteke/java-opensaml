@@ -24,13 +24,13 @@ import java.security.cert.X509Certificate;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableX509SubjectKeyIdentifierCredentialCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
+import org.opensaml.security.x509.X509Support;
 
 /**
  *
@@ -90,8 +90,8 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
-        entityCertNoSKI = SecurityHelper.buildJavaX509Cert(entityCertNoSKIBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
+        entityCertNoSKI = X509Support.decodeCertificate(entityCertNoSKIBase64);
         subjectKeyIdentifier = Base64Support.decode(entityCertSKIBase64);
         
         credential = new BasicX509Credential();

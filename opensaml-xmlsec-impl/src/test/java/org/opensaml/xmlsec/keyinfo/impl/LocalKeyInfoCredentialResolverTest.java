@@ -29,12 +29,12 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.LocalKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
@@ -57,7 +57,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         keyName = "MyKey";
-        keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
+        keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
         
         localCred = new BasicCredential();
         localCred.setPublicKey(keyPair.getPublic());
@@ -76,7 +76,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testKeyInfoWithKeyName() throws ResolverException {
-        KeyInfoHelper.addKeyName(keyInfo, keyName);
+        KeyInfoSupport.addKeyName(keyInfo, keyName);
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
@@ -86,7 +86,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testKeyInfoWithKnownPublicKey() throws ResolverException {
-        KeyInfoHelper.addPublicKey(keyInfo, keyPair.getPublic());
+        KeyInfoSupport.addPublicKey(keyInfo, keyPair.getPublic());
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
@@ -98,8 +98,8 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testKeyInfoWithUnknownPublicKey() throws IllegalArgumentException,
         NoSuchAlgorithmException, NoSuchProviderException, ResolverException {
         
-        KeyInfoHelper.addPublicKey(keyInfo, 
-                SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic());
+        KeyInfoSupport.addPublicKey(keyInfo, 
+                KeySupport.generateKeyPair("RSA", 1024, null).getPublic());
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);

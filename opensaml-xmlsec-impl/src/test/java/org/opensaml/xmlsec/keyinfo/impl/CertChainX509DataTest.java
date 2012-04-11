@@ -34,9 +34,10 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
@@ -120,9 +121,9 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         providers.add(new RSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         
-        pubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
-        caCert = SecurityHelper.buildJavaX509Cert(caCertBase64);
+        pubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
+        caCert = X509Support.decodeCertificate(caCertBase64);
         
         new X500Principal("cn=foobar.example.org, O=Internet2");
         new X500Principal("cn=ca.example.org, O=Internet2");

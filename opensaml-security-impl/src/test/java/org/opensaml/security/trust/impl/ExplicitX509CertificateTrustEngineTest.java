@@ -28,14 +28,16 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Support;
 
 /**
  * Test the explicit key trust engine.
@@ -129,12 +131,12 @@ public class ExplicitX509CertificateTrustEngineTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityPubKey = SecurityHelper.buildJavaRSAPublicKey(rsaBase64);
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
-        otherCert1 = SecurityHelper.buildJavaX509Cert(otherCert1Base64);
-        otherCert2 = SecurityHelper.buildJavaX509Cert(otherCert2Base64);
+        entityPubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
+        otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
+        otherCert2 = X509Support.decodeCertificate(otherCert2Base64);
         
-        entityRSACred = SecurityHelper.getSimpleCredential(entityPubKey, null);
+        entityRSACred = CredentialSupport.getSimpleCredential(entityPubKey, null);
         entityRSACred.setEntityId("entity-RSA");
         
         entityX509Cred = new BasicX509Credential();

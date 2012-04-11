@@ -27,10 +27,11 @@ import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableX509CertSelectorCredentialCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Support;
 
 /**
  *
@@ -74,7 +75,7 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
         entityCert.getPublicKey();
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
@@ -106,7 +107,7 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
 
     @Test
     public void testNotSatisfy() throws NoSuchAlgorithmException, NoSuchProviderException {
-        certSelector.setSubjectPublicKey( SecurityHelper.generateKeyPair("RSA", 1024, null).getPublic() );
+        certSelector.setSubjectPublicKey( KeySupport.generateKeyPair("RSA", 1024, null).getPublic() );
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     

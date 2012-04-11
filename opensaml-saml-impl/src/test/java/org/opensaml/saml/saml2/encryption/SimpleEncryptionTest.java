@@ -35,7 +35,7 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.saml.saml2.encryption.Encrypter;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
@@ -80,11 +80,11 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(algoURI);
-        encParams.setEncryptionCredential(XMLSecurityHelper.generateKeyAndCredential(algoURI));
+        encParams.setEncryptionCredential(AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI));
         
         kekParamsRSA = new KeyEncryptionParameters();
         kekParamsRSA.setAlgorithm(kekURIRSA);
-        kekParamsRSA.setEncryptionCredential(XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 1024, false));
+        kekParamsRSA.setEncryptionCredential(AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 1024, false));
         
         kekParamsList = new ArrayList<KeyEncryptionParameters>();
         
