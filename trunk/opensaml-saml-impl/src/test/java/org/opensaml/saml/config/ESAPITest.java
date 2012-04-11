@@ -17,24 +17,17 @@
 
 package org.opensaml.saml.config;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.opensaml.saml.config.DefaultBootstrap;
+import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.SecurityConfiguration;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
- * Test that OWASPI ESAPI is initialized properly by the default bootstrap process.
+ * Test that OWASPI ESAPI is initialized properly by the default InitializationService.
  */
-public class ESAPITest {
-
-    /** {@inheritDoc} */
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        DefaultBootstrap.bootstrap();
-    }
+public class ESAPITest extends OpenSAMLInitBaseTestCase {
     
     /**
      *  Tests that basic initialization has happened.
