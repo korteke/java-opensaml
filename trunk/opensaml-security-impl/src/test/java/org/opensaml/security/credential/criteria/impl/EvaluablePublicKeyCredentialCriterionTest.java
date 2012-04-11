@@ -24,12 +24,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluablePublicKeyCredentialCriterion;
 import org.opensaml.security.criteria.PublicKeyCriterion;
+import org.opensaml.security.crypto.KeySupport;
 
 /**
  *
@@ -49,7 +49,7 @@ public class EvaluablePublicKeyCredentialCriterionTest {
     @BeforeMethod
     protected void setUp() throws Exception {
         credential = new BasicCredential();
-        pubKey = SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic();
+        pubKey = KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic();
         credential.setPublicKey(pubKey);
         
         criteria = new PublicKeyCriterion(pubKey);
@@ -63,7 +63,7 @@ public class EvaluablePublicKeyCredentialCriterionTest {
 
     @Test
     public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        criteria.setPublicKey(SecurityHelper.generateKeyPair(keyAlgo, 1024, null).getPublic());
+        criteria.setPublicKey(KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic());
         EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }

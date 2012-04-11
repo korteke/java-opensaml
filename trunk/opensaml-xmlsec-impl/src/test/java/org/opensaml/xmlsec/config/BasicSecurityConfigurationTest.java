@@ -23,10 +23,11 @@ import org.testng.Assert;
 import java.security.KeyPair;
 
 import org.apache.xml.security.Init;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.config.BasicSecurityConfiguration;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
@@ -46,9 +47,9 @@ public class BasicSecurityConfigurationTest {
             Init.init();
         }
         
-        KeyPair kp = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        rsaCred = SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate());
-        aes128Cred = XMLSecurityHelper.generateKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
+        rsaCred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        aes128Cred = AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
         
         config = new BasicSecurityConfiguration();
     }

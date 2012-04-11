@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec;
+package org.opensaml.xmlsec.crypto;
 
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SigningUtil;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.SigningUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,12 +47,12 @@ public final class XMLSigningUtil {
     public static byte[] signWithURI(Credential signingCredential, String algorithmURI, byte[] input)
             throws SecurityException {
 
-        String jcaAlgorithmID = XMLSecurityHelper.getAlgorithmIDFromURI(algorithmURI);
+        String jcaAlgorithmID = AlgorithmSupport.getAlgorithmID(algorithmURI);
         if (jcaAlgorithmID == null) {
             throw new SecurityException("Could not derive JCA algorithm identifier from algorithm URI");
         }
 
-        boolean isHMAC = XMLSecurityHelper.isHMAC(algorithmURI);
+        boolean isHMAC = AlgorithmSupport.isHMAC(algorithmURI);
 
         return SigningUtil.sign(signingCredential, jcaAlgorithmID, isHMAC, input);
     }
@@ -74,12 +74,12 @@ public final class XMLSigningUtil {
     public static boolean verifyWithURI(Credential verificationCredential, String algorithmURI, byte[] signature,
             byte[] input) throws SecurityException {
 
-        String jcaAlgorithmID = XMLSecurityHelper.getAlgorithmIDFromURI(algorithmURI);
+        String jcaAlgorithmID = AlgorithmSupport.getAlgorithmID(algorithmURI);
         if (jcaAlgorithmID == null) {
             throw new SecurityException("Could not derive JCA algorithm identifier from algorithm URI");
         }
 
-        boolean isHMAC = XMLSecurityHelper.isHMAC(algorithmURI);
+        boolean isHMAC = AlgorithmSupport.isHMAC(algorithmURI);
 
         return SigningUtil.verify(verificationCredential, jcaAlgorithmID, isHMAC, signature, input);
     }

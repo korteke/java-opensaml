@@ -34,13 +34,13 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.AbstractCriteriaFilteringCredentialResolver;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -335,7 +335,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
         kiContext.setKeyInfo(keyInfo);
 
         // Extract all KeyNames
-        kiContext.getKeyNames().addAll(KeyInfoHelper.getKeyNames(keyInfo));
+        kiContext.getKeyNames().addAll(KeyInfoSupport.getKeyNames(keyInfo));
         log.debug("Found {} key names: {}", kiContext.getKeyNames().size(), kiContext.getKeyNames());
 
         // Extract the Credential based on the (singular) key from an existing KeyValue(s).
@@ -406,7 +406,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             // but go ahead and try and handle it
             PrivateKey privateKey = (PrivateKey) key;
             try {
-                PublicKey publicKey = SecurityHelper.derivePublicKey(privateKey);
+                PublicKey publicKey = KeySupport.derivePublicKey(privateKey);
                 if (publicKey != null) {
                     basicCred.setPublicKey(publicKey);
                     basicCred.setPrivateKey(privateKey);

@@ -22,6 +22,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import org.testng.Assert;
 import java.security.Key;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -31,8 +32,9 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.SecurityHelper;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.Encrypter;
@@ -104,18 +106,18 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(algoURI);
-        encParams.setEncryptionCredential(XMLSecurityHelper.generateKeyAndCredential(algoURI));
+        encParams.setEncryptionCredential(AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI));
         
         kekParamsList = new ArrayList<KeyEncryptionParameters>();
         
         kekParamsAES = new KeyEncryptionParameters();
         kekParamsAES.setAlgorithm(kekURIAES);
-        kekParamsAES.setEncryptionCredential(XMLSecurityHelper.generateKeyAndCredential(kekURIAES));
+        kekParamsAES.setEncryptionCredential(AlgorithmSupport.generateSymmetricKeyAndCredential(kekURIAES));
         kekParamsAES.setRecipient(expectedRecipientAES);
         
         kekParamsRSA = new KeyEncryptionParameters();
         kekParamsRSA.setAlgorithm(kekURIRSA);
-        kekParamsRSA.setEncryptionCredential(XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 1024, false));
+        kekParamsRSA.setEncryptionCredential(AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 1024, false));
         kekParamsRSA.setRecipient(expectedRecipientRSA);
         
         keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
@@ -306,12 +308,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
+     * @throws KeyException 
      */
     @Test
     public void testEncryptKeySingleKEK() throws NoSuchAlgorithmException, NoSuchProviderException, 
-            XMLParserException {
+            XMLParserException, KeyException {
         
-        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
@@ -332,12 +335,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
+     * @throws KeyException 
      */
     @Test
     public void testEncryptKeyMultipleKEK() throws NoSuchAlgorithmException, NoSuchProviderException, 
-            XMLParserException {
+            XMLParserException, KeyException {
         
-        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
         
         kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
@@ -431,12 +435,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
+     * @throws KeyException 
      */
     @Test
     public void testEncryptKeyDigestMethodsRSAOAEP() throws NoSuchAlgorithmException, NoSuchProviderException, 
-            XMLParserException {
+            XMLParserException, KeyException {
         
-        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
         
         kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         
@@ -465,12 +470,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
+     * @throws KeyException 
      */
     @Test
     public void testEncryptKeyDigestMethodsRSAv15() throws NoSuchAlgorithmException, NoSuchProviderException, 
-            XMLParserException {
+            XMLParserException, KeyException {
         
-        Key targetKey = XMLSecurityHelper.generateKeyFromURI(algoURI);
+        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
         
         kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         
@@ -497,8 +503,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         KeyEncryptionParameters kekParamsDSA = new KeyEncryptionParameters();
-        KeyPair kp = SecurityHelper.generateKeyPair("DSA", 1024, null);
-        kekParamsDSA.setEncryptionCredential(SecurityHelper.getSimpleCredential(kp.getPublic(), null));
+        KeyPair kp = KeySupport.generateKeyPair("DSA", 1024, null);
+        kekParamsDSA.setEncryptionCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), null));
         
         try {
             encrypter.encryptElement(sxo, encParams, kekParamsDSA);

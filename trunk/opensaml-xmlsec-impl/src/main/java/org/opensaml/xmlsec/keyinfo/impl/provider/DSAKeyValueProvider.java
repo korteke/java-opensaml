@@ -31,7 +31,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
@@ -74,7 +74,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
         PublicKey pubKey = null;
         try {
             //TODO deal with case of incomplete DSAParams, need hook to resolve those
-            pubKey = KeyInfoHelper.getDSAKey(keyValue);
+            pubKey = KeyInfoSupport.getDSAKey(keyValue);
         } catch (KeyException e) {
             log.error("Error extracting DSA key value", e);
             throw new SecurityException("Error extracting DSA key value", e);

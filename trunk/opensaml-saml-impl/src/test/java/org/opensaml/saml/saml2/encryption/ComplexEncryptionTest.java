@@ -33,7 +33,7 @@ import org.opensaml.saml.saml2.core.EncryptedAttribute;
 import org.opensaml.saml.saml2.encryption.Encrypter;
 import org.opensaml.saml.saml2.encryption.Encrypter.KeyPlacement;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -83,9 +83,9 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(algoURI);
-        Credential kekCredAES = XMLSecurityHelper.generateKeyAndCredential(kekURIAES);
-        Credential kekCredRSA = XMLSecurityHelper.generateKeyPairAndCredential(kekURIRSA, 2048, false);
+        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI);
+        Credential kekCredAES = AlgorithmSupport.generateSymmetricKeyAndCredential(kekURIAES);
+        Credential kekCredRSA = AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 2048, false);
         
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(algoURI);

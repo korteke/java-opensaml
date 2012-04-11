@@ -41,9 +41,9 @@ import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -169,7 +169,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     private List<X509CRL> extractCRLs(X509Data x509Data) throws SecurityException {
         List<X509CRL> crls = null;
         try {
-            crls = KeyInfoHelper.getCRLs(x509Data);
+            crls = KeyInfoSupport.getCRLs(x509Data);
         } catch (CRLException e) {
             log.error("Error extracting CRL's from X509Data", e);
             throw new SecurityException("Error extracting CRL's from X509Data", e);
@@ -189,7 +189,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     private List<X509Certificate> extractCertificates(X509Data x509Data) throws SecurityException {
         List<X509Certificate> certs = null;
         try {
-            certs = KeyInfoHelper.getCertificates(x509Data);
+            certs = KeyInfoSupport.getCertificates(x509Data);
         } catch (CertificateException e) {
             log.error("Error extracting certificates from X509Data", e);
             throw new SecurityException("Error extracting certificates from X509Data", e);
@@ -333,7 +333,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             if (!Strings.isNullOrEmpty(ski.getValue())) {
                 byte[] xmlValue = Base64Support.decode(ski.getValue());
                 for (X509Certificate cert : certs) {
-                    byte[] certValue = X509Util.getSubjectKeyIdentifier(cert);
+                    byte[] certValue = X509Support.getSubjectKeyIdentifier(cert);
                     if (certValue != null && Arrays.equals(xmlValue, certValue)) {
                         return cert;
                     }

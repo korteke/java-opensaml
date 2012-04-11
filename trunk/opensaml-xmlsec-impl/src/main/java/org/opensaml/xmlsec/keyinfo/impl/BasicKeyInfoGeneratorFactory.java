@@ -25,7 +25,7 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.impl.KeyInfoBuilder;
 
@@ -194,7 +194,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
             if (options.emitKeyNames) {
                 for (String keyNameValue : credential.getKeyNames()) {
                     if ( ! Strings.isNullOrEmpty(keyNameValue)) {
-                        KeyInfoHelper.addKeyName(keyInfo, keyNameValue);
+                        KeyInfoSupport.addKeyName(keyInfo, keyNameValue);
                     }
                 }
             }
@@ -209,7 +209,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
             if (options.emitEntityIDAsKeyName) {
                 String keyNameValue = credential.getEntityId();
                 if ( ! Strings.isNullOrEmpty(keyNameValue)) {
-                    KeyInfoHelper.addKeyName(keyInfo, keyNameValue);
+                    KeyInfoSupport.addKeyName(keyInfo, keyNameValue);
                 }
             }
         }
@@ -222,7 +222,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         protected void processPublicKey(KeyInfo keyInfo, Credential credential) {
             if (options.emitPublicKeyValue) {
                 if (credential.getPublicKey() != null) {
-                    KeyInfoHelper.addPublicKey(keyInfo, credential.getPublicKey());
+                    KeyInfoSupport.addPublicKey(keyInfo, credential.getPublicKey());
                 }
             }
         }

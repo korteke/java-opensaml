@@ -40,7 +40,7 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -328,7 +328,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
         Document ownerDocument = encElement.getDOM().getOwnerDocument();
 
         String encryptionAlgorithmURI = encParams.getAlgorithm();
-        Key encryptionKey = SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential());
+        Key encryptionKey = CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential());
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }

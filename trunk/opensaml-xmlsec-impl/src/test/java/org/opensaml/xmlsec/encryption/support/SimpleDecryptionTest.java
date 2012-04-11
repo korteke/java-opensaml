@@ -21,6 +21,7 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.security.Key;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -31,7 +32,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.Decrypter;
@@ -87,7 +88,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         encKey = encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
@@ -95,7 +96,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encParams.setEncryptionCredential(encCred);
         
         
-        Credential kekCred = XMLSecurityHelper.generateKeyPairAndCredential(kekURI, 1024, true);
+        Credential kekCred = AlgorithmSupport.generateKeyPairAndCredential(kekURI, 1024, true);
         kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
         kekParams = new KeyEncryptionParameters();
         kekParams.setAlgorithm(kekURI);
@@ -198,10 +199,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      *  
      * @throws NoSuchProviderException 
      * @throws NoSuchAlgorithmException 
+     * @throws KeyException 
      */
     @Test
-    public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        Key badKey = XMLSecurityHelper.generateKeyFromURI(encURI);
+    public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException, KeyException {
+        Key badKey = AlgorithmSupport.generateSymmetricKey(encURI);
         BasicCredential encCred = new BasicCredential();
         encCred.setSecretKey((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);
@@ -225,7 +227,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testErrorInvalidKeyDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
-        KeyPair badKeyPair = XMLSecurityHelper.generateKeyPairFromURI(kekURI, 1024);
+        KeyPair badKeyPair = AlgorithmSupport.generateKeyPair(kekURI, 1024);
         BasicCredential kekCred = new BasicCredential();
         kekCred.setPublicKey(badKeyPair.getPublic());
         kekCred.setPrivateKey(badKeyPair.getPrivate());

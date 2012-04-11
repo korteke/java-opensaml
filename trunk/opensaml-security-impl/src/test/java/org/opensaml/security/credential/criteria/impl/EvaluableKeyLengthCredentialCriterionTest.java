@@ -20,12 +20,12 @@ package org.opensaml.security.credential.criteria.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableKeyLengthCredentialCriterion;
 import org.opensaml.security.criteria.KeyLengthCriterion;
+import org.opensaml.security.crypto.KeySupport;
 
 /**
  *
@@ -46,7 +46,7 @@ public class EvaluableKeyLengthCredentialCriterionTest {
     @BeforeMethod
     protected void setUp() throws Exception {
         credential = new BasicCredential();
-        credential.setSecretKey(SecurityHelper.generateKey(keyAlgo, keyLength, null));
+        credential.setSecretKey(KeySupport.generateKey(keyAlgo, keyLength, null));
         
         criteria = new KeyLengthCriterion(keyLength);
     }

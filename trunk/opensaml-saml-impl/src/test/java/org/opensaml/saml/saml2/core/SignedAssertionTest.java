@@ -40,10 +40,11 @@ import org.opensaml.saml.saml2.core.impl.AssertionBuilder;
 import org.opensaml.saml.saml2.core.impl.AuthnStatementBuilder;
 import org.opensaml.saml.saml2.core.impl.IssuerBuilder;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureBuilder;
@@ -80,11 +81,11 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
+        KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
+        goodCredential = CredentialSupport.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
         
-        keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
+        keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
+        CredentialSupport.getSimpleCredential(keyPair.getPublic(), null);
         
         assertionBuilder = (AssertionBuilder) builderFactory.getBuilder(Assertion.DEFAULT_ELEMENT_NAME);
         issuerBuilder = (IssuerBuilder) builderFactory.getBuilder(Issuer.DEFAULT_ELEMENT_NAME);

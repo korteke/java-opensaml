@@ -19,9 +19,9 @@ package org.opensaml.security.credential.criteria.impl;
 
 import java.security.Key;
 
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyLengthCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +71,7 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
             log.info("Could not evaluate criteria, credential contained no key");
             return null;
         }
-        Integer length = SecurityHelper.getKeyLength(key);
+        Integer length = KeySupport.getKeyLength(key);
         if (length == null) {
             log.info("Could not evaluate criteria, can not determine length of key");
             return null;

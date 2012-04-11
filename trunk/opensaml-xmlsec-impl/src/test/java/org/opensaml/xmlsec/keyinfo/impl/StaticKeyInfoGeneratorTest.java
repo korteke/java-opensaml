@@ -27,9 +27,9 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
@@ -72,8 +72,8 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         keyname2.setValue(expectedKeyName2);
         origKeyInfo.getKeyNames().add(keyname2);
         
-        expectedKeyValue = SecurityHelper.generateKeyPair(expectedKeyAlgorithm, 1024, null).getPublic();
-        KeyInfoHelper.addPublicKey(origKeyInfo, expectedKeyValue);
+        expectedKeyValue = KeySupport.generateKeyPair(expectedKeyAlgorithm, 1024, null).getPublic();
+        KeyInfoSupport.addPublicKey(origKeyInfo, expectedKeyValue);
         
         generator = new StaticKeyInfoGenerator(origKeyInfo);
     }
@@ -173,7 +173,7 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(keyInfo.getKeyNames().get(1).getValue(), expectedKeyName2, "Unexpected value for KeyName");
         
         Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Number of KeyValues");
-        PublicKey pubKey = KeyInfoHelper.getKey(keyInfo.getKeyValues().get(0));
+        PublicKey pubKey = KeyInfoSupport.getKey(keyInfo.getKeyValues().get(0));
         Assert.assertEquals(pubKey, expectedKeyValue, "Unexpected public key value");
     }
 

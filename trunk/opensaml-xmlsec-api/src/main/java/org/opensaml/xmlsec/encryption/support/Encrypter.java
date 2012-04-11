@@ -43,8 +43,8 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
@@ -285,7 +285,7 @@ public class Encrypter {
 
         checkParams(kekParams, false);
 
-        Key encryptionKey = SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential());
+        Key encryptionKey = CredentialSupport.extractEncryptionKey(kekParams.getEncryptionCredential());
         String encryptionAlgorithmURI = kekParams.getAlgorithm();
 
         EncryptedKey encryptedKey = encryptKey(key, encryptionKey, encryptionAlgorithmURI, containingDocument);
@@ -489,7 +489,7 @@ public class Encrypter {
         checkParams(encParams, kekParamsList);
 
         String encryptionAlgorithmURI = encParams.getAlgorithm();
-        Key encryptionKey = SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential());
+        Key encryptionKey = CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential());
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }
@@ -576,7 +576,7 @@ public class Encrypter {
                 throw new EncryptionException("Key encryption parameters are required");
             }
         }
-        Key key = SecurityHelper.extractEncryptionKey(kekParams.getEncryptionCredential());
+        Key key = CredentialSupport.extractEncryptionKey(kekParams.getEncryptionCredential());
         if (key == null) {
             log.error("Key encryption credential and contained key are required");
             throw new EncryptionException("Key encryption credential and contained key are required");
@@ -627,7 +627,7 @@ public class Encrypter {
         checkParams(encParams);
         checkParams(kekParamsList, true);
 
-        if (SecurityHelper.extractEncryptionKey(encParams.getEncryptionCredential()) == null
+        if (CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential()) == null
                 && (kekParamsList == null || kekParamsList.isEmpty())) {
             log.error("Using a generated encryption key requires a KeyEncryptionParameters "
                     + "object and key encryption key");
@@ -646,7 +646,7 @@ public class Encrypter {
     protected SecretKey generateEncryptionKey(String encryptionAlgorithmURI) throws EncryptionException {
         try {
             log.debug("Generating random symmetric data encryption key from algorithm URI: {}", encryptionAlgorithmURI);
-            return XMLSecurityHelper.generateSymmetricKey(encryptionAlgorithmURI);
+            return AlgorithmSupport.generateSymmetricKey(encryptionAlgorithmURI);
         } catch (NoSuchAlgorithmException e) {
             log.error("Could not generate encryption key, algorithm URI was invalid: " + encryptionAlgorithmURI);
             throw new EncryptionException("Could not generate encryption key, algorithm URI was invalid: "

@@ -38,17 +38,18 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.opensaml.xmlsec.XMLSecurityTestingHelper;
-import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -388,7 +389,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testRawWrongCredType() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
         rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
-        rawCandidateCred = SecurityHelper.getSimpleCredential(rawCandidateCred.getPublicKey(), null);
+        rawCandidateCred = CredentialSupport.getSimpleCredential(rawCandidateCred.getPublicKey(), null);
         engine = getEngine(
                 getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
                 EMPTY_CRLS,
@@ -516,7 +517,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
-            return SecurityHelper.decodePrivateKey(encoded, null);
+            return KeySupport.decodePrivateKey(encoded, null);
         } catch (Exception e) {
             Assert.fail("Could not create private key from file: " + fileName + ": " + e.getMessage());
         }
@@ -529,7 +530,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
-            return X509Util.decodeCertificate(encoded).iterator().next();
+            return X509Support.decodeCertificates(encoded).iterator().next();
         } catch (Exception e) {
             Assert.fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
         }
@@ -549,7 +550,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
-            return X509Util.decodeCRLs(encoded).iterator().next();
+            return X509Support.decodeCRLs(encoded).iterator().next();
         } catch (Exception e) {
             Assert.fail("Could not create CRL from file: " + fileName + ": " + e.getMessage());
         }

@@ -37,9 +37,10 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -76,11 +77,11 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        KeyPair keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        goodCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
+        KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
+        goodCredential = CredentialSupport.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
 
-        keyPair = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        badCredential = SecurityHelper.getSimpleCredential(keyPair.getPublic(), null);
+        keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
+        badCredential = CredentialSupport.getSimpleCredential(keyPair.getPublic(), null);
 
         sxoBuilder = new SignableSimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -144,7 +145,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         KeyInfo keyInfo = signature.getKeyInfo();
         Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");
         
-        PublicKey pubKey = KeyInfoHelper.getPublicKeys(keyInfo).get(0);
+        PublicKey pubKey = KeyInfoSupport.getPublicKeys(keyInfo).get(0);
         Assert.assertNotNull(pubKey, "KeyInfo did not contain the verification key");
     }
 

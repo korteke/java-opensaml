@@ -17,9 +17,6 @@
 
 package org.opensaml.security.x509;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.PrivateKey;
@@ -36,15 +33,16 @@ import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.crypto.KeySupport;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
- * Tests the X509Util utility methods.
+ * Tests the X509Support utility methods.
  */
-public class X509UtilTest extends XMLObjectBaseTestCase {
+public class X509SupportTest {
 
     private PrivateKey entityPrivateKey;
 
@@ -271,18 +269,18 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityPrivateKey = SecurityHelper.buildJavaRSAPrivateKey(entityPrivKeyBase64);
-        entityCert = SecurityHelper.buildJavaX509Cert(entityCertBase64);
+        entityPrivateKey = KeySupport.buildJavaRSAPrivateKey(entityPrivKeyBase64);
+        entityCert = X509Support.decodeCertificate(entityCertBase64);
 
-        entityCert3AltNamesDNS_URL_IP = SecurityHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URL_IPBase64);
-        entityCert3AltNamesDNS_URN_IP = SecurityHelper.buildJavaX509Cert(entityCert3AltNamesDNS_URN_IPBase64);
-        entityCert1AltNameDNS = SecurityHelper.buildJavaX509Cert(entityCert1AltNameDNSBase64);
-        entityCert1AltNameURN = SecurityHelper.buildJavaX509Cert(entityCert1AltNameURNBase64);
-        entityCert1AltNameURL = SecurityHelper.buildJavaX509Cert(entityCert1AltNameURLBase64);
-        entityCert1AltNameIP = SecurityHelper.buildJavaX509Cert(entityCert1AltNameIPBase64);
+        entityCert3AltNamesDNS_URL_IP = X509Support.decodeCertificate(entityCert3AltNamesDNS_URL_IPBase64);
+        entityCert3AltNamesDNS_URN_IP = X509Support.decodeCertificate(entityCert3AltNamesDNS_URN_IPBase64);
+        entityCert1AltNameDNS = X509Support.decodeCertificate(entityCert1AltNameDNSBase64);
+        entityCert1AltNameURN = X509Support.decodeCertificate(entityCert1AltNameURNBase64);
+        entityCert1AltNameURL = X509Support.decodeCertificate(entityCert1AltNameURLBase64);
+        entityCert1AltNameIP = X509Support.decodeCertificate(entityCert1AltNameIPBase64);
 
-        SecurityHelper.buildJavaX509Cert(caCertBase64);
-        SecurityHelper.buildJavaX509CRL(caCRLBase64);
+        X509Support.decodeCertificate(caCertBase64);
+        X509Support.decodeCRL(caCRLBase64);
 
         new X500Principal("cn=foobar.example.org, O=Internet2");
         new X500Principal("cn=ca.example.org, O=Internet2");
@@ -294,9 +292,9 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         altNameURL = "http://heinlein.example.org";
         altNameIP = "10.1.2.3";
 
-        altNameTypeIP = X509Util.IP_ADDRESS_ALT_NAME;
-        altNameTypeURI = X509Util.URI_ALT_NAME;
-        altNameTypeDNS = X509Util.DNS_ALT_NAME;
+        altNameTypeIP = X509Support.IP_ADDRESS_ALT_NAME;
+        altNameTypeURI = X509Support.URI_ALT_NAME;
+        altNameTypeDNS = X509Support.DNS_ALT_NAME;
     }
 
     /**
@@ -306,7 +304,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testDetermineEntityCertificate() throws Exception {
-        // TODO comment out probably causes failure until X509Util matchKey method is refactored.
+        // TODO comment out probably causes failure until X509Support matchKey method is refactored.
         // org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
         // DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
 
@@ -315,7 +313,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         certs.add(entityCert1AltNameDNS);
         certs.add(entityCert);
 
-        Assert.assertTrue(X509Util.determineEntityCertificate(certs, entityPrivateKey).equals(entityCert));
+        Assert.assertTrue(X509Support.determineEntityCertificate(certs, entityPrivateKey).equals(entityCert));
     }
 
     /**
@@ -336,7 +334,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeDNS);
 
         List altNames = getAltNames(cert, nameTypes);
-        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
+        Assert.assertNotNull(altNames, "X509Support.getAltNames() returned null");
 
         Assert.assertTrue(altNames.contains(altNameDNS), "Failed to find expected KeyName value");
     }
@@ -359,7 +357,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeURI);
 
         List altNames = getAltNames(cert, nameTypes);
-        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
+        Assert.assertNotNull(altNames, "X509Support.getAltNames() returned null");
 
         Assert.assertTrue(altNames.contains(altNameURN), "Failed to find expected KeyName value");
     }
@@ -382,7 +380,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeURI);
 
         List altNames = getAltNames(cert, nameTypes);
-        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
+        Assert.assertNotNull(altNames, "X509Support.getAltNames() returned null");
 
         Assert.assertTrue(altNames.contains(altNameURL), "Failed to find expected KeyName value");
     }
@@ -405,7 +403,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
-        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
+        Assert.assertNotNull(altNames, "X509Support.getAltNames() returned null");
 
         Assert.assertTrue(altNames.contains(altNameIP), "Failed to find expected KeyName value");
     }
@@ -430,7 +428,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
-        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
+        Assert.assertNotNull(altNames, "X509Support.getAltNames() returned null");
 
         Assert.assertTrue(altNames.contains(altNameDNS), "Failed to find expected KeyName value");
         Assert.assertTrue(altNames.contains(altNameURL), "Failed to find expected KeyName value");
@@ -457,7 +455,7 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
-        Assert.assertNotNull(altNames, "X509Util.getAltNames() returned null");
+        Assert.assertNotNull(altNames, "X509Support.getAltNames() returned null");
 
         Assert.assertTrue(altNames.contains(altNameDNS), "Failed to find expected KeyName value");
         Assert.assertTrue(altNames.contains(altNameURN), "Failed to find expected KeyName value");
@@ -467,38 +465,41 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     /** Test decoding a PEM encoded cert. */
     @Test
     public void testDecodeCertPEM() throws Exception {
-        InputStream certInS = X509UtilTest.class.getResourceAsStream(certPEM);
+        InputStream certInS = X509SupportTest.class.getResourceAsStream(certPEM);
 
         byte[] certBytes = new byte[certInS.available()];
         certInS.read(certBytes);
 
-        Collection<X509Certificate> certs = X509Util.decodeCertificate(certBytes);
+        Collection<X509Certificate> certs = X509Support.decodeCertificates(certBytes);
         Assert.assertNotNull(certs);
         Assert.assertEquals(certs.size(), 2);
     }
 
     /** Test decoding a DER encoded cert. */
     @Test
-    public void testDecodeCertPDER() throws Exception {
-        InputStream certInS = X509UtilTest.class.getResourceAsStream(certDER);
+    public void testDecodeCertDER() throws Exception {
+        InputStream certInS = X509SupportTest.class.getResourceAsStream(certDER);
 
         byte[] certBytes = new byte[certInS.available()];
         certInS.read(certBytes);
 
-        Collection<X509Certificate> certs = X509Util.decodeCertificate(certBytes);
+        Collection<X509Certificate> certs = X509Support.decodeCertificates(certBytes);
         Assert.assertNotNull(certs);
         Assert.assertEquals(certs.size(), 1);
+        
+        X509Certificate cert = X509Support.decodeCertificate(certBytes);
+        Assert.assertNotNull(cert);
     }
 
     /** Test decoding a PEM encoded CRL. */
     @Test
     public void testDecodeCRLPEM() throws Exception {
-        InputStream crlInS = X509UtilTest.class.getResourceAsStream(crlPEM);
+        InputStream crlInS = X509SupportTest.class.getResourceAsStream(crlPEM);
 
         byte[] crlBytes = new byte[crlInS.available()];
         crlInS.read(crlBytes);
 
-        Collection<X509CRL> crls = X509Util.decodeCRLs(crlBytes);
+        Collection<X509CRL> crls = X509Support.decodeCRLs(crlBytes);
         Assert.assertNotNull(crls);
         Assert.assertEquals(crls.size(), 1);
     }
@@ -506,12 +507,12 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     /** Test decoding a DER encoded CRL. */
     @Test
     public void testDecodeCRLDER() throws Exception {
-        InputStream crlInS = X509UtilTest.class.getResourceAsStream(crlDER);
+        InputStream crlInS = X509SupportTest.class.getResourceAsStream(crlDER);
 
         byte[] crlBytes = new byte[crlInS.available()];
         crlInS.read(crlBytes);
 
-        Collection<X509CRL> crls = X509Util.decodeCRLs(crlBytes);
+        Collection<X509CRL> crls = X509Support.decodeCRLs(crlBytes);
         Assert.assertNotNull(crls);
         Assert.assertEquals(crls.size(), 1);
     }
@@ -526,6 +527,6 @@ public class X509UtilTest extends XMLObjectBaseTestCase {
     private List getAltNames(X509Certificate cert, Set<Integer> nameTypes) {
         Integer[] array = new Integer[nameTypes.size()];
         nameTypes.toArray(array);
-        return X509Util.getAltNames(cert, array);
+        return X509Support.getAltNames(cert, array);
     }
 }

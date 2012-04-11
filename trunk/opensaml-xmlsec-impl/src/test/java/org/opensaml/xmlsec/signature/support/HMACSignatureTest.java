@@ -40,9 +40,10 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -94,11 +95,11 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         hmacOutputLength = new Integer(160);
         expectedKeyName = "KeyFoo123";
         
-        SecretKey key = SecurityHelper.generateKey("AES", 128, null);
-        goodCredential = SecurityHelper.getSimpleCredential(key);
+        SecretKey key = KeySupport.generateKey("AES", 128, null);
+        goodCredential = CredentialSupport.getSimpleCredential(key);
         
-        key = SecurityHelper.generateKey("AES", 128, null);
-        badCredential = SecurityHelper.getSimpleCredential(key);
+        key = KeySupport.generateKey("AES", 128, null);
+        badCredential = CredentialSupport.getSimpleCredential(key);
 
         sxoBuilder = new SignableSimpleXMLObjectBuilder();
         sigBuilder = new SignatureBuilder();
@@ -314,7 +315,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         sig.getContentReferences().add(contentReference);
         
         KeyInfo keyInfo = keyInfoBuilder.buildObject();
-        KeyInfoHelper.addKeyName(keyInfo, expectedKeyName);
+        KeyInfoSupport.addKeyName(keyInfo, expectedKeyName);
         sig.setKeyInfo(keyInfo);
 
         sxo.setSignature(sig);

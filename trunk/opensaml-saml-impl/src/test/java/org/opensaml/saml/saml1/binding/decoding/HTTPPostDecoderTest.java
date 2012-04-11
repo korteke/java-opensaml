@@ -35,12 +35,13 @@ import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.saml1.binding.decoding.HTTPPostDecoder;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -195,11 +196,11 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         samlResponse.setRecipient(null);
 
         Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
-        KeyPair kp = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        Credential signingCred = SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
+        Credential signingCred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         signature.setSigningCredential(signingCred);
         samlResponse.setSignature(signature);
-        XMLSecurityHelper.prepareSignatureParams(signature, signingCred, null, null);
+        SignatureSupport.prepareSignatureParams(signature, signingCred, null, null);
         marshallerFactory.getMarshaller(samlResponse).marshall(samlResponse);
         Signer.signObject(signature);
 

@@ -47,7 +47,7 @@ import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.PKIXValidationOptions;
 import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509Util;
+import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,7 +132,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         
         if (log.isDebugEnabled()) {
             log.debug("Attempting PKIX path validation on untrusted credential: {}",
-                    X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
+                    X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler));
         }        
         
         try {
@@ -145,17 +145,17 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             if (log.isDebugEnabled()) {
                 logCertPathDebug(buildResult, untrustedCredential.getEntityCertificate());
                 log.debug("PKIX validation succeeded for untrusted credential: {}",
-                        X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler));
+                        X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler));
             }            
             return true;
 
         } catch (CertPathBuilderException e) {
             if (log.isTraceEnabled()) {
                 log.trace("PKIX path construction failed for untrusted credential: " 
-                        + X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler), e);
+                        + X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler), e);
             } else {
                 log.error("PKIX path construction failed for untrusted credential: " 
-                        + X509Util.getIdentifiersToken(untrustedCredential, x500DNHandler) + ": " + e.getMessage());
+                        + X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler) + ": " + e.getMessage());
             }
             return false;
         } catch (GeneralSecurityException e) {

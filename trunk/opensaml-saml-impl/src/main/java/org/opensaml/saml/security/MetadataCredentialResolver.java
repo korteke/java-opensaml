@@ -44,7 +44,7 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.credential.impl.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.slf4j.Logger;
@@ -100,7 +100,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
         cache = new HashMap<MetadataCacheKey, SoftReference<Collection<Credential>>>();
 
-        keyInfoCredentialResolver = XMLSecurityHelper.getGlobalXMLSecurityConfiguration()
+        keyInfoCredentialResolver = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration()
                 .getDefaultKeyInfoCredentialResolver();
         
         rwlock = new ReentrantReadWriteLock();

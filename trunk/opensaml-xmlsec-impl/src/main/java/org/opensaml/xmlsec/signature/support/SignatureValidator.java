@@ -21,8 +21,8 @@ import java.security.Key;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.slf4j.Logger;
@@ -54,7 +54,7 @@ public class SignatureValidator {
 
         XMLSignature xmlSig = buildSignature(signature);
 
-        Key validationKey = SecurityHelper.extractVerificationKey(validationCredential);
+        Key validationKey = CredentialSupport.extractVerificationKey(validationCredential);
         if (validationKey == null) {
             log.debug("Supplied credential contained no key suitable for signature validation");
             throw new SignatureException("No key available to validate signature");

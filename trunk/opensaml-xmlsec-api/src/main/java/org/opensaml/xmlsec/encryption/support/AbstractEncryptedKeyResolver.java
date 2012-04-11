@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 
 import com.google.common.base.Strings;
 
@@ -84,7 +84,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
         }
         
         String keyCarriedKeyName = encryptedKey.getCarriedKeyName().getValue();
-        List<String> dataKeyNames = KeyInfoHelper.getKeyNames(encryptedData.getKeyInfo());
+        List<String> dataKeyNames = KeyInfoSupport.getKeyNames(encryptedData.getKeyInfo());
         
         return dataKeyNames.contains(keyCarriedKeyName);
     }

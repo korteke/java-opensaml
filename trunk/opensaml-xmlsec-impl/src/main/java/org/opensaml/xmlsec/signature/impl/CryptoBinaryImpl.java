@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 import java.math.BigInteger;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
-import org.opensaml.xmlsec.keyinfo.KeyInfoHelper;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.CryptoBinary;
 
 import com.google.common.base.Objects;
@@ -48,7 +48,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     /** {@inheritDoc} */
     public BigInteger getValueBigInt() {
         if (bigIntValue == null && !Strings.isNullOrEmpty(getValue())) {
-            bigIntValue = KeyInfoHelper.decodeBigIntegerFromCryptoBinary(getValue());
+            bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(getValue());
         }
         return bigIntValue;
     }
@@ -58,7 +58,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
         if (bigInt == null) {
             setValue(null);
         } else {
-            setValue(KeyInfoHelper.encodeCryptoBinaryFromBigInteger(bigInt));
+            setValue(KeyInfoSupport.encodeCryptoBinaryFromBigInteger(bigInt));
         }
         bigIntValue = bigInt;
     }

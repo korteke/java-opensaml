@@ -37,9 +37,9 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.message.encoder.BaseMessageEncoder;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.xmlsec.XMLSecurityHelper;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,7 +162,7 @@ public abstract class BaseSAML1MessageEncoder extends BaseMessageEncoder impleme
             try {
                 // TODO pull SecurityConfiguration from SAMLMessageContext? needs to be added
                 // TODO pull binding-specific keyInfoGenName from encoder setting, etc?
-                XMLSecurityHelper.prepareSignatureParams(signature, signingCredential, null, null);
+                SignatureSupport.prepareSignatureParams(signature, signingCredential, null, null);
             } catch (SecurityException e) {
                 throw new MessageEncodingException("Error preparing signature for signing", e);
             }

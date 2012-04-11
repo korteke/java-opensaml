@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.security;
+package org.opensaml.security.crypto;
 
 import java.security.GeneralSecurityException;
 import java.security.Key;
@@ -27,7 +27,9 @@ import java.util.Arrays;
 import javax.crypto.Mac;
 
 import org.apache.commons.codec.binary.Hex;
+import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +60,7 @@ public final class SigningUtil {
             throws SecurityException {
         Logger log = getLogger();
 
-        Key signingKey = SecurityHelper.extractSigningKey(signingCredential);
+        Key signingKey = CredentialSupport.extractSigningKey(signingCredential);
         if (signingKey == null) {
             log.error("No signing key supplied in signing credential for signature computation");
             throw new SecurityException("No signing key supplied in signing credential");
@@ -153,7 +155,7 @@ public final class SigningUtil {
             byte[] signature, byte[] input) throws SecurityException {
         Logger log = getLogger();
 
-        Key verificationKey = SecurityHelper.extractVerificationKey(verificationCredential);
+        Key verificationKey = CredentialSupport.extractVerificationKey(verificationCredential);
         if (verificationKey == null) {
             log.error("No verification key supplied in verification credential for signature verification");
             throw new SecurityException("No verification key supplied in verification credential");

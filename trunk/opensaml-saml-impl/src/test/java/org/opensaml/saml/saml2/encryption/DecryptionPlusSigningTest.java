@@ -41,9 +41,10 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.encryption.Decrypter;
 import org.opensaml.saml.saml2.encryption.Encrypter;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.SecurityHelper;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.XMLSecurityHelper;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
@@ -52,6 +53,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.w3c.dom.Document;
@@ -85,7 +87,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        Credential encCred = XMLSecurityHelper.generateKeyAndCredential(encURI);
+        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
@@ -94,8 +96,8 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         
         encrypter = new Encrypter(encParams);
         
-        KeyPair kp = SecurityHelper.generateKeyPair("RSA", 1024, null);
-        signingCred = SecurityHelper.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
+        signingCred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         
     }
     
@@ -138,7 +140,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         Signature responseSignature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
         responseSignature.setSigningCredential(signingCred);
         response.setSignature(responseSignature);
-        XMLSecurityHelper.prepareSignatureParams(responseSignature, signingCred, null, null);
+        SignatureSupport.prepareSignatureParams(responseSignature, signingCred, null, null);
         
         marshallerFactory.getMarshaller(response).marshall(response);
         

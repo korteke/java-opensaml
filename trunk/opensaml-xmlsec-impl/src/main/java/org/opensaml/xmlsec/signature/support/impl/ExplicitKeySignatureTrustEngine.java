@@ -28,8 +28,8 @@ import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEvaluator;
-import org.opensaml.xmlsec.XMLSecurityHelper;
-import org.opensaml.xmlsec.XMLSigningUtil;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
@@ -93,7 +93,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         if (!criteriaSet.contains(UsageCriterion.class)) {
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
-        String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(signature.getSignatureAlgorithm());
+        String jcaAlgorithm = AlgorithmSupport.getKeyAlgorithm(signature.getSignatureAlgorithm());
         if (!Strings.isNullOrEmpty(jcaAlgorithm)) {
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
@@ -135,7 +135,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         if (!criteriaSet.contains(UsageCriterion.class)) {
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
-        String jcaAlgorithm = XMLSecurityHelper.getKeyAlgorithmFromURI(algorithmURI);
+        String jcaAlgorithm = AlgorithmSupport.getKeyAlgorithm(algorithmURI);
         if (!Strings.isNullOrEmpty(jcaAlgorithm)) {
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
