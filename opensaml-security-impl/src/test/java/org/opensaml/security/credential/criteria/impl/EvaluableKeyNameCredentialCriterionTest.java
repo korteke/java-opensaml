@@ -25,6 +25,7 @@ import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteri
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableKeyNameCredentialCriterion;
 import org.opensaml.security.criteria.KeyNameCriterion;
+import org.opensaml.security.crypto.KeySupport;
 
 /**
  *
@@ -42,7 +43,7 @@ public class EvaluableKeyNameCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        credential = new BasicCredential();
+        credential = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         credential.getKeyNames().add(keyName);
         credential.getKeyNames().add("foo");
         credential.getKeyNames().add("bar");

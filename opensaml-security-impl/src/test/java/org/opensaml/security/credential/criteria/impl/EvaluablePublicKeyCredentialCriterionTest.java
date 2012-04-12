@@ -48,9 +48,8 @@ public class EvaluablePublicKeyCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        credential = new BasicCredential();
         pubKey = KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic();
-        credential.setPublicKey(pubKey);
+        credential = new BasicCredential(pubKey);
         
         criteria = new PublicKeyCriterion(pubKey);
     }
@@ -64,13 +63,6 @@ public class EvaluablePublicKeyCredentialCriterionTest {
     @Test
     public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         criteria.setPublicKey(KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic());
-        EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
-    }
-    
-    @Test
-    public void testNotSatisfyNoPublicKey() {
-        credential.setPublicKey(null);
         EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }

@@ -26,6 +26,7 @@ import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteri
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableUsageCredentialCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.crypto.KeySupport;
 
 /**
  *
@@ -43,7 +44,7 @@ public class EvaluableUsageCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        credential = new BasicCredential();
+        credential = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         credential.setUsageType(usage);
         
         criteria = new UsageCriterion(usage);
@@ -75,14 +76,6 @@ public class EvaluableUsageCredentialCriterionTest {
         EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
-    
-    /* With BasicCredential, can't set UsageType to null, so can't really test.
-    public void testCanNotEvaluate() {
-        credential.setUsageType(null);
-        EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
-        assertNull("Credential should have been unevaluable against the criteria", evalCrit.evaluate(credential));
-    }
-    */
     
     @Test
     public void testRegistry() throws Exception {

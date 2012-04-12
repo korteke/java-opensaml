@@ -27,13 +27,16 @@ import java.util.Collections;
 
 import javax.net.ssl.X509KeyManager;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.AbstractCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 
 /** A class that wraps a {@link X509KeyManager} and exposes it as an {@link X509Credential}. */
-public class X509KeyManagerX509CredentialAdapter extends BasicCredential implements X509Credential {
+public class X509KeyManagerX509CredentialAdapter extends AbstractCredential implements X509Credential {
 
     /** Alias used to reference the credential in the key manager. */
     private String credentialAlias;
@@ -48,15 +51,8 @@ public class X509KeyManagerX509CredentialAdapter extends BasicCredential impleme
      * @param alias alias used to reference the credential in the key manager
      */
     public X509KeyManagerX509CredentialAdapter(X509KeyManager manager, String alias) {
-        if (manager == null) {
-            throw new IllegalArgumentException("Key manager may not be null");
-        }
-        keyManager = manager;
-
-        credentialAlias = StringSupport.trimOrNull(alias);
-        if (credentialAlias == null) {
-            throw new IllegalArgumentException("Entity alias may not be null");
-        }
+        keyManager = Constraint.isNotNull(manager, "Key manager may not be null");
+        credentialAlias = Constraint.isNotNull(StringSupport.trimOrNull(alias), "Entity alias may not be null");
     }
 
     /** {@inheritDoc} */
@@ -93,4 +89,20 @@ public class X509KeyManagerX509CredentialAdapter extends BasicCredential impleme
     public PublicKey getPublicKey() {
         return getEntityCertificate().getPublicKey();
     }
+
+    /** {@inheritDoc} */
+    public Class<? extends Credential> getCredentialType() {
+        return X509Credential.class;
+    }
+
+    /** {@inheritDoc} */
+    public void setEntityId(String newEntityID) {
+        super.setEntityId(newEntityID);
+    }
+
+    /** {@inheritDoc} */
+    public void setUsageType(UsageType newUsageType) {
+        super.setUsageType(newUsageType);
+    }
+    
 }

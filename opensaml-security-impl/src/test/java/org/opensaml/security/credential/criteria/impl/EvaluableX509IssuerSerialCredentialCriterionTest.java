@@ -21,6 +21,8 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
@@ -29,6 +31,7 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableX509IssuerSerialCredentialCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509IssuerSerialCriterion;
 import org.opensaml.security.x509.X509Support;
@@ -79,8 +82,7 @@ public class EvaluableX509IssuerSerialCredentialCriterionTest {
         issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
         serialNumber = new BigInteger("49");
         
-        credential = new BasicX509Credential();
-        credential.setEntityCertificate(entityCert);
+        credential = new BasicX509Credential(entityCert);
         
         criteria = new X509IssuerSerialCriterion(issuerName, serialNumber);
     }
@@ -99,17 +101,10 @@ public class EvaluableX509IssuerSerialCredentialCriterionTest {
     }
     
     @Test
-    public void testNotSatisfyWrongCredType() {
-        BasicCredential basicCred = new BasicCredential();
+    public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
+        BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
-    }
-    
-    @Test
-    public void testNotSatisfyNoCert() {
-        credential.setEntityCertificate(null);
-        EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test

@@ -27,7 +27,7 @@ import javax.crypto.SecretKey;
  * A credential for an entity. A particular credential may contain either asymmetric key information (a public key 
  * and optionally the corresponding private key), or a symmetric (secret) key, but never both.
  * With asymmetric key-based credentials, local entity credentials will usually contain both a public 
- * and private key while peer credentails will normally contain only a public key. 
+ * and private key while peer credentials will normally contain only a public key. 
  */
 public interface Credential {
     
@@ -47,7 +47,7 @@ public interface Credential {
     
     /**
      * Gets key names for this credential.  These names may be used to reference a key(s) exchanged 
-     * through an out-of-band aggreement.  Implementations may or may not implement means to resolve 
+     * through an out-of-band agreement.  Implementations may or may not implement means to resolve 
      * these names into keys retrievable through the {@link #getPublicKey()}, {@link #getPrivateKey()} 
      * or {@link #getSecretKey()} methods.
      * 

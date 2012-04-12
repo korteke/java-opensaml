@@ -22,19 +22,46 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 /**
  * A basic implementation of {@link Credential}.
  */
-public class BasicCredential extends AbstractCredential {
+public class BasicCredential extends AbstractCredential implements MutableCredential {
 
-    /** Constructor. */
-    public BasicCredential() {
+    /**
+     * Constructor.
+     *
+     * @param publicKey the credential public key
+     */
+    public BasicCredential(PublicKey publicKey) {
         super();
-        keyNames = new LazySet<String>();
-        usageType = UsageType.UNSPECIFIED;
+        setPublicKey(publicKey);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param publicKey the credential public key
+     * @param privateKey the credential private key
+     */
+    public BasicCredential(PublicKey publicKey, PrivateKey privateKey) {
+        super();
+        setPublicKey(publicKey);
+        setPrivateKey(privateKey);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param secretKey the credential secret key
+     */
+    public BasicCredential(SecretKey secretKey) {
+        super();
+        setSecretKey(secretKey);
+    }
+    
+    /** Constructor. */
+    protected BasicCredential() {
+        super();
     }
     
     /** {@inheritDoc} */
@@ -42,62 +69,29 @@ public class BasicCredential extends AbstractCredential {
         return Credential.class;
     }
 
-    /**
-     * Sets the ID of the entity this credential is for.
-     * 
-     * @param id ID of the entity this credential is for
-     */
-    public void setEntityId(String id) {
-        entityID = StringSupport.trimOrNull(id);
+    /** {@inheritDoc} */
+    public void setEntityId(String newEntityId) {
+        super.setEntityId(newEntityId);
     }
 
-    /**
-     * Sets the usage type for this credential.
-     * 
-     * @param usage usage type for this credential
-     */
-    public void setUsageType(UsageType usage) {
-        if (usage != null) {
-            usageType = usage;
-        } else {
-            usageType = UsageType.UNSPECIFIED;
-        }
+    /** {@inheritDoc} */
+    public void setUsageType(UsageType newUsageType) {
+        super.setUsageType(newUsageType);
     }
 
-    /**
-     * Sets the public key for this credential.
-     * 
-     * @param key public key for this credential
-     */
-    public void setPublicKey(PublicKey key) {
-        publicKey = key;
-        if (key != null) {
-            setSecretKey(null);
-        }
+    /** {@inheritDoc} */
+    public void setPublicKey(PublicKey newPublicKey) {
+        super.setPublicKey(newPublicKey);
+    }
+    
+    /** {@inheritDoc} */
+    public void setPrivateKey(PrivateKey newPrivateKey) {
+        super.setPrivateKey(newPrivateKey);
     }
 
-    /**
-     * Sets the secret key for this credential.
-     * 
-     * @param key secret key for this credential
-     */
-    public void setSecretKey(SecretKey key) {
-        secretKey = key;
-        if (key != null) {
-            setPublicKey(null);
-            setPrivateKey(null);
-        }
+    /** {@inheritDoc} */
+    public void setSecretKey(SecretKey newSecretKey) {
+        super.setSecretKey(newSecretKey);
     }
 
-    /**
-     * Sets the private key for this credential.
-     * 
-     * @param key private key for this credential
-     */
-    public void setPrivateKey(PrivateKey key) {
-        privateKey = key;
-        if (key != null) {
-            setSecretKey(null);
-        }
-    }
 }

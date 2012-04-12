@@ -79,8 +79,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
             log.error("Error extracting DSA key value", e);
             throw new SecurityException("Error extracting DSA key value", e);
         }
-        BasicCredential cred = new BasicCredential();
-        cred.setPublicKey(pubKey);
+        BasicCredential cred = new BasicCredential(pubKey);
         if (kiContext != null) {
             cred.getKeyNames().addAll(kiContext.getKeyNames());
         }

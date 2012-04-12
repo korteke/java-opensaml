@@ -17,22 +17,20 @@
 
 package org.opensaml.security.credential.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.impl.ChainingCredentialResolver;
-import org.opensaml.security.credential.impl.StaticCredentialResolver;
-
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
+import org.opensaml.security.credential.BasicCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.KeySupport;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Testing the chaining credential resolver.
@@ -53,11 +51,11 @@ public class ChainingCredentialResolverTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        cred1 = new BasicCredential();
-        cred2 = new BasicCredential();
-        cred3 = new BasicCredential();
-        cred4 = new BasicCredential();
-        cred5 = new BasicCredential();
+        cred1 = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        cred2 = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        cred3 = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        cred4 = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        cred5 = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         
         criteriaSet = new CriteriaSet();
         

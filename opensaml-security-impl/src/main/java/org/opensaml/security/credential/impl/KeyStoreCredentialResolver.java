@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -68,9 +69,8 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param store key store credentials are retrieved from
      * @param passwords for key entries, map key is the entity id, map value is the password
      * 
-     * @throws IllegalArgumentException thrown if the given keystore is null
      */
-    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords) throws IllegalArgumentException {
+    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords) {
         this(store, passwords, null);
     }
 
@@ -81,23 +81,17 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param passwords for key entries, map key is the entity id, map value is the password
      * @param usage usage type of all keys in the store
      * 
-     * @throws IllegalArgumentException thrown if the given keystore is null
      */
-    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords, UsageType usage)
-            throws IllegalArgumentException {
+    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords, UsageType usage) {
         super();
 
-        if (store == null) {
-            throw new IllegalArgumentException("Provided key store may not be null.");
-        }
+        keyStore = Constraint.isNotNull(store, "Provided key store may not be null");
 
         try {
             store.size();
         } catch (KeyStoreException e) {
-            throw new IllegalArgumentException("Keystore has not been initialized.");
+            throw new IllegalStateException("Keystore has not been initialized.");
         }
-
-        keyStore = store;
 
         if (usage != null) {
             keystoreUsage = usage;
@@ -222,13 +216,11 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
 
         log.debug("Processing TrustedCertificateEntry from keystore");
 
-        BasicX509Credential credential = new BasicX509Credential();
-        credential.setEntityId(entityID);
-        credential.setUsageType(usage);
-
         X509Certificate cert = (X509Certificate) trustedCertEntry.getTrustedCertificate();
 
-        credential.setEntityCertificate(cert);
+        BasicX509Credential credential = new BasicX509Credential(cert);
+        credential.setEntityId(entityID);
+        credential.setUsageType(usage);
 
         ArrayList<X509Certificate> certChain = new ArrayList<X509Certificate>();
         certChain.add(cert);
@@ -250,13 +242,12 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
 
         log.debug("Processing PrivateKeyEntry from keystore");
 
-        BasicX509Credential credential = new BasicX509Credential();
+        BasicX509Credential credential = 
+                new BasicX509Credential((X509Certificate) privateKeyEntry.getCertificate(), 
+                        privateKeyEntry.getPrivateKey());
         credential.setEntityId(entityID);
         credential.setUsageType(usage);
 
-        credential.setPrivateKey(privateKeyEntry.getPrivateKey());
-
-        credential.setEntityCertificate((X509Certificate) privateKeyEntry.getCertificate());
         credential.setEntityCertificateChain(Arrays.asList((X509Certificate[]) privateKeyEntry.getCertificateChain()));
 
         return credential;
@@ -273,11 +264,9 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
     protected Credential processSecretKeyEntry(SecretKeyEntry secretKeyEntry, String entityID, UsageType usage) {
         log.debug("Processing SecretKeyEntry from keystore");
 
-        BasicCredential credential = new BasicCredential();
+        BasicCredential credential = new BasicCredential(secretKeyEntry.getSecretKey());
         credential.setEntityId(entityID);
         credential.setUsageType(usage);
-
-        credential.setSecretKey(secretKeyEntry.getSecretKey());
 
         return credential;
     }

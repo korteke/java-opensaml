@@ -249,8 +249,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     public void testErrorInvalidDataDecryptionKey() 
             throws XMLParserException, EncryptionException, NoSuchAlgorithmException, NoSuchProviderException, KeyException {
         Key badKey = AlgorithmSupport.generateSymmetricKey(encURI);
-        BasicCredential encCred = new BasicCredential();
-        encCred.setSecretKey((SecretKey) badKey);
+        BasicCredential encCred = new BasicCredential((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);
         
         String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";

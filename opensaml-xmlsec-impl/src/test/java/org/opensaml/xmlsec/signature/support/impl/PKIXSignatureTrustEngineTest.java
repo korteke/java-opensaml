@@ -461,10 +461,8 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     }
 
     private BasicX509Credential getCredential(String entityCertFileName, String entityKeyFileName, String ... chainMembers) {
-        BasicX509Credential cred = new BasicX509Credential();
-        
         X509Certificate entityCert = getCertificate(entityCertFileName);
-        cred.setEntityCertificate(entityCert);
+        BasicX509Credential cred = new BasicX509Credential(entityCert);
         
         PrivateKey privateKey = getPrivateKey(entityKeyFileName);
         cred.setPrivateKey(privateKey);

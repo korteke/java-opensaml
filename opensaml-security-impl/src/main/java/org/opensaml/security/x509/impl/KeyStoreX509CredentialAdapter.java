@@ -29,13 +29,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensaml.security.credential.BasicCredential;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
+import org.opensaml.security.credential.AbstractCredential;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** A wrapper that changes a {@link KeyStore} in to a {@link X509Credential}. */
-public class KeyStoreX509CredentialAdapter extends BasicCredential implements X509Credential {
+public class KeyStoreX509CredentialAdapter extends AbstractCredential implements X509Credential {
 
     /** Class logger. */
     private Logger log = LoggerFactory.getLogger(KeyStoreX509CredentialAdapter.class);
@@ -57,8 +62,8 @@ public class KeyStoreX509CredentialAdapter extends BasicCredential implements X5
      * @param password password to the key to be exposed
      */
     public KeyStoreX509CredentialAdapter(KeyStore store, String alias, char[] password) {
-        keyStore = store;
-        credentialAlias = alias;
+        keyStore = Constraint.isNotNull(store, "Keystore must be supplied");
+        credentialAlias = Constraint.isNotNull(StringSupport.trimOrNull(alias), "Keystore alias must be supplied");
         keyPassword = password;
     }
 
@@ -109,4 +114,20 @@ public class KeyStoreX509CredentialAdapter extends BasicCredential implements X5
     public PublicKey getPublicKey() {
         return getEntityCertificate().getPublicKey();
     }
+
+    /** {@inheritDoc} */
+    public Class<? extends Credential> getCredentialType() {
+        return X509Credential.class;
+    }
+
+    /** {@inheritDoc} */
+    public void setEntityId(String newEntityID) {
+        super.setEntityId(newEntityID);
+    }
+
+    /** {@inheritDoc} */
+    public void setUsageType(UsageType newUsageType) {
+        super.setUsageType(newUsageType);
+    }
+
 }

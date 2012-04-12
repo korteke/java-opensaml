@@ -21,6 +21,9 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import org.testng.Assert;
+
+import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -33,6 +36,9 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
+
+import edu.vt.middleware.crypt.CryptException;
+import edu.vt.middleware.crypt.io.X509CertificateCredentialReader;
 
 /**
  * Test the NamedKeyInfoGeneratorFactory manager.
@@ -48,6 +54,8 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     
     private String nameFoo = "FOO";
     private String nameBar = "BAR";
+    
+    private String certDER = "/data/certificate.der";
     
     /** {@inheritDoc} */
     @BeforeMethod
@@ -185,9 +193,11 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(defaultManager.getFactories().size(), 1, "Unexpected # of default factories");
     }
     
-    /** Test lookup of factory from manager based on a credential instance. */
+    /** Test lookup of factory from manager based on a credential instance. 
+     * @throws CryptException 
+     * @throws IOException */
     @Test
-    public void testLookupFactory() {
+    public void testLookupFactory() throws IOException, CryptException {
         manager.registerFactory(nameFoo, basicFactoryFoo);
         manager.registerFactory(nameFoo, x509FactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
@@ -198,8 +208,12 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(manager.getManager("BAZ").getFactories().size(), 0, "Unexpected # of managed factories");
         Assert.assertEquals(manager.getManagerNames().size(), 3, "Unexpected # of manager names");
         
-        Credential basicCred = new BasicCredential();
-        X509Credential x509Cred = new BasicX509Credential();
+        X509CertificateCredentialReader reader = new X509CertificateCredentialReader();
+        X509Certificate cert = reader.read(getClass().getResourceAsStream(certDER));
+        
+        Credential basicCred = new BasicCredential(cert.getPublicKey());
+        
+        X509Credential x509Cred = new BasicX509Credential(cert);
         
         Assert.assertNotNull(manager.getFactory(nameFoo, basicCred), 
                 "Failed to find factory based on manager name and credential");
@@ -226,14 +240,17 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         }        
     }
     
-    /** Test proper functioning of option to use the default manager for unnamed factories. */
+    /** Test proper functioning of option to use the default manager for unnamed factories. 
+     * @throws CryptException 
+     * @throws IOException */
     @Test
-    public void testFallThroughToDefaultManager() {
+    public void testFallThroughToDefaultManager() throws IOException, CryptException {
         KeyInfoGeneratorFactory defaultX509Factory = new X509KeyInfoGeneratorFactory();
         manager.registerDefaultFactory(defaultX509Factory);
         manager.registerFactory(nameFoo, basicFactoryFoo);
         
-        X509Credential x509Cred = new BasicX509Credential();
+        X509CertificateCredentialReader reader = new X509CertificateCredentialReader();
+        X509Credential x509Cred = new BasicX509Credential(reader.read(getClass().getResourceAsStream(certDER)));
         
         manager.setUseDefaultManager(true);
         

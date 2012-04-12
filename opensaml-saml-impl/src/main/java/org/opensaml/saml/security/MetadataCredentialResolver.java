@@ -40,6 +40,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.provider.ObservableMetadataProvider;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.MutableCredential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.credential.impl.AbstractCriteriaFilteringCredentialResolver;
 import org.opensaml.security.criteria.EntityIDCriterion;
@@ -270,12 +271,12 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                             continue;
                         }
                         for (Credential cred : creds) {
-                            if (cred instanceof BasicCredential) {
-                                BasicCredential basicCred = (BasicCredential) cred;
-                                basicCred.setEntityId(entityID);
-                                basicCred.setUsageType(mdUsage);
-                                basicCred.getCredentalContextSet().add(new SAMLMDCredentialContext(keyDescriptor));
+                            if (cred instanceof MutableCredential) {
+                                MutableCredential mutableCred = (MutableCredential) cred;
+                                mutableCred.setEntityId(entityID);
+                                mutableCred.setUsageType(mdUsage);
                             }
+                            cred.getCredentalContextSet().add(new SAMLMDCredentialContext(keyDescriptor));
                             credentials.add(cred);
                         }
                     }
