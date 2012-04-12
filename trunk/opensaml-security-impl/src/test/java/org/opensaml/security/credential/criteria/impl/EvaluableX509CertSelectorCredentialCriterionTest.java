@@ -79,8 +79,7 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
         entityCert.getPublicKey();
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
-        credential = new BasicX509Credential();
-        credential.setEntityCertificate(entityCert);
+        credential = new BasicX509Credential(entityCert);
         
         certSelector = new X509CertSelector();
         
@@ -112,16 +111,10 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     }
     
     @Test
-    public void testNotSatisfyWrongCredType() {
+    public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
         certSelector.setCertificate(entityCert);
-        BasicCredential basicCred = new BasicCredential();
+        BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
-    @Test
-    public void testNotSatisfyNoCert() {
-        certSelector.setCertificate(entityCert);
-        credential.setEntityCertificate(null);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
-    }
 }

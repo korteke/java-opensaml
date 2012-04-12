@@ -21,17 +21,25 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import org.testng.Assert;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Collection;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
+
+import edu.vt.middleware.crypt.CryptException;
+import edu.vt.middleware.crypt.io.X509CertificateCredentialReader;
 
 /**
  * Test the KeyInfoGeneratorFactory manager.
@@ -44,6 +52,8 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     private BasicKeyInfoGeneratorFactory basicFactory2;
     private X509KeyInfoGeneratorFactory x509Factory;
     private X509KeyInfoGeneratorFactory x509Factory2;
+    
+    private String certDER = "/data/certificate.der";
     
     /** {@inheritDoc} */
     @BeforeMethod
@@ -115,15 +125,20 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         }        
     }
     
-    /** Test lookup of factory from manager based on a credential instance. */
+    /** Test lookup of factory from manager based on a credential instance. 
+     * @throws NoSuchProviderException 
+     * @throws NoSuchAlgorithmException 
+     * @throws CryptException 
+     * @throws IOException */
     @Test
-    public void testLookupFactory() {
+    public void testLookupFactory() throws NoSuchAlgorithmException, NoSuchProviderException, IOException, CryptException {
         manager.registerFactory(basicFactory);
         manager.registerFactory(x509Factory);
         Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
         
-        Credential basicCred = new BasicCredential();
-        X509Credential x509Cred = new BasicX509Credential();
+        Credential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        X509CertificateCredentialReader reader = new X509CertificateCredentialReader();
+        X509Credential x509Cred = new BasicX509Credential(reader.read(getClass().getResourceAsStream(certDER)));
         
         Assert.assertNotNull(manager.getFactory(basicCred), "Failed to find factory based on credential");
         Assert.assertTrue(basicFactory == manager.getFactory(basicCred), "Found incorrect factory based on credential");

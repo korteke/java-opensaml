@@ -204,8 +204,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     @Test
     public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException, KeyException {
         Key badKey = AlgorithmSupport.generateSymmetricKey(encURI);
-        BasicCredential encCred = new BasicCredential();
-        encCred.setSecretKey((SecretKey) badKey);
+        BasicCredential encCred = new BasicCredential((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);
         
         Decrypter decrypter = new Decrypter(badEncResolver, null, null);
@@ -228,9 +227,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     @Test
     public void testErrorInvalidKeyDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair badKeyPair = AlgorithmSupport.generateKeyPair(kekURI, 1024);
-        BasicCredential kekCred = new BasicCredential();
-        kekCred.setPublicKey(badKeyPair.getPublic());
-        kekCred.setPrivateKey(badKeyPair.getPrivate());
+        BasicCredential kekCred = new BasicCredential(badKeyPair.getPublic(), badKeyPair.getPrivate());
         KeyInfoCredentialResolver badKEKResolver = new StaticKeyInfoCredentialResolver(kekCred);
         
         Decrypter decrypter = new Decrypter(null, badKEKResolver, null);

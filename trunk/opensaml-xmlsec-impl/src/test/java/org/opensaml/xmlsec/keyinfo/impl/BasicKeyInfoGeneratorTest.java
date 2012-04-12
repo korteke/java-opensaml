@@ -65,11 +65,10 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         pubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
         
-        credential = new BasicCredential();
+        credential = new BasicCredential(pubKey);
         credential.setEntityId(entityID);
         credential.getKeyNames().add(keyNameFoo);
         credential.getKeyNames().add(keyNameBar);
-        credential.setPublicKey(pubKey);
     }
     
     /**

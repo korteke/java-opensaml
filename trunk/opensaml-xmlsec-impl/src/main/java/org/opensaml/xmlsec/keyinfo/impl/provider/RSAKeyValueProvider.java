@@ -77,8 +77,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
             log.error("Error extracting RSA key value", e);
             throw new SecurityException("Error extracting RSA key value", e);
         }
-        BasicCredential cred = new BasicCredential();
-        cred.setPublicKey(pubKey);
+        BasicCredential cred = new BasicCredential(pubKey);
         if (kiContext != null) {
             cred.getKeyNames().addAll(kiContext.getKeyNames());
         }

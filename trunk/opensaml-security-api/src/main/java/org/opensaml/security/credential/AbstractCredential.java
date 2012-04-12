@@ -23,42 +23,48 @@ import java.util.Collection;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 /**
  * Base class for {@link org.opensaml.security.credential.Credential} implementations.
  */
 public abstract class AbstractCredential implements Credential {
 
     /** ID of the entity owning this credential. */
-    protected String entityID;
+    private String entityId;
     
     /** Usage type of this credential. */
-    protected UsageType usageType;
+    private UsageType usageType;
     
     /** Key names for this credential. */
-    protected Collection<String> keyNames;
+    private Collection<String> keyNames;
     
     /** Public key of this credential. */
-    protected PublicKey publicKey;
+    private PublicKey publicKey;
     
     /** Secret key for this credential. */
-    protected SecretKey secretKey;
+    private SecretKey secretKey;
     
     /** Private key of this credential. */
-    protected PrivateKey privateKey;
+    private PrivateKey privateKey;
     
     /** Credential context of this credential. */
-    protected final CredentialContextSet credentialContextSet;
+    private final CredentialContextSet credentialContextSet;
     
     /**
      * Constructor.
      */
     public AbstractCredential() {
         credentialContextSet = new CredentialContextSet(); 
+        keyNames = new LazySet<String>();
+        setUsageType(UsageType.UNSPECIFIED);
     }
     
     /** {@inheritDoc}  */
     public String getEntityId() {
-        return entityID;
+        return entityId;
     }
 
     /** {@inheritDoc}  */
@@ -89,6 +95,58 @@ public abstract class AbstractCredential implements Credential {
     /** {@inheritDoc} */
     public CredentialContextSet getCredentalContextSet() {
         return credentialContextSet;
+    }
+
+    /**
+     * Sets the ID of the entity this credential is for.
+     * 
+     * @param newEntityID ID of the entity this credential is for
+     */
+    protected void setEntityId(String newEntityID) {
+        entityId = StringSupport.trimOrNull(newEntityID);
+    }
+
+    /**
+     * Sets the usage type for this credential.
+     * 
+     * @param newUsageType usage type for this credential
+     */
+    protected void setUsageType(UsageType newUsageType) {
+        Constraint.isNotNull(newUsageType, "Credential usage type may not be null");
+        usageType = newUsageType;
+    }
+
+    /**
+     * Sets the public key for this credential.
+     * 
+     * @param newPublicKey public key for this credential
+     */
+    protected void setPublicKey(PublicKey newPublicKey) {
+        Constraint.isNull(getSecretKey(), "A credential with a secret key may not contain a public key");
+        Constraint.isNotNull(newPublicKey, "Credential public key may not be null");
+        publicKey = newPublicKey;
+    }
+    
+    /**
+     * Sets the private key for this credential.
+     * 
+     * @param newPrivateKey private key for this credential
+     */
+    protected void setPrivateKey(PrivateKey newPrivateKey) {
+        Constraint.isNull(getSecretKey(), "A credential with a secret key may not contain a private key");
+        privateKey = newPrivateKey;
+    }
+
+    /**
+     * Sets the secret key for this credential.
+     * 
+     * @param newSecretKey secret key for this credential
+     */ 
+    protected void setSecretKey(SecretKey newSecretKey) {
+        Constraint.isNull(getPublicKey(), "A credential with a public key may not contain a secret key");
+        Constraint.isNull(getPrivateKey(), "A credential with a private key may not contain a secret key");
+        Constraint.isNotNull(newSecretKey, "Credential secret key may not be null");
+        secretKey = newSecretKey;
     }
     
 }

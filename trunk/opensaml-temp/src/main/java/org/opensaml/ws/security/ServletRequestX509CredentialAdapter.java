@@ -17,22 +17,33 @@
 
 package org.opensaml.ws.security;
 
+import java.security.PublicKey;
+import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.ServletRequest;
 
+import org.opensaml.security.credential.AbstractCredential;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 
 /**
  * An adapter that exposes the X.509 certificates contained in the servlet request attribute.
  */
-public class ServletRequestX509CredentialAdapter extends BasicX509Credential implements X509Credential {
+public class ServletRequestX509CredentialAdapter extends AbstractCredential implements X509Credential {
 
     /** Servlet request attribute to pull certificate info from. */
     public static final String X509_CERT_REQUEST_ATTRIBUTE = "javax.servlet.request.X509Certificate";
+    
+    /** The entity certificate. */
+    private X509Certificate cert;
+    
+    /** The certificate chain. */
+    private List<X509Certificate> certChain;
 
     /**
      * Constructor.
@@ -46,8 +57,34 @@ public class ServletRequestX509CredentialAdapter extends BasicX509Credential imp
                     + X509_CERT_REQUEST_ATTRIBUTE);
         }
 
-        setEntityCertificate(chain[0]);
-        setEntityCertificateChain(Arrays.asList(chain));
+        cert = chain[0];
+        certChain = Arrays.asList(chain);
         setUsageType(UsageType.SIGNING);
     }
+
+    /** {@inheritDoc} */
+    public Class<? extends Credential> getCredentialType() {
+        return X509Credential.class;
+    }
+
+    /** {@inheritDoc} */
+    public X509Certificate getEntityCertificate() {
+        return cert;
+    }
+
+    /** {@inheritDoc} */
+    public Collection<X509Certificate> getEntityCertificateChain() {
+        return certChain;
+    }
+
+    /** {@inheritDoc} */
+    public Collection<X509CRL> getCRLs() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public PublicKey getPublicKey() {
+        return getEntityCertificate().getPublicKey();
+    }
+    
 }

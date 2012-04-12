@@ -393,14 +393,12 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             return null;
         }
 
-        BasicCredential basicCred = new BasicCredential();
-
-        basicCred.getKeyNames().addAll(keyNames);
+        BasicCredential basicCred = null;
 
         if (key instanceof PublicKey) {
-            basicCred.setPublicKey((PublicKey) key);
+            basicCred = new BasicCredential((PublicKey) key);
         } else if (key instanceof SecretKey) {
-            basicCred.setSecretKey((SecretKey) key);
+            basicCred = new BasicCredential((SecretKey) key);
         } else if (key instanceof PrivateKey) {
             // This would be unusual for most KeyInfo use cases,
             // but go ahead and try and handle it
@@ -408,8 +406,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             try {
                 PublicKey publicKey = KeySupport.derivePublicKey(privateKey);
                 if (publicKey != null) {
-                    basicCred.setPublicKey(publicKey);
-                    basicCred.setPrivateKey(privateKey);
+                    basicCred = new BasicCredential(publicKey, privateKey);
                 } else {
                     log.error("Failed to derive public key from private key");
                     return null;
@@ -422,6 +419,8 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             log.error(String.format("Key was of an unsupported type '%s'", key.getClass().getName()));
             return null;
         }
+        
+        basicCred.getKeyNames().addAll(keyNames);
 
         return basicCred;
     }

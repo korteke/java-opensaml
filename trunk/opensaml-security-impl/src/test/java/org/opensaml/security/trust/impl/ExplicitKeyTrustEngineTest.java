@@ -139,16 +139,13 @@ public class ExplicitKeyTrustEngineTest {
         entityRSACred = CredentialSupport.getSimpleCredential(entityPubKey, null);
         entityRSACred.setEntityId("entity-RSA");
         
-        entityX509Cred = new BasicX509Credential();
-        entityX509Cred.setEntityCertificate(entityCert);
+        entityX509Cred = new BasicX509Credential(entityCert);
         entityX509Cred.setEntityId("entity-X509");
         
-        BasicX509Credential otherCred1 = new BasicX509Credential();
-        otherCred1.setEntityCertificate(otherCert1);
+        BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
         otherCred1.setEntityId("other-1");
         
-        BasicX509Credential otherCred2 = new BasicX509Credential();
-        otherCred2.setEntityCertificate(otherCert2);
+        BasicX509Credential otherCred2 = new BasicX509Credential(otherCert2);
         otherCred2.setEntityId("other-2");
         
         credentials = new ArrayList<Credential>();

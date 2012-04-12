@@ -113,9 +113,7 @@ public final class CredentialSupport {
         if (secretKey == null) {
             throw new IllegalArgumentException("A secret key is required");
         }
-        BasicCredential cred = new BasicCredential();
-        cred.setSecretKey(secretKey);
-        return cred;
+        return new BasicCredential(secretKey);
     }
 
     /**
@@ -129,10 +127,7 @@ public final class CredentialSupport {
         if (publicKey == null) {
             throw new IllegalArgumentException("A public key is required");
         }
-        BasicCredential cred = new BasicCredential();
-        cred.setPublicKey(publicKey);
-        cred.setPrivateKey(privateKey);
-        return cred;
+        return new BasicCredential(publicKey, privateKey);
     }
 
     /**
@@ -146,10 +141,7 @@ public final class CredentialSupport {
         if (cert == null) {
             throw new IllegalArgumentException("A certificate is required");
         }
-        BasicX509Credential cred = new BasicX509Credential();
-        cred.setEntityCertificate(cert);
-        cred.setPrivateKey(privateKey);
-        return cred;
+        return new BasicX509Credential(cert, privateKey);
     }
 
 }

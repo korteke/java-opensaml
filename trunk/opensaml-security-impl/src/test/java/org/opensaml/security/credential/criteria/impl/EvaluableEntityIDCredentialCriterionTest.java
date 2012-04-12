@@ -17,14 +17,12 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
-import org.opensaml.security.credential.criteria.impl.EvaluableEntityIDCredentialCriterion;
 import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.crypto.KeySupport;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  *
@@ -39,10 +37,9 @@ public class EvaluableEntityIDCredentialCriterionTest {
         entityID = "someEntityID";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        credential = new BasicCredential();
+        credential = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         credential.setEntityId(entityID);
         
         criteria = new EntityIDCriterion(entityID);

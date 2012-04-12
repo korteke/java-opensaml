@@ -43,9 +43,7 @@ public class EvaluableKeyAlgorithmCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        credential = new BasicCredential();
-        credential.setPublicKey(KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic());
-        
+        credential = new BasicCredential(KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic());
         criteria = new KeyAlgorithmCriterion(keyAlgo);
     }
     
@@ -60,13 +58,6 @@ public class EvaluableKeyAlgorithmCredentialCriterionTest {
         criteria.setKeyAlgorithm("SomeOtherKeyAlgo");
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
-    }
-    
-    @Test
-    public void testCanNotEvaluate() {
-        credential.setPublicKey(null);
-        EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
-        Assert.assertNull(evalCrit.evaluate(credential), "Credential should have been unevaluable against the criteria");
     }
     
     @Test

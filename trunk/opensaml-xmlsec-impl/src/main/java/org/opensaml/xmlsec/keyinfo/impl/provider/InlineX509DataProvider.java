@@ -140,8 +140,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             return null;
         }
 
-        BasicX509Credential cred = new BasicX509Credential();
-        cred.setEntityCertificate(entityCert);
+        BasicX509Credential cred = new BasicX509Credential(entityCert);
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
 

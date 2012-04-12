@@ -118,15 +118,12 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest
         signingCert = X509Support.decodeCertificate(signingCertBase64);
         //signingPrivateKey = SecurityTestHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
         
-        signingX509Cred = new BasicX509Credential();
-        signingX509Cred.setEntityCertificate(signingCert);
-        signingX509Cred.setPrivateKey(signingPrivateKey);
+        signingX509Cred = new BasicX509Credential(signingCert, signingPrivateKey);
         signingX509Cred.setEntityId(issuer);
         
         otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
         
-        BasicX509Credential otherCred1 = new BasicX509Credential();
-        otherCred1.setEntityCertificate(otherCert1);
+        BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
         otherCred1.setEntityId("other-1");
         
         trustedCredentials = new ArrayList<Credential>();

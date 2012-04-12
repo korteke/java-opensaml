@@ -166,11 +166,10 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         altName3 = "10.1.2.3";
         altName3Type = X509Support.IP_ADDRESS_ALT_NAME;
 
-        credential = new BasicX509Credential();
+        credential = new BasicX509Credential(entityCert);
         credential.setEntityId(entityID);
         credential.getKeyNames().add(keyNameFoo);
         credential.getKeyNames().add(keyNameBar);
-        credential.setEntityCertificate(entityCert);
 
         List<X509Certificate> chain = new ArrayList<X509Certificate>();
         chain.add(entityCert);

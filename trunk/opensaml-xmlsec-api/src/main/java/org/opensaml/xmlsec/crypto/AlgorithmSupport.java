@@ -191,8 +191,7 @@ public final class AlgorithmSupport {
      */
     public static Credential generateSymmetricKeyAndCredential(String algorithmURI) throws NoSuchAlgorithmException, KeyException {
         SecretKey key = generateSymmetricKey(algorithmURI);
-        BasicCredential credential = new BasicCredential();
-        credential.setSecretKey(key);
+        BasicCredential credential = new BasicCredential(key);
         return credential;
     }
 
@@ -209,8 +208,7 @@ public final class AlgorithmSupport {
     public static Credential generateKeyPairAndCredential(String algorithmURI, int keyLength, boolean includePrivate) 
             throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair keyPair = generateKeyPair(algorithmURI, keyLength);
-        BasicCredential credential = new BasicCredential();
-        credential.setPublicKey(keyPair.getPublic());
+        BasicCredential credential = new BasicCredential(keyPair.getPublic());
         if (includePrivate) {
             credential.setPrivateKey(keyPair.getPrivate());
         }

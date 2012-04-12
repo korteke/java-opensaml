@@ -20,6 +20,9 @@ package org.opensaml.security.credential.criteria.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
@@ -28,6 +31,7 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.criteria.impl.EvaluableX509SubjectNameCredentialCriterion;
+import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509SubjectNameCriterion;
 import org.opensaml.security.x509.X509Support;
@@ -76,8 +80,7 @@ public class EvaluableX509SubjectNameCredentialCriterionTest {
         entityCert = X509Support.decodeCertificate(entityCertBase64);
         subjectName = new X500Principal("cn=foobar.example.org, O=Internet2");
         
-        credential = new BasicX509Credential();
-        credential.setEntityCertificate(entityCert);
+        credential = new BasicX509Credential(entityCert);
         
         criteria = new X509SubjectNameCriterion(subjectName);
     }
@@ -96,17 +99,10 @@ public class EvaluableX509SubjectNameCredentialCriterionTest {
     }
     
     @Test
-    public void testNotSatisfyWrongCredType() {
-        BasicCredential basicCred = new BasicCredential();
+    public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
+        BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
-    }
-    
-    @Test
-    public void testNotSatisfyNoCert() {
-        credential.setEntityCertificate(null);
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test

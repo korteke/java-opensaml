@@ -17,14 +17,17 @@
 
 package org.opensaml.security.x509;
 
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import javax.crypto.SecretKey;
+
+import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
@@ -42,6 +45,28 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
 
     /** CRLs for this credential. */
     private Collection<X509CRL> crls;
+    
+    /**
+     * Constructor.
+     *
+     * @param entityCertificate the credential entity certificate
+     */
+    public BasicX509Credential(X509Certificate entityCertificate) {
+        super();
+        setEntityCertificate(entityCertificate);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param entityCertificate the credential entity certificate
+     * @param privateKey the credential private key
+     */
+    public BasicX509Credential(X509Certificate entityCertificate, PrivateKey privateKey) {
+        super();
+        setEntityCertificate(entityCertificate);
+        setPrivateKey(privateKey);
+    }
 
     /** {@inheritDoc} */
     public Class<? extends Credential> getCredentialType() {
@@ -70,60 +95,67 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     /**
      * Sets the entity certificate for this credential.
      * 
-     * @param cert entity certificate for this credential
+     * @param newEntityCertificate entity certificate for this credential
      */
-    public void setEntityCertificate(X509Certificate cert) {
-        entityCert = cert;
-        if (cert != null) {
-            setPublicKey(cert.getPublicKey());
-        } else {
-            setPublicKey(null);
-        }
+    public void setEntityCertificate(X509Certificate newEntityCertificate) {
+        Constraint.isNotNull(newEntityCertificate, "Credential certificate may not be null");
+        entityCert = newEntityCertificate;
+    }
+    
+    /** {@inheritDoc} */
+    public PublicKey getPublicKey() {
+        return getEntityCertificate().getPublicKey();
+    }
+    
+    /**
+     * This operation is unsupported for X.509 credentials. The public key will be retrieved
+     * automatically from the entity certificate.
+     * 
+     * @param newPublicKey not supported
+     */
+    public void setPublicKey(PublicKey newPublicKey) {
+        throw new UnsupportedOperationException("Public key may not be set explicitly on an X509 credential");
     }
 
     /** {@inheritDoc} */
     public Collection<X509Certificate> getEntityCertificateChain() {
-        if (entityCertChain == null && entityCert != null) {
-            HashSet<X509Certificate> constructedChain = new HashSet<X509Certificate>(5);
+        if (entityCertChain == null) {
+            LazySet<X509Certificate> constructedChain = new LazySet<X509Certificate>();
             constructedChain.add(entityCert);
             return constructedChain;
+        } else {
+            return entityCertChain;
         }
-
-        return entityCertChain;
     }
 
     /**
      * Sets the entity certificate chain for this credential. This <strong>MUST</strong> include the entity
      * certificate.
      * 
-     * @param certs ntity certificate chain for this credential
+     * @param newCertificateChain entity certificate chain for this credential
      */
-    public void setEntityCertificateChain(Collection<X509Certificate> certs) {
-        entityCertChain = new ArrayList<X509Certificate>(certs);
+    public void setEntityCertificateChain(Collection<X509Certificate> newCertificateChain) {
+        Constraint.isNotNull(newCertificateChain, "Certificate chain argument may not be null");
+        Constraint.isNotEmpty(newCertificateChain, "Certificate chain collection argument may not be empty");
+        entityCertChain = new ArrayList<X509Certificate>(newCertificateChain);
     }
-
-    /** {@inheritDoc} */
-    public void setPublicKey(PublicKey key) {
-        if (entityCert != null) {
-            if (! entityCert.getPublicKey().equals(key)) {
-                throw new IllegalArgumentException("X509Credential already contains a certificate " 
-                        + "with a different public key");
-            }
-        }
-        super.setPublicKey(key);
-    }
-
-    /** {@inheritDoc} */
-    public void setSecretKey(SecretKey key) {
-        if (key != null) {
-            throw new UnsupportedOperationException("Secret (symmetric) key may not be set " 
-                    + "on an X509Credential instance");
-        }
-    }
-
-    /** {@inheritDoc} */
+    
+    /**
+     *  This operation is unsupported for X.509 credentials.
+     *  
+     *  @return null
+     */
     public SecretKey getSecretKey() {
         return null;
     }
     
+    /**
+     *  This operation is unsupported for X.509 credentials.
+     *  
+     *  @param newSecretKey unsupported
+     */
+    public void setSecretKey(SecretKey newSecretKey) {
+        throw new UnsupportedOperationException("An X509Credential may not contain a secret key");
+    }
+
 }

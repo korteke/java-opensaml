@@ -45,9 +45,7 @@ public class EvaluableKeyLengthCredentialCriterionTest {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        credential = new BasicCredential();
-        credential.setSecretKey(KeySupport.generateKey(keyAlgo, keyLength, null));
-        
+        credential = new BasicCredential(KeySupport.generateKey(keyAlgo, keyLength, null));
         criteria = new KeyLengthCriterion(keyLength);
     }
     
@@ -62,13 +60,6 @@ public class EvaluableKeyLengthCredentialCriterionTest {
         criteria.setKeyLength(keyLength * 2);
         EvaluableKeyLengthCredentialCriterion evalCrit = new EvaluableKeyLengthCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
-    }
-    
-    @Test
-    public void testCanNotEvaluate() {
-        credential.setSecretKey(null);
-        EvaluableKeyLengthCredentialCriterion evalCrit = new EvaluableKeyLengthCredentialCriterion(criteria);
-        Assert.assertNull(evalCrit.evaluate(credential), "Credential should have been unevaluable against the criteria");
     }
     
     @Test

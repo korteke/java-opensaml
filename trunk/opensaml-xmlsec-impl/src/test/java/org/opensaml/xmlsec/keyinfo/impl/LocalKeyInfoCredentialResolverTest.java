@@ -59,9 +59,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         keyName = "MyKey";
         keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
         
-        localCred = new BasicCredential();
-        localCred.setPublicKey(keyPair.getPublic());
-        localCred.setPrivateKey(keyPair.getPrivate());
+        localCred = new BasicCredential(keyPair.getPublic(), keyPair.getPrivate());
         localCred.getKeyNames().add(keyName);
         
         localCredResolver = new CollectionCredentialResolver();
