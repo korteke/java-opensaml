@@ -36,7 +36,6 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -262,7 +261,6 @@ public class KeyInfoSupport {
      * @return a native Java {@link java.security.cert.X509CRL} object
      * 
      * @throws CRLException thrown if there is a problem converting the CRL data into {@link java.security.cert.X509CRL}
-     *             s
      */
     public static X509CRL getCRL(org.opensaml.xmlsec.signature.X509CRL xmlCRL) throws CRLException {
 
@@ -270,8 +268,11 @@ public class KeyInfoSupport {
             return null;
         }
 
-        Collection<X509CRL> crls = X509Support.decodeCRLs(Base64Support.decode(xmlCRL.getValue()));
-        return crls.iterator().next();
+        try {
+            return X509Support.decodeCRL(xmlCRL.getValue());
+        } catch (CertificateException e) {
+            throw new CRLException("Certificate error attempting to decode CRL", e);
+        }
     }
 
     /**
@@ -287,8 +288,8 @@ public class KeyInfoSupport {
         X509Data x509Data;
         if (keyInfo.getX509Datas().size() == 0) {
             x509Data =
-                    (X509Data) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
-                            .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
+                    (X509Data) XMLObjectProviderRegistrySupport.getBuilderFactory()
+                        .getBuilder(X509Data.DEFAULT_ELEMENT_NAME).buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
         } else {
             x509Data = keyInfo.getX509Datas().get(0);
@@ -309,8 +310,8 @@ public class KeyInfoSupport {
         X509Data x509Data;
         if (keyInfo.getX509Datas().size() == 0) {
             x509Data =
-                    (X509Data) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509Data.DEFAULT_ELEMENT_NAME)
-                            .buildObject(X509Data.DEFAULT_ELEMENT_NAME);
+                    (X509Data) XMLObjectProviderRegistrySupport.getBuilderFactory()
+                        .getBuilder(X509Data.DEFAULT_ELEMENT_NAME).buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
         } else {
             x509Data = keyInfo.getX509Datas().get(0);
@@ -367,8 +368,8 @@ public class KeyInfoSupport {
      */
     public static X509SubjectName buildX509SubjectName(String subjectName) {
         X509SubjectName xmlSubjectName =
-                (X509SubjectName) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509SubjectName.DEFAULT_ELEMENT_NAME)
-                        .buildObject(X509SubjectName.DEFAULT_ELEMENT_NAME);
+                (X509SubjectName) XMLObjectProviderRegistrySupport.getBuilderFactory()
+                    .getBuilder(X509SubjectName.DEFAULT_ELEMENT_NAME).buildObject(X509SubjectName.DEFAULT_ELEMENT_NAME);
         xmlSubjectName.setValue(subjectName);
         return xmlSubjectName;
     }
@@ -381,18 +382,19 @@ public class KeyInfoSupport {
      * @return the new X509IssuerSerial
      */
     public static X509IssuerSerial buildX509IssuerSerial(String issuerName, BigInteger serialNumber) {
+        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         X509IssuerName xmlIssuerName =
-                (X509IssuerName) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509IssuerName.DEFAULT_ELEMENT_NAME)
+                (X509IssuerName) builderFactory.getBuilder(X509IssuerName.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
         xmlIssuerName.setValue(issuerName);
 
         X509SerialNumber xmlSerialNumber =
-                (X509SerialNumber) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME)
+                (X509SerialNumber) builderFactory.getBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         xmlSerialNumber.setValue(serialNumber);
 
         X509IssuerSerial xmlIssuerSerial =
-                (X509IssuerSerial) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME)
+                (X509IssuerSerial) builderFactory.getBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME)
                         .buildObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         xmlIssuerSerial.setX509IssuerName(xmlIssuerName);
         xmlIssuerSerial.setX509SerialNumber(xmlSerialNumber);
@@ -429,12 +431,11 @@ public class KeyInfoSupport {
      * 
      * @param keyInfo the {@link KeyInfo} element to which to add the key
      * @param pk the native Java {@link PublicKey} to add
-     * @throws IllegalArgumentException thrown if an unsupported public key type is passed
      */
-    public static void addPublicKey(KeyInfo keyInfo, PublicKey pk) throws IllegalArgumentException {
+    public static void addPublicKey(KeyInfo keyInfo, PublicKey pk) {
         KeyValue keyValue =
-                (KeyValue) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyValue.DEFAULT_ELEMENT_NAME)
-                        .buildObject(KeyValue.DEFAULT_ELEMENT_NAME);
+                (KeyValue) XMLObjectProviderRegistrySupport.getBuilderFactory()
+                    .getBuilder(KeyValue.DEFAULT_ELEMENT_NAME).buildObject(KeyValue.DEFAULT_ELEMENT_NAME);
 
         if (pk instanceof RSAPublicKey) {
             keyValue.setRSAKeyValue(buildRSAKeyValue((RSAPublicKey) pk));
@@ -702,8 +703,9 @@ public class KeyInfoSupport {
      * 
      * <p>
      * The generator is determined by the specified {@link SecurityConfiguration}. If a security configuration is not
-     * supplied, the global security configuration ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()}) will be
-     * used.
+     * supplied, the global security configuration 
+     * ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()})
+     * will be used.
      * </p>
      * 
      * @param credential the credential for which a generator is desired

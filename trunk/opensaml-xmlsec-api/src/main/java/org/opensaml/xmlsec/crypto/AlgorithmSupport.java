@@ -187,9 +187,9 @@ public final class AlgorithmSupport {
      * @return a basic credential containing a randomly generated symmetric key
      * @throws KeyException 
      * @throws NoSuchAlgorithmException algorithm not found
-     * @throws NoSuchProviderException provider not found
      */
-    public static Credential generateSymmetricKeyAndCredential(String algorithmURI) throws NoSuchAlgorithmException, KeyException {
+    public static Credential generateSymmetricKeyAndCredential(String algorithmURI) 
+            throws NoSuchAlgorithmException, KeyException {
         SecretKey key = generateSymmetricKey(algorithmURI);
         BasicCredential credential = new BasicCredential(key);
         return credential;
