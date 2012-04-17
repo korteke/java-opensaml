@@ -78,8 +78,6 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 	protected void initXMLObjectSupport() throws Exception {
         XMLUnit.setIgnoreWhitespace(true);
         
-        InitializationService.initialize();
-        
         try {
             parserPool = XMLObjectProviderRegistrySupport.getParserPool();
             builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
