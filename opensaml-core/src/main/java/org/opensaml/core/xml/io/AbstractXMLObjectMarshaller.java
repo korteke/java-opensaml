@@ -43,8 +43,8 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
- * A thread safe, abstract implementation of the {@link org.opensaml.core.xml.io.Marshaller} interface. This class handles
- * most of the boilerplate code:
+ * A thread safe, abstract implementation of the {@link org.opensaml.core.xml.io.Marshaller} interface. 
+ * This class handles most of the boilerplate code:
  * <ul>
  * <li>Ensuring elements to be marshalled are of either the correct xsi:type or element QName</li>
  * <li>Setting the appropriate namespace and prefix for the marshalled element</li>
@@ -306,7 +306,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 Marshaller marshaller = marshallerFactory.getMarshaller(childXMLObject);
 
                 if (marshaller == null) {
-                    marshaller = marshallerFactory.getMarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+                    marshaller = 
+                            marshallerFactory.getMarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
 
                     if (marshaller == null) {
                         String errorMsg = "No marshaller available for " + childXMLObject.getElementQName()
@@ -338,17 +339,18 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         Set<Namespace> namespaces = xmlObject.getNamespaces();
 
         for (Namespace namespace : namespaces) {
-            if (!namespace.alwaysDeclare()) {
+            if (!xmlObject.getNamespaceManager().getNamespaceDeclarations().contains(namespace)) {
                 if(Objects.equal(namespace.getNamespacePrefix(), XmlConstants.XML_PREFIX)
                         || Objects.equal(namespace.getNamespaceURI(), XmlConstants.XML_NS)) {
                     //the "xml" namespace never needs to be declared
                     continue;
                 }
                 
-                String declared = NamespaceSupport.lookupNamespaceURI(domElement, domElement, namespace.getNamespacePrefix());
+                String declared = NamespaceSupport.lookupNamespaceURI(domElement, domElement, 
+                        namespace.getNamespacePrefix());
                 if (declared != null && namespace.getNamespaceURI().equals(declared)) {
-                    log.trace("Namespace {} has already been declared on an ancestor of {} no need to add it here", namespace,
-                            xmlObject.getElementQName());
+                    log.trace("Namespace {} has already been declared on an ancestor of {} no need to add it here", 
+                            namespace, xmlObject.getElementQName());
                     continue;
                 }
             }

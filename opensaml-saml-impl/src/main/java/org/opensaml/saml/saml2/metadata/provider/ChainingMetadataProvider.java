@@ -458,11 +458,6 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
         }
 
         /** {@inheritDoc} */
-        public void addNamespace(Namespace namespace) {
-
-        }
-
-        /** {@inheritDoc} */
         public void detach() {
 
         }
@@ -548,11 +543,6 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
 
         /** {@inheritDoc} */
         public void releaseParentDOM(boolean propagateRelease) {
-
-        }
-
-        /** {@inheritDoc} */
-        public void removeNamespace(Namespace namespace) {
 
         }
 
