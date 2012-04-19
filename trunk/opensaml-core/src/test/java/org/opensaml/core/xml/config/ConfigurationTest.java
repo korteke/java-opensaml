@@ -17,17 +17,23 @@
 
 package org.opensaml.core.xml.config;
 
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.InputStream;
+import java.util.Properties;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLConfigurationException;
 import org.opensaml.core.xml.config.XMLConfigurator;
@@ -40,33 +46,18 @@ import org.opensaml.core.xml.io.Unmarshaller;
  */
 public class ConfigurationTest {
 
-    /** System configuration utility */
-    private XMLConfigurator configurator;
-
     /** Parser pool used to parse example config files */
     private BasicParserPool parserPool;
 
     /** SimpleElement QName */
     private QName simpleXMLObjectQName;
-
-    /**
-     * Constructor
-     * 
-     * @throws XMLConfigurationException
-     */
-    public ConfigurationTest() throws XMLConfigurationException {
-        configurator = new XMLConfigurator();
-
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
-        simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
-    }
-
+    
     /**
      * Tests that a schema invalid configuration file is properly identified as such.
      */
     @Test
     public void testInvalidConfiguration() throws Exception {
+        XMLConfigurator configurator = new XMLConfigurator();
         try {
             InputStream sxConfig = XMLObjectProviderRegistrySupport.class
                     .getResourceAsStream("/data/org/opensaml/core/xml/config/InvalidConfiguration.xml");
@@ -83,9 +74,10 @@ public class ConfigurationTest {
      */
     @Test
     public void testObjectProviderConfiguration() throws Exception {
+        XMLConfigurator configurator = new XMLConfigurator();
 
         // Test loading the SimpleXMLObject configuration where builder contains additional children
-        InputStream sxConfig = XMLObjectProviderRegistrySupport.class
+        InputStream sxConfig = ConfigurationTest.class
                 .getResourceAsStream("/data/org/opensaml/core/xml/config/SimpleXMLObjectConfiguration.xml");
         configurator.load(sxConfig);
 
@@ -138,6 +130,8 @@ public class ConfigurationTest {
      */
     @Test
     public void testIDAttributeConfiguration() throws XMLParserException, XMLConfigurationException {
+        XMLConfigurator configurator = new XMLConfigurator();
+        
         QName fooQName = new QName("http://www.example.org/testObjects", "foo", "test");
         QName barQName = new QName("http://www.example.org/testObjects", "bar", "test");
         QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");
@@ -154,4 +148,31 @@ public class ConfigurationTest {
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(barQName);
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(bazQName);
     }
+    
+    @BeforeClass
+    protected void initClass() throws ComponentInitializationException {
+        parserPool = new BasicParserPool();
+        parserPool.setNamespaceAware(true);
+        parserPool.initialize();
+        
+        simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
+    }
+    
+    /** {@inheritDoc} */
+    @BeforeMethod
+    protected void setUp() throws Exception {
+        Properties props = new Properties();
+        props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
+        ThreadLocalConfigurationPropertiesHolder.setProperties(props);
+        
+        ConfigurationService.register(XMLObjectProviderRegistry.class, new XMLObjectProviderRegistry());
+    }
+
+    /** {@inheritDoc} */
+    @AfterMethod
+    protected void tearDown() throws Exception {
+        ConfigurationService.deregister(XMLObjectProviderRegistry.class);
+        ThreadLocalConfigurationPropertiesHolder.clear();
+    }
+    
 }
