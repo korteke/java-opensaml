@@ -18,7 +18,7 @@
 package org.opensaml.core.xml;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +30,6 @@ import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -66,9 +65,6 @@ public class NamespaceManager {
     /** Explicitly declared namespaces. */
     private Set<Namespace> decls;
     
-    /** Indeterminate namespace usage. */
-    private Set<Namespace> usage;
-    
     /** Registered namespaces of attribute names. */
     private Set<Namespace> attrNames;
     
@@ -87,7 +83,6 @@ public class NamespaceManager {
         owner = owningObject;
         
         decls = new LazySet<Namespace>();
-        usage = new LazySet<Namespace>();
         attrNames = new LazySet<Namespace>();
         attrValues = new LazyMap<String, Namespace>();
     }
@@ -116,43 +111,14 @@ public class NamespaceManager {
     /**
      * Get the set of namespaces currently in use on the owning XMLObject.
      * 
-     * @return the set of namespaces
+     * @return the unmodifiable set of namespaces
      */
     public Set<Namespace> getNamespaces() {
-        Set<Namespace> namespaces = mergeNamespaceCollections(decls, usage, attrNames, attrValues.values());
+        Set<Namespace> namespaces = mergeNamespaceCollections(decls, attrNames, attrValues.values());
         addNamespace(namespaces, getElementNameNamespace());
         addNamespace(namespaces, getElementTypeNamespace());
         addNamespace(namespaces, contentValue);
-        return namespaces;
-    }
-    
-    
-    /**
-     * Register usage of a namespace in some indeterminate fashion.
-     * 
-     * <p>
-     * Other methods which indicate specific usage should be preferred over this one.  This
-     * method exists primarily for backward-compatibility support for {@link XMLObject#addNamespace(Namespace)}.
-     * </p>
-     * 
-     * @param namespace namespace to register
-     */
-    public void registerNamespace(Namespace namespace) {
-        addNamespace(usage, namespace);
-    }
-    
-    /**
-     * Deregister usage of a namespace in some indeterminate fashion.
-     * 
-     * <p>
-     * Other methods which indicate specific usage should be preferred over this one.  This
-     * method exists primarily for backward-compatibility support for {@link XMLObject#removeNamespace(Namespace)}.
-     * </p>
-     * 
-     * @param namespace namespace to deregister
-     */
-    public void deregisterNamespace(Namespace namespace) {
-        removeNamespace(usage, namespace);
+        return Collections.unmodifiableSet(namespaces);
     }
     
     /**
@@ -161,7 +127,6 @@ public class NamespaceManager {
      * @param namespace the namespace to register
      */
     public void registerNamespaceDeclaration(Namespace namespace) {
-        namespace.setAlwaysDeclare(true);
         addNamespace(decls, namespace);
     }
     
@@ -172,6 +137,15 @@ public class NamespaceManager {
      */
     public void deregisterNamespaceDeclaration(Namespace namespace) {
         removeNamespace(decls, namespace);
+    }
+    
+    /**
+     * Get the set of namespace declarations registered on the owning XMLObject.
+     * 
+     * @return the set of namespace declarations
+     */
+    public Set<Namespace> getNamespaceDeclarations() {
+        return Collections.unmodifiableSet(decls);
     }
     
     /**
@@ -262,12 +236,6 @@ public class NamespaceManager {
      * information that may optionally be supplied as a part of XML exclusive canonicalization.
      * </p>
      * 
-     * <p>
-     * The Namespace instances themselves will be copied before being returned, so
-     * modifications to them do not affect the actual Namespace instances in the
-     * underlying tree. The original <code>alwaysDeclare</code> property is not preserved.
-     * </p>
-     * 
      * @return the set of non-visibly used namespaces 
      */
     public Set<Namespace> getNonVisibleNamespaces() {
@@ -305,12 +273,6 @@ public class NamespaceManager {
      * Get the set of all namespaces which are in scope within the subtree rooted
      * at the owning XMLObject.
      * 
-     * <p>
-     * The Namespace instances themselves will be copied before being returned, so
-     * modifications to them do not affect the actual Namespace instances in the
-     * underlying tree. The original <code>alwaysDeclare</code> property is not preserved.
-     * </p>
-     * 
      * @return set of all namespaces in scope for the owning object
      */
     public Set<Namespace> getAllNamespacesInSubtreeScope() {
@@ -329,9 +291,9 @@ public class NamespaceManager {
             }
         }
 
-        // Collect this node's namespaces.  Copy before adding to the set. Do not preserve alwaysDeclare.
+        // Collect this node's namespaces.
         for (Namespace myNS : getNamespaces()) {
-            namespaces.add(copyNamespace(myNS));
+            namespaces.add(myNS);
         }
 
         return namespaces;
@@ -407,7 +369,6 @@ public class NamespaceManager {
     
     /**
      * Add a Namespace to a set of Namespaces.  Namespaces with identical URI and prefix will be treated as equivalent.
-     * An <code>alwaysDeclare</code> property of true will take precedence over a value of false.
      * 
      * @param namespaces the set of namespaces
      * @param newNamespace the namespace to add to the set
@@ -417,34 +378,11 @@ public class NamespaceManager {
             return;
         }
         
-        if (namespaces.size() == 0) {
-            namespaces.add(newNamespace);
-            return;
-        }
-        
-        for (Namespace namespace : namespaces) {
-            if (Objects.equal(namespace.getNamespaceURI(), newNamespace.getNamespaceURI()) &&
-                    Objects.equal(namespace.getNamespacePrefix(), newNamespace.getNamespacePrefix())) {
-                if (newNamespace.alwaysDeclare() && !namespace.alwaysDeclare()) {
-                    // An alwaysDeclare=true trumps false.
-                    // Don't modify the existing object in the set, merely swap them.
-                    namespaces.remove(namespace);
-                    namespaces.add(newNamespace);
-                    return;
-                } else {
-                    // URI and prefix match, alwaysDeclare does also, so just leave the original
-                    return;
-                }
-            }
-        }
-        
         namespaces.add(newNamespace);
     }
     
     /**
-     * Remove a Namespace from a set of Namespaces.  Equivalence of Namespace instances will be based 
-     * on namespace URI and prefix only. The <code>alwaysDeclare</code> property will be ignored for
-     * purpose of equivalence.
+     * Remove a Namespace from a set of Namespaces.
      * 
      * @param namespaces the set of namespaces
      * @param oldNamespace the namespace to add to the set
@@ -454,20 +392,11 @@ public class NamespaceManager {
             return;
         }
         
-        Iterator<Namespace> iter = namespaces.iterator();
-        while (iter.hasNext()) {
-            Namespace namespace = iter.next();
-            if (Objects.equal(namespace.getNamespaceURI(), oldNamespace.getNamespaceURI()) &&
-                    Objects.equal(namespace.getNamespacePrefix(), oldNamespace.getNamespacePrefix())) {
-                iter.remove();
-            }
-        }
-        
+        namespaces.remove(oldNamespace);
     }
     
     /**
-     * Merge 2 or more Namespace collections into a single set, with equivalence semantics as described
-     * in {@link #addNamespace(Set, Namespace)}.
+     * Merge 2 or more Namespace collections into a single set.
      * 
      * @param namespaces list of Namespaces to merge
      * @return the a new set of merged Namespaces
@@ -490,11 +419,6 @@ public class NamespaceManager {
      * Get the set of namespaces which are currently visibly-used on the owning XMLObject (only the owner,
      * not its children).
      * 
-     * <p>
-     * Namespaces returned in the set are copied from the ones held in the manager.  The
-     * <code>alwaysDeclare</code> property is not preserved.
-     * </p>
-     * 
      * @return the set of visibly-used namespaces
      */
     private Set<Namespace> getVisibleNamespaces() {
@@ -502,18 +426,18 @@ public class NamespaceManager {
 
         // Add namespace from element name.
         if (getElementNameNamespace() != null) {
-            namespaces.add(copyNamespace(getElementNameNamespace()));
+            namespaces.add(getElementNameNamespace());
         }
 
         // Add xsi attribute prefix, if element carries an xsi:type.
         if (getElementTypeNamespace() != null) {
-            namespaces.add(copyNamespace(XSI_NAMESPACE));
+            namespaces.add(XSI_NAMESPACE);
         }
         
         // Add namespaces from attribute names
         for (Namespace attribName : attrNames) {
             if (attribName != null) {
-                namespaces.add(copyNamespace(attribName));
+                namespaces.add(attribName);
             }
         }
 
@@ -524,11 +448,6 @@ public class NamespaceManager {
      * Get the set of non-visibly used namespaces used on the owning XMLObject (only the owner,
      * not the owner's children).
      * 
-     * <p>
-     * Namespaces returned in the set are copied from the ones held in the manager.  The
-     * <code>alwaysDeclare</code> property is not preserved.
-     * </p>
-     * 
      * @return the set of non-visibly-used namespaces
      */
     private Set<Namespace> getNonVisibleNamespaceCandidates() {
@@ -536,35 +455,22 @@ public class NamespaceManager {
 
         // Add xsi:type value's prefix, if element carries an xsi:type
         if (getElementTypeNamespace() != null) {
-            namespaces.add(copyNamespace(getElementTypeNamespace()));
+            namespaces.add(getElementTypeNamespace());
         }
         
         // Add prefixes from attribute and content values
         for (Namespace attribValue : attrValues.values()) {
             if (attribValue != null) {
-                namespaces.add(copyNamespace(attribValue));
+                namespaces.add(attribValue);
             }
         }
         if (contentValue != null) {
-            namespaces.add(copyNamespace(contentValue));
+            namespaces.add(contentValue);
         }
 
         return namespaces;
     }
-    
-    /**
-     * Get a copy of a Namespace.  The <code>alwaysDeclare</code> property is not preserved.
-     * 
-     * @param orig the namespace instance to copy
-     * @return a copy of the specified namespace
-     */
-    private Namespace copyNamespace(Namespace orig) {
-        if (orig == null) {
-            return null;
-        } else {
-            return new Namespace(orig.getNamespaceURI(), orig.getNamespacePrefix());
-        }
-    }
+
     
     /**
      * Add the prefixes from a collection of namespaces to a set of prefixes. The 

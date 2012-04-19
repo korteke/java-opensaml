@@ -124,7 +124,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
         String attrValueString = attrValue.getPrefix() + ":" + attrValue.getLocalPart();
         
         //  Using this mechanism have to "pre-register" the namespace so that the attr value is detected properly
-        owner.getNamespaceManager().registerNamespace(buildNamespace(attrValue));
+        owner.getNamespaceManager().registerNamespaceDeclaration(buildNamespace(attrValue));
         
         owner.getUnknownAttributes().put(attrName, attrValueString);
         checkNamespaces(owner, 3, elementName, attrName, attrValue);

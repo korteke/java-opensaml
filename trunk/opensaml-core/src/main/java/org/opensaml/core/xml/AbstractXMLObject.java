@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -88,11 +87,6 @@ public abstract class AbstractXMLObject implements XMLObject {
             setElementNamespacePrefix(namespacePrefix);
         }
     }
-    
-    /** {@inheritDoc} */
-    public void addNamespace(Namespace newNamespace) {
-        getNamespaceManager().registerNamespace(newNamespace);
-    }
 
     /** {@inheritDoc} */
     public void detach(){
@@ -122,7 +116,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     public Set<Namespace> getNamespaces() {
-        return Collections.unmodifiableSet(getNamespaceManager().getNamespaces());
+        return getNamespaceManager().getNamespaces();
     }
 
     /** {@inheritDoc} */
@@ -173,42 +167,6 @@ public abstract class AbstractXMLObject implements XMLObject {
         } else {
             getNamespaceManager().deregisterAttributeName(attributeName);
         }
-    }
-
-    /**
-     * A helper function for derived classes. This checks for semantic equality between two QNames if it they are
-     * different invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
-     * prepareForAssignment(this.foo, foo);
-     * 
-     * @param oldValue - the current value
-     * @param newValue - the new value
-     * 
-     * @return the value that should be assigned
-     * 
-     * @deprecated replacement {@link #prepareAttributeValueForAssignment(String, QName, QName)} 
-     *                or {@link #prepareElementContentForAssignment(QName, QName)} as appropriate
-     */
-    protected QName prepareForAssignment(QName oldValue, QName newValue) {
-        if (oldValue == null) {
-            if (newValue != null) {
-                Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
-                addNamespace(newNamespace);
-                releaseThisandParentDOM();
-                return newValue;
-            } else {
-                return null;
-            }
-        }
-
-        if (!oldValue.equals(newValue)) {
-            if (newValue != null) {
-                Namespace newNamespace = new Namespace(newValue.getNamespaceURI(), newValue.getPrefix());
-                addNamespace(newNamespace);
-            }
-            releaseThisandParentDOM();
-        }
-
-        return newValue;
     }
     
     /**
@@ -457,11 +415,6 @@ public abstract class AbstractXMLObject implements XMLObject {
             releaseDOM();
             releaseParentDOM(true);
         }
-    }
-
-    /** {@inheritDoc} */
-    public void removeNamespace(Namespace namespace) {
-        getNamespaceManager().deregisterNamespace(namespace);
     }
 
     /** {@inheritDoc} */

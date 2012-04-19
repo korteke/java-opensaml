@@ -44,8 +44,8 @@ import com.google.common.base.Objects;
 /**
  * An thread safe abstract unmarshaller. This unmarshaller will:
  * <ul>
- * <li>Unmarshalling namespace decleration attributes</li>
- * <li>Unmarshalling schema instance type (xsi:type) decleration attributes</li>
+ * <li>Unmarshalling namespace declaration attributes</li>
+ * <li>Unmarshalling schema instance type (xsi:type) declaration attributes</li>
  * <li>Delegating to child classes element, text, and attribute processing</li>
  * </ul>
  * 
@@ -209,7 +209,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * Unmarshalls the attributes from the given DOM Attr into the given XMLObject. If the attribute is an XML namespace
      * declaration the attribute is passed to
      * {@link AbstractXMLObjectUnmarshaller#unmarshallNamespaceAttribute(XMLObject, Attr)}. If it is an schema type
-     * decleration (xsi:type) it is ignored because this attribute is handled by {@link #buildXMLObject(Element)}. All
+     * declaration (xsi:type) it is ignored because this attribute is handled by {@link #buildXMLObject(Element)}. All
      * other attributes are passed to the {@link #processAttribute(XMLObject, Attr)}
      * 
      * @param attribute the attribute to be unmarshalled
@@ -248,8 +248,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     /**
      * Unmarshalls a namespace declaration attribute.
      * 
-     * @param xmlObject the xmlObject to recieve the namespace decleration
-     * @param attribute the namespace decleration attribute
+     * @param xmlObject the xmlObject to receive the namespace declaration
+     * @param attribute the namespace declaration attribute
      */
     protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
         log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject",
@@ -260,15 +260,14 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         } else {
             namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
         }
-        namespace.setAlwaysDeclare(true);
         xmlObject.getNamespaceManager().registerNamespaceDeclaration(namespace);
     }
 
     /**
      * Unmarshalls the XSI type, schemaLocation, and noNamespaceSchemaLocation attributes.
      * 
-     * @param xmlObject the xmlObject to recieve the namespace decleration
-     * @param attribute the namespace decleration attribute
+     * @param xmlObject the xmlObject to recieve the namespace declaration
+     * @param attribute the namespace declaration attribute
      */
     protected void unmarshallSchemaInstanceAttributes(XMLObject xmlObject, Attr attribute) {
         QName attribName = QNameSupport.getNodeQName(attribute);

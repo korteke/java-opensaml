@@ -31,16 +31,8 @@ public class Namespace {
     /** Prefix of the namespace. */
     private String namespacePrefix;
 
-    /** Always declare this namespace while marshalling? */
-    private boolean alwaysDeclare;
-
     /** String representation of this namespace. */
     private String nsStr;
-
-    /** Constructor. */
-    public Namespace() {
-
-    }
 
     /**
      * Constructor.
@@ -64,56 +56,12 @@ public class Namespace {
     }
 
     /**
-     * Sets the prefix of the namespace.
-     * 
-     * @param newPrefix the prefix of the namespace
-     */
-    public void setNamespacePrefix(String newPrefix) {
-        namespacePrefix = StringSupport.trimOrNull(newPrefix);
-        nsStr = null;
-    }
-
-    /**
      * Gets the URI of the namespace.
      * 
      * @return the URI of the namespace
      */
     public String getNamespaceURI() {
         return namespaceURI;
-    }
-
-    /**
-     * Sets the URI of the namespace.
-     * 
-     * @param newURI the URI of the namespace
-     */
-    public void setNamespaceURI(String newURI) {
-        namespaceURI = StringSupport.trimOrNull(newURI);
-        nsStr = null;
-    }
-
-    /**
-     * Gets wether this namespace should always be declared when marshalling, even if it was already declared on an
-     * ancestral element.
-     * 
-     * @return true if this namespace should always be declared, false if not
-     * 
-     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
-     */
-    public boolean alwaysDeclare() {
-        return alwaysDeclare;
-    }
-
-    /**
-     * Sets wether this namespace should always be declared when marshalling, even if it was already declared on an
-     * ancestral element.
-     * 
-     * @param shouldAlwaysDeclare true if this namespace should always be declared, false if not
-     * 
-     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
-     */
-    public void setAlwaysDeclare(boolean shouldAlwaysDeclare) {
-        alwaysDeclare = shouldAlwaysDeclare;
     }
 
     /** {@inheritDoc} */
@@ -129,7 +77,6 @@ public class Namespace {
     public int hashCode() {
         int hash = 1;
         hash = hash * 31 + toString().hashCode();
-        hash = hash * 31 + (alwaysDeclare ? 0 : 1);
         return hash;
     }
 
@@ -154,7 +101,7 @@ public class Namespace {
             Namespace otherNamespace = (Namespace) obj;
             if (Objects.equal(otherNamespace.getNamespaceURI(), getNamespaceURI())){
                 if (Objects.equal(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
-                    return otherNamespace.alwaysDeclare() == alwaysDeclare();
+                    return true;
                 }
             }
         }

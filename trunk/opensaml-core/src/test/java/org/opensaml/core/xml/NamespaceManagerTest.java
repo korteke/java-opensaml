@@ -20,7 +20,6 @@ package org.opensaml.core.xml;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -145,53 +144,25 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         //Will be there b/c it's the ns of the element
         Assert.assertNotNull(findNamespace(nsManager, ns1));
         Assert.assertEquals(nsManager.getNamespaces().size(), 1);
-        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertFalse(nsManager.getNamespaceDeclarations().contains(ns1));
         
         nsManager.registerNamespaceDeclaration(ns1);
         Assert.assertEquals(nsManager.getNamespaces().size(), 1);
         Assert.assertNotNull(findNamespace(nsManager, ns1));
-        Assert.assertTrue(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertTrue(nsManager.getNamespaceDeclarations().contains(ns1));
         
         nsManager.registerNamespaceDeclaration(ns2);
         Assert.assertEquals(nsManager.getNamespaces().size(), 2);
         Assert.assertNotNull(findNamespace(nsManager, ns2));
-        Assert.assertTrue(findNamespace(nsManager, ns2).alwaysDeclare());
+        Assert.assertTrue(nsManager.getNamespaceDeclarations().contains(ns2));
         
-        // Should still be there b/c of element name, but no longer always declared
+        // Should still be there b/c of element name, but no longer declared
         nsManager.deregisterNamespaceDeclaration(ns1);
         Assert.assertEquals(nsManager.getNamespaces().size(), 2);
         Assert.assertNotNull(findNamespace(nsManager, ns1));
-        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
+        Assert.assertFalse(nsManager.getNamespaceDeclarations().contains(ns1));
         
         nsManager.deregisterNamespaceDeclaration(ns2);
-        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
-        Assert.assertNull(findNamespace(nsManager, ns2));
-    }
-    
-    @Test
-    public void testNSUnspecifiedUsage() {
-        Namespace ns1 = new Namespace(ns1uri, ns1Prefix);
-        Namespace ns2 = new Namespace(ns2uri, ns2Prefix);
-        
-        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
-        
-        nsManager.registerNamespace(ns1);
-        Assert.assertEquals(nsManager.getNamespaces().size(), 1);
-        Assert.assertNotNull(findNamespace(nsManager, ns1));
-        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
-        
-        nsManager.registerNamespace(ns2);
-        Assert.assertEquals(nsManager.getNamespaces().size(), 2);
-        Assert.assertNotNull(findNamespace(nsManager, ns2));
-        Assert.assertFalse(findNamespace(nsManager, ns2).alwaysDeclare());
-        
-        // Should still be there b/c of element name
-        nsManager.deregisterNamespace(ns1);
-        Assert.assertEquals(nsManager.getNamespaces().size(), 2);
-        Assert.assertNotNull(findNamespace(nsManager, ns1));
-        Assert.assertFalse(findNamespace(nsManager, ns1).alwaysDeclare());
-        
-        nsManager.deregisterNamespace(ns2);
         Assert.assertEquals(nsManager.getNamespaces().size(), 1);
         Assert.assertNull(findNamespace(nsManager, ns2));
     }
@@ -231,10 +202,6 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
         nsManager.registerNamespaceDeclaration(ns);
         checkPrefixes(nsManager);
         nsManager.deregisterNamespaceDeclaration(ns);
-        
-        nsManager.registerNamespace(ns);
-        checkPrefixes(nsManager);
-        nsManager.deregisterNamespace(ns);
         
         checkPrefixes(nsManager);
         

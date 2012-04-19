@@ -33,15 +33,6 @@ import org.w3c.dom.Element;
 public interface XMLObject {
 
     /**
-     * Adds a namespace to the ones already scoped to this element.
-     * 
-     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
-     * 
-     * @param namespace the namespace to add
-     */
-    public void addNamespace(Namespace namespace);
-
-    /**
      * Detaches the XMLObject from its parent. This will release the parent's cached DOM (if it has one) and set this
      * object's parent to null. It does not remove this object from its parent, that's the responsibility of the invoker
      * of this method, nor does it re-root the cached DOM node (if there is one) in a new document. This is handled at
@@ -153,15 +144,6 @@ public interface XMLObject {
      * @param propagateRelease true if all ancestors of this element should release their DOM
      */
     public void releaseParentDOM(boolean propagateRelease);
-
-    /**
-     * Removes a namespace from this element.
-     * 
-     * @deprecated use appropriate methods on the XMLObject's {@link NamespaceManager}.
-     * 
-     * @param namespace the namespace to remove
-     */
-    public void removeNamespace(Namespace namespace);
 
     /**
      * Find the XMLObject which is identified by the specified ID attribute, within the subtree of XMLObjects which has
