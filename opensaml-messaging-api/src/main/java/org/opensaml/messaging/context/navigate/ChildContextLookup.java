@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.messaging.context.BaseContext;
 
 /**
- * A function that gets the child context of a given parent context.
+ * A {@link ContextDataLookupFunction} that gets the child context of a given parent context.
  * 
  * @param <ParentContext> type of the parent context
  * @param <ChildContext> type of the child context
@@ -64,7 +64,11 @@ public class ChildContextLookup<ParentContext extends BaseContext, ChildContext 
     }
 
     /** {@inheritDoc} */
-    @Nullable public ChildContext apply(ParentContext input) {
+    @Nullable public ChildContext apply(@Nullable final ParentContext input) {
+        if (input == null) {
+            return null;
+        }
+
         return input.getSubcontext(childType, autocreate);
     }
 }
