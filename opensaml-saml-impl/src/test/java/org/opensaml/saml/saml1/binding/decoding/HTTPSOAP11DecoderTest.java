@@ -17,47 +17,26 @@
 
 package org.opensaml.saml.saml1.binding.decoding;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.KeyPair;
-
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
-import org.opensaml.saml.saml1.binding.decoding.HTTPSOAP11Decoder;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.Request;
-import org.opensaml.saml.saml1.core.Response;
-import org.opensaml.security.SecurityException;
-import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
 import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.support.SignatureSupport;
-import org.opensaml.xmlsec.signature.support.Signer;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for SAML 1.X HTTP SOAP 1.1 message decoder.
  */
 public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     
-    private String responseRecipient = "https://sp.example.org/sso/acs";
-    
-    private SAMLMessageDecoder decoder;
-    
-    private BasicSAMLMessageContext messageContext;
+    private HTTPSOAP11Decoder decoder;
     
     private MockHttpServletRequest httpRequest;
     
@@ -67,10 +46,10 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         httpRequest = new MockHttpServletRequest();
         httpRequest.setMethod("POST");
         
-        messageContext = new BasicSAMLMessageContext();
-        messageContext.setInboundMessageTransport(new HttpServletRequestAdapter(httpRequest));
-        
         decoder = new HTTPSOAP11Decoder();
+        decoder.setParserPool(parserPool);
+        decoder.setHttpServletRequest(httpRequest);
+        decoder.initialize();
     }
 
     /**
@@ -84,167 +63,12 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
                 + "</soap11:Body></soap11:Envelope>";
         httpRequest.setContent(requestContent.getBytes());
         
-        decoder.decode(messageContext);
+        decoder.decode();
+        MessageContext<SAMLObject> messageContext = decoder.getMessageContext();
 
-        Assert.assertTrue(messageContext.getInboundMessage() instanceof Envelope);
-        Assert.assertTrue(messageContext.getInboundSAMLMessage() instanceof Request);
-    }
-    
-    @Test
-    public void testMessageEndpointGood() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
-        
-        Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
-        String deliveredEndpointURL = samlResponse.getRecipient();
-        
-        httpRequest.setContent(encodeMessage(soapEnvelope).getBytes());
-        
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-        
-        try {
-            decoder.decode(messageContext);
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void testMessageEndpointGoodWithQueryParams() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
-        
-        Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
-        String deliveredEndpointURL = samlResponse.getRecipient() + "?paramFoo=bar&paramBar=baz";
-        
-        httpRequest.setContent(encodeMessage(soapEnvelope).getBytes());
-        
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void testMessageEndpointInvalidURI() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
-        
-        Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
-        String deliveredEndpointURL = samlResponse.getRecipient() + "/some/other/endpointURI";
-        
-        httpRequest.setContent(encodeMessage(soapEnvelope).getBytes());
-        
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-            Assert.fail("Passed delivered endpoint check, should have failed");
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void testMessageEndpointInvalidHost() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
-        
-        String deliveredEndpointURL = "https://bogus-sp.example.org/sso/acs";
-        
-        httpRequest.setContent(encodeMessage(soapEnvelope).getBytes());
-        
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-            Assert.fail("Passed delivered endpoint check, should have failed");
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
-        
-        Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
-        samlResponse.setRecipient(null);
-        
-        String deliveredEndpointURL = responseRecipient;
-        
-        httpRequest.setContent(encodeMessage(soapEnvelope).getBytes());
-        
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-    
-    @Test
-    public void testMessageEndpointMissingDestinationSigned() throws Exception {
-        Envelope soapEnvelope = (Envelope) unmarshallElement("/data/org/opensaml/saml/saml1/binding/ResponseSOAP.xml");
-        
-        Response samlResponse = (Response) soapEnvelope.getBody().getUnknownXMLObjects().get(0);
-        samlResponse.setRecipient(null);
-        
-        Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
-        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
-        Credential signingCred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
-        signature.setSigningCredential(signingCred);
-        samlResponse.setSignature(signature);
-        SignatureSupport.prepareSignatureParams(signature, signingCred, null, null);
-        marshallerFactory.getMarshaller(soapEnvelope).marshall(soapEnvelope);
-        Signer.signObject(signature);
-        
-        String deliveredEndpointURL = responseRecipient;
-        
-        httpRequest.setContent(encodeMessage(soapEnvelope).getBytes());
-        
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-            // SOAP binding doesn't require the Recipient, even when signed
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-    
-    private void populateRequestURL(MockHttpServletRequest request, String requestURL) {
-        URL url = null;
-        try {
-            url = new URL(requestURL);
-        } catch (MalformedURLException e) {
-            Assert.fail("Malformed URL: " + e.getMessage());
-        }
-        request.setScheme(url.getProtocol());
-        request.setServerName(url.getHost());
-        if (url.getPort() != -1) {
-            request.setServerPort(url.getPort());
-        } else {
-            if ("https".equalsIgnoreCase(url.getProtocol())) {
-                request.setServerPort(443);
-            } else if ("http".equalsIgnoreCase(url.getProtocol())) {
-                request.setServerPort(80);
-            }
-        }
-        request.setRequestURI(url.getPath());
-        request.setQueryString(url.getQuery());
+        //TODO if decide to expose Envelope
+        //Assert.assertTrue(messageContext.getInboundMessage() instanceof Envelope);
+        Assert.assertTrue(messageContext.getMessage() instanceof Request);
     }
     
     protected String encodeMessage(XMLObject message) throws MessageEncodingException, MarshallingException {

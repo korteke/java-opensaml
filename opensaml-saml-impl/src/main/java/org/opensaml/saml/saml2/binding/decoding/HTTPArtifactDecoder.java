@@ -18,14 +18,15 @@
 package org.opensaml.saml.saml2.binding.decoding;
 
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.ParserPool;
+import javax.servlet.http.HttpServletRequest;
 
-import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
-import org.opensaml.ws.transport.http.HTTPInTransport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,73 +35,47 @@ import org.slf4j.LoggerFactory;
  * 
  * <strong>NOTE: This decoder is not yet implemented.</strong>
  * */
-public class HTTPArtifactDecoder extends BaseSAML2MessageDecoder {
+public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAMLObject> 
+        implements SAMLMessageDecoder {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPArtifactDecoder.class);
     
-    /**
-     * Constructor.
-     * 
-     * @param pool parser pool used to deserialize messages
-     */
-    public HTTPArtifactDecoder(ParserPool pool) {
-        super(pool);
-    }
-
     /** {@inheritDoc} */
     public String getBindingURI() {
-        return SAMLConstants.SAML2_ARTIFACT_BINDING_URI;
-    }
-
-    /** {@inheritDoc} */
-    protected boolean isIntendedDestinationEndpointURIRequired(SAMLMessageContext samlMsgCtx) {
-        return false;
-    }
-    
-    /** {@inheritDoc} */
-    protected String getIntendedDestinationEndpointURI(SAMLMessageContext samlMsgCtx) throws MessageDecodingException {
-        // Not relevant in this binding/profile, there is neither SAML message
-        // nor binding parameter with this information
+        // TODO Auto-generated method stub
         return null;
     }
 
     /** {@inheritDoc} */
-    protected void doDecode(MessageContext messageContext) throws MessageDecodingException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Invalid message context type, this decoder only support SAMLMessageContext");
-            throw new MessageDecodingException(
-                    "Invalid message context type, this decoder only support SAMLMessageContext");
-        }
+    protected void doDecode() throws MessageDecodingException {
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        HttpServletRequest request = getHttpServletRequest();
 
-        if (!(messageContext.getInboundMessageTransport() instanceof HTTPInTransport)) {
-            log.error("Invalid inbound message transport type, this decoder only support HTTPInTransport");
-            throw new MessageDecodingException(
-                    "Invalid inbound message transport type, this decoder only support HTTPInTransport");
-        }
-
-        SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
-
-        HTTPInTransport inTransport = (HTTPInTransport) samlMsgCtx.getInboundMessageTransport();
-        String relayState = StringSupport.trim(inTransport.getParameterValue("RelayState"));
-        samlMsgCtx.setRelayState(relayState);
+        String relayState = StringSupport.trim(request.getParameter("RelayState"));
+        //TODO what to do with storing RelayState
+        log.debug("Decoded SAML relay state of: {}", relayState);
         
-        processArtifact(samlMsgCtx);
+        processArtifact(messageContext, request);
 
-        populateMessageContext(samlMsgCtx);
+        //TODO
+        //populateMessageContext(samlMsgCtx);
+        
+        setMessageContext(messageContext);
     }
     
     /**
      * Process the incoming artifact by decoding the artifacts, dereferencing it from the artifact issuer and 
      * storing the resulting protocol message in the message context.
      * 
-     * @param samlMsgCtx current message context
+     * @param messageContext the message context being processed
+     * @param request the HTTP servlet request
      * 
      * @throws MessageDecodingException thrown if there is a problem decoding or dereferencing the artifact
      */
-    protected void processArtifact(SAMLMessageContext samlMsgCtx) throws MessageDecodingException {
-        HTTPInTransport inTransport = (HTTPInTransport) samlMsgCtx.getInboundMessageTransport();
-        String encodedArtifact = StringSupport.trimOrNull(inTransport.getParameterValue("SAMLart"));
+    protected void processArtifact(MessageContext messageContext, HttpServletRequest request) 
+            throws MessageDecodingException {
+        String encodedArtifact = StringSupport.trimOrNull(request.getParameter("SAMLart"));
         if (encodedArtifact == null) {
             log.error("URL SAMLart parameter was missing or did not contain a value.");
             throw new MessageDecodingException("URL TARGET parameter was missing or did not contain a value.");
@@ -109,4 +84,5 @@ public class HTTPArtifactDecoder extends BaseSAML2MessageDecoder {
         // TODO decode artifact; resolve issuer resolution endpoint; dereference using ArtifactResolve
         // over synchronous backchannel binding; store resultant protocol message as the inbound SAML message.
     }
+
 }
