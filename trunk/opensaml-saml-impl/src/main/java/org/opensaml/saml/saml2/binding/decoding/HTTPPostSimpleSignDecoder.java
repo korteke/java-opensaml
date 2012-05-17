@@ -17,44 +17,14 @@
 
 package org.opensaml.saml.saml2.binding.decoding;
 
-import net.shibboleth.utilities.java.support.xml.ParserPool;
-
-import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.ws.transport.http.HTTPInTransport;
-
-import com.google.common.base.Strings;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign binding. */
 public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
 
-    /**
-     * Constructor.
-     *
-     */
-    public HTTPPostSimpleSignDecoder() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param pool parser pool used to deserialize messages
-     */
-    public HTTPPostSimpleSignDecoder(ParserPool pool) {
-        super(pool);
-    }
-
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML2_POST_SIMPLE_SIGN_BINDING_URI;
-    }
-
-    /** {@inheritDoc} */
-    protected boolean isMessageSigned(SAMLMessageContext messageContext) {
-        HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
-        String sigParam = inTransport.getParameterValue("Signature");
-        return (!Strings.isNullOrEmpty(sigParam)) || super.isMessageSigned(messageContext);
     }
     
 }

@@ -22,15 +22,16 @@ import java.io.InputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.xml.ParserPool;
+import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
-import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,24 +42,11 @@ import com.google.common.base.Strings;
  * 
  * This decoder only supports DEFLATE compression.
  */
-public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
+public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAMLObject> 
+    implements SAMLMessageDecoder {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPRedirectDeflateDecoder.class);
-
-    /** Constructor. */
-    public HTTPRedirectDeflateDecoder() {
-        super();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param pool parser pool used to deserialize messages
-     */
-    public HTTPRedirectDeflateDecoder(ParserPool pool) {
-        super(pool);
-    }
 
     /** {@inheritDoc} */
     public String getBindingURI() {
@@ -66,54 +54,32 @@ public class HTTPRedirectDeflateDecoder extends BaseSAML2MessageDecoder {
     }
 
     /** {@inheritDoc} */
-    protected boolean isIntendedDestinationEndpointURIRequired(SAMLMessageContext samlMsgCtx) {
-        return isMessageSigned(samlMsgCtx);
-    }
+    protected void doDecode() throws MessageDecodingException {
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        HttpServletRequest request = getHttpServletRequest();
 
-    /** {@inheritDoc} */
-    protected void doDecode(MessageContext messageContext) throws MessageDecodingException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Invalid message context type, this decoder only support SAMLMessageContext");
-            throw new MessageDecodingException(
-                    "Invalid message context type, this decoder only support SAMLMessageContext");
-        }
-
-        if (!(messageContext.getInboundMessageTransport() instanceof HTTPInTransport)) {
-            log.error("Invalid inbound message transport type, this decoder only support HTTPInTransport");
-            throw new MessageDecodingException(
-                    "Invalid inbound message transport type, this decoder only support HTTPInTransport");
-        }
-
-        SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
-
-        HTTPInTransport inTransport = (HTTPInTransport) samlMsgCtx.getInboundMessageTransport();
-        String relayState = inTransport.getParameterValue("RelayState");
-        samlMsgCtx.setRelayState(relayState);
+        String relayState = request.getParameter("RelayState");
+        //TODO what to do with storing RelayState
         log.debug("Decoded RelayState: {}", relayState);
 
         InputStream samlMessageIns;
-        if (!Strings.isNullOrEmpty(inTransport.getParameterValue("SAMLRequest"))) {
-            samlMessageIns = decodeMessage(inTransport.getParameterValue("SAMLRequest"));
-        } else if (!Strings.isNullOrEmpty(inTransport.getParameterValue("SAMLResponse"))) {
-            samlMessageIns = decodeMessage(inTransport.getParameterValue("SAMLResponse"));
+        if (!Strings.isNullOrEmpty(request.getParameter("SAMLRequest"))) {
+            samlMessageIns = decodeMessage(request.getParameter("SAMLRequest"));
+        } else if (!Strings.isNullOrEmpty(request.getParameter("SAMLResponse"))) {
+            samlMessageIns = decodeMessage(request.getParameter("SAMLResponse"));
         } else {
             throw new MessageDecodingException(
                     "No SAMLRequest or SAMLResponse query path parameter, invalid SAML 2 HTTP Redirect message");
         }
 
         SAMLObject samlMessage = (SAMLObject) unmarshallMessage(samlMessageIns);
-        samlMsgCtx.setInboundSAMLMessage(samlMessage);
-        samlMsgCtx.setInboundMessage(samlMessage);
+        messageContext.setMessage(samlMessage);
         log.debug("Decoded SAML message");
 
-        populateMessageContext(samlMsgCtx);
-    }
-    
-    /** {@inheritDoc} */
-    protected boolean isMessageSigned(SAMLMessageContext messageContext) {
-        HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
-        String sigParam = inTransport.getParameterValue("Signature");
-        return (!Strings.isNullOrEmpty(sigParam)) || super.isMessageSigned(messageContext);
+        //TODO
+        //populateMessageContext(samlMsgCtx);
+        
+        setMessageContext(messageContext);
     }
 
     /**

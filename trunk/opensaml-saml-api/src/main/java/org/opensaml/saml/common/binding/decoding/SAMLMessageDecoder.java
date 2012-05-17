@@ -17,12 +17,13 @@
 
 package org.opensaml.saml.common.binding.decoding;
 
-import org.opensaml.ws.message.decoder.MessageDecoder;
+import org.opensaml.messaging.decoder.MessageDecoder;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * SAML extension to the generic message decoders.
  */
-public interface SAMLMessageDecoder extends MessageDecoder {
+public interface SAMLMessageDecoder extends MessageDecoder<SAMLObject> {
 
     /**
      * Gets the SAML binding URI supported by this decoder.

@@ -17,11 +17,8 @@
 
 package org.opensaml.saml.saml2.binding.decoding;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,33 +28,28 @@ import java.util.zip.DeflaterOutputStream;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
-import org.opensaml.saml.saml2.binding.decoding.HTTPRedirectDeflateDecoder;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
-import org.opensaml.security.SecurityException;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  *
  */
 public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
-    private String authnRequestDestination = "https://idp.example.com/idp/sso";
-
     private String expectedRelayValue = "relay";
 
-    private SAMLMessageDecoder decoder;
-
-    private BasicSAMLMessageContext messageContext;
+    private HTTPRedirectDeflateDecoder decoder;
 
     private MockHttpServletRequest httpRequest;
 
@@ -68,14 +60,14 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         httpRequest.setMethod("GET");
         httpRequest.setParameter("RelayState", expectedRelayValue);
 
-        messageContext = new BasicSAMLMessageContext();
-        messageContext.setInboundMessageTransport(new HttpServletRequestAdapter(httpRequest));
-
         decoder = new HTTPRedirectDeflateDecoder();
+        decoder.setParserPool(parserPool);
+        decoder.setHttpServletRequest(httpRequest);
+        decoder.initialize();
     }
 
     @Test
-    public void testResponseDecoding() throws Exception {
+    public void testResponseDecoding() throws MessageDecodingException {
         // Note, Spring's Mock objects don't do URL encoding/decoding, so this is the URL decoded form
         httpRequest
                 .setParameter(
@@ -84,156 +76,28 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         populateRequestURL(httpRequest, "http://example.org");
 
-        decoder.decode(messageContext);
+        decoder.decode();
+        MessageContext messageContext = decoder.getMessageContext();
 
-        Assert.assertTrue(messageContext.getInboundMessage() instanceof Response);
-        Assert.assertTrue(messageContext.getInboundSAMLMessage() instanceof Response);
-        Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
+        Assert.assertTrue(messageContext.getMessage() instanceof Response);
+        //TODO
+        //Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
     }
 
     @Test
-    public void testRequestDecoding() throws Exception {
+    public void testRequestDecoding() throws MessageDecodingException, MessageEncodingException, MarshallingException {
         AuthnRequest samlRequest =
                 (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
 
         httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
 
-        decoder.decode(messageContext);
+        decoder.decode();
+        MessageContext<SAMLObject> messageContext = decoder.getMessageContext();
 
-        Assert.assertTrue(messageContext.getInboundMessage() instanceof RequestAbstractType);
-        Assert.assertTrue(messageContext.getInboundSAMLMessage() instanceof RequestAbstractType);
-        Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
-    }
-
-    @Test
-    public void testMessageEndpointGood() throws Exception {
-        AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-
-        String deliveredEndpointURL = samlRequest.getDestination();
-
-        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
-
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMessageEndpointGoodWithQueryParams() throws Exception {
-        AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-
-        String deliveredEndpointURL = samlRequest.getDestination();
-
-        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
-
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-        // Additional query parameters
-        httpRequest.setParameter("paramFoo", "bar");
-        httpRequest.setParameter("paramBar", "baz");
-
-        try {
-            decoder.decode(messageContext);
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMessageEndpointInvalidURI() throws Exception {
-        AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-
-        String deliveredEndpointURL = samlRequest.getDestination() + "/some/other/endpointURI";
-
-        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
-
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-            Assert.fail("Passed delivered endpoint check, should have failed");
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMessageEndpointInvalidHost() throws Exception {
-        AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-
-        String deliveredEndpointURL = "https://bogusidp.example.com/idp/sso";
-
-        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
-
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-            Assert.fail("Passed delivered endpoint check, should have failed");
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMessageEndpointMissingDestinationNotSigned() throws Exception {
-        AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-        samlRequest.setDestination(null);
-
-        String deliveredEndpointURL = authnRequestDestination;
-
-        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
-
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-        } catch (SecurityException e) {
-            Assert.fail("Caught SecurityException: " + e.getMessage());
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMessageEndpointMissingDestinationSigned() throws Exception {
-        AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-        samlRequest.setDestination(null);
-
-        String deliveredEndpointURL = authnRequestDestination;
-
-        httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));
-        // simulate simple signature, won't really get evaluated
-        httpRequest.setParameter("Signature", "someSigValue");
-
-        populateRequestURL(httpRequest, deliveredEndpointURL);
-
-        try {
-            decoder.decode(messageContext);
-            Assert.fail("Passed delivered endpoint check, should have failed, binding requires endpoint on signed message");
-        } catch (SecurityException e) {
-            // do nothing, failure expected
-        } catch (MessageDecodingException e) {
-            Assert.fail("Caught MessageDecodingException: " + e.getMessage());
-        }
+        Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
+        //TODO
+        //Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
     }
 
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {
