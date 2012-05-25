@@ -26,6 +26,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +76,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder
             log.error("URL TARGET parameter was missing or did not contain a value.");
             throw new MessageDecodingException("URL TARGET parameter was missing or did not contain a value.");
         }
-        //TODO
-        //samlMsgCtx.setRelayState(target);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState(target);
     }
 
     /**

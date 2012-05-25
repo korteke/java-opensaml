@@ -21,6 +21,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -67,8 +68,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = decoder.getMessageContext();
 
         Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
-        //TODO
-        //Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
+        Assert.assertEquals(messageContext.getSubcontext(SamlProtocolContext.class).getRelayState(), expectedRelayValue);
     }
 
     /**
@@ -88,8 +88,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = decoder.getMessageContext();
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
-        //TODO
-        //Assert.assertEquals(messageContext.getRelayState(), expectedRelayValue);
+        Assert.assertEquals(messageContext.getSubcontext(SamlProtocolContext.class).getRelayState(), expectedRelayValue);
     }
     
 }

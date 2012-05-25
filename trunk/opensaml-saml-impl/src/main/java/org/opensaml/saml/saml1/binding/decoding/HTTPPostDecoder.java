@@ -27,10 +27,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,8 +56,8 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAM
         }
 
         String relayState = request.getParameter("TARGET");
-        //TODO what to do with storing RelayState
         log.debug("Decoded SAML relay state (TARGET parameter) of: {}", relayState);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState(relayState);
 
         String base64Message = request.getParameter("SAMLResponse");
         byte[] decodedBytes = Base64Support.decode(base64Message);
