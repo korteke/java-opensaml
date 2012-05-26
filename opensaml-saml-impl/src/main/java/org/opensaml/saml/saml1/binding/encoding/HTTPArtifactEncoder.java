@@ -17,15 +17,22 @@
 
 package org.opensaml.saml.saml1.binding.encoding;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
@@ -33,11 +40,7 @@ import org.opensaml.saml.saml1.binding.artifact.AbstractSAML1Artifact;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilder;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml.saml1.core.Assertion;
-import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Response;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HTTPOutTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,13 +64,32 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      * @param map SAML artifact map used to store created artifacts for later retrival
      */
     public HTTPArtifactEncoder(SAMLArtifactMap map) {
-        artifactMap = map;
         defaultArtifactType = SAML1ArtifactType0001.TYPE_CODE;
     }
 
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML1_ARTIFACT_BINDING_URI;
+    }
+    
+    /**
+     * Get the SAML artifact map to use.
+     * 
+     * @return the artifactMap.
+     */
+    public SAMLArtifactMap getArtifactMap() {
+        return artifactMap;
+    }
+
+    /**
+     * Set the SAML artifact map to use.
+     * 
+     * @param newArtifactMap the new artifactMap 
+     */
+    public void setArtifactMap(SAMLArtifactMap newArtifactMap) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        artifactMap = newArtifactMap;
     }
 
     /** {@inheritDoc} */
@@ -79,51 +101,62 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
     public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException {
         return false;
     }
+    
+    /** {@inheritDoc} */
+    protected void doDestroy() {
+        artifactMap = null;
+        super.doDestroy();
+    }
 
     /** {@inheritDoc} */
-    protected void doEncode(MessageContext messageContext) throws MessageEncodingException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Invalid message context type, this encoder only support SAMLMessageContext");
-            throw new MessageEncodingException(
-                    "Invalid message context type, this encoder only support SAMLMessageContext");
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        if (artifactMap == null) {
+            throw new ComponentInitializationException("SAML artifact map must be supplied");
         }
+    }
 
-        if (!(messageContext.getOutboundMessageTransport() instanceof HTTPOutTransport)) {
-            log.error("Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-            throw new MessageEncodingException(
-                    "Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-        }
+    /** {@inheritDoc} */
+    protected void doEncode() throws MessageEncodingException {
+        MessageContext<SAMLObject> messageContext = getMessageContext();
 
-        SAMLMessageContext<SAMLObject, Response, NameIdentifier> artifactContext = (SAMLMessageContext) messageContext;
-        HTTPOutTransport outTransport = (HTTPOutTransport) artifactContext.getOutboundMessageTransport();
-
-        URI endpointUrl = getEndpointURL(artifactContext);
+        URI endpointUrl = getEndpointURL(messageContext);
 
         List<Pair<String, String>> params = UriSupport.parseQueryString(endpointUrl.getQuery());
 
-        params.add(new Pair<String, String>("TARGET", artifactContext.getRelayState()));
+        String relayState = SAMLBindingSupport.getRelayState(messageContext);
+        if (SAMLBindingSupport.checkRelayState(relayState)) {
+            params.add(new Pair<String, String>("TARGET", relayState));
+        }
 
         SAML1ArtifactBuilder artifactBuilder;
-        if (artifactContext.getOutboundMessageArtifactType() != null) {
-            artifactBuilder = SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory().getArtifactBuilder(
-                    artifactContext.getOutboundMessageArtifactType());
+        byte[] artifactType = getSamlArtifactType(messageContext);
+        if (artifactType != null) {
+            artifactBuilder = SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory()
+                    .getArtifactBuilder(artifactType);
         } else {
-            artifactBuilder = SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory().getArtifactBuilder(defaultArtifactType);
-            artifactContext.setOutboundMessageArtifactType(defaultArtifactType);
+            artifactBuilder = SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory()
+                    .getArtifactBuilder(defaultArtifactType);
+            storeSamlArtifactType(defaultArtifactType);
         }
 
         AbstractSAML1Artifact artifact;
         String artifactString;
-        for (Assertion assertion : artifactContext.getOutboundSAMLMessage().getAssertions()) {
-            artifact = artifactBuilder.buildArtifact(artifactContext, assertion);
-            if(artifact == null){
+        SAMLObject outboundMessage = messageContext.getMessage();
+        if (!(outboundMessage instanceof Response)) {
+            throw new MessageEncodingException("Outbound message was not a SAML 1 Response");
+        }
+        Response samlResponse = (Response) outboundMessage;
+        for (Assertion assertion : samlResponse.getAssertions()) {
+            artifact = artifactBuilder.buildArtifact(messageContext, assertion);
+            if (artifact == null) {
                 log.error("Unable to build artifact for message to relying party");
                 throw new MessageEncodingException("Unable to builder artifact for message to relying party");
             }
 
             try {
-                artifactMap.put(artifact.base64Encode(), messageContext.getInboundMessageIssuer(), messageContext
-                        .getOutboundMessageIssuer(), assertion);
+                artifactMap.put(artifact.base64Encode(), getInboundMessageIssuer(messageContext), 
+                        getOutboundMessageIssuer(messageContext), assertion);
             } catch (MarshallingException e) {
                 log.error("Unable to marshall assertion to be represented as an artifact", e);
                 throw new MessageEncodingException("Unable to marshall assertion to be represented as an artifact", e);
@@ -135,8 +168,49 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
         endpointUrl = UriSupport.setQuery(endpointUrl, params);
 
         String encodedEndpoint = endpointUrl.toASCIIString();
-        log.debug("Sending redirect to URL {} to relying party {}", encodedEndpoint, artifactContext
-                .getInboundMessageIssuer());
-        outTransport.sendRedirect(encodedEndpoint);
+        log.debug("Sending redirect to URL {} to relying party {}", encodedEndpoint, 
+                getInboundMessageIssuer(messageContext));
+        
+        HttpServletResponse response = getHttpServletResponse();
+        try {
+            response.sendRedirect(encodedEndpoint);
+        } catch (IOException e) {
+            throw new MessageEncodingException("Problem sending HTTP redirect", e);
+        }
+    }
+
+    /**
+     * @param messageContext
+     * @return
+     */
+    private String getOutboundMessageIssuer(MessageContext<SAMLObject> messageContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param messageContext
+     * @return
+     */
+    private String getInboundMessageIssuer(MessageContext<SAMLObject> messageContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param defaultArtifactType2
+     */
+    private void storeSamlArtifactType(byte[] artifactType) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * @param messageContext
+     * @return
+     */
+    private byte[] getSamlArtifactType(MessageContext<SAMLObject> messageContext) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -21,14 +21,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicEndpointSelector;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +48,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
     }
 
     /** {@inheritDoc} */
-    public SAML2ArtifactType0004 buildArtifact(SAMLMessageContext<SAMLObject, SAMLObject, NameID> requestContext) {
+    public SAML2ArtifactType0004 buildArtifact(MessageContext<SAMLObject> requestContext) {
         try {
             IndexedEndpoint acsEndpoint = (IndexedEndpoint) getAcsEndpoint(requestContext);
             if (acsEndpoint == null) {
@@ -59,7 +61,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
             trimmedIndex[1] = endpointIndex[3];
 
             MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
-            byte[] source = sha1Digester.digest(requestContext.getLocalEntityId().getBytes());
+            byte[] source = sha1Digester.digest(getLocalEntityId(requestContext).getBytes());
 
             SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
             byte[] assertionHandle;
@@ -80,25 +82,70 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * 
      * @return source location used to for the artifacts created by this encoder
      */
-    protected Endpoint getAcsEndpoint(SAMLMessageContext<SAMLObject, SAMLObject, NameID> requestContext) {
+    protected Endpoint getAcsEndpoint(MessageContext<SAMLObject> requestContext) {
         BasicEndpointSelector selector = new BasicEndpointSelector();
         selector.setEndpointType(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         selector.getSupportedIssuerBindings().add(SAMLConstants.SAML2_SOAP11_BINDING_URI);
-        selector.setMetadataProvider(requestContext.getMetadataProvider());
-        selector.setEntityMetadata(requestContext.getLocalEntityMetadata());
-        selector.setEntityRoleMetadata(requestContext.getLocalEntityRoleMetadata());
+        selector.setMetadataProvider(getMetadataProvider(requestContext));
+        selector.setEntityMetadata(getLocalEntityMetadata(requestContext));
+        selector.setEntityRoleMetadata(getLocalEntityRoleMetadata(requestContext));
 
         Endpoint acsEndpoint = selector.selectEndpoint();
 
         if (acsEndpoint == null) {
             log.error("No artifact resolution service endpoint defined for the entity "
-                    + requestContext.getOutboundMessageIssuer());
+                    + getOutboundMessageIssuer(requestContext));
             return null;
         }
 
         return acsEndpoint;
     }
     
+    /**
+     * @param requestContext
+     * @return
+     */
+    private String getLocalEntityId(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private String getOutboundMessageIssuer(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private RoleDescriptor getLocalEntityRoleMetadata(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private EntityDescriptor getLocalEntityMetadata(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private MetadataProvider getMetadataProvider(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     /**
      * Converts an integer into an unsigned 4-byte array.
      * 

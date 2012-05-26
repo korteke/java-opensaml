@@ -17,24 +17,26 @@
 
 package org.opensaml.saml.saml1.binding.encoding;
 
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import javax.servlet.http.HttpServletResponse;
+
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HTTPOutTransport;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
@@ -53,22 +55,50 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
 
     /** ID of the velocity template used when performing POST encoding. */
     private String velocityTemplateId;
-
-    /**
-     * Constructor.
-     * 
-     * @param engine velocity engine instance used to create POST body
-     * @param templateId ID of the template used to create POST body
-     */
-    public HTTPPostEncoder(VelocityEngine engine, String templateId) {
-        super();
-        velocityEngine = engine;
-        velocityTemplateId = templateId;
-    }
-
+    
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML1_POST_BINDING_URI;
+    }
+
+    /**
+     * Get the VelocityEngine instance.
+     * 
+     * @return return the VelocityEngine instance
+     */
+    public VelocityEngine getVelocityEngine() {
+        return velocityEngine;
+    }
+
+    /**
+     * Set the VelocityEngine instance.
+     * 
+     * @param newVelocityEngine the new VelocityEngine instane
+     */
+    public void setVelocityEngine(VelocityEngine newVelocityEngine) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        velocityEngine = newVelocityEngine;
+    }
+    
+    /**
+     * Get the Velocity template id.
+     * 
+     * @return return the Velocity template id
+     */
+    public String getVelocityTemplateId() {
+        return velocityTemplateId;
+    }
+
+    /**
+     * Set the Velocity template id.
+     * 
+     * @param newVelocityTemplateId the new Velocity template id
+     */
+    public void setVelocityTemplateId(String newVelocityTemplateId) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        velocityTemplateId = newVelocityTemplateId;
     }
 
     /** {@inheritDoc} */
@@ -82,35 +112,41 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
     }
 
     /** {@inheritDoc} */
-    protected void doEncode(MessageContext messageContext) throws MessageEncodingException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Invalid message context type, this encoder only support SAMLMessageContext");
-            throw new MessageEncodingException(
-                    "Invalid message context type, this encoder only support SAMLMessageContext");
+    protected void doDestroy() {
+        velocityEngine = null;
+        velocityTemplateId = null;
+        super.doDestroy();
+    }
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        if (velocityEngine == null) {
+            throw new ComponentInitializationException("VelocityEngine must be supplied");
         }
-
-        if (!(messageContext.getOutboundMessageTransport() instanceof HTTPOutTransport)) {
-            log.error("Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-            throw new MessageEncodingException(
-                    "Invalid outbound message transport type, this encoder only support HTTPOutTransport");
+        if (velocityTemplateId == null) {
+            throw new ComponentInitializationException("Velocity template id must be supplied");
         }
+    }
 
-        SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
+    /** {@inheritDoc} */
+    protected void doEncode() throws MessageEncodingException {
+        MessageContext<SAMLObject> messageContext = getMessageContext();
 
-        SAMLObject outboundMessage = samlMsgCtx.getOutboundSAMLMessage();
+        SAMLObject outboundMessage = messageContext.getMessage();
         if (outboundMessage == null) {
             throw new MessageEncodingException("No outbound SAML message contained in message context");
         }
-        String endpointURL = getEndpointURL(samlMsgCtx).toString();
+        String endpointURL = getEndpointURL(messageContext).toString();
 
-        if (samlMsgCtx.getOutboundSAMLMessage() instanceof ResponseAbstractType) {
-            ((ResponseAbstractType) samlMsgCtx.getOutboundSAMLMessage()).setRecipient(endpointURL);
+        if (outboundMessage instanceof ResponseAbstractType) {
+            ((ResponseAbstractType) outboundMessage).setRecipient(endpointURL);
         }
+        
+        //TODO decide on this
+        signMessage(messageContext);
 
-        signMessage(samlMsgCtx);
-        samlMsgCtx.setOutboundMessage(outboundMessage);
-
-        postEncode(samlMsgCtx, endpointURL);
+        postEncode(messageContext, endpointURL);
     }
 
     /**
@@ -121,36 +157,38 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * 
      * @throws MessageEncodingException thrown if there is a problem encoding the message
      */
-    protected void postEncode(SAMLMessageContext messageContext, String endpointURL) throws MessageEncodingException {
+    protected void postEncode(MessageContext<SAMLObject> messageContext, String endpointURL) 
+            throws MessageEncodingException {
         log.debug("Invoking velocity template to create POST body");
 
         try {
             VelocityContext context = new VelocityContext();
             Encoder esapiEncoder = ESAPI.encoder();
+            SAMLObject message = messageContext.getMessage();
 
             String encodedEndpointURL = esapiEncoder.encodeForHTMLAttribute(endpointURL);
             log.debug("Encoding action url of '{}' with encoded value '{}'", endpointURL, encodedEndpointURL);
             context.put("action", encodedEndpointURL);
 
             log.debug("Marshalling and Base64 encoding SAML message");
-            String messageXML = SerializeSupport.nodeToString(marshallMessage(messageContext.getOutboundSAMLMessage()));
+            String messageXML = SerializeSupport.nodeToString(marshallMessage(message));
             String encodedMessage = Base64Support.encode(messageXML.getBytes("UTF-8"), Base64Support.UNCHUNKED);
             context.put("SAMLResponse", encodedMessage);
 
-            if (messageContext.getRelayState() != null) {
-                String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(messageContext.getRelayState());
-                log.debug("Setting TARGET parameter to: '{}', encoded as '{}'", messageContext.getRelayState(),
-                        encodedRelayState);
+            String relayState = SAMLBindingSupport.getRelayState(messageContext);
+            if (relayState != null) {
+                String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(relayState);
+                log.debug("Setting TARGET parameter to: '{}', encoded as '{}'", relayState, encodedRelayState);
                 context.put("TARGET", encodedRelayState);
             }
+            
+            HttpServletResponse response = getHttpServletResponse();
 
-            HTTPOutTransport outTransport = (HTTPOutTransport) messageContext.getOutboundMessageTransport();
-            HTTPTransportUtils.addNoCacheHeaders(outTransport);
-            HTTPTransportUtils.setUTF8Encoding(outTransport);
-            HTTPTransportUtils.setContentType(outTransport, "text/html");
+            HttpServletSupport.addNoCacheHeaders(response);
+            HttpServletSupport.setUTF8Encoding(response);
+            HttpServletSupport.setContentType(response, "text/html");
 
-            OutputStream transportOutStream = outTransport.getOutgoingStream();
-            Writer out = new OutputStreamWriter(transportOutStream, "UTF-8");
+            Writer out = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
             velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
             out.flush();
         } catch (UnsupportedEncodingException e) {

@@ -21,11 +21,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.Assertion;
-import org.opensaml.saml.saml1.core.NameIdentifier;
-import org.opensaml.saml.saml1.core.RequestAbstractType;
-import org.opensaml.saml.saml1.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,11 +41,10 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
     }
 
     /** {@inheritDoc} */
-    public SAML1ArtifactType0001 buildArtifact(
-            SAMLMessageContext<RequestAbstractType, Response, NameIdentifier> requestContext, Assertion assertion) {
+    public SAML1ArtifactType0001 buildArtifact(MessageContext<SAMLObject> requestContext, Assertion assertion) {
         try {
             MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
-            byte[] source = sha1Digester.digest(requestContext.getLocalEntityId().getBytes());
+            byte[] source = sha1Digester.digest(getLocalEntityId(requestContext).getBytes());
 
             SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
             byte[] assertionHandle = new byte[20];
@@ -58,5 +55,14 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
             log.error("JVM does not support required cryptography algorithms.", e);
             throw new InternalError("JVM does not support required cryptography algorithms: SHA-1 and/or SHA1PRNG.");
         }
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private String getLocalEntityId(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

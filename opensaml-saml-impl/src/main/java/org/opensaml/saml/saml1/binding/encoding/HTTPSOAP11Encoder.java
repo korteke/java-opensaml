@@ -17,20 +17,22 @@
 
 package org.opensaml.saml.saml1.binding.encoding;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HTTPOutTransport;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -55,45 +57,80 @@ public class HTTPSOAP11Encoder extends BaseSAML1MessageEncoder {
 
     /** {@inheritDoc} */
     public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException {
+        //TODO
+        /*
         if (messageContext.getOutboundMessageTransport().isConfidential()) {
             return true;
         }
+        */
 
         return false;
     }
 
     /** {@inheritDoc} */
     public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException {
+        //TODO
+        /*
         if (messageContext.getOutboundMessageTransport().isIntegrityProtected()) {
             return true;
         }
+        */
 
         return false;
     }
 
     /** {@inheritDoc} */
-    protected void doEncode(MessageContext messageContext) throws MessageEncodingException {
-        validateMessageContent(messageContext);
-        SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
+    public void prepareContext() throws MessageEncodingException {
+        MessageContext<SAMLObject> messageContext = getMessageContext();
 
-        SAMLObject samlMessage = samlMsgCtx.getOutboundSAMLMessage();
+        SAMLObject samlMessage = messageContext.getMessage();
         if (samlMessage == null) {
             throw new MessageEncodingException("No outbound SAML message contained in message context");
         }
 
-        signMessage(samlMsgCtx);
+        //TODO decide on this
+        signMessage(messageContext);
+        
         Envelope envelope = buildSOAPMessage(samlMessage);
-        samlMsgCtx.setOutboundMessage(envelope);
+        storeSOAPEnvelope(envelope);
+    }
 
+    /** {@inheritDoc} */
+    protected void doEncode() throws MessageEncodingException {
+        Envelope envelope = getSOAPEnvelope();
         Element envelopeElem = marshallMessage(envelope);
 
-        HTTPOutTransport outTransport = (HTTPOutTransport) messageContext.getOutboundMessageTransport();
-        HTTPTransportUtils.addNoCacheHeaders(outTransport);
-        HTTPTransportUtils.setUTF8Encoding(outTransport);
-        HTTPTransportUtils.setContentType(outTransport, "text/xml");
-        outTransport.setHeader("SOAPAction", "http://www.oasis-open.org/committees/security");
+        HttpServletResponse response = getHttpServletResponse();
+        HttpServletSupport.addNoCacheHeaders(response);
+        HttpServletSupport.setUTF8Encoding(response);
+        HttpServletSupport.setContentType(response, "text/xml");
+        response.setHeader("SOAPAction", "http://www.oasis-open.org/committees/security");
 
-        SerializeSupport.writeNode(envelopeElem, outTransport.getOutgoingStream());
+        try {
+            SerializeSupport.writeNode(envelopeElem, response.getOutputStream());
+        } catch (IOException e) {
+            throw new MessageEncodingException("Problem writing SOAP envelope to servlet output stream", e);
+        }
+    }
+
+    /**
+     * Store the constructed SOAP envelope in the message context for later encoding.
+     * 
+     * @param envelope the SOAP envelope
+     */
+    protected void storeSOAPEnvelope(Envelope envelope) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * Retrieve the previously stored SOAP envelope from the message context.
+     * 
+     * @return the previously stored SOAP envelope
+     */
+    protected Envelope getSOAPEnvelope() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
@@ -122,24 +159,4 @@ public class HTTPSOAP11Encoder extends BaseSAML1MessageEncoder {
         return envelope;
     }
 
-    /**
-     * Validates that the message context is a {@link SAMLMessageContext} and that its outbound transport is HTTP.
-     * 
-     * @param messageContext current message context
-     * 
-     * @throws MessageEncodingException thrown if the message context conditions are not met
-     */
-    protected void validateMessageContent(MessageContext messageContext) throws MessageEncodingException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Invalid message context type, this encoder only support SAMLMessageContext");
-            throw new MessageEncodingException(
-                    "Invalid message context type, this encoder only support SAMLMessageContext");
-        }
-
-        if (!(messageContext.getOutboundMessageTransport() instanceof HTTPOutTransport)) {
-            log.error("Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-            throw new MessageEncodingException(
-                    "Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-        }
-    }
 }

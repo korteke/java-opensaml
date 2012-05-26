@@ -17,10 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.security;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
 import java.net.URI;
 import java.security.KeyException;
 import java.security.PrivateKey;
@@ -30,15 +26,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.UriSupport;
 
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLTestHelper;
-import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.saml2.binding.encoding.HTTPRedirectDeflateEncoder;
-import org.opensaml.saml.saml2.binding.security.SAML2HTTPRedirectDeflateSignatureRule;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
@@ -50,16 +49,17 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 
 /**
@@ -256,25 +256,34 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         //
         // Encode the "outbound" message context, with simple signature
         //
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        HttpServletResponseAdapter outTransport = new HttpServletResponseAdapter(response, false);
-        
         SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
         .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        BasicSAMLMessageContext outboundMessgeContext = new BasicSAMLMessageContext();
-        outboundMessgeContext.setOutboundMessageTransport(outTransport);
-        outboundMessgeContext.setOutboundSAMLMessage(buildInboundSAMLMessage());
-        outboundMessgeContext.setRelayState(expectedRelayValue);
-        outboundMessgeContext.setPeerEntityEndpoint(samlEndpoint);
-        outboundMessgeContext.setOutboundSAMLMessageSigningCredential(signingX509Cred);
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        messageContext.setMessage(buildInboundSAMLMessage());
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState(expectedRelayValue);
+        //TODO
+        //messageContext.setPeerEntityEndpoint(samlEndpoint);
+        //messageContext.setOutboundSAMLMessageSigningCredential(signingX509Cred);
+        
+        MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
         try {
-            encoder.encode(outboundMessgeContext);
+            encoder.initialize();
+        } catch (ComponentInitializationException e1) {
+            Assert.fail("Failed to initialize encoder");
+        }
+
+        try {
+            encoder.prepareContext();
+            encoder.encode();
         } catch (MessageEncodingException e) {
             Assert.fail("Could not encode outbound message context");
         }

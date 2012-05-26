@@ -17,9 +17,8 @@
 
 package org.opensaml.saml.saml2.binding.artifact;
 
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml.saml2.core.NameID;
 
 /**
  * Builder of typed SAML 2 artifacts.
@@ -37,7 +36,7 @@ public interface SAML2ArtifactBuilder<ArtifactType extends AbstractSAML2Artifact
      * 
      * @return constructed artifcate
      */
-    public ArtifactType buildArtifact(SAMLMessageContext<SAMLObject, SAMLObject, NameID> requestContext);
+    public ArtifactType buildArtifact(MessageContext<SAMLObject> requestContext);
 
     /**
      * Builds a populated artifact given the artifact's byte-array representation.

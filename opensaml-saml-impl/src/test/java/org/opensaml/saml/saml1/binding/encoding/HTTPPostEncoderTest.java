@@ -17,22 +17,22 @@
 
 package org.opensaml.saml.saml1.binding.encoding;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.saml.saml1.binding.encoding.HTTPPostEncoder;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test class for SAML 1 HTTP Post encoding.
@@ -71,17 +71,24 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
 
-        HTTPPostEncoder encoder = new HTTPPostEncoder(velocityEngine,
-        "/templates/saml1-post-binding.vm");
-
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        BasicSAMLMessageContext messageContext = new BasicSAMLMessageContext();
-        messageContext.setOutboundMessageTransport(new HttpServletResponseAdapter(response, false));
-        messageContext.setPeerEntityEndpoint(samlEndpoint);
-        messageContext.setOutboundSAMLMessage(samlMessage);
-        messageContext.setRelayState("relay");
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        messageContext.setMessage(samlMessage);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState("relay");
+        //TODO
+        //messageContext.setPeerEntityEndpoint(samlEndpoint);
         
-        encoder.encode(messageContext);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        
+        HTTPPostEncoder encoder = new HTTPPostEncoder();
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.setVelocityEngine(velocityEngine);
+        encoder.setVelocityTemplateId("/templates/saml1-post-binding.vm");
+
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
 
         Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");

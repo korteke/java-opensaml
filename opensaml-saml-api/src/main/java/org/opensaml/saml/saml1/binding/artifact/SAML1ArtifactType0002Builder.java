@@ -20,6 +20,8 @@ package org.opensaml.saml.saml1.binding.artifact;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -29,6 +31,9 @@ import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +51,7 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
     }
 
     /** {@inheritDoc} */
-    public SAML1ArtifactType0002 buildArtifact(
-            SAMLMessageContext<RequestAbstractType, Response, NameIdentifier> requestContext, Assertion assertion) {
+    public SAML1ArtifactType0002 buildArtifact(MessageContext<SAMLObject> requestContext, Assertion assertion) {
         try {
             String sourceLocation = getSourceLocation(requestContext);
             if (sourceLocation == null) {
@@ -71,13 +75,13 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
      * 
      * @return source location used to for the artifacts created by this encoder
      */
-    protected String getSourceLocation(SAMLMessageContext<RequestAbstractType, Response, NameIdentifier> requestContext) {
+    protected String getSourceLocation(MessageContext<SAMLObject> requestContext) {
         BasicEndpointSelector selector = new BasicEndpointSelector();
         selector.setEndpointType(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
         selector.getSupportedIssuerBindings().add(SAMLConstants.SAML1_SOAP11_BINDING_URI);
-        selector.setMetadataProvider(requestContext.getMetadataProvider());
-        selector.setEntityMetadata(requestContext.getLocalEntityMetadata());
-        selector.setEntityRoleMetadata(requestContext.getLocalEntityRoleMetadata());
+        selector.setMetadataProvider(getMetadataProvider(requestContext));
+        selector.setEntityMetadata(getLocalEntityMetadata(requestContext));
+        selector.setEntityRoleMetadata(getLocalEntityRoleMetadata(requestContext));
 
         Endpoint acsEndpoint = selector.selectEndpoint();
 
@@ -87,5 +91,32 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
         }
 
         return acsEndpoint.getLocation();
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private RoleDescriptor getLocalEntityRoleMetadata(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private EntityDescriptor getLocalEntityMetadata(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * @param requestContext
+     * @return
+     */
+    private MetadataProvider getMetadataProvider(MessageContext<SAMLObject> requestContext) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

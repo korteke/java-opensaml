@@ -26,24 +26,25 @@ import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
+import javax.servlet.http.HttpServletResponse;
+
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.net.UriSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
-import org.opensaml.ws.transport.http.HTTPOutTransport;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
@@ -81,48 +82,42 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     }
 
     /** {@inheritDoc} */
-    protected void doEncode(MessageContext messageContext) throws MessageEncodingException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Invalid message context type, this encoder only support SAMLMessageContext");
-            throw new MessageEncodingException(
-                    "Invalid message context type, this encoder only support SAMLMessageContext");
+    protected void doEncode() throws MessageEncodingException {
+        MessageContext<SAMLObject> messageContext = getMessageContext();
+        SAMLObject outboundMessage = messageContext.getMessage();
+
+        String endpointURL = getEndpointURL(messageContext).toString();
+        setResponseDestination(outboundMessage, endpointURL);
+
+        removeSignature(outboundMessage);
+
+        String encodedMessage = deflateAndBase64Encode(outboundMessage);
+
+        String redirectURL = buildRedirectURL(messageContext, endpointURL, encodedMessage);
+
+        HttpServletResponse response = getHttpServletResponse();
+        HttpServletSupport.addNoCacheHeaders(response);
+        HttpServletSupport.setUTF8Encoding(response);
+
+        try {
+            response.sendRedirect(redirectURL);
+        } catch (IOException e) {
+            throw new MessageEncodingException("Problem sending HTTP redirect", e);
         }
-
-        if (!(messageContext.getOutboundMessageTransport() instanceof HTTPOutTransport)) {
-            log.error("Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-            throw new MessageEncodingException(
-                    "Invalid outbound message transport type, this encoder only support HTTPOutTransport");
-        }
-
-        SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
-
-        String endpointURL = getEndpointURL(samlMsgCtx).toString();
-
-        setResponseDestination(samlMsgCtx.getOutboundSAMLMessage(), endpointURL);
-
-        removeSignature(samlMsgCtx);
-
-        String encodedMessage = deflateAndBase64Encode(samlMsgCtx.getOutboundSAMLMessage());
-
-        String redirectURL = buildRedirectURL(samlMsgCtx, endpointURL, encodedMessage);
-
-        HTTPOutTransport out = (HTTPOutTransport) messageContext.getOutboundMessageTransport();
-        HTTPTransportUtils.addNoCacheHeaders(out);
-        HTTPTransportUtils.setUTF8Encoding(out);
-
-        out.sendRedirect(redirectURL);
     }
 
     /**
      * Removes the signature from the protocol message.
      * 
-     * @param messageContext current message context
+     * @param message current message context
      */
-    protected void removeSignature(SAMLMessageContext messageContext) {
-        SignableSAMLObject message = (SignableSAMLObject) messageContext.getOutboundSAMLMessage();
-        if (message.isSigned()) {
-            log.debug("Removing SAML protocol message signature");
-            message.setSignature(null);
+    protected void removeSignature(SAMLObject message) {
+        if (message instanceof SignableSAMLObject) {
+            SignableSAMLObject signableMessage = (SignableSAMLObject) message;
+            if (signableMessage.isSigned()) {
+                log.debug("Removing SAML protocol message signature");
+                signableMessage.setSignature(null);
+            }
         }
     }
 
@@ -155,7 +150,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     /**
      * Builds the URL to redirect the client to.
      * 
-     * @param messagesContext current message context
+     * @param messageContext current message context
      * @param endpoint endpoint URL to send encoded message to
      * @param message Deflated and Base64 encoded message
      * 
@@ -163,7 +158,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
      * 
      * @throws MessageEncodingException thrown if the SAML message is neither a RequestAbstractType or Response
      */
-    protected String buildRedirectURL(SAMLMessageContext messagesContext, String endpoint, String message)
+    protected String buildRedirectURL(MessageContext<SAMLObject> messageContext, String endpoint, String message)
             throws MessageEncodingException {
         log.debug("Building URL to redirect client to");
 
@@ -176,22 +171,24 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
         List<Pair<String, String>> queryParams = UriSupport.parseQueryString(endpointUrl.getQuery());
         queryParams.clear();
+        
+        SAMLObject outboundMessage = messageContext.getMessage();
 
-        if (messagesContext.getOutboundSAMLMessage() instanceof RequestAbstractType) {
+        if (outboundMessage instanceof RequestAbstractType) {
             queryParams.add(new Pair<String, String>("SAMLRequest", message));
-        } else if (messagesContext.getOutboundSAMLMessage() instanceof StatusResponseType) {
+        } else if (outboundMessage instanceof StatusResponseType) {
             queryParams.add(new Pair<String, String>("SAMLResponse", message));
         } else {
             throw new MessageEncodingException(
                     "SAML message is neither a SAML RequestAbstractType or StatusResponseType");
         }
 
-        String relayState = messagesContext.getRelayState();
-        if (checkRelayState(relayState)) {
+        String relayState = SAMLBindingSupport.getRelayState(messageContext);
+        if (SAMLBindingSupport.checkRelayState(relayState)) {
             queryParams.add(new Pair<String, String>("RelayState", relayState));
         }
 
-        Credential signingCredential = messagesContext.getOuboundSAMLMessageSigningCredential();
+        Credential signingCredential = getContextSigningCredential(messageContext);
         if (signingCredential != null) {
             // TODO pull SecurityConfiguration from SAMLMessageContext? needs to be added
             String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);

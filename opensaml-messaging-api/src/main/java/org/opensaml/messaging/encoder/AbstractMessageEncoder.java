@@ -48,7 +48,15 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestru
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
-        doEncoder();
+        doEncode();
+    }
+
+    /** {@inheritDoc}.
+     * 
+     * Default implementation is a no-op.
+     */
+    public void prepareContext() throws MessageEncodingException {
+        
     }
 
     /**
@@ -82,5 +90,5 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestru
      * 
      * @throws MessageEncodingException thrown if there is a problem encoding the message
      */
-    protected abstract void doEncoder() throws MessageEncodingException;
+    protected abstract void doEncode() throws MessageEncodingException;
 }
