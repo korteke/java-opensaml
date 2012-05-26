@@ -17,19 +17,19 @@
 
 package org.opensaml.saml.saml1.binding.encoding;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.saml.saml1.binding.encoding.HTTPSOAP11Encoder;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * Test case for SAML 1.X HTTP SOAP 1.1 binding encoding.
@@ -53,15 +53,21 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
 
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        messageContext.setMessage(request);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState("relay");
+        //TODO
+        //messageContext.setPeerEntityEndpoint(samlEndpoint);
+        
         MockHttpServletResponse response = new MockHttpServletResponse();
-        BasicSAMLMessageContext messageContext = new BasicSAMLMessageContext();
-        messageContext.setOutboundMessageTransport(new HttpServletResponseAdapter(response, false));
-        messageContext.setPeerEntityEndpoint(samlEndpoint);
-        messageContext.setOutboundSAMLMessage(request);
-        messageContext.setRelayState("relay");
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
-        encoder.encode(messageContext);
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
 
         Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");

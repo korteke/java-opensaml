@@ -17,11 +17,9 @@
 
 package org.opensaml.saml.saml1.binding.artifact;
 
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.Assertion;
-import org.opensaml.saml.saml1.core.NameIdentifier;
-import org.opensaml.saml.saml1.core.RequestAbstractType;
-import org.opensaml.saml.saml1.core.Response;
 
 /**
  * Builder of typed SAML 1 artifacts.
@@ -40,8 +38,7 @@ public interface SAML1ArtifactBuilder<ArtifactType extends AbstractSAML1Artifact
      * 
      * @return constructed artifcate
      */
-    public ArtifactType buildArtifact(SAMLMessageContext<RequestAbstractType, Response, NameIdentifier> requestContext,
-            Assertion assertion);
+    public ArtifactType buildArtifact(MessageContext<SAMLObject> requestContext, Assertion assertion);
 
     /**
      * Builds a populated artifact given the artifact's byte-array representation.

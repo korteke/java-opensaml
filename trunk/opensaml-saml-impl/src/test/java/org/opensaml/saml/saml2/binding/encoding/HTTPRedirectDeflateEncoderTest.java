@@ -17,27 +17,26 @@
 
 package org.opensaml.saml.saml2.binding.encoding;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
 import java.net.URL;
 import java.security.KeyPair;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.common.binding.BasicSAMLMessageContext;
-import org.opensaml.saml.saml2.binding.encoding.HTTPRedirectDeflateEncoder;
+import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.ws.transport.http.HTTPTransportUtils;
-import org.opensaml.ws.transport.http.HttpServletResponseAdapter;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * Unit test for redirect encoding.
@@ -75,19 +74,23 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
-
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        HttpServletResponseAdapter outTransport = new HttpServletResponseAdapter(response, false);
         
-        BasicSAMLMessageContext messageContext = new BasicSAMLMessageContext();
-        messageContext.setOutboundMessageTransport(outTransport);
-        messageContext.setOutboundSAMLMessage(samlMessage);
-        messageContext.setPeerEntityEndpoint(samlEndpoint);
-        messageContext.setRelayState("relay");
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        messageContext.setMessage(samlMessage);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState("relay");
+        //TODO
+        //messageContext.setPeerEntityEndpoint(samlEndpoint);
+        
+        MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
-        encoder.encode(messageContext);
-
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
+        
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getRedirectedUrl().hashCode(), -117456809);
@@ -124,22 +127,25 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
-
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        HttpServletResponseAdapter outTransport = new HttpServletResponseAdapter(response, false);
         
-        BasicSAMLMessageContext messageContext = new BasicSAMLMessageContext();
-        messageContext.setOutboundMessageTransport(outTransport);
-        messageContext.setOutboundSAMLMessage(samlMessage);
-        messageContext.setPeerEntityEndpoint(samlEndpoint);
-        messageContext.setRelayState("relay");
-        
+        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        messageContext.setMessage(samlMessage);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState("relay");
+        //TODO
+        //messageContext.setPeerEntityEndpoint(samlEndpoint);
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
-        messageContext.setOutboundSAMLMessageSigningCredential(
-                CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+        //TODO
+        //messageContext.setOutboundSAMLMessageSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+        
+        MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
-        encoder.encode(messageContext);
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
         
         String queryString = new URL(response.getRedirectedUrl()).getQuery();
         

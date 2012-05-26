@@ -17,12 +17,13 @@
 
 package org.opensaml.saml.common.binding.encoding;
 
-import org.opensaml.ws.message.encoder.MessageEncoder;
+import org.opensaml.messaging.encoder.MessageEncoder;
+import org.opensaml.saml.common.SAMLObject;
 
 /**
  * SAML extension to the generic message encoder.
  */
-public interface SAMLMessageEncoder extends MessageEncoder {
+public interface SAMLMessageEncoder extends MessageEncoder<SAMLObject> {
 
     /**
      * Gets the SAML binding URI supported by this encoder.

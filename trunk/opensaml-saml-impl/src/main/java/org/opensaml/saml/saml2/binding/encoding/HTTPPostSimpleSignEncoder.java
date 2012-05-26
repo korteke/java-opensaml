@@ -27,12 +27,15 @@ import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.encoder.MessageEncodingException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
@@ -60,55 +63,54 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostSimpleSignEncoder.class);
 
+    //TODO get rid of this flag and ops if decided not to have encoders do protocol message signing
+    
     /**
      * Flag to indicate whether the SAML 2 protocol message should additionally be signed using the XML Signature, in
      * addition to SimpleSign.
      */
-    private boolean signProtocolMessageWithXMLDSIG;
+    private boolean signWithXmlSignature;
 
-    /**
-     * Constructor.
-     * 
-     * @param engine Velocity engine instance used to create POST body
-     * @param templateId ID of the template used to create POST body
-     */
-    public HTTPPostSimpleSignEncoder(VelocityEngine engine, String templateId) {
-        super(engine, templateId);
-        signProtocolMessageWithXMLDSIG = false;
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param engine Velocity engine instance used to create POST body
-     * @param templateId ID of the template used to create POST body
-     * @param signXMLProtocolMessage if true, the protocol message will be signed according to the XML Signature
-     *            specification, in addition to the HTTP-POST-SimpleSign binding specification
-     */
-    public HTTPPostSimpleSignEncoder(VelocityEngine engine, String templateId, boolean signXMLProtocolMessage) {
-        super(engine, templateId);
-        signProtocolMessageWithXMLDSIG = signXMLProtocolMessage;
-    }
 
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML2_POST_SIMPLE_SIGN_BINDING_URI;
     }
+    
+    /**
+     * Get the flag to indicate whether the SAML 2 protocol message should be 
+     * signed using the XML Signature, in addition to SimpleSign.
+     * 
+     * @return the signWithXmlSignature flag
+     */
+    public boolean isSignWithXmlSignature() {
+        return signWithXmlSignature;
+    }
+
+    /**
+     * Set the flag to indicate whether the SAML 2 protocol message should be 
+     * signed using the XML Signature, in addition to SimpleSign.
+     * 
+     * @param newSignWithXmlSignature the new signWithXmlSignature 
+     */
+    public void setSignWithXmlSignature(boolean newSignWithXmlSignature) {
+        signWithXmlSignature = newSignWithXmlSignature;
+    }
 
     /** {@inheritDoc} */
-    protected void signMessage(SAMLMessageContext messageContext) throws MessageEncodingException {
-        if (signProtocolMessageWithXMLDSIG) {
+    protected void signMessage(MessageContext<SAMLObject> messageContext) throws MessageEncodingException {
+        if (signWithXmlSignature) {
             super.signMessage(messageContext);
         }
     }
 
     /** {@inheritDoc} */
-    protected void populateVelocityContext(VelocityContext velocityContext, SAMLMessageContext messageContext,
+    protected void populateVelocityContext(VelocityContext velocityContext, MessageContext<SAMLObject> messageContext,
             String endpointURL) throws MessageEncodingException {
 
         super.populateVelocityContext(velocityContext, messageContext, endpointURL);
 
-        Credential signingCredential = messageContext.getOuboundSAMLMessageSigningCredential();
+        Credential signingCredential = getContextSigningCredential(messageContext);
         if (signingCredential == null) {
             log.debug("No signing credential was supplied, skipping HTTP-Post simple signing");
             return;
@@ -175,7 +177,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * 
      * @return the form control data string for signature computation
      */
-    protected String buildFormDataToSign(VelocityContext velocityContext, SAMLMessageContext messageContext,
+    protected String buildFormDataToSign(VelocityContext velocityContext, MessageContext<SAMLObject> messageContext,
             String sigAlgURI) {
         StringBuilder builder = new StringBuilder();
 
@@ -204,8 +206,9 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
             builder.append("SAMLResponse=" + msg);
         }
 
-        if (messageContext.getRelayState() != null) {
-            builder.append("&RelayState=" + messageContext.getRelayState());
+        String relayState = SAMLBindingSupport.getRelayState(messageContext);
+        if (relayState != null) {
+            builder.append("&RelayState=" + relayState);
         }
 
         builder.append("&SigAlg=" + sigAlgURI);
