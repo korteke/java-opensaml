@@ -22,6 +22,7 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.opensaml.core.config.ConfigurationPropertiesSource;
@@ -42,10 +43,11 @@ public class FilesystemConfigurationPropertiesSourceTest {
     /** Actual target file test runs against. */
     private File targetFile;
     
-    /** Constructor. */
-    public FilesystemConfigurationPropertiesSourceTest() {
+    /** Constructor. 
+     * @throws IOException */
+    public FilesystemConfigurationPropertiesSourceTest() throws IOException {
         masterFile = new File("src/test/resources/opensaml-config.properties");
-        targetFile = new File("/tmp/opensaml-config.properties");
+        targetFile = File.createTempFile("opensaml-config.properties", "");
         System.out.println(masterFile.getAbsolutePath());
         System.out.println(targetFile.getAbsolutePath()); 
     }
