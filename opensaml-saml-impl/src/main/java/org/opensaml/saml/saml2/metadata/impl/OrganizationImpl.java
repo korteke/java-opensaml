@@ -39,27 +39,27 @@ import org.opensaml.saml.saml2.metadata.OrganizationURL;
  */
 public class OrganizationImpl extends AbstractSAMLObject implements Organization {
 
-    /** element extensions */
+    /** element extensions. */
     private Extensions extensions;
 
-    /** OrganizationName children */
+    /** OrganizationName children. */
     private final XMLObjectChildrenList<OrganizationName> names;
 
-    /** OrganizationDisplayName children */
+    /** OrganizationDisplayName children. */
     private final XMLObjectChildrenList<OrganizationDisplayName> displayNames;
 
-    /** OrganizationURL children */
+    /** OrganizationURL children. */
     private final XMLObjectChildrenList<OrganizationURL> urls;
     
-    /** "anyAttribute" attributes */
+    /** "anyAttribute" attributes. */
     private final AttributeMap unknownAttributes;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected OrganizationImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -75,8 +75,8 @@ public class OrganizationImpl extends AbstractSAMLObject implements Organization
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException {
-        this.extensions = prepareForAssignment(this.extensions, extensions);
+    public void setExtensions(Extensions newExtensions) throws IllegalArgumentException {
+        this.extensions = prepareForAssignment(this.extensions, newExtensions);
     }
 
     /** {@inheritDoc} */

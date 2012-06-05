@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.EmailAddressImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.EmailAddressImpl}.
  */
 public class EmailAddressBuilder extends AbstractSAMLObjectBuilder<EmailAddress> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public EmailAddressBuilder() {
 
@@ -39,7 +39,8 @@ public class EmailAddressBuilder extends AbstractSAMLObjectBuilder<EmailAddress>
 
     /** {@inheritDoc} */
     public EmailAddress buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, EmailAddress.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, EmailAddress.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

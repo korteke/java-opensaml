@@ -62,7 +62,8 @@ public class EntityDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
         // Set the validUntil attribute
         if (entityDescriptor.getValidUntil() != null) {
             log.debug("Writting validUntil attribute to EntityDescriptor DOM element");
-            String validUntilStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(entityDescriptor.getValidUntil());
+            String validUntilStr =
+                    SAMLConfigurationSupport.getSAMLDateFormatter().print(entityDescriptor.getValidUntil());
             domElement.setAttributeNS(null, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_NAME, validUntilStr);
         }
 

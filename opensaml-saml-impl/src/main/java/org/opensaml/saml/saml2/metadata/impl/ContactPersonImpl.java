@@ -38,40 +38,40 @@ import org.opensaml.saml.saml2.metadata.SurName;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ContactPerson}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ContactPerson}.
  */
 public class ContactPersonImpl extends AbstractSAMLObject implements ContactPerson {
 
-    /** Contact person type */
+    /** Contact person type. */
     private ContactPersonTypeEnumeration type;
 
-    /** Extensions child object */
+    /** Extensions child object. */
     private Extensions extensions;
 
-    /** Company child element */
+    /** Company child element. */
     private Company company;
 
-    /** GivenName child objectobject */
+    /** GivenName child objectobject. */
     private GivenName givenName;
 
-    /** SurName child object */
+    /** SurName child object. */
     private SurName surName;
     
-    /** "anyAttribute" attributes */
+    /** "anyAttribute" attributes. */
     private final AttributeMap unknownAttributes;
 
-    /** Child email address */
+    /** Child email address. */
     private final XMLObjectChildrenList<EmailAddress> emailAddresses;
 
-    /** Child telephone numbers */
+    /** Child telephone numbers. */
     private final XMLObjectChildrenList<TelephoneNumber> telephoneNumbers;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected ContactPersonImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -86,8 +86,8 @@ public class ContactPersonImpl extends AbstractSAMLObject implements ContactPers
     }
 
     /** {@inheritDoc} */
-    public void setType(ContactPersonTypeEnumeration type) {
-        this.type = prepareForAssignment(this.type, type);
+    public void setType(ContactPersonTypeEnumeration theType) {
+        this.type = prepareForAssignment(this.type, theType);
     }
 
     /** {@inheritDoc} */
@@ -96,8 +96,8 @@ public class ContactPersonImpl extends AbstractSAMLObject implements ContactPers
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException {
-        this.extensions = prepareForAssignment(this.extensions, extensions);
+    public void setExtensions(Extensions theExtensions) throws IllegalArgumentException {
+        this.extensions = prepareForAssignment(this.extensions, theExtensions);
     }
 
     /** {@inheritDoc} */
@@ -106,8 +106,8 @@ public class ContactPersonImpl extends AbstractSAMLObject implements ContactPers
     }
 
     /** {@inheritDoc} */
-    public void setCompany(Company company) {
-        this.company = prepareForAssignment(this.company, company);
+    public void setCompany(Company theCompany) {
+        this.company = prepareForAssignment(this.company, theCompany);
     }
 
     /** {@inheritDoc} */

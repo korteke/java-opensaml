@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 public class AuthnQueryServiceBuilder extends AbstractSAMLObjectBuilder<AuthnQueryService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthnQueryServiceBuilder() {
 
@@ -39,7 +39,8 @@ public class AuthnQueryServiceBuilder extends AbstractSAMLObjectBuilder<AuthnQue
 
     /** {@inheritDoc} */
     public AuthnQueryService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, AuthnQueryService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, AuthnQueryService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -40,36 +40,36 @@ import org.opensaml.saml.saml2.metadata.KeyDescriptor;
  */
 public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implements AffiliationDescriptor {
 
-    /** ID of the owner of this affiliation */
+    /** ID of the owner of this affiliation. */
     private String ownerID;
     
-    /** ID attribute*/
+    /** ID attribute. */
     private String id;
 
-    /** validUntil attribute */
+    /** validUntil attribute. */
     private DateTime validUntil;
 
-    /** cacheDurection attribute */
+    /** cacheDurection attribute. */
     private Long cacheDuration;
 
-    /** Extensions child */
+    /** Extensions child. */
     private Extensions extensions;
     
-    /** "anyAttribute" attributes */
+    /** "anyAttribute" attributes. */
     private final AttributeMap unknownAttributes;
 
-    /** Members of this affiliation */
+    /** Members of this affiliation. */
     private final XMLObjectChildrenList<AffiliateMember> members;
 
-    /** Key descriptors for this role */
+    /** Key descriptors for this role. */
     private final XMLObjectChildrenList<KeyDescriptor> keyDescriptors;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace
+     * @param elementLocalName localname
+     * @param namespacePrefix prefix
      */
     protected AffiliationDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -91,10 +91,12 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
         ownerID = prepareForAssignment(ownerID, newOwnerID);
     }
     
+    /** {@inheritDoc} */
     public String getID() {
         return id;
     }
     
+    /** {@inheritDoc} */
     public void setID(String newID) {
         String oldID = this.id;
         this.id = prepareForAssignment(this.id, newID);
@@ -112,8 +114,8 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
-    public void setValidUntil(DateTime validUntil) {
-        this.validUntil = prepareForAssignment(this.validUntil, validUntil);
+    public void setValidUntil(DateTime theValidUntil) {
+        this.validUntil = prepareForAssignment(this.validUntil, theValidUntil);
     }
 
     /** {@inheritDoc} */
@@ -132,8 +134,8 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException {
-        this.extensions = prepareForAssignment(this.extensions, extensions);
+    public void setExtensions(Extensions theExtensions) throws IllegalArgumentException {
+        this.extensions = prepareForAssignment(this.extensions, theExtensions);
     }
 
     /** {@inheritDoc} */

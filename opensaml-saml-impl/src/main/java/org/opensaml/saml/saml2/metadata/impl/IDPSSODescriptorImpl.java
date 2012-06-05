@@ -60,7 +60,7 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
 
     /** Attributes accepted by this entity. */
     private final XMLObjectChildrenList<Attribute> attributes;
-    
+
     /**
      * Constructor.
      * 
@@ -78,24 +78,25 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
     }
 
     /** {@inheritDoc} */
-    public Boolean getWantAuthnRequestsSigned(){
-        if(wantAuthnRequestsSigned != null){
+    public Boolean getWantAuthnRequestsSigned() {
+        if (wantAuthnRequestsSigned != null) {
             return wantAuthnRequestsSigned.getValue();
         }
-        
+
         return Boolean.FALSE;
     }
-    
+
     /** {@inheritDoc} */
     public XSBooleanValue getWantAuthnRequestsSignedXSBoolean() {
         return wantAuthnRequestsSigned;
     }
-    
+
     /** {@inheritDoc} */
-    public void setWantAuthnRequestsSigned(Boolean newWantSigned){
-        if(newWantSigned != null){
-            wantAuthnRequestsSigned = prepareForAssignment(wantAuthnRequestsSigned, new XSBooleanValue(newWantSigned, false));
-        }else{
+    public void setWantAuthnRequestsSigned(Boolean newWantSigned) {
+        if (newWantSigned != null) {
+            wantAuthnRequestsSigned =
+                    prepareForAssignment(wantAuthnRequestsSigned, new XSBooleanValue(newWantSigned, false));
+        } else {
             wantAuthnRequestsSigned = prepareForAssignment(wantAuthnRequestsSigned, null);
         }
     }
@@ -129,7 +130,7 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
     public List<Attribute> getAttributes() {
         return attributes;
     }
-    
+
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
         List<Endpoint> endpoints = new ArrayList<Endpoint>();
@@ -139,16 +140,16 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
         endpoints.addAll(assertionIDRequestServices);
         return Collections.unmodifiableList(endpoints);
     }
-    
+
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints(QName type) {
-        if(type.equals(SingleSignOnService.DEFAULT_ELEMENT_NAME)){
+        if (type.equals(SingleSignOnService.DEFAULT_ELEMENT_NAME)) {
             return Collections.unmodifiableList(new ArrayList<Endpoint>(singleSignOnServices));
-        }else if(type.equals(NameIDMappingService.DEFAULT_ELEMENT_NAME)){
+        } else if (type.equals(NameIDMappingService.DEFAULT_ELEMENT_NAME)) {
             return Collections.unmodifiableList(new ArrayList<Endpoint>(nameIDMappingServices));
-        }else if(type.equals(AssertionIDRequestService.DEFAULT_ELEMENT_NAME)){
+        } else if (type.equals(AssertionIDRequestService.DEFAULT_ELEMENT_NAME)) {
             return Collections.unmodifiableList(new ArrayList<Endpoint>(assertionIDRequestServices));
-        }else{
+        } else {
             return super.getEndpoints(type);
         }
     }

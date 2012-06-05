@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SurName;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SurNameImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SurNameImpl}.
  */
 public class SurNameBuilder extends AbstractSAMLObjectBuilder<SurName> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SurNameBuilder() {
 
@@ -39,7 +39,8 @@ public class SurNameBuilder extends AbstractSAMLObjectBuilder<SurName> {
 
     /** {@inheritDoc} */
     public SurName buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, SurName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, SurName.DEFAULT_ELEMENT_LOCAL_NAME, 
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

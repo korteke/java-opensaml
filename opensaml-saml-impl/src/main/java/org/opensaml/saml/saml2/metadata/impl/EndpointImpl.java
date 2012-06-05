@@ -29,27 +29,27 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.Endpoint}
+ * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.Endpoint}.
  */
 public abstract class EndpointImpl extends AbstractSAMLObject implements Endpoint {
 
-    /** Binding URI */
+    /** Binding URI. */
     private String bindingId;
 
-    /** Endpoint location URI */
+    /** Endpoint location URI. */
     private String location;
 
-    /** Response location URI */
+    /** Response location URI. */
     private String responseLocation;
-    
-    /** "anyAttribute" attributes */
+
+    /** "anyAttribute" attributes. */
     private final AttributeMap unknownAttributes;
-    
-    /** child "any" elements */
+
+    /** child "any" elements. */
     private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -77,8 +77,8 @@ public abstract class EndpointImpl extends AbstractSAMLObject implements Endpoin
     }
 
     /** {@inheritDoc} */
-    public void setLocation(String location) {
-        this.location = prepareForAssignment(this.location, location);
+    public void setLocation(String theLocation) {
+        this.location = prepareForAssignment(this.location, theLocation);
     }
 
     /** {@inheritDoc} */
@@ -87,29 +87,29 @@ public abstract class EndpointImpl extends AbstractSAMLObject implements Endpoin
     }
 
     /** {@inheritDoc} */
-    public void setResponseLocation(String location) {
-        responseLocation = prepareForAssignment(responseLocation, location);
+    public void setResponseLocation(String theLocation) {
+        responseLocation = prepareForAssignment(responseLocation, theLocation);
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
-    
+
     /** {@inheritDoc} */
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
-    
+
     /**
      * {@inheritDoc}
      */

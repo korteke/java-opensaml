@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.GivenName;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.GivenNameImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.GivenNameImpl}.
  */
 public class GivenNameBuilder extends AbstractSAMLObjectBuilder<GivenName> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public GivenNameBuilder() {
 
@@ -39,7 +39,8 @@ public class GivenNameBuilder extends AbstractSAMLObjectBuilder<GivenName> {
 
     /** {@inheritDoc} */
     public GivenName buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, GivenName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, GivenName.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

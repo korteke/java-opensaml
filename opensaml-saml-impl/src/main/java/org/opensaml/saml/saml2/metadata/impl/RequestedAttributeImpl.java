@@ -29,19 +29,19 @@ import org.opensaml.saml.saml2.core.impl.AttributeImpl;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.RequestedAttribute}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.RequestedAttribute}.
  */
 public class RequestedAttributeImpl extends AttributeImpl implements RequestedAttribute {
 
-    /** isRequired attribute */
+    /** isRequired attribute. */
     private XSBooleanValue isRequired;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected RequestedAttributeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

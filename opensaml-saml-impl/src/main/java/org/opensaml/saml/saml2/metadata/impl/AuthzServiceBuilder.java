@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.AuthzService;
 public class AuthzServiceBuilder extends AbstractSAMLObjectBuilder<AuthzService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthzServiceBuilder() {
 
@@ -35,7 +35,8 @@ public class AuthzServiceBuilder extends AbstractSAMLObjectBuilder<AuthzService>
 
     /** {@inheritDoc} */
     public AuthzService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, AuthzService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, AuthzService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

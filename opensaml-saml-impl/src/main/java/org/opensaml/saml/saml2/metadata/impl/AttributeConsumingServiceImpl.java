@@ -39,27 +39,27 @@ import org.opensaml.saml.saml2.metadata.ServiceName;
  */
 public class AttributeConsumingServiceImpl extends AbstractSAMLObject implements AttributeConsumingService {
 
-    /** Index of this service */
+    /** Index of this service. */
     private int index;
 
-    /** isDefault attribute of this service */
+    /** isDefault attribute of this service. */
     private XSBooleanValue isDefault;
 
-    /** ServiceName children */
+    /** ServiceName children. */
     private final XMLObjectChildrenList<ServiceName> serviceNames;
 
-    /** ServiceDescription children */
+    /** ServiceDescription children. */
     private final XMLObjectChildrenList<ServiceDescription> serviceDescriptions;
 
-    /** RequestedAttribute children */
+    /** RequestedAttribute children. */
     private final XMLObjectChildrenList<RequestedAttribute> requestAttributes;
     
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected AttributeConsumingServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -74,10 +74,10 @@ public class AttributeConsumingServiceImpl extends AbstractSAMLObject implements
     }
 
     /** {@inheritDoc} */
-    public void setIndex(int index) {
-        if (this.index != index) {
+    public void setIndex(int theIndex) {
+        if (this.index != theIndex) {
             releaseThisandParentDOM();
-            this.index = index;
+            this.index = theIndex;
         }
     }
     

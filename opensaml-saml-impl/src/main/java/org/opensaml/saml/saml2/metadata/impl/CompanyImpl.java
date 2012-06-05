@@ -32,15 +32,15 @@ import org.opensaml.saml.saml2.metadata.Company;
  */
 public class CompanyImpl extends AbstractSAMLObject implements Company {
 
-    /** Company name */
+    /** Company name. */
     private String companyName;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected CompanyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

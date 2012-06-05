@@ -28,19 +28,19 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeProfile}
+ * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeProfile}.
  */
 public class AttributeProfileImpl extends AbstractSAMLObject implements AttributeProfile {
 
-    /** Profile URI */
+    /** Profile URI. */
     private String profileURI;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected AttributeProfileImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -52,12 +52,13 @@ public class AttributeProfileImpl extends AbstractSAMLObject implements Attribut
     }
 
     /** {@inheritDoc} */
-    public void setProfileURI(String profileURI) {
-        this.profileURI = prepareForAssignment(this.profileURI, profileURI);
+    public void setProfileURI(String theProfileURI) {
+        this.profileURI = prepareForAssignment(this.profileURI, theProfileURI);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return null; // No Children
+        // No Children
+        return null; 
     }
 }

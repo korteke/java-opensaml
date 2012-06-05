@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 public class SingleLogoutServiceBuilder extends AbstractSAMLObjectBuilder<SingleLogoutService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SingleLogoutServiceBuilder() {
 
@@ -39,7 +39,8 @@ public class SingleLogoutServiceBuilder extends AbstractSAMLObjectBuilder<Single
 
     /** {@inheritDoc} */
     public SingleLogoutService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

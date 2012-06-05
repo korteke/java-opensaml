@@ -32,15 +32,15 @@ import org.opensaml.saml.saml2.metadata.GivenName;
  */
 public class GivenNameImpl extends AbstractSAMLObject implements GivenName {
 
-    /** Given name (first name) */
+    /** Given name (first name). */
     private String name;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected GivenNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

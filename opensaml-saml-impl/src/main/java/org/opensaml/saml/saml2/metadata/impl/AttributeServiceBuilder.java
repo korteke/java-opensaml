@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.AttributeService;
 public class AttributeServiceBuilder extends AbstractSAMLObjectBuilder<AttributeService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeServiceBuilder() {
 
@@ -39,7 +39,8 @@ public class AttributeServiceBuilder extends AbstractSAMLObjectBuilder<Attribute
 
     /** {@inheritDoc} */
     public AttributeService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

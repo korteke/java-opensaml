@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.IDPSSODescriptorImpl}
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.IDPSSODescriptorImpl}.
  */
 public class IDPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<IDPSSODescriptor> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public IDPSSODescriptorBuilder() {
 
@@ -39,7 +39,8 @@ public class IDPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<IDPSSODes
 
     /** {@inheritDoc} */
     public IDPSSODescriptor buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

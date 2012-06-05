@@ -24,22 +24,22 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 
 /**
- * Concreate implementation of {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation}.
  */
 public class AdditionalMetadataLocationImpl extends AbstractSAMLObject implements AdditionalMetadataLocation {
 
-    /** The metadata location */
+    /** The metadata location. */
     private String location;
 
-    /** Namespace scope of the root metadata element at the location */
+    /** Namespace scope of the root metadata element at the location. */
     private String namespace;
-    
+
     /**
-     * Constructor
-     *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * Constructor.
+     * 
+     * @param namespaceURI the URI of the name space
+     * @param elementLocalName the local name
+     * @param namespacePrefix the prefix name space
      */
     protected AdditionalMetadataLocationImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

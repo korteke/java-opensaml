@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 public class NameIDMappingServiceBuilder extends AbstractSAMLObjectBuilder<NameIDMappingService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public NameIDMappingServiceBuilder() {
 
@@ -39,7 +39,8 @@ public class NameIDMappingServiceBuilder extends AbstractSAMLObjectBuilder<NameI
 
     /** {@inheritDoc} */
     public NameIDMappingService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, NameIDMappingService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, NameIDMappingService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.NameIDFormatImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.NameIDFormatImpl}.
  */
 public class NameIDFormatBuilder extends AbstractSAMLObjectBuilder<NameIDFormat> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public NameIDFormatBuilder() {
 
@@ -39,7 +39,8 @@ public class NameIDFormatBuilder extends AbstractSAMLObjectBuilder<NameIDFormat>
 
     /** {@inheritDoc} */
     public NameIDFormat buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

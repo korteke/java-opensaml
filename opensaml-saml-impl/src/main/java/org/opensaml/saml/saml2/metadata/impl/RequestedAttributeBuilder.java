@@ -30,14 +30,15 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
  */
 public class RequestedAttributeBuilder extends AbstractSAMLObjectBuilder<RequestedAttribute> {
 
-    /** Constructor */
+    /** Constructor. */
     public RequestedAttributeBuilder() {
 
     }
 
     /** {@inheritDoc} */
     public RequestedAttribute buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, RequestedAttribute.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, RequestedAttribute.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

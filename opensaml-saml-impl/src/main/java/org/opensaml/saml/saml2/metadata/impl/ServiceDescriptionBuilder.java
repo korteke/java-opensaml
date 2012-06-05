@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ServiceDescription;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ServiceDescriptionImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ServiceDescriptionImpl}.
  */
 public class ServiceDescriptionBuilder extends AbstractSAMLObjectBuilder<ServiceDescription> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ServiceDescriptionBuilder() {
 
@@ -39,7 +39,8 @@ public class ServiceDescriptionBuilder extends AbstractSAMLObjectBuilder<Service
 
     /** {@inheritDoc} */
     public ServiceDescription buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

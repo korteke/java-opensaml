@@ -35,7 +35,8 @@ public class EntityDescriptorBuilder extends AbstractSAMLObjectBuilder<EntityDes
 
     /** {@inheritDoc} */
     public EntityDescriptor buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

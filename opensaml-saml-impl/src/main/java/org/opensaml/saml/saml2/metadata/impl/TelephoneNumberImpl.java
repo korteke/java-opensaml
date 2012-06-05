@@ -28,19 +28,19 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}.
  */
 public class TelephoneNumberImpl extends AbstractSAMLObject implements TelephoneNumber {
 
-    /** Telephone number */
+    /** Telephone number. */
     private String number;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected TelephoneNumberImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

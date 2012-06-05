@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 public class AssertionConsumerServiceBuilder extends AbstractSAMLObjectBuilder<AssertionConsumerService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AssertionConsumerServiceBuilder() {
 
