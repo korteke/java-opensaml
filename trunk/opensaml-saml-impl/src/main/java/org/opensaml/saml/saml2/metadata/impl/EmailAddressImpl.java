@@ -28,19 +28,19 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EmailAddress}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EmailAddress}.
  */
 public class EmailAddressImpl extends AbstractSAMLObject implements EmailAddress {
 
-    /** The email address */
+    /** The email address. */
     private String address;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected EmailAddressImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

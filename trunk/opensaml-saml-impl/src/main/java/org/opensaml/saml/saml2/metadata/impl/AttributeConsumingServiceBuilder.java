@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 public class AttributeConsumingServiceBuilder extends AbstractSAMLObjectBuilder<AttributeConsumingService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeConsumingServiceBuilder() {
 

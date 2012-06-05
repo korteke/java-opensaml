@@ -17,25 +17,14 @@
 
 /**
  * 
+ * Concrete implementations of the {@link org.opensaml.saml.saml2.metadata} APIs.
+ * 
+ * Information on using this library can be found in the 
+ * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoUserManual">User's Manual</a>
+ * and information on extending its functionality can be found in the 
+ * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoDeveloperManual">
+ *  Developer's Manual.</a> see <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OpenSAML">
+ *  OpenSAML</a> Wiki. 
  */
 
 package org.opensaml.saml.saml2.metadata.impl;
-
-import org.opensaml.saml.saml2.metadata.SingleSignOnService;
-
-/**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SingleSignOnService}.
- */
-public class SingleSignOnServiceImpl extends EndpointImpl implements SingleSignOnService {
-
-    /**
-     * Constructor.
-     * 
-     * @param namespaceURI the namespace the element is in
-     * @param elementLocalName the local name of the XML element this Object represents
-     * @param namespacePrefix the prefix for the given namespace
-     */
-    protected SingleSignOnServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-}

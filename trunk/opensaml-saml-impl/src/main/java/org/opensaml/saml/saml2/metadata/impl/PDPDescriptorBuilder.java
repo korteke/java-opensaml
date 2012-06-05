@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}.
  */
 public class PDPDescriptorBuilder extends AbstractSAMLObjectBuilder<PDPDescriptor> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public PDPDescriptorBuilder() {
 
@@ -39,7 +39,8 @@ public class PDPDescriptorBuilder extends AbstractSAMLObjectBuilder<PDPDescripto
 
     /** {@inheritDoc} */
     public PDPDescriptor buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * Concreate implementation of {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor}
+ * Concreate implementation of {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor}.
  */
 public class AuthnAuthorityDescriptorImpl extends RoleDescriptorImpl implements AuthnAuthorityDescriptor {
 

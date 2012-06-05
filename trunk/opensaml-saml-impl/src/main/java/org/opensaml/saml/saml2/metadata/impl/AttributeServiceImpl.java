@@ -29,11 +29,11 @@ import org.opensaml.saml.saml2.metadata.AttributeService;
 public class AttributeServiceImpl extends EndpointImpl implements AttributeService {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected AttributeServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

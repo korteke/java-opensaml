@@ -28,15 +28,15 @@ import org.opensaml.saml.saml2.metadata.AffiliateMember;
  */
 public class AffiliateMemberImpl extends AbstractSAMLObject implements AffiliateMember {
 
-    /** ID of this member */
+    /** ID of this member. */
     private String id;
     
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected AffiliateMemberImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

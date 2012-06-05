@@ -32,15 +32,16 @@ import org.opensaml.saml.saml2.metadata.NameIDFormat;
  */
 public class NameIDFormatImpl extends AbstractSAMLObject implements NameIDFormat {
 
-    /** NameID format */
+    /** NameID format. */
     private String format;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
+
      */
     protected NameIDFormatImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
@@ -52,8 +53,8 @@ public class NameIDFormatImpl extends AbstractSAMLObject implements NameIDFormat
     }
 
     /** {@inheritDoc} */
-    public void setFormat(String format) {
-        this.format = prepareForAssignment(this.format, format);
+    public void setFormat(String newFormat) {
+        this.format = prepareForAssignment(this.format, newFormat);
     }
 
     /** {@inheritDoc} */

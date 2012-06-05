@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 public class SingleSignOnServiceBuilder extends AbstractSAMLObjectBuilder<SingleSignOnService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SingleSignOnServiceBuilder() {
 
@@ -39,7 +39,8 @@ public class SingleSignOnServiceBuilder extends AbstractSAMLObjectBuilder<Single
 
     /** {@inheritDoc} */
     public SingleSignOnService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, SingleSignOnService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, SingleSignOnService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

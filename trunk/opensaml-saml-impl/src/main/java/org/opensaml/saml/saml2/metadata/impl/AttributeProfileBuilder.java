@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AttributeProfileImpl}s
+ * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AttributeProfileImpl}s.
  */
 public class AttributeProfileBuilder extends AbstractSAMLObjectBuilder<AttributeProfile> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeProfileBuilder() {
 
@@ -39,7 +39,8 @@ public class AttributeProfileBuilder extends AbstractSAMLObjectBuilder<Attribute
 
     /** {@inheritDoc} */
     public AttributeProfile buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, AttributeProfile.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, AttributeProfile.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -29,11 +29,12 @@ import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 public class NameIDMappingServiceImpl extends EndpointImpl implements NameIDMappingService {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
+
      */
     protected NameIDMappingServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

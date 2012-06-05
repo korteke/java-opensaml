@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.AffiliateMember;
 public class AffiliateMemberBuilder extends AbstractSAMLObjectBuilder<AffiliateMember> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AffiliateMemberBuilder() {
 
@@ -35,7 +35,8 @@ public class AffiliateMemberBuilder extends AbstractSAMLObjectBuilder<AffiliateM
 
     /** {@inheritDoc} */
     public AffiliateMember buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -29,11 +29,11 @@ import org.opensaml.saml.saml2.metadata.AuthzService;
 public class AuthzServiceImpl extends EndpointImpl implements AuthzService {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected AuthzServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

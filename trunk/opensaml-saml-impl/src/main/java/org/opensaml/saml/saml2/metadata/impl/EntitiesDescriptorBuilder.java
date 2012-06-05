@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 public class EntitiesDescriptorBuilder extends AbstractSAMLObjectBuilder<EntitiesDescriptor> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public EntitiesDescriptorBuilder() {
 
@@ -35,7 +35,8 @@ public class EntitiesDescriptorBuilder extends AbstractSAMLObjectBuilder<Entitie
 
     /** {@inheritDoc} */
     public EntitiesDescriptor buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, EntitiesDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, EntitiesDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

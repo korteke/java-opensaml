@@ -24,7 +24,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.OrganizationName}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
 public class OrganizationNameImpl extends LocalizedNameImpl implements OrganizationName {
 

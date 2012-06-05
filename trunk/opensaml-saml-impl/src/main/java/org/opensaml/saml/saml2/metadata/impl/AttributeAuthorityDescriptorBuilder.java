@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 public class AttributeAuthorityDescriptorBuilder extends AbstractSAMLObjectBuilder<AttributeAuthorityDescriptor> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeAuthorityDescriptorBuilder() {
 

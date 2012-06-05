@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SPSSODescriptorImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SPSSODescriptorImpl}.
  */
 public class SPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<SPSSODescriptor> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SPSSODescriptorBuilder() {
 
@@ -39,7 +39,8 @@ public class SPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<SPSSODescr
 
     /** {@inheritDoc} */
     public SPSSODescriptor buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

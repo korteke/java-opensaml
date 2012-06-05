@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 public class AdditionalMetadataLocationBuilder extends AbstractSAMLObjectBuilder<AdditionalMetadataLocation> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AdditionalMetadataLocationBuilder() {
 
@@ -35,7 +35,8 @@ public class AdditionalMetadataLocationBuilder extends AbstractSAMLObjectBuilder
 
     /** {@inheritDoc} */
     public AdditionalMetadataLocation buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -28,7 +28,8 @@ public class KeyDescriptorBuilder extends AbstractSAMLObjectBuilder<KeyDescripto
 
     /** {@inheritDoc} */
     public KeyDescriptor buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

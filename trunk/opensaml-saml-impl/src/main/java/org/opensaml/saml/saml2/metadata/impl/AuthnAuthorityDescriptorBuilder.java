@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 public class AuthnAuthorityDescriptorBuilder extends AbstractSAMLObjectBuilder<AuthnAuthorityDescriptor> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthnAuthorityDescriptorBuilder() {
 

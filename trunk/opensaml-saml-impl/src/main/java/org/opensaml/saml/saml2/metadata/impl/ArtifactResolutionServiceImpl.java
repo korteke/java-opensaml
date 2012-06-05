@@ -24,16 +24,16 @@ package org.opensaml.saml.saml2.metadata.impl;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ArtifactResolutionService}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ArtifactResolutionService}.
  */
 public class ArtifactResolutionServiceImpl extends IndexedEndpointImpl implements ArtifactResolutionService {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space 
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected ArtifactResolutionServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

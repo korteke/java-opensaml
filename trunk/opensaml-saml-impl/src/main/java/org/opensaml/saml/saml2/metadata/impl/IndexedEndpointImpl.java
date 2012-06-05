@@ -25,18 +25,18 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint}.
  */
 public abstract class IndexedEndpointImpl extends EndpointImpl implements IndexedEndpoint {
 
-    /** Index of this endpoint */
+    /** Index of this endpoint. */
     private Integer index;
 
-    /** isDefault attribute */
+    /** isDefault attribute. */
     private XSBooleanValue isDefault;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -52,8 +52,8 @@ public abstract class IndexedEndpointImpl extends EndpointImpl implements Indexe
     }
 
     /** {@inheritDoc} */
-    public void setIndex(Integer index) {
-        this.index = prepareForAssignment(this.index, index);
+    public void setIndex(Integer theIndex) {
+        this.index = prepareForAssignment(this.index, theIndex);
     }
     
     /** {@inheritDoc} */
@@ -79,7 +79,7 @@ public abstract class IndexedEndpointImpl extends EndpointImpl implements Indexe
     }
 
     /** {@inheritDoc} */
-    public void setIsDefault(XSBooleanValue isDefault) {
-        this.isDefault = prepareForAssignment(this.isDefault, isDefault);
+    public void setIsDefault(XSBooleanValue theIsDefault) {
+        this.isDefault = prepareForAssignment(this.isDefault, theIsDefault);
     }
 }

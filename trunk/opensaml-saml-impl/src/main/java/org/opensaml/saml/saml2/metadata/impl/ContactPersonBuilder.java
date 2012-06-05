@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ContactPersonImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ContactPersonImpl}.
  */
 public class ContactPersonBuilder extends AbstractSAMLObjectBuilder<ContactPerson> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ContactPersonBuilder() {
 
@@ -39,7 +39,8 @@ public class ContactPersonBuilder extends AbstractSAMLObjectBuilder<ContactPerso
 
     /** {@inheritDoc} */
     public ContactPerson buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

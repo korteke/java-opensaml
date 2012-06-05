@@ -26,12 +26,12 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.TelephoneNumberImpl}
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.TelephoneNumberImpl}.
  */
 public class TelephoneNumberBuilder extends AbstractSAMLObjectBuilder<TelephoneNumber> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public TelephoneNumberBuilder() {
 
@@ -39,7 +39,8 @@ public class TelephoneNumberBuilder extends AbstractSAMLObjectBuilder<TelephoneN
 
     /** {@inheritDoc} */
     public TelephoneNumber buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, TelephoneNumber.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, TelephoneNumber.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

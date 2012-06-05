@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.ManageNameIDService;
 public class ManageNameIDServiceBuilder extends AbstractSAMLObjectBuilder<ManageNameIDService> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ManageNameIDServiceBuilder() {
 
@@ -39,7 +39,8 @@ public class ManageNameIDServiceBuilder extends AbstractSAMLObjectBuilder<Manage
 
     /** {@inheritDoc} */
     public ManageNameIDService buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, ManageNameIDService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, ManageNameIDService.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */

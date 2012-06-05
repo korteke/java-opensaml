@@ -26,17 +26,18 @@ import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EncryptionMethod}.
  */
-public class EncryptionMethodImpl extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodImpl implements EncryptionMethod {
+public class EncryptionMethodImpl extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodImpl implements
+        EncryptionMethod {
 
     /**
      * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected EncryptionMethodImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-    
+
 }

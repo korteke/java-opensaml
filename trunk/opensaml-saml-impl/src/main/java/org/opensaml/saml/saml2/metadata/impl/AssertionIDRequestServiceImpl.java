@@ -24,16 +24,16 @@ package org.opensaml.saml.saml2.metadata.impl;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AssertionIDRequestService}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AssertionIDRequestService}.
  */
 public class AssertionIDRequestServiceImpl extends EndpointImpl implements AssertionIDRequestService {
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI name space
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected AssertionIDRequestServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
