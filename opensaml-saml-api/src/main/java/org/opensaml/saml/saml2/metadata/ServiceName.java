@@ -27,18 +27,20 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface ServiceName extends LocalizedName {
 
     /** Element local name. */
-    static final public String DEFAULT_ELEMENT_LOCAL_NAME = "ServiceName";
-    
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ServiceName";
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "localizedNameType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "localizedNameType";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /** Language attribute name. */
     public static final String LANG_ATTRIB_NAME = "lang";
-    
+
 }

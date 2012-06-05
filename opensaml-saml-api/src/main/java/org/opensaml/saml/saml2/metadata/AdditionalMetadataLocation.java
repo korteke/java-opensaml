@@ -23,46 +23,48 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata AdditionalMetadataLocation
+ * SAML 2.0 Metadata AdditionalMetadataLocation.
  */
 public interface AdditionalMetadataLocation extends SAMLObject {
-    
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AdditionalMetadataLocation";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "AdditionalMetadataLocationType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** "affiliationOwnerID" attribute's local name */
-    public final static String NAMESPACE_ATTRIB_NAME = "namespace";
-    
+
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AdditionalMetadataLocation";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AdditionalMetadataLocationType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** "affiliationOwnerID" attribute's local name. */
+    public static final String NAMESPACE_ATTRIB_NAME = "namespace";
+
     /**
      * Gets the location URI.
      * 
      * @return the location URI
      */
     public String getLocationURI();
-    
+
     /**
      * Sets the location URI.
      * 
      * @param locationURI the location URI
      */
     public void setLocationURI(String locationURI);
-    
+
     /**
      * Gets the namespace URI.
      * 
      * @return the namespace URI
      */
     public String getNamespaceURI();
-    
+
     /**
      * Sets the namespace URI.
      * 

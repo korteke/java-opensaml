@@ -29,31 +29,33 @@ import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
 /**
- * SAML 2.0 Metadata EntityDescriptor
+ * SAML 2.0 Metadata EntityDescriptor.
  */
 public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObject, CacheableSAMLObject,
         AttributeExtensibleXMLObject {
 
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "EntityDescriptor";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EntityDescriptorType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityDescriptor";
 
-    /** Element QName, no prefix */
-    public final static QName ELEMENT_QNAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
 
-    /** "ID" attribute name */
-    public final static String ID_ATTRIB_NAME = "ID";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EntityDescriptorType";
 
-    /** "Name" attribute name */
-    public final static String ENTITY_ID_ATTRIB_NAME = "entityID";
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** Element QName, no prefix. */
+    public static final QName ELEMENT_QNAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME);
+
+    /** "ID" attribute name. */
+    public static final String ID_ATTRIB_NAME = "ID";
+
+    /** "Name" attribute name. */
+    public static final String ENTITY_ID_ATTRIB_NAME = "entityID";
 
     /**
      * Gets the entity ID for this entity descriptor.
@@ -114,7 +116,7 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * @return the role descriptors for this entity descriptor
      */
     public List<RoleDescriptor> getRoleDescriptors(QName typeOrName);
-    
+
     /**
      * Gets all the role descriptors for this entity that support the given protocol.
      * 
@@ -147,7 +149,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
     public AuthnAuthorityDescriptor getAuthnAuthorityDescriptor(String supportedProtocol);
 
     /**
-     * Gets the first {@link AttributeAuthorityDescriptor} role descriptor for this entity that supports the given protocol.
+     * Gets the first {@link AttributeAuthorityDescriptor} role descriptor for this entity that supports the given
+     * protocol.
      * 
      * @return the {@link AttributeAuthorityDescriptor} role descriptor
      */

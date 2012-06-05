@@ -25,38 +25,40 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata Endpoint data type interface
+ * SAML 2.0 Metadata Endpoint data type interface.
  */
-public interface Endpoint extends SAMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject{
-    
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Endpoint";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "EndpointType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** "Binding" attribute name */
-    public final static String BINDING_ATTRIB_NAME = "Binding";
-    
-    /** "Location" attribute name */
-    public final static String LOCATION_ATTRIB_NAME = "Location";
-    
-    /** "ResponseLocation" attribute name */
-    public final static String RESPONSE_LOCATION_ATTRIB_NAME = "ResponseLocation";
-    
+public interface Endpoint extends SAMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
+
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Endpoint";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "EndpointType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** "Binding" attribute name. */
+    public static final String BINDING_ATTRIB_NAME = "Binding";
+
+    /** "Location" attribute name. */
+    public static final String LOCATION_ATTRIB_NAME = "Location";
+
+    /** "ResponseLocation" attribute name. */
+    public static final String RESPONSE_LOCATION_ATTRIB_NAME = "ResponseLocation";
+
     /**
      * Gets the URI identifier for the binding supported by this Endpoint.
      * 
      * @return the URI identifier for the binding supported by this Endpoint
      */
-	public String getBinding();
-    
+    public String getBinding();
+
     /**
      * Sets the URI identifier for the binding supported by this Endpoint.
      * 
@@ -69,8 +71,8 @@ public interface Endpoint extends SAMLObject, ElementExtensibleXMLObject, Attrib
      * 
      * @return the location of this Endpoint
      */
-	public String getLocation();
-    
+    public String getLocation();
+
     /**
      * Sets the URI, usually a URL, for the location of this Endpoint.
      * 
@@ -83,8 +85,8 @@ public interface Endpoint extends SAMLObject, ElementExtensibleXMLObject, Attrib
      * 
      * @return the URI responses should be sent to this for this Endpoint
      */
-	public String getResponseLocation();
-    
+    public String getResponseLocation();
+
     /**
      * Sets the URI, usually a URL, responses should be sent to this for this Endpoint.
      * 

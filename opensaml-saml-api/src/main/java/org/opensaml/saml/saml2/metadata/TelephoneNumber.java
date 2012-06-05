@@ -23,23 +23,24 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata TelephoneNumber
+ * SAML 2.0 Metadata TelephoneNumber.
  */
 public interface TelephoneNumber extends SAMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "TelephoneNumber";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "TelephoneNumber";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /**
      * Gets the telephone number.
      * 
      * @return the telephone number
      */
     public String getNumber();
-    
+
     /**
      * Sets the telephone number.
      * 

@@ -25,28 +25,28 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata SPSSODescriptorType
+ * SAML 2.0 Metadata SPSSODescriptorType.
  */
 public interface SPSSODescriptor extends SSODescriptor {
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SPSSODescriptor";
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPSSODescriptor";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "SPSSODescriptorType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "SPSSODescriptorType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
-    /** "AuthnRequestsSigned" attribute's local name */
-    public final static String AUTH_REQUESTS_SIGNED_ATTRIB_NAME = "AuthnRequestsSigned";
+    /** "AuthnRequestsSigned" attribute's local name. */
+    public static final String AUTH_REQUESTS_SIGNED_ATTRIB_NAME = "AuthnRequestsSigned";
 
-    /** "WantAssertionsSigned" attribute's local name */
-    public final static String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
+    /** "WantAssertionsSigned" attribute's local name. */
+    public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
 
     /**
      * Gets whether this service signs AuthN requests.
@@ -110,7 +110,7 @@ public interface SPSSODescriptor extends SSODescriptor {
      * @return list of assertion consumer service {@link Endpoint}s for this service
      */
     public List<AssertionConsumerService> getAssertionConsumerServices();
-    
+
     /**
      * Gets the default assertion consumer service.
      * 
@@ -133,7 +133,7 @@ public interface SPSSODescriptor extends SSODescriptor {
      * @return list of attribute consuming service descriptors for this service
      */
     public List<AttributeConsumingService> getAttributeConsumingServices();
-    
+
     /**
      * Gets the default attribute consuming service.
      * 
@@ -146,7 +146,7 @@ public interface SPSSODescriptor extends SSODescriptor {
      * </ol>
      * </p>
      * 
-     * @return default attribute consuming service (or null if there are no attribute consuming services defined) 
+     * @return default attribute consuming service (or null if there are no attribute consuming services defined)
      */
     public AttributeConsumingService getDefaultAttributeConsumingService();
 }

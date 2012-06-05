@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata ServiceDescription
+ * SAML 2.0 Metadata ServiceDescription.
  */
 public interface ServiceDescription extends LocalizedName {
 

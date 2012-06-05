@@ -29,28 +29,30 @@ import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
 /**
- * SAML 2.0 Metadata AffiliationDescriptorType
+ * SAML 2.0 Metadata AffiliationDescriptorType.
  */
 public interface AffiliationDescriptor extends SignableSAMLObject, TimeBoundSAMLObject, CacheableSAMLObject,
         AttributeExtensibleXMLObject {
 
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AffiliationDescriptor";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "AffiliationDescriptorType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AffiliationDescriptor";
 
-    /** "affiliationOwnerID" attribute's local name */
-    public final static String OWNER_ID_ATTRIB_NAME = "affiliationOwnerID";
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
 
-    /** ID attribute's local name */
-    public final static String ID_ATTRIB_NAME = "ID";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AffiliationDescriptorType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** "affiliationOwnerID" attribute's local name. */
+    public static final String OWNER_ID_ATTRIB_NAME = "affiliationOwnerID";
+
+    /** ID attribute's local name. */
+    public static final String ID_ATTRIB_NAME = "ID";
 
     /**
      * Gets the ID of the owner of this affiliation. The owner may, or may not, be a memeber of the affiliation.
