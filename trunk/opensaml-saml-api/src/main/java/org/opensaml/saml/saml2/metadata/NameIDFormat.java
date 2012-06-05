@@ -23,29 +23,31 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata NameIDFormat
+ * SAML 2.0 Metadata NameIDFormat.
  */
 public interface NameIDFormat extends SAMLObject {
 
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDFormat";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "NameIDFormatType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDFormat";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "NameIDFormatType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /**
      * Gets the format of the NameID.
      * 
      * @return the format of the NameID
      */
     public String getFormat();
-    
+
     /**
      * Sets the format of the NameID.
      * 

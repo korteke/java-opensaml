@@ -26,26 +26,26 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Attribute;
 
 /**
- * SAML 2.0 Metadata IDPSSODescriptorType
+ * SAML 2.0 Metadata IDPSSODescriptorType.
  */
 public interface IDPSSODescriptor extends SSODescriptor {
 
-    /** Local name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "IDPSSODescriptor";
+    /** Local name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPSSODescriptor";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "IDPSSODescriptorType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "IDPSSODescriptorType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
-    /** "WantAuthnRequestSigned" attribute name */
-    public final static String WANT_AUTHN_REQ_SIGNED_ATTRIB_NAME = "WantAuthnRequestsSigned";
+    /** "WantAuthnRequestSigned" attribute name. */
+    public static final String WANT_AUTHN_REQ_SIGNED_ATTRIB_NAME = "WantAuthnRequestsSigned";
 
     /**
      * Checks if the IDP SSO service wants authentication requests signed.

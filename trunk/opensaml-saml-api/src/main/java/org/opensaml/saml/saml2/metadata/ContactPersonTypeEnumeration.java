@@ -22,31 +22,32 @@ package org.opensaml.saml.saml2.metadata;
  */
 public final class ContactPersonTypeEnumeration {
 
-    /** "technical" contact type */
+    /** "technical" contact type. */
     public static final ContactPersonTypeEnumeration TECHNICAL = new ContactPersonTypeEnumeration("technical");
 
-    /** "support" contact type */
+    /** "support" contact type. */
     public static final ContactPersonTypeEnumeration SUPPORT = new ContactPersonTypeEnumeration("support");
 
-    /** "administrative" contact type */
-    public static final ContactPersonTypeEnumeration ADMINISTRATIVE = new ContactPersonTypeEnumeration("administrative");
+    /** "administrative" contact type. */
+    public static final ContactPersonTypeEnumeration ADMINISTRATIVE =
+            new ContactPersonTypeEnumeration("administrative");
 
-    /** "billing" contact type */
+    /** "billing" contact type. */
     public static final ContactPersonTypeEnumeration BILLING = new ContactPersonTypeEnumeration("billing");
 
-    /** "other" contact type */
+    /** "other" contact type. */
     public static final ContactPersonTypeEnumeration OTHER = new ContactPersonTypeEnumeration("other");
 
-    /** the contact type */
+    /** the contact type. */
     private String type;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param type the contact type
+     * @param providedType the contact type
      */
-    protected ContactPersonTypeEnumeration(String type) {
-        this.type = type;
+    protected ContactPersonTypeEnumeration(String providedType) {
+        type = providedType;
     }
 
     /**

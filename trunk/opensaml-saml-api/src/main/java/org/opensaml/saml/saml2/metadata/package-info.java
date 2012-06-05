@@ -15,21 +15,16 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.metadata;
-
-import javax.xml.namespace.QName;
-
-import org.opensaml.saml.common.xml.SAMLConstants;
-
 /**
- * SAML 2.0 Metadata AuthzService.
+ * 
+ * Concrete implementations of the {@link org.opensaml.saml.saml2.metadata} APIs. 
+ * 
+ * Information on using this library can be found in the 
+ * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoUserManual">User's Manual</a>
+ * and information on extending its functionality can be found in the 
+ * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoDeveloperManual">
+ *  Developer's Manual.</a> see <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OpenSAML">
+ *  OpenSAML</a> Wiki. 
  */
-public interface AuthzService extends Endpoint {
 
-    /** Default element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzService";
-
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
-}
+package org.opensaml.saml.saml2.metadata;

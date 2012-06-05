@@ -27,15 +27,17 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface OrganizationDisplayName extends LocalizedName {
 
     /** Element local name. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "OrganizationDisplayName";
-    
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "OrganizationDisplayName";
+
     /** Default element name. */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /** Local name of the XSI type. */
-    public final static String TYPE_LOCAL_NAME = "localizedNameType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "localizedNameType";
+
     /** QName of the XSI type. */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
 }

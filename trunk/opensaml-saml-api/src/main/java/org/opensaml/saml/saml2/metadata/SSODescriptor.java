@@ -23,31 +23,32 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-
 /**
- * SAML 2.0 Metadata SSODescriptor
+ * SAML 2.0 Metadata SSODescriptor.
  */
 public interface SSODescriptor extends RoleDescriptor {
 
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SSODescriptor";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "SSODescriptorType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SSODescriptor";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "SSODescriptorType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /**
      * Gets a list of artifact resolution services for this service.
      * 
      * @return list of artifact resolution services for this service
      */
-	public List<ArtifactResolutionService> getArtifactResolutionServices();
-    
+    public List<ArtifactResolutionService> getArtifactResolutionServices();
+
     /**
      * Gets the default artifact resolution service.
      * 
@@ -64,7 +65,7 @@ public interface SSODescriptor extends RoleDescriptor {
      * 
      */
     public ArtifactResolutionService getDefaultArtifactResolutionService();
-    
+
     /**
      * Gets the default artifact resolution service.
      * 
@@ -88,15 +89,15 @@ public interface SSODescriptor extends RoleDescriptor {
      * 
      * @return list of single logout services for this service
      */
-	public List<SingleLogoutService> getSingleLogoutServices();
+    public List<SingleLogoutService> getSingleLogoutServices();
 
     /**
      * Gets a list of manage NameId services for this service.
      * 
      * @return list of manage NameId services for this service
      */
-	public List<ManageNameIDService> getManageNameIDServices();
-    
+    public List<ManageNameIDService> getManageNameIDServices();
+
     /**
      * Gets the list of NameID formats this service supports.
      * 

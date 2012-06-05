@@ -37,15 +37,17 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
 
     /** Element name, no namespace. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
-    
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RoleDescriptorType"; 
-        
+    public static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
 
     /** "ID" attribute's local name. */
     public static final String ID_ATTRIB_NAME = "ID";
@@ -172,14 +174,14 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
      * @return list of {@link ContactPerson}s for this role
      */
     public List<ContactPerson> getContactPersons();
-    
+
     /**
      * Gets a read-only list of endpoints for this role.
      * 
      * @return immutable list of endpoints for this role
      */
     public List<Endpoint> getEndpoints();
-    
+
     /**
      * Gets a read-only list of endpoints for this role for the given type.
      * 

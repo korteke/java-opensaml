@@ -21,15 +21,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-
 /**
- * SAML 2.0 Metadata AssertionIDRequestService
+ * SAML 2.0 Metadata AssertionIDRequestService.
  */
 public interface AssertionIDRequestService extends Endpoint {
 
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDRequestService";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDRequestService";
+
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
 }
