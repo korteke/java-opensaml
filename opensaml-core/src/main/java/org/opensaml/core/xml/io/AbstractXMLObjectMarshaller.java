@@ -18,6 +18,7 @@
 package org.opensaml.core.xml.io;
 
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -25,16 +26,19 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -478,4 +482,23 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             domCachingObject.releaseParentDOM(true);
         }
     }
+    
+    /**
+     * @param endpoint
+     * @param domElement
+     */
+    protected void marshallUnknownAttributes(AttributeExtensibleXMLObject xmlObject, Element domElement) {
+        Attr attribute;
+        for (Entry<QName, String> entry : xmlObject.getUnknownAttributes().entrySet()) {
+            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
+            attribute.setValue(entry.getValue());
+            domElement.setAttributeNodeNS(attribute);
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
+                    || xmlObject.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+            }
+        }
+
+    }
+ 
 }

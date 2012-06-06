@@ -24,6 +24,7 @@ import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
+import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
@@ -394,5 +395,19 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         log.debug("Ignorning unknown element content {}", elementContent);
+    }
+    
+    /**
+     * Called to store unrecognised attributes, if the object supports that.  It is expected that the
+     * objects marshaller will have checked and dealt with for known attributes before calling this. 
+     * @param xmlObject The object which support anyAttribute.
+     * @param attribute The attribute in question.
+     */
+    protected void processUnknownAttribute(AttributeExtensibleXMLObject xmlObject, Attr attribute) {
+        QName attribQName = QNameSupport.getNodeQName(attribute);
+        if (attribute.isId()) {
+            xmlObject.getUnknownAttributes().registerID(attribQName);
+        }
+        xmlObject.getUnknownAttributes().put(attribQName, attribute.getValue());
     }
 }
