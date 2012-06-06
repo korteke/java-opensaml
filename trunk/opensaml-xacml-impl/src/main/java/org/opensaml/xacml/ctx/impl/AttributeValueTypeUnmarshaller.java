@@ -17,10 +17,7 @@
 
 package org.opensaml.xacml.ctx.impl;
 
-import javax.xml.namespace.QName;
-
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -52,11 +49,7 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
-        QName attribQName = QNameSupport.getNodeQName(attribute);
-        if (attribute.isId()) {
-            attributeValue.getUnknownAttributes().registerID(attribQName);
-        }
-        attributeValue.getUnknownAttributes().put(attribQName, attribute.getValue());
+        processUnknownAttribute(attributeValue, attribute);
     }
 
     /** {@inheritDoc} */
