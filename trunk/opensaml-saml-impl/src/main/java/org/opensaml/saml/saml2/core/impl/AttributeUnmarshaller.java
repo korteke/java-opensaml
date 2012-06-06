@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.core.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -60,11 +58,7 @@ public class AttributeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         } else if (attribute.getLocalName().equals(Attribute.FRIENDLY_NAME_ATTRIB_NAME)) {
             attrib.setFriendlyName(attribute.getValue());
         } else {
-            QName attribQName = QNameSupport.getNodeQName(attribute);
-            if (attribute.isId()) {
-                attrib.getUnknownAttributes().registerID(attribQName);
-            }
-            attrib.getUnknownAttributes().put(attribQName, attribute.getValue());
-        }
+            processUnknownAttribute(attrib, attribute);
+       }
     }
 }

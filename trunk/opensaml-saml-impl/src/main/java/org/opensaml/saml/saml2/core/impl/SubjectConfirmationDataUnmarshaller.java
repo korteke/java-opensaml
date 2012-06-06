@@ -67,11 +67,7 @@ public class SubjectConfirmationDataUnmarshaller extends AbstractSAMLObjectUnmar
         } else if (attribute.getLocalName().equals(SubjectConfirmationData.ADDRESS_ATTRIB_NAME)) {
             subjectCD.setAddress(attribute.getValue());
         } else {
-            QName attribQName = QNameSupport.getNodeQName(attribute);
-            if (attribute.isId()) {
-                subjectCD.getUnknownAttributes().registerID(attribQName);
-            }
-            subjectCD.getUnknownAttributes().put(attribQName, attribute.getValue());
+            processUnknownAttribute(subjectCD, attribute);
         }
     }
 }

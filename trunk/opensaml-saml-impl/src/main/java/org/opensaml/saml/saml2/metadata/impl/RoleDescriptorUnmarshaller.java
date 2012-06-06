@@ -19,10 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.StringTokenizer;
 
-import javax.xml.namespace.QName;
-
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -86,11 +83,7 @@ public abstract class RoleDescriptorUnmarshaller extends AbstractSAMLObjectUnmar
         } else if (attribute.getLocalName().equals(RoleDescriptor.ERROR_URL_ATTRIB_NAME)) {
             roleDescriptor.setErrorURL(attribute.getValue());
         } else {
-            QName attribQName = QNameSupport.getNodeQName(attribute);
-            if (attribute.isId()) {
-                roleDescriptor.getUnknownAttributes().registerID(attribQName);
-            }
-            roleDescriptor.getUnknownAttributes().put(attribQName, attribute.getValue());
+            processUnknownAttribute(roleDescriptor, attribute);
         }
     }
 }

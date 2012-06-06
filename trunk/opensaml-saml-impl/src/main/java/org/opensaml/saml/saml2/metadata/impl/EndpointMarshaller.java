@@ -17,17 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
@@ -51,15 +43,7 @@ public class EndpointMarshaller extends AbstractSAMLObjectMarshaller {
                     .toString());
         }
 
-        Attr attribute;
-        for (Entry<QName, String> entry : endpoint.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || endpoint.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        marshallUnknownAttributes(endpoint, domElement);
     }
+
 }
