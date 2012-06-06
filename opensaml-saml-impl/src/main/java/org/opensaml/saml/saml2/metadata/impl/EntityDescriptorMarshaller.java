@@ -74,15 +74,6 @@ public class EntityDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME, cacheDuration);
         }
 
-        Attr attribute;
-        for (Entry<QName, String> entry : entityDescriptor.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || entityDescriptor.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        marshallUnknownAttributes(entityDescriptor, domElement);
     }
 }

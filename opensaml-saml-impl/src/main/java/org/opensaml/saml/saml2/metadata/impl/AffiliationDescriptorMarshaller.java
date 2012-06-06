@@ -21,15 +21,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
@@ -38,7 +32,6 @@ import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
@@ -78,15 +71,6 @@ public class AffiliationDescriptorMarshaller extends AbstractSAMLObjectMarshalle
             domElement.setAttributeNS(null, CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME, cacheDuration);
         }
 
-        Attr attribute;
-        for (Entry<QName, String> entry : descriptor.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || descriptor.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        marshallUnknownAttributes(descriptor, domElement);
     }
 }

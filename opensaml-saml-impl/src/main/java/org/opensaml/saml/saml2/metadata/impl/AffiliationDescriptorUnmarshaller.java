@@ -17,10 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import javax.xml.namespace.QName;
-
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -76,11 +73,7 @@ public class AffiliationDescriptorUnmarshaller extends AbstractSAMLObjectUnmarsh
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
             descriptor.setCacheDuration(DomTypeSupport.durationToLong(attribute.getValue()));
         } else {
-            QName attribQName = QNameSupport.getNodeQName(attribute);
-            if (attribute.isId()) {
-                descriptor.getUnknownAttributes().registerID(attribQName);
-            }
-            descriptor.getUnknownAttributes().put(attribQName, attribute.getValue());
+            processUnknownAttribute(descriptor, attribute);
         }
     }
 }

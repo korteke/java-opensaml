@@ -68,15 +68,6 @@ public class SubjectConfirmationDataMarshaller extends AbstractSAMLObjectMarshal
             domElement.setAttributeNS(null, SubjectConfirmationData.ADDRESS_ATTRIB_NAME, subjectCD.getAddress());
         }
 
-        Attr attribute;
-        for (Entry<QName, String> entry : subjectCD.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || subjectCD.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        marshallUnknownAttributes(subjectCD, domElement);
     }
 }
