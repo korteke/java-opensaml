@@ -484,8 +484,9 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
     
     /**
-     * @param endpoint
-     * @param domElement
+     * Marshalls unknown attributes.
+     * @param xmlObject the Object which has the unknown attributes/
+     * @param domElement where to marshall them to.
      */
     protected void marshallUnknownAttributes(AttributeExtensibleXMLObject xmlObject, Element domElement) {
         Attr attribute;
