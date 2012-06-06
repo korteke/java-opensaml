@@ -47,7 +47,9 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
         attributeValue.getUnknownAttributes().put(attribQName, attribute.getValue());
         
         if(attribute.getLocalName().equals(AttributeValueType.DATA_TYPE_ATTRIB_NAME)){
-        	attributeValue.setDataType(StringSupport.trimOrNull(attribute.getValue()));
+            attributeValue.setDataType(StringSupport.trimOrNull(attribute.getValue()));
+        } else {
+            processUnknownAttribute(attributeValue, attribute);
         }
     }
 

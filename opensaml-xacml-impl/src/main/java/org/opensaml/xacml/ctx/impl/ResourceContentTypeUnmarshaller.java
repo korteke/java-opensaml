@@ -52,11 +52,7 @@ public class ResourceContentTypeUnmarshaller extends AbstractXACMLObjectUnmarsha
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         ResourceContentType resourceContent = (ResourceContentType) xmlObject;
 
-        QName attribQName = QNameSupport.getNodeQName(attribute);
-        if (attribute.isId()) {
-            resourceContent.getUnknownAttributes().registerID(attribQName);
-        }
-        resourceContent.getUnknownAttributes().put(attribQName, attribute.getValue());
+        processUnknownAttribute(resourceContent, attribute);
     }
 
     /** {@inheritDoc} */

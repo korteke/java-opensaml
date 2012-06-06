@@ -51,16 +51,7 @@ public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller 
         	domElement.setAttributeNS(null,AttributeAssignmentType.DATA_TYPE_ATTRIB_NAME, attributeValue.getDataType());
         }
         
-        Attr attribute;
-        for (Entry<QName, String> entry : attributeValue.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || attributeValue.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        marshallUnknownAttributes(attributeValue, domElement);
     }
 
     /** {@inheritDoc} */
