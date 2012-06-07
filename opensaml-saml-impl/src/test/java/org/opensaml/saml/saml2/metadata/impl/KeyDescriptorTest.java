@@ -91,9 +91,8 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, 
-                SAMLConstants.SAML20MD_PREFIX);
-        KeyDescriptor keyDescriptor = (KeyDescriptor) buildXMLObject(qname);
+        KeyDescriptor keyDescriptor = (new KeyDescriptorBuilder()).buildObject();
+        keyDescriptor.setUse(null);
 
         assertXMLEquals(expectedDOM, keyDescriptor);
     }

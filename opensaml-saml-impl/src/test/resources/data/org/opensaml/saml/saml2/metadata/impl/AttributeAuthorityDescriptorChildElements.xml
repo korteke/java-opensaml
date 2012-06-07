@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:AttributeAuthorityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"  xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" >
+	<md:AttributeService/>
+	<md:AssertionIDRequestService/>
+	<md:AssertionIDRequestService/>
+	<md:NameIDFormat/>
+	<md:AttributeProfile/>
+	<md:AttributeProfile/>
+	<saml2:Attribute/>
+	<saml2:Attribute/>
+	<saml2:Attribute/>
+</md:AttributeAuthorityDescriptor>

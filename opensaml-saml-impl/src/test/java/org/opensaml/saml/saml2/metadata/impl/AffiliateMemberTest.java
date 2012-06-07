@@ -57,7 +57,23 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        AffiliateMember member = (AffiliateMember) buildXMLObject(qname);
+        
+        AffiliateMember member = buildXMLObject(qname);
+        
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 1026; i++) {
+            stringBuilder.append(i);
+        }
+
+        try {
+            member.setID(stringBuilder.toString());
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            //OK
+        }
+        
+        
+        member = (new AffiliateMemberBuilder()).buildObject();
         
         member.setID(expectedMemberID);
         

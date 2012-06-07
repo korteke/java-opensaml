@@ -89,6 +89,7 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
 
         DateTime validUntil = entitiesDescriptorObj.getValidUntil();
         Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
+        Assert.assertTrue(entitiesDescriptorObj.isValid());
     }
 
     /** {@inheritDoc} */
@@ -110,6 +111,7 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
         DateTime validUntil = entitiesDescriptorObj.getValidUntil();
         Assert.assertEquals(expectedValidUntil
                 .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
+        Assert.assertFalse(entitiesDescriptorObj.isValid());
     }
 
     /** {@inheritDoc} */

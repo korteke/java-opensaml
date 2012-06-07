@@ -74,7 +74,7 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AuthnQueryService service = (AuthnQueryService) buildXMLObject(AuthnQueryService.DEFAULT_ELEMENT_NAME);
+        AuthnQueryService service = (new AuthnQueryServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

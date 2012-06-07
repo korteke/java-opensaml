@@ -85,7 +85,7 @@ public class AssertionIDRequestServiceTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        AssertionIDRequestService service = (AssertionIDRequestService) buildXMLObject(AssertionIDRequestService.DEFAULT_ELEMENT_NAME);
+        AssertionIDRequestService service = (new AssertionIDRequestServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

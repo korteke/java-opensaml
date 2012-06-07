@@ -85,7 +85,7 @@ public class AuthzServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        AuthzService service = (AuthzService) buildXMLObject(AuthzService.DEFAULT_ELEMENT_NAME);
+        AuthzService service = (new AuthzServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

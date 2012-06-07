@@ -17,14 +17,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
@@ -36,12 +34,17 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.impl.EntityDescriptorImpl}.
+ * Test case for creating, marshalling, and unmarshalling
+ * {@link org.opensaml.saml.saml2.metadata.impl.EntityDescriptorImpl}.
  */
 public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
@@ -57,18 +60,27 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** Expected validUntil value */
     protected DateTime expectedValidUntil;
 
+    /** Unknown Attributes */
+    protected QName[] unknownAttributeNames = {new QName("urn:foo:bar", "bar", "foo"), new QName("flibble")};
+
+    /** Unknown Attribute Values */
+    protected String[] unknownAttributeValues = {"fred", "flobble"};
+
     /**
      * Constructor
      */
     public EntityDescriptorTest() {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorOptionalAttributes.xml";
+        singleElementOptionalAttributesFile =
+                "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorOptionalAttributes.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorChildElements.xml";
+        singleElementUnknownAttributesFile =
+                "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorUnknownAttributes.xml";
+
     }
 
     /** {@inheritDoc} */
-    @BeforeMethod
-    protected void setUp() throws Exception {
+    @BeforeMethod protected void setUp() throws Exception {
         expectedID = "id";
         expectedEntityID = "99ff33";
         expectedCacheDuration = 90000;
@@ -76,54 +88,89 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementUnmarshall() {
+    @Test public void testSingleElementUnmarshall() {
         EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementFile);
 
         String entityID = descriptor.getEntityID();
-        Assert.assertEquals(entityID,
-                expectedEntityID, "entityID attribute has a value of " + entityID + ", expected a value of " + expectedEntityID);
+        Assert.assertEquals(entityID, expectedEntityID, "entityID attribute has a value of " + entityID
+                + ", expected a value of " + expectedEntityID);
 
         Long duration = descriptor.getCacheDuration();
         Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
         DateTime validUntil = descriptor.getValidUntil();
         Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
+
+        Assert.assertTrue(descriptor.isValid());
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementOptionalAttributesUnmarshall() {
+    @Test public void testSingleElementOptionalAttributesUnmarshall() {
         EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
         String entityID = descriptor.getEntityID();
-        Assert.assertEquals(entityID,
-                expectedEntityID, "entityID attribute has a value of " + entityID + ", expected a value of " + expectedEntityID);
+        Assert.assertEquals(entityID, expectedEntityID, "entityID attribute has a value of " + entityID
+                + ", expected a value of " + expectedEntityID);
 
         String id = descriptor.getID();
         Assert.assertEquals(id, expectedID, "ID attribute has a value of " + id + ", expected a value of " + expectedID);
 
         long duration = descriptor.getCacheDuration().longValue();
-        Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
-                        + expectedCacheDuration);
+        Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration
+                + ", expected a value of " + expectedCacheDuration);
 
         DateTime validUntil = descriptor.getValidUntil();
-        Assert.assertEquals(expectedValidUntil
-                .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
+        Assert.assertEquals(expectedValidUntil.compareTo(validUntil), 0,
+                "validUntil attribute value did not match expected value");
+
+        Assert.assertFalse(descriptor.isValid());
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testChildElementsUnmarshall() {
+    @Test public void testSingleElementUnknownAttributesUnmarshall() {
+        EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementUnknownAttributesFile);
+        AttributeMap attributes = descriptor.getUnknownAttributes();
+
+        Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            Assert.assertEquals(attributes.get(unknownAttributeNames[i]), unknownAttributeValues[i]);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Test public void testChildElementsUnmarshall() {
         EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(childElementsFile);
 
         Assert.assertNotNull(descriptor.getExtensions(), "Extensions child");
         Assert.assertNotNull(descriptor.getSignature(), "Signature child");
-        Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 2, "IDPSSODescriptor count");
-        Assert.assertEquals(descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 3, "SPSSODescriptor count");
-        Assert.assertEquals(descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 2, "AuthnAuthorityDescriptor count");
-        Assert.assertEquals(descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 1, "AttributeAuthorityDescriptor count");
-        Assert.assertEquals(descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).size(), 2, "PDPDescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
+                "IDPSSODescriptor count");
+        Assert.assertNotNull(descriptor.getIDPSSODescriptor("foo"), "IDPSSODescriptor (protocol)");
+        Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
+                "IDPSSODescriptor (protocol) count");
+        
+        Assert.assertEquals(descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 3,
+                "SPSSODescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
+                "SPSSODescriptor (protocol) count");
+        Assert.assertNotNull(descriptor.getSPSSODescriptor("foo"), "IDPSSODescriptor (protocol)");
+        
+        Assert.assertEquals(descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
+                "AuthnAuthorityDescriptor count");
+        
+        Assert.assertEquals(descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 1,
+                "AttributeAuthorityDescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
+                "AttributeAuthorityDescriptor (protocol) count");
+        Assert.assertNotNull(descriptor.getAttributeAuthorityDescriptor("foo"), "IDPSSODescriptor (protocol)");
+
+        
+        Assert.assertEquals(descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
+                "PDPDescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
+                "PDPDescriptor (protocol) count");
+        Assert.assertNotNull(descriptor.getPDPDescriptor("foo"), "IDPSSODescriptor (protocol)");
+        
         Assert.assertNotNull(descriptor.getAffiliationDescriptor(), "AffiliationDescriptor ");
         Assert.assertNotNull(descriptor.getOrganization(), "Organization ");
         Assert.assertEquals(descriptor.getContactPersons().size(), 1, "ContactPerson count");
@@ -131,9 +178,10 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    @Test public void testSingleElementMarshall() {
+        QName qname =
+                new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
 
         descriptor.setEntityID(expectedEntityID);
@@ -141,10 +189,20 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
         assertXMLEquals(expectedDOM, descriptor);
     }
 
+    @Test public void testSingleElementUnknownAttributesMarshall() {
+        EntityDescriptor descriptor = (new EntityDescriptorBuilder()).buildObject();
+
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            descriptor.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
+        }
+        assertXMLEquals(expectedUnknownAttributesDOM, descriptor);
+    }
+
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    @Test public void testSingleElementOptionalAttributesMarshall() {
+        QName qname =
+                new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
 
         descriptor.setEntityID(expectedEntityID);
@@ -156,42 +214,80 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    @Test public void testChildElementsMarshall() {
+        QName qname =
+                new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
         descriptor.setID(expectedID);
         descriptor.setEntityID(expectedEntityID);
 
-        QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        QName extensionsQName =
+                new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
+
+        descriptor.setSignature(buildSignatureSkeleton());
+
+        QName idpSSOQName =
+                new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
+        QName spSSOQName =
+                new QName(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
+        QName authnAuthQName =
+                new QName(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
+        QName pdpQName =
+                new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
+        QName affilQName =
+                new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
+        RoleDescriptor desc = (RoleDescriptor) buildXMLObject(idpSSOQName);
+        desc.addSupportedProtocol("foo");
+        descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).add(desc);
         
-        descriptor.setSignature( buildSignatureSkeleton() );
+        desc = (RoleDescriptor) buildXMLObject(spSSOQName);
+        desc.addSupportedProtocol("foo");
+        descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).add(desc);
+
+        descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).add(
+                (SPSSODescriptor) buildXMLObject(spSSOQName));
         
-        QName idpSSOQName = new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        QName spSSOQName = new QName(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        QName authnAuthQName = new QName(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        QName pdpQName = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        QName affilQName = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).add((IDPSSODescriptor) buildXMLObject(idpSSOQName));
-        descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).add((SPSSODescriptor) buildXMLObject(spSSOQName));
-        descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).add((SPSSODescriptor) buildXMLObject(spSSOQName));
-        descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).add((AuthnAuthorityDescriptor) buildXMLObject(authnAuthQName));
-        descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).add((PDPDescriptor) buildXMLObject(pdpQName));
-        descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).add((IDPSSODescriptor) buildXMLObject(idpSSOQName));
-        descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).add((AttributeAuthorityDescriptor) buildXMLObject(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME));
-        descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).add((SPSSODescriptor) buildXMLObject(spSSOQName));
-        descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).add((AuthnAuthorityDescriptor) buildXMLObject(authnAuthQName));
+        desc =(RoleDescriptor) buildXMLObject(authnAuthQName);
+        desc.addSupportedProtocol("foo");
+        descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).add(desc);
+        
+        desc =(RoleDescriptor) buildXMLObject(pdpQName);
+        desc.addSupportedProtocol("foo");
+        descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).add(desc);
+        descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).add(
+                (IDPSSODescriptor) buildXMLObject(idpSSOQName));
+        
+        desc =(RoleDescriptor) buildXMLObject(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME);
+        desc.addSupportedProtocol("foo");        
+        descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).add(desc);
+
+        descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME).add(
+                (SPSSODescriptor) buildXMLObject(spSSOQName));
+        descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).add(
+                (AuthnAuthorityDescriptor) buildXMLObject(authnAuthQName));
         descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).add((PDPDescriptor) buildXMLObject(pdpQName));
         descriptor.setAffiliationDescriptor((AffiliationDescriptor) buildXMLObject(affilQName));
-        
-        QName orgQName = new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+
+        QName orgQName =
+                new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         descriptor.setOrganization((Organization) buildXMLObject(orgQName));
-        
-        QName contactQName = new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+
+        QName contactQName =
+                new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         descriptor.getContactPersons().add((ContactPerson) buildXMLObject(contactQName));
-        
-        QName addMDQName = new QName(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+
+        QName addMDQName =
+                new QName(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
             descriptor.getAdditionalMetadataLocations().add((AdditionalMetadataLocation) buildXMLObject(addMDQName));
         }
