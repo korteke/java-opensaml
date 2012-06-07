@@ -35,6 +35,9 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     /** Location of file containing a single element with all optional attributes */
     protected String singleElementOptionalAttributesFile;
 
+    /** Location of file containing a single element with some unknown attributes */
+    protected String singleElementUnknownAttributesFile;
+
     /** Location of file containing a single element with child elements */
     protected String childElementsFile;
 
@@ -43,6 +46,9 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
 
     /** The expected result of a marshalled single element with all optional attributes */
     protected Document expectedOptionalAttributesDOM;
+
+    /** The expected result of a marshalled single element some unknown attributes */
+    protected Document expectedUnknownAttributesDOM;
 
     /** The expected result of a marshalled single element with child elements */
     protected Document expectedChildElementsDOM;
@@ -64,6 +70,11 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
             expectedChildElementsDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
                     .getResourceAsStream(childElementsFile));
         }
+        
+        if (singleElementUnknownAttributesFile != null) {
+            expectedUnknownAttributesDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
+                    .getResourceAsStream(singleElementUnknownAttributesFile));
+        }
     }
 
     /**
@@ -78,6 +89,15 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     @Test
 	public void testSingleElementOptionalAttributesUnmarshall() {
         Assert.assertNull(singleElementOptionalAttributesFile, "No testSingleElementOptionalAttributesUnmarshall present");
+    }
+
+    /**
+     * Tests unmarshalling a document that contains a single element (no children) with all that element's optional
+     * attributes.
+     */
+    @Test
+    public void testSingleElementUnknownAttributesUnmarshall() {
+        Assert.assertNull(singleElementUnknownAttributesFile, "No testSingleElementUnknownAttributesUnmarshall present");
     }
 
     /**
@@ -102,11 +122,21 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     }
 
     /**
+     * Tests marshalling the contents of a single element, some unknown attributes, to a DOM document.
+     */
+    @Test
+    public void testSingleElementUnknownAttributesMarshall() {
+        Assert.assertNull(expectedUnknownAttributesDOM, "No testSingleUnknownAttributesMarshall");
+    }
+
+    /**
      * Tests marshalling the contents of a single element with child elements to a DOM document.
      */
     @Test
 	public void testChildElementsMarshall() {
         Assert.assertNull(expectedChildElementsDOM, "No testSingleElementChildElementsMarshall");
     }
+    
+    
 
 }
