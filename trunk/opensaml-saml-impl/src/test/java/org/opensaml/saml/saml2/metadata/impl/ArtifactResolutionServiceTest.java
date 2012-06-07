@@ -82,7 +82,7 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ArtifactResolutionService service = (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
+        ArtifactResolutionService service = (new ArtifactResolutionServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

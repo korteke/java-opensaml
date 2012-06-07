@@ -21,9 +21,6 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
@@ -37,9 +34,13 @@ import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 import org.opensaml.saml.saml2.metadata.AuthzService;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}.
+ * Test case for creating, marshalling, and unmarshalling
+ * {@link org.opensaml.saml.saml2.metadata.impl.PDPDescriptorImpl}.
  */
 public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
 
@@ -60,13 +61,13 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
      */
     public PDPDescriptorTest() {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorOptionalAttributes.xml";
+        singleElementOptionalAttributesFile =
+                "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorOptionalAttributes.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorChildElements.xml";
     }
 
     /** {@inheritDoc} */
-    @BeforeMethod
-    protected void setUp() throws Exception {
+    @BeforeMethod protected void setUp() throws Exception {
         expectedSupportedProtocol = new ArrayList<String>();
         expectedSupportedProtocol.add("urn:foo:bar");
         expectedSupportedProtocol.add("urn:fooz:baz");
@@ -78,43 +79,46 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementUnmarshall() {
+    @Test public void testSingleElementUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(singleElementFile);
 
-        Assert.assertEquals(descriptor
-                .getSupportedProtocols(), expectedSupportedProtocol, "Supported protocols not equal to expected value");
+        Assert.assertEquals(descriptor.getSupportedProtocols(), expectedSupportedProtocol,
+                "Supported protocols not equal to expected value");
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementOptionalAttributesUnmarshall() {
+    @Test public void testSingleElementOptionalAttributesUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
 
-        Assert.assertEquals(descriptor.getCacheDuration()
-                .longValue(), expectedCacheDuration, "Cache duration was not expected value");
+        Assert.assertEquals(descriptor.getCacheDuration().longValue(), expectedCacheDuration,
+                "Cache duration was not expected value");
         Assert.assertEquals(descriptor.getValidUntil(), expectedValidUntil, "ValidUntil was not expected value");
         Assert.assertEquals(descriptor.getErrorURL(), expectedErrorURL, "ErrorURL was not expected value");
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testChildElementsUnmarshall() {
+    @Test public void testChildElementsUnmarshall() {
         PDPDescriptor descriptor = (PDPDescriptor) unmarshallElement(childElementsFile);
 
         Assert.assertNotNull(descriptor.getExtensions(), "<Extensions>");
         Assert.assertEquals(descriptor.getKeyDescriptors().size(), 0, "KeyDescriptor");
 
         Assert.assertEquals(descriptor.getAuthzServices().size(), 3, "AuthzService count");
+        Assert.assertEquals(descriptor.getEndpoints(AuthzService.DEFAULT_ELEMENT_NAME).size(), 3, "AuthzService count");
+
         Assert.assertEquals(descriptor.getAssertionIDRequestServices().size(), 2, "AssertionIDRequestService count");
+        Assert.assertEquals(descriptor.getEndpoints(AssertionIDRequestService.DEFAULT_ELEMENT_NAME).size(), 2,
+                "AssertionIDRequestService count");
+        
+        Assert.assertNull(descriptor.getEndpoints(PDPDescriptor.DEFAULT_ELEMENT_NAME));
+        
+        Assert.assertEquals(descriptor.getEndpoints().size(), 5, "EndPoints");
         Assert.assertEquals(descriptor.getNameIDFormats().size(), 1, "NameIDFormat count");
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);
+    @Test public void testSingleElementMarshall() {
+        PDPDescriptor descriptor = (new PDPDescriptorBuilder()).buildObject();
 
         for (String protocol : expectedSupportedProtocol) {
             descriptor.addSupportedProtocol(protocol);
@@ -124,9 +128,10 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    @Test public void testSingleElementOptionalAttributesMarshall() {
+        QName qname =
+                new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);
 
         for (String protocol : expectedSupportedProtocol) {
@@ -141,29 +146,34 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    @Test public void testChildElementsMarshall() {
+        QName qname =
+                new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);
 
-        QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
+        QName extensionsQName =
+                new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
-        QName authzQName = new QName(SAMLConstants.SAML20MD_NS, AuthzService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        QName authzQName =
+                new QName(SAMLConstants.SAML20MD_NS, AuthzService.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
             descriptor.getAuthzServices().add((AuthzService) buildXMLObject(authzQName));
         }
 
-        QName assertIDReqQName = new QName(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
+        QName assertIDReqQName =
+                new QName(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
             descriptor.getAssertionIDRequestServices()
                     .add((AssertionIDRequestService) buildXMLObject(assertIDReqQName));
         }
 
-        QName nameIDFormatQName = new QName(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
+        QName nameIDFormatQName =
+                new QName(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME,
+                        SAMLConstants.SAML20MD_PREFIX);
         descriptor.getNameIDFormats().add((NameIDFormat) buildXMLObject(nameIDFormatQName));
 
         assertXMLEquals(expectedChildElementsDOM, descriptor);

@@ -17,21 +17,34 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.opensaml.core.xml.Namespace;
+import org.opensaml.core.xml.NamespaceManager;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IDIndex;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -88,6 +101,8 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
         DateTime validUntil = descriptor.getValidUntil();
         Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
+        
+        Assert.assertTrue(descriptor.isValid());
     }
 
     /** {@inheritDoc} */
@@ -109,6 +124,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         DateTime validUntil = descriptor.getValidUntil();
         Assert.assertEquals(expectedValidUntil
                 .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
+        Assert.assertFalse(descriptor.isValid());
     }
 
     /** {@inheritDoc} */
@@ -129,7 +145,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
         Assert.assertNotNull(descriptor.getExtensions(), "Extensions");
         Assert.assertNotNull(descriptor.getSignature(), "Signature");
-        Assert.assertEquals(descriptor.getKeyDescriptors().size(), 0, "KeyDescriptor count");
+        Assert.assertEquals(descriptor.getKeyDescriptors().size(), 1, "KeyDescriptor count");
         Assert.assertEquals(descriptor.getMembers().size(), 3, "Affiliate Member count ");
     }
 
@@ -175,6 +191,16 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
                 SAMLConstants.SAML20MD_PREFIX);
         AffiliationDescriptor descriptor = (AffiliationDescriptor) buildXMLObject(qname);
 
+        StringBuilder bigString = new StringBuilder();
+        for (int i=0; i < 1026; i++) {
+            bigString.append('s');
+        }
+        try {
+            descriptor.setOwnerID(bigString.toString());
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+        }
+        
         descriptor.setOwnerID(expectedOwnerID);
         descriptor.setID(expectedID);
         
@@ -187,6 +213,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
+        descriptor.getKeyDescriptors().add((new KeyDescriptorBuilder().buildObject()));
 
         assertXMLEquals(expectedChildElementsDOM, descriptor);
     }

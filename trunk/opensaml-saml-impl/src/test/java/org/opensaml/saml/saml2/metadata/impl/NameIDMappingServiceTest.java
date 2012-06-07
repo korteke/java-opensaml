@@ -74,7 +74,7 @@ public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        NameIDMappingService service = (NameIDMappingService) buildXMLObject(NameIDMappingService.DEFAULT_ELEMENT_NAME);
+        NameIDMappingService service = (new NameIDMappingServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

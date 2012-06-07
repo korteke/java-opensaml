@@ -59,7 +59,7 @@ public class GivenNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        GivenName name = (GivenName) buildXMLObject(GivenName.DEFAULT_ELEMENT_NAME);
+        GivenName name = (new GivenNameBuilder()).buildObject();
         
         name.setName(expectName);
 

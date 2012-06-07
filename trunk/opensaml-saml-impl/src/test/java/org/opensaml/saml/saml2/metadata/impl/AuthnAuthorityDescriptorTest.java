@@ -34,6 +34,7 @@ import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.Organization;
 
@@ -162,6 +163,7 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
                 expectedAuthnQueryServices, "Endpoints(AuthnQueryService) count");
         Assert.assertEquals(authnAuthorityObj.getEndpoints(AssertionIDRequestService.DEFAULT_ELEMENT_NAME).size(),
                 expectedAssertionIdRequestServices, "Endpoints(AssertionIdRequestService) count");
+        Assert.assertNull(authnAuthorityObj.getEndpoints(EntityDescriptor.DEFAULT_ELEMENT_NAME));
     }
 
     /** {@inheritDoc} */

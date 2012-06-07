@@ -20,14 +20,25 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.Namespace;
+import org.opensaml.core.xml.NamespaceManager;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.core.xml.util.IDIndex;
+import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -49,6 +60,7 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
      */
     public SingleLogoutServiceTest() {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutService.xml";
+        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceChildElements.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceOptionalAttributes.xml";
         singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceUnknownAttributes.xml";
     }
@@ -124,5 +136,25 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
         service.setResponseLocation(expectedResponseLocation);
 
         assertXMLEquals(expectedOptionalAttributesDOM, service);
+    }
+    
+    /** {@inheritDoc} */
+    @Test public void testChildElementsUnmarshall() {
+        SingleLogoutService service = (SingleLogoutService) unmarshallElement(childElementsFile);
+        Assert.assertEquals(service.getUnknownXMLObjects().size(), 1);
+    }
+    
+    /** {@inheritDoc} */
+    @Test public void testChildElementsMarshall() {
+        SingleLogoutService service = (new SingleLogoutServiceBuilder()).buildObject();
+        service.setBinding(expectedBinding);
+        service.setLocation(expectedLocation);
+
+
+        XMLObject obj = new XSAnyBuilder().buildObject(new QName("http://example.org/", "bar", "foo"));
+        
+        service.getUnknownXMLObjects().add(obj);
+
+        assertXMLEquals(expectedChildElementsDOM, service);    
     }
 }

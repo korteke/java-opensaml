@@ -91,7 +91,7 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AttributeConsumingService service = (AttributeConsumingService) buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
+        AttributeConsumingService service = (new AttributeConsumingServiceBuilder()).buildObject();
         
         service.setIndex(expectedIndex);
 

@@ -89,7 +89,7 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        EncryptionMethod em = (EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        EncryptionMethod em = (new EncryptionMethodBuilder()).buildObject();
         
         em.setAlgorithm(expectedAlgorithm);
         em.setKeySize((KeySize) buildXMLObject(KeySize.DEFAULT_ELEMENT_NAME));
