@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?><md:ContactPerson xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:foo="urn:foo:bar" contactType="technical" flibble="flobble" foo:bar="fred"/>
+<?xml version="1.0" encoding="UTF-8"?><md:ContactPerson xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:foo="urn:foo:bar" contactType="other" flibble="flobble" foo:bar="fred"/>

@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -32,7 +30,6 @@ import org.opensaml.saml.saml2.metadata.EmailAddress;
 import org.opensaml.saml.saml2.metadata.GivenName;
 import org.opensaml.saml.saml2.metadata.SurName;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -119,7 +116,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnknownAttributesMarshall() {
         ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
-        person.setType(expectedPersonType);
+        person.setType(ContactPersonTypeEnumeration.OTHER);
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             person.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);

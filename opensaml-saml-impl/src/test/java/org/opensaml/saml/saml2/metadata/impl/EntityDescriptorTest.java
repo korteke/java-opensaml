@@ -146,6 +146,7 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
                 "IDPSSODescriptor count");
         Assert.assertNotNull(descriptor.getIDPSSODescriptor("foo"), "IDPSSODescriptor (protocol)");
+        Assert.assertNull(descriptor.getIDPSSODescriptor("bar"), "IDPSSODescriptor (protocol)");
         Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
                 "IDPSSODescriptor (protocol) count");
         
@@ -153,23 +154,30 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
                 "SPSSODescriptor count");
         Assert.assertEquals(descriptor.getRoleDescriptors(SPSSODescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
                 "SPSSODescriptor (protocol) count");
-        Assert.assertNotNull(descriptor.getSPSSODescriptor("foo"), "IDPSSODescriptor (protocol)");
+        Assert.assertNotNull(descriptor.getSPSSODescriptor("foo"), "SPPSSODescriptor (protocol)");
+        Assert.assertNull(descriptor.getSPSSODescriptor("bar"), "SPPSSODescriptor (protocol)");
         
         Assert.assertEquals(descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
                 "AuthnAuthorityDescriptor count");
+        Assert.assertEquals(descriptor.getRoleDescriptors(AuthnAuthorityDescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
+                "AuthnAuthorityDescriptor count");
+        Assert.assertNotNull(descriptor.getAuthnAuthorityDescriptor("foo"), "AuthnAuthorityDescriptor (protocol)");
+        Assert.assertNull(descriptor.getAuthnAuthorityDescriptor("bar"), "AuthnAuthorityDescriptor (protocol)");
         
         Assert.assertEquals(descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).size(), 1,
                 "AttributeAuthorityDescriptor count");
         Assert.assertEquals(descriptor.getRoleDescriptors(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
                 "AttributeAuthorityDescriptor (protocol) count");
-        Assert.assertNotNull(descriptor.getAttributeAuthorityDescriptor("foo"), "IDPSSODescriptor (protocol)");
+        Assert.assertNotNull(descriptor.getAttributeAuthorityDescriptor("foo"), "AttributeAuthorityDescriptor (protocol)");
+        Assert.assertNull(descriptor.getAttributeAuthorityDescriptor("bar"), "AttributeAuthorityDescriptor (protocol)");
 
         
         Assert.assertEquals(descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
                 "PDPDescriptor count");
         Assert.assertEquals(descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME, "foo").size(), 1,
                 "PDPDescriptor (protocol) count");
-        Assert.assertNotNull(descriptor.getPDPDescriptor("foo"), "IDPSSODescriptor (protocol)");
+        Assert.assertNotNull(descriptor.getPDPDescriptor("foo"), "PDPDescriptor (protocol)");
+        Assert.assertNull(descriptor.getPDPDescriptor("bar"), "PDPDescriptor (protocol)");
         
         Assert.assertNotNull(descriptor.getAffiliationDescriptor(), "AffiliationDescriptor ");
         Assert.assertNotNull(descriptor.getOrganization(), "Organization ");
@@ -184,6 +192,17 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
                         SAMLConstants.SAML20MD_PREFIX);
         EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
 
+        StringBuilder bigString = new StringBuilder();
+        for (int i = 0; i < 2000; i++ ) {
+            bigString.append('x');
+        }
+        try {
+            descriptor.setEntityID(bigString.toString());
+            Assert.fail();
+        }
+        catch (IllegalArgumentException e) {
+        }
+        
         descriptor.setEntityID(expectedEntityID);
 
         assertXMLEquals(expectedDOM, descriptor);

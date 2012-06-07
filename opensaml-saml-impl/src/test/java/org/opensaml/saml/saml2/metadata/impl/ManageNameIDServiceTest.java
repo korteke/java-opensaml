@@ -74,7 +74,7 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
+        ManageNameIDService service = (new ManageNameIDServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
