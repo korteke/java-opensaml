@@ -17,33 +17,15 @@
 
 package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.XMLObject;
+import javax.annotation.concurrent.ThreadSafe;
+
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.core.xml.io.UnmarshallingException;
-import org.w3c.dom.Attr;
 
 /**
  * An thread safe abstract unmarshaller. This abstract marshaller only works with
  * {@link org.opensaml.saml.common.AbstractSAMLObject}.
  */
+@ThreadSafe
 public abstract class AbstractSAMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void processChildElement(XMLObject parentSAMLObject, XMLObject childSAMLObject)
-            throws UnmarshallingException {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
-    }
 }
