@@ -17,12 +17,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.Company;
@@ -32,6 +32,10 @@ import org.opensaml.saml.saml2.metadata.EmailAddress;
 import org.opensaml.saml.saml2.metadata.GivenName;
 import org.opensaml.saml.saml2.metadata.SurName;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
+import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -47,6 +51,11 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     
     /** Count of TelephoneNumber subelements */
     protected int telephoneNumberCount = 3;
+    
+    /** Unknown Attributes */
+    protected QName[] unknownAttributeNames = { new QName("urn:foo:bar", "bar", "foo"), new  QName("flibble") };
+    /** Unknown Attribute Values */
+    protected String[] unknownAttributeValues = {"fred", "flobble"};
 
     /**
      * Constructor
@@ -54,6 +63,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     public ContactPersonTest() {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPerson.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPersonChildElements.xml";
+        singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPersonUnknownAttributes.xml";
     }
     
     /** {@inheritDoc} */
@@ -69,6 +79,17 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
         
         Assert.assertEquals(person.getType(), expectedPersonType, "Contact type was not expected value");
     }
+    
+    /** {@inheritDoc} */
+    @Test public void testSingleElementUnknownAttributesUnmarshall() {
+        ContactPerson person = (ContactPerson) unmarshallElement(singleElementUnknownAttributesFile);
+        AttributeMap attributes = person.getUnknownAttributes();
+
+        Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            Assert.assertEquals(attributes.get(unknownAttributeNames[i]), unknownAttributeValues[i]);
+        }
+    }
 
     /** {@inheritDoc} */
     @Test
@@ -78,6 +99,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
         
         Assert.assertNotNull(person.getExtensions(), "Extension Element not present");
         Assert.assertNotNull(person.getCompany(), "Company Element not present");
+        Assert.assertNotNull(person.getSurName(), "SurName not present");
         Assert.assertNotNull(person.getGivenName(), "GivenName not present");
         Assert.assertEquals(person.getEmailAddresses().size(), emailAddressCount, "Email address count");
         Assert.assertEquals(person.getTelephoneNumbers().size(), telephoneNumberCount, "Telephone Number count");
@@ -95,9 +117,21 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test
+    public void testSingleElementUnknownAttributesMarshall() {
+        ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
+        person.setType(expectedPersonType);
+
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            person.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
+        }
+        assertXMLEquals(expectedUnknownAttributesDOM, person);
+    }
+    
+    /** {@inheritDoc} */
+    @Test
     public void testChildElementsMarshall()
     {
-        ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
+        ContactPerson person = (new ContactPersonBuilder()).buildObject();
         
         person.setType(expectedPersonType);
 

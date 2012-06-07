@@ -17,20 +17,21 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -50,6 +51,11 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** Expected validUntil value */
     protected DateTime expectedValidUntil;
 
+    /** Unknown Attributes */
+    protected QName[] unknownAttributeNames = { new QName("urn:foo:bar", "bar", "foo"), new  QName("flibble") };
+    /** Unknown Attribute Values */
+    protected String[] unknownAttributeValues = {"fred", "flobble"};
+
     /**
      * Constructor
      */
@@ -57,6 +63,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptor.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorOptionalAttributes.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorChildElements.xml";
+        singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorUnknownAttributes.xml";
     }
 
     @BeforeMethod
@@ -105,6 +112,17 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
+    @Test public void testSingleElementUnknownAttributesUnmarshall() {
+        AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementUnknownAttributesFile);
+        AttributeMap attributes = descriptor.getUnknownAttributes();
+
+        Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            Assert.assertEquals(attributes.get(unknownAttributeNames[i]), unknownAttributeValues[i]);
+        }
+    }
+    
+    /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
         AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(childElementsFile);
@@ -130,9 +148,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) buildXMLObject(qname);
+        AffiliationDescriptor descriptor = (new AffiliationDescriptorBuilder()).buildObject();
 
         descriptor.setOwnerID(expectedOwnerID);
         descriptor.setID(expectedID);
@@ -140,6 +156,17 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         descriptor.setCacheDuration(expectedCacheDuration);
 
         assertXMLEquals(expectedOptionalAttributesDOM, descriptor);
+    }
+    
+    /** {@inheritDoc} */
+    @Test
+    public void testSingleElementUnknownAttributesMarshall() {
+        AffiliationDescriptor descriptor = (new AffiliationDescriptorBuilder()).buildObject();
+
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            descriptor.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
+        }
+        assertXMLEquals(expectedUnknownAttributesDOM, descriptor);
     }
 
     @Test

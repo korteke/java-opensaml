@@ -59,7 +59,7 @@ public class CompanyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Company company = (Company) buildXMLObject(Company.DEFAULT_ELEMENT_NAME);
+        Company company = (new CompanyBuilder()).buildObject();
         
         company.setName(expectedName);
 

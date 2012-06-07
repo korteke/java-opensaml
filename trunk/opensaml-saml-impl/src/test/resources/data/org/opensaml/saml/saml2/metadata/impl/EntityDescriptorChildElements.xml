@@ -17,13 +17,13 @@
         <ds:SignatureValue/>
     </ds:Signature>
     <md:Extensions/>
-    <md:IDPSSODescriptor/>
+    <md:IDPSSODescriptor protocolSupportEnumeration="foo"/>
+    <md:SPSSODescriptor protocolSupportEnumeration="foo"/>
     <md:SPSSODescriptor/>
-    <md:SPSSODescriptor/>
-    <md:AuthnAuthorityDescriptor/>
-    <md:PDPDescriptor/>
+    <md:AuthnAuthorityDescriptor protocolSupportEnumeration="foo" />
+    <md:PDPDescriptor protocolSupportEnumeration="foo"/>
     <md:IDPSSODescriptor/>
-    <md:AttributeAuthorityDescriptor/>
+    <md:AttributeAuthorityDescriptor protocolSupportEnumeration="foo"/>
     <md:SPSSODescriptor/>
     <md:AuthnAuthorityDescriptor/>
     <md:PDPDescriptor/>

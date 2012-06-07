@@ -20,11 +20,14 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
+import javax.xml.namespace.QName;
+
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -36,12 +39,18 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     protected String expectedLocation;
     protected String expectedResponseLocation;
     
+    /** Unknown Attributes */
+    protected QName[] unknownAttributeNames = { new QName("urn:foo:bar", "bar", "foo"), new  QName("flibble") };
+    /** Unknown Attribute Values */
+    protected String[] unknownAttributeValues = {"fred", "flobble"};
+
     /**
      * Constructor
      */
     public SingleLogoutServiceTest() {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutService.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceOptionalAttributes.xml";
+        singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceUnknownAttributes.xml";
     }
     
     /** {@inheritDoc} */
@@ -60,6 +69,18 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
+    
+    /** {@inheritDoc} */
+    @Test public void testSingleElementUnknownAttributesUnmarshall() {
+        SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementUnknownAttributesFile);
+        AttributeMap attributes = service.getUnknownAttributes();
+
+        Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            Assert.assertEquals(attributes.get(unknownAttributeNames[i]), unknownAttributeValues[i]);
+        }
+    }
+
 
     /** {@inheritDoc} */
     @Test
@@ -81,6 +102,17 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
 
         assertXMLEquals(expectedDOM, service);
     }
+    
+    @Test
+    public void testSingleElementUnknownAttributesMarshall() {
+        SingleLogoutService service = (new SingleLogoutServiceBuilder()).buildObject();
+
+        for (int i = 0; i < unknownAttributeNames.length; i++) {
+            service.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
+        }
+        assertXMLEquals(expectedUnknownAttributesDOM, service);
+    }
+
 
     /** {@inheritDoc} */
     @Test

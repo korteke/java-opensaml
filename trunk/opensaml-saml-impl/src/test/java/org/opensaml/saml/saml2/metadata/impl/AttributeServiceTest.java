@@ -77,8 +77,7 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        AttributeService service = (AttributeService) buildXMLObject(qname);
+        AttributeService service = (new AttributeServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

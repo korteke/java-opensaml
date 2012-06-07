@@ -17,14 +17,11 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import javax.xml.namespace.QName;
-
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -67,8 +64,7 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        AdditionalMetadataLocation location = (AdditionalMetadataLocation) buildXMLObject(qname);
+        AdditionalMetadataLocation location = (new AdditionalMetadataLocationBuilder()).buildObject(); 
         location.setLocationURI(expectedContent);
         location.setNamespaceURI(expectedNamespace);
 

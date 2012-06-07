@@ -17,14 +17,11 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import javax.xml.namespace.QName;
-
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -59,8 +56,7 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall(){
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeProfile.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        AttributeProfile profile = (AttributeProfile) buildXMLObject(qname);
+        AttributeProfile profile = (new AttributeProfileBuilder()).buildObject();
         
         profile.setProfileURI(expectedProfileURI);
         
