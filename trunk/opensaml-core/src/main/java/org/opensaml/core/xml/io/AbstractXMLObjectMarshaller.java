@@ -36,6 +36,7 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -489,17 +490,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param domElement where to marshall them to.
      */
     protected void marshallUnknownAttributes(AttributeExtensibleXMLObject xmlObject, Element domElement) {
-        Attr attribute;
-        for (Entry<QName, String> entry : xmlObject.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || xmlObject.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
-
+        XMLObjectSupport.marshallAttributeMap(xmlObject.getUnknownAttributes(), domElement);
     }
  
 }

@@ -31,6 +31,7 @@ import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSBooleanValue;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -398,16 +399,15 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
     
     /**
-     * Called to store unrecognised attributes, if the object supports that.  It is expected that the
-     * objects marshaller will have checked and dealt with for known attributes before calling this. 
+     * Called to store wildcard attributes, if the object supports that.  It is expected that the
+     * object's unmarshaller will have checked and dealt with known attributes before calling this. 
      * @param xmlObject The object which support anyAttribute.
      * @param attribute The attribute in question.
      */
     protected void processUnknownAttribute(AttributeExtensibleXMLObject xmlObject, Attr attribute) {
-        QName attribQName = QNameSupport.getNodeQName(attribute);
-        if (attribute.isId()) {
-            xmlObject.getUnknownAttributes().registerID(attribQName);
-        }
-        xmlObject.getUnknownAttributes().put(attribQName, attribute.getValue());
+        // TODO Add support for validating whether attribute's namespace is consistent with the
+        // anyAttribute/@namespace.  Either via this method directly (new arguments) or in the 
+        // below support method.
+        XMLObjectSupport.unmarshallToAttributeMap(xmlObject.getUnknownAttributes(), attribute);
     }
 }
