@@ -107,8 +107,7 @@ public class RequestedAttributeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, RequestedAttribute.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        RequestedAttribute requestedAttribute = (RequestedAttribute) buildXMLObject(qname);
+        RequestedAttribute requestedAttribute = (new RequestedAttributeBuilder()).buildObject();
 
         requestedAttribute.setName(expectedName);
         requestedAttribute.setNameFormat(expectedNameFormat);

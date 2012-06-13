@@ -59,7 +59,7 @@ public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        TelephoneNumber number = (TelephoneNumber) buildXMLObject(TelephoneNumber.DEFAULT_ELEMENT_NAME);
+        TelephoneNumber number = (new TelephoneNumberBuilder()).buildObject();
         
         number.setNumber(expectedNumber);
 

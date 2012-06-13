@@ -54,6 +54,7 @@ public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
         
         Assert.assertEquals(url.getValue(), expectValue, "URL was not expected value");
         Assert.assertEquals(url.getXMLLang(), expectLang, "langg was not expected value");
+        url.hashCode();
     }
 
     /** {@inheritDoc} */

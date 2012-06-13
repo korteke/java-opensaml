@@ -68,7 +68,8 @@ public class AssertionIDRequestServiceTest extends XMLObjectProviderBaseTestCase
         
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
-        Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
+        Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");
+        Assert.assertEquals(service.getUnknownXMLObjects(AssertionIDRequestService.DEFAULT_ELEMENT_NAME).size(), 0);
     }
 
     /** {@inheritDoc} */
