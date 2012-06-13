@@ -76,6 +76,22 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
         Assert.assertEquals(keyDescriptor.getUse(), expectedUse, "Use attribute");
     }
+    
+    @Test
+    public void testSingleElementBadAttributesUnmarshall() {
+        try {
+            unmarshallElement("/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorBadAttributes1.xml");
+            Assert.fail();
+        } catch (AssertionError e) {
+        }
+        try {
+            unmarshallElement("/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorBadAttributes2.xml");
+            Assert.fail();
+        } catch (AssertionError e) {
+        }
+       
+    }
+    
 
     /** {@inheritDoc} */
     @Test

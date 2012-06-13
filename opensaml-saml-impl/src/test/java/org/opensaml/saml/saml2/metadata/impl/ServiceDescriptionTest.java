@@ -59,8 +59,7 @@ public class ServiceDescriptionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        ServiceDescription description = (ServiceDescription) buildXMLObject(qname);
+        ServiceDescription description = (new ServiceDescriptionBuilder()).buildObject();
         
         description.setValue(expectLocalizedDescription);
         description.setXMLLang(expectLang);

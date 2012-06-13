@@ -59,7 +59,7 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        EmailAddress address = (EmailAddress) buildXMLObject(EmailAddress.DEFAULT_ELEMENT_NAME);
+        EmailAddress address = (new EmailAddressBuilder()).buildObject();
         
         address.setAddress(expectedAddress);
 

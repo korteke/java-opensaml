@@ -74,7 +74,7 @@ public class SingleSignOnServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SingleSignOnService service = ( SingleSignOnService) buildXMLObject(SingleSignOnService.DEFAULT_ELEMENT_NAME);
+        SingleSignOnService service = (new SingleSignOnServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

@@ -118,7 +118,7 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
             return Collections.unmodifiableList(new ArrayList<Endpoint>(manageNameIDServices));
         }
         
-        return null;
+        return Collections.EMPTY_LIST;
     }
     
     /** {@inheritDoc} */

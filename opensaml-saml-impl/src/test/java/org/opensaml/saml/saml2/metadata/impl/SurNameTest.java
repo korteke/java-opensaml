@@ -59,7 +59,7 @@ public class SurNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SurName name = (SurName) buildXMLObject(SurName.DEFAULT_ELEMENT_NAME);
+        SurName name = (new SurNameBuilder()).buildObject();
         
         name.setName(expectedName);
 

@@ -62,6 +62,7 @@ public class OrganizationNameTest extends XMLObjectProviderBaseTestCase {
         
         Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
         Assert.assertEquals(name.getXMLLang(), expectLang, "xml:lang was not expected value");
+        name.hashCode();
     }
 
     /** {@inheritDoc} */
