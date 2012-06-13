@@ -98,11 +98,12 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
 
     /** {@inheritDoc} */
     public boolean isValid() {
-        if (validUntil != null) {
-            return validUntil.isBeforeNow();
-        } else {
+        if (null == validUntil) {
             return true;
         }
+        
+        DateTime now = new DateTime();
+        return now.isBefore(validUntil);
     }
 
     /** {@inheritDoc} */
@@ -162,9 +163,7 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
 
     /** {@inheritDoc} */
     public void removeAllSupportedProtocols() {
-        for (String protocol : supportedProtocols) {
-            removeSupportedProtocol(protocol);
-        }
+        supportedProtocols.clear();
     }
 
     /** {@inheritDoc} */
