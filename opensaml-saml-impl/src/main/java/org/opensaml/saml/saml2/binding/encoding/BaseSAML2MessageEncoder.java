@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -34,9 +36,11 @@ import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
+import org.opensaml.saml.common.context.SamlSigningContext;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
@@ -180,11 +184,20 @@ public abstract class BaseSAML2MessageEncoder extends BaseHttpServletResponseXml
     }
 
     /**
-     * @param messageContext
-     * @return
+     * Get the signing credential from the message context.
+     * 
+     * @param messageContext the message context
+     * 
+     * @return the signing credential to use, may be null
      */
-    protected Credential getContextSigningCredential(MessageContext<SAMLObject> messageContext) {
-        // TODO Auto-generated method stub
+    @Nullable protected Credential getContextSigningCredential(MessageContext<SAMLObject> messageContext) {
+        SamlSigningContext context = messageContext.getSubcontext(SamlSigningContext.class);
+        if (context != null) {
+            SignatureSigningConfiguration configuration = context.getSigningConfiguration();
+            if (configuration != null) {
+                return configuration.getSigningCredential();
+            }
+        }
         return null;
     }
 }

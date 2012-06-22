@@ -20,10 +20,14 @@ package org.opensaml.saml.saml1.binding.artifact;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.context.SamlLocalEntityContext;
+import org.opensaml.saml.common.context.SamlMetadataContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
@@ -94,21 +98,32 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
     }
 
     /**
-     * @param requestContext
-     * @return
+     * Get the local entity role metadata.
+     * 
+     * @param requestContext the message context
+     * @return local entity role metadata
      */
     private RoleDescriptor getLocalEntityRoleMetadata(MessageContext<SAMLObject> requestContext) {
-        // TODO Auto-generated method stub
-        return null;
+        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
+        SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
+        Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");
+        return mdContext.getRoleDescriptor();
+        
     }
 
     /**
-     * @param requestContext
-     * @return
+     * Get the local entity metadata.
+     * 
+     * @param requestContext the message context
+     * @return the local entity metadata
      */
     private EntityDescriptor getLocalEntityMetadata(MessageContext<SAMLObject> requestContext) {
-        // TODO Auto-generated method stub
-        return null;
+        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
+        SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
+        Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");
+        return mdContext.getEntityDescriptor();
     }
 
     /**

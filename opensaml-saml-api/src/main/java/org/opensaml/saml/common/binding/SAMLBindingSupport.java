@@ -20,8 +20,12 @@ package org.opensaml.saml.common.binding;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.context.SamlEndpointContext;
 import org.opensaml.saml.common.context.SamlProtocolContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml2.core.StatusResponseType;
@@ -86,9 +90,13 @@ public final class SAMLBindingSupport {
      * @throws BindingException throw if no relying party endpoint is available
      */
     public static URI getEndpointURL(MessageContext<SAMLObject> messageContext) throws BindingException {
-        //TODO
-        //Endpoint endpoint = messageContext.getPeerEntityEndpoint();
-        Endpoint endpoint = null;
+        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, false);
+        Constraint.isNotNull(peerContext, "Message context contained no PeerEntityContext");
+        SamlEndpointContext endpointContext = peerContext.getSubcontext(SamlEndpointContext.class, false);
+        Constraint.isNotNull(endpointContext, "PeerEntityContext contained no SamlEndpointContext");
+        
+        Endpoint endpoint = endpointContext.getEndpoint();
+        
         if (endpoint == null) {
             throw new BindingException("Endpoint for relying party was null.");
         }

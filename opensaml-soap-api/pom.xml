@@ -23,6 +23,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-messaging-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <!-- TODO this needs to be removed -->
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-temp</artifactId>
