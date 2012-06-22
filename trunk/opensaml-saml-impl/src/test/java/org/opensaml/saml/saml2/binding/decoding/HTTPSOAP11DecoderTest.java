@@ -25,6 +25,7 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.soap.messaging.context.Soap11Context;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -66,8 +67,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         decoder.decode();
         MessageContext<SAMLObject> messageContext = decoder.getMessageContext();
 
-        //TODO test if decided to expose Envelope
-        //Assert.assertTrue(messageContext.getMessage() instanceof Envelope);
+        Assert.assertNotNull(messageContext.getSubcontext(Soap11Context.class).getEnvelope());
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
     }
     

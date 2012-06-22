@@ -27,17 +27,20 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
+import org.opensaml.saml.common.context.SamlArtifactContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.binding.artifact.AbstractSAML2Artifact;
@@ -308,7 +311,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         } else {
             artifactBuilder = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory()
                     .getArtifactBuilder(defaultArtifactType);
-            storeSamlArtifactType(defaultArtifactType);
+            storeSamlArtifactType(messageContext, defaultArtifactType);
         }
 
         AbstractSAML2Artifact artifact = artifactBuilder.buildArtifact(messageContext);
@@ -329,12 +332,17 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     }
     
     /**
-     * @param messageContext
-     * @return
+     * Get the outbound message issuer.
+     * 
+     * @param messageContext  the message context
+     * @return the outbound message issuer
      */
     private String getOutboundMessageIssuer(MessageContext<SAMLObject> messageContext) {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO need to reconcile the old terminology of "issuer" vs other SAML concepts
+        BasicMessageMetadataContext basicContext = 
+                messageContext.getSubcontext(BasicMessageMetadataContext.class, false);
+        Constraint.isNotNull(basicContext, "Message context did not contain a BasicMessageMetadataContext");
+        return basicContext.getMessageIssuer();
     }
 
     /**
@@ -342,20 +350,32 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @return
      */
     private String getInboundMessageIssuer(MessageContext<SAMLObject> messageContext) {
-        // TODO Auto-generated method stub
+        // TODO need to reconcile the old terminology of "issuer" vs other SAML concepts
+        // TODO will the original inbound message context "issuer" data be copied to the outbound message context, 
+        // or do we assume we can walk the tree somehow, possibly with a context navigator instance
         return null;
     }
 
     /**
-     * @param defaultArtifactType2
+     * Store the SAML artifact type in the message context.
+     * 
+     * @param messageContext  the message context
+     * 
+     * @param artifactType the artifact type to store
      */
-    private void storeSamlArtifactType(byte[] artifactType) {
-        // TODO Auto-generated method stub
-        
+    private void storeSamlArtifactType(MessageContext<SAMLObject> messageContext, byte[] artifactType) {
+        messageContext.getSubcontext(SamlArtifactContext.class, true).setArtifactType(artifactType);
     }
 
+    /**
+     * Get the SAML artifact type from the message context.
+     * 
+     * @param messageContext the message context
+     * 
+     * @return the artifact type
+     */
     private byte[] getSamlArtifactType(MessageContext<SAMLObject> messageContext) {
-        // TODO Auto-generated method stub
-        return null;
+        return messageContext.getSubcontext(SamlArtifactContext.class, true).getArtifactType();
     }
+
 }

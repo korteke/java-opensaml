@@ -29,6 +29,7 @@ import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDe
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.soap.messaging.context.Soap11Context;
 import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,11 +61,11 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXmlMessageDecoder<S
         Envelope soapMessage;
         try {
             soapMessage = (Envelope) unmarshallMessage(request.getInputStream());
+            messageContext.getSubcontext(Soap11Context.class, true).setEnvelope(soapMessage);
         } catch (IOException e) {
             log.error("Unable to obtain input stream from HttpServletRequest", e);
             throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
         }
-        //TODO expose the envelope somehow, via view context, etc ?
 
         List<XMLObject> soapBodyChildren = soapMessage.getBody().getUnknownXMLObjects();
         if (soapBodyChildren.size() < 1 || soapBodyChildren.size() > 1) {
