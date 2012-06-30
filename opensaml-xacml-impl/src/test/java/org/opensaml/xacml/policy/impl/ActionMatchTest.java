@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xacml.ctx.provider;
+package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xacml.policy.ActionMatchType;
