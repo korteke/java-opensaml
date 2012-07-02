@@ -71,9 +71,7 @@ public class AttributeValueTypeImpl extends AbstractXACMLObject implements Attri
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
-        if (textContent == null) {
-            children.addAll(unknownElements);
-        }
+        children.addAll(unknownElements);
 
         return Collections.unmodifiableList(children);
     }
