@@ -52,10 +52,6 @@ public class AttributeSelectorTypeMarshaller extends AbstractXACMLObjectMarshall
             domElement.setAttribute(AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME, 
                     Boolean.toString(attributeSelectorType.getMustBePresentXSBoolean().getValue()));
         }
-        if(!attributeSelectorType.getMustBePresent()){
-            domElement.setAttribute(AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME, 
-                    Boolean.toString(attributeSelectorType.getMustBePresent()));
-        }
-    }
+   }
 
 }
