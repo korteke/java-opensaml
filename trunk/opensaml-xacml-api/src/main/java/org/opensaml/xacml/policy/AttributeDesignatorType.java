@@ -84,7 +84,7 @@ public interface AttributeDesignatorType extends ExpressionType {
      * 
      * @param id ID of the designated attribute
      */
-    public void setAttribtueId(String id);
+    public void setAttributeId(String id);
 
     /**
      * Gets the data type of the designated attribute.

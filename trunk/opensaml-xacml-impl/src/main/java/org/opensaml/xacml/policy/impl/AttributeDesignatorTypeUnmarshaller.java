@@ -42,7 +42,7 @@ public class AttributeDesignatorTypeUnmarshaller extends AbstractXACMLObjectUnma
         AttributeDesignatorType attributeDesignatorType = (AttributeDesignatorType) xmlObject;
         
         if (attribute.getLocalName().equals(AttributeDesignatorType.ATTRIBUTE_ID_ATTRIB_NAME)){
-            attributeDesignatorType.setAttribtueId(StringSupport.trimOrNull(attribute.getValue()));
+            attributeDesignatorType.setAttributeId(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.DATA_TYPE_ATTRIB_NAME)){
             attributeDesignatorType.setDataType(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.ISSUER_ATTRIB_NAME)){
