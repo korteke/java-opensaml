@@ -88,7 +88,7 @@ public class AttributeDesignatorTypeImpl extends AbstractXACMLObject implements 
     }
 
     /** {@inheritDoc} */
-    public void setAttribtueId(String id) {
+    public void setAttributeId(String id) {
 	this.attributeId = prepareForAssignment(this.attributeId, id);
     }
 
