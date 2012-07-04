@@ -42,10 +42,12 @@ public class IdReferenceTypeMarshaller extends XSStringMarshaller {
         if(!Strings.isNullOrEmpty(idReferenceType.getEarliestVersion())){
             domElement.setAttribute(IdReferenceType.EARLIEST_VERSION_ATTRIB_NAME,
                     idReferenceType.getEarliestVersion());
-        }else if(!Strings.isNullOrEmpty(idReferenceType.getLatestVersion())){
+        }
+        if(!Strings.isNullOrEmpty(idReferenceType.getLatestVersion())){
             domElement.setAttribute(IdReferenceType.LATEST_VERSION_ATTRIB_NAME,
                     idReferenceType.getLatestVersion());
-        }else if(!Strings.isNullOrEmpty(idReferenceType.getVersion())){
+        }
+        if(!Strings.isNullOrEmpty(idReferenceType.getVersion())){
             domElement.setAttribute(IdReferenceType.VERSION_ATTRIB_NAME,
                     idReferenceType.getVersion());
         }
