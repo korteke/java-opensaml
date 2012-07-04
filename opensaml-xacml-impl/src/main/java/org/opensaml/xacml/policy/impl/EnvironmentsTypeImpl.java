@@ -48,7 +48,7 @@ public class EnvironmentsTypeImpl extends AbstractXACMLObject implements Environ
     }
     
     /** {@inheritDoc} */
-    public List<EnvironmentType> getEnvrionments() {
+    public List<EnvironmentType> getEnvironments() {
         return environments;
     }
 

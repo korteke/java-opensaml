@@ -39,7 +39,7 @@ public class EnvironmentsTypeUnmarshaller extends AbstractXACMLObjectUnmarshalle
         EnvironmentsType environmentsType = (EnvironmentsType) parentXMLObject;
         
         if(childXMLObject instanceof EnvironmentType){
-            environmentsType.getEnvrionments().add((EnvironmentType)childXMLObject);
+            environmentsType.getEnvironments().add((EnvironmentType)childXMLObject);
         } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
