@@ -46,5 +46,5 @@ public interface EnvironmentsType extends XACMLObject {
      * 
      * @return environments
      */
-    public List<EnvironmentType> getEnvrionments();
+    public List<EnvironmentType> getEnvironments();
 }
