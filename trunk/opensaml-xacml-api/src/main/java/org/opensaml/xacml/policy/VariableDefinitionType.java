@@ -48,6 +48,13 @@ public interface VariableDefinitionType extends XACMLObject {
      * @return expression for this definition
      */
     public ExpressionType getExpression();
+    
+    /**
+     * Sets the expression for this definition.
+     * 
+     * @param expression what to set.
+     */
+    public void setExpression(ExpressionType expression);
 
     /**
      * Gets the ID of this defined variable.

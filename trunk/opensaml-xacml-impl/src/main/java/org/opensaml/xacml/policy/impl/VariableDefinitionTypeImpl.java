@@ -54,6 +54,11 @@ public class VariableDefinitionTypeImpl extends AbstractXACMLObject implements V
     }
 
     /** {@inheritDoc} */
+    public void setExpression(ExpressionType newExpression) {
+        expression = prepareForAssignment(expression, newExpression);
+    }
+
+    /** {@inheritDoc} */
     public String getVariableId() {
         return variableId;
     }
