@@ -72,6 +72,7 @@ public class PolicySetTypeImpl extends AbstractXACMLObject implements PolicySetT
     protected PolicySetTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         choiceGroup = new IndexedXMLObjectChildrenList<XACMLObject>(this);
+        version = DEFAULT_VERSION;
     }
 
     /** {@inheritDoc} */
