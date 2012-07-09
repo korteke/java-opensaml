@@ -46,6 +46,10 @@ public interface PolicyType extends XACMLObject {
 
     /** Version attribute name. */
     public static final String VERSION_ATTRIB_NAME = "Version";
+    
+    /** Version default value. */
+    public static final String VERSION_DEFAULT_VALUE = "1.0";
+    
 
     /** RuleCombiningAlgId attribute name. */
     public static final String RULE_COMBINING_ALG_ID_ATTRIB_NAME = "RuleCombiningAlgId";

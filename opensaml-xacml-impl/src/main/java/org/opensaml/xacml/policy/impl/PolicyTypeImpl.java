@@ -71,6 +71,7 @@ public class PolicyTypeImpl extends AbstractXACMLObject implements PolicyType {
     protected PolicyTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         choiceGroup = new IndexedXMLObjectChildrenList<XACMLObject>(this);
+        version = VERSION_DEFAULT_VALUE;
     }
 
     /** {@inheritDoc} */
