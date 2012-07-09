@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:PolicyIdReference 
+	xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+	Version="3.2.*"
+	EarliestVersion="3.1.+"
+	LatestVersion="3.3.99"
+	>https://example.org/Policy/Id/Reference</xacml:PolicyIdReference>

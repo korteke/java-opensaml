@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:SubjectMatch xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" MatchId="http://example.org/Subject/Match/Match/Id">
+	<xacml:AttributeValue DataType="https://example.org/Subject/Match/Data/Type"/>
+	<xacml:SubjectAttributeDesignator DataType="https://example.org/Subject/Match/Data/Type" AttributeId="https://example.org/Subject/Match/Attribute/Id" />
+	<xacml:AttributeSelector RequestContextPath="SubjectMatchAttrSelectConextPath" DataType="https://example.org/Subject/Match/Data/Type" />
+</xacml:SubjectMatch>
