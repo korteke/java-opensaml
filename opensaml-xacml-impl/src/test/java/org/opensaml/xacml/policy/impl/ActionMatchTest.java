@@ -22,14 +22,12 @@ import org.opensaml.xacml.policy.ActionMatchType;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xacml.policy.AttributeValueType;
-import org.opensaml.xacml.policy.impl.ActionMatchTypeImplBuilder;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml.saml2.metadata.impl.AttributeProfileImpl}.
+ * {@link link org.opensaml.xacml.policy.ActionMatchType}.
  */
 public class ActionMatchTest extends XMLObjectProviderBaseTestCase {
     
@@ -40,13 +38,9 @@ public class ActionMatchTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ActionMatchTest(){
-        singleElementFile = "/data/org/opensaml/xacml/ctx/provider/ActionMatch.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/ctx/provider/ActionMatchChildElements.xml";
-    }
-    
-    /** {@inheritDoc} */
-    @BeforeMethod
-    protected void setUp() throws Exception {
+        singleElementFile = "/data/org/opensaml/xacml/policy/impl/ActionMatch.xml";
+        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/ActionMatchChildElements.xml";
+
         expectedMatchId = "http://example.org";
     }
 

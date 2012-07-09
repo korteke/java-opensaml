@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:Actions xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+    <xacml:Action/>
+    <xacml:Action/>
+    <xacml:Action/>
+</xacml:Actions>

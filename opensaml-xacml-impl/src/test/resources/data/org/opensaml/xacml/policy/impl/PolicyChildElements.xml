@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:Policy xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" Version="9.9.8" PolicyId="https://example.org/Policy/Policy/Id" RuleCombiningAlgId="https://example.org/Policy/Rule/Combining/Alg" >
+	<xacml:Description>This is a Description</xacml:Description>
+	<xacml:PolicyDefaults />
+	<xacml:Target />
+	<xacml:CombinerParameters />
+	<xacml:CombinerParameters />
+	<xacml:CombinerParameters />
+	<xacml:RuleCombinerParameters  RuleIdRef="https://example.org/Rule/Id/Ref" />
+	<xacml:RuleCombinerParameters  RuleIdRef="https://example.org/Rule/Id/Ref" />
+	<xacml:RuleCombinerParameters  RuleIdRef="https://example.org/Rule/Id/Ref" />
+	<xacml:VariableDefinition VariableId="VariableDefinitionId" />
+	<xacml:Rule RuleId="RuleRuleId" Effect="Permit"/>
+	<xacml:Rule RuleId="RuleRuleId" Effect="Permit"/>
+	<xacml:Rule RuleId="RuleRuleId" Effect="Permit"/>
+	<xacml:Rule RuleId="RuleRuleId" Effect="Permit"/>
+	<xacml:Obligations />
+</xacml:Policy>

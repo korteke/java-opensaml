@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:PolicySet xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" PolicySetId="https://example.org/Policy/Set/Policy/Set/Id" PolicyCombiningAlgId="https://example.org/Policy/Set/Policy/Combining/Alg/Id" />
