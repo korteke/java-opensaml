@@ -17,25 +17,15 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.xacml.impl.AbstractXACMLObject;
-import org.opensaml.xacml.policy.CombinerParameterType;
 
 /**
  * Implementation for {@link RuleCombinerParametersTypeImplBuilder}.
  */
-public class RuleCombinerParametersTypeImpl extends AbstractXACMLObject implements
+public class RuleCombinerParametersTypeImpl extends CombinerParametersTypeImpl implements
         org.opensaml.xacml.policy.RuleCombinerParametersType {
     
-    /**Rule indentity reference.*/
+    /**Rule identity reference.*/
     private String ruleIdRef;
-    /**List or the combiner parameters.*/
-    private XMLObjectChildrenList<CombinerParameterType> combinerParameters;
     
     /**
      * Constructor.
@@ -45,7 +35,7 @@ public class RuleCombinerParametersTypeImpl extends AbstractXACMLObject implemen
      */
     protected RuleCombinerParametersTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        combinerParameters = new XMLObjectChildrenList<CombinerParameterType>(this);
+       // combinerParameters = new XMLObjectChildrenList<CombinerParameterType>(this);
     }
     
     /** {@inheritDoc} */
@@ -57,19 +47,4 @@ public class RuleCombinerParametersTypeImpl extends AbstractXACMLObject implemen
     public void setRuleIdRef(String ref) {
         this.ruleIdRef = prepareForAssignment(this.ruleIdRef, ref);
     }
-
-    /** {@inheritDoc} */
-    public List<CombinerParameterType> getCombinerParameters() {
-        return combinerParameters;
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
-        
-        children.addAll(combinerParameters);
-                       
-        return Collections.unmodifiableList(children);
-    }
-
 }
