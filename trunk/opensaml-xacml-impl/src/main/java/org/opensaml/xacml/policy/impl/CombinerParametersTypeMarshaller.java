@@ -31,7 +31,7 @@ public class CombinerParametersTypeMarshaller extends AbstractXACMLObjectMarshal
     }
     
     /**
-     * Constructor.
+     * Constructor. <em>Note</em> changes visibility of super constructor.
      * 
      * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
      *            marshaller operates on

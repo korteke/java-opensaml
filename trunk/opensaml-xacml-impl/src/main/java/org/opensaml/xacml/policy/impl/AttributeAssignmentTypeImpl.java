@@ -17,11 +17,6 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 
 /** Implementation for {@link AttributeAssignmentType}. */
@@ -51,13 +46,4 @@ public class AttributeAssignmentTypeImpl extends AttributeValueTypeImpl implemen
         attributeId = prepareForAssignment(this.attributeId, newAttributeID);
     }
 
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
-
-        if (!super.getOrderedChildren().isEmpty()) {
-            children.addAll(super.getOrderedChildren());
-        }
-        return Collections.unmodifiableList(children);
-    }
 }
