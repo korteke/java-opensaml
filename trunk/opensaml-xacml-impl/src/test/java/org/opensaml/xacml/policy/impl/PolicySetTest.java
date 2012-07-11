@@ -26,10 +26,7 @@ import org.opensaml.xacml.policy.PolicyCombinerParametersType;
 import org.opensaml.xacml.policy.PolicySetCombinerParametersType;
 import org.opensaml.xacml.policy.PolicySetType;
 import org.opensaml.xacml.policy.PolicyType;
-import org.opensaml.xacml.policy.RuleCombinerParametersType;
-import org.opensaml.xacml.policy.RuleType;
 import org.opensaml.xacml.policy.TargetType;
-import org.opensaml.xacml.policy.VariableDefinitionType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -115,6 +112,7 @@ public class PolicySetTest extends XMLObjectProviderBaseTestCase {
         Assert.assertTrue(policySet.getCombinerParameters().isEmpty());
         Assert.assertTrue(policySet.getPolicyCombinerParameters().isEmpty());
         Assert.assertTrue(policySet.getPolicySetCombinerParameters().isEmpty());
+        Assert.assertTrue(policySet.getPolicyChoiceGroup().isEmpty());
 
         Assert.assertNull(policySet.getObligations());
     }
@@ -178,6 +176,10 @@ public class PolicySetTest extends XMLObjectProviderBaseTestCase {
         for (PolicySetCombinerParametersType pscp : policySet.getPolicySetCombinerParameters()) {
             Assert.assertEquals(pscp.getPolicySetIdRef(), expectedPolicySetIdReference);
         }
+
+        Assert.assertEquals(policySet.getPolicyChoiceGroup().size(), expectedNumCombinerParameters + expectedNumPolicy
+                + expectedNumPolicyCombinerParameters + expectedNumPolicyIdReference
+                + expectedNumPolicySetCombinerParameters + expectedNumPolicySetIdReference + expectedNumPolicySet);
 
         Assert.assertNotNull(policySet.getObligations());
     }

@@ -26,89 +26,98 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.xacml.policy.EnvironmentMatchType}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.xacml.policy.EnvironmentMatchType}.
  */
 public class EnvironmentMatchTest extends XMLObjectProviderBaseTestCase {
-    
+
     private String expectedMatchId;
+
     private String expectedDataType;
+
     private String expectedAttributeId;
+
     private String expectedRequestContextPath;
-    
-    
+
     /**
      * Constructor
      */
-    public EnvironmentMatchTest(){
+    public EnvironmentMatchTest() {
         singleElementFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentMatch.xml";
         childElementsFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentMatchChildElements.xml";
-        
+
         expectedMatchId = "https://example.org/Environment/Match/Id";
         expectedDataType = "https://example.org/Environment/Match/Data/Type";
         expectedAttributeId = "https://example.org/Environment/Match/Attribute/Id";
         expectedRequestContextPath = "ConextPathAttrSelect";
     }
-    
+
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementUnmarshall() {
+    @Test public void testSingleElementUnmarshall() {
         EnvironmentMatchType environmentMatch = (EnvironmentMatchType) unmarshallElement(singleElementFile);
 
         Assert.assertEquals(environmentMatch.getMatchId(), expectedMatchId);
-   }
+    }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementMarshall(){
+    @Test public void testSingleElementMarshall() {
         EnvironmentMatchType environmentMatch = new EnvironmentMatchTypeImplBuilder().buildObject();
-        
+
         environmentMatch.setMatchId(expectedMatchId);
         assertXMLEquals(expectedDOM, environmentMatch);
     }
-    
+
     /** {@inheritDoc} */
-    @Test
-    public void testChildElementsMarshall() {
+    @Test public void testChildElementsMarshall() {
         EnvironmentMatchType environmentMatch = new EnvironmentMatchTypeImplBuilder().buildObject();
         environmentMatch.setMatchId(expectedMatchId);
-        
+
         AttributeValueType attrValue = new AttributeValueTypeImplBuilder().buildObject();
         attrValue.setDataType(expectedDataType);
         environmentMatch.setAttributeValue(attrValue);
-        
-        AttributeDesignatorType attrDesignator = (AttributeDesignatorType) buildXMLObject(AttributeDesignatorType.ENVIRONMENT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+
+        AttributeDesignatorType attrDesignator =
+                (AttributeDesignatorType) buildXMLObject(AttributeDesignatorType.ENVIRONMENT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+        attrDesignator.setAttributeId(expectedAttributeId+"g");
+        attrDesignator.setDataType(expectedDataType+"t");
+        attrDesignator.setMustBePresent(true);
+        environmentMatch.setEnvironmentAttributeDesignator(attrDesignator);
+        attrDesignator =
+                (AttributeDesignatorType) buildXMLObject(AttributeDesignatorType.ENVIRONMENT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         attrDesignator.setAttributeId(expectedAttributeId);
         attrDesignator.setDataType(expectedDataType);
         attrDesignator.setMustBePresentXSBoolean(null);
         environmentMatch.setEnvironmentAttributeDesignator(attrDesignator);
-        
+
         AttributeSelectorType attrSelector = new AttributeSelectorTypeImplBuilder().buildObject();
+        attrSelector.setRequestContextPath(expectedRequestContextPath + "ds");
+        attrSelector.setDataType(expectedDataType + "*");
+        attrSelector.setMustBePresent(true);
+        environmentMatch.setAttributeSelector(attrSelector);
+        attrSelector = new AttributeSelectorTypeImplBuilder().buildObject();
         attrSelector.setRequestContextPath(expectedRequestContextPath);
         attrSelector.setDataType(expectedDataType);
         attrSelector.setMustBePresentXSBoolean(null);
         environmentMatch.setAttributeSelector(attrSelector);
-        
+
         assertXMLEquals(expectedChildElementsDOM, environmentMatch);
     }
-    
+
     /** {@inheritDoc} */
-    @Test
-    public void testChildElementsUnmarshall() {
+    @Test public void testChildElementsUnmarshall() {
         EnvironmentMatchType environmentMatch = (EnvironmentMatchType) unmarshallElement(childElementsFile);
-        
+
         Assert.assertEquals(environmentMatch.getMatchId(), expectedMatchId);
-        
+
         AttributeValueType attrValue = environmentMatch.getAttributeValue();
-        Assert.assertEquals(attrValue.getDataType(),expectedDataType);
-        
+        Assert.assertEquals(attrValue.getDataType(), expectedDataType);
+
         AttributeDesignatorType attrDesignator = environmentMatch.getEnvironmentAttributeDesignator();
-        Assert.assertEquals(attrDesignator.getAttributeId(),expectedAttributeId);
-        Assert.assertEquals(attrDesignator.getDataType(),expectedDataType);
+        Assert.assertEquals(attrDesignator.getAttributeId(), expectedAttributeId);
+        Assert.assertEquals(attrDesignator.getDataType(), expectedDataType);
         attrDesignator.setMustBePresent(null);
-        
+
         AttributeSelectorType attrSelector = environmentMatch.getAttributeSelector();
-        Assert.assertEquals(attrSelector.getRequestContextPath(),expectedRequestContextPath);
-        Assert.assertEquals(attrSelector.getDataType(),expectedDataType);
+        Assert.assertEquals(attrSelector.getRequestContextPath(), expectedRequestContextPath);
+        Assert.assertEquals(attrSelector.getDataType(), expectedDataType);
     }
 }

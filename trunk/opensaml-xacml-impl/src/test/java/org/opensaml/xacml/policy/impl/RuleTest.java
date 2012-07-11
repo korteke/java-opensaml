@@ -21,7 +21,6 @@ import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.xacml.policy.DescriptionType;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.RuleType;
-import org.opensaml.xacml.policy.VariableReferenceType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -33,7 +32,6 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProfileURI */
     private String expectedRuleId;
-    private EffectType expectedEffect;
     private String expectedDescription;
     
     /**
@@ -44,7 +42,6 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
         childElementsFile  = "/data/org/opensaml/xacml/policy/impl/RuleChildElements.xml";
 
         expectedRuleId = "RuleRuleId";
-        expectedEffect = EffectType.Permit;
         expectedDescription = "This is a Description";
     }
 
@@ -54,7 +51,7 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
         RuleType rule = (RuleType) unmarshallElement(singleElementFile);
         
         Assert.assertEquals(rule.getRuleId(), expectedRuleId);
-        Assert.assertEquals(rule.getEffect(), expectedEffect);
+        Assert.assertEquals(rule.getEffect(), EffectType.Permit);
         Assert.assertNull(rule.getDescription());
         Assert.assertNull(rule.getTarget());
         Assert.assertNull(rule.getCondition());
@@ -65,7 +62,7 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall(){
         RuleType rule = (new RuleTypeImplBuilder()).buildObject();
         rule.setRuleId(expectedRuleId);
-        rule.setEffect(expectedEffect);
+        rule.setEffect(EffectType.Permit);
         
         assertXMLEquals(expectedDOM, rule);
     }
@@ -76,7 +73,7 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
         RuleType rule = (RuleType) unmarshallElement(childElementsFile);
         
         Assert.assertEquals(rule.getRuleId(), expectedRuleId);
-        Assert.assertEquals(rule.getEffect(), expectedEffect);
+        Assert.assertEquals(rule.getEffect(), EffectType.Deny);
         Assert.assertEquals(rule.getDescription().getValue(), expectedDescription);
         Assert.assertNotNull(rule.getTarget());
         Assert.assertNotNull(rule.getCondition());
@@ -87,7 +84,7 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsMarshall(){
         RuleType rule = (new RuleTypeImplBuilder()).buildObject();
         rule.setRuleId(expectedRuleId);
-        rule.setEffect(expectedEffect);
+        rule.setEffect(EffectType.Deny);
 
         DescriptionType description = new DescriptionTypeImplBuilder().buildObject();
         description.setValue(expectedDescription);
