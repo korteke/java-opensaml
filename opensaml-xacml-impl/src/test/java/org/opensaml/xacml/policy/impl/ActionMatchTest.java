@@ -81,9 +81,14 @@ public class ActionMatchTest extends XMLObjectProviderBaseTestCase {
         actionMatch.setMatchId(expectedMatchId);
         
         AttributeDesignatorType attributeDesignatorType = (AttributeDesignatorType) buildXMLObject(AttributeDesignatorType.ACTION_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+        attributeDesignatorType.setMustBePresent(true);
+        actionMatch.setActionAttributeDesignator(attributeDesignatorType);
+        
+        attributeDesignatorType = (AttributeDesignatorType) buildXMLObject(AttributeDesignatorType.ACTION_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         attributeDesignatorType.setMustBePresent(false);
         actionMatch.setActionAttributeDesignator(attributeDesignatorType);
 
+        actionMatch.setAttributeSelector((AttributeSelectorType) buildXMLObject(AttributeSelectorType.DEFAULT_ELEMENT_NAME));
         actionMatch.setAttributeSelector((AttributeSelectorType) buildXMLObject(AttributeSelectorType.DEFAULT_ELEMENT_NAME));
         actionMatch.setAttributeValue((AttributeValueType) buildXMLObject(AttributeValueType.DEFAULT_ELEMENT_NAME));
 

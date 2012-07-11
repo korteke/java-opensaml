@@ -97,17 +97,27 @@ public class SubjectMatchTest extends XMLObjectProviderBaseTestCase {
         subjectMatch.setAttributeValue(attributeValue);
         
         AttributeDesignatorType attributeDesignator = buildXMLObject(AttributeDesignatorType.SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+        attributeDesignator.setAttributeId(expectedAttributeId+"*");
+        attributeDesignator.setDataType(expectedDataType+"*");
+        attributeDesignator.setMustBePresent(null);
+        subjectMatch.setSubjectAttributeDesignator(attributeDesignator);
+        attributeDesignator = buildXMLObject(AttributeDesignatorType.SUBJECT_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         attributeDesignator.setAttributeId(expectedAttributeId);
         attributeDesignator.setDataType(expectedDataType);
         attributeDesignator.setMustBePresent(null);
         subjectMatch.setSubjectAttributeDesignator(attributeDesignator);
         
         AttributeSelectorType attributeSelector = new AttributeSelectorTypeImplBuilder().buildObject();
+        attributeSelector.setDataType(expectedDataType+"*");
+        attributeSelector.setRequestContextPath("*"+expectedRequestContextPath);
+        attributeSelector.setMustBePresentXSBoolean(null);
+        subjectMatch.setAttributeSelector(attributeSelector);
+        attributeSelector = new AttributeSelectorTypeImplBuilder().buildObject();
         attributeSelector.setDataType(expectedDataType);
         attributeSelector.setRequestContextPath(expectedRequestContextPath);
         attributeSelector.setMustBePresentXSBoolean(null);
         subjectMatch.setAttributeSelector(attributeSelector);
-        
+                
         assertXMLEquals(expectedChildElementsDOM, subjectMatch);
     }
 }

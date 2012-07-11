@@ -83,6 +83,7 @@ public class AttributeValueTest extends XMLObjectProviderBaseTestCase {
             count ++;
         }
         Assert.assertEquals(count, 3);
+        Assert.assertEquals(attributeValue.getUnknownXMLObjects(ActionsType.DEFAULT_ELEMENT_NAME).size(), 3);
     }
     
     @Test

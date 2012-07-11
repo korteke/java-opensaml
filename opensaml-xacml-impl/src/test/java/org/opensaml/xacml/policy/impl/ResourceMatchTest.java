@@ -97,12 +97,24 @@ public class ResourceMatchTest extends XMLObjectProviderBaseTestCase {
         resourceMatch.setAttributeValue(attributeValue);
         
         AttributeDesignatorType attributeDesignator = buildXMLObject(AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
+        attributeDesignator.setAttributeId(expectedAttributeId+"p");
+        attributeDesignator.setDataType(expectedDataType+"*");
+        attributeDesignator.setMustBePresent(true);
+        resourceMatch.setResourceAttributeDesignator(attributeDesignator);
+        
+        attributeDesignator = buildXMLObject(AttributeDesignatorType.RESOURCE_ATTRIBUTE_DESIGNATOR_ELEMENT_NAME);
         attributeDesignator.setAttributeId(expectedAttributeId);
         attributeDesignator.setDataType(expectedDataType);
         attributeDesignator.setMustBePresent(null);
         resourceMatch.setResourceAttributeDesignator(attributeDesignator);
         
         AttributeSelectorType attributeSelector = new AttributeSelectorTypeImplBuilder().buildObject();
+        attributeSelector.setDataType(expectedDataType+"7");
+        attributeSelector.setRequestContextPath(expectedRequestContextPath+"7");
+        attributeSelector.setMustBePresent(true);
+        resourceMatch.setAttributeSelector(attributeSelector);
+        
+        attributeSelector = new AttributeSelectorTypeImplBuilder().buildObject();
         attributeSelector.setDataType(expectedDataType);
         attributeSelector.setRequestContextPath(expectedRequestContextPath);
         attributeSelector.setMustBePresentXSBoolean(null);

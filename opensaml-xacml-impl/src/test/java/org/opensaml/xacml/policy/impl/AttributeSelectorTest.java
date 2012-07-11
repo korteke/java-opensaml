@@ -62,6 +62,10 @@ public class AttributeSelectorTest extends XMLObjectProviderBaseTestCase {
         attributeSelector.setDataType(expectedDataType);
         attributeSelector.setRequestContextPath(expectedRequestContextPath);
         attributeSelector.setMustBePresentXSBoolean(null);
+        Assert.assertFalse(attributeSelector.getMustBePresent());
+        attributeSelector.setMustBePresent(true);
+        Assert.assertTrue(attributeSelector.getMustBePresent());
+        attributeSelector.setMustBePresent(null);
         assertXMLEquals(expectedDOM, attributeSelector );
     }
     

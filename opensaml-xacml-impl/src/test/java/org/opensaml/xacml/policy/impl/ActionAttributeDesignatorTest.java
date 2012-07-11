@@ -62,6 +62,7 @@ public class ActionAttributeDesignatorTest extends XMLObjectProviderBaseTestCase
         attributeDesignator.setDataType(expectedDataType);
         attributeDesignator.setAttributeId(expectedAttributeId);
         attributeDesignator.setMustBePresent(null);
+        Assert.assertFalse(attributeDesignator.getMustBePresent());
         assertXMLEquals(expectedDOM, attributeDesignator );
     }
     
