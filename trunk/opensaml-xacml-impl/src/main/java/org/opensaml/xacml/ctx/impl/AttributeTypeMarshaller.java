@@ -55,8 +55,8 @@ public class AttributeTypeMarshaller extends AbstractXACMLObjectMarshaller {
             domElement.setAttributeNS(null, AttributeType.DATATYPE_ATTRIB_NAME, attribute.getDataType());
         }
 
-        if (attribute.getAttributeID() != null) {
-            domElement.setAttributeNS(null, AttributeType.ATTRIBUTEID_ATTTRIB_NAME, attribute.getAttributeID());
+        if (attribute.getAttributeId() != null) {
+            domElement.setAttributeNS(null, AttributeType.ATTRIBUTEID_ATTTRIB_NAME, attribute.getAttributeId());
         }
     }
 

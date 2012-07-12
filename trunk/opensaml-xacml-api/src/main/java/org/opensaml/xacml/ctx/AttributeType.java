@@ -55,7 +55,7 @@ public interface AttributeType extends XACMLObject {
      * 
      * @return the AttributeId
      */
-    public String getAttributeID();
+    public String getAttributeId();
 
     /**
      * Gets the list of attribute values for this attribute.

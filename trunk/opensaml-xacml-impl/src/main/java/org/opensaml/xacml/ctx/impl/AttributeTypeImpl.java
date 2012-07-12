@@ -55,7 +55,7 @@ public class AttributeTypeImpl extends AbstractXACMLObject implements AttributeT
     }
 
     /** {@inheritDoc} */
-    public String getAttributeID() {
+    public String getAttributeId() {
         return attributeID;
     }
 
