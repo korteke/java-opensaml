@@ -22,16 +22,16 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xacml.ctx.ResourceType;
+import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xacml.ctx.ResponseType;
 import org.opensaml.xacml.ctx.ResultType;
 import org.opensaml.xacml.impl.AbstractXACMLObject;
 
-/** Concrete implementation of {@link ResourceType}. */
+/** Concrete implementation of {@link ResponseType}. */
 public class ResponseTypeImpl extends AbstractXACMLObject implements ResponseType {
 
-    /** The result of the response. */
-    private ResultType result;
+    /** The results of the response. */
+    private final XMLObjectChildrenList<ResultType> results;
 
     /**
      * Constructor.
@@ -42,26 +42,21 @@ public class ResponseTypeImpl extends AbstractXACMLObject implements ResponseTyp
      */
     protected ResponseTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        results = new XMLObjectChildrenList<ResultType>(this);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
-        if (result != null) {
-            children.add(result);
-        }
+        children.addAll(results);
 
         return Collections.unmodifiableList(children);
     }
 
     /** {@inheritDoc} */
-    public ResultType getResult() {
-        return result;
+    public List<ResultType> getResults() {
+        return results;
     }
 
-    /** {@inheritDoc} */
-    public void setResult(ResultType result) {
-        this.result = prepareForAssignment(this.result, result);
-    }
 }
