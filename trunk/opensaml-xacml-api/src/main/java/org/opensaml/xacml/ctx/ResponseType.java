@@ -17,6 +17,8 @@
 
 package org.opensaml.xacml.ctx;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.opensaml.xacml.XACMLConstants;
@@ -40,16 +42,9 @@ public interface ResponseType extends XACMLObject {
             XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /**
-     * Returns the result of the response.
+     * Returns the list of results for the response.
      * 
-     * @return the result of the response
+     * @return the list of result for the response
      */
-    public ResultType getResult();
-
-    /**
-     * Sets the result of the response.
-     * 
-     * @param newResult result of the response
-     */
-    public void setResult(ResultType newResult);
+    public List<ResultType> getResults();
 }
