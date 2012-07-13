@@ -17,6 +17,9 @@
 
 package org.opensaml.xacml.ctx.provider;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
@@ -89,9 +92,18 @@ public class ObligationServiceTest extends XMLObjectBaseTestCase {
         obligSrvc.addObligationhandler(new MultiplicitiveObligationHandler("multiply1", 2, 2));
         
         // Test lexical ordering when two handlers have the same precedence
-        obligSrvc.addObligationhandler(new AdditiveObligationHandler("add2", 3, 2));
-        obligSrvc.addObligationhandler(new MultiplicitiveObligationHandler("multiply2", 3, 2));
+        obligSrvc.addObligationhandler(Arrays.asList(
+                new AdditiveObligationHandler("add2", 3, 2),
+                new MultiplicitiveObligationHandler("multiply2", 3, 2)));
 
+        obligSrvc.addObligationhandler(Collections.EMPTY_LIST);
+        
+        BaseObligationHandler toDel = new AdditiveObligationHandler("doo", -1, 3);
+        obligSrvc.addObligationhandler(toDel);
+        Assert.assertEquals(obligSrvc.getObligationHandlers().size(), 5);
+        obligSrvc.removeObligationHandler(toDel);
+        Assert.assertEquals(obligSrvc.getObligationHandlers().size(), 4);
+        
         obligSrvc.processObligations(processingCtx);
 
         Assert.assertEquals(count, 8);
