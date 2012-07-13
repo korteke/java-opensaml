@@ -44,6 +44,10 @@ public interface SubjectType extends XACMLObject {
     /** Name of the SubjectCategory attribute. */
     public static final String SUBJECT_CATEGORY_ATTTRIB_NAME = "SubjectCategory";
 
+    /** Dfeault for the SubjectCategory attribute. */
+    public static final String SUBJECT_CATEGORY_ATTTRIB_DEFAULT =
+            "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject";
+
     /**
      * Returns the list of attributes in the subject.
      * 
