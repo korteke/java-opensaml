@@ -23,40 +23,44 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.xacml.policy.AttributeAssignmentType}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.xacml.policy.AttributeAssignmentType}.
  */
 public class AttributeAssignmentTest extends XMLObjectProviderBaseTestCase {
-    
+
     private String expectedDataType;
+
     private String expectedAttributeId;
+
+    private String expectedContent;
+
     /**
      * Constructor
      */
-    public AttributeAssignmentTest(){
+    public AttributeAssignmentTest() {
         singleElementFile = "/data/org/opensaml/xacml/policy/impl/AttributeAssignment.xml";
 
         expectedDataType = "https://example.org/Data/Type";
         expectedAttributeId = "https://example.org/Attribute/Id";
+        expectedContent = "Sometext";
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementUnmarshall() {
+    @Test public void testSingleElementUnmarshall() {
         AttributeAssignmentType attributeAssignment = (AttributeAssignmentType) unmarshallElement(singleElementFile);
 
+        Assert.assertEquals(attributeAssignment.getValue(), expectedContent);
         Assert.assertEquals(attributeAssignment.getDataType(), expectedDataType);
         Assert.assertEquals(attributeAssignment.getAttributeId(), expectedAttributeId);
     }
 
     /** {@inheritDoc} */
-    @Test
-    public void testSingleElementMarshall(){
-        AttributeAssignmentType attributeAssignment   = (new AttributeAssignmentTypeImplBuilder()).buildObject();
-        
+    @Test public void testSingleElementMarshall() {
+        AttributeAssignmentType attributeAssignment = (new AttributeAssignmentTypeImplBuilder()).buildObject();
+
+        attributeAssignment.setValue(expectedContent);
         attributeAssignment.setDataType(expectedDataType);
         attributeAssignment.setAttributeId(expectedAttributeId);
-        assertXMLEquals(expectedDOM, attributeAssignment );
+        assertXMLEquals(expectedDOM, attributeAssignment);
     }
-    
+
 }
