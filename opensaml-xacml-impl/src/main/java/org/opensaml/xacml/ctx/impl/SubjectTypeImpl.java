@@ -46,7 +46,7 @@ public class SubjectTypeImpl extends AbstractXACMLObject implements SubjectType 
     protected SubjectTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new XMLObjectChildrenList<AttributeType>(this);
-        subjectCategory = "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject";
+        subjectCategory = SUBJECT_CATEGORY_ATTTRIB_DEFAULT;
     }
 
     /** {@inheritDoc} */
