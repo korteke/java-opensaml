@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:ResourceContent xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os"  xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+	<xacml:Action />
+	<xacml:Apply FunctionId="http://example.org/Resource/Content/Apply/Function/Id" />
+</xacml-context:ResourceContent>
+	
+	
+

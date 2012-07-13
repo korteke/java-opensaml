@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:Attribute xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" 
+	AttributeId="https://example.org/Attribute/Attribute/Id" 
+	DataType="https://example.org/Attribute/Data/Type" />

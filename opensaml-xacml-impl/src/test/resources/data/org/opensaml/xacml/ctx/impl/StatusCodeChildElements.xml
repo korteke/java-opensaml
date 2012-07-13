@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:StatusCode xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" Value="https://example.org/Status/Code">
+	<xacml-context:StatusCode xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" Value="https://example.org/Status/Code/Minor"/>
+</xacml-context:StatusCode>

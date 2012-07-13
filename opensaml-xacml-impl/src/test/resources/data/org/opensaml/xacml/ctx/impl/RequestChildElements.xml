@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:Request xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" >
+	<xacml-context:Subject  SubjectCategory="https://example.org/Request/Subject/Subject/Category"/>
+	<xacml-context:Subject  SubjectCategory="https://example.org/Request/Subject/Subject/Category"/>
+	<xacml-context:Subject  SubjectCategory="https://example.org/Request/Subject/Subject/Category"/>
+	<xacml-context:Resource />
+	<xacml-context:Resource />
+	<xacml-context:Action/>
+	<xacml-context:Environment/> 
+</xacml-context:Request>
