@@ -241,7 +241,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * A helper function for derived classes. This 'nornmalizes' newString and then if it is different from oldString
+     * A helper function for derived classes. This 'normalizes' newString and then if it is different from oldString
      * invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
      * prepareForAssignment(this.foo, foo);
      * 
@@ -396,8 +396,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)} with
-     * the release being propogated.
+     * A convenience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)} with
+     * the release being propagated.
      */
     public void releaseThisAndChildrenDOM() {
         if (getDOM() != null) {
@@ -407,8 +407,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * A convience method that is equal to calling {@link #releaseDOM()} then {@link #releaseParentDOM(boolean)} with
-     * the release being propogated.
+     * A convenience method that is equal to calling {@link #releaseDOM()} then {@link #releaseParentDOM(boolean)} with
+     * the release being propagated.
      */
     public void releaseThisandParentDOM() {
         if (getDOM() != null) {
