@@ -27,7 +27,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * This interface describes how ab object representing a SAML1 <code>Audience</code> element will behave.
+ * This interface describes how an object representing a SAML1 <code>Audience</code> element will behave.
  */
 public interface Audience extends SAMLObject {
 
