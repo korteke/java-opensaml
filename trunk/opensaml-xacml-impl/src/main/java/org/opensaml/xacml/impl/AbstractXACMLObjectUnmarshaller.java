@@ -27,21 +27,6 @@ import org.w3c.dom.Attr;
  * {@link AbstractXACMLObject}.
  */
 public abstract class AbstractXACMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
-    
-    /**
-     * Constructor.
-     * 
-     * @deprecated no replacement
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected AbstractXACMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
 
     /**
      * Constructor.

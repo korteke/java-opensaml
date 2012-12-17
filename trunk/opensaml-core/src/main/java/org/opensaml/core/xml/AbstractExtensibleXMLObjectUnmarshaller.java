@@ -36,20 +36,6 @@ public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractEl
     }
 
     /**
-     * Constructor.
-     * 
-     * @deprecated no replacement
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    public AbstractExtensibleXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
-    /**
      * Unmarshalls the <code>xs:anyAttribute</code> attributes.
      * 
      * {@inheritDoc}

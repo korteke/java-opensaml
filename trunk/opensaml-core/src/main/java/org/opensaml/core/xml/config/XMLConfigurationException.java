@@ -18,7 +18,8 @@
 package org.opensaml.core.xml.config;
 
 /**
- * An exception thrown when an error occurs loading information via {@link org.opensaml.core.xml.config.XMLConfigurator}.
+ * An exception thrown when an error occurs loading information via
+ * {@link org.opensaml.core.xml.config.XMLConfigurator}.
  */
 public class XMLConfigurationException extends Exception {
 

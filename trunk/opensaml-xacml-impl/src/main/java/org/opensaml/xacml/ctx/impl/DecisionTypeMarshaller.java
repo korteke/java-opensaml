@@ -33,18 +33,6 @@ public class DecisionTypeMarshaller extends AbstractXACMLObjectMarshaller {
         super();
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected DecisionTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         DecisionType decision = (DecisionType) samlObject;

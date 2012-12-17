@@ -33,25 +33,11 @@ import org.w3c.dom.Element;
  * AbstractExtensibleXMLObjectMarshaller marshalls element of type <code>xs:any</code> and with
  * <code>xs:anyAttribute</code> attributes.
  */
-public class AbstractExtensibleXMLObjectMarshaller extends AbstractElementExtensibleXMLObjectMarshaller {
+public abstract class AbstractExtensibleXMLObjectMarshaller extends AbstractElementExtensibleXMLObjectMarshaller {
     
     /** Constructor. */
     public AbstractExtensibleXMLObjectMarshaller(){
         super();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @deprecated no replacement
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    public AbstractExtensibleXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
     }
 
     /**

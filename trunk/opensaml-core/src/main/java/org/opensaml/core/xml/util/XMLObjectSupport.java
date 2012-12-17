@@ -368,7 +368,8 @@ public final class XMLObjectSupport {
             attribute = AttributeSupport.constructAttribute(document, entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) || attributeMap.isIDAttribute(entry.getKey())) {
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) ||
+                    attributeMap.isIDAttribute(entry.getKey())) {
                 domElement.setIdAttributeNode(attribute, true);
             }
         }

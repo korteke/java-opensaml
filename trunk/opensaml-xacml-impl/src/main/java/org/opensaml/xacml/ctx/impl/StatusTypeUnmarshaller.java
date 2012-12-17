@@ -33,18 +33,6 @@ public class StatusTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
         super();
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected StatusTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         StatusType status = (StatusType) parentObject;

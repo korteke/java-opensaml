@@ -21,20 +21,23 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 
 /**
- * Class which provides storage for the ID-to-XMLObject index mapping on an owning {@link org.opensaml.core.xml.XMLObject}.
+ * Class which provides storage for the ID-to-XMLObject index mapping on an owning
+ * {@link org.opensaml.core.xml.XMLObject}.
  */
 @NotThreadSafe
 public class IDIndex {
     
     /** The XMLObject which owns this ID index. */
-    private XMLObject owner;
+    private final XMLObject owner;
     
     /** Mapping of ID attributes to XMLObjects in the subtree rooted at this object's owner.
      * This allows constant-time dereferencing of ID-typed attributes within the subtree.  */
@@ -44,13 +47,9 @@ public class IDIndex {
      * Constructor.
      *
      * @param newOwner the XMLObject which owns this ID-to-XMLObject index
-     * 
-     * @throws NullPointerException thrown if the given XMLObject is null
      */
-    public IDIndex(XMLObject newOwner) throws NullPointerException {
-        if (newOwner == null) {
-            throw new NullPointerException("Attribute owner XMLObject may not be null");
-        }
+    public IDIndex(@Nonnull final XMLObject newOwner) {
+        Constraint.isNotNull(newOwner, "ID-owning XMLObject may not be null");
         
         owner = newOwner;
         idMappings = new LazyMap<String, XMLObject>();

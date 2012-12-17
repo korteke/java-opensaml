@@ -19,7 +19,6 @@ package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.xacml.XACMLConstants;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.CombinerParametersType;
 import org.opensaml.xacml.policy.DefaultsType;
@@ -38,7 +37,7 @@ public class PolicySetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
     /** Constructor. */
     public PolicySetTypeUnmarshaller() {
-        super(XACMLConstants.XACML20_NS, PolicySetType.DEFAULT_ELEMENT_LOCAL_NAME);
+        super();
     }
 
     /** {@inheritDoc} */

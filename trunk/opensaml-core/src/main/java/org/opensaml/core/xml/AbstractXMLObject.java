@@ -396,8 +396,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * A convenience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)} with
-     * the release being propagated.
+     * A convenience method that is equal to calling {@link #releaseDOM()} then {@link #releaseChildrenDOM(boolean)}
+     * with the release being propagated.
      */
     public void releaseThisAndChildrenDOM() {
         if (getDOM() != null) {
@@ -464,7 +464,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void setNoNamespaceSchemaLocation(String location) {
         noNamespaceSchemaLocation = StringSupport.trimOrNull(location);
-        manageQualifiedAttributeNamespace(XmlConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
+        manageQualifiedAttributeNamespace(XmlConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME,
+                schemaLocation != null);
     }
 
     /** {@inheritDoc} */
@@ -479,9 +480,9 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will register the namespace
-     * for the type as well as for the xsi:type qualified attribute name with the namespace manager for this XMLObject.
-     * If null is passed, the type name and xsi:type name will be deregistered.
+     * Sets a given QName as the schema type for the Element represented by this XMLObject. This will register
+     * the namespace for the type as well as for the xsi:type qualified attribute name with the namespace manager
+     * for this XMLObject. If null is passed, the type name and xsi:type name will be deregistered.
      * 
      * @param type the schema type
      */

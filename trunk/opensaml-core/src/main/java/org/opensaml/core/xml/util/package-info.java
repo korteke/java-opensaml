@@ -15,16 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.xacml.ctx.impl;
-
-import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-
-/** Marshaller for {@link org.opensaml.xacml.ctx.RequestType} objects. */
-public class ResourceTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public ResourceTypeMarshaller() {
-        super();
-    }
-
-}
+/** Utility classes for working with XML, XMLObjects, and various data types. */
+package org.opensaml.core.xml.util;

@@ -17,10 +17,7 @@
 
 package org.opensaml.xacml.ctx.impl;
 
-import javax.xml.namespace.QName;
-
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -34,18 +31,6 @@ public class ResourceContentTypeUnmarshaller extends AbstractXACMLObjectUnmarsha
     /** Constructor. */
     public ResourceContentTypeUnmarshaller() {
         super();
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected ResourceContentTypeUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
     }
 
     /** {@inheritDoc} */
