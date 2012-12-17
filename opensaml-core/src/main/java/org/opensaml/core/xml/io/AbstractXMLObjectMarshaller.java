@@ -18,7 +18,6 @@
 package org.opensaml.core.xml.io;
 
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -26,7 +25,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
@@ -39,7 +37,6 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,31 +60,11 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectMarshaller.class);
 
-    /** The target name and namespace for this marshaller. */
-    private QName targetQName;
-
     /** Factory for XMLObject Marshallers. */
     private MarshallerFactory marshallerFactory;
 
     /** Constructor. */
     protected AbstractXMLObjectMarshaller() {
-        marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
-    }
-
-    /**
-     * This constructor supports checking an XMLObject to be marshalled, either element name or schema type, against a
-     * given namespace/local name pair.
-     * 
-     * @deprecated no replacement
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected AbstractXMLObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
-        targetQName = QNameSupport.constructQName(targetNamespaceURI, targetLocalName, null);
-
         marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
     }
 
@@ -110,8 +87,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         if (document == null) {
             throw new MarshallingException("Given document may not be null");
         }
-
-        checkXMLObjectIsTarget(xmlObject);
 
         log.trace("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
         domElement = xmlObject.getDOM();
@@ -158,8 +133,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         if (parentElement == null) {
             throw new MarshallingException("Given parent element is null");
         }
-
-        checkXMLObjectIsTarget(xmlObject);
 
         log.trace("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
         domElement = xmlObject.getDOM();
@@ -238,40 +211,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         marshallElementContent(xmlObject, targetElement);
 
         return targetElement;
-    }
-
-    /**
-     * Checks to make sure the given XMLObject's schema type or element QName matches the target parameters given at
-     * marshaller construction time.
-     * 
-     * @param xmlObject the XMLObject to marshall
-     * 
-     * @throws MarshallingException thrown if the given object is not or the required type
-     */
-    protected void checkXMLObjectIsTarget(XMLObject xmlObject) throws MarshallingException {
-        if (targetQName == null) {
-            log.trace("Targeted QName checking is not available for this marshaller, XMLObject {} was not verified",
-                    xmlObject.getElementQName());
-            return;
-        }
-
-        log.trace("Checking that {} meets target criteria", xmlObject.getElementQName());
-        QName type = xmlObject.getSchemaType();
-        if (type != null && type.equals(targetQName)) {
-            log.trace("{} schema type matches target", xmlObject.getElementQName());
-            return;
-        } else {
-            QName elementQName = xmlObject.getElementQName();
-            if (elementQName.equals(targetQName)) {
-                log.trace("{} element QName matches target", xmlObject.getElementQName());
-                return;
-            }
-        }
-
-        String errorMsg = "This marshaller only operations on " + targetQName + " elements not "
-                + xmlObject.getElementQName();
-        log.error(errorMsg);
-        throw new MarshallingException(errorMsg);
     }
 
     /**

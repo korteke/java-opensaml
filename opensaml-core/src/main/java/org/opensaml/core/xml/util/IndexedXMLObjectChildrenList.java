@@ -260,6 +260,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
         indexList = backingList.get(index);
     }
 
+    /** {@inheritDoc} */
     public boolean add(ElementType o) {
         boolean result = backingList.add(o);
         indexList = backingList.get(index);
@@ -279,7 +280,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
     }
 
     /** {@inheritDoc} */
-    public boolean addAll(int index, Collection<? extends ElementType> c) {
+    public boolean addAll(int i, Collection<? extends ElementType> c) {
         throw new UnsupportedOperationException();
     }
 
@@ -366,6 +367,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
         return indexList.toArray();
     }
 
+    /** {@inheritDoc} */
     public <T extends Object> T[] toArray(T[] a) {
         return indexList.toArray(a);
     }

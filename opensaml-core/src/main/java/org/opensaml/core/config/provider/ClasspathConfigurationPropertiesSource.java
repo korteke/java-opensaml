@@ -63,6 +63,7 @@ public class ClasspathConfigurationPropertiesSource implements ConfigurationProp
                         try {
                             is.close();
                         } catch (IOException e) {
+                            log.warn("I/O error attempting to close classpath resource '" + RESOURCE_NAME + "'", e);
                         }
                     }
                 }

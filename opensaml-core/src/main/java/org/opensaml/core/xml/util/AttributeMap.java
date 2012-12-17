@@ -22,11 +22,13 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
@@ -42,8 +44,6 @@ import com.google.common.base.Strings;
 /**
  * A map of attribute names and attribute values that invalidates the DOM of the attribute owning XMLObject when the
  * attributes change.
- * 
- * <strong>Note:</strong> 
  */
 @NotThreadSafe
 public class AttributeMap implements Map<QName, String> {
@@ -52,7 +52,7 @@ public class AttributeMap implements Map<QName, String> {
     private final Logger log = LoggerFactory.getLogger(AttributeMap.class);
 
     /** XMLObject owning the attributes. */
-    private XMLObject attributeOwner;
+    private final XMLObject attributeOwner;
 
     /** Map of attributes. */
     private Map<QName, String> attributes;
@@ -73,13 +73,9 @@ public class AttributeMap implements Map<QName, String> {
      * Constructor.
      *
      * @param newOwner the XMLObject that owns these attributes
-     * 
-     * @throws NullPointerException thrown if the given XMLObject is null
      */
-    public AttributeMap(XMLObject newOwner) throws NullPointerException {
-        if (newOwner == null) {
-            throw new NullPointerException("Attribute owner XMLObject may not be null");
-        }
+    public AttributeMap(@Nonnull final XMLObject newOwner) {
+        Constraint.isNotNull(newOwner, "Attribute owner XMLObject may not be null");
 
         attributeOwner = newOwner;
         attributes = new LazyMap<QName, String>();

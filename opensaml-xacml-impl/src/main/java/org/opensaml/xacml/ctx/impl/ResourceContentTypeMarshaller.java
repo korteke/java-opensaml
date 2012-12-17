@@ -33,18 +33,6 @@ public class ResourceContentTypeMarshaller extends AbstractXACMLObjectMarshaller
         super();
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected ResourceContentTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ResourceContentType resourceContent  = (ResourceContentType)xmlObject;

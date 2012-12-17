@@ -35,20 +35,6 @@ public abstract class AbstractXACMLObjectMarshaller extends AbstractXMLObjectMar
     public AbstractXACMLObjectMarshaller() {
         super();
     }
-    
-    /**
-     * Constructor.
-     * 
-     * @deprecated no replacement
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected AbstractXACMLObjectMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
 
     /**
      * No-op method. Extending implementations should override this method if they have attributes to marshall into the

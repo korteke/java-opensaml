@@ -80,6 +80,7 @@ public abstract class AbstractFilesystemConfigurationPropertiesSource implements
                         try {
                             is.close();
                         } catch (IOException e) {
+                            log.warn("I/O problem attempting to close property file '" + fileName + "'", e);
                         }
                     }
                 }

@@ -17,20 +17,13 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 import org.opensaml.xacml.policy.AttributeAssignmentType;
 import org.opensaml.xacml.policy.AttributeValueType;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
@@ -48,7 +41,7 @@ public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller 
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
         if(!Strings.isNullOrEmpty(attributeValue.getDataType())){
-        	domElement.setAttributeNS(null,AttributeAssignmentType.DATA_TYPE_ATTRIB_NAME, attributeValue.getDataType());
+            domElement.setAttributeNS(null,AttributeAssignmentType.DATA_TYPE_ATTRIB_NAME, attributeValue.getDataType());
         }
         
         marshallUnknownAttributes(attributeValue, domElement);

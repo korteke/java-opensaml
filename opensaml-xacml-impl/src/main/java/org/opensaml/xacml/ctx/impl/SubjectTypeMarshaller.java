@@ -31,18 +31,6 @@ public class SubjectTypeMarshaller extends AbstractXACMLObjectMarshaller {
         super();
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected SubjectTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
         SubjectType attribute = (SubjectType) samlElement;

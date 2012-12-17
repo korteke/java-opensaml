@@ -32,18 +32,6 @@ public class CombinerParametersTypeUnmarshaller extends AbstractXACMLObjectUnmar
     public CombinerParametersTypeUnmarshaller() {
         super();
     }
-    
-    /**
-     * Constructor. <em>Note</em> changes visibility of super constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    public CombinerParametersTypeUnmarshaller(String targetNamespaceURI,String targetLocalName ) {
-        super(targetNamespaceURI,targetLocalName);
-    }
 
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)

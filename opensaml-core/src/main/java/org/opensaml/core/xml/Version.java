@@ -45,7 +45,6 @@ public final class Version {
      * @param args command line arguments
      */
     public static void main(String[] args) {
-        Package pkg = Version.class.getPackage();
         System.out.println(NAME + " version " + VERSION);
     }
 

@@ -167,11 +167,11 @@ public class XSBooleanValue {
     public static XSBooleanValue valueOf(String booleanString) {
         String trimmedBooleanString = StringSupport.trimOrNull(booleanString);
         if (trimmedBooleanString != null) {
-            if (trimmedBooleanString.equals("1")) {
+            if ("1".equals(trimmedBooleanString)) {
                 return new XSBooleanValue(Boolean.TRUE, true);
-            } else if (trimmedBooleanString.equals("0")) {
+            } else if ("0".equals(trimmedBooleanString)) {
                 return new XSBooleanValue(Boolean.FALSE, true);
-            } else if (trimmedBooleanString.equals("true")) {
+            } else if ("true".equals(trimmedBooleanString)) {
                 return new XSBooleanValue(Boolean.TRUE, false);
             }
         }

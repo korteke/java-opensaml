@@ -21,7 +21,10 @@ import java.util.AbstractList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 
@@ -35,7 +38,7 @@ import org.opensaml.core.xml.XMLObject;
 public class XMLObjectChildrenList<ElementType extends XMLObject> extends AbstractList<ElementType> {
 
     /** Parent to the elements in this list. */
-    private XMLObject parent;
+    private final XMLObject parent;
 
     /** List of elements. */
     private List<ElementType> elements;
@@ -44,13 +47,9 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * Constructs an empty list with all added XMLObjects being assigned the given parent XMLObject.
      * 
      * @param newParent the parent for all the added XMLObjects
-     * 
-     * @throws NullPointerException thrown if the parent is null
      */
-    public XMLObjectChildrenList(XMLObject newParent) throws NullPointerException {
-        if (newParent == null) {
-            throw new NullPointerException("Parent may not be null");
-        }
+    public XMLObjectChildrenList(@Nonnull final XMLObject newParent) {
+        Constraint.isNotNull(newParent, "Parent may not be null");
 
         parent = newParent;
         elements = new LazyList<ElementType>();
@@ -60,17 +59,14 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * Constructs a list containing the elements in the specified collection, in the order they are returned by the
      * collection's iterator, with each added XMLObject assigned the given parent XMLObject.
      * 
+     * <p>An IllegalArgumentException is thrown if any of the XMLObjects in the given collection already have a parent
+     * other than the given parent
+     * 
      * @param newParent the parent for all the added XMLObjects
      * @param newElements the elements to be added
-     * 
-     * @throws NullPointerException thrown if the parent is null
-     * @throws IllegalArgumentException thrown if any of the XMLObjects in the given collection already have a parent
-     *             that is different from the given parent
      */
-    public XMLObjectChildrenList(XMLObject newParent, Collection<ElementType> newElements) throws NullPointerException {
-        if (newParent == null) {
-            throw new NullPointerException("Parent may not be null");
-        }
+    public XMLObjectChildrenList(@Nonnull final XMLObject newParent, Collection<ElementType> newElements) {
+        Constraint.isNotNull(newParent, "Parent may not be null");
 
         parent = newParent;
         elements = new LazyList<ElementType>();
@@ -102,15 +98,15 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     /**
      * Replaces the XMLObject at the specified index with the given element.
      * 
+     * <p>An IllegalArgumentException is thrown if the given XMLObject already has a parent
+     * other than the parent given at list construction time.
+     * 
      * @param index index of the XMLObject to be replaced
      * @param element element to be stored at the given index
      * 
      * @return the replaced XMLObject
-     * 
-     * @throws IllegalArgumentException thrown if the given XMLObject already has a parent that is different from the
-     *             XMLObject given at list construction time
      */
-    public ElementType set(int index, ElementType element) throws IllegalArgumentException {
+    public ElementType set(int index, ElementType element) {
         if (element == null) {
             return null;
         }
@@ -135,13 +131,13 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     /**
      * Adds the given XMLObject to this list.
      * 
+     * <p>An IllegalArgumentException is thrown if the given XMLObject already has a parent
+     * other than the parent given at list construction time.
+     * 
      * @param index index at which to add the given XMLObject
      * @param element element to be stored at the given index
-     * 
-     * @throws IllegalArgumentException thrown if the given XMLObject already has a parent that is different from the
-     *             XMLObject given at list construction time
      */
-    public void add(int index, ElementType element) throws IllegalArgumentException {
+    public void add(int index, ElementType element) {
         if (element == null || elements.contains(element)) {
             return;
         }
@@ -193,16 +189,16 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * Assigned the parent, given at list construction, to the given element if the element does not have a parent or
      * its parent matches the one given at list construction time.
      * 
-     * @param element the element to set the parent on
+     * <p>An IllegalArgumentException is thrown if the given XMLObject already has a parent
+     * other than the parent given at list construction time.
      * 
-     * @throws IllegalArgumentException thrown if the given element already has a parent and it is different than the
-     *             parent given at list construction time
+     * @param element the element to set the parent on
      */
-    protected void setParent(ElementType element) throws IllegalArgumentException {
+    protected void setParent(ElementType element) {
         XMLObject elemParent = element.getParent();
         if (elemParent != null && elemParent != parent) {
             throw new IllegalArgumentException(element.getElementQName()
-                    + " is already the child of another XMLObject and may not be inserted in to this list");
+                    + " is already the child of another XMLObject and may not be inserted into this list");
         }
 
         element.setParent(parent);

@@ -31,18 +31,6 @@ public class AttributeTypeMarshaller extends AbstractXACMLObjectMarshaller {
         super();
     }
 
-    /**
-     * Constructor.
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            marshaller operates on
-     */
-    protected AttributeTypeMarshaller(String targetNamespaceURI, String targetLocalName) {
-        super(targetNamespaceURI, targetLocalName);
-    }
-
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
         AttributeType attribute = (AttributeType) samlElement;

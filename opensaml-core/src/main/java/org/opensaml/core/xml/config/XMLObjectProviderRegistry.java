@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.io.Marshaller;
@@ -58,9 +57,6 @@ public class XMLObjectProviderRegistry {
     /** Object provider configuration elements indexed by QName. */
     private Map<QName, Element> configuredObjectProviders;
 
-    /** Validator suite configuration elements indexed by suite IDs. */
-    private Map<String, Element> validatorSuiteConfigurations;
-
     /** Configured XMLObject builder factory. */
     private XMLObjectBuilderFactory builderFactory;
 
@@ -79,7 +75,6 @@ public class XMLObjectProviderRegistry {
     /** Constructor. */
     public XMLObjectProviderRegistry() {
         configuredObjectProviders = new ConcurrentHashMap<QName, Element>(0);
-        validatorSuiteConfigurations = new ConcurrentHashMap<String, Element>(0);
         builderFactory = new XMLObjectBuilderFactory();
         marshallerFactory = new MarshallerFactory();
         unmarshallerFactory = new UnmarshallerFactory();

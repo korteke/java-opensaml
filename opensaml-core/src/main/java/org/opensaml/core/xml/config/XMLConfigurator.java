@@ -71,9 +71,6 @@ public class XMLConfigurator {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
 
-    /** Whether the XML configuration elements that configured object providers should be retained. */
-    private boolean retainXMLConfiguration;
-
     /** Pool of parsers used to read and validate configurations. */
     private BasicParserPool parserPool;
 
@@ -86,24 +83,9 @@ public class XMLConfigurator {
     /**
      * Constructor.
      * 
-     * @throws XMLConfigurationException thrown if the validation schema for configuration files can not be created
+     * @throws XMLConfigurationException thrown if the validation schema for configuration files cannot be created
      */
     public XMLConfigurator() throws XMLConfigurationException {
-        this(false);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param retainXML whether to retain the XML configuration elements within the {@link XMLObjectProviderRegistrySupport}.
-     * 
-     * @throws XMLConfigurationException thrown if the validation schema for configuration files can not be created
-     * 
-     * @deprecated this method will be removed once {@link XMLObjectProviderRegistrySupport} no longer has the option to store the XML
-     *             configuration fragements
-     */
-    public XMLConfigurator(boolean retainXML) throws XMLConfigurationException {
-        retainXMLConfiguration = retainXML;
         parserPool = new BasicParserPool();
         SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Source schemaSource = new StreamSource(XMLConfigurator.class.getResourceAsStream(XMLTOOLING_SCHEMA_LOCATION));
@@ -136,7 +118,7 @@ public class XMLConfigurator {
      * 
      * @param configurationFile the configuration file(s) to be loaded
      * 
-     * @throws XMLConfigurationException thrown if the configuration file(s) can not be be read or invalid
+     * @throws XMLConfigurationException thrown if the configuration file(s) cannot be read or invalid
      */
     public void load(File configurationFile) throws XMLConfigurationException {
         if (configurationFile == null || !configurationFile.canRead()) {
@@ -165,7 +147,7 @@ public class XMLConfigurator {
      * 
      * @param configurationStream configuration stream
      * 
-     * @throws XMLConfigurationException thrown if the given configuration is invalid or can not be read
+     * @throws XMLConfigurationException thrown if the given configuration is invalid or cannot be read
      */
     public void load(InputStream configurationStream) throws XMLConfigurationException {
         try {
@@ -179,10 +161,10 @@ public class XMLConfigurator {
     }
 
     /**
-     * Loads the configuration docuement.
+     * Loads the configuration document.
      * 
      * @param configuration the configurationd document
-     * @throws XMLConfigurationException thrown if the configuration file(s) can not be be read or invalid
+     * @throws XMLConfigurationException thrown if the configuration file(s) cannot be read or invalid
      */
     public void load(Document configuration) throws XMLConfigurationException {
         log.debug("Loading configuration from XML Document");
@@ -263,13 +245,7 @@ public class XMLConfigurator {
                                 .item(0);
                 unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
-                if (retainXMLConfiguration) {
-                    // TODO think we should probably remove this now
-                    // getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller,
-                    // objectProvider);
-                } else {
-                    getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
-                }
+                getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
 
                 log.debug("{} intialized and configuration cached", objectProviderName);
             } catch (XMLConfigurationException e) {

@@ -20,7 +20,6 @@ package org.opensaml.core.xml.io;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
@@ -61,9 +60,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectUnmarshaller.class);
 
-    /** The target name and namespace for this unmarshaller. */
-    private QName targetQName;
-
     /** Factory for XMLObjectBuilders. */
     private XMLObjectBuilderFactory xmlObjectBuilderFactory;
 
@@ -78,29 +74,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
     }
 
-    /**
-     * This constructor supports checking a DOM Element to be unmarshalled, either element name or schema type, against
-     * a given namespace/local name pair.
-     * 
-     * @deprecated no replacement
-     * 
-     * @param targetNamespaceURI the namespace URI of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     * @param targetLocalName the local name of either the schema type QName or element QName of the elements this
-     *            unmarshaller operates on
-     */
-    protected AbstractXMLObjectUnmarshaller(String targetNamespaceURI, String targetLocalName) {
-        targetQName = QNameSupport.constructQName(targetNamespaceURI, targetLocalName, null);
-
-        xmlObjectBuilderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
-    }
-
     /** {@inheritDoc} */
     public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
         log.trace("Starting to unmarshall DOM element {}", QNameSupport.getNodeQName(domElement));
-
-        checkElementIsTarget(domElement);
 
         XMLObject xmlObject = buildXMLObject(domElement);
 
@@ -136,43 +112,6 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
 
     /**
-     * Checks that the given DOM Element's XSI type or namespace qualified element name matches the target QName of this
-     * unmarshaller.
-     * 
-     * @param domElement the DOM element to check
-     * 
-     * @throws UnmarshallingException thrown if the DOM Element does not match the target of this unmarshaller
-     */
-    protected void checkElementIsTarget(Element domElement) throws UnmarshallingException {
-        QName elementName = QNameSupport.getNodeQName(domElement);
-
-        if (targetQName == null) {
-            log.trace(
-                    "Targeted QName checking is not available for this unmarshaller, DOM Element {} was not verified",
-                    elementName);
-            return;
-        }
-
-        log.trace("Checking that {} meets target criteria.", elementName);
-
-        QName type = DomTypeSupport.getXSIType(domElement);
-
-        if (type != null && type.equals(targetQName)) {
-            log.trace("{} schema type matches target.", elementName);
-            return;
-        } else {
-            if (elementName.equals(targetQName)) {
-                log.trace("{} element name matches target.", elementName);
-                return;
-            } else {
-                String errorMsg = "This unmarshaller only operates on " + targetQName + " elements not " + elementName;
-                log.error(errorMsg);
-                throw new UnmarshallingException(errorMsg);
-            }
-        }
-    }
-
-    /**
      * Constructs the XMLObject that the given DOM Element will be unmarshalled into. If the DOM element has an XML
      * Schema type defined this method will attempt to retrieve an XMLObjectBuilder, from the factory given at
      * construction time, using the schema type. If no schema type is present or no builder is registered with the
@@ -193,7 +132,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
         xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
         if (xmlObjectBuilder == null) {
-            xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+            xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(
+                    XMLObjectProviderRegistrySupport.getDefaultProviderQName());
             if (xmlObjectBuilder == null) {
                 String errorMsg = "Unable to located builder for " + QNameSupport.getNodeQName(domElement);
                 log.error(errorMsg);
@@ -322,7 +262,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
 
         if (unmarshaller == null) {
-            unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+            unmarshaller = unmarshallerFactory.getUnmarshaller(
+                    XMLObjectProviderRegistrySupport.getDefaultProviderQName());
             if (unmarshaller == null) {
                 String errorMsg =
                         "No unmarshaller available for " + QNameSupport.getNodeQName(childElement) + ", child of "
