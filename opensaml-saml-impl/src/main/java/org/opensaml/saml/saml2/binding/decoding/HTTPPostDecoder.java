@@ -53,7 +53,7 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAM
         HttpServletRequest request = getHttpServletRequest();
 
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
-            throw new MessageDecodingException("This message deocoder only supports the HTTP POST method");
+            throw new MessageDecodingException("This message decoder only supports the HTTP POST method");
         }
 
         String relayState = request.getParameter("RelayState");
