@@ -17,6 +17,7 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 
 import org.opensaml.messaging.encoder.MessageEncoder;
@@ -33,13 +34,13 @@ public interface HttpServletResponseMessageEncoder<MessageType> extends MessageE
      * 
      * @return the HTTP servlet response
      */
-    public HttpServletResponse getHttpServletResponse();
+    @Nullable public HttpServletResponse getHttpServletResponse();
     
     /**
      * Set the HTTP servlet response on which to operate.
      * 
      * @param response the HTTP servlet response
      */
-    public void setHttpServletResponse(HttpServletResponse response);
+    public void setHttpServletResponse(@Nullable final HttpServletResponse response);
     
 }

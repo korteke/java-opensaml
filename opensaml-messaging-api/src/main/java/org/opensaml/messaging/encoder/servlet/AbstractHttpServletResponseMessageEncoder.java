@@ -17,6 +17,7 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -36,12 +37,12 @@ public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> ext
     private HttpServletResponse response;
 
     /** {@inheritDoc} */
-    public HttpServletResponse getHttpServletResponse() {
+    @Nullable public HttpServletResponse getHttpServletResponse() {
         return response;
     }
 
     /** {@inheritDoc} */
-    public synchronized void setHttpServletResponse(HttpServletResponse servletResponse) {
+    public synchronized void setHttpServletResponse(@Nullable final HttpServletResponse servletResponse) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
@@ -60,7 +61,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder<MessageType> ext
         super.doInitialize();
 
         if (response == null) {
-            throw new ComponentInitializationException("HTTP servlet response can not be null");
+            throw new ComponentInitializationException("HTTP servlet response cannot be null");
         }
     }
 }

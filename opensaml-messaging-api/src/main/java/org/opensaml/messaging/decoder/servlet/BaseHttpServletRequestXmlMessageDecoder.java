@@ -19,6 +19,8 @@ package org.opensaml.messaging.decoder.servlet;
 
 import java.io.InputStream;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -37,7 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * Base class for message decoders which decode XML messages from HttpServletRequests.
+ * Base class for message decoders which decode XML messages from an {@link HttpServletRequest}.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
@@ -74,7 +76,7 @@ public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extend
      * 
      * @return parser pool used to deserialize incoming messages
      */
-    public ParserPool getParserPool() {
+    @Nonnull public ParserPool getParserPool() {
         return parserPool;
     }
 
@@ -83,8 +85,8 @@ public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extend
      * 
      * @param pool parser pool used to deserialize incoming messages
      */
-    public void setParserPool(ParserPool pool) {
-        Constraint.isNotNull(pool, "ParserPool may not be null");
+    public void setParserPool(@Nonnull final ParserPool pool) {
+        Constraint.isNotNull(pool, "ParserPool cannot be null");
         parserPool = pool;
     }
     
@@ -100,7 +102,7 @@ public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extend
         super.doInitialize();
         
         if (parserPool == null) {
-            throw new ComponentInitializationException("Parser pool can not be null");
+            throw new ComponentInitializationException("Parser pool cannot be null");
         }
     }
 
@@ -108,13 +110,12 @@ public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extend
      * Log the decoded message to the protocol message logger.
      */
     protected void logDecodedMessage() {
-        if(protocolMessageLog.isDebugEnabled() ){
+        if (protocolMessageLog.isDebugEnabled() ){
             MessageContext messageContext = getMessageContext();
             if (messageContext.getMessage() == null) {
                 log.warn("Decoded message was null, nothing to log");
                 return;
-            }
-            if (!(messageContext.getMessage() instanceof XMLObject)) {
+            } else if (!(messageContext.getMessage() instanceof XMLObject)) {
                 log.warn("Decoded message was not an instance of XMLObject, was a: {}", 
                         messageContext.getMessage().getClass().getName());
                 return;

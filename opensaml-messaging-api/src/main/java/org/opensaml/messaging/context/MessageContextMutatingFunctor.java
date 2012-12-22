@@ -21,7 +21,7 @@ import org.opensaml.messaging.MessageException;
 
 
 /**
- * An interface for components which mutate a message context, or data contained therein,
+ * An interface for components which mutate a {@link MessageContext}, or data contained therein,
  * based on an input value of a particular type.
  * 
  * @param <MessageType> the message type of the message context on which to operate

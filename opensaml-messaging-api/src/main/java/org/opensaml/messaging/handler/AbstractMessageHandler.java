@@ -17,6 +17,13 @@
 
 package org.opensaml.messaging.handler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
+import org.opensaml.messaging.context.MessageContext;
+
 
 
 /**
@@ -30,7 +37,7 @@ public abstract class AbstractMessageHandler<MessageType> implements MessageHand
     private String id;
 
     /** {@inheritDoc} */
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
     
@@ -39,8 +46,25 @@ public abstract class AbstractMessageHandler<MessageType> implements MessageHand
      * 
      * @param newId the handler's new unique identifier
      */
-    public void setId(String newId) {
+    public void setId(@Nullable final String newId) {
         id = newId;
     }
+
+    /** {@inheritDoc} */
+    public void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        
+        doInvoke(messageContext);
+    }
+
+
+    /**
+     * Performs the handler logic.
+     * 
+     * @param messageContext the message context on which to invoke the handler
+     * @throws MessageHandlerException if the there is an error invoking the handler on the message context
+     */
+    protected abstract void doInvoke(@Nonnull final MessageContext<MessageType> messageContext)
+            throws MessageHandlerException;
 
 }

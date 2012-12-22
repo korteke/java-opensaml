@@ -22,6 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -95,8 +97,8 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * 
      * @param newId the new context id
      */
-    protected void setId(final String newId) {
-        id = Constraint.isNotNull(StringSupport.trimOrNull(newId), "Context ID can not be null or empty");
+    protected void setId(@Nonnull final String newId) {
+        id = Constraint.isNotNull(StringSupport.trimOrNull(newId), "Context ID cannot be null or empty");
     }
     
     /**
@@ -133,7 +135,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param clazz the class type to obtain
      * @return the held instance of the class, or null
      */
-    public <T extends BaseContext> T getSubcontext(Class<T> clazz) {
+    public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz) {
         return getSubcontext(clazz, isAutoCreateSubcontexts());
     }
     
@@ -145,7 +147,9 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * @return the held instance of the class, or null
      */ 
-    public <T extends BaseContext> T getSubcontext(Class<T> clazz, boolean autocreate) {
+    public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, boolean autocreate) {
+        Constraint.isNotNull(clazz, "Class type cannot be null");
+        
         log.trace("Request for subcontext of type: {}", clazz.getName());
         T subcontext = subcontexts.get(clazz);
         if (subcontext != null) {
@@ -169,7 +173,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * 
      * @param subContext the subcontext to add
      */
-    public void addSubcontext(BaseContext subContext) {
+    public void addSubcontext(@Nonnull final BaseContext subContext) {
         addSubcontext(subContext, false);
     }
     
@@ -180,10 +184,12 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param replace flag indicating whether to replace the existing instance of the subcontext if present
      * 
      */
-    public void addSubcontext(BaseContext subcontext, boolean replace) {
+    public void addSubcontext(@Nonnull final BaseContext subcontext, boolean replace) {
+        Constraint.isNotNull(subcontext, "Subcontext cannot be null");
+        
         BaseContext existing = subcontexts.get(subcontext.getClass());
         if (existing == subcontext) {
-            log.trace("Subcontext to add was already a child of the current context, skipping");
+            log.trace("Subcontext to add is already a child of the current context, skipping");
             return;
         }
         
@@ -205,7 +211,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
         }
         
         // Set parent pointer of new subcontext to this instance
-        log.trace("New subcontext with type '{}' id '{}' is set to have parent with type '{}' id '{}', removing it",
+        log.trace("New subcontext with type '{}' id '{}' set to have parent with type '{}' id '{}'",
                 new String[]{subcontext.getClass().getName(), subcontext.getId(), 
                 this.getClass().getName(), this.getId(),});
         subcontext.setParent(this);
@@ -214,7 +220,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
         // then clear out its parent pointer.
         if (existing != null) {
             log.trace("Old subcontext with type '{}' id '{}' will have parent cleared",
-                    new String[]{existing.getClass().getName(), existing.getId(), });
+                    new String[]{existing.getClass().getName(), existing.getId(),});
             existing.setParent(null);
         }
         
@@ -225,7 +231,9 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * 
      * @param subcontext the subcontext to remove
      */
-    public void removeSubcontext(BaseContext subcontext) {
+    public void removeSubcontext(@Nonnull final BaseContext subcontext) {
+        Constraint.isNotNull(subcontext, "Subcontext cannot be null");
+        
         log.trace("Removing subcontext with type '{}' id '{}' from parent with type '{}' id '{}'",
                 new String[]{subcontext.getClass().getName(), subcontext.getId(), 
                 this.getClass().getName(), this.getId(),});
@@ -239,7 +247,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param <T> the type of subcontext being operated on
      * @param clazz the subcontext class to remove
      */
-    public <T extends BaseContext>void removeSubcontext(Class<T> clazz) {
+    public <T extends BaseContext>void removeSubcontext(@Nonnull final Class<T> clazz) {
         BaseContext subcontext = getSubcontext(clazz, false);
         if (subcontext != null) {
             removeSubcontext(subcontext);
@@ -254,7 +262,9 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param clazz the class to check
      * @return true if the current context contains an instance of the class, false otherwise
      */
-    public <T extends BaseContext> boolean containsSubcontext(Class<T> clazz) {
+    public <T extends BaseContext> boolean containsSubcontext(@Nonnull final Class<T> clazz) {
+        Constraint.isNotNull(clazz, "Class type cannot be null");
+        
         return subcontexts.contains(clazz);
     }
     
@@ -289,7 +299,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
     }
     
     /** {@inheritDoc} */
-    public Iterator<BaseContext>  iterator() {
+    public Iterator<BaseContext> iterator() {
         return new ContextSetNoRemoveIteratorDecorator(subcontexts.iterator());
     }
     
@@ -300,7 +310,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
      * @param clazz the class of the subcontext instance to create
      * @return the new subcontext instance
      */
-    protected <T extends BaseContext> T createSubcontext(Class<T> clazz) {
+    protected <T extends BaseContext> T createSubcontext(@Nonnull final Class<T> clazz) {
         Constructor<T> constructor;
         try {
             constructor = clazz.getConstructor();

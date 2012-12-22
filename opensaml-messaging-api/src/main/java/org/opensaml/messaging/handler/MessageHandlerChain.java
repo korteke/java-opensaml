@@ -19,6 +19,8 @@ package org.opensaml.messaging.handler;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 
 /**
  *
@@ -34,6 +36,6 @@ public interface MessageHandlerChain<MessageType> extends MessageHandler<Message
      * 
      * @return the list of members of the handler chain
      */
-    public List<MessageHandler<MessageType>> getHandlers();
+    @Nullable public List<MessageHandler<MessageType>> getHandlers();
     
 }

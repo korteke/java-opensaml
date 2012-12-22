@@ -17,6 +17,10 @@
 
 package org.opensaml.messaging.handler;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+
 import org.opensaml.messaging.context.MessageContext;
 
 
@@ -26,21 +30,14 @@ import org.opensaml.messaging.context.MessageContext;
  *
  * @param <MessageType> the type of message being handled
  */
-public interface MessageHandler<MessageType> {
-    
-    /**
-     * Get the handler's unique identifier.
-     * 
-     * @return the handler's unique identifier
-     */
-    public String getId();
+public interface MessageHandler<MessageType> extends IdentifiableComponent {
     
     /**
      * Invoke the handler on the specified message context.
      * 
-     * @param messageContext the message context on which to invoke that handler
+     * @param messageContext the message context on which to invoke the handler
      * @throws MessageHandlerException if the there is an error invoking the handler on the message context
      */
-    public void invoke(MessageContext<MessageType> messageContext) throws MessageHandlerException;
+    public void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException;
     
 }

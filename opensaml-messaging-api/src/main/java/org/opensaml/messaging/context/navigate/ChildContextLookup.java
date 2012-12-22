@@ -48,7 +48,7 @@ public class ChildContextLookup<ParentContext extends BaseContext, ChildContext 
      * @param type child context type to look up
      */
     public ChildContextLookup(@Nonnull final Class<ChildContext> type) {
-        childType = Constraint.isNotNull(type, "Child context type can not be null");
+        childType = Constraint.isNotNull(type, "Child context type cannot be null");
         autocreate = false;
     }
 
@@ -59,7 +59,7 @@ public class ChildContextLookup<ParentContext extends BaseContext, ChildContext 
      * @param createContext whether to create the child context if it does not exist
      */
     public ChildContextLookup(@Nonnull final Class<ChildContext> type, final boolean createContext) {
-        childType = Constraint.isNotNull(type, "Child context type can not be null");
+        childType = Constraint.isNotNull(type, "Child context type cannot be null");
         autocreate = createContext;
     }
 

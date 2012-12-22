@@ -37,7 +37,7 @@ public class RootContextLookup<RootContext extends BaseContext> implements
 
         if(input.getParent() == null){
             return (RootContext) input;
-        }else{
+        } else {
             return apply(input.getParent());
         }
     }

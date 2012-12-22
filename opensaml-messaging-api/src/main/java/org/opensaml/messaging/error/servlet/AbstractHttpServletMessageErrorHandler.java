@@ -17,6 +17,7 @@
 
 package org.opensaml.messaging.error.servlet;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,22 +37,22 @@ public abstract class AbstractHttpServletMessageErrorHandler<MessageType>
     private HttpServletResponse response;
 
     /** {@inheritDoc} */
-    public HttpServletRequest getHttpServletRequest() {
+    @Nullable public HttpServletRequest getHttpServletRequest() {
         return request;
     }
 
     /** {@inheritDoc} */
-    public HttpServletResponse getHttpServletResponse() {
+    @Nullable public HttpServletResponse getHttpServletResponse() {
         return response;
     }
 
     /** {@inheritDoc} */
-    public void setHttpServletRequest(HttpServletRequest servletRequest) {
+    public void setHttpServletRequest(@Nullable final HttpServletRequest servletRequest) {
         request = servletRequest;
     }
 
     /** {@inheritDoc} */
-    public void setHttpServletResponse(HttpServletResponse servletResponse) {
+    public void setHttpServletResponse(@Nullable final HttpServletResponse servletResponse) {
         response = servletResponse;
     }
 
