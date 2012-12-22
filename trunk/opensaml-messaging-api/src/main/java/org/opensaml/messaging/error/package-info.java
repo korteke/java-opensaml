@@ -15,22 +15,5 @@
  * limitations under the License.
  */
 
+/** Interfaces and classes for message-related error handling. */
 package org.opensaml.messaging.error;
-
-/**
- * A specialization of error handler that explicitly indicates that it is capable of handling 
- * one or more types of throwable errors.
- * 
- * @param <MessageType> the type of message being handled
- */
-public interface TypedMessageErrorHandler<MessageType> extends MessageErrorHandler<MessageType> {
-    
-    /**
-     * Indicates whether the message error handle is capable of handling the specified error.
-     * 
-     * @param t the type of error about which to query
-     * @return true iff the handle can handle the specified error type
-     */
-    public boolean handlesError(Throwable t);
-
-}

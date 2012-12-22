@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * Base class for message encoders which encoder XML messages to HttpServletResponse.
+ * Base class for message encoders which encode XML messages to HttpServletResponse.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
@@ -44,7 +44,9 @@ public abstract class BaseHttpServletResponseXmlMessageEncoder<MessageType exten
 
     /** {@inheritDoc} */
     public void encode() throws MessageEncodingException {
-        log.debug("Beginning encode of message of type: {}", getMessageContext().getMessage().getClass().getName());
+        if (log.isDebugEnabled() && getMessageContext().getMessage() != null) {
+            log.debug("Beginning encode of message of type: {}", getMessageContext().getMessage().getClass().getName());
+        }
 
         super.encode();
 
@@ -57,13 +59,12 @@ public abstract class BaseHttpServletResponseXmlMessageEncoder<MessageType exten
      * Log the encoded message to the protocol message logger.
      */
     protected void logEncodedMessage() {
-        if(protocolMessageLog.isDebugEnabled() ){
+        if (protocolMessageLog.isDebugEnabled() ){
             MessageContext messageContext = getMessageContext();
             if (messageContext.getMessage() == null) {
                 log.warn("Encoded message was null, nothing to log");
                 return;
-            }
-            if (!(messageContext.getMessage() instanceof XMLObject)) {
+            } else if (!(messageContext.getMessage() instanceof XMLObject)) {
                 log.warn("Encoded message was not an instance of XMLObject, was a: {}", 
                         messageContext.getMessage().getClass().getName());
                 return;

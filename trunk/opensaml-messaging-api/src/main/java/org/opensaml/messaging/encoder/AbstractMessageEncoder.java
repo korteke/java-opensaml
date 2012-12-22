@@ -80,7 +80,7 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestru
         super.doInitialize();
 
         if (messageContext == null) {
-            throw new ComponentInitializationException("Message context can not be null");
+            throw new ComponentInitializationException("Message context cannot be null");
         }
     }
 

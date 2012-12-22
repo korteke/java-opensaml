@@ -20,6 +20,9 @@ package org.opensaml.messaging.handler.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandler;
@@ -46,18 +49,8 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
      * </p>
      * 
      * */
-    public List<MessageHandler<MessageType>> getHandlers() {
+    @Nullable public List<MessageHandler<MessageType>> getHandlers() {
         return members;
-    }
-
-    /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    public void invoke(MessageContext<MessageType> msgContext) throws MessageHandlerException {
-        for (MessageHandler handler: members) {
-            if (handler != null) {
-                handler.invoke(msgContext);
-            }
-        }
     }
     
     /**
@@ -70,10 +63,24 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
      * 
      * @param handlers the list of message handler members
      */
-    public void setHandlers(List<MessageHandler<MessageType>> handlers) {
-        ArrayList<MessageHandler<MessageType>> newMembers = new ArrayList<MessageHandler<MessageType>>();
-        newMembers.addAll(handlers);
-        members = newMembers;
+    public void setHandlers(@Nullable final List<MessageHandler<MessageType>> handlers) {
+        if (handlers != null) {
+            ArrayList<MessageHandler<MessageType>> newMembers = new ArrayList<MessageHandler<MessageType>>();
+            newMembers.addAll(handlers);
+            members = newMembers;
+        } else {
+            members = null;
+        }
     }
 
+    /** {@inheritDoc} */
+    public void doInvoke(@Nonnull final MessageContext<MessageType> msgContext) throws MessageHandlerException {
+        if (members != null) {
+            for (MessageHandler handler: members) {
+                if (handler != null) {
+                    handler.invoke(msgContext);
+                }
+            }
+        }
+    }
 }

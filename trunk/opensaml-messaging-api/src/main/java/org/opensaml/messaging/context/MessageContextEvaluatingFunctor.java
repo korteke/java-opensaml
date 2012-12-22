@@ -21,8 +21,8 @@ import org.opensaml.messaging.MessageException;
 
 
 /**
- * An interface for components which evaluate a message context as the basis for extracting, calculating,
- * or otherwise producing a specific data value.
+ * An interface for components which evaluate a {@link MessageContext} as the basis for extracting,
+ * calculating, or otherwise producing a specific data value.
  * 
  * <p>
  * Implementations should not have side effects and should not modify any data in the 
