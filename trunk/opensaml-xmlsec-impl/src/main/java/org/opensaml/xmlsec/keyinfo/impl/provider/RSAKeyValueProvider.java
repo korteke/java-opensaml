@@ -84,7 +84,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
 
         CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
-            cred.getCredentalContextSet().add(credContext);
+            cred.getCredentialContextSet().add(credContext);
         }
 
         log.debug("Credential successfully extracted from RSAKeyValue");

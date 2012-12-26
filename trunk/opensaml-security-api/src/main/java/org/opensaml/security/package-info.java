@@ -15,15 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.credential;
-
-
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
-
 /**
- * A resolver which uses {@link Criterion} to resolve and return instances of {@link Credential}.
+ * Interfaces and classes used in representing cryptographic credentials,
+ * evaluating the trustworthiness of security of tokens, etc.
  */
-public interface CredentialResolver extends Resolver<Credential, CriteriaSet>{
-    
-}
+package org.opensaml.security;

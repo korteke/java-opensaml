@@ -549,7 +549,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     private void checkContextAndID(Credential credential, String entityID, QName role) {
         Assert.assertEquals(credential.getEntityId(), entityID, "Unexpected value found for credential entityID");
         
-        SAMLMDCredentialContext mdContext = credential.getCredentalContextSet().get(SAMLMDCredentialContext.class);
+        SAMLMDCredentialContext mdContext = credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
         Assert.assertNotNull(mdContext, "SAMLMDCredentialContext was not available");
         
         Assert.assertNotNull(mdContext.getRoleDescriptor());
