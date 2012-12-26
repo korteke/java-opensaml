@@ -21,6 +21,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.collection.LazySet;
@@ -63,37 +65,37 @@ public abstract class AbstractCredential implements Credential {
     }
     
     /** {@inheritDoc}  */
-    public String getEntityId() {
+    @Nullable public String getEntityId() {
         return entityId;
     }
 
     /** {@inheritDoc}  */
-    public UsageType getUsageType() {
+    @Nullable public UsageType getUsageType() {
         return usageType;
     }
 
     /** {@inheritDoc} */
-    public Collection<String> getKeyNames() {
+    @Nonnull public Collection<String> getKeyNames() {
         return keyNames;
     }
     
     /** {@inheritDoc}  */
-    public PublicKey getPublicKey() {
+    @Nullable public PublicKey getPublicKey() {
         return publicKey;
     }
     
     /** {@inheritDoc} */
-    public SecretKey getSecretKey() {
+    @Nullable public SecretKey getSecretKey() {
         return secretKey;
     }
 
     /** {@inheritDoc}  */
-    public PrivateKey getPrivateKey() {
+    @Nullable public PrivateKey getPrivateKey() {
         return privateKey;
     }
 
     /** {@inheritDoc} */
-    public CredentialContextSet getCredentalContextSet() {
+    @Nonnull public CredentialContextSet getCredentialContextSet() {
         return credentialContextSet;
     }
 
@@ -102,7 +104,7 @@ public abstract class AbstractCredential implements Credential {
      * 
      * @param newEntityID ID of the entity this credential is for
      */
-    protected void setEntityId(String newEntityID) {
+    protected void setEntityId(@Nullable final String newEntityID) {
         entityId = StringSupport.trimOrNull(newEntityID);
     }
 
@@ -111,8 +113,8 @@ public abstract class AbstractCredential implements Credential {
      * 
      * @param newUsageType usage type for this credential
      */
-    protected void setUsageType(UsageType newUsageType) {
-        Constraint.isNotNull(newUsageType, "Credential usage type may not be null");
+    protected void setUsageType(@Nonnull final UsageType newUsageType) {
+        Constraint.isNotNull(newUsageType, "Credential usage type cannot be null");
         usageType = newUsageType;
     }
 
@@ -121,9 +123,9 @@ public abstract class AbstractCredential implements Credential {
      * 
      * @param newPublicKey public key for this credential
      */
-    protected void setPublicKey(PublicKey newPublicKey) {
-        Constraint.isNull(getSecretKey(), "A credential with a secret key may not contain a public key");
-        Constraint.isNotNull(newPublicKey, "Credential public key may not be null");
+    protected void setPublicKey(@Nonnull final PublicKey newPublicKey) {
+        Constraint.isNull(getSecretKey(), "A credential with a secret key cannot contain a public key");
+        Constraint.isNotNull(newPublicKey, "Credential public key cannot be null");
         publicKey = newPublicKey;
     }
     
@@ -132,8 +134,8 @@ public abstract class AbstractCredential implements Credential {
      * 
      * @param newPrivateKey private key for this credential
      */
-    protected void setPrivateKey(PrivateKey newPrivateKey) {
-        Constraint.isNull(getSecretKey(), "A credential with a secret key may not contain a private key");
+    protected void setPrivateKey(@Nullable final PrivateKey newPrivateKey) {
+        Constraint.isNull(getSecretKey(), "A credential with a secret key cannot contain a private key");
         privateKey = newPrivateKey;
     }
 
@@ -142,10 +144,10 @@ public abstract class AbstractCredential implements Credential {
      * 
      * @param newSecretKey secret key for this credential
      */ 
-    protected void setSecretKey(SecretKey newSecretKey) {
-        Constraint.isNull(getPublicKey(), "A credential with a public key may not contain a secret key");
-        Constraint.isNull(getPrivateKey(), "A credential with a private key may not contain a secret key");
-        Constraint.isNotNull(newSecretKey, "Credential secret key may not be null");
+    protected void setSecretKey(@Nonnull final SecretKey newSecretKey) {
+        Constraint.isNull(getPublicKey(), "A credential with a public key cannot contain a secret key");
+        Constraint.isNull(getPrivateKey(), "A credential with a private key cannot contain a secret key");
+        Constraint.isNotNull(newSecretKey, "Credential secret key cannot be null");
         secretKey = newSecretKey;
     }
     

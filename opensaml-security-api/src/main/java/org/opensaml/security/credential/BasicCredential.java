@@ -20,6 +20,8 @@ package org.opensaml.security.credential;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 /**
@@ -32,7 +34,7 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
      *
      * @param publicKey the credential public key
      */
-    public BasicCredential(PublicKey publicKey) {
+    public BasicCredential(@Nonnull final PublicKey publicKey) {
         super();
         setPublicKey(publicKey);
     }
@@ -43,7 +45,7 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
      * @param publicKey the credential public key
      * @param privateKey the credential private key
      */
-    public BasicCredential(PublicKey publicKey, PrivateKey privateKey) {
+    public BasicCredential(@Nonnull final PublicKey publicKey, @Nullable final PrivateKey privateKey) {
         super();
         setPublicKey(publicKey);
         setPrivateKey(privateKey);
@@ -54,7 +56,7 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
      *
      * @param secretKey the credential secret key
      */
-    public BasicCredential(SecretKey secretKey) {
+    public BasicCredential(@Nonnull final SecretKey secretKey) {
         super();
         setSecretKey(secretKey);
     }
@@ -70,27 +72,27 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
     }
 
     /** {@inheritDoc} */
-    public void setEntityId(String newEntityId) {
+    public void setEntityId(@Nullable final String newEntityId) {
         super.setEntityId(newEntityId);
     }
 
     /** {@inheritDoc} */
-    public void setUsageType(UsageType newUsageType) {
+    public void setUsageType(@Nonnull final UsageType newUsageType) {
         super.setUsageType(newUsageType);
     }
 
     /** {@inheritDoc} */
-    public void setPublicKey(PublicKey newPublicKey) {
+    public void setPublicKey(@Nonnull final PublicKey newPublicKey) {
         super.setPublicKey(newPublicKey);
     }
     
     /** {@inheritDoc} */
-    public void setPrivateKey(PrivateKey newPrivateKey) {
+    public void setPrivateKey(@Nullable final PrivateKey newPrivateKey) {
         super.setPrivateKey(newPrivateKey);
     }
 
     /** {@inheritDoc} */
-    public void setSecretKey(SecretKey newSecretKey) {
+    public void setSecretKey(@Nonnull final SecretKey newSecretKey) {
         super.setSecretKey(newSecretKey);
     }
 

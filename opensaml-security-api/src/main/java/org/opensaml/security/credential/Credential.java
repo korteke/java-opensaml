@@ -21,6 +21,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 /**
@@ -36,45 +38,45 @@ public interface Credential {
      * 
      * @return unique ID of the entity this credential is for
      */
-    public String getEntityId();
+    @Nullable public String getEntityId();
     
     /**
      * Gets usage type of this credential.
      * 
      * @return usage type of this credential
      */
-    public UsageType getUsageType();
+    @Nullable public UsageType getUsageType();
     
     /**
-     * Gets key names for this credential.  These names may be used to reference a key(s) exchanged 
-     * through an out-of-band agreement.  Implementations may or may not implement means to resolve 
+     * Gets key names for this credential. These names may be used to reference a key(s) exchanged 
+     * through an out-of-band agreement. Implementations may or may not implement means to resolve 
      * these names into keys retrievable through the {@link #getPublicKey()}, {@link #getPrivateKey()} 
      * or {@link #getSecretKey()} methods.
      * 
      * @return key names for this credential
      */
-    public Collection<String> getKeyNames();
+    @Nullable public Collection<String> getKeyNames();
 
     /**
      * Gets the public key for the entity.
      * 
      * @return public key for the entity
      */
-    public PublicKey getPublicKey();
+    @Nullable public PublicKey getPublicKey();
 
     /**
      * Gets the private key for the entity if there is one.
      * 
      * @return the private key for the entity
      */
-    public PrivateKey getPrivateKey();
+    @Nullable public PrivateKey getPrivateKey();
     
     /**
      * Gets the secret key for this entity.
      * 
      * @return secret key for this entity
      */
-    public SecretKey getSecretKey();
+    @Nullable public SecretKey getSecretKey();
     
     /**
      * Get the set of credential context information, which provides additional information
@@ -82,7 +84,7 @@ public interface Credential {
      * 
      * @return set of resolution contexts of the credential
      */
-    public CredentialContextSet getCredentalContextSet();
+    @Nullable public CredentialContextSet getCredentialContextSet();
     
     /**
      * Get the primary type of the credential instance. This will usually be the primary sub-interface
@@ -90,5 +92,5 @@ public interface Credential {
      * 
      * @return the credential type
      */
-    public Class<? extends Credential> getCredentialType();
+    @Nonnull public Class<? extends Credential> getCredentialType();
 }

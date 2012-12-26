@@ -22,7 +22,11 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.x509.BasicX509Credential;
 
@@ -41,7 +45,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the encryption key
      * @return the encryption key (either a public key or a secret (symmetric) key
      */
-    public static Key extractEncryptionKey(Credential credential) {
+    @Nullable public static Key extractEncryptionKey(@Nullable final Credential credential) {
         if (credential == null) {
             return null;
         }
@@ -58,7 +62,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the decryption key
      * @return the decryption key (either a private key or a secret (symmetric) key
      */
-    public static Key extractDecryptionKey(Credential credential) {
+    @Nullable public static Key extractDecryptionKey(@Nullable final Credential credential) {
         if (credential == null) {
             return null;
         }
@@ -75,7 +79,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the signing key
      * @return the signing key (either a private key or a secret (symmetric) key
      */
-    public static Key extractSigningKey(Credential credential) {
+    @Nullable public static Key extractSigningKey(@Nullable final Credential credential) {
         if (credential == null) {
             return null;
         }
@@ -92,7 +96,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the verification key
      * @return the verification key (either a public key or a secret (symmetric) key
      */
-    public static Key extractVerificationKey(Credential credential) {
+    @Nullable public static Key extractVerificationKey(@Nullable final Credential credential) {
         if (credential == null) {
             return null;
         }
@@ -109,10 +113,9 @@ public final class CredentialSupport {
      * @param secretKey the symmetric key to wrap
      * @return a credential containing the secret key specified
      */
-    public static BasicCredential getSimpleCredential(SecretKey secretKey) {
-        if (secretKey == null) {
-            throw new IllegalArgumentException("A secret key is required");
-        }
+    @Nonnull public static BasicCredential getSimpleCredential(@Nonnull final SecretKey secretKey) {
+        Constraint.isNotNull(secretKey, "Secret key cannot be null");
+
         return new BasicCredential(secretKey);
     }
 
@@ -123,10 +126,10 @@ public final class CredentialSupport {
      * @param privateKey the private key to wrap, which may be null
      * @return a credential containing the key(s) specified
      */
-    public static BasicCredential getSimpleCredential(PublicKey publicKey, PrivateKey privateKey) {
-        if (publicKey == null) {
-            throw new IllegalArgumentException("A public key is required");
-        }
+    @Nonnull public static BasicCredential getSimpleCredential(@Nonnull final PublicKey publicKey,
+            @Nullable final PrivateKey privateKey) {
+        Constraint.isNotNull(publicKey, "Public key cannot be null");
+
         return new BasicCredential(publicKey, privateKey);
     }
 
@@ -137,10 +140,10 @@ public final class CredentialSupport {
      * @param privateKey the private key to wrap, which may be null
      * @return a credential containing the certificate and key specified
      */
-    public static BasicX509Credential getSimpleCredential(X509Certificate cert, PrivateKey privateKey) {
-        if (cert == null) {
-            throw new IllegalArgumentException("A certificate is required");
-        }
+    @Nonnull public static BasicX509Credential getSimpleCredential(@Nonnull final X509Certificate cert,
+            @Nullable final PrivateKey privateKey) {
+        Constraint.isNotNull(cert, "Certificate cannot be null");
+
         return new BasicX509Credential(cert, privateKey);
     }
 

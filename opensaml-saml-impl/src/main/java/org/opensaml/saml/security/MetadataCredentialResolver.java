@@ -276,7 +276,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                                 mutableCred.setEntityId(entityID);
                                 mutableCred.setUsageType(mdUsage);
                             }
-                            cred.getCredentalContextSet().add(new SAMLMDCredentialContext(keyDescriptor));
+                            cred.getCredentialContextSet().add(new SAMLMDCredentialContext(keyDescriptor));
                             credentials.add(cred);
                         }
                     }
