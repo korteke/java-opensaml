@@ -17,6 +17,9 @@
 
 package org.opensaml.security.criteria;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 import org.opensaml.security.credential.UsageType;
@@ -36,7 +39,7 @@ public final class UsageCriterion implements Criterion {
      *
      * @param usage the usage for which a credential is intended
      */
-    public UsageCriterion(UsageType usage) {
+    public UsageCriterion(@Nullable final UsageType usage) {
         setUsage(usage);
     }
 
@@ -45,7 +48,7 @@ public final class UsageCriterion implements Criterion {
      * 
      * @return Returns the usage.
      */
-    public UsageType getUsage() {
+    @Nonnull public UsageType getUsage() {
         return credUsage;
     }
 
@@ -54,7 +57,7 @@ public final class UsageCriterion implements Criterion {
      * 
      * @param usage The usage to set.
      */
-    public void setUsage(UsageType usage) {
+    public void setUsage(@Nullable final UsageType usage) {
         if (usage != null) {
             credUsage = usage;
         } else {

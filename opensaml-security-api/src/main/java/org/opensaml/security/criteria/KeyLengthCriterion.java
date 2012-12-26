@@ -17,6 +17,9 @@
 
 package org.opensaml.security.criteria;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
@@ -32,7 +35,7 @@ public final class KeyLengthCriterion implements Criterion {
      *
      * @param length key length 
      */
-    public KeyLengthCriterion(Integer length) {
+    public KeyLengthCriterion(@Nonnull final Integer length) {
         setKeyLength(length);
     }
 
@@ -41,7 +44,7 @@ public final class KeyLengthCriterion implements Criterion {
      * 
      * @return Returns the keyLength.
      */
-    public Integer getKeyLength() {
+    @Nonnull public Integer getKeyLength() {
         return keyLength;
     }
 
@@ -50,10 +53,9 @@ public final class KeyLengthCriterion implements Criterion {
      * 
      * @param length The keyLength to set.
      */
-    public void setKeyLength(Integer length) {
-        if (length == null) {
-            throw new IllegalArgumentException("Key length criteria value must be supplied");
-        }
+    public void setKeyLength(@Nonnull final Integer length) {
+        Constraint.isNotNull(length, "Key length criteria value cannot be null");
+
         keyLength = length;
     }
 

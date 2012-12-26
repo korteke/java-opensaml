@@ -17,10 +17,12 @@
 
 package org.opensaml.security.criteria;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import com.google.common.base.Strings;
 
 /**
  * An implementation of {@link Criterion} which specifies key name criteria.
@@ -35,7 +37,7 @@ public final class KeyNameCriterion implements Criterion {
      *
      * @param name key name
      */
-    public KeyNameCriterion(String name) {
+    public KeyNameCriterion(@Nonnull final String name) {
         setKeyName(name);
     }
 
@@ -44,7 +46,7 @@ public final class KeyNameCriterion implements Criterion {
      * 
      * @return Returns the keyName.
      */
-    public String getKeyName() {
+    @Nonnull public String getKeyName() {
         return keyName;
     }
 
@@ -53,11 +55,11 @@ public final class KeyNameCriterion implements Criterion {
      * 
      * @param name The keyName to set.
      */
-    public void setKeyName(String name) {
-        if (Strings.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("Key name criteria value must be supplied");
-        }
-        keyName = StringSupport.trimOrNull(name);
+    public void setKeyName(@Nonnull final String name) {
+        String trimmed = StringSupport.trimOrNull(name);
+        Constraint.isNotNull(trimmed, "Key name criteria value cannot be null or empty");
+
+        keyName = trimmed;
     }
 
 }

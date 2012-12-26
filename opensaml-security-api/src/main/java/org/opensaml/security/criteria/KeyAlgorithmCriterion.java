@@ -17,10 +17,12 @@
 
 package org.opensaml.security.criteria;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import com.google.common.base.Strings;
 
 /**
  * An implementation of {@link Criterion} which specifies key algorithm criteria.
@@ -35,7 +37,7 @@ public final class KeyAlgorithmCriterion implements Criterion {
      *
      * @param algorithm key algorithm
      */
-    public KeyAlgorithmCriterion(String algorithm) {
+    public KeyAlgorithmCriterion(@Nonnull final String algorithm) {
         setKeyAlgorithm(algorithm);
     }
  
@@ -44,7 +46,7 @@ public final class KeyAlgorithmCriterion implements Criterion {
      * 
      * @return returns the keyAlgorithm.
      */
-    public String getKeyAlgorithm() {
+    @Nonnull public String getKeyAlgorithm() {
         return keyAlgorithm;
     }
 
@@ -53,11 +55,11 @@ public final class KeyAlgorithmCriterion implements Criterion {
      * 
      * @param algorithm The keyAlgorithm to set.
      */
-    public void setKeyAlgorithm(String algorithm) {
-        if (Strings.isNullOrEmpty(algorithm)) {
-            throw new IllegalArgumentException("Key algorithm criteria value must be supplied");
-        }
-        keyAlgorithm = StringSupport.trimOrNull(algorithm);
+    public void setKeyAlgorithm(@Nonnull final String algorithm) {
+        String trimmed = StringSupport.trimOrNull(algorithm);
+        Constraint.isNotNull(trimmed, "Key algorithm criteria cannot be null or empty");
+
+        keyAlgorithm = trimmed;
     }
 
 }

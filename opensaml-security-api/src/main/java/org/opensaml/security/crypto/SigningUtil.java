@@ -24,7 +24,11 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.Mac;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.commons.codec.binary.Hex;
 import org.opensaml.security.SecurityException;
@@ -56,8 +60,8 @@ public final class SigningUtil {
      * @return the computed signature or MAC value
      * @throws SecurityException throw if the computation process results in an error
      */
-    public static byte[] sign(Credential signingCredential, String jcaAlgorithmID, boolean isMAC, byte[] input)
-            throws SecurityException {
+    @Nonnull public static byte[] sign(@Nullable final Credential signingCredential,
+            @Nonnull final String jcaAlgorithmID, boolean isMAC, @Nonnull final byte[] input) throws SecurityException {
         Logger log = getLogger();
 
         Key signingKey = CredentialSupport.extractSigningKey(signingCredential);
@@ -88,7 +92,12 @@ public final class SigningUtil {
      * @return the computed signature value
      * @throws SecurityException thrown if the signature computation results in an error
      */
-    public static byte[] sign(PrivateKey signingKey, String jcaAlgorithmID, byte[] input) throws SecurityException {
+    @Nonnull public static byte[] sign(@Nonnull final PrivateKey signingKey, @Nonnull final String jcaAlgorithmID,
+            @Nonnull final byte[] input) throws SecurityException {
+        Constraint.isNotNull(signingKey, "Private key cannot be null");
+        Constraint.isNotNull(jcaAlgorithmID, "JCA algorithm ID cannot be null");
+        Constraint.isNotNull(input, "Input data to sign cannot be null");
+
         Logger log = getLogger();
         log.debug("Computing signature over input using private key of type {} and JCA algorithm ID {}", signingKey
                 .getAlgorithm(), jcaAlgorithmID);
@@ -118,7 +127,12 @@ public final class SigningUtil {
      * @return the computed MAC value
      * @throws SecurityException thrown if the MAC computation results in an error
      */
-    public static byte[] signMAC(Key signingKey, String jcaAlgorithmID, byte[] input) throws SecurityException {
+    @Nonnull public static byte[] signMAC(@Nonnull final Key signingKey, @Nonnull final String jcaAlgorithmID,
+            @Nonnull final byte[] input) throws SecurityException {
+        Constraint.isNotNull(signingKey, "Secret key cannot be null");
+        Constraint.isNotNull(jcaAlgorithmID, "JCA algorithm ID cannot be null");
+        Constraint.isNotNull(input, "Input data to sign cannot be null");
+
         Logger log = getLogger();
         log.debug("Computing MAC over input using key of type {} and JCA algorithm ID {}", signingKey.getAlgorithm(),
                 jcaAlgorithmID);
@@ -147,12 +161,13 @@ public final class SigningUtil {
      * @param isMAC flag indicating whether the operation to be performed is a signature or MAC computation
      * @param signature the computed signature value received from the signer
      * @param input the input over which the signature is computed and verified
-     * @return true if the signature value computed over the input using the supplied key and algorithm ID is identical
+     * @return true iff the signature value computed over the input using the supplied key and algorithm ID is identical
      *         to the supplied signature value
      * @throws SecurityException thrown if the signature computation or verification process results in an error
      */
-    public static boolean verify(Credential verificationCredential, String jcaAlgorithmID, boolean isMAC,
-            byte[] signature, byte[] input) throws SecurityException {
+    public static boolean verify(@Nullable final Credential verificationCredential,
+            @Nonnull final String jcaAlgorithmID, boolean isMAC, @Nonnull final byte[] signature,
+            @Nonnull final byte[] input) throws SecurityException {
         Logger log = getLogger();
 
         Key verificationKey = CredentialSupport.extractVerificationKey(verificationCredential);
@@ -185,10 +200,14 @@ public final class SigningUtil {
      *         to the supplied signature value
      * @throws SecurityException thrown if the signature computation or verification process results in an error
      */
-    public static boolean verify(PublicKey verificationKey, String jcaAlgorithmID, byte[] signature, byte[] input)
-            throws SecurityException {
-        Logger log = getLogger();
+    public static boolean verify(@Nonnull final PublicKey verificationKey, @Nonnull final String jcaAlgorithmID,
+            @Nonnull final byte[] signature, @Nonnull final byte[] input) throws SecurityException {
+        Constraint.isNotNull(verificationKey, "Public key cannot be null");
+        Constraint.isNotNull(jcaAlgorithmID, "JCA algorithm ID cannot be null");
+        Constraint.isNotNull(signature, "Signature data to verify cannot be null");
+        Constraint.isNotNull(input, "Input data to verify cannot be null");
 
+        Logger log = getLogger();
         log.debug("Verifying signature over input using public key of type {} and JCA algorithm ID {}", verificationKey
                 .getAlgorithm(), jcaAlgorithmID);
 
@@ -214,14 +233,18 @@ public final class SigningUtil {
      * @param jcaAlgorithmID the Java JCA algorithm ID to use
      * @param signature the computed MAC value received from the signer
      * @param input the input over which the MAC is computed and verified
-     * @return true if the MAC value computed over the input using the supplied key and algorithm ID is identical to the
-     *         supplied MAC signature value
+     * @return true iff the MAC value computed over the input using the supplied key and algorithm ID is identical to
+     *         the supplied MAC signature value
      * @throws SecurityException thrown if the MAC computation or verification process results in an error
      */
-    public static boolean verifyMAC(Key verificationKey, String jcaAlgorithmID, byte[] signature, byte[] input)
-            throws SecurityException {
-        Logger log = getLogger();
+    public static boolean verifyMAC(@Nonnull final Key verificationKey, @Nonnull final String jcaAlgorithmID,
+            @Nonnull final byte[] signature, @Nonnull final byte[] input) throws SecurityException {
+        Constraint.isNotNull(verificationKey, "Secret key cannot be null");
+        Constraint.isNotNull(jcaAlgorithmID, "JCA algorithm ID cannot be null");
+        Constraint.isNotNull(signature, "Signature data to verify cannot be null");
+        Constraint.isNotNull(input, "Input data to verify cannot be null");
 
+        Logger log = getLogger();
         log.debug("Verifying MAC over input using key of type {} and JCA algorithm ID {}", verificationKey
                 .getAlgorithm(), jcaAlgorithmID);
 
@@ -237,7 +260,7 @@ public final class SigningUtil {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(SigningUtil.class);
     }
 }

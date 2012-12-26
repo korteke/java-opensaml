@@ -21,6 +21,9 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Source of PKIX validation information such as trust anchors and CRLs.
  */
@@ -31,19 +34,19 @@ public interface PKIXValidationInformation {
      * 
      * @return maximum allowable trust chain verification depth
      */
-    public Integer getVerificationDepth();
+    @Nonnull public Integer getVerificationDepth();
 
     /**
      * Gets the certificate trust anchors used during PKIX validation.
      * 
      * @return trust anchors used during PKIX validation
      */
-    public Collection<X509Certificate> getCertificates();
+    @Nullable public Collection<X509Certificate> getCertificates();
 
     /**
      * Gets the CRLs used during PKIX validation.
      * 
      * @return CRLs used during PKIX validation
      */
-    public Collection<X509CRL> getCRLs();
+    @Nullable public Collection<X509CRL> getCRLs();
 }

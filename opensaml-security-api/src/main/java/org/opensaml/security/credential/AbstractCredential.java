@@ -134,8 +134,9 @@ public abstract class AbstractCredential implements Credential {
      * 
      * @param newPrivateKey private key for this credential
      */
-    protected void setPrivateKey(@Nullable final PrivateKey newPrivateKey) {
+    protected void setPrivateKey(@Nonnull final PrivateKey newPrivateKey) {
         Constraint.isNull(getSecretKey(), "A credential with a secret key cannot contain a private key");
+        Constraint.isNotNull(newPrivateKey, "Credential private key cannot be null");
         privateKey = newPrivateKey;
     }
 

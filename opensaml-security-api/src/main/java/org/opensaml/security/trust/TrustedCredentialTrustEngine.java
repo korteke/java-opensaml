@@ -17,6 +17,8 @@
 
 package org.opensaml.security.trust;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.CredentialResolver;
 
 /**
@@ -35,5 +37,5 @@ public interface TrustedCredentialTrustEngine<TokenType> extends TrustEngine<Tok
      * @return credential resolver used to recover trusted credentials 
      *         that may be used to validate tokens
      */
-    public CredentialResolver getCredentialResolver();
+    @Nullable public CredentialResolver getCredentialResolver();
 }

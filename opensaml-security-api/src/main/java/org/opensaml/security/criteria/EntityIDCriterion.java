@@ -17,6 +17,9 @@
 
 package org.opensaml.security.criteria;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
@@ -42,7 +45,7 @@ public final class EntityIDCriterion implements Criterion {
      *
      * @param entity the entity ID represented by the criteria
      */
-    public EntityIDCriterion(String entity) {
+    public EntityIDCriterion(@Nonnull final String entity) {
         setEntityID(entity);
     }
 
@@ -51,7 +54,7 @@ public final class EntityIDCriterion implements Criterion {
      * 
      * @return the primary entity ID.
      */
-    public String getEntityID() {
+    @Nonnull public String getEntityID() {
         return entityID;
     }
 
@@ -60,11 +63,10 @@ public final class EntityIDCriterion implements Criterion {
      * 
      * @param entity The entityID to set.
      */
-    public void setEntityID(String entity) {
+    public void setEntityID(@Nonnull final String entity) {
         String trimmed = StringSupport.trimOrNull(entity);
-        if (trimmed == null) {
-            throw new IllegalArgumentException("Entity ID criteria must be supplied");
-        }
+        Constraint.isNotNull(trimmed, "Entity ID criteria cannot be null or empty");
+
         entityID = trimmed;
     }
 

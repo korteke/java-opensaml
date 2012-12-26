@@ -87,7 +87,7 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
     }
     
     /** {@inheritDoc} */
-    public void setPrivateKey(@Nullable final PrivateKey newPrivateKey) {
+    public void setPrivateKey(@Nonnull final PrivateKey newPrivateKey) {
         super.setPrivateKey(newPrivateKey);
     }
 

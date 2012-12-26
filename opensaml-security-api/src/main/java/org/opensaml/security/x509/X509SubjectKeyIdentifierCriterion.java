@@ -17,6 +17,8 @@
 
 package org.opensaml.security.x509;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
@@ -33,7 +35,7 @@ public final class X509SubjectKeyIdentifierCriterion implements Criterion {
      *
      * @param ski certificate subject key identifier
      */
-    public X509SubjectKeyIdentifierCriterion(byte[] ski) {
+    public X509SubjectKeyIdentifierCriterion(@Nonnull final byte[] ski) {
         setSubjectKeyIdentifier(ski);
     }
     
@@ -42,7 +44,7 @@ public final class X509SubjectKeyIdentifierCriterion implements Criterion {
      * 
      * @return Returns the subject key identifier
      */
-    public byte[] getSubjectKeyIdentifier() {
+    @Nonnull public byte[] getSubjectKeyIdentifier() {
         return subjectKeyIdentifier;
     }
 
@@ -51,14 +53,11 @@ public final class X509SubjectKeyIdentifierCriterion implements Criterion {
      * 
      * @param ski The subject key identifier to set.
      */
-    public void setSubjectKeyIdentifier(byte[] ski) {
+    public void setSubjectKeyIdentifier(@Nonnull final byte[] ski) {
         if (ski == null || ski.length == 0) {
-            throw new IllegalArgumentException("Subject key identifier criteria value must be non-null and non-empty");
+            throw new IllegalArgumentException("Subject key identifier criteria value cannot be null or empty");
         }
         subjectKeyIdentifier = ski;
     }
-    
-    
-    
 
 }

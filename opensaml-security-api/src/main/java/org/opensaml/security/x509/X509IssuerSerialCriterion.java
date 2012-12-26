@@ -19,8 +19,10 @@ package org.opensaml.security.x509;
 
 import java.math.BigInteger;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
@@ -41,7 +43,7 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * @param issuer certificate issuer name
      * @param serial certificate serial number
      */
-    public X509IssuerSerialCriterion(X500Principal issuer, BigInteger serial) {
+    public X509IssuerSerialCriterion(@Nonnull final X500Principal issuer, @Nonnull final BigInteger serial) {
         setIssuerName(issuer);
         setSerialNumber(serial);
     }
@@ -50,7 +52,7 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * 
      * @return Returns the issuer name.
      */
-    public X500Principal getIssuerName() {
+    @Nonnull public X500Principal getIssuerName() {
         return issuerName;
     }
 
@@ -59,10 +61,8 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * 
      * @param issuer The issuer name to set.
      */
-    public void setIssuerName(X500Principal issuer) {
-        if (issuer == null) {
-            throw new IllegalArgumentException("Issuer principal criteria value may not be null");
-        }
+    public void setIssuerName(@Nonnull final X500Principal issuer) {
+        Constraint.isNotNull(issuer, "Issuer principal criteria value cannot be null");
         this.issuerName = issuer;
     }
 
@@ -71,7 +71,7 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * 
      * @return Returns the serial number.
      */
-    public BigInteger getSerialNumber() {
+    @Nonnull public BigInteger getSerialNumber() {
         return serialNumber;
     }
 
@@ -80,10 +80,8 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * 
      * @param serial The serial number to set.
      */
-    public void setSerialNumber(BigInteger serial) {
-        if (serial == null) {
-            throw new IllegalArgumentException("Serial number criteria value may not be null");
-        }
+    public void setSerialNumber(@Nonnull final BigInteger serial) {
+        Constraint.isNotNull(serial, "Serial number criteria value cannot be null");
         this.serialNumber = serial;
     }
 

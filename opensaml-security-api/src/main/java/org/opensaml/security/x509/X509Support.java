@@ -35,9 +35,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.bouncycastle.asn1.ASN1InputStream;
@@ -112,22 +115,28 @@ public class X509Support {
      * @param certs certificates to check
      * @param privateKey entity's private key
      * 
-     * @return the certificate associated with entity's private key or null if not certificate in the collection is
+     * @return the certificate associated with entity's private key or null if no certificate in the collection is
      *         associated with the given private key
      * 
      * @throws SecurityException thrown if the public or private keys checked are of an unsupported type
      * 
      * @since 1.2
      */
-    public static X509Certificate determineEntityCertificate(Collection<X509Certificate> certs, PrivateKey privateKey)
-            throws SecurityException {
+    @Nullable public static X509Certificate determineEntityCertificate(
+            @Nullable final Collection<X509Certificate> certs, @Nullable final PrivateKey privateKey)
+                    throws SecurityException {
         if (certs == null || privateKey == null) {
             return null;
         }
 
         for (X509Certificate certificate : certs) {
-            if (KeySupport.matchKeyPair(certificate.getPublicKey(), privateKey)) {
-                return certificate;
+            try {
+                if (KeySupport.matchKeyPair(certificate.getPublicKey(), privateKey)) {
+                    return certificate;
+                }
+            } catch (SecurityException e) {
+                // An exception here is just a false match.
+                // Java 7 apparently throws in this case.
             }
         }
 
@@ -142,12 +151,12 @@ public class X509Support {
      * 
      * @return the common names that appear in the DN in the order they appear or null if the given DN is null
      */
-    public static List<String> getCommonNames(X500Principal dn) {
-        Logger log = getLogger();
+    @Nullable public static List<String> getCommonNames(@Nullable final X500Principal dn) {
         if (dn == null) {
             return null;
         }
 
+        Logger log = getLogger();
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
         List<String> commonNames = new LinkedList<String>();
         try {
@@ -203,9 +212,9 @@ public class X509Support {
      * 
      * @return the alt names, of the given type, within the cert
      */
-    public static List getAltNames(X509Certificate certificate, Integer[] nameTypes) {
-        Logger log = getLogger();
-        if (certificate == null) {
+    @Nullable public static List getAltNames(@Nullable final X509Certificate certificate,
+            @Nullable final Integer[] nameTypes) {
+        if (certificate == null || nameTypes == null || nameTypes.length == 0) {
             return null;
         }
 
@@ -214,7 +223,7 @@ public class X509Support {
         try {
             altNames = X509ExtensionUtil.getSubjectAlternativeNames(certificate);
         } catch (CertificateParsingException e) {
-            log.error("Encountered an problem trying to extract Subject Alternate "
+            getLogger().error("Encountered an problem trying to extract Subject Alternate "
                     + "Name from supplied certificate: " + e);
             return names;
         }
@@ -243,13 +252,20 @@ public class X509Support {
      * 
      * @return list of subject names in the certificate
      */
-    @SuppressWarnings("unchecked")
-    public static List getSubjectNames(X509Certificate certificate, Integer[] altNameTypes) {
+    @Nullable public static List getSubjectNames(@Nullable final X509Certificate certificate,
+            @Nullable final Integer[] altNameTypes) {
         List issuerNames = new LinkedList();
-
-        List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
-        issuerNames.add(entityCertCNs.get(0));
-        issuerNames.addAll(X509Support.getAltNames(certificate, altNameTypes));
+        
+        if (certificate != null) {
+            List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
+            if (entityCertCNs != null && !entityCertCNs.isEmpty()) {
+                issuerNames.add(entityCertCNs.get(0));
+            }
+            List<String> entityAltNames = X509Support.getAltNames(certificate, altNameTypes);
+            if (entityAltNames != null) {
+                issuerNames.addAll(entityAltNames);
+            }
+        }
 
         return issuerNames;
     }
@@ -261,26 +277,18 @@ public class X509Support {
      * @param certificate an X.509 certificate possibly containing a subject key identifier
      * @return the plain (non-DER encoded) value of the Subject Key Identifier extension, or null if the certificate
      *         does not contain the extension
-     * @throws IOException
      */
-    public static byte[] getSubjectKeyIdentifier(X509Certificate certificate) {
-        Logger log = getLogger();
+    @Nullable public static byte[] getSubjectKeyIdentifier(@Nonnull final X509Certificate certificate) {
         byte[] derValue = certificate.getExtensionValue(SKI_OID);
         if (derValue == null || derValue.length == 0) {
             return null;
         }
 
-        SubjectKeyIdentifier ski = null;
         try {
-            ski = new SubjectKeyIdentifierStructure(derValue);
-        } catch (IOException e) {
-            log.error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
-            return null;
-        }
-
-        if (ski != null) {
+            SubjectKeyIdentifier ski = new SubjectKeyIdentifierStructure(derValue);
             return ski.getKeyIdentifier();
-        } else {
+        } catch (IOException e) {
+            getLogger().error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
             return null;
         }
     }
@@ -292,22 +300,22 @@ public class X509Support {
      * 
      * @return decoded certs
      * 
-     * @throws CertificateException thrown if the certificates can not be decoded
+     * @throws CertificateException thrown if the certificates cannot be decoded
      * 
      * @since 1.2
      */
-    public static Collection<X509Certificate> decodeCertificates(File certs) throws CertificateException{
-        if(!certs.exists()){
+    @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final File certs)
+            throws CertificateException {
+        Constraint.isNotNull(certs, "Input file cannot be null");
+        if (!certs.exists()) {
             throw new CertificateException("Certificate file " + certs.getAbsolutePath() + " does not exist");
-        }
-        
-        if(!certs.canRead()){
+        } else if (!certs.canRead()) {
             throw new CertificateException("Certificate file " + certs.getAbsolutePath() + " is not readable");
         }
         
-        try{
+        try {
             return decodeCertificates(Files.toByteArray(certs));
-        }catch(IOException e){
+        } catch(IOException e) {
             throw new CertificateException("Error reading certificate file " + certs.getAbsolutePath(), e);
         }
     }
@@ -319,9 +327,10 @@ public class X509Support {
      * 
      * @return decoded certs
      * 
-     * @throws CertificateException thrown if the certificates can not be decoded
+     * @throws CertificateException thrown if the certificates cannot be decoded
      */
-    public static Collection<X509Certificate> decodeCertificates(byte[] certs) throws CertificateException {
+    @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final byte[] certs)
+            throws CertificateException {
         X509CertificatesCredentialReader credReader = new X509CertificatesCredentialReader();
         ByteArrayInputStream bais = new ByteArrayInputStream(certs);
         try {
@@ -344,18 +353,17 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    public static X509Certificate decodeCertificate(File cert) throws CertificateException{
-        if(!cert.exists()){
+    @Nullable public static X509Certificate decodeCertificate(@Nonnull final File cert) throws CertificateException {
+        Constraint.isNotNull(cert, "Input file cannot be null");
+        if (!cert.exists()) {
             throw new CertificateException("Certificate file " + cert.getAbsolutePath() + " does not exist");
-        }
-        
-        if(!cert.canRead()){
+        } else if (!cert.canRead()) {
             throw new CertificateException("Certificate file " + cert.getAbsolutePath() + " is not readable");
         }
         
-        try{
+        try {
             return decodeCertificate(Files.toByteArray(cert));
-        }catch(IOException e){
+        } catch(IOException e) {
             throw new CertificateException("Error reading certificate file " + cert.getAbsolutePath(), e);
         }
     }
@@ -367,17 +375,17 @@ public class X509Support {
      * 
      * @return decoded cert
      * 
-     * @throws CertificateException thrown if the certificate can not be decoded
+     * @throws CertificateException thrown if the certificate cannot be decoded
      */
-    public static X509Certificate decodeCertificate(byte[] cert) throws CertificateException {
+    @Nullable public static X509Certificate decodeCertificate(@Nonnull final byte[] cert) throws CertificateException {
         X509CertificateCredentialReader credReader = new X509CertificateCredentialReader();
         ByteArrayInputStream bais = new ByteArrayInputStream(cert);
         try {
             return credReader.read(bais);
         } catch (IOException e) {
-            throw new CertificateException("Unable to decode X.509 certificates", e);
+            throw new CertificateException("Unable to decode X.509 certificate", e);
         } catch (CryptException e) {
-            throw new CertificateException("Unable to decode X.509 certificates", e);
+            throw new CertificateException("Unable to decode X.509 certificate", e);
         }
     }
     
@@ -388,12 +396,13 @@ public class X509Support {
      * @return a native Java X509 certificate
      * @throws CertificateException thrown if there is an error constructing certificate
      */
-    public static X509Certificate decodeCertificate(String base64Cert) throws CertificateException {
+    @Nullable public static X509Certificate decodeCertificate(@Nonnull final String base64Cert)
+            throws CertificateException {
         return decodeCertificate(Base64Support.decode(base64Cert));
     }
     
     /**
-     * Decodes CRLS in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decode, the rest of the content is
+     * Decodes CRLs in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decoded; the rest of the content is
      * ignored.
      * 
      * @param crls encoded CRLs
@@ -404,24 +413,23 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    public static Collection<X509CRL> decodeCRLs(File crls) throws CRLException{
-        if(!crls.exists()){
+    @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final File crls) throws CRLException{
+        Constraint.isNotNull(crls, "Input file cannot be null");
+        if (!crls.exists()) {
             throw new CRLException("CRL file " + crls.getAbsolutePath() + " does not exist");
-        }
-        
-        if(!crls.canRead()){
+        } else if (!crls.canRead()) {
             throw new CRLException("CRL file " + crls.getAbsolutePath() + " is not readable");
         }
         
-        try{
+        try {
             return decodeCRLs(Files.toByteArray(crls));
-        }catch(IOException e){
+        } catch(IOException e) {
             throw new CRLException("Error reading CRL file " + crls.getAbsolutePath(), e);
         }
     }
 
     /**
-     * Decodes CRLS in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decode, the rest of the content is
+     * Decodes CRLs in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decoded; the rest of the content is
      * ignored.
      * 
      * @param crls encoded CRLs
@@ -430,8 +438,7 @@ public class X509Support {
      * 
      * @throws CRLException thrown if the CRLs can not be decoded
      */
-    @SuppressWarnings("unchecked")
-    public static Collection<X509CRL> decodeCRLs(byte[] crls) throws CRLException {
+    @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final byte[] crls) throws CRLException {
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             return (Collection<X509CRL>) cf.generateCRLs(new ByteArrayInputStream(crls));
@@ -448,7 +455,8 @@ public class X509Support {
      * @throws CertificateException thrown if there is an error constructing certificate
      * @throws CRLException thrown if there is an error constructing CRL
      */
-    public static X509CRL decodeCRL(String base64CRL) throws CertificateException, CRLException {
+    @Nullable public static X509CRL decodeCRL(@Nonnull final String base64CRL)
+            throws CertificateException, CRLException {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64CRL));
         return (java.security.cert.X509CRL) cf.generateCRL(input);
@@ -472,7 +480,10 @@ public class X509Support {
      * 
      * @return a formatted string containing identifier information present in the credential
      */
-    public static String getIdentifiersToken(X509Credential credential, X500DNHandler handler) {
+    @Nonnull public static String getIdentifiersToken(@Nonnull final X509Credential credential,
+            @Nullable final X500DNHandler handler) {
+        Constraint.isNotNull(credential, "Credential cannot be null");
+        
         X500DNHandler x500DNHandler;
         if (handler != null) {
             x500DNHandler = handler;
@@ -499,16 +510,16 @@ public class X509Support {
      * @param nameValue the alt name value
      * @return converted representation of name value, based on type
      */
-    private static Object convertAltNameType(Integer nameType, Object nameValue) {
+    @Nullable private static Object convertAltNameType(@Nonnull final Integer nameType,
+            @Nonnull final Object nameValue) {
         Logger log = getLogger();
+        
         if (DIRECTORY_ALT_NAME.equals(nameType) || DNS_ALT_NAME.equals(nameType) || RFC822_ALT_NAME.equals(nameType)
                 || URI_ALT_NAME.equals(nameType) || REGISTERED_ID_ALT_NAME.equals(nameType)) {
 
             // these are just strings in the appropriate format already, return as-is
             return nameValue;
-        }
-
-        if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
+        } else if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
             // this is a byte[], IP addr in network byte order
             byte [] nameValueBytes = (byte[]) nameValue;
             try {
@@ -519,17 +530,15 @@ public class X509Support {
                         hexConverter.fromBytes(nameValueBytes), e);
                 return null;
             }
-        }
-
-        if (EDI_PARTY_ALT_NAME.equals(nameType) || X400ADDRESS_ALT_NAME.equals(nameType)
+        } else if (EDI_PARTY_ALT_NAME.equals(nameType) || X400ADDRESS_ALT_NAME.equals(nameType)
                 || OTHER_ALT_NAME.equals(nameType)) {
 
             // these have no defined representation, just return a DER-encoded byte[]
             return ((DERObject) nameValue).getDEREncoded();
+        } else {
+            log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
+            return nameValue;
         }
-
-        log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
-        return nameValue;
     }
     
     /**
@@ -537,7 +546,7 @@ public class X509Support {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(X509Support.class);
     }
     
