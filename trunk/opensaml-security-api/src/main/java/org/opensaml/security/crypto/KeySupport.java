@@ -35,6 +35,7 @@ import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -45,11 +46,14 @@ import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.SecurityException;
 import org.slf4j.Logger;
@@ -76,14 +80,16 @@ public final class KeySupport {
      * Get the key length in bits of the specified key.
      * 
      * @param key the key to evaluate
-     * @return length of the key in bits, or null if the length can not be determined
+     * @return length of the key in bits, or null if the length cannot be determined
      */
-    public static Integer getKeyLength(Key key) {
+    @Nullable public static Integer getKeyLength(@Nonnull final Key key) {
         Logger log = getLogger();
         // TODO investigate techniques (and use cases) to determine length in other cases,
-        // e.g. RSA and DSA keys, and non-RAW format symmetric keys
+        // e.g. EC, DSA keys, and non-RAW format symmetric keys
         if (key instanceof SecretKey && "RAW".equals(key.getFormat())) {
             return key.getEncoded().length * 8;
+        } else if (key instanceof RSAKey) {
+            return ((RSAKey) key).getModulus().bitLength();
         }
         log.debug("Unable to determine length in bits of specified Key instance");
         return null;
@@ -101,7 +107,8 @@ public final class KeySupport {
      * 
      * @throws KeyException thrown if the key can not be decoded
      */
-    public static SecretKey decodeSecretKey(byte[] key, char[] password) throws KeyException {
+    @Nonnull public static SecretKey decodeSecretKey(@Nonnull final byte[] key, @Nullable final char[] password)
+            throws KeyException {
         // TODO
         throw new UnsupportedOperationException("This method is not yet supported");
     }
@@ -110,13 +117,14 @@ public final class KeySupport {
      * Decodes RSA/DSA public keys in DER-encoded "SubjectPublicKeyInfo" format.
      * 
      * @param key encoded key
-     * @param password password if the key is encrypted or null if not
      * 
      * @return decoded key
      * 
-     * @throws KeyException thrown if the key can not be decoded
+     * @throws KeyException thrown if the key cannot be decoded
      */
-    public static PublicKey decodePublicKey(byte[] key, char[] password) throws KeyException {
+    @Nonnull public static PublicKey decodePublicKey(@Nonnull final byte[] key) throws KeyException {
+        Constraint.isNotNull(key, "Encoded key bytes cannot be null");
+        
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
         try {
             return buildKey(keySpec, "RSA");
@@ -141,9 +149,12 @@ public final class KeySupport {
      * 
      * @return decoded private key
      * 
-     * @throws KeyException thrown if the key can not be decoded
+     * @throws KeyException thrown if the key cannot be decoded
      */
-    public static PrivateKey decodePrivateKey(File key, char[] password) throws KeyException {
+    @Nonnull public static PrivateKey decodePrivateKey(@Nonnull final File key, @Nullable final char[] password)
+            throws KeyException {
+        Constraint.isNotNull(key, "Key file cannot be null");
+        
         if (!key.exists()) {
             throw new KeyException("Key file " + key.getAbsolutePath() + " does not exist");
         }
@@ -165,24 +176,27 @@ public final class KeySupport {
      * @param key encoded key
      * @param password decryption password or null if the key is not encrypted
      * 
-     * @return deocded private key
+     * @return decoded private key
      * 
-     * @throws KeyException thrown if the key can not be decoded
+     * @throws KeyException thrown if the key cannot be decoded
      */
-    public static PrivateKey decodePrivateKey(byte[] key, char[] password) throws KeyException {
-            PrivateKeyCredentialReader credReader = new PrivateKeyCredentialReader();
-            ByteArrayInputStream bais = new ByteArrayInputStream(key);
-            try {
-                if (password != null && password.length > 0) {
-                    return credReader.read(bais, password);
-                } else {
-                    return credReader.read(bais);
-                } 
-            } catch (IOException e) {
-                throw new KeyException("Unable to decode private key", e);
-            } catch (CryptException e) {
-                throw new KeyException("Unable to decode private key", e);
-            }
+    @Nonnull public static PrivateKey decodePrivateKey(@Nonnull final byte[] key, @Nullable final char[] password)
+            throws KeyException {
+        Constraint.isNotNull(key, "Encoded key bytes cannot be null");
+        
+        PrivateKeyCredentialReader credReader = new PrivateKeyCredentialReader();
+        ByteArrayInputStream bais = new ByteArrayInputStream(key);
+        try {
+            if (password != null && password.length > 0) {
+                return credReader.read(bais, password);
+            } else {
+                return credReader.read(bais);
+            } 
+        } catch (IOException e) {
+            throw new KeyException("Unable to decode private key", e);
+        } catch (CryptException e) {
+            throw new KeyException("Unable to decode private key", e);
+        }
     }
     
     /**
@@ -195,7 +209,7 @@ public final class KeySupport {
      * @throws KeyException thrown if the given private key is not a DSA or RSA key or there is a problem generating the
      *             public key
      */
-    public static PublicKey derivePublicKey(PrivateKey key) throws KeyException {
+    @Nonnull public static PublicKey derivePublicKey(@Nonnull final PrivateKey key) throws KeyException {
         KeyFactory factory;
         if (key instanceof DSAPrivateKey) {
             DSAPrivateKey dsaKey = (DSAPrivateKey) key;
@@ -231,7 +245,8 @@ public final class KeySupport {
      * @return a native Java DSAPublicKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static DSAPublicKey buildJavaDSAPublicKey(String base64EncodedKey) throws KeyException {
+    @Nonnull public static DSAPublicKey buildJavaDSAPublicKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
         return (DSAPublicKey) buildKey(keySpec, "DSA");
     }
@@ -243,7 +258,8 @@ public final class KeySupport {
      * @return a native Java RSAPublicKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static RSAPublicKey buildJavaRSAPublicKey(String base64EncodedKey) throws KeyException {
+    @Nonnull public static RSAPublicKey buildJavaRSAPublicKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
         return (RSAPublicKey) buildKey(keySpec, "RSA");
     }
@@ -255,7 +271,8 @@ public final class KeySupport {
      * @return a native Java ECPublicKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static ECPublicKey buildJavaECPublicKey(String base64EncodedKey) throws KeyException {
+    @Nonnull public static ECPublicKey buildJavaECPublicKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
         return (ECPublicKey) buildKey(keySpec, "EC");
     }
@@ -267,7 +284,8 @@ public final class KeySupport {
      * @return a native Java RSAPrivateKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static RSAPrivateKey buildJavaRSAPrivateKey(String base64EncodedKey) throws KeyException {
+    @Nonnull public static RSAPrivateKey buildJavaRSAPrivateKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
         PrivateKey key = buildJavaPrivateKey(base64EncodedKey);
         if (!(key instanceof RSAPrivateKey)) {
             throw new KeyException("Generated key was not an RSAPrivateKey instance");
@@ -282,7 +300,8 @@ public final class KeySupport {
      * @return a native Java DSAPrivateKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static DSAPrivateKey buildJavaDSAPrivateKey(String base64EncodedKey) throws KeyException {
+    @Nonnull public static DSAPrivateKey buildJavaDSAPrivateKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
         PrivateKey key = buildJavaPrivateKey(base64EncodedKey);
         if (!(key instanceof DSAPrivateKey)) {
             throw new KeyException("Generated key was not a DSAPrivateKey instance");
@@ -297,7 +316,7 @@ public final class KeySupport {
      * @return a native Java PrivateKey
      * @throws KeyException thrown if there is an error constructing key
      */
-    public static PrivateKey buildJavaPrivateKey(String base64EncodedKey) throws KeyException {
+    @Nonnull public static PrivateKey buildJavaPrivateKey(@Nonnull final String base64EncodedKey) throws KeyException {
         return decodePrivateKey(Base64Support.decode(base64EncodedKey), null);
     }
 
@@ -305,14 +324,17 @@ public final class KeySupport {
      * Generates a public key from the given key spec.
      * 
      * @param keySpec {@link KeySpec} specification for the key
-     * @param keyAlgorithm key generation algorithm, only DSA and RSA supported
+     * @param keyAlgorithm key generation algorithm, only DSA, RSA, and EC supported
      * 
      * @return the generated {@link PublicKey}
      * 
      * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not contain
      *             valid information
      */
-    public static PublicKey buildKey(KeySpec keySpec, String keyAlgorithm) throws KeyException {
+    @Nonnull public static PublicKey buildKey(@Nullable final KeySpec keySpec, @Nonnull final String keyAlgorithm)
+            throws KeyException {
+        Constraint.isNotNull(keyAlgorithm, "Key algorithm cannot be null");
+        
         try {
             KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
             return keyFactory.generatePublic(keySpec);
@@ -333,9 +355,10 @@ public final class KeySupport {
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
      */
-    public static SecretKey generateKey(String algo, int keyLength, String provider) throws NoSuchAlgorithmException,
-            NoSuchProviderException {
-        SecretKey key = null;
+    @Nonnull public static SecretKey generateKey(@Nonnull final String algo, final int keyLength,
+            @Nullable final String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
+        Constraint.isNotNull(algo, "Key algorithm cannot be null");
+        
         KeyGenerator keyGenerator = null;
         if (provider != null) {
             keyGenerator = KeyGenerator.getInstance(algo, provider);
@@ -343,8 +366,7 @@ public final class KeySupport {
             keyGenerator = KeyGenerator.getInstance(algo);
         }
         keyGenerator.init(keyLength);
-        key = keyGenerator.generateKey();
-        return key;
+        return keyGenerator.generateKey();
     }
 
     /**
@@ -357,8 +379,10 @@ public final class KeySupport {
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
      */
-    public static KeyPair generateKeyPair(String algo, int keyLength, String provider) throws NoSuchAlgorithmException,
-            NoSuchProviderException {
+    @Nonnull public static KeyPair generateKeyPair(@Nonnull final String algo, final int keyLength,
+            @Nullable final String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
+        Constraint.isNotNull(algo, "Key algorithm cannot be null");
+        
         KeyPairGenerator keyGenerator = null;
         if (provider != null) {
             keyGenerator = KeyPairGenerator.getInstance(algo, provider);
@@ -377,10 +401,9 @@ public final class KeySupport {
      * @return true if the public and private are from the same key pair, false if not
      * @throws SecurityException if the keys can not be evaluated, or if the key algorithm is unsupported or unknown
      */
-    public static boolean matchKeyPair(PublicKey pubKey, PrivateKey privKey) throws SecurityException {
-        Logger log = getLogger();
+    public static boolean matchKeyPair(@Nonnull final PublicKey pubKey, @Nonnull final PrivateKey privKey)
+            throws SecurityException {
         // This approach attempts to match the keys by signing and then validating some known data.
-
         if (pubKey == null || privKey == null) {
             throw new SecurityException("Either public or private key was null");
         }
@@ -391,6 +414,7 @@ public final class KeySupport {
                     + privKey.getAlgorithm());
         }
 
+        Logger log = getLogger();
         if (log.isDebugEnabled()) {
             log.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', "
                     + "using JCA signature algorithm '{}'", new Object[] {pubKey.getAlgorithm(),
@@ -407,7 +431,7 @@ public final class KeySupport {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(KeySupport.class);
     }
 

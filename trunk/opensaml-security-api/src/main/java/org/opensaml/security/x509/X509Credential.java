@@ -21,6 +21,9 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 
 /**
@@ -33,12 +36,12 @@ import org.opensaml.security.credential.Credential;
 public interface X509Credential extends Credential {
     
     /**
-     * Gets the public certificate for the entity. The public key of this certificate will be 
+     * Gets the public key certificate for the entity. The public key of this certificate will be 
      * the same key obtained from {@link Credential#getPublicKey()}.
      * 
-     * @return the public certificate for the entity
+     * @return the public key certificate for the entity
      */
-    public X509Certificate getEntityCertificate();
+    @Nonnull public X509Certificate getEntityCertificate();
 
     /**
      * Gets an immutable collection of certificates in the entity's trust chain. The entity certificate is contained
@@ -46,12 +49,12 @@ public interface X509Credential extends Credential {
      * 
      * @return entities certificate chain
      */
-    public Collection<X509Certificate> getEntityCertificateChain();
+    @Nonnull public Collection<X509Certificate> getEntityCertificateChain();
 
     /**
      * Gets a collection of CRLs associated with the credential.
      * 
      * @return CRLs associated with the credential
      */
-    public Collection<X509CRL> getCRLs();
+    @Nullable public Collection<X509CRL> getCRLs();
 }

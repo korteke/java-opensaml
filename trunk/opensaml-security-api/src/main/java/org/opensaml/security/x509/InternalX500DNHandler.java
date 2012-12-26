@@ -17,7 +17,10 @@
 
 package org.opensaml.security.x509;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Basic implementation of {@link X500DNHandler} which uses the internal built-in mechanisms
@@ -26,47 +29,37 @@ import javax.security.auth.x500.X500Principal;
 public class InternalX500DNHandler implements X500DNHandler {
 
     /** {@inheritDoc} */
-    public byte[] getEncoded(X500Principal principal) {
-        if (principal == null) {
-            throw new NullPointerException("X500Principal may not be null");
-        }
+    @Nonnull public byte[] getEncoded(@Nonnull final X500Principal principal) {
+        Constraint.isNotNull(principal, "X500Principal cannot be null");
         return principal.getEncoded();
     }
 
     /** {@inheritDoc} */
-    public String getName(X500Principal principal) {
-        if (principal == null) {
-            throw new NullPointerException("X500Principal may not be null");
-        }
+    @Nonnull public String getName(@Nonnull final X500Principal principal) {
+        Constraint.isNotNull(principal, "X500Principal cannot be null");
         return principal.getName();
     }
 
     /** {@inheritDoc} */
-    public String getName(X500Principal principal, String format) {
-        if (principal == null) {
-            throw new NullPointerException("X500Principal may not be null");
-        }
+    @Nonnull public String getName(@Nonnull final X500Principal principal, @Nonnull final String format) {
+        Constraint.isNotNull(principal, "X500Principal cannot be null");
         return principal.getName(format);
     }
 
     /** {@inheritDoc} */
-    public X500Principal parse(String name) {
-        if (name == null) {
-            throw new NullPointerException("X.500 name string may not be null");
-        }
+    @Nonnull public X500Principal parse(@Nonnull final String name) {
+        Constraint.isNotNull(name, "X.500 name string cannot be null");
         return new X500Principal(name);
     }
 
     /** {@inheritDoc} */
-    public X500Principal parse(byte[] name) {
-        if (name == null) {
-            throw new NullPointerException("X.500 DER-encoded name may not be null");
-        }
+    @Nonnull public X500Principal parse(@Nonnull final byte[] name) {
+        Constraint.isNotNull(name, "X.500 DER-encoded name cannot be null");
         return new X500Principal(name);
     }
 
     /** {@inheritDoc} */
-    public X500DNHandler clone() {
+    @Nonnull public X500DNHandler clone() {
         // We don't have any state, just return a new instance to maintain the clone() contract.
         return new InternalX500DNHandler();
     }

@@ -17,6 +17,9 @@
 
 package org.opensaml.security.criteria;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
@@ -39,7 +42,7 @@ public final class PeerEntityIDCriterion implements Criterion {
      *
      * @param peer the entity ID which is the peer relative to a primary entity ID
      */
-    public PeerEntityIDCriterion(String peer) {
+    public PeerEntityIDCriterion(@Nonnull final String peer) {
         setPeerID(peer);
     }
 
@@ -48,7 +51,7 @@ public final class PeerEntityIDCriterion implements Criterion {
      * 
      * @return the peer entity ID.
      */
-    public String getPeerID() {
+    @Nonnull public String getPeerID() {
         return peerID;
     }
 
@@ -57,11 +60,10 @@ public final class PeerEntityIDCriterion implements Criterion {
      * 
      * @param peer The peerID to set.
      */
-    public void setPeerID(String peer) {
+    public void setPeerID(@Nonnull final String peer) {
         String trimmed = StringSupport.trimOrNull(peer);
-        if (trimmed == null) {
-            throw new IllegalArgumentException("Peer entity ID criteria must be supplied");
-        }
+        Constraint.isNotNull(trimmed, "Peer entity ID criteria cannot be null");
+        
         peerID = trimmed;
     }
 

@@ -17,18 +17,22 @@
 
 package org.opensaml.security.x509;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 /**
  * Options which may be supplied to influence the processing behavior of a {@link PKIXTrustEvaluator}.
  */
 public class PKIXValidationOptions {
 
-    /** Flag as to whether empty CRL's will be processed. */
+    /** Flag as to whether empty CRLs will be processed. */
     private boolean processEmptyCRLs;
     
-    /** Flag as to whether expired CRL's will be processed. */
+    /** Flag as to whether expired CRLs will be processed. */
     private boolean processExpiredCRLs;
     
-    /** Flag as to whether CRL's supplied in the untrusted credential being evaluated will be processed. */
+    /** Flag as to whether CRLs supplied in the untrusted credential being evaluated will be processed. */
     private boolean processCredentialCRLs;
     
     /** Default verification depth. */
@@ -44,69 +48,69 @@ public class PKIXValidationOptions {
     }
 
     /**
-     * Whether empty CRL's should be processed.
+     * Whether empty CRLs should be processed.
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @return Returns the processEmptyCRLs.
+     * @return whether empty CRLs should be processed
      */
     public boolean isProcessEmptyCRLs() {
         return processEmptyCRLs;
     }
 
     /**
-     * Whether empty CRL's should be processed.
+     * Whether empty CRLs should be processed.
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @param processEmptyCRLs The processEmptyCRLs to set.
+     * @param flag whether to process empty CRLs
      */
-    public void setProcessEmptyCRLs(boolean processEmptyCRLs) {
-        this.processEmptyCRLs = processEmptyCRLs;
+    public void setProcessEmptyCRLs(boolean flag) {
+        this.processEmptyCRLs = flag;
     }
 
     /**
-     * Whether expired CRL's should be processed.
+     * Whether expired CRLs should be processed.
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @return Returns the processExpiredCRLs.
+     * @return whether expired CRLs should be processsed
      */
     public boolean isProcessExpiredCRLs() {
         return processExpiredCRLs;
     }
 
     /**
-     * Whether expired CRL's should be processed.
+     * Whether expired CRLs should be processed.
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @param processExpiredCRLs The processExpiredCRLs to set.
+     * @param flag whether expired CRLs should be processed
      */
-    public void setProcessExpiredCRLs(boolean processExpiredCRLs) {
-        this.processExpiredCRLs = processExpiredCRLs;
+    public void setProcessExpiredCRLs(boolean flag) {
+        this.processExpiredCRLs = flag;
     }
 
     /**
-     * Whether CRL's supplied within the untrusted {@link X509Credential} being evaluated should be processed.
+     * Whether CRLs supplied within the untrusted {@link X509Credential} being evaluated should be processed.
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @return Returns the processCredentialCRLs.
+     * @return whether to process CRLs from an untrusted credential
      */
     public boolean isProcessCredentialCRLs() {
         return processCredentialCRLs;
     }
 
     /**
-     * Whether CRL's supplied within the untrusted {@link X509Credential} being evaluated should be processed.
+     * Whether CRLs supplied within the untrusted {@link X509Credential} being evaluated should be processed.
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @param processCredentialCRLs The processCredentialCRLs to set.
+     * @param flag whether to process CRLs from an untrusted credential
      */
-    public void setProcessCredentialCRLs(boolean processCredentialCRLs) {
-        this.processCredentialCRLs = processCredentialCRLs;
+    public void setProcessCredentialCRLs(boolean flag) {
+        this.processCredentialCRLs = flag;
     }
 
     /**
@@ -127,13 +131,11 @@ public class PKIXValidationOptions {
      * 
      * <p>Default is: <b>1</b></p>
      * 
-     * @param defaultVerificationDepth The defaultVerificationDepth to set.
+     * @param depth default verification depth to set
      */
-    public void setDefaultVerificationDepth(Integer defaultVerificationDepth) {
-        if (defaultVerificationDepth == null) {
-            throw new IllegalArgumentException("Default verification depth may not be null");
-        }
-        this.defaultVerificationDepth = defaultVerificationDepth;
+    public void setDefaultVerificationDepth(@Nonnull final Integer depth) {
+        Constraint.isNotNull(depth, "Default verification depth cannot be null");
+        this.defaultVerificationDepth = depth;
     }
 
 }

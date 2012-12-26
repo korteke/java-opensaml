@@ -19,6 +19,9 @@ package org.opensaml.security.criteria;
 
 import java.security.PublicKey;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
@@ -34,7 +37,7 @@ public final class PublicKeyCriterion implements Criterion {
      *
      * @param pubKey public key
      */
-    public PublicKeyCriterion(PublicKey pubKey) {
+    public PublicKeyCriterion(@Nonnull final PublicKey pubKey) {
         setPublicKey(pubKey);
     }
     
@@ -43,7 +46,7 @@ public final class PublicKeyCriterion implements Criterion {
      * 
      * @return Returns the publicKey.
      */
-    public PublicKey getPublicKey() {
+    @Nonnull public PublicKey getPublicKey() {
         return publicKey;
     }
 
@@ -52,10 +55,9 @@ public final class PublicKeyCriterion implements Criterion {
      * 
      * @param key The publicKey to set.
      */
-    public void setPublicKey(PublicKey key) {
-        if (key == null) {
-            throw new IllegalArgumentException("Public key criteria value must be supplied");
-        }
+    public void setPublicKey(@Nonnull final PublicKey key) {
+        Constraint.isNotNull(key, "Public key criteria value cannot be null");
+
         publicKey = key;
     }
 

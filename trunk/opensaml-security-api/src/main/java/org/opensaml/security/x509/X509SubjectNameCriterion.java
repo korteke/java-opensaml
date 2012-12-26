@@ -17,8 +17,10 @@
 
 package org.opensaml.security.x509;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
@@ -35,7 +37,7 @@ public final class X509SubjectNameCriterion implements Criterion {
      *
      * @param subject certificate subject name
      */
-    public X509SubjectNameCriterion(X500Principal subject) {
+    public X509SubjectNameCriterion(@Nonnull final X500Principal subject) {
         setSubjectName(subject);
     }
 
@@ -44,19 +46,17 @@ public final class X509SubjectNameCriterion implements Criterion {
      * 
      * @return Returns the subject name
      */
-    public X500Principal getSubjectName() {
+    @Nonnull public X500Principal getSubjectName() {
         return subjectName;
     }
 
     /**
-     * Set the serial number.
+     * Set the subject name.
      * 
      * @param subject The subject name
      */
-    public void setSubjectName(X500Principal subject) {
-        if (subject == null) {
-            throw new IllegalArgumentException("Subject principal criteria value must be supplied");
-        }
+    public void setSubjectName(@Nonnull final X500Principal subject) {
+        Constraint.isNotNull(subject, "Subject principal criteria value cannot be null");
         this.subjectName = subject;
     }
 

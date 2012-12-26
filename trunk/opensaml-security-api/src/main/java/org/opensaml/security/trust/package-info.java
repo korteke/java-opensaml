@@ -15,24 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.x509;
-
-import javax.annotation.Nullable;
-
-import org.opensaml.security.trust.TrustEngine;
-
 /**
- * Trust engine that validates tokens using PKIX validation.
- * 
- * @param <TokenType> the token type this trust engine evaluates
+ * Interfaces and classes used to evaluate the trustworthiness and validity of
+ * {@link org.opensaml.security.credential.Credential}s.
  */
-public interface PKIXTrustEngine<TokenType> extends TrustEngine<TokenType> {
-    
-    /**
-     * Get the resolver instance which will be used to resolve PKIX validation information.
-     * 
-     * @return the currently configured resolver instance
-     */
-    @Nullable public PKIXValidationInformationResolver getPKIXResolver();
-    
-}
+package org.opensaml.security.trust;

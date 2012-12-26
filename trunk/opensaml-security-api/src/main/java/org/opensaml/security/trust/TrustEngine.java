@@ -17,6 +17,9 @@
 
 package org.opensaml.security.trust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -37,9 +40,10 @@ public interface TrustEngine<TokenType> {
      * @param trustBasisCriteria criteria used to describe and/or resolve the information
      *          which serves as the basis for trust evaluation
      *
-     * @return true if the token is trusted and valid, false if not
+     * @return true iff the token is trusted and valid
      *
      * @throws SecurityException thrown if there is a problem validating the security token
      */
-    public boolean validate(TokenType token, CriteriaSet trustBasisCriteria) throws SecurityException;
+    public boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException;
 }

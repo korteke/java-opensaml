@@ -17,6 +17,7 @@
 
 package org.opensaml.security.x509;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
 /**
@@ -39,7 +40,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the name value can not be parsed by the implementation
      */
-    public X500Principal parse(String name);
+    @Nonnull public X500Principal parse(@Nonnull final String name);
     
     /**
      * Parse the ASN.1 DER encoding representation of a name and build a new principal instance.
@@ -49,7 +50,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the name value can not be parsed by the implementation
      */
-    public X500Principal parse(byte[] name);
+    @Nonnull public X500Principal parse(@Nonnull final byte[] name);
     
     /**
      * Returns a string representation of the X.500 distinguished name using the default format
@@ -58,7 +59,7 @@ public interface X500DNHandler {
      * @param principal the principal name instance to serialize
      * @return the serialized string name
      */
-    public String getName(X500Principal principal);
+    @Nonnull public String getName(@Nonnull final X500Principal principal);
     
     /**
      * Returns a string representation of the X.500 distinguished name using the specified format.
@@ -72,7 +73,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the specified format is not understood by the implementation
      */
-    public String getName(X500Principal principal, String format);
+    @Nonnull public String getName(@Nonnull final X500Principal principal, String format);
     
     /**
      * Returns the distinguished name in ASN.1 DER encoded form.
@@ -80,7 +81,7 @@ public interface X500DNHandler {
      * @param principal the principal name instance to serialize
      * @return the serialized name in ASN.1 DER encoded form
      */
-    public byte[] getEncoded(X500Principal principal);
+    @Nonnull public byte[] getEncoded(@Nonnull final X500Principal principal);
     
     /**
      * Clone the handler. Implementations which maintain instance-specific configuration data, etc,
@@ -88,6 +89,6 @@ public interface X500DNHandler {
      * 
      * @return the cloned handler
      */
-    public X500DNHandler clone();
+    @Nonnull public X500DNHandler clone();
 
 }

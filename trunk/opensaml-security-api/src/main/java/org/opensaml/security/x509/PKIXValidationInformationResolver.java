@@ -19,14 +19,15 @@ package org.opensaml.security.x509;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
- * A resolver which uses {@link Criterion} to resolve {@link PKIXValidationInformation}, which will typically be used
- * PKIX-based trust engines.
+ * A resolver which uses {@link Criterion} to resolve {@link PKIXValidationInformation}, which will typically
+ * be used by PKIX-based trust engines.
  * 
  * Implementations may also optionally implement {@link #resolveTrustedNames(CriteriaSet)}, which will 
  * return a set of trusted names associated with the entity implied by the criteria.  These trusted names
@@ -44,8 +45,8 @@ public interface PKIXValidationInformationResolver extends Resolver<PKIXValidati
      * @throws ResolverException thrown if there is an error resolving the trusted names
      * @throws UnsupportedOperationException thrown if this optional method is not supported by the implementation
      */
-    public Set<String> resolveTrustedNames(CriteriaSet criteriaSet)
-        throws ResolverException, UnsupportedOperationException;
+    @Nullable public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet)
+        throws ResolverException;
     
     /**
      * Check whether resolution of trusted names is supported.
