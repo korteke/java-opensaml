@@ -17,12 +17,17 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyNameCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
 
 /**
  * Instance of evaluable credential criteria for evaluating credential key names.
@@ -33,18 +38,15 @@ public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialC
     private final Logger log = LoggerFactory.getLogger(EvaluableKeyNameCredentialCriterion.class);
     
     /** Base criteria. */
-    private String keyName;
+    private final String keyName;
     
     /**
      * Constructor.
      *
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableKeyNameCredentialCriterion(KeyNameCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        keyName = criteria.getKeyName();
+    public EvaluableKeyNameCredentialCriterion(@Nonnull final KeyNameCriterion criteria) {
+        keyName = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getKeyName();
     }
     
     /**
@@ -52,15 +54,15 @@ public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialC
      *
      * @param newKeyName the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyNameCredentialCriterion(String newKeyName) {
-        if (Strings.isNullOrEmpty(newKeyName)) {
-            throw new IllegalArgumentException("Key name may not be null");
-        }
-        keyName = newKeyName;
+    public EvaluableKeyNameCredentialCriterion(@Nonnull final String newKeyName) {
+        String trimmed = StringSupport.trimOrNull(newKeyName);
+        Constraint.isNotNull(trimmed, "Key name cannot be null or empty");
+
+        keyName = trimmed;
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
@@ -69,8 +71,7 @@ public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialC
             log.info("Could not evaluate criteria, credential contained no key names");
             return null;
         }
-        Boolean result = target.getKeyNames().contains(keyName);
-        return result;
+        return target.getKeyNames().contains(keyName);
     }
 
 }

@@ -19,8 +19,10 @@ package org.opensaml.security.credential.impl;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -33,7 +35,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
  * 
  * This credential resolver attempts to retrieve credential information from the file system. Specifically it will
  * attempt to find key, cert, and crl information from files within the given directory. The filename must start with
- * the entity ID and be followed by one of the follow extensions:
+ * the entityID and be followed by one of the follow extensions:
  * 
  * <ul>
  * <li>.name - for key names. File must contain a carriage return seperated list of key names</li>
@@ -51,12 +53,13 @@ public class FilesystemCredentialResolver extends AbstractCriteriaFilteringCrede
      * @param credentialDirectory directory credential information can be found in
      * @param passwords passwords for encrypted private keys, key is the entity ID, value is the password
      */
-    public FilesystemCredentialResolver(String credentialDirectory, Map<String, String> passwords) {
+    public FilesystemCredentialResolver(@Nonnull final String credentialDirectory,
+            @Nonnull final Map<String, String> passwords) {
         super();
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) {
+    @Nonnull protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet) {
         throw new UnsupportedOperationException("Functionality not yet implemented");
     }
 }

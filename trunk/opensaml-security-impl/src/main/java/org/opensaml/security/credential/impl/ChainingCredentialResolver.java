@@ -22,6 +22,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -55,12 +59,12 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
      * 
      * @return the list of credential resolvers in the chain
      */
-    public List<CredentialResolver> getResolverChain() {
+    @Nonnull public List<CredentialResolver> getResolverChain() {
         return resolvers;
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws ResolverException {
+    @Nonnull public Iterable<Credential> resolve(@Nullable CriteriaSet criteriaSet) throws ResolverException {
         if (resolvers.isEmpty()) {
             log.warn("Chaining credential resolver resolution was attempted with an empty resolver chain");
             throw new IllegalStateException("The resolver chain is empty");
@@ -85,13 +89,14 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
          * @param resolver the chaining parent of this iterable
          * @param criteriaSet the set of criteria which is input to the underyling resolvers
          */
-        public CredentialIterable(ChainingCredentialResolver resolver, CriteriaSet criteriaSet) {
+        public CredentialIterable(@Nonnull final ChainingCredentialResolver resolver,
+                @Nullable final CriteriaSet criteriaSet) {
             parent = resolver;
             critSet = criteriaSet;
         }
 
         /** {@inheritDoc} */
-        public Iterator<Credential> iterator() {
+        @Nonnull public Iterator<Credential> iterator() {
             return new CredentialIterator(parent, critSet);
         }
 
@@ -129,7 +134,10 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
          * @param resolver the chaining parent of this iterable
          * @param criteriaSet the set of criteria which is input to the underyling resolvers
          */
-        public CredentialIterator(ChainingCredentialResolver resolver, CriteriaSet criteriaSet) {
+        public CredentialIterator(@Nonnull final ChainingCredentialResolver resolver,
+                @Nullable final CriteriaSet criteriaSet) {
+            Constraint.isNotNull(resolver, "Parent resolver cannot be null");
+            
             parent = resolver;
             critSet = criteriaSet;
             resolverIterator = parent.getResolverChain().iterator();
@@ -173,12 +181,13 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
         /**
          * Get the iterator from the next resolver in the chain.
          * 
-         * @return an iterator of credentials
+         * @return an iterator of credentials, or null if none is available
          */
-        private Iterator<Credential> getNextCredentialIterator() {
+        @Nullable private Iterator<Credential> getNextCredentialIterator() {
             while (resolverIterator.hasNext()) {
                 currentResolver = resolverIterator.next();
-                    log.debug("Getting credential iterator from next resolver in chain: {}", currentResolver.getClass().toString());
+                log.debug("Getting credential iterator from next resolver in chain: {}",
+                        currentResolver.getClass().toString());
                 try {
                     return currentResolver.resolve(critSet).iterator();
                 } catch (ResolverException e) {
@@ -198,9 +207,9 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
         /**
          * Get the next credential that will be returned by this iterator.
          * 
-         * @return the next credential to return
+         * @return the next credential to return, or null if none is available
          */
-        private Credential getNextCredential() {
+        @Nullable private Credential getNextCredential() {
             if (credentialIterator != null) {
                 if (credentialIterator.hasNext()) {
                     return credentialIterator.next();

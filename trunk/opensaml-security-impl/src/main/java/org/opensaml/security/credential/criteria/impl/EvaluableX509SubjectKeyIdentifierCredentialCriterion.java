@@ -20,6 +20,11 @@ package org.opensaml.security.credential.criteria.impl;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
@@ -37,18 +42,16 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements Eva
     private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
     
     /** Base criteria. */
-    private byte[] ski;
+    private final byte[] ski;
     
     /**
      * Constructor.
      *
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableX509SubjectKeyIdentifierCredentialCriterion(X509SubjectKeyIdentifierCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        ski = criteria.getSubjectKeyIdentifier();
+    public EvaluableX509SubjectKeyIdentifierCredentialCriterion(
+            @Nonnull final X509SubjectKeyIdentifierCriterion criteria) {
+        ski = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getSubjectKeyIdentifier();
     }
     
     /**
@@ -56,26 +59,21 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements Eva
      *
      * @param newSKI the criteria value which is the basis for evaluation
      */
-    public EvaluableX509SubjectKeyIdentifierCredentialCriterion(byte[] newSKI) {
-        if (newSKI == null || newSKI.length == 0) {
-            throw new IllegalArgumentException("Subject key identifier may not be null or empty");
-        }
-        ski = newSKI;
+    public EvaluableX509SubjectKeyIdentifierCredentialCriterion(@Nonnull final byte[] newSKI) {
+        ski = Constraint.isNotEmpty(newSKI, "Subject key identifier cannot be null or empty");
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
-        }
-        if (! (target instanceof X509Credential)) {
+        } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy subject key identifier criteria");
             return Boolean.FALSE;
         }
-        X509Credential x509Cred = (X509Credential) target;
         
-        X509Certificate entityCert = x509Cred.getEntityCertificate();
+        X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
             return Boolean.FALSE;
@@ -87,8 +85,7 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements Eva
             return null;
         }
         
-        Boolean result = Arrays.equals(ski, credSKI);
-        return result;
+        return Arrays.equals(ski, credSKI);
     }
 
 }

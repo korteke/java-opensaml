@@ -20,9 +20,12 @@ package org.opensaml.security.credential.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import org.opensaml.security.credential.Credential;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -45,9 +48,10 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
      *
      * @param credentials collection of credentials to be held by this resolver
      */
-    public StaticCredentialResolver(List<Credential> credentials) {
-        creds = new ArrayList<Credential>();
-        creds.addAll(credentials);
+    public StaticCredentialResolver(@Nonnull final List<Credential> credentials) {
+        Constraint.isNotNull(credentials, "Input credentials list cannot be null");
+        
+        creds = new ArrayList<Credential>(credentials);
     }
     
     /**
@@ -55,13 +59,15 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
      *
      * @param credential a single credential to be held by this resolver
      */
-    public StaticCredentialResolver(Credential credential) {
+    public StaticCredentialResolver(@Nonnull final Credential credential) {
+        Constraint.isNotNull(credential, "Input credential cannot be null");
+        
         creds = new ArrayList<Credential>();
         creds.add(credential);
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CriteriaSet criteria) throws ResolverException {
+    @Nonnull public Iterable<Credential> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         return creds;
     }
 

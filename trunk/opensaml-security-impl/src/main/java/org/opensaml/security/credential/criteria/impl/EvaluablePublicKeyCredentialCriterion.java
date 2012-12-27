@@ -19,6 +19,11 @@ package org.opensaml.security.credential.criteria.impl;
 
 import java.security.PublicKey;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.PublicKeyCriterion;
 import org.slf4j.Logger;
@@ -34,18 +39,15 @@ public class EvaluablePublicKeyCredentialCriterion implements EvaluableCredentia
     private final Logger log = LoggerFactory.getLogger(EvaluablePublicKeyCredentialCriterion.class);
     
     /** Base criteria. */
-    private PublicKey publicKey;
+    private final PublicKey publicKey;
     
     /**
      * Constructor.
      *
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluablePublicKeyCredentialCriterion(PublicKeyCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        publicKey = criteria.getPublicKey();
+    public EvaluablePublicKeyCredentialCriterion(@Nonnull final PublicKeyCriterion criteria) {
+        publicKey = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getPublicKey();
     }
     
     /**
@@ -53,27 +55,24 @@ public class EvaluablePublicKeyCredentialCriterion implements EvaluableCredentia
      *
      * @param newPublicKey the criteria value which is the basis for evaluation
      */
-    public EvaluablePublicKeyCredentialCriterion(PublicKey newPublicKey) {
-        if (newPublicKey == null) {
-            throw new IllegalArgumentException("Public key may not be null");
-        }
-        publicKey = newPublicKey;
+    public EvaluablePublicKeyCredentialCriterion(@Nonnull final PublicKey newPublicKey) {
+        publicKey = Constraint.isNotNull(newPublicKey, "Public key cannot be null");
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
         }
+        
         PublicKey key = target.getPublicKey();
         if (key == null) {
             log.info("Credential contained no public key, does not satisfy public key criteria");
             return Boolean.FALSE;
         }
         
-        Boolean result = publicKey.equals(key);
-        return result;
+        return publicKey.equals(key);
     }
 
 }

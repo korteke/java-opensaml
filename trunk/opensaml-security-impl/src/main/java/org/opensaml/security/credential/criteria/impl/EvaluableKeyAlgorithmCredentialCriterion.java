@@ -19,14 +19,16 @@ package org.opensaml.security.credential.criteria.impl;
 
 import java.security.Key;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
 
 /**
  * Instance of evaluable credential criteria for evaluating the credential key algorithm.
@@ -37,18 +39,15 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
     private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriterion.class);
 
     /** Base criteria. */
-    private String keyAlgorithm;
+    private final String keyAlgorithm;
 
     /**
      * Constructor.
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableKeyAlgorithmCredentialCriterion(KeyAlgorithmCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        keyAlgorithm = criteria.getKeyAlgorithm();
+    public EvaluableKeyAlgorithmCredentialCriterion(@Nonnull final KeyAlgorithmCriterion criteria) {
+        keyAlgorithm = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getKeyAlgorithm();
     }
 
     /**
@@ -56,32 +55,33 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
      * 
      * @param newKeyAlgorithm the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyAlgorithmCredentialCriterion(String newKeyAlgorithm) {
-        if (Strings.isNullOrEmpty(newKeyAlgorithm)) {
-            throw new IllegalArgumentException("Key algorithm may not be null");
-        }
-        keyAlgorithm = newKeyAlgorithm;
+    public EvaluableKeyAlgorithmCredentialCriterion(@Nonnull final String newKeyAlgorithm) {
+        String trimmed = StringSupport.trimOrNull(newKeyAlgorithm);
+        Constraint.isNotNull(trimmed, "Key algorithm cannot be null or empty");
+
+        keyAlgorithm = trimmed;
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
         }
+        
         Key key = getKey(target);
         if (key == null) {
             log.info("Could not evaluate criteria, credential contained no key");
             return null;
         }
+        
         String algorithm = StringSupport.trimOrNull(key.getAlgorithm());
         if (algorithm == null) {
             log.info("Could not evaluate criteria, key does not specify an algorithm via getAlgorithm()");
             return null;
         }
 
-        Boolean result = keyAlgorithm.equals(algorithm);
-        return result;
+        return keyAlgorithm.equals(algorithm);
     }
 
     /**
@@ -90,7 +90,7 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
      * @param credential the credential containing a key
      * @return the key from the credential
      */
-    private Key getKey(Credential credential) {
+    @Nullable private Key getKey(@Nonnull final Credential credential) {
         if (credential.getPublicKey() != null) {
             return credential.getPublicKey();
         } else if (credential.getSecretKey() != null) {
@@ -101,7 +101,6 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
         } else {
             return null;
         }
-
     }
 
 }
