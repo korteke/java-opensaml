@@ -363,12 +363,14 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
         subjectAltNameTypes.toArray(nameTypes);
         List altNames = X509Support.getAltNames(certificate, nameTypes);
 
-        log.debug("Extracted subject alt names from certificate: {}", altNames);
-
-        for (Object altName : altNames) {
-            if (trustedNames.contains(altName)) {
-                log.debug("Matched subject alt name to trusted names: {}", altName.toString());
-                return true;
+        if (altNames != null) {
+            log.debug("Extracted subject alt names from certificate: {}", altNames);
+    
+            for (Object altName : altNames) {
+                if (trustedNames.contains(altName)) {
+                    log.debug("Matched subject alt name to trusted names: {}", altName.toString());
+                    return true;
+                }
             }
         }
         return false;
