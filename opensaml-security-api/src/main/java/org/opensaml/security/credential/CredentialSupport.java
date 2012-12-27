@@ -26,8 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.x509.BasicX509Credential;
 
 /**
@@ -114,8 +112,6 @@ public final class CredentialSupport {
      * @return a credential containing the secret key specified
      */
     @Nonnull public static BasicCredential getSimpleCredential(@Nonnull final SecretKey secretKey) {
-        Constraint.isNotNull(secretKey, "Secret key cannot be null");
-
         return new BasicCredential(secretKey);
     }
 
@@ -128,9 +124,11 @@ public final class CredentialSupport {
      */
     @Nonnull public static BasicCredential getSimpleCredential(@Nonnull final PublicKey publicKey,
             @Nullable final PrivateKey privateKey) {
-        Constraint.isNotNull(publicKey, "Public key cannot be null");
-
-        return new BasicCredential(publicKey, privateKey);
+        if (privateKey != null) {
+            return new BasicCredential(publicKey, privateKey);
+        } else {
+            return new BasicCredential(publicKey);
+        }
     }
 
     /**
@@ -142,9 +140,11 @@ public final class CredentialSupport {
      */
     @Nonnull public static BasicX509Credential getSimpleCredential(@Nonnull final X509Certificate cert,
             @Nullable final PrivateKey privateKey) {
-        Constraint.isNotNull(cert, "Certificate cannot be null");
-
-        return new BasicX509Credential(cert, privateKey);
+        if (privateKey != null) {
+            return new BasicX509Credential(cert, privateKey);
+        } else {
+            return new BasicX509Credential(cert);
+        }
     }
 
 }
