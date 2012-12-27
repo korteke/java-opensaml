@@ -48,7 +48,9 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
     public BasicCredential(@Nonnull final PublicKey publicKey, @Nullable final PrivateKey privateKey) {
         super();
         setPublicKey(publicKey);
-        setPrivateKey(privateKey);
+        if (privateKey != null) {
+            setPrivateKey(privateKey);
+        }
     }
     
     /**
