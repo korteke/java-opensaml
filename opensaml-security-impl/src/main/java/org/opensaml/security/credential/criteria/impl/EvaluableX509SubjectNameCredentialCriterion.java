@@ -19,7 +19,11 @@ package org.opensaml.security.credential.criteria.impl;
 
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
@@ -37,18 +41,15 @@ public class EvaluableX509SubjectNameCredentialCriterion implements EvaluableCre
     private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectNameCredentialCriterion.class);
 
     /** Base criteria. */
-    private X500Principal subjectName;
+    private final X500Principal subjectName;
 
     /**
      * Constructor.
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableX509SubjectNameCredentialCriterion(X509SubjectNameCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        subjectName = criteria.getSubjectName();
+    public EvaluableX509SubjectNameCredentialCriterion(@Nonnull final X509SubjectNameCriterion criteria) {
+        subjectName = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getSubjectName();
     }
 
     /**
@@ -56,33 +57,27 @@ public class EvaluableX509SubjectNameCredentialCriterion implements EvaluableCre
      * 
      * @param newSubjectName the subject name criteria value which is the basis for evaluation
      */
-    public EvaluableX509SubjectNameCredentialCriterion(X500Principal newSubjectName) {
-        if (newSubjectName == null) {
-            throw new IllegalArgumentException("Subject name may not be null");
-        }
-        subjectName = newSubjectName;
+    public EvaluableX509SubjectNameCredentialCriterion(@Nonnull final X500Principal newSubjectName) {
+        subjectName = Constraint.isNotNull(newSubjectName, "Subject name cannot be null");
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
-        }
-        if (!(target instanceof X509Credential)) {
+        } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy subject name criteria");
             return Boolean.FALSE;
         }
-        X509Credential x509Cred = (X509Credential) target;
 
-        X509Certificate entityCert = x509Cred.getEntityCertificate();
+        X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
             return Boolean.FALSE;
         }
 
-        Boolean result = entityCert.getSubjectX500Principal().equals(subjectName);
-        return result;
+        return entityCert.getSubjectX500Principal().equals(subjectName);
     }
 
 }

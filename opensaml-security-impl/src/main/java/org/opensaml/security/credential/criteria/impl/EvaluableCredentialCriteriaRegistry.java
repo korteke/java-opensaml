@@ -25,23 +25,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A registry which manages mappings from types of {@link Criterion} to the class type which can evaluate that criteria's
- * data against a {@link Credential} target. That latter class will be a subtype of {@link EvaluableCredentialCriterion}.
- * Each EvaluableCredentialCriterion implementation that is registered <strong>MUST</strong> implement a single-arg
- * constructor which takes an instance of the Criterion to be evaluated. The evaluable instance is instantiated
- * reflectively based on this requirement.
+ * A registry which manages mappings from types of {@link Criterion} to the class type which can evaluate that
+ * criteria's data against a Credential target. That latter class will be a subtype of
+ * {@link EvaluableCredentialCriterion}. Each EvaluableCredentialCriterion implementation that is registered
+ * <strong>MUST</strong> implement a single-arg constructor which takes an instance of the Criterion to be evaluated.
+ * The evaluable instance is instantiated reflectively based on this requirement.
  */
 public final class EvaluableCredentialCriteriaRegistry {
-
+    
     /**
      * Properties file storing default mappings from criteria to evaluable credential criteria. Will be loaded as a
      * resource stream relative to this class.
@@ -59,15 +62,18 @@ public final class EvaluableCredentialCriteriaRegistry {
     }
 
     /**
-     * Get an instance of EvaluableCredentialCriterion which can evaluate the supplied criteria's requirements against a
-     * Credential target.
+     * Get an instance of {@link EvaluableCredentialCriterion} which can evaluate the supplied criteria's
+     * requirements against a Credential target.
      * 
      * @param criteria the criteria to be evaluated against a credential
      * @return an instance of of EvaluableCredentialCriterion representing the specified criteria's requirements
      * @throws SecurityException thrown if there is an error reflectively instantiating a new instance of
      *             EvaluableCredentialCriterion based on class information stored in the registry
      */
-    public static EvaluableCredentialCriterion getEvaluator(Criterion criteria) throws SecurityException {
+    @Nullable public static EvaluableCredentialCriterion getEvaluator(@Nonnull final Criterion criteria)
+            throws SecurityException {
+        Constraint.isNotNull(criteria, "Criteria to map cannot be null");
+        
         Logger log = getLogger();
         Class<? extends EvaluableCredentialCriterion> clazz = lookup(criteria.getClass());
 
@@ -76,7 +82,6 @@ public final class EvaluableCredentialCriteriaRegistry {
                     .getClass().getName());
 
             try {
-
                 Constructor<? extends EvaluableCredentialCriterion> constructor = clazz
                         .getConstructor(new Class[] { criteria.getClass() });
 
@@ -101,12 +106,11 @@ public final class EvaluableCredentialCriteriaRegistry {
                 log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
                 throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             }
-
         } else {
             log.debug("Registry could not locate evaluable criteria for criteria class {}", criteria.getClass()
                     .getName());
+            return null;
         }
-        return null;
     }
 
     /**
@@ -115,7 +119,9 @@ public final class EvaluableCredentialCriteriaRegistry {
      * @param clazz the Criterion class subtype to lookup
      * @return the registered EvaluableCredentialCriterion class subtype
      */
-    public static synchronized Class<? extends EvaluableCredentialCriterion> lookup(Class<? extends Criterion> clazz) {
+    @Nullable public static synchronized Class<? extends EvaluableCredentialCriterion> lookup(
+            @Nonnull final Class<? extends Criterion> clazz) {
+        Constraint.isNotNull(clazz, "Criterion class to lookup cannot be null");
         return registry.get(clazz);
     }
 
@@ -125,14 +131,15 @@ public final class EvaluableCredentialCriteriaRegistry {
      * @param criteriaClass class subtype of {@link Criterion}
      * @param evaluableClass class subtype of {@link EvaluableCredentialCriterion}
      */
-    public static synchronized void register(Class<? extends Criterion> criteriaClass,
-            Class<? extends EvaluableCredentialCriterion> evaluableClass) {
+    public static synchronized void register(@Nonnull final Class<? extends Criterion> criteriaClass,
+            @Nonnull final Class<? extends EvaluableCredentialCriterion> evaluableClass) {
+        Constraint.isNotNull(criteriaClass, "Criterion class to register cannot be null");
+        Constraint.isNotNull(evaluableClass, "Evaluable class to register cannot be null");
+        
         Logger log = getLogger();
-
         log.debug("Registering class {} as evaluator for class {}", evaluableClass.getName(), criteriaClass.getName());
 
         registry.put(criteriaClass, evaluableClass);
-
     }
 
     /**
@@ -140,9 +147,10 @@ public final class EvaluableCredentialCriteriaRegistry {
      * 
      * @param criteriaClass class subtype of {@link Criterion}
      */
-    public static synchronized void deregister(Class<? extends Criterion> criteriaClass) {
+    public static synchronized void deregister(@Nonnull final Class<? extends Criterion> criteriaClass) {
+        Constraint.isNotNull(criteriaClass, "Criterion class to unregister cannot be null");
+        
         Logger log = getLogger();
-
         log.debug("Deregistering evaluator for class {}", criteriaClass.getName());
         registry.remove(criteriaClass);
     }
@@ -210,8 +218,9 @@ public final class EvaluableCredentialCriteriaRegistry {
      * 
      * @param mappings properies set where the key is the criteria class name, the value is the evaluator class name
      */
-    @SuppressWarnings("unchecked")
-    public static synchronized void loadMappings(Properties mappings) {
+    public static synchronized void loadMappings(@Nonnull final Properties mappings) {
+        Constraint.isNotNull(mappings, "Mappings to load cannot be null");
+        
         Logger log = getLogger();
         for (Object key : mappings.keySet()) {
             if (!(key instanceof String)) {
@@ -252,7 +261,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(EvaluableCredentialCriteriaRegistry.class);
     }
 

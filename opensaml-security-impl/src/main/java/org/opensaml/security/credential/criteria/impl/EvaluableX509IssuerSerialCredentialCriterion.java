@@ -20,7 +20,11 @@ package org.opensaml.security.credential.criteria.impl;
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
@@ -38,21 +42,18 @@ public class EvaluableX509IssuerSerialCredentialCriterion implements EvaluableCr
     private final Logger log = LoggerFactory.getLogger(EvaluableX509IssuerSerialCredentialCriterion.class);
 
     /** Base criteria. */
-    private X500Principal issuer;
+    private final X500Principal issuer;
 
     /** Base criteria. */
-    private BigInteger serialNumber;
+    private final BigInteger serialNumber;
 
     /**
      * Constructor.
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableX509IssuerSerialCredentialCriterion(X509IssuerSerialCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        issuer = criteria.getIssuerName();
+    public EvaluableX509IssuerSerialCredentialCriterion(@Nonnull final X509IssuerSerialCriterion criteria) {
+        issuer = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getIssuerName();
         serialNumber = criteria.getSerialNumber();
     }
 
@@ -62,37 +63,29 @@ public class EvaluableX509IssuerSerialCredentialCriterion implements EvaluableCr
      * @param newIssuer the issuer name criteria value which is the basis for evaluation
      * @param newSerialNumber the serial number criteria value which is the basis for evaluation
      */
-    public EvaluableX509IssuerSerialCredentialCriterion(X500Principal newIssuer, BigInteger newSerialNumber) {
-        if (newIssuer == null || newSerialNumber == null) {
-            throw new IllegalArgumentException("Issuer and serial number may not be null");
-        }
-        issuer = newIssuer;
-        serialNumber = newSerialNumber;
+    public EvaluableX509IssuerSerialCredentialCriterion(@Nonnull final X500Principal newIssuer,
+            @Nonnull final BigInteger newSerialNumber) {
+        issuer = Constraint.isNotNull(newIssuer, "Issuer cannot be null");
+        serialNumber = Constraint.isNotNull(newSerialNumber, "Serial number cannot be null");
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
-        }
-        if (!(target instanceof X509Credential)) {
+        } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy issuer name and serial number criteria");
             return Boolean.FALSE;
         }
-        X509Credential x509Cred = (X509Credential) target;
 
-        X509Certificate entityCert = x509Cred.getEntityCertificate();
+        X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
             return Boolean.FALSE;
         }
-
-        if (!entityCert.getIssuerX500Principal().equals(issuer)) {
-            return false;
-        }
-        Boolean result = entityCert.getSerialNumber().equals(serialNumber);
-        return result;
+        
+        return entityCert.getIssuerX500Principal().equals(issuer) && entityCert.getSerialNumber().equals(serialNumber);
     }
 
 }

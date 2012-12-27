@@ -28,13 +28,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
@@ -46,8 +48,10 @@ import org.slf4j.LoggerFactory;
 /**
  * A {@link CredentialResolver} that extracts {@link Credential}'s from a key store.
  * 
- * If no key usage type is presented at construction time this resolver will return the key, if available, regardless of
- * the usage type provided to its resolve method.
+ * <p>If no key usage type is presented at construction time this resolver will return the key, if available, regardless
+ * of the usage type provided to its resolve method.</p>
+ * 
+ * <p>Resolution will fail if an {@link EntityIDCriterion} is not part of the input criteria set.</p>
  */
 public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
 
@@ -55,13 +59,13 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
     private final Logger log = LoggerFactory.getLogger(KeyStoreCredentialResolver.class);
 
     /** Key store credentials are retrieved from. */
-    private KeyStore keyStore;
+    private final KeyStore keyStore;
 
-    /** Passwords for keys. The key must be the entity ID, the value the password. */
-    private Map<String, String> keyPasswords;
+    /** Passwords for keys. The key must be the entityID, the value the password. */
+    private final Map<String, String> keyPasswords;
 
     /** Usage type of all keys in the store. */
-    private UsageType keystoreUsage;
+    private final UsageType keystoreUsage;
 
     /**
      * Constructor.
@@ -70,7 +74,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param passwords for key entries, map key is the entity id, map value is the password
      * 
      */
-    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords) {
+    public KeyStoreCredentialResolver(@Nonnull final KeyStore store, @Nonnull final Map<String, String> passwords) {
         this(store, passwords, null);
     }
 
@@ -82,10 +86,12 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param usage usage type of all keys in the store
      * 
      */
-    public KeyStoreCredentialResolver(KeyStore store, Map<String, String> passwords, UsageType usage) {
+    public KeyStoreCredentialResolver(@Nonnull final KeyStore store, @Nonnull final Map<String, String> passwords,
+            @Nullable UsageType usage) {
         super();
 
-        keyStore = Constraint.isNotNull(store, "Provided key store may not be null");
+        keyStore = Constraint.isNotNull(store, "Provided key store cannot be null");
+        keyPasswords = Constraint.isNotNull(passwords, "Password map cannot be null");
 
         try {
             store.size();
@@ -98,12 +104,11 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         } else {
             keystoreUsage = UsageType.UNSPECIFIED;
         }
-
-        keyPasswords = passwords;
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
+    @Nonnull protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
+            throws ResolverException {
 
         checkCriteriaRequirements(criteriaSet);
 
@@ -139,7 +144,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         }
 
         if (keyStoreEntry == null) {
-            log.debug("Keystore entry for entity ID (keystore alias) {} does not exist", entityID);
+            log.debug("Keystore entry for entityID (keystore alias) {} does not exist", entityID);
             return Collections.emptySet();
         }
 
@@ -152,10 +157,9 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * 
      * @param criteriaSet the credential criteria set to evaluate
      */
-    protected void checkCriteriaRequirements(CriteriaSet criteriaSet) {
-        EntityIDCriterion entityCriteria = criteriaSet.get(EntityIDCriterion.class);
-        if (entityCriteria == null) {
-            log.error("EntityIDCriterion was not specified in the criteria set, resolution can not be attempted");
+    protected void checkCriteriaRequirements(@Nullable final CriteriaSet criteriaSet) {
+        if (criteriaSet == null || criteriaSet.get(EntityIDCriterion.class) == null) {
+            log.error("EntityIDCriterion was not specified in the criteria set, resolution cannot be attempted");
             throw new IllegalArgumentException("No EntityIDCriterion was available in criteria set");
         }
     }
@@ -167,7 +171,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param criteriaUsage the value from credential criteria
      * @return true if the two usage specifiers match for purposes of resolving credentials, false otherwise
      */
-    protected boolean matchUsage(UsageType keyStoreUsage, UsageType criteriaUsage) {
+    protected boolean matchUsage(@Nonnull final UsageType keyStoreUsage, @Nonnull final UsageType criteriaUsage) {
         if (keyStoreUsage == UsageType.UNSPECIFIED || criteriaUsage == UsageType.UNSPECIFIED) {
             return true;
         }
@@ -183,24 +187,22 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @return the new credential instance, appropriate to the type of key store entry being processed
      * @throws ResolverException throw if there is a problem building a credential from the key store entry
      */
-    protected Credential buildCredential(KeyStore.Entry keyStoreEntry, String entityID, UsageType usage)
-            throws ResolverException {
+    @Nonnull protected Credential buildCredential(@Nonnull final KeyStore.Entry keyStoreEntry,
+            @Nonnull final String entityID, @Nonnull final UsageType usage) throws ResolverException {
 
         log.debug("Building credential from keystore entry for entityID {}, usage type {}", entityID, usage);
 
-        Credential credential = null;
         if (keyStoreEntry instanceof KeyStore.PrivateKeyEntry) {
-            credential = processPrivateKeyEntry((KeyStore.PrivateKeyEntry) keyStoreEntry, entityID, keystoreUsage);
+            return processPrivateKeyEntry((KeyStore.PrivateKeyEntry) keyStoreEntry, entityID, keystoreUsage);
         } else if (keyStoreEntry instanceof KeyStore.TrustedCertificateEntry) {
-            credential = processTrustedCertificateEntry((KeyStore.TrustedCertificateEntry) keyStoreEntry, entityID,
+            return processTrustedCertificateEntry((KeyStore.TrustedCertificateEntry) keyStoreEntry, entityID,
                     keystoreUsage);
         } else if (keyStoreEntry instanceof KeyStore.SecretKeyEntry) {
-            credential = processSecretKeyEntry((KeyStore.SecretKeyEntry) keyStoreEntry, entityID, keystoreUsage);
+            return processSecretKeyEntry((KeyStore.SecretKeyEntry) keyStoreEntry, entityID, keystoreUsage);
         } else {
             throw new ResolverException("KeyStore entry was of an unsupported type: "
                     + keyStoreEntry.getClass().getName());
         }
-        return credential;
     }
 
     /**
@@ -211,8 +213,9 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param usage the usage type to set
      * @return new X509Credential instance
      */
-    protected X509Credential processTrustedCertificateEntry(KeyStore.TrustedCertificateEntry trustedCertEntry,
-            String entityID, UsageType usage) {
+    protected X509Credential processTrustedCertificateEntry(
+            @Nonnull final KeyStore.TrustedCertificateEntry trustedCertEntry, @Nonnull final String entityID,
+            @Nonnull final UsageType usage) {
 
         log.debug("Processing TrustedCertificateEntry from keystore");
 
@@ -237,8 +240,8 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param usage the usage type to set
      * @return new X509Credential instance
      */
-    protected X509Credential processPrivateKeyEntry(KeyStore.PrivateKeyEntry privateKeyEntry, String entityID,
-            UsageType usage) {
+    protected X509Credential processPrivateKeyEntry(@Nonnull final KeyStore.PrivateKeyEntry privateKeyEntry,
+            @Nonnull final String entityID, @Nonnull final UsageType usage) {
 
         log.debug("Processing PrivateKeyEntry from keystore");
 
@@ -261,7 +264,8 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param usage the usage type to set
      * @return new Credential instance
      */
-    protected Credential processSecretKeyEntry(SecretKeyEntry secretKeyEntry, String entityID, UsageType usage) {
+    protected Credential processSecretKeyEntry(@Nonnull final SecretKeyEntry secretKeyEntry,
+            @Nonnull final String entityID, @Nonnull final UsageType usage) {
         log.debug("Processing SecretKeyEntry from keystore");
 
         BasicCredential credential = new BasicCredential(secretKeyEntry.getSecretKey());

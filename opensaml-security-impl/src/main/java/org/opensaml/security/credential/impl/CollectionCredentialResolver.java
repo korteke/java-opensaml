@@ -20,13 +20,13 @@ package org.opensaml.security.credential.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 
 /**
  * An implementation of {@link CredentialResolver} which uses a {@link Collection} as the
@@ -41,7 +41,7 @@ import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteri
 public class CollectionCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
     
     /** The collection of credentials which is the underlying store for the resolver. */
-    private Collection<Credential> collection;
+    private final Collection<Credential> collection;
     
     /**
      * Constructor.
@@ -59,7 +59,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      *
      * @param credentials the credential collection which is the backing store for the resolver
      */
-    public CollectionCredentialResolver(Collection<Credential> credentials) {
+    public CollectionCredentialResolver(@Nonnull final Collection<Credential> credentials) {
         super();
         collection = credentials;
     }
@@ -69,12 +69,13 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      * 
      * @return the credential collection backing store
      */
-    public Collection<Credential> getCollection() {
+    @Nonnull public Collection<Credential> getCollection() {
         return collection;
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
+    @Nonnull protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
+            throws ResolverException {
         return collection;
     }
 

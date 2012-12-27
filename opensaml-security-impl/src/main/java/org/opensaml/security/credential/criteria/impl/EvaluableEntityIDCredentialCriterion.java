@@ -17,6 +17,12 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.slf4j.Logger;
@@ -25,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 /**
- * Instance of evaluable credential criteria for evaluating a credential's entity ID.
+ * Instance of evaluable credential criteria for evaluating a credential's entityID.
  */
 public class EvaluableEntityIDCredentialCriterion implements EvaluableCredentialCriterion {
 
@@ -33,44 +39,39 @@ public class EvaluableEntityIDCredentialCriterion implements EvaluableCredential
     private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriterion.class);
 
     /** Base criteria. */
-    private String entityID;
+    private final String entityID;
 
     /**
      * Constructor.
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableEntityIDCredentialCriterion(EntityIDCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        entityID = criteria.getEntityID();
+    public EvaluableEntityIDCredentialCriterion(@Nonnull final EntityIDCriterion criteria) {
+        entityID = Constraint.isNotNull(criteria, "Criterion instance may not be null").getEntityID();
     }
 
     /**
      * Constructor.
      * 
-     * @param newEntityID the criteria value which is the basis for evaluation
+     * @param entity the criteria value which is the basis for evaluation
      */
-    public EvaluableEntityIDCredentialCriterion(String newEntityID) {
-        if (Strings.isNullOrEmpty(newEntityID)) {
-            throw new IllegalArgumentException("Entity ID may not be null");
-        }
-        entityID = newEntityID;
+    public EvaluableEntityIDCredentialCriterion(@Nonnull final String entity) {
+        String trimmed = StringSupport.trimOrNull(entity);
+        Constraint.isNotNull(trimmed, "EntityID criteria cannot be null or empty");
+
+        entityID = trimmed;
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
-        }
-        if (Strings.isNullOrEmpty(target.getEntityId())) {
-            log.info("Could not evaluate criteria, credential contained no entity ID");
+        } else if (Strings.isNullOrEmpty(target.getEntityId())) {
+            log.info("Could not evaluate criteria, credential contained no entityID");
             return null;
         }
-        Boolean result = entityID.equals(target.getEntityId());
-        return result;
+        return entityID.equals(target.getEntityId());
     }
 
 }

@@ -20,17 +20,18 @@ package org.opensaml.security.credential.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.util.criteria.CriteriaFilteringIterable;
-import org.opensaml.util.criteria.CriteriaFilteringIterator;
 import org.opensaml.util.criteria.EvaluableCriterion;
 
 /**
@@ -48,7 +49,6 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     
     /**
      * Constructor.
-     *
      */
     public AbstractCriteriaFilteringCredentialResolver() {
         super();
@@ -57,7 +57,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
     }
 
     /** {@inheritDoc} */
-    public Iterable<Credential> resolve(CriteriaSet criteriaSet) throws ResolverException {
+    @Nonnull public Iterable<Credential> resolve(@Nullable final CriteriaSet criteriaSet) throws ResolverException {
         Iterable<Credential> storeCandidates = resolveFromSource(criteriaSet);
         Set<EvaluableCriterion<Credential>> evaluableCriteria = getEvaluableCriteria(criteriaSet);
         if (evaluableCriteria.isEmpty()) {
@@ -126,7 +126,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * @return an Iterable for the resolved set of credentials
      * @throws ResolverException thrown if there is an error resolving credentials from the credential source
      */
-    protected abstract Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet)
+    @Nonnull protected abstract Iterable<Credential> resolveFromSource(@Nullable CriteriaSet criteriaSet)
         throws ResolverException;
 
     /**

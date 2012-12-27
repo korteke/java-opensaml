@@ -20,6 +20,11 @@ package org.opensaml.security.credential.criteria.impl;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -36,40 +41,34 @@ public class EvaluableX509CertSelectorCredentialCriterion implements EvaluableCr
     private final Logger log = LoggerFactory.getLogger(EvaluableX509CertSelectorCredentialCriterion.class);
 
     /** Base criteria. */
-    private X509CertSelector certSelector;
+    private final X509CertSelector certSelector;
 
     /**
      * Constructor.
      * 
-     * @param newSelector the new X509 cert selector
+     * @param selector X509 cert selector to use
      */
-    public EvaluableX509CertSelectorCredentialCriterion(X509CertSelector newSelector) {
-        if (newSelector == null) {
-            throw new IllegalArgumentException("X509 cert selector may not be null");
-        }
-        certSelector = newSelector;
+    public EvaluableX509CertSelectorCredentialCriterion(@Nonnull final X509CertSelector selector) {
+        certSelector = Constraint.isNotNull(selector, "X.509 cert selector cannot be null");
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
-        }
-        if (!(target instanceof X509Credential)) {
-            log.info("Credential is not an X509Credential, can not evaluate X509CertSelector criteria");
+        } else if (!(target instanceof X509Credential)) {
+            log.info("Credential is not an X509Credential, cannot evaluate X509CertSelector criteria");
             return Boolean.FALSE;
         }
-        X509Credential x509Cred = (X509Credential) target;
 
-        X509Certificate entityCert = x509Cred.getEntityCertificate();
+        X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
-            log.info("X509Credential did not contain an entity certificate, can not evaluate X509CertSelector criteria");
+            log.info("X509Credential did not contain an entity certificate, cannot evaluate X509CertSelector criteria");
             return Boolean.FALSE;
         }
 
-        Boolean result = certSelector.match(entityCert);
-        return result;
+        return certSelector.match(entityCert);
     }
 
 }

@@ -19,6 +19,11 @@ package org.opensaml.security.credential.criteria.impl;
 
 import java.security.Key;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.crypto.KeySupport;
@@ -34,18 +39,15 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
     private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriterion.class);
 
     /** Base criteria. */
-    private Integer keyLength;
+    private final Integer keyLength;
 
     /**
      * Constructor.
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableKeyLengthCredentialCriterion(KeyLengthCriterion criteria) {
-        if (criteria == null) {
-            throw new NullPointerException("Criterion instance may not be null");
-        }
-        keyLength = criteria.getKeyLength();
+    public EvaluableKeyLengthCredentialCriterion(@Nonnull final KeyLengthCriterion criteria) {
+        keyLength = Constraint.isNotNull(criteria, "Criterion instance cannot be null").getKeyLength();
     }
 
     /**
@@ -53,32 +55,30 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
      * 
      * @param newKeyLength the criteria value which is the basis for evaluation
      */
-    public EvaluableKeyLengthCredentialCriterion(Integer newKeyLength) {
-        if (newKeyLength == null) {
-            throw new IllegalArgumentException("Key length may not be null");
-        }
-        keyLength = newKeyLength;
+    public EvaluableKeyLengthCredentialCriterion(@Nonnull final Integer newKeyLength) {
+        keyLength = Constraint.isNotNull(newKeyLength, "Key length cannot be null");
     }
 
     /** {@inheritDoc} */
-    public Boolean evaluate(Credential target) {
+    @Nullable public Boolean evaluate(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
             return null;
         }
+        
         Key key = getKey(target);
         if (key == null) {
             log.info("Could not evaluate criteria, credential contained no key");
             return null;
         }
+        
         Integer length = KeySupport.getKeyLength(key);
         if (length == null) {
-            log.info("Could not evaluate criteria, can not determine length of key");
+            log.info("Could not evaluate criteria, cannot determine length of key");
             return null;
         }
 
-        Boolean result = keyLength.equals(length);
-        return result;
+        return keyLength.equals(length);
     }
 
     /**
@@ -87,7 +87,7 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
      * @param credential the credential containing a key
      * @return the key from the credential
      */
-    private Key getKey(Credential credential) {
+    @Nullable private Key getKey(@Nonnull final Credential credential) {
         if (credential.getPublicKey() != null) {
             return credential.getPublicKey();
         } else if (credential.getSecretKey() != null) {
@@ -98,7 +98,6 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
         } else {
             return null;
         }
-
     }
 
 }

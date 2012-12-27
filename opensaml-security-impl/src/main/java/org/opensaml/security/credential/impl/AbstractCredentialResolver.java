@@ -17,6 +17,9 @@
 
 package org.opensaml.security.credential.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 
@@ -29,7 +32,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 public abstract class AbstractCredentialResolver implements CredentialResolver {
 
     /** {@inheritDoc} */
-    public Credential resolveSingle(CriteriaSet criteriaSet) throws ResolverException {
+    @Nullable public Credential resolveSingle(@Nullable CriteriaSet criteriaSet) throws ResolverException {
         Iterable<Credential> creds = resolve(criteriaSet);
         if (creds.iterator().hasNext()) {
             return creds.iterator().next();
@@ -39,6 +42,6 @@ public abstract class AbstractCredentialResolver implements CredentialResolver {
     }
 
     /** {@inheritDoc} */
-    public abstract Iterable<Credential> resolve(CriteriaSet criteriaSet) throws ResolverException;
+    @Nonnull public abstract Iterable<Credential> resolve(@Nullable CriteriaSet criteriaSet) throws ResolverException;
 
 }
