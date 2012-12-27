@@ -41,7 +41,7 @@ import org.opensaml.security.x509.X509Support;
 public class EvaluableX509DigestCredentialCriterionTest {
     
     private BasicX509Credential credential;
-    private String digestAlgorithm = "SHA256";
+    private String digestAlgorithm = "SHA-256";
     private String entityCertDigestBase64 = "z+OxxIy+EZxLN6PbDEXPmOutQhaYbcJYKDrIyFSuE0I=";
     private byte[] entityCertDigest;
     
@@ -96,7 +96,7 @@ public class EvaluableX509DigestCredentialCriterionTest {
 
     @Test
     public void testNotSatisfy() {
-        criteria.setAlgorithm("SHA1");
+        criteria.setAlgorithm("SHA-1");
         EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }
