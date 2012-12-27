@@ -17,6 +17,8 @@
 
 package org.opensaml.util.criteria;
 
+import net.shibboleth.utilities.java.support.resolver.Criterion;
+
 /**
  * Interface for criteria which are capable of evaluating a target of a particular type.
  * 
