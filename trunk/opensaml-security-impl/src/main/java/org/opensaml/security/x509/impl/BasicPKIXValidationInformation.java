@@ -21,6 +21,11 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.x509.PKIXValidationInformation;
 
 /**
@@ -29,13 +34,13 @@ import org.opensaml.security.x509.PKIXValidationInformation;
 public class BasicPKIXValidationInformation implements PKIXValidationInformation {
 
     /** Certs used as the trust anchors. */
-    private Collection<X509Certificate> trustAnchors;
+    private final Collection<X509Certificate> trustAnchors;
 
     /** CRLs used during validation. */
-    private Collection<X509CRL> trustedCRLs;
+    private final Collection<X509CRL> trustedCRLs;
 
     /** Max verification depth during PKIX validation. */
-    private Integer verificationDepth;
+    private final Integer verificationDepth;
 
     /**
      * Constructor.
@@ -44,26 +49,26 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
      * @param crls CRLs used during validation
      * @param depth max verification path depth
      */
-    public BasicPKIXValidationInformation(Collection<X509Certificate> anchors, Collection<X509CRL> crls,
-            Integer depth) {
-        
+    public BasicPKIXValidationInformation(@Nullable final Collection<X509Certificate> anchors,
+            @Nullable final Collection<X509CRL> crls, @Nonnull final Integer depth) {
+
+        verificationDepth = Constraint.isNotNull(depth, "Verification depth cannot be null");
         trustAnchors = anchors;
         trustedCRLs = crls;
-        verificationDepth = depth;
     }
 
     /** {@inheritDoc} */
-    public Collection<X509CRL> getCRLs() {
+    @Nullable public Collection<X509CRL> getCRLs() {
         return trustedCRLs;
     }
 
     /** {@inheritDoc} */
-    public Collection<X509Certificate> getCertificates() {
+    @Nullable public Collection<X509Certificate> getCertificates() {
         return trustAnchors;
     }
 
     /** {@inheritDoc} */
-    public Integer getVerificationDepth() {
+    @Nonnull public Integer getVerificationDepth() {
         return verificationDepth;
     }
 }

@@ -20,6 +20,9 @@ package org.opensaml.security.trust.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -51,12 +54,13 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    public List<TrustEngine<TokenType>> getChain() {
+    @Nonnull public List<TrustEngine<TokenType>> getChain() {
         return engines;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(TokenType token, CriteriaSet trustBasisCriteria) throws SecurityException {
+    public boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
         for (TrustEngine<TokenType> engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
                 log.debug("Token was trusted by chain member: {}", engine.getClass().getName());

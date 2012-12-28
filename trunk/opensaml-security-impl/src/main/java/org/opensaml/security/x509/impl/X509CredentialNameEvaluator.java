@@ -19,6 +19,9 @@ package org.opensaml.security.x509.impl;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.X509Credential;
 
@@ -41,6 +44,7 @@ public interface X509CredentialNameEvaluator {
      * 
      * @throws SecurityException thrown if there is an error during name evaluation
      */
-    public boolean evaluate(X509Credential credential, Set<String> trustedNames) throws SecurityException;
+    public boolean evaluate(@Nonnull final X509Credential credential, @Nullable final Set<String> trustedNames)
+            throws SecurityException;
     
 }

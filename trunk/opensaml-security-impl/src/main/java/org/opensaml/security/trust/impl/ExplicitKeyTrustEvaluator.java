@@ -19,15 +19,16 @@ package org.opensaml.security.trust.impl;
 
 import java.security.Key;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Auxillary trust evaluator for evaluating an untrusted key or credential against a trusted key or credential. Trust is
- * established if the untrusted key (or public key or symmetric key from the untrusted credential) is matches one of the
+ * established if the untrusted key (a public key or symmetric key from the untrusted credential) matches one of the
  * trusted keys supplied.
- * 
  */
 public class ExplicitKeyTrustEvaluator {
 
@@ -41,7 +42,7 @@ public class ExplicitKeyTrustEvaluator {
      * @param trustedKey basis for trust
      * @return true if trust can be established, false otherwise
      */
-    public boolean validate(Key untrustedKey, Key trustedKey) {
+    public boolean validate(@Nonnull final Key untrustedKey, @Nonnull final Key trustedKey) {
         return untrustedKey.equals(trustedKey);
     }
 
@@ -52,7 +53,7 @@ public class ExplicitKeyTrustEvaluator {
      * @param trustedKeys basis for trust
      * @return true if trust can be established, false otherwise
      */
-    public boolean validate(Key untrustedKey, Iterable<Key> trustedKeys) {
+    public boolean validate(@Nonnull final Key untrustedKey, @Nonnull final Iterable<Key> trustedKeys) {
         for (Key trustedKey : trustedKeys) {
             if (untrustedKey.equals(trustedKey)) {
                 return true;
@@ -68,7 +69,8 @@ public class ExplicitKeyTrustEvaluator {
      * @param trustedCredential basis for trust
      * @return true if trust can be established, false otherwise
      */
-    public boolean validate(Credential untrustedCredential, Credential trustedCredential) {
+    public boolean validate(@Nonnull final Credential untrustedCredential,
+            @Nonnull final Credential trustedCredential) {
 
         Key untrustedKey = null;
         Key trustedKey = null;
@@ -103,7 +105,8 @@ public class ExplicitKeyTrustEvaluator {
      * @param trustedCredentials basis for trust
      * @return true if trust can be established, false otherwise
      */
-    public boolean validate(Credential untrustedCredential, Iterable<Credential> trustedCredentials) {
+    public boolean validate(@Nonnull final Credential untrustedCredential,
+            @Nonnull final Iterable<Credential> trustedCredentials) {
 
         for (Credential trustedCredential : trustedCredentials) {
             if (validate(untrustedCredential, trustedCredential)) {

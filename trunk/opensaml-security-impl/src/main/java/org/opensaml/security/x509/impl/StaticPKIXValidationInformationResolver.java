@@ -23,6 +23,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.PKIXValidationInformationResolver;
 
@@ -36,10 +39,10 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 public class StaticPKIXValidationInformationResolver implements PKIXValidationInformationResolver {
 
     /** The PKIX validation information to return. */
-    private List<PKIXValidationInformation> pkixInfo;
+    private final List<PKIXValidationInformation> pkixInfo;
 
     /** The set of trusted names to return. */
-    private Set<String> trustedNames;
+    private final Set<String> trustedNames;
 
     /**
      * Constructor.
@@ -47,7 +50,8 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
      * @param info list of PKIX validation information to return
      * @param names set of trusted names to return
      */
-    public StaticPKIXValidationInformationResolver(List<PKIXValidationInformation> info, Set<String> names) {
+    public StaticPKIXValidationInformationResolver(@Nullable final List<PKIXValidationInformation> info,
+            @Nullable final Set<String> names) {
         if (info != null) {
             pkixInfo = new ArrayList<PKIXValidationInformation>(info);
         } else {
@@ -62,9 +66,7 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     }
 
     /** {@inheritDoc} */
-    public Set<String> resolveTrustedNames(CriteriaSet criteriaSet) throws ResolverException,
-            UnsupportedOperationException {
-
+    @Nullable public Set<String> resolveTrustedNames(CriteriaSet criteriaSet) throws ResolverException {
         return trustedNames;
     }
 
@@ -74,12 +76,14 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     }
 
     /** {@inheritDoc} */
-    public Iterable<PKIXValidationInformation> resolve(CriteriaSet criteria) throws ResolverException {
+    @Nonnull public Iterable<PKIXValidationInformation> resolve(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
         return pkixInfo;
     }
 
     /** {@inheritDoc} */
-    public PKIXValidationInformation resolveSingle(CriteriaSet criteria) throws ResolverException {
+    @Nullable public PKIXValidationInformation resolveSingle(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
         if (!pkixInfo.isEmpty()) {
             return pkixInfo.get(0);
         }

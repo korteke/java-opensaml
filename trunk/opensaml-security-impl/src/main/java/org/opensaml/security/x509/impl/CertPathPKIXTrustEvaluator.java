@@ -38,7 +38,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.security.auth.x500.X500Principal;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.InternalX500DNHandler;
@@ -76,16 +79,13 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @param newOptions PKIX validation options
      */
-    public CertPathPKIXTrustEvaluator(PKIXValidationOptions newOptions) {
-        if (newOptions == null) {
-            throw new IllegalArgumentException("PKIXValidationOptions may not be null");
-        }
-        options = newOptions;
+    public CertPathPKIXTrustEvaluator(@Nonnull final PKIXValidationOptions newOptions) {
+        options = Constraint.isNotNull(newOptions, "PKIXValidationOptions cannot be null");
         x500DNHandler = new InternalX500DNHandler();
     }
     
     /** {@inheritDoc} */
-    public PKIXValidationOptions getPKIXValidationOptions() {
+    @Nonnull public PKIXValidationOptions getPKIXValidationOptions() {
         return options;
     }
 
@@ -94,11 +94,8 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @param newOptions the new set of options
      */
-    public void setPKIXValidationOptions(PKIXValidationOptions newOptions) {
-        if (newOptions == null) {
-            throw new IllegalArgumentException("PKIXValidationOptions may not be null");
-        }
-        options = newOptions;
+    public void setPKIXValidationOptions(@Nonnull final PKIXValidationOptions newOptions) {
+        options = Constraint.isNotNull(newOptions, "PKIXValidationOptions cannot be null");
     }
 
     /**
@@ -108,7 +105,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @return returns the X500DNHandler instance
      */
-    public X500DNHandler getX500DNHandler() {
+    @Nonnull public X500DNHandler getX500DNHandler() {
         return x500DNHandler;
     }
 
@@ -119,20 +116,17 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @param handler the new X500DNHandler instance
      */
-    public void setX500DNHandler(X500DNHandler handler) {
-        if (handler == null) {
-            throw new IllegalArgumentException("X500DNHandler may not be null");
-        }
-        x500DNHandler = handler;
+    public void setX500DNHandler(@Nonnull final X500DNHandler handler) {
+        x500DNHandler = Constraint.isNotNull(handler, "X500DNHandler cannot be null");
     }
 
     /** {@inheritDoc} */
-    public boolean validate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
-            throws SecurityException {
+    public boolean validate(@Nonnull final PKIXValidationInformation validationInfo,
+            @Nonnull final X509Credential untrustedCredential) throws SecurityException {
         
         if (log.isDebugEnabled()) {
             log.debug("Attempting PKIX path validation on untrusted credential: {}",
-                    X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler));
+                    X509Support.getIdentifiersToken(untrustedCredential, getX500DNHandler()));
         }        
         
         try {
@@ -145,17 +139,18 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             if (log.isDebugEnabled()) {
                 logCertPathDebug(buildResult, untrustedCredential.getEntityCertificate());
                 log.debug("PKIX validation succeeded for untrusted credential: {}",
-                        X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler));
+                        X509Support.getIdentifiersToken(untrustedCredential, getX500DNHandler()));
             }            
             return true;
 
         } catch (CertPathBuilderException e) {
             if (log.isTraceEnabled()) {
                 log.trace("PKIX path construction failed for untrusted credential: " 
-                        + X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler), e);
+                        + X509Support.getIdentifiersToken(untrustedCredential, getX500DNHandler()), e);
             } else {
                 log.error("PKIX path construction failed for untrusted credential: " 
-                        + X509Support.getIdentifiersToken(untrustedCredential, x500DNHandler) + ": " + e.getMessage());
+                        + X509Support.getIdentifiersToken(untrustedCredential, getX500DNHandler()) + ": "
+                        + e.getMessage());
             }
             return false;
         } catch (GeneralSecurityException e) {
@@ -174,8 +169,8 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @throws GeneralSecurityException thrown if the parameters can not be created
      */
-    protected PKIXBuilderParameters getPKIXBuilderParameters(PKIXValidationInformation validationInfo,
-            X509Credential untrustedCredential) throws GeneralSecurityException {
+    protected PKIXBuilderParameters getPKIXBuilderParameters(@Nonnull final PKIXValidationInformation validationInfo,
+            @Nonnull final X509Credential untrustedCredential) throws GeneralSecurityException {
         Set<TrustAnchor> trustAnchors = getTrustAnchors(validationInfo);
         if (trustAnchors == null || trustAnchors.isEmpty()) {
             throw new GeneralSecurityException(
@@ -223,9 +218,9 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * Determine whether there are any CRL's in the {@link CertStore} that is to be used.
      * 
      * @param certStore the cert store that will be used for validation
-     * @return true if the store contains at least 1 CRL instance, false otherwise
+     * @return true iff the store contains at least 1 CRL instance
      */
-    protected boolean storeContainsCRLs(CertStore certStore) {
+    protected boolean storeContainsCRLs(@Nonnull final CertStore certStore) {
         Collection<? extends CRL> crls = null;
         try {
             //Save some cycles and memory: Collection cert store allows null as specifier to return all.
@@ -247,7 +242,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * @param validationInfo PKIX validation information
      * @return the effective max verification depth to use
      */
-    protected Integer getEffectiveVerificationDepth(PKIXValidationInformation validationInfo) {
+    @Nonnull protected Integer getEffectiveVerificationDepth(@Nonnull final PKIXValidationInformation validationInfo) {
         Integer effectiveVerifyDepth = validationInfo.getVerificationDepth();
         if (effectiveVerifyDepth == null) {
             effectiveVerifyDepth = options.getDefaultVerificationDepth();
@@ -262,8 +257,11 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @return trust anchors to use during validation
      */
-    protected Set<TrustAnchor> getTrustAnchors(PKIXValidationInformation validationInfo) {
+    @Nullable protected Set<TrustAnchor> getTrustAnchors(@Nonnull final PKIXValidationInformation validationInfo) {
         Collection<X509Certificate> validationCertificates = validationInfo.getCertificates();
+        if (validationCertificates == null || validationCertificates.isEmpty()) {
+            return null;
+        }
 
         log.trace("Constructing trust anchors for PKIX validation");
         Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
@@ -288,7 +286,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * @param cert the certificate which serves as the trust anchor
      * @return the newly constructed TrustAnchor
      */
-    protected TrustAnchor buildTrustAnchor(X509Certificate cert) {
+    @Nonnull protected TrustAnchor buildTrustAnchor(@Nonnull final X509Certificate cert) {
         return new TrustAnchor(cert, null);
     }
 
@@ -303,8 +301,8 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * @throws GeneralSecurityException thrown if the certificate store can not be created from the cert and CRL
      *             material
      */
-    protected CertStore buildCertStore(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
-            throws GeneralSecurityException {
+    @Nonnull protected CertStore buildCertStore(@Nonnull final PKIXValidationInformation validationInfo,
+            @Nonnull final X509Credential untrustedCredential) throws GeneralSecurityException {
 
         log.trace("Creating cert store to use during path validation");
 
@@ -314,37 +312,40 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             for (X509Certificate cert : untrustedCredential.getEntityCertificateChain()) {
                 log.trace(String.format("Added X509Certificate from entity cert chain to cert store "
                         + "with subject name '%s' issued by '%s' with serial number '%s'",
-                        x500DNHandler.getName(cert.getSubjectX500Principal()),
-                        x500DNHandler.getName(cert.getIssuerX500Principal()),
+                        getX500DNHandler().getName(cert.getSubjectX500Principal()),
+                        getX500DNHandler().getName(cert.getIssuerX500Principal()),
                         cert.getSerialNumber().toString()));
             }
         }
         
         Date now = new Date();
         
-        if (validationInfo.getCRLs() != null && !validationInfo.getCRLs().isEmpty()) {
-            log.trace("Processing CRL's from PKIX info set");
-            addCRLsToStoreMaterial(storeMaterial, validationInfo.getCRLs(), now);
+        Collection<X509CRL> crls = validationInfo.getCRLs();
+        if (crls != null && !crls.isEmpty()) {
+            log.trace("Processing CRLs from PKIX info set");
+            addCRLsToStoreMaterial(storeMaterial, crls, now);
         }        
         
-        if (untrustedCredential.getCRLs() != null && !untrustedCredential.getCRLs().isEmpty() 
-                && options.isProcessCredentialCRLs()) {
-            log.trace("Processing CRL's from untrusted credential");
-            addCRLsToStoreMaterial(storeMaterial, untrustedCredential.getCRLs(), now);
+        crls = untrustedCredential.getCRLs();
+        if (crls != null && !crls.isEmpty() && options.isProcessCredentialCRLs()) {
+            log.trace("Processing CRLs from untrusted credential");
+            addCRLsToStoreMaterial(storeMaterial, crls, now);
         }        
         
         return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
     }
     
     /**
-     * Add CRL's from the specified collection to the list of certs and CRL's being collected
+     * Add CRLs from the specified collection to the list of certs and CRLs being collected
      * for the CertStore.
      * 
-     * @param storeMaterial list of certs and CRL's to be updated.
-     * @param crls collection of CRL's to be processed
+     * @param storeMaterial list of certs and CRLs to be updated.
+     * @param crls collection of CRLs to be processed
      * @param now current date/time
      */
-    protected void addCRLsToStoreMaterial(List<Object> storeMaterial, Collection<X509CRL> crls, Date now) {
+    protected void addCRLsToStoreMaterial(@Nonnull final List<Object> storeMaterial,
+            @Nonnull final Collection<X509CRL> crls, @Nonnull final Date now) {
+        
         for (X509CRL crl : crls) {
             boolean isEmpty = crl.getRevokedCertificates() == null || crl.getRevokedCertificates().isEmpty();
             boolean isExpired = crl.getNextUpdate().before(now);
@@ -353,26 +354,26 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
                     storeMaterial.add(crl);
                     if (log.isTraceEnabled()) {
                         log.trace("Added X509CRL to cert store from issuer {} dated {}",
-                                x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
+                                getX500DNHandler().getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
                         if (isEmpty) {
                             log.trace("X509CRL added to cert store from issuer {} dated {} was empty",
-                                    x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
+                                    getX500DNHandler().getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
                         }
                     }
                     if (isExpired) {
                         log.warn("Using X509CRL from issuer {} with a nextUpdate in the past: {}",
-                                x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
+                                getX500DNHandler().getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
                     }
                 } else {
                     if (log.isTraceEnabled()) {
                         log.trace("Expired X509CRL not added to cert store, from issuer {} nextUpdate {}",
-                                x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
+                                getX500DNHandler().getName(crl.getIssuerX500Principal()), crl.getNextUpdate());
                     }
                 }
             } else {
                 if (log.isTraceEnabled()) {
                     log.trace("Empty X509CRL not added to cert store, from issuer {} dated {}",
-                            x500DNHandler.getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
+                            getX500DNHandler().getName(crl.getIssuerX500Principal()), crl.getThisUpdate());
                 }
             }
         }
@@ -384,18 +385,20 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * @param buildResult the PKIX cert path builder result containing the cert path and trust anchor
      * @param targetCert the cert untrusted certificate that was being evaluated
      */
-    private void logCertPathDebug(PKIXCertPathBuilderResult buildResult, X509Certificate targetCert) {
+    private void logCertPathDebug(@Nonnull final PKIXCertPathBuilderResult buildResult,
+            @Nonnull final X509Certificate targetCert) {
+        
         log.debug("Built valid PKIX cert path");
-        log.debug("Target certificate: {}", x500DNHandler.getName(targetCert.getSubjectX500Principal()));
+        log.debug("Target certificate: {}", getX500DNHandler().getName(targetCert.getSubjectX500Principal()));
         for (Certificate cert : buildResult.getCertPath().getCertificates()) {
-            log.debug("CertPath certificate: {}", x500DNHandler.getName(((X509Certificate) cert)
+            log.debug("CertPath certificate: {}", getX500DNHandler().getName(((X509Certificate) cert)
                     .getSubjectX500Principal()));
         }
         TrustAnchor ta = buildResult.getTrustAnchor();
         if (ta.getTrustedCert() != null) {
-            log.debug("TrustAnchor: {}", x500DNHandler.getName(ta.getTrustedCert().getSubjectX500Principal()));
+            log.debug("TrustAnchor: {}", getX500DNHandler().getName(ta.getTrustedCert().getSubjectX500Principal()));
         } else if (ta.getCA() != null) {
-            log.debug("TrustAnchor: {}", x500DNHandler.getName(ta.getCA()));
+            log.debug("TrustAnchor: {}", getX500DNHandler().getName(ta.getCA()));
         } else {
             log.debug("TrustAnchor: {}", ta.getCAName());
         }
