@@ -17,7 +17,7 @@
 
 package org.opensaml.security.x509;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import org.opensaml.security.trust.TrustEngine;
 
@@ -33,6 +33,6 @@ public interface PKIXTrustEngine<TokenType> extends TrustEngine<TokenType> {
      * 
      * @return the currently configured resolver instance
      */
-    @Nullable public PKIXValidationInformationResolver getPKIXResolver();
+    @Nonnull public PKIXValidationInformationResolver getPKIXResolver();
     
 }
