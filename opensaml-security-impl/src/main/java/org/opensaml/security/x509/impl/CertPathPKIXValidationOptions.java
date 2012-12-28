@@ -17,7 +17,6 @@
 
 package org.opensaml.security.x509.impl;
 
-import org.opensaml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.security.x509.PKIXValidationOptions;
 
 /**
@@ -46,7 +45,7 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * <p>Default is: <b>false</b></p>
      * 
-     * @return Returns the forceRevocationEnabled.
+     * @return whether to force revocation behavior
      */
     public boolean isForceRevocationEnabled() {
         return forceRevocationEnabled;
@@ -59,10 +58,10 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * <p>Default is: <b>false</b></p>
      * 
-     * @param forceRevocationEnabled The forceRevocationEnabled to set.
+     * @param flag whether to force revocation behavior
      */
-    public void setForceRevocationEnabled(boolean forceRevocationEnabled) {
-        this.forceRevocationEnabled = forceRevocationEnabled;
+    public void setForceRevocationEnabled(boolean flag) {
+        forceRevocationEnabled = flag;
     }
 
     /**
@@ -72,7 +71,7 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @return Returns the revocationEnabled.
+     * @return whether to force revocation if forcing is enabled
      */
     public boolean isRevocationEnabled() {
         return revocationEnabled;
@@ -85,11 +84,10 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * <p>Default is: <b>true</b></p>
      * 
-     * @param revocationEnabled The revocationEnabled to set.
+     * @param flag whether to force revocation if forcing is enabled
      */
-    public void setRevocationEnabled(boolean revocationEnabled) {
-        this.revocationEnabled = revocationEnabled;
+    public void setRevocationEnabled(boolean flag) {
+        revocationEnabled = flag;
     }
-    
 
 }

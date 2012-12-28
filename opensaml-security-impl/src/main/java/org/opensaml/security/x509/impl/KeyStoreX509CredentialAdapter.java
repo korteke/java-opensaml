@@ -19,8 +19,10 @@ package org.opensaml.security.x509.impl;
 
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -28,6 +30,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -46,13 +51,13 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
     private Logger log = LoggerFactory.getLogger(KeyStoreX509CredentialAdapter.class);
 
     /** Keystore that contains the credential to be exposed. */
-    private KeyStore keyStore;
+    private final KeyStore keyStore;
 
     /** Alias to the credential to be exposed. */
-    private String credentialAlias;
+    private final String credentialAlias;
 
     /** Password for the key to be exposed. */
-    private char[] keyPassword;
+    private final char[] keyPassword;
 
     /**
      * Constructor.
@@ -61,29 +66,31 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
      * @param alias alias to the credential to be exposed
      * @param password password to the key to be exposed
      */
-    public KeyStoreX509CredentialAdapter(KeyStore store, String alias, char[] password) {
-        keyStore = Constraint.isNotNull(store, "Keystore must be supplied");
-        credentialAlias = Constraint.isNotNull(StringSupport.trimOrNull(alias), "Keystore alias must be supplied");
+    public KeyStoreX509CredentialAdapter(@Nonnull final KeyStore store, @Nonnull final String alias,
+            @Nullable final char[] password) {
+        keyStore = Constraint.isNotNull(store, "Keystore cannot be null");
+        credentialAlias = Constraint.isNotNull(StringSupport.trimOrNull(alias),
+                "Keystore alias cannot be null or empty");
         keyPassword = password;
     }
 
     /** {@inheritDoc} */
-    public Collection<X509CRL> getCRLs() {
+    @Nullable public Collection<X509CRL> getCRLs() {
         return Collections.EMPTY_LIST;
     }
 
     /** {@inheritDoc} */
-    public X509Certificate getEntityCertificate() {
+    @Nonnull public X509Certificate getEntityCertificate() {
         try {
             return (X509Certificate) keyStore.getCertificate(credentialAlias);
         } catch (KeyStoreException e) {
-            log.error("Error accessing {} certificates in keystore", e);
+            log.error("Error accessing {" + credentialAlias + "} certificates in keystore", e);
             return null;
         }
     }
 
     /** {@inheritDoc} */
-    public Collection<X509Certificate> getEntityCertificateChain() {
+    @Nonnull public Collection<X509Certificate> getEntityCertificateChain() {
         List<X509Certificate> certsCollection = Collections.EMPTY_LIST;
 
         try {
@@ -95,38 +102,42 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
                 }
             }
         } catch (KeyStoreException e) {
-            log.error("Error accessing {} certificates in keystore", e);
+            log.error("Error accessing {" + credentialAlias + "} certificates in keystore", e);
         }
         return certsCollection;
     }
 
     /** {@inheritDoc} */
-    public PrivateKey getPrivateKey() {
+    @Nullable public PrivateKey getPrivateKey() {
         try {
             return (PrivateKey) keyStore.getKey(credentialAlias, keyPassword);
-        } catch (Exception e) {
-            log.error("Error accessing {} private key in keystore", e);
-            return null;
+        } catch (KeyStoreException e) {
+            log.error("Error accessing {" + credentialAlias + "} private key in keystore", e);
+        } catch (UnrecoverableKeyException e) {
+            log.error("Error accessing {" + credentialAlias + "} private key in keystore", e);
+        } catch (NoSuchAlgorithmException e) {
+            log.error("Error accessing {" + credentialAlias + "} private key in keystore", e);
         }
+        return null;
     }
 
     /** {@inheritDoc} */
-    public PublicKey getPublicKey() {
+    @Nullable public PublicKey getPublicKey() {
         return getEntityCertificate().getPublicKey();
     }
 
     /** {@inheritDoc} */
-    public Class<? extends Credential> getCredentialType() {
+    @Nonnull public Class<? extends Credential> getCredentialType() {
         return X509Credential.class;
     }
 
     /** {@inheritDoc} */
-    public void setEntityId(String newEntityID) {
+    public void setEntityId(@Nullable final String newEntityID) {
         super.setEntityId(newEntityID);
     }
 
     /** {@inheritDoc} */
-    public void setUsageType(UsageType newUsageType) {
+    public void setUsageType(@Nonnull final UsageType newUsageType) {
         super.setUsageType(newUsageType);
     }
 

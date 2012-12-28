@@ -17,6 +17,10 @@
 
 package org.opensaml.security.trust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -40,64 +44,42 @@ public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Cred
     private final Logger log = LoggerFactory.getLogger(ExplicitKeyTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private CredentialResolver credentialResolver;
+    private final CredentialResolver credentialResolver;
 
     /** Trust evaluator. */
-    private ExplicitKeyTrustEvaluator trustEvaluator;
+    private final ExplicitKeyTrustEvaluator trustEvaluator;
 
     /**
      * Constructor.
      * 
      * @param resolver credential resolver which is used to resolve trusted credentials
      */
-    public ExplicitKeyTrustEngine(CredentialResolver resolver) {
-        if (resolver == null) {
-            throw new IllegalArgumentException("Credential resolver may not be null");
-        }
-        credentialResolver = resolver;
+    public ExplicitKeyTrustEngine(@Nonnull final CredentialResolver resolver) {
+        credentialResolver = Constraint.isNotNull(resolver, "Credential resolver cannot be null");
 
         trustEvaluator = new ExplicitKeyTrustEvaluator();
     }
 
     /** {@inheritDoc} */
-    public CredentialResolver getCredentialResolver() {
+    @Nonnull public CredentialResolver getCredentialResolver() {
         return credentialResolver;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Credential untrustedCredential, CriteriaSet trustBasisCriteria) throws SecurityException {
-
-        checkParams(untrustedCredential, trustBasisCriteria);
-
-        log.debug("Attempting to validate untrusted credential");
-        Iterable<Credential> trustedCredentials;
-        try {
-            trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
-        } catch (ResolverException e) {
-            throw new SecurityException("Error resolving trusted credentials", e);
-        }
-
-        return trustEvaluator.validate(untrustedCredential, trustedCredentials);
-    }
-
-    /**
-     * Check the parameters for required values.
-     * 
-     * @param untrustedCredential the credential to be evaluated
-     * @param trustBasisCriteria the set of trusted credential criteria
-     * @throws SecurityException thrown if required values are absent or otherwise invalid
-     */
-    protected void checkParams(Credential untrustedCredential, CriteriaSet trustBasisCriteria)
-        throws SecurityException {
+    public boolean validate(@Nonnull final Credential untrustedCredential,
+            @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException {
 
         if (untrustedCredential == null) {
-            throw new SecurityException("Untrusted credential was null");
+            log.error("Credential was null, unable to perform validation");
+            return false;
         }
-        if (trustBasisCriteria == null) {
-            throw new SecurityException("Trust basis criteria set was null");
-        }
-        if (trustBasisCriteria.isEmpty()) {
-            throw new SecurityException("Trust basis criteria set was empty");
+
+        log.debug("Attempting to validate untrusted credential");
+        try {
+            Iterable<Credential> trustedCredentials = getCredentialResolver().resolve(trustBasisCriteria);
+            return trustEvaluator.validate(untrustedCredential, trustedCredentials);
+        } catch (ResolverException e) {
+            throw new SecurityException("Error resolving trusted credentials", e);
         }
     }
 
