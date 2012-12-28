@@ -17,6 +17,8 @@
 
 package org.opensaml.security.x509;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.SecurityException;
 
 /**
@@ -33,16 +35,14 @@ public interface PKIXTrustEvaluator {
      * @return true if the credential can be successfully evaluated, false otherwise
      * @throws SecurityException thrown if there is an error evaluating the credential
      */
-    public boolean validate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
-            throws SecurityException;
+    public boolean validate(@Nonnull final PKIXValidationInformation validationInfo,
+            @Nonnull final X509Credential untrustedCredential) throws SecurityException;
     
     /**
      * Get the {@link PKIXValidationOptions} instance that is in use.
      * 
      * @return the PKIXValidationOptions instance
      */
-    public PKIXValidationOptions getPKIXValidationOptions();
+    @Nonnull public PKIXValidationOptions getPKIXValidationOptions();
     
 }
-
-
