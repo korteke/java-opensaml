@@ -18,7 +18,7 @@
 package org.opensaml.security.credential;
 
 /**
- * Marker interface for implementations which hold information specific to a a particular context within 
+ * Marker interface for implementations which hold information specific to a particular context within 
  * which a {@link CredentialResolver} resolves a {@link Credential}.
  */
 public interface CredentialContext {
