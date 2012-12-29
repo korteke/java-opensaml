@@ -17,6 +17,8 @@
 
 package org.opensaml.core.config;
 
+import javax.annotation.Nullable;
+
 /**
  * Exception indicating a problem during the library initialization process.
  */
@@ -34,7 +36,7 @@ public class InitializationException extends Exception {
      *
      * @param msg the exception message
      */
-    public InitializationException(String msg) {
+    public InitializationException(@Nullable final String msg) {
         super(msg);
     }
 
@@ -43,7 +45,7 @@ public class InitializationException extends Exception {
      *
      * @param cause the exception cause
      */
-    public InitializationException(Throwable cause) {
+    public InitializationException(@Nullable final Throwable cause) {
         super(cause);
     }
 
@@ -53,7 +55,7 @@ public class InitializationException extends Exception {
      * @param message the exception message
      * @param cause the exception cause
      */
-    public InitializationException(String message, Throwable cause) {
+    public InitializationException(@Nullable final String message, @Nullable final Throwable cause) {
         super(message, cause);
     }
 

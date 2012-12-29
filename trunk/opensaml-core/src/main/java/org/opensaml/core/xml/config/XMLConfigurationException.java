@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.config;
 
+import javax.annotation.Nullable;
+
 /**
  * An exception thrown when an error occurs loading information via
  * {@link org.opensaml.core.xml.config.XMLConfigurator}.
@@ -38,7 +40,7 @@ public class XMLConfigurationException extends Exception {
      * 
      * @param message exception message
      */
-    public XMLConfigurationException(String message) {
+    public XMLConfigurationException(@Nullable final String message) {
         super(message);
     }
 
@@ -47,7 +49,7 @@ public class XMLConfigurationException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public XMLConfigurationException(Exception wrappedException) {
+    public XMLConfigurationException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -57,7 +59,7 @@ public class XMLConfigurationException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public XMLConfigurationException(String message, Exception wrappedException) {
+    public XMLConfigurationException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }

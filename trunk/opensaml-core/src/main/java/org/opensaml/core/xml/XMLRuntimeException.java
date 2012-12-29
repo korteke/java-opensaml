@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nullable;
+
 /**
  * An unchecked runtime exception thrown when an unrecoverable error occurs during XML processing.
  */
@@ -37,7 +39,7 @@ public class XMLRuntimeException extends RuntimeException {
      * 
      * @param message exception message
      */
-    public XMLRuntimeException(String message) {
+    public XMLRuntimeException(@Nullable final String message) {
         super(message);
     }
 
@@ -46,7 +48,7 @@ public class XMLRuntimeException extends RuntimeException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public XMLRuntimeException(Exception wrappedException) {
+    public XMLRuntimeException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -56,7 +58,7 @@ public class XMLRuntimeException extends RuntimeException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public XMLRuntimeException(String message, Exception wrappedException) {
+    public XMLRuntimeException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
