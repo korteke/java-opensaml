@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.decoder;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.MessageException;
 
 
@@ -40,7 +42,7 @@ public class MessageDecodingException extends MessageException {
      * 
      * @param message exception message
      */
-    public MessageDecodingException(String message) {
+    public MessageDecodingException(@Nullable final String message) {
         super(message);
     }
 
@@ -49,7 +51,7 @@ public class MessageDecodingException extends MessageException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageDecodingException(Exception wrappedException) {
+    public MessageDecodingException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -59,7 +61,7 @@ public class MessageDecodingException extends MessageException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageDecodingException(String message, Exception wrappedException) {
+    public MessageDecodingException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.handler;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.MessageException;
 
 /**
@@ -39,7 +41,7 @@ public class MessageHandlerException extends MessageException {
      * 
      * @param message exception message
      */
-    public MessageHandlerException(String message) {
+    public MessageHandlerException(@Nullable final String message) {
         super(message);
     }
 
@@ -48,7 +50,7 @@ public class MessageHandlerException extends MessageException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageHandlerException(Exception wrappedException) {
+    public MessageHandlerException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -58,7 +60,7 @@ public class MessageHandlerException extends MessageException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageHandlerException(String message, Exception wrappedException) {
+    public MessageHandlerException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
