@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging;
 
+import javax.annotation.Nullable;
+
 
 /**
  * Base class for messaging-related checked exceptions.
@@ -38,7 +40,7 @@ public class MessageException extends Exception {
      * 
      * @param message exception message
      */
-    public MessageException(String message) {
+    public MessageException(@Nullable final String message) {
         super(message);
     }
 
@@ -47,7 +49,7 @@ public class MessageException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageException(Exception wrappedException) {
+    public MessageException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -57,7 +59,7 @@ public class MessageException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageException(String message, Exception wrappedException) {
+    public MessageException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }

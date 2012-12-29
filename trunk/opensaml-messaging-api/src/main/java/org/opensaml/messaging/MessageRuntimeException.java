@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging;
 
+import javax.annotation.Nullable;
+
 
 /**
  * Base class for messaging-related unchecked runtime exceptions.
@@ -38,7 +40,7 @@ public class MessageRuntimeException extends RuntimeException {
      * 
      * @param message exception message
      */
-    public MessageRuntimeException(String message) {
+    public MessageRuntimeException(@Nullable final String message) {
         super(message);
     }
 
@@ -47,7 +49,7 @@ public class MessageRuntimeException extends RuntimeException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageRuntimeException(Exception wrappedException) {
+    public MessageRuntimeException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -57,7 +59,7 @@ public class MessageRuntimeException extends RuntimeException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public MessageRuntimeException(String message, Exception wrappedException) {
+    public MessageRuntimeException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
