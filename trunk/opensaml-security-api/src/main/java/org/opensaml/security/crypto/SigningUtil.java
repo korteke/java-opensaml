@@ -60,7 +60,7 @@ public final class SigningUtil {
      * @return the computed signature or MAC value
      * @throws SecurityException throw if the computation process results in an error
      */
-    @Nonnull public static byte[] sign(@Nullable final Credential signingCredential,
+    @Nonnull public static byte[] sign(@Nonnull final Credential signingCredential,
             @Nonnull final String jcaAlgorithmID, boolean isMAC, @Nonnull final byte[] input) throws SecurityException {
         Logger log = getLogger();
 
@@ -165,7 +165,7 @@ public final class SigningUtil {
      *         to the supplied signature value
      * @throws SecurityException thrown if the signature computation or verification process results in an error
      */
-    public static boolean verify(@Nullable final Credential verificationCredential,
+    public static boolean verify(@Nonnull final Credential verificationCredential,
             @Nonnull final String jcaAlgorithmID, boolean isMAC, @Nonnull final byte[] signature,
             @Nonnull final byte[] input) throws SecurityException {
         Logger log = getLogger();
