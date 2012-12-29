@@ -17,6 +17,8 @@
 
 package org.opensaml.security;
 
+import javax.annotation.Nullable;
+
 /**
  * Base exception for security related errors.
  */
@@ -37,7 +39,7 @@ public class SecurityException extends Exception {
      * 
      * @param message exception message
      */
-    public SecurityException(String message) {
+    public SecurityException(@Nullable final String message) {
         super(message);
     }
 
@@ -46,7 +48,7 @@ public class SecurityException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SecurityException(Exception wrappedException) {
+    public SecurityException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -56,7 +58,7 @@ public class SecurityException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SecurityException(String message, Exception wrappedException) {
+    public SecurityException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
