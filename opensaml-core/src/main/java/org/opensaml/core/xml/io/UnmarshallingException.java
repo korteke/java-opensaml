@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.io;
 
+import javax.annotation.Nullable;
+
 /**
  * Exception thrown when error occurs unmarshalling a DOM Element to a XMLObject.
  */
@@ -39,7 +41,7 @@ public class UnmarshallingException extends Exception {
      * 
      * @param message exception message
      */
-    public UnmarshallingException(String message) {
+    public UnmarshallingException(@Nullable final String message) {
         super(message);
     }
 
@@ -48,7 +50,7 @@ public class UnmarshallingException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public UnmarshallingException(Exception wrappedException) {
+    public UnmarshallingException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -58,7 +60,7 @@ public class UnmarshallingException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public UnmarshallingException(String message, Exception wrappedException) {
+    public UnmarshallingException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }

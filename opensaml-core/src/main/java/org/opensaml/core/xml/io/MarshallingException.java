@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.io;
 
+import javax.annotation.Nullable;
+
 /**
  * Exception thrown when error occurs marshalling an XMLObject to a DOM Element.
  */
@@ -37,7 +39,7 @@ public class MarshallingException extends Exception {
      * 
      * @param message exception message
      */
-    public MarshallingException(String message) {
+    public MarshallingException(@Nullable final String message) {
         super(message);
     }
 
@@ -46,7 +48,7 @@ public class MarshallingException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public MarshallingException(Exception wrappedException) {
+    public MarshallingException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -56,7 +58,7 @@ public class MarshallingException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public MarshallingException(String message, Exception wrappedException) {
+    public MarshallingException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
