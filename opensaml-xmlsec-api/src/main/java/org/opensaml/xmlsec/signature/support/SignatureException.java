@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import javax.annotation.Nullable;
+
 /**
  * Exception thrown when an error occurs during signature operations.
  */
@@ -39,7 +41,7 @@ public class SignatureException extends Exception {
      *
      * @param message exception message
      */
-    public SignatureException(String message) {
+    public SignatureException(@Nullable final String message) {
         super(message);
     }
     
@@ -48,7 +50,7 @@ public class SignatureException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SignatureException(Exception wrappedException) {
+    public SignatureException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -58,9 +60,8 @@ public class SignatureException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SignatureException(String message, Exception wrappedException) {
+    public SignatureException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
-
 
 }

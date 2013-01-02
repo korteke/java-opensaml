@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 
@@ -31,41 +33,41 @@ public interface EncryptionConfiguration {
      * 
      * @return the encryption credential
      */
-    Credential getDataEncryptionCredential();
+    @Nullable Credential getDataEncryptionCredential();
     
     /**
      * Get the encryption credential to use when encrypting the EncryptedKey.
      * 
      * @return the encryption credential
      */
-    Credential getKeyTransportEncryptionCredential();
+    @Nullable Credential getKeyTransportEncryptionCredential();
     
     /**
      * Get the encryption algorithm URI to use when encrypting the EncryptedData.
      * 
      * @return an encryption algorithm URI, or null if no mapping is available
      */
-    public String getDataEncryptionAlgorithmURI();
+    @Nullable public String getDataEncryptionAlgorithmURI();
     
     /**
      * Get the encryption algorithm URI to use when encrypting the EncryptedKey.
      * 
      * @return an encryption algorithm URI, or null if no mapping is available
      */
-    public String getKeyTransportEncryptionAlgorithmURI();
+    @Nullable public String getKeyTransportEncryptionAlgorithmURI();
 
     /**
      * Get the KeyInfoGenerator to use when generating the EncryptedData/KeyInfo.
      * 
      * @return the KeyInfoGenerator instance
      */
-    public KeyInfoGenerator getDataKeyInfoGenerator();
+    @Nullable public KeyInfoGenerator getDataKeyInfoGenerator();
     
     /**
      * Get the KeyInfoGenerator to use when generating the EncryptedKey/KeyInfo.
      * 
      * @return the KeyInfoGenerator instance
      */
-    public KeyInfoGenerator getKeyTransportKeyInfoGenerator();
+    @Nullable public KeyInfoGenerator getKeyTransportKeyInfoGenerator();
     
 }

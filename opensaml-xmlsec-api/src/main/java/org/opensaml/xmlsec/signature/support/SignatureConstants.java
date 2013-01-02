@@ -18,30 +18,40 @@
 package org.opensaml.xmlsec.signature.support;
 
 /**
- * Constants defined in or related to the XML Signature specification, version 20020112.
+ * Constants defined in or related to the XML Signature 1.0 and 1.1 specifications and
+ * related RFCs.
  */
 public final class SignatureConstants {
 
-    /** XML Signature namespace. */
+    /** XML Signature namespace and algorithm prefix. */
     public static final String XMLSIG_NS = "http://www.w3.org/2000/09/xmldsig#";
 
+    /** XML Signature 1.1 namespace and algorithm prefix. */
+    public static final String XMLSIG11_NS = "http://www.w3.org/2009/xmldsig11#";
+    
     /** XML Signature QName prefix. */
     public static final String XMLSIG_PREFIX = "ds";
+    
+    /** XML Signature 1.1 QName prefix. */
+    public static final String XMLSIG11_PREFIX = "dsig11";
 
-    /** Namespace URI defined by RFC 4051. */
+    /** Algorithm URI prefix used by RFC 4051. */
     public static final String MORE_ALGO_NS = "http://www.w3.org/2001/04/xmldsig-more#";
 
     // *********************************************************
     // Algorithm URI's
     // *********************************************************
 
-    /** Signature - Required DSAwithSHA1 (DSS). */
+    /** Signature - Optional DSAwithSHA1 (DSS). */
     public static final String ALGO_ID_SIGNATURE_DSA = XMLSIG_NS + "dsa-sha1";
 
-    /** Signature - Recommended RSAwithSHA1 (PKCS1). */
+    /** Signature - Optional DSAwithSHA1 (DSS). */
+    public static final String ALGO_ID_SIGNATURE_DSA_SHA1 = ALGO_ID_SIGNATURE_DSA;
+    
+    /** Signature - Required RSAwithSHA1 (PKCS1). */
     public static final String ALGO_ID_SIGNATURE_RSA = XMLSIG_NS + "rsa-sha1";
 
-    /** Signature - Recommended RSAwithSHA1 (PKCS1). */
+    /** Signature - Required RSAwithSHA1 (PKCS1). */
     public static final String ALGO_ID_SIGNATURE_RSA_SHA1 = ALGO_ID_SIGNATURE_RSA;
 
     /** MAC - Required HMAC-SHA1. */
@@ -88,7 +98,7 @@ public final class SignatureConstants {
     /** Type - Signature SignatureProperties. */
     // public static final String TYPE_SIGNATURE_SIGNATURE_PROPERTIES = XMLSIG_NS + "SignatureProperties";
 
-    // These are additional type URI's defined by RFC 4051
+    // These are additional type URIs defined by RFC 4051
 
     /** Type - KeyInfo KeyValue. */
     public static final String TYPE_KEYINFO_KEYVALUE = MORE_ALGO_NS + "KeyValue";
@@ -114,16 +124,31 @@ public final class SignatureConstants {
     /** Type - Binary PKCS7 signed data. */
     public static final String TYPE_KEYINFO_RAW_PKCS7_SIGNED_DATA = MORE_ALGO_NS + "rawPKCS7signedData";
 
+    // These are additional type URIs defined by XML Signature 1.1
+    
+    /** Type - KeyInfo ECKeyValue. */
+    public static final String TYPE_KEYINFO_ECKEYVALUE = XMLSIG11_NS + "ECKeyValue";
+    
+    /** Type - KeyInfo DEREncodedKeyValue. */
+    public static final String TYPE_KEYINFO_DERENCODEDKEYVALUE = XMLSIG11_NS + "DEREncodedKeyValue";
+    
+    
     // *********************************************************
     // Canonicalization
     // *********************************************************
 
-    /** Canonicalization - Inclusive WITHOUT comments. */
+    /** Canonicalization - Inclusive 1.0 WITHOUT comments. */
     public static final String ALGO_ID_C14N_OMIT_COMMENTS = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
 
-    /** Canonicalization - Inclusive WITH comments. */
+    /** Canonicalization - Inclusive 1.0 WITH comments. */
     public static final String ALGO_ID_C14N_WITH_COMMENTS = ALGO_ID_C14N_OMIT_COMMENTS + "#WithComments";
 
+    /** Canonicalization - Inclusive 1.1 WITHOUT comments. */
+    public static final String ALGO_ID_C14N11_OMIT_COMMENTS = "http://www.w3.org/2006/12/xml-c14n11";
+
+    /** Canonicalization - Inclusive 1.1 WITH comments. */
+    public static final String ALGO_ID_C14N11_WITH_COMMENTS = ALGO_ID_C14N11_OMIT_COMMENTS + "#WithComments";
+    
     /** Canonicalization - Exclusive WITHOUT comments. */
     public static final String ALGO_ID_C14N_EXCL_OMIT_COMMENTS = "http://www.w3.org/2001/10/xml-exc-c14n#";
 
@@ -137,16 +162,22 @@ public final class SignatureConstants {
     /** Transform - Required Enveloped Signature. */
     public static final String TRANSFORM_ENVELOPED_SIGNATURE = XMLSIG_NS + "enveloped-signature";
 
-    /** Transform - Required Inclusive c14n WITHOUT comments. */
+    /** Transform - Required Inclusive c14n 1.0 WITHOUT comments. */
     public static final String TRANSFORM_C14N_OMIT_COMMENTS = ALGO_ID_C14N_OMIT_COMMENTS;
 
-    /** Transform - Recommended Inclusive c14n WITH comments. */
+    /** Transform - Recommended Inclusive c14n 1.0 WITH comments. */
     public static final String TRANSFORM_C14N_WITH_COMMENTS = ALGO_ID_C14N_WITH_COMMENTS;
 
-    /** Transform - Exclusive c14n WITHOUT comments. */
+    /** Transform - Required Inclusive c14n 1.1 WITHOUT comments. */
+    public static final String TRANSFORM_C14N11_OMIT_COMMENTS = ALGO_ID_C14N11_OMIT_COMMENTS;
+
+    /** Transform - Recommended Inclusive c14n 1.1 WITH comments. */
+    public static final String TRANSFORM_C14N11_WITH_COMMENTS = ALGO_ID_C14N11_WITH_COMMENTS;
+    
+    /** Transform - Required Exclusive c14n WITHOUT comments. */
     public static final String TRANSFORM_C14N_EXCL_OMIT_COMMENTS = ALGO_ID_C14N_EXCL_OMIT_COMMENTS;
 
-    /** Transform - Exclusive c14n WITH comments. */
+    /** Transform - Recommended Exclusive c14n WITH comments. */
     public static final String TRANSFORM_C14N_EXCL_WITH_COMMENTS = ALGO_ID_C14N_EXCL_WITH_COMMENTS;
 
     /** Transform - Optional XSLT. */
@@ -165,7 +196,7 @@ public final class SignatureConstants {
      */
 
     // *********************************************************
-    // Some additional algorithm URI's from RFC 4051
+    // Some additional algorithm URIs from RFC 4051
     // *********************************************************
     /** Signature - NOT Recommended RSAwithMD5. */
     public static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 = MORE_ALGO_NS + "rsa-md5";
@@ -173,13 +204,13 @@ public final class SignatureConstants {
     /** Signature - Optional RSAwithRIPEMD160. */
     public static final String ALGO_ID_SIGNATURE_RSA_RIPEMD160 = MORE_ALGO_NS + "rsa-ripemd160";
 
-    /** Signature - Optional RSAwithSHA256. */
+    /** Signature - Required RSAwithSHA256. */
     public static final String ALGO_ID_SIGNATURE_RSA_SHA256 = MORE_ALGO_NS + "rsa-sha256";
 
-    /** Signature - Optional RSAwithSHA384. */
+    /** Signature - Required RSAwithSHA384. */
     public static final String ALGO_ID_SIGNATURE_RSA_SHA384 = MORE_ALGO_NS + "rsa-sha384";
 
-    /** Signature - Optional RSAwithSHA512. */
+    /** Signature - Required RSAwithSHA512. */
     public static final String ALGO_ID_SIGNATURE_RSA_SHA512 = MORE_ALGO_NS + "rsa-sha512";
 
     /** HMAC - NOT Recommended HMAC-MD5. */
@@ -200,6 +231,15 @@ public final class SignatureConstants {
     /** Signature - Optional ECDSAwithSHA1. */
     public static final String ALGO_ID_SIGNATURE_ECDSA_SHA1 = MORE_ALGO_NS + "ecdsa-sha1";
 
+    /** Signature - Optional ECDSAwithSHA256. */
+    public static final String ALGO_ID_SIGNATURE_ECDSA_SHA256 = MORE_ALGO_NS + "ecdsa-sha256";
+
+    /** Signature - Optional ECDSAwithSHA384. */
+    public static final String ALGO_ID_SIGNATURE_ECDSA_SHA384 = MORE_ALGO_NS + "ecdsa-sha384";
+
+    /** Signature - Optional ECDSAwithSHA512. */
+    public static final String ALGO_ID_SIGNATURE_ECDSA_SHA512 = MORE_ALGO_NS + "ecdsa-sha512";
+    
     /** Digest - Optional MD5. */
     public static final String ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5 = MORE_ALGO_NS + "md5";
 
@@ -209,7 +249,15 @@ public final class SignatureConstants {
 
     /** Digest - Optional SHA384. */
     public static final String ALGO_ID_DIGEST_SHA384 = MORE_ALGO_NS + "sha384";
-      
+    
+    // *********************************************************
+    // Some additional algorithm URIs from XML Signature 1.1
+    // *********************************************************
+    /** Signature - Optional DSAwithSHA256 (DSS). */
+    // Apache XML-Security doesn't support this
+    // public static final String ALGO_ID_SIGNATURE_DSA_SHA256 = XMLSIG11_NS + "dsa-sha256";
+    
+    
     /** Constructor. */
     private SignatureConstants() {
 

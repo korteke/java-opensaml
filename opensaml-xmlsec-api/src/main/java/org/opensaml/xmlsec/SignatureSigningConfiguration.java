@@ -19,6 +19,8 @@ package org.opensaml.xmlsec;
 
 import java.security.interfaces.DSAParams;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 
@@ -33,28 +35,28 @@ public interface SignatureSigningConfiguration {
      * 
      * @return the signing credential
      */
-    Credential getSigningCredential();
+    @Nullable Credential getSigningCredential();
     
     /**
      * Get the signature algorithm URI to use when signing.
      * 
      * @return a signature algorithm URI mapping, or null if no mapping is available
      */
-    public String getSignatureAlgorithmURI();
+    @Nullable public String getSignatureAlgorithmURI();
     
     /**
      * Get a digest method algorithm URI suitable for use as a Signature Reference DigestMethod value.
      * 
      * @return a digest method algorithm URI
      */
-    public String getSignatureReferenceDigestMethod();
+    @Nullable public String getSignatureReferenceDigestMethod();
     
     /**
      * Get a canonicalization algorithm URI suitable for use as a Signature CanonicalizationMethod value.
      * 
      * @return a canonicalization algorithm URI
      */
-    public String getSignatureCanonicalizationAlgorithm();
+    @Nullable public String getSignatureCanonicalizationAlgorithm();
     
     /**
      * Get the value to be used as the Signature SignatureMethod HMACOutputLength value, used
@@ -62,7 +64,7 @@ public interface SignatureSigningConfiguration {
      * 
      * @return the configured HMAC output length value
      */
-    public Integer getSignatureHMACOutputLength();
+    @Nullable public Integer getSignatureHMACOutputLength();
     
     /**
      * Get a DSA parameters instance which defines the default DSA key information to be used 
@@ -71,13 +73,13 @@ public interface SignatureSigningConfiguration {
      * @param keyLength length of the DSA key whose parameters are desired
      * @return the default DSA parameters instance, or null if no default is available
      */
-    public DSAParams getDSAParams(int keyLength);
+    @Nullable public DSAParams getDSAParams(int keyLength);
     
     /**
      * Get the KeyInfoGenerator to use when generating the Signature/KeyInfo.
      * 
      * @return the KeyInfoGenerator instance
      */
-    public KeyInfoGenerator getKeyInfoGenerator();
+    @Nullable public KeyInfoGenerator getKeyInfoGenerator();
 
 }

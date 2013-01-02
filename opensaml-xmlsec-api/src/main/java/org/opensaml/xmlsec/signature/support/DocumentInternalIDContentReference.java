@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * A content reference that references Elements withing the same document by ID attribute. That is the reference is
@@ -29,7 +31,7 @@ public class DocumentInternalIDContentReference extends URIContentReference {
      * 
      * @param referenceID the reference ID of the element to be signed
      */
-    public DocumentInternalIDContentReference(String referenceID) {
+    public DocumentInternalIDContentReference(@Nonnull final String referenceID) {        
         super("#" + referenceID);
     }
 }

@@ -17,11 +17,11 @@
 
 package org.opensaml.xmlsec.crypto;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.SigningUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A utility class for computing and verifying raw signatures and MAC values.
@@ -30,6 +30,7 @@ public final class XMLSigningUtil {
 
     /** Constructor. */
     private XMLSigningUtil() {
+        
     }
 
     /**
@@ -44,8 +45,8 @@ public final class XMLSigningUtil {
      * @return the computed signature or MAC value
      * @throws SecurityException throw if the computation process results in an error
      */
-    public static byte[] signWithURI(Credential signingCredential, String algorithmURI, byte[] input)
-            throws SecurityException {
+    public static byte[] signWithURI(@Nonnull final Credential signingCredential, @Nonnull final String algorithmURI,
+            @Nonnull final byte[] input) throws SecurityException {
 
         String jcaAlgorithmID = AlgorithmSupport.getAlgorithmID(algorithmURI);
         if (jcaAlgorithmID == null) {
@@ -71,8 +72,9 @@ public final class XMLSigningUtil {
      *         to the supplied signature value
      * @throws SecurityException thrown if the signature computation or verification process results in an error
      */
-    public static boolean verifyWithURI(Credential verificationCredential, String algorithmURI, byte[] signature,
-            byte[] input) throws SecurityException {
+    public static boolean verifyWithURI(@Nonnull final Credential verificationCredential,
+            @Nonnull final String algorithmURI, @Nonnull final byte[] signature, @Nonnull final byte[] input)
+                    throws SecurityException {
 
         String jcaAlgorithmID = AlgorithmSupport.getAlgorithmID(algorithmURI);
         if (jcaAlgorithmID == null) {
@@ -84,13 +86,4 @@ public final class XMLSigningUtil {
         return SigningUtil.verify(verificationCredential, jcaAlgorithmID, isHMAC, signature, input);
     }
 
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    private static Logger getLogger() {
-        return LoggerFactory.getLogger(XMLSigningUtil.class);
-    }
 }

@@ -19,6 +19,8 @@ package org.opensaml.xmlsec;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
@@ -32,21 +34,21 @@ public interface DecryptionConfiguration {
      * 
      * @return the list of algorithms
      */
-    List<String> getWhitelistedAlgorithmURIs();
+    @Nullable List<String> getWhitelistedAlgorithmURIs();
     
     /**
      * Get the list of blacklisted algorithm URI's.
      * 
      * @return the list of algorithms
      */
-    List<String> getBlacklistedAlgorithmsURIs();
+    @Nullable List<String> getBlacklistedAlgorithmsURIs();
     
     /**
      * The KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
      * 
      * @return the KeyInfoCredentialResolver instance
      */
-    KeyInfoCredentialResolver getDataKeyInfoCredentialResolver();
+    @Nullable KeyInfoCredentialResolver getDataKeyInfoCredentialResolver();
     
     /**
      * The KeyInfoCredentialResolver to use when processing the EncryptedKey/KeyInfo (the
@@ -54,13 +56,13 @@ public interface DecryptionConfiguration {
      * 
      * @return the KeyInfoCredentialResolver instance
      */
-    KeyInfoCredentialResolver getKEKKeyInfoCredentialResolver();
+    @Nullable KeyInfoCredentialResolver getKEKKeyInfoCredentialResolver();
     
     /**
      * Get the EncryptedKeyResolver to use when resolving the EncryptedKey(s) to process.
      * 
      * @return the EncryptedKeyResolver instance
      */
-    EncryptedKeyResolver geEncryptedKeyResolver();
+    @Nullable EncryptedKeyResolver geEncryptedKeyResolver();
     
 }

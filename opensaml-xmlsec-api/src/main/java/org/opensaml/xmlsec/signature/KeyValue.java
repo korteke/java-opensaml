@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -27,59 +28,59 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public interface KeyValue extends XMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "KeyValueType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "KeyValueType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
-     * Get the DSAKeyValue child element
+     * Get the DSAKeyValue child element.
      * 
      * @return DSAKeyValue child element
      */
-    public DSAKeyValue getDSAKeyValue();
+    @Nullable public DSAKeyValue getDSAKeyValue();
 
     /**
-     * Set the DSAKeyValue child element
+     * Set the DSAKeyValue child element.
      * 
      * @param newDSAKeyValue the new DSAKeyValue child element
      */
-    public void setDSAKeyValue(DSAKeyValue newDSAKeyValue);
+    public void setDSAKeyValue(@Nullable final DSAKeyValue newDSAKeyValue);
 
     /**
-     * Get the RSAKeyValue child element
+     * Get the RSAKeyValue child element.
      * 
      * @return the RSAKeyValue child element
      */
-    public RSAKeyValue getRSAKeyValue();
+    @Nullable public RSAKeyValue getRSAKeyValue();
 
     /**
-     * Set the RSAKeyValue child element
+     * Set the RSAKeyValue child element.
      * 
      * @param newRSAKeyValue the new RSAKeyValue child element
      */
-    public void setRSAKeyValue(RSAKeyValue newRSAKeyValue);
+    public void setRSAKeyValue(@Nullable final RSAKeyValue newRSAKeyValue);
 
     /**
-     * Get the wildcard &lt;any&gt; XMLObject child element
+     * Get the wildcard &lt;any&gt; XMLObject child element.
      * 
      * @return the wildcard XMLObject child element
      */
-    public XMLObject getUnknownXMLObject();
+    @Nullable public XMLObject getUnknownXMLObject();
 
     /**
-     * Set the wildcard &lt;any&gt; XMLObject child element
+     * Set the wildcard &lt;any&gt; XMLObject child element.
      * 
      * @param newXMLObject the wildcard XMLObject child element
      */
-    public void setUnknownXMLObject(XMLObject newXMLObject);
+    public void setUnknownXMLObject(@Nullable final XMLObject newXMLObject);
 }

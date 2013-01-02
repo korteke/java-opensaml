@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -44,27 +45,27 @@ public interface X509IssuerSerial extends XMLObject {
      * 
      * @return the X509Issuername child element
      */
-    public X509IssuerName getX509IssuerName();
+    @Nullable public X509IssuerName getX509IssuerName();
 
     /**
      * Set the X509IssuerName child element.
      * 
      * @param newX509IssuerName the new X509IssuerName child element
      */
-    public void setX509IssuerName(X509IssuerName newX509IssuerName);
+    public void setX509IssuerName(@Nullable final X509IssuerName newX509IssuerName);
 
     /**
      * Get the X509SerialNumber child element.
      * 
      * @return the X509SerialNumber child element
      */
-    public X509SerialNumber getX509SerialNumber();
+    @Nullable public X509SerialNumber getX509SerialNumber();
 
     /**
      * Set the X509SerialNumber child element.
      * 
      * @param newX509SerialNumber the new X509SerialNumber child element
      */
-    public void setX509SerialNumber(X509SerialNumber newX509SerialNumber);
+    public void setX509SerialNumber(@Nullable final X509SerialNumber newX509SerialNumber);
 
 }

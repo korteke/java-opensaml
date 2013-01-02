@@ -20,7 +20,15 @@ package org.opensaml.xmlsec.signature.support;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,21 +42,21 @@ public class URIContentReference implements ContentReference {
     private final Logger log = LoggerFactory.getLogger(URIContentReference.class);
 
     /** Element reference ID. */
-    private String referenceID;
+    private final String referenceID;
 
     /** Algorithm used to digest the content . */
     private String digestAlgorithm;
 
     /** Transforms applied to the content. */
-    private List<String> transforms;
+    private final List<String> transforms;
 
     /**
      * Constructor. The anchor designator (#) must not be included in the ID.
      * 
-     * @param referenceID the reference ID of the element to be signed
+     * @param refID the reference ID of the element to be signed
      */
-    public URIContentReference(String referenceID) {
-        this.referenceID = referenceID;
+    public URIContentReference(@Nullable final String refID) {
+        referenceID = refID;
         transforms = new LinkedList<String>();
     }
 
@@ -57,7 +65,7 @@ public class URIContentReference implements ContentReference {
      * 
      * @return the transforms applied to the content prior to digest generation
      */
-    public List<String> getTransforms() {
+    @Nonnull public List<String> getTransforms() {
         return transforms;
     }
 
@@ -66,7 +74,7 @@ public class URIContentReference implements ContentReference {
      * 
      * @return the algorithm used to digest the content
      */
-    public String getDigestAlgorithm() {
+    @Nullable public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
@@ -75,20 +83,22 @@ public class URIContentReference implements ContentReference {
      * 
      * @param newAlgorithm the algorithm used to digest the content
      */
-    public void setDigestAlgorithm(String newAlgorithm) {
-        digestAlgorithm = newAlgorithm;
+    public void setDigestAlgorithm(@Nonnull final String newAlgorithm) {
+        digestAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(newAlgorithm),
+                "Digest algorithm cannot be empty or null");
     }
 
     /** {@inheritDoc} */
-    public void createReference(XMLSignature signature) {
+    public void createReference(@Nonnull final XMLSignature signature) {
         try {
             Transforms dsigTransforms = new Transforms(signature.getDocument());
-            for (String transform : transforms) {
+            for (String transform : getTransforms()) {
                 dsigTransforms.addTransform(transform);
             }
-
             signature.addDocument(referenceID, dsigTransforms, digestAlgorithm);
-        } catch (Exception e) {
+        } catch (TransformationException e) {
+            log.error("Error while creating transforms", e);
+        } catch (XMLSignatureException e) {
             log.error("Error while adding content reference", e);
         }
     }

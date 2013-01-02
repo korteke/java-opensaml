@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -27,66 +28,66 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public interface RetrievalMethod extends XMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "RetrievalMethod";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RetrievalMethod";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "RetrievalMethodType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RetrievalMethodType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
-    /** URI attribute name */
+    /** URI attribute name. */
     public static final String URI_ATTRIB_NAME = "URI";
 
-    /** Type attribute name */
+    /** Type attribute name. */
     public static final String TYPE_ATTRIB_NAME = "Type";
 
     /**
-     * Get the URI attribute value
+     * Get the URI attribute value.
      * 
      * @return the URI attribute value
      */
-    public String getURI();
+    @Nullable public String getURI();
 
     /**
-     * Set the URI attribute value
+     * Set the URI attribute value.
      * 
      * @param newURI the new URI attribute value
      */
-    public void setURI(String newURI);
+    public void setURI(@Nullable final String newURI);
 
     /**
-     * Set the Type attribute value
+     * Set the Type attribute value.
      * 
      * @return the Type attribute value
      */
-    public String getType();
+    @Nullable public String getType();
 
     /**
-     * Set the Type attribute value
+     * Set the Type attribute value.
      * 
      * @param newType the new Type attribute value
      */
-    public void setType(String newType);
+    public void setType(@Nullable final String newType);
 
     /**
-     * Get the Transforms child element
+     * Get the Transforms child element.
      * 
      * @return the Transforms child element
      */
-    public Transforms getTransforms();
+    @Nullable public Transforms getTransforms();
 
     /**
-     * Set the Transforms child element
+     * Set the Transforms child element.
      * 
      * @param newTransforms the new Transforms child element
      */
-    public void setTransforms(Transforms newTransforms);
+    public void setTransforms(@Nullable final Transforms newTransforms);
 
 }

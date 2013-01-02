@@ -17,8 +17,9 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.CredentialContext;
-import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 
 /**
@@ -28,14 +29,14 @@ import org.opensaml.xmlsec.signature.Signature;
 public class XMLSignatureCredentialContext implements CredentialContext {
 
     /** The Signature element context. */ 
-    private Signature sig;
+    private final Signature sig;
     
     /**
      * Constructor.
      *
      * @param signature the signature resolution context
      */
-    public XMLSignatureCredentialContext(Signature signature) {
+    public XMLSignatureCredentialContext(@Nonnull final Signature signature) {
         sig = signature;
     }
 
@@ -44,7 +45,7 @@ public class XMLSignatureCredentialContext implements CredentialContext {
      * 
      * @return signature context
      */
-    public Signature getSignature() {
+    @Nonnull public Signature getSignature() {
         return sig;
     }
     

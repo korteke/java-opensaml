@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -44,27 +45,27 @@ public interface RSAKeyValue extends XMLObject {
      * 
      * @return the Modulus child element
      */
-    public Modulus getModulus();
+    @Nullable public Modulus getModulus();
 
     /**
      * Set the Modulus child element.
      * 
      * @param newModulus the new Modulus child element
      */
-    public void setModulus(Modulus newModulus);
+    public void setModulus(@Nullable final Modulus newModulus);
 
     /**
      * Get the Exponent child element.
      * 
      * @return the Exponent child element
      */
-    public Exponent getExponent();
+    @Nullable public Exponent getExponent();
 
     /**
      * Set the Exponent child element.
      * 
      * @param newExponent the new Exponent child element
      */
-    public void setExponent(Exponent newExponent);
+    public void setExponent(@Nullable final Exponent newExponent);
 
 }

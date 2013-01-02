@@ -17,63 +17,56 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+
 
 /**
  * Base for signable XMLObjects.
  */
 public abstract class AbstractSignableXMLObject extends AbstractXMLObject implements SignableXMLObject {
 
-    /** XMLSecSignatureImpl */
+    /** Signature child. */
     private Signature signature;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractSignableXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AbstractSignableXMLObject(@Nullable final String namespaceURI,
+            @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
     public boolean isSigned() {
-        Element domElement = getDOM();
-
-        if (domElement == null) {
-            return false;
+        
+        Element child = ElementSupport.getFirstChildElement(getDOM());
+        while (child != null && !ElementSupport.isElementNamed(child, SignatureConstants.XMLSIG_NS,
+                Signature.DEFAULT_ELEMENT_LOCAL_NAME)) {
+            child = ElementSupport.getNextSiblingElement(child);
         }
-
-        NodeList children = domElement.getChildNodes();
-        Element childElement;
-        for (int i = 0; i < children.getLength(); i++) {
-            if (children.item(i).getNodeType() != Node.ELEMENT_NODE) {
-                continue;
-            }
-
-            childElement = (Element) children.item(i);
-            if (childElement.getNamespaceURI().equals(SignatureConstants.XMLSIG_NS)
-                    && childElement.getLocalName().equals(Signature.DEFAULT_ELEMENT_LOCAL_NAME)) {
-                return true;
-            }
-        }
-
-        return false;
+        
+        return child != null;
     }
 
     /** {@inheritDoc} */
-    public Signature getSignature() {
+    @Nullable public Signature getSignature() {
         return signature;
     }
 
     /** {@inheritDoc} */
-    public void setSignature(Signature newSignature) {
+    public void setSignature(@Nullable final Signature newSignature) {
         signature = prepareForAssignment(signature, newSignature);
     }
+    
 }

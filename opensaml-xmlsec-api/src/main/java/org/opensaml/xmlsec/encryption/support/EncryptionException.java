@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import javax.annotation.Nullable;
+
 /**
  * Exception thrown when an error occurs during encryption operations.
  */
@@ -39,7 +41,7 @@ public class EncryptionException extends Exception {
      *
      * @param message exception message
      */
-    public EncryptionException(String message) {
+    public EncryptionException(@Nullable final String message) {
         super(message);
     }
     
@@ -48,7 +50,7 @@ public class EncryptionException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public EncryptionException(Exception wrappedException) {
+    public EncryptionException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -58,9 +60,8 @@ public class EncryptionException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public EncryptionException(String message, Exception wrappedException) {
+    public EncryptionException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
-
 
 }

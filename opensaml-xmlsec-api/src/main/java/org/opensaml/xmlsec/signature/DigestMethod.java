@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
@@ -50,7 +51,7 @@ public interface DigestMethod extends XMLObject, ElementExtensibleXMLObject {
      * 
      * @return the Algorithm URI attribute value
      */
-    public String getAlgorithm();
+    @Nullable public String getAlgorithm();
 
     /**
      * 
@@ -58,6 +59,6 @@ public interface DigestMethod extends XMLObject, ElementExtensibleXMLObject {
      * 
      * @param newAlgorithm the new Algorithm URI attribute value
      */
-    public void setAlgorithm(String newAlgorithm);
+    public void setAlgorithm(@Nullable final String newAlgorithm);
 
 }

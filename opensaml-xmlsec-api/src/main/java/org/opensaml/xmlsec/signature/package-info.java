@@ -14,39 +14,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.opensaml.xmlsec;
-
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
-
-/**
- * The configuration information to use when validating an XML signature.
- */
-public interface SignatureValidationConfiguration {
-    
-    /**
-     * Get the list of whitelisted algorithm URI's.
-     * 
-     * @return the list of algorithms
-     */
-    @Nullable List<String> getWhitelistedAlgorithmURIs();
-    
-    /**
-     * Get the list of blacklisted algorithm URI's.
-     * 
-     * @return the list of algorithms
-     */
-    @Nullable List<String> getBlacklistedAlgorithmsURIs();
-    
-    /**
-     * Get the signature trust engine to use.
-     * 
-     * @return the signature trust engine
-     */
-    @Nullable SignatureTrustEngine getSignatureTrustEngine();
-
-}
+/** XMLObject interfaces and helper classes for representing digitally signed content and signing/validating content. */
+package org.opensaml.xmlsec.signature;

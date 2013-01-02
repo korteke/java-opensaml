@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -46,7 +47,7 @@ public interface X509Data extends XMLObject {
      * 
      * @return the list of XMLObject children
      */
-    public List<XMLObject> getXMLObjects();
+    @Nonnull public List<XMLObject> getXMLObjects();
 
     /**
      * Get the list of XMLObject children whose type or element QName matches the specified QName.
@@ -55,41 +56,41 @@ public interface X509Data extends XMLObject {
      * 
      * @return the matching list of XMLObject children
      */
-    public List<XMLObject> getXMLObjects(QName typeOrName);
+    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
      * Get the list of X509IssuerSerial child elements.
      * 
      * @return the list of X509IssuerSerial child elements
      */
-    public List<X509IssuerSerial> getX509IssuerSerials();
+    @Nonnull public List<X509IssuerSerial> getX509IssuerSerials();
 
     /**
      * Get the list of X509SKI child elements.
      * 
      * @return the list of X509SKI child elements
      */
-    public List<X509SKI> getX509SKIs();
+    @Nonnull public List<X509SKI> getX509SKIs();
 
     /**
      * Get the list of X509SubjectName child elements.
      * 
      * @return the list of X509SubjectName child elements
      */
-    public List<X509SubjectName> getX509SubjectNames();
+    @Nonnull public List<X509SubjectName> getX509SubjectNames();
 
     /**
      * Get the list of X509Certificate child elements.
      * 
      * @return the list of X509Certificate child elements
      */
-    public List<X509Certificate> getX509Certificates();
+    @Nonnull public List<X509Certificate> getX509Certificates();
 
     /**
      * Get the list of X509CRL child elements.
      * 
      * @return the list of X509CRL child elements
      */
-    public List<X509CRL> getX509CRLs();
+    @Nonnull public List<X509CRL> getX509CRLs();
 
 }

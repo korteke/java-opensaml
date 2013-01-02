@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 
 /**
@@ -27,7 +29,7 @@ public interface SignableXMLObject extends XMLObject {
     /**
      * Checks to see if the element has been signed.
      * 
-     * @return true if this element is signed, false if not
+     * @return true iff this element is signed
      */
     public boolean isSigned();
     
@@ -36,12 +38,12 @@ public interface SignableXMLObject extends XMLObject {
      * 
      * @return the Signature XMLObject
      */
-    public Signature getSignature();
+    @Nullable public Signature getSignature();
     
     /**
      * Sets the Signature XMLObject.
      * 
      * @param newSignature the Signature XMLObject
      */
-    public void setSignature(Signature newSignature);
+    public void setSignature(@Nullable final Signature newSignature);
 }
