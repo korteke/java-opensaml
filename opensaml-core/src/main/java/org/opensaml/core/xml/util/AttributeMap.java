@@ -75,7 +75,7 @@ public class AttributeMap implements Map<QName, String> {
      * @param newOwner the XMLObject that owns these attributes
      */
     public AttributeMap(@Nonnull final XMLObject newOwner) {
-        Constraint.isNotNull(newOwner, "Attribute owner XMLObject may not be null");
+        Constraint.isNotNull(newOwner, "Attribute owner XMLObject cannot be null");
 
         attributeOwner = newOwner;
         attributes = new LazyMap<QName, String>();
@@ -85,6 +85,7 @@ public class AttributeMap implements Map<QName, String> {
 
     /** {@inheritDoc} */
     public String put(QName attributeName, String value) {
+        Constraint.isNotNull(attributeName, "Attribute name cannot be null");
         String oldValue = get(attributeName);
         if (value != oldValue) {
             releaseDOM();
@@ -117,6 +118,7 @@ public class AttributeMap implements Map<QName, String> {
      * @return the old attribute value, possibly null
      */
     public QName put(QName attributeName, QName value) {
+        Constraint.isNotNull(attributeName, "Attribute name cannot be null");
         String oldValueString = get(attributeName);
         
         QName oldValue = null;

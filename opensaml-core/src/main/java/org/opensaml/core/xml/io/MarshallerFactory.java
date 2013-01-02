@@ -21,7 +21,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
@@ -39,7 +43,7 @@ public class MarshallerFactory {
     private final Logger log = LoggerFactory.getLogger(MarshallerFactory.class);
 
     /** Map of marshallers to the elements they are for. */
-    private Map<QName, Marshaller> marshallers;
+    private final Map<QName, Marshaller> marshallers;
 
     /**
      * Constructor.
@@ -55,7 +59,7 @@ public class MarshallerFactory {
      * 
      * @return the Marshaller or null
      */
-    public Marshaller getMarshaller(QName key) {
+    @Nullable public Marshaller getMarshaller(@Nullable final QName key) {
         if (key == null) {
             return null;
         }
@@ -71,7 +75,7 @@ public class MarshallerFactory {
      * 
      * @return the marshaller that can be used for the given XMLObject
      */
-    public Marshaller getMarshaller(XMLObject xmlObject) {
+    @Nullable public Marshaller getMarshaller(@Nonnull final XMLObject xmlObject) {
         Marshaller marshaller;
 
         marshaller = getMarshaller(xmlObject.getSchemaType());
@@ -88,7 +92,7 @@ public class MarshallerFactory {
      * 
      * @return a listing of all the Marshallers currently registered
      */
-    public Map<QName, Marshaller> getMarshallers() {
+    @Nonnull public Map<QName, Marshaller> getMarshallers() {
         return Collections.unmodifiableMap(marshallers);
     }
 
@@ -99,11 +103,11 @@ public class MarshallerFactory {
      * @param key the key the marshaller was registered under
      * @param marshaller the Marshaller
      */
-    public void registerMarshaller(QName key, Marshaller marshaller) {
+    public void registerMarshaller(@Nonnull final QName key, @Nonnull final Marshaller marshaller) {
+        Constraint.isNotNull(key, "Marshaller key cannot be null");
+        Constraint.isNotNull(marshaller, "Marshaller cannot be null");
         log.debug("Registering marshaller, {}, for object type {}", marshaller.getClass().getName(), key);
-        if(key == null){
-            throw new IllegalArgumentException("Marshaller key may not be null");
-        }
+
         marshallers.put(key, marshaller);
     }
 
@@ -114,7 +118,7 @@ public class MarshallerFactory {
      * 
      * @return the Marshaller previously registered or null
      */
-    public Marshaller deregisterMarshaller(QName key) {
+    @Nullable public Marshaller deregisterMarshaller(@Nonnull final QName key) {
         log.debug("Deregistering marshaller for object type {}", key);
         if(key != null){
             return marshallers.remove(key);

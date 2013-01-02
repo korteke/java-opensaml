@@ -20,6 +20,8 @@ package org.opensaml.core.xml;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
@@ -32,7 +34,7 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
         ElementExtensibleXMLObject {
 
     /** xs:any {@link XMLObject} child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> anyXMLObjects;
+    private final IndexedXMLObjectChildrenList<XMLObject> anyXMLObjects;
 
     /**
      * Constructor.
@@ -41,23 +43,24 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    public AbstractElementExtensibleXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public AbstractElementExtensibleXMLObject(@Nullable final String namespaceURI,
+            @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         anyXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return Collections.unmodifiableList(anyXMLObjects);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nullable public List<XMLObject> getUnknownXMLObjects() {
         return anyXMLObjects;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+    @Nullable public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) anyXMLObjects.subList(typeOrName);
     }
 }

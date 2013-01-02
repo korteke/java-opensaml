@@ -20,8 +20,11 @@ package org.opensaml.core.xml;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -79,7 +82,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AbstractXMLObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         nsManager = new NamespaceManager(this);
         idIndex = new IDIndex(this);
         elementQname = QNameSupport.constructQName(namespaceURI, elementLocalName, namespacePrefix);
@@ -95,51 +99,47 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public Element getDOM() {
+    @Nullable public Element getDOM() {
         return dom;
     }
 
     /** {@inheritDoc} */
-    public QName getElementQName() {
+    @Nonnull public QName getElementQName() {
         return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
     }
 
     /** {@inheritDoc} */
-    public IDIndex getIDIndex() {
+    @Nonnull public IDIndex getIDIndex() {
         return idIndex;
     }
     
     /** {@inheritDoc} */
-    public NamespaceManager getNamespaceManager() {
+    @Nonnull public NamespaceManager getNamespaceManager() {
         return nsManager;
     }
 
     /** {@inheritDoc} */
-    public Set<Namespace> getNamespaces() {
+    @Nonnull public Set<Namespace> getNamespaces() {
         return getNamespaceManager().getNamespaces();
     }
 
     /** {@inheritDoc} */
-    public String getNoNamespaceSchemaLocation() {
+    @Nullable public String getNoNamespaceSchemaLocation() {
         return noNamespaceSchemaLocation;
     }
 
-    /**
-     * Gets the parent of this element.
-     * 
-     * @return the parent of this element
-     */
-    public XMLObject getParent() {
+    /** {@inheritDoc} */
+    @Nullable public XMLObject getParent() {
         return parent;
     }
 
     /** {@inheritDoc} */
-    public String getSchemaLocation() {
+    @Nullable public String getSchemaLocation() {
         return schemaLocation;
     }
 
     /** {@inheritDoc} */
-    public QName getSchemaType() {
+    @Nullable public QName getSchemaType() {
         return typeQname;
     }
 
@@ -161,7 +161,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param attributeName the attribute name
      * @param hasValue true to indicate that the attribute has a value, false to indicate it has no value
      */
-    protected void manageQualifiedAttributeNamespace(QName attributeName, boolean hasValue) {
+    protected void manageQualifiedAttributeNamespace(@Nonnull final QName attributeName, boolean hasValue) {
         if (hasValue) {
             getNamespaceManager().registerAttributeName(attributeName);
         } else {
@@ -170,8 +170,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
     
     /**
-     * A helper function for derived classes. This checks for semantic equality between two QNames if it they are
-     * different invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * A helper function for derived classes. This checks for semantic equality between two QNames, and if they are
+     * different invalidates the DOM. It returns the normalized value so subclasses just have to use: this.foo =
      * prepareElementContentForAssignment(this.foo, foo);
      * 
      * @param oldValue - the current value
@@ -179,7 +179,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @return the value that should be assigned
      */
-    protected QName prepareElementContentForAssignment(QName oldValue, QName newValue) {
+    @Nullable protected QName prepareElementContentForAssignment(@Nullable final QName oldValue,
+            @Nullable final QName newValue) {
         if (oldValue == null) {
             if (newValue != null) {
                 getNamespaceManager().registerContentValue(newValue);
@@ -205,8 +206,8 @@ public abstract class AbstractXMLObject implements XMLObject {
     
     
     /**
-     * A helper function for derived classes. This checks for semantic equality between two QNames if it they are
-     * different invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * A helper function for derived classes. This checks for semantic equality between two QNames and if they are
+     * different invalidates the DOM. It returns the normalized value so subclasses just have to use: this.foo =
      * prepareAttributeValueForAssignment(this.foo, foo);
      * 
      * @param attributeID - unique identifier of the attribute in the content model within this XMLObject, used to 
@@ -216,7 +217,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @return the value that should be assigned
      */
-    protected QName prepareAttributeValueForAssignment(String attributeID, QName oldValue, QName newValue) {
+    @Nullable protected QName prepareAttributeValueForAssignment(@Nonnull final String attributeID,
+            @Nullable final QName oldValue, @Nullable final QName newValue) {
         if (oldValue == null) {
             if (newValue != null) {
                 getNamespaceManager().registerAttributeValue(attributeID, newValue);
@@ -242,7 +244,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /**
      * A helper function for derived classes. This 'normalizes' newString and then if it is different from oldString
-     * invalidates the DOM. It returns the normalized value so subclasses just have to go. this.foo =
+     * invalidates the DOM. It returns the normalized value so subclasses just have to use: this.foo =
      * prepareForAssignment(this.foo, foo);
      * 
      * @param oldValue - the current value
@@ -250,7 +252,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @return the value that should be assigned
      */
-    protected String prepareForAssignment(String oldValue, String newValue) {
+    @Nullable protected String prepareForAssignment(@Nullable final String oldValue, @Nullable final String newValue) {
         String newString = StringSupport.trimOrNull(newValue);
 
         if (!Objects.equal(oldValue, newString)) {
@@ -274,7 +276,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @return The value to assign to the saved Object.
      */
-    protected <T extends Object> T prepareForAssignment(T oldValue, T newValue) {
+    @Nullable protected <T extends Object> T prepareForAssignment(@Nullable final T oldValue,
+            @Nullable final T newValue) {
         if (oldValue == null) {
             if (newValue != null) {
                 releaseThisandParentDOM();
@@ -292,7 +295,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /**
-     * A helper function for derived classes, similar to assignString, but for (singleton) SAML objects. It is
+     * A helper function for derived classes, similar to assignString, but for (singleton) XML objects. It is
      * indifferent to whether either the old or the new version of the value is null. Derived classes are expected to
      * use this thus: <code>
      *   this.foo = prepareForAssignment(this.foo, foo);
@@ -306,11 +309,12 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @return The value to assign to the saved Object.
      */
-    protected <T extends XMLObject> T prepareForAssignment(T oldValue, T newValue) {
+    @Nullable protected <T extends XMLObject> T prepareForAssignment(@Nullable final T oldValue,
+            @Nullable final T newValue) {
 
         if (newValue != null && newValue.hasParent()) {
             throw new IllegalArgumentException(newValue.getClass().getName()
-                    + " cannot be added - it is already the child of another SAML Object");
+                    + " cannot be added - it is already the child of another XML Object");
         }
 
         if (oldValue == null) {
@@ -346,7 +350,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param oldID the old value of the ID-typed attribute
      * @param newID the new value of the ID-typed attribute
      */
-    protected void registerOwnID(String oldID, String newID) {
+    protected void registerOwnID(@Nullable final String oldID, @Nullable final String newID) {
         String newString = StringSupport.trimOrNull(newID);
 
         if (!Objects.equal(oldID, newString)) {
@@ -418,12 +422,12 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public XMLObject resolveID(String id) {
+    @Nullable public XMLObject resolveID(@Nonnull final String id) {
         return idIndex.lookup(id);
     }
 
     /** {@inheritDoc} */
-    public XMLObject resolveIDFromRoot(String id) {
+    @Nullable public XMLObject resolveIDFromRoot(@Nonnull final String id) {
         XMLObject root = this;
         while (root.hasParent()) {
             root = root.getParent();
@@ -432,7 +436,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public void setDOM(Element newDom) {
+    public void setDOM(@Nullable final Element newDom) {
         dom = newDom;
     }
 
@@ -441,7 +445,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @param prefix the prefix for this element's namespace
      */
-    public void setElementNamespacePrefix(String prefix) {
+    public void setElementNamespacePrefix(@Nullable final String prefix) {
         if (prefix == null) {
             elementQname = new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart());
         } else {
@@ -453,28 +457,28 @@ public abstract class AbstractXMLObject implements XMLObject {
     /**
      * Sets the element QName.
      * 
-     * @param elementQName the element's QName
+     * @param name the element's QName
      */
-    protected void setElementQName(QName elementQName) {
-        this.elementQname = QNameSupport.constructQName(elementQName.getNamespaceURI(), elementQName.getLocalPart(),
-                elementQName.getPrefix());
-        getNamespaceManager().registerElementName(this.elementQname);
+    protected void setElementQName(@Nonnull final QName name) {
+        Constraint.isNotNull(name, "Element QName cannot be null");
+        elementQname = QNameSupport.constructQName(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix());
+        getNamespaceManager().registerElementName(elementQname);
     }
 
     /** {@inheritDoc} */
-    public void setNoNamespaceSchemaLocation(String location) {
+    public void setNoNamespaceSchemaLocation(@Nullable final String location) {
         noNamespaceSchemaLocation = StringSupport.trimOrNull(location);
         manageQualifiedAttributeNamespace(XmlConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME,
-                schemaLocation != null);
+                noNamespaceSchemaLocation != null);
     }
 
     /** {@inheritDoc} */
-    public void setParent(XMLObject newParent) {
+    public void setParent(@Nullable final XMLObject newParent) {
         parent = newParent;
     }
 
     /** {@inheritDoc} */
-    public void setSchemaLocation(String location) {
+    public void setSchemaLocation(@Nullable final String location) {
         schemaLocation = StringSupport.trimOrNull(location);
         manageQualifiedAttributeNamespace(XmlConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
@@ -486,7 +490,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * 
      * @param type the schema type
      */
-    protected void setSchemaType(QName type) {
+    protected void setSchemaType(@Nullable final QName type) {
         typeQname = type;
         getNamespaceManager().registerElementType(typeQname);
         manageQualifiedAttributeNamespace(XmlConstants.XSI_TYPE_ATTRIB_NAME, typeQname != null);
@@ -507,7 +511,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public void setNil(Boolean newNil) {
+    public void setNil(@Nullable final Boolean newNil) {
         if (newNil != null) {
             nil = prepareForAssignment(nil, new XSBooleanValue(newNil, false));
         } else {

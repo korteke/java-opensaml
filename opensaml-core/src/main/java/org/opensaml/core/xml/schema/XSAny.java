@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -38,14 +39,14 @@ public interface XSAny extends ElementExtensibleXMLObject, AttributeExtensibleXM
     /**
      * Gets the text content for the DOM Element.
      * 
-     * @return the text content for the DOM Element
+     * @return the text content for the DOM Element, or null
      */
-    public String getTextContent();
+    @Nullable public String getTextContent();
 
     /**
      * Sets the text content for the DOM Element.
      * 
      * @param newContent the text content for the DOM Element
      */
-    public void setTextContent(String newContent);
+    public void setTextContent(@Nullable final String newContent);
 }

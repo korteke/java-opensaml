@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -41,14 +43,14 @@ public interface XSDateTime extends XMLObject {
      * 
      * @return the dateTime value
      */
-    public DateTime getValue();
+    @Nullable public DateTime getValue();
     
     /**
      * Sets the dateTime value.
      * 
      * @param newValue the dateTime value
      */
-    public void setValue(DateTime newValue);
+    public void setValue(@Nullable final DateTime newValue);
     
     /**
      * Get the {@link DateTimeFormatter} to be used when stringifying
@@ -60,17 +62,13 @@ public interface XSDateTime extends XMLObject {
      * 
      * @return the currently configured formatter
      */
-    public DateTimeFormatter getDateTimeFormatter();
+    @Nonnull public DateTimeFormatter getDateTimeFormatter();
     
     /**
      * Set the {@link DateTimeFormatter} to be used when stringifying
      * the {@link DateTime} value.
      * 
-     * <p>Defaults to the formatter constructed by calling: 
-     * <code>org.joda.time.format.ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC()</code>
-     * </p>
-     * 
      * @param newFormatter the new formatter
      */
-    public void setDateTimeFormatter(DateTimeFormatter newFormatter);
+    public void setDateTimeFormatter(@Nonnull final DateTimeFormatter newFormatter);
 }

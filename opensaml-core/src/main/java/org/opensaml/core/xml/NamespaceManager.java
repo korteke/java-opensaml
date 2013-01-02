@@ -23,10 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
@@ -54,7 +57,7 @@ public class NamespaceManager {
         new Namespace(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX);
     
     /** The owning XMLObject. */
-    private XMLObject owner;
+    private final XMLObject owner;
     
     /** XMLObject name namespace. */
     private Namespace elementName;
@@ -79,7 +82,7 @@ public class NamespaceManager {
      *
      * @param owningObject the XMLObject whose namespace info is to be managed
      */
-    public NamespaceManager(XMLObject owningObject) {
+    public NamespaceManager(@Nonnull final XMLObject owningObject) {
         owner = owningObject;
         
         decls = new LazySet<Namespace>();
@@ -88,14 +91,14 @@ public class NamespaceManager {
     }
     
     /**
-     * From an QName representing a qualified attribute name, generate an attribute ID
+     * From a QName representing a qualified attribute name, generate an attribute ID
      * suitable for use in {@link #registerAttributeValue(String, QName)} 
      * and {@link #deregisterAttributeValue(String)}.
      * 
      * @param name attribute name as a QName
      * @return a string attribute ID
      */
-    public static String generateAttributeID(QName name) {
+    @Nonnull public static String generateAttributeID(@Nonnull final QName name) {
        return name.toString(); 
     }
     
@@ -104,7 +107,7 @@ public class NamespaceManager {
      * 
      * @return the owning XMLObject
      */
-    public XMLObject getOwner() {
+    @Nonnull public XMLObject getOwner() {
         return owner;
     }
     
@@ -113,7 +116,7 @@ public class NamespaceManager {
      * 
      * @return the unmodifiable set of namespaces
      */
-    public Set<Namespace> getNamespaces() {
+    @Nonnull public Set<Namespace> getNamespaces() {
         Set<Namespace> namespaces = mergeNamespaceCollections(decls, attrNames, attrValues.values());
         addNamespace(namespaces, getElementNameNamespace());
         addNamespace(namespaces, getElementTypeNamespace());
@@ -126,7 +129,7 @@ public class NamespaceManager {
      * 
      * @param namespace the namespace to register
      */
-    public void registerNamespaceDeclaration(Namespace namespace) {
+    public void registerNamespaceDeclaration(@Nonnull final Namespace namespace) {
         addNamespace(decls, namespace);
     }
     
@@ -135,7 +138,7 @@ public class NamespaceManager {
      * 
      * @param namespace the namespace to deregister
      */
-    public void deregisterNamespaceDeclaration(Namespace namespace) {
+    public void deregisterNamespaceDeclaration(@Nonnull final Namespace namespace) {
         removeNamespace(decls, namespace);
     }
     
@@ -144,7 +147,7 @@ public class NamespaceManager {
      * 
      * @return the set of namespace declarations
      */
-    public Set<Namespace> getNamespaceDeclarations() {
+    @Nonnull public Set<Namespace> getNamespaceDeclarations() {
         return Collections.unmodifiableSet(decls);
     }
     
@@ -153,7 +156,7 @@ public class NamespaceManager {
      * 
      * @param attributeName the attribute name to register
      */
-    public void registerAttributeName(QName attributeName) {
+    public void registerAttributeName(@Nonnull final QName attributeName) {
         if (checkQName(attributeName)) {
             addNamespace(attrNames, buildNamespace(attributeName));
         }
@@ -164,7 +167,7 @@ public class NamespaceManager {
      * 
      * @param attributeName the attribute name to deregister
      */
-    public void deregisterAttributeName(QName attributeName) {
+    public void deregisterAttributeName(@Nonnull final QName attributeName) {
         if (checkQName(attributeName)) {
             removeNamespace(attrNames, buildNamespace(attributeName));
         }
@@ -176,7 +179,7 @@ public class NamespaceManager {
      * @param attributeID unique identifier for the attribute within the XMLObject's content model
      * @param attributeValue the QName value to register
      */
-    public void registerAttributeValue(String attributeID, QName attributeValue) {
+    public void registerAttributeValue(@Nonnull final String attributeID, @Nonnull final QName attributeValue) {
         if (checkQName(attributeValue)) {
             attrValues.put(attributeID, buildNamespace(attributeValue));
         }
@@ -187,7 +190,7 @@ public class NamespaceManager {
      * 
      * @param attributeID unique identifier for the attribute within the XMLObject's content model
      */
-    public void deregisterAttributeValue(String attributeID) {
+    public void deregisterAttributeValue(@Nonnull final String attributeID) {
         attrValues.remove(attributeID);
     }
     
@@ -196,7 +199,7 @@ public class NamespaceManager {
      * 
      * @param content the QName value to register
      */
-    public void registerContentValue(QName content) {
+    public void registerContentValue(@Nonnull final QName content) {
         if (checkQName(content)) {
             contentValue = buildNamespace(content);
         }
@@ -221,7 +224,7 @@ public class NamespaceManager {
      * 
      * @return the set of non-visibly used namespace prefixes
      */
-    public Set<String> getNonVisibleNamespacePrefixes() {
+    @Nonnull public Set<String> getNonVisibleNamespacePrefixes() {
         LazySet<String> prefixes = new LazySet<String>();
         addPrefixes(prefixes, getNonVisibleNamespaces());
         return prefixes;
@@ -238,7 +241,7 @@ public class NamespaceManager {
      * 
      * @return the set of non-visibly used namespaces 
      */
-    public Set<Namespace> getNonVisibleNamespaces() {
+    @Nonnull public Set<Namespace> getNonVisibleNamespaces() {
         LazySet<Namespace> nonVisibleCandidates = new LazySet<Namespace>();
 
         // Collect each child's non-visible namespaces
@@ -275,7 +278,7 @@ public class NamespaceManager {
      * 
      * @return set of all namespaces in scope for the owning object
      */
-    public Set<Namespace> getAllNamespacesInSubtreeScope() {
+    @Nonnull public Set<Namespace> getAllNamespacesInSubtreeScope() {
         LazySet<Namespace> namespaces = new LazySet<Namespace>();
 
         // Collect namespaces for the subtree rooted at each child
@@ -304,7 +307,7 @@ public class NamespaceManager {
      * 
      * @param name the element name to register
      */
-    public void registerElementName(QName name) {
+    public void registerElementName(@Nonnull final QName name) {
         if (checkQName(name)) {
             elementName = buildNamespace(name);
         }
@@ -315,7 +318,7 @@ public class NamespaceManager {
      * 
      * @param type the element type to register
      */
-    public void registerElementType(QName type) {
+    public void registerElementType(@Nullable final QName type) {
         if (type != null) {
             if (checkQName(type)) {
                 elementType = buildNamespace(type);
@@ -330,7 +333,7 @@ public class NamespaceManager {
      * 
      * @return the element name's namespace
      */
-    private Namespace getElementNameNamespace() {
+    @Nullable private Namespace getElementNameNamespace() {
         if (elementName == null && checkQName(owner.getElementQName())) {
             elementName = buildNamespace(owner.getElementQName());
         }
@@ -342,7 +345,7 @@ public class NamespaceManager {
      * 
      * @return the element type's namespace
      */
-    private Namespace getElementTypeNamespace() {
+    @Nullable private Namespace getElementTypeNamespace() {
         if (elementType == null) {
             QName type = owner.getSchemaType();
             if (type != null && checkQName(type)) {
@@ -358,11 +361,10 @@ public class NamespaceManager {
      * @param name the source QName 
      * @return a Namespace built using the information in the QName
      */
-    private Namespace buildNamespace(QName name) {
-        String uri = StringSupport.trimOrNull(name.getNamespaceURI());
-        if (uri == null) {
-            throw new IllegalArgumentException("A non-empty namespace URI must be supplied");
-        }
+    @Nonnull private Namespace buildNamespace(@Nonnull final QName name) {
+        Constraint.isNotNull(name, "QName cannot be null");
+        String uri = Constraint.isNotNull(StringSupport.trimOrNull(name.getNamespaceURI()),
+                "Namespace URI of QName cannot be null");
         String prefix = StringSupport.trimOrNull(name.getPrefix());
         return new Namespace(uri, prefix);
     }
@@ -373,7 +375,7 @@ public class NamespaceManager {
      * @param namespaces the set of namespaces
      * @param newNamespace the namespace to add to the set
      */
-    private void addNamespace(Set<Namespace> namespaces, Namespace newNamespace) {
+    private void addNamespace(@Nonnull final Set<Namespace> namespaces, @Nullable final Namespace newNamespace) {
         if (newNamespace == null) {
             return;
         }
@@ -387,7 +389,7 @@ public class NamespaceManager {
      * @param namespaces the set of namespaces
      * @param oldNamespace the namespace to add to the set
      */
-    private void removeNamespace(Set<Namespace> namespaces, Namespace oldNamespace) {
+    private void removeNamespace(@Nonnull final Set<Namespace> namespaces, @Nullable final Namespace oldNamespace) {
         if (oldNamespace == null) {
             return;
         }
@@ -401,7 +403,7 @@ public class NamespaceManager {
      * @param namespaces list of Namespaces to merge
      * @return the a new set of merged Namespaces
      */
-    private Set<Namespace> mergeNamespaceCollections(Collection<Namespace> ... namespaces) {
+    @Nonnull private Set<Namespace> mergeNamespaceCollections(Collection<Namespace> ... namespaces) {
         LazySet<Namespace> newNamespaces = new LazySet<Namespace>();
         
         for (Collection<Namespace> nsCollection : namespaces) {
@@ -421,7 +423,7 @@ public class NamespaceManager {
      * 
      * @return the set of visibly-used namespaces
      */
-    private Set<Namespace> getVisibleNamespaces() {
+    @Nonnull private Set<Namespace> getVisibleNamespaces() {
         LazySet<Namespace> namespaces = new LazySet<Namespace>();
 
         // Add namespace from element name.
@@ -450,7 +452,7 @@ public class NamespaceManager {
      * 
      * @return the set of non-visibly-used namespaces
      */
-    private Set<Namespace> getNonVisibleNamespaceCandidates() {
+    @Nonnull private Set<Namespace> getNonVisibleNamespaceCandidates() {
         LazySet<Namespace> namespaces = new LazySet<Namespace>();
 
         // Add xsi:type value's prefix, if element carries an xsi:type
@@ -479,7 +481,7 @@ public class NamespaceManager {
      * @param prefixes the set of prefixes to which to add
      * @param namespaces the source set of Namespaces
      */
-    private void addPrefixes(Set<String> prefixes, Collection<Namespace> namespaces) {
+    private void addPrefixes(@Nonnull final Set<String> prefixes, @Nonnull final Collection<Namespace> namespaces) {
         for (Namespace ns : namespaces) {
             String prefix = StringSupport.trimOrNull(ns.getNamespacePrefix());
             if (prefix == null) {
@@ -496,8 +498,12 @@ public class NamespaceManager {
      * @param name the QName to check
      * @return true if the QName contains non-empty namespace info and should be managed, false otherwise
      */
-    private boolean checkQName(QName name) {
-        return !Strings.isNullOrEmpty(name.getNamespaceURI());
+    private boolean checkQName(@Nonnull final QName name) {
+        if (name != null) {
+            return !Strings.isNullOrEmpty(name.getNamespaceURI());
+        } else {
+            return false;
+        }
     }
     
 }

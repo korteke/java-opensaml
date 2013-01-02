@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -39,12 +40,12 @@ public interface XSInteger extends XMLObject {
      * 
      * @return the integer
      */
-    public Integer getValue();
+    @Nullable public Integer getValue();
     
     /**
      * Sets the integer.
      * 
      * @param newValue the integer value
      */
-    public void setValue(Integer newValue);
+    public void setValue(@Nullable final Integer newValue);
 }

@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -39,12 +40,12 @@ public interface XSURI extends XMLObject {
      * 
      * @return the URI content of the element
      */
-    public String getValue();
+    @Nullable public String getValue();
     
     /**
      * Sets the URI content of the element.
      * 
      * @param newValue the URI content of the element
      */
-    public void setValue(String newValue);
+    public void setValue(@Nullable final String newValue);
 }

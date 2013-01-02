@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nullable;
+
 /**
  * XSBoolean is the <code>xs:boolean</code> schema type.
  */
@@ -27,13 +29,13 @@ public abstract interface XSBoolean {
      * 
      * @return the {@link XSBooleanValue} value
      */
-    public XSBooleanValue getValue();
+    @Nullable public XSBooleanValue getValue();
 
     /**
      * Sets the XSBooleanValue value.
      * 
      * @param value The {@link XSBooleanValue} value
      */
-    public void setValue(XSBooleanValue value);
+    public void setValue(@Nullable final XSBooleanValue value);
 
 }

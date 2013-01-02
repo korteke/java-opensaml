@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -39,13 +40,13 @@ public interface LangBearing {
      * 
      * @return The <code>@xml:lang</code> attribute value or <code>null</code>.
      */
-    public String getXMLLang();
+    @Nullable public String getXMLLang();
 
     /**
      * Sets the <code>@xml:lang</code> attribute value.
      * 
      * @param newLang The <code>@xml:lang</code> attribute value
      */
-    public void setXMLLang(String newLang);
+    public void setXMLLang(@Nullable final String newLang);
 
 }

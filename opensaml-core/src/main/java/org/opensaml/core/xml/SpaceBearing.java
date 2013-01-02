@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -70,13 +71,13 @@ public interface SpaceBearing {
      * 
      * @return The <code>@xml:space</code> attribute value or <code>null</code>.
      */
-    public XMLSpaceEnum getXMLSpace();
+    @Nullable public XMLSpaceEnum getXMLSpace();
 
     /**
      * Sets the <code>@xml:space</code> attribute value.
      * 
      * @param newSpace The <code>@xml:space</code> attribute value
      */
-    public void setXMLSpace(XMLSpaceEnum newSpace);
+    public void setXMLSpace(@Nullable final XMLSpaceEnum newSpace);
 
 }

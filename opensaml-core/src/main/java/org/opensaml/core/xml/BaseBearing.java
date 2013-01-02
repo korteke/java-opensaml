@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -39,13 +40,13 @@ public interface BaseBearing {
      * 
      * @return The <code>@xml:base</code> attribute value or <code>null</code>.
      */
-    public String getXMLBase();
+    @Nullable public String getXMLBase();
 
     /**
      * Sets the <code>@xml:base</code> attribute value.
      * 
      * @param newBase The <code>@xml:base</code> attribute value
      */
-    public void setXMLBase(String newBase);
+    public void setXMLBase(@Nullable final String newBase);
 
 }
