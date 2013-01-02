@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.utilities.java.support.collection.LazyMap;
@@ -62,7 +63,7 @@ public class IDIndex {
      * @param id the XMLObject child's ID attribute value
      * @param referent the XMLObject child
      */
-    public void registerIDMapping(String id, XMLObject referent) {
+    public void registerIDMapping(@Nonnull final String id, @Nonnull final XMLObject referent) {
         if (id == null) {
             return;
         }
@@ -78,7 +79,7 @@ public class IDIndex {
      * 
      * @param idIndex the ID-to-XMLObject mapping to register
      */
-    public void registerIDMappings(IDIndex idIndex) {
+    public void registerIDMappings(@Nonnull final IDIndex idIndex) {
         if (idIndex == null || idIndex.isEmpty()) {
             return;
         }
@@ -94,7 +95,7 @@ public class IDIndex {
      * 
      * @param id the ID attribute value of the XMLObject child to deregister
      */  
-    public void deregisterIDMapping(String id) {
+    public void deregisterIDMapping(@Nonnull final String id) {
         if (id == null) {
             return;
         }
@@ -110,7 +111,7 @@ public class IDIndex {
      * 
      * @param idIndex the ID-to-XMLObject mappings to deregister
      */
-    public void deregisterIDMappings(IDIndex idIndex) {
+    public void deregisterIDMappings(@Nonnull final IDIndex idIndex) {
         if (idIndex == null || idIndex.isEmpty()) {
             return;
         }
@@ -129,7 +130,7 @@ public class IDIndex {
      * @param id the ID attribute value to lookup
      * @return the XMLObject identified by the ID attribute value
      */
-    public XMLObject lookup(String id) {
+    @Nullable public XMLObject lookup(@Nonnull final String id) {
         return idMappings.get(id);
     }
     
@@ -147,16 +148,16 @@ public class IDIndex {
      * 
      * @return the set of ID strings which are keys to the index
      */
-    public Set<String> getIDs() {
+    @Nonnull public Set<String> getIDs() {
         return Collections.unmodifiableSet(idMappings.keySet());
     }
     
     /**
-     * Get the ID-to-XMLObject mappings for this object's object's owner's children.
+     * Get the ID-to-XMLObject mappings for this object's owner's children.
      * 
      * @return the ID-to-XMLObject mapping
      */
-    protected Map<String, XMLObject> getIDMappings() {
+    @Nonnull protected Map<String, XMLObject> getIDMappings() {
         return Collections.unmodifiableMap(idMappings);
     }
     

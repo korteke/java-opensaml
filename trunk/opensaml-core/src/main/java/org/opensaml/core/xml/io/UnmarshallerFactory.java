@@ -21,8 +21,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
@@ -42,7 +45,7 @@ public class UnmarshallerFactory {
     private final Logger log = LoggerFactory.getLogger(UnmarshallerFactory.class);
 
     /** Map of unmarshallers to the elements they are for. */
-    private Map<QName, Unmarshaller> unmarshallers;
+    private final Map<QName, Unmarshaller> unmarshallers;
 
     /**
      * Constructor.
@@ -58,7 +61,7 @@ public class UnmarshallerFactory {
      * 
      * @return the Unmarshaller
      */
-    public Unmarshaller getUnmarshaller(QName key) {
+    @Nullable public Unmarshaller getUnmarshaller(@Nullable final QName key) {
         if (key == null) {
             return null;
         }
@@ -74,7 +77,7 @@ public class UnmarshallerFactory {
      * 
      * @return the unmarshaller for the XMLObject the given element can be unmarshalled into
      */
-    public Unmarshaller getUnmarshaller(Element domElement) {
+    @Nullable public Unmarshaller getUnmarshaller(@Nullable final Element domElement) {
         Unmarshaller unmarshaller;
 
         unmarshaller = getUnmarshaller(DomTypeSupport.getXSIType(domElement));
@@ -91,7 +94,7 @@ public class UnmarshallerFactory {
      * 
      * @return a listing of all the Unmarshallers currently registered
      */
-    public Map<QName, Unmarshaller> getUnmarshallers() {
+    @Nonnull public Map<QName, Unmarshaller> getUnmarshallers() {
         return Collections.unmodifiableMap(unmarshallers);
     }
 
@@ -102,11 +105,11 @@ public class UnmarshallerFactory {
      * @param key the key the unmarshaller was registered under
      * @param unmarshaller the Unmarshaller
      */
-    public void registerUnmarshaller(QName key, Unmarshaller unmarshaller) {
+    public void registerUnmarshaller(@Nonnull final QName key, @Nonnull final Unmarshaller unmarshaller) {
+        Constraint.isNotNull(key, "Unmarshaller key cannot be null");
+        Constraint.isNotNull(unmarshaller, "Unmarshaller cannot be null");
         log.debug("Registering unmarshaller, {}, for object type, {}", unmarshaller.getClass().getName(), key);
-        if (key == null) {
-            throw new IllegalArgumentException("Unmarshaller key may not be null");
-        }
+        
         unmarshallers.put(key, unmarshaller);
     }
 
@@ -117,7 +120,7 @@ public class UnmarshallerFactory {
      * 
      * @return the Unmarshaller previously registered or null
      */
-    public Unmarshaller deregisterUnmarshaller(QName key) {
+    @Nullable public Unmarshaller deregisterUnmarshaller(@Nonnull final QName key) {
         log.debug("Deregistering marshaller for object type {}", key);
         if (key != null) {
             return unmarshallers.remove(key);

@@ -20,6 +20,7 @@ package org.opensaml.core.xml.io;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -61,7 +62,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectMarshaller.class);
 
     /** Factory for XMLObject Marshallers. */
-    private MarshallerFactory marshallerFactory;
+    private final MarshallerFactory marshallerFactory;
 
     /** Constructor. */
     protected AbstractXMLObjectMarshaller() {
@@ -69,7 +70,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
 
     /** {@inheritDoc} */
-    public Element marshall(XMLObject xmlObject) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
         try {
             Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             return marshall(xmlObject, document);
@@ -79,7 +80,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
 
     /** {@inheritDoc} */
-    public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Document document)
+            throws MarshallingException {
         Element domElement;
 
         log.trace("Starting to marshall {}", xmlObject.getElementQName());
@@ -124,7 +126,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     }
 
     /** {@inheritDoc} */
-    public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Element parentElement)
+            throws MarshallingException {
         Element domElement;
 
         log.trace("Starting to marshall {} as child of {}", xmlObject.getElementQName(), QNameSupport
@@ -174,7 +177,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param document the document
      * @param element the Element that will serve as the Document Element
      */
-    protected void setDocumentElement(Document document, Element element) {
+    protected void setDocumentElement(@Nonnull final Document document, @Nonnull final Element element) {
         Element documentRoot = document.getDocumentElement();
         if (documentRoot != null) {
             document.replaceChild(element, documentRoot);
@@ -194,7 +197,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if there is a problem marshalling the object
      */
-    protected Element marshallInto(XMLObject xmlObject, Element targetElement) throws MarshallingException {
+    @Nonnull protected Element marshallInto(@Nonnull final XMLObject xmlObject, @Nonnull final Element targetElement)
+            throws MarshallingException {
         log.trace("Setting namespace prefix for {} for XMLObject {}", xmlObject.getElementQName().getPrefix(),
                 xmlObject.getElementQName());
 
@@ -219,7 +223,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param xmlObject the XMLObject being marshalled
      * @param domElement the DOM element the XMLObject is being marshalled into
      */
-    protected void marshallNamespacePrefix(XMLObject xmlObject, Element domElement) {
+    protected void marshallNamespacePrefix(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement) {
         String prefix = xmlObject.getElementQName().getPrefix();
         prefix = StringSupport.trimOrNull(prefix);
 
@@ -236,7 +240,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if there is a problem marshalling a child element
      */
-    protected void marshallChildElements(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    protected void marshallChildElements(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         log.trace("Marshalling child elements for XMLObject {}", xmlObject.getElementQName());
 
         List<XMLObject> childXMLObjects = xmlObject.getOrderedChildren();
@@ -278,7 +283,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param xmlObject the XMLObject
      * @param domElement the DOM element the namespaces will be added to
      */
-    protected void marshallNamespaces(XMLObject xmlObject, Element domElement) {
+    protected void marshallNamespaces(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement) {
         log.trace("Marshalling namespace attributes for XMLObject {}", xmlObject.getElementQName());
         Set<Namespace> namespaces = xmlObject.getNamespaces();
 
@@ -314,8 +319,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if the schema type information is invalid
      */
-    protected void marshallSchemaInstanceAttributes(XMLObject xmlObject, Element domElement)
-            throws MarshallingException {
+    protected void marshallSchemaInstanceAttributes(@Nonnull final XMLObject xmlObject,
+            @Nonnull final Element domElement) throws MarshallingException {
 
         if (!Strings.isNullOrEmpty(xmlObject.getSchemaLocation())) {
             log.trace("Setting xsi:schemaLocation for XMLObject {} to {}", xmlObject.getElementQName(), xmlObject
@@ -378,7 +383,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if there is a problem marshalling the element
      */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException{
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException{
         
     }
 
@@ -392,7 +398,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if the textual content can not be added to the DOM element
      */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException{
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException{
         
     }
 
@@ -405,7 +412,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if a namespace within the XMLObject's DOM subtree can not be resolved.
      */
-    private void prepareForAdoption(XMLObject domCachingObject) throws MarshallingException {
+    private void prepareForAdoption(@Nonnull final XMLObject domCachingObject) throws MarshallingException {
         if (domCachingObject.getParent() != null) {
             log.trace("Rooting all visible namespaces of XMLObject {} before adding it to new parent Element",
                     domCachingObject.getElementQName());
@@ -428,7 +435,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * @param xmlObject the Object which has the unknown attributes/
      * @param domElement where to marshall them to.
      */
-    protected void marshallUnknownAttributes(AttributeExtensibleXMLObject xmlObject, Element domElement) {
+    protected void marshallUnknownAttributes(@Nonnull final AttributeExtensibleXMLObject xmlObject,
+            @Nonnull final Element domElement) {
         XMLObjectSupport.marshallAttributeMap(xmlObject.getUnknownAttributes(), domElement);
     }
  

@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.io;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -61,10 +62,10 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectUnmarshaller.class);
 
     /** Factory for XMLObjectBuilders. */
-    private XMLObjectBuilderFactory xmlObjectBuilderFactory;
+    private final XMLObjectBuilderFactory xmlObjectBuilderFactory;
 
     /** Factory for creating unmarshallers for child elements. */
-    private UnmarshallerFactory unmarshallerFactory;
+    private final UnmarshallerFactory unmarshallerFactory;
 
     /**
      * Constructor.
@@ -75,7 +76,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
 
     /** {@inheritDoc} */
-    public XMLObject unmarshall(Element domElement) throws UnmarshallingException {
+    @Nonnull public XMLObject unmarshall(@Nonnull final Element domElement) throws UnmarshallingException {
         log.trace("Starting to unmarshall DOM element {}", QNameSupport.getNodeQName(domElement));
 
         XMLObject xmlObject = buildXMLObject(domElement);
@@ -126,7 +127,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is now XMLObjectBuilder registered for the given DOM Element
      */
-    protected XMLObject buildXMLObject(Element domElement) throws UnmarshallingException {
+    @Nonnull protected XMLObject buildXMLObject(@Nonnull final Element domElement) throws UnmarshallingException {
         log.trace("Building XMLObject for {}", QNameSupport.getNodeQName(domElement));
         XMLObjectBuilder xmlObjectBuilder;
 
@@ -159,7 +160,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is a problem unmarshalling an attribute
      */
-    protected void unmarshallAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    protected void unmarshallAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         QName attribName = QNameSupport.getNodeQName(attribute);
         log.trace("Pre-processing attribute {}", attribName);
         String attributeNamespace = StringSupport.trimOrNull(attribute.getNamespaceURI());
@@ -193,7 +195,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param xmlObject the xmlObject to receive the namespace declaration
      * @param attribute the namespace declaration attribute
      */
-    protected void unmarshallNamespaceAttribute(XMLObject xmlObject, Attr attribute) {
+    protected void unmarshallNamespaceAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute) {
         log.trace("{} is a namespace declaration, adding it to the list of namespaces on the XMLObject",
                 QNameSupport.getNodeQName(attribute));
         Namespace namespace;
@@ -211,7 +213,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param xmlObject the xmlObject to recieve the namespace declaration
      * @param attribute the namespace declaration attribute
      */
-    protected void unmarshallSchemaInstanceAttributes(XMLObject xmlObject, Attr attribute) {
+    protected void unmarshallSchemaInstanceAttributes(@Nonnull final XMLObject xmlObject,
+            @Nonnull final Attr attribute) {
         QName attribName = QNameSupport.getNodeQName(attribute);
         if (XmlConstants.XSI_TYPE_ATTRIB_NAME.equals(attribName)) {
             log.trace("Saw XMLObject {} with an xsi:type of: {}", xmlObject.getElementQName(), attribute.getValue());
@@ -238,7 +241,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @param attribute the DOM attribute to be checked
      */
-    protected void checkIDAttribute(Attr attribute) {
+    protected void checkIDAttribute(@Nonnull final Attr attribute) {
         QName attribName = QNameSupport.getNodeQName(attribute);
         if (XMLObjectProviderRegistrySupport.isIDAttribute(attribName) && !attribute.isId()) {
             attribute.getOwnerElement().setIdAttributeNode(attribute, true);
@@ -256,7 +259,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the chilren elements
      */
-    protected void unmarshallChildElement(XMLObject xmlObject, Element childElement) throws UnmarshallingException {
+    protected void unmarshallChildElement(@Nonnull final XMLObject xmlObject, @Nonnull final Element childElement)
+            throws UnmarshallingException {
         log.trace("Unmarshalling child elements of XMLObject {}", xmlObject.getElementQName());
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(childElement);
@@ -291,7 +295,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is a problem unmarshalling the text node
      */
-    protected void unmarshallTextContent(XMLObject xmlObject, Text content) throws UnmarshallingException {
+    protected void unmarshallTextContent(@Nonnull final XMLObject xmlObject, @Nonnull final Text content)
+            throws UnmarshallingException {
         String textContent = StringSupport.trimOrNull(content.getWholeText());
         if (textContent != null) {
             processElementContent(xmlObject, textContent);
@@ -308,8 +313,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is a problem adding the child to the parent
      */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         log.debug("Ignorning unknown child element {}", childXMLObject.getElementQName());
     }
 
@@ -323,7 +328,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if there is a problem adding the attribute to the XMLObject
      */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         log.debug("Ignorning unknown attribute {}", QNameSupport.getNodeQName(attribute));
     }
 
@@ -335,7 +341,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param xmlObject XMLObject the content will be given to
      * @param elementContent the Element's content
      */
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         log.debug("Ignorning unknown element content {}", elementContent);
     }
     
@@ -345,7 +351,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param xmlObject The object which support anyAttribute.
      * @param attribute The attribute in question.
      */
-    protected void processUnknownAttribute(AttributeExtensibleXMLObject xmlObject, Attr attribute) {
+    protected void processUnknownAttribute(@Nonnull final AttributeExtensibleXMLObject xmlObject,
+            @Nonnull final Attr attribute) {
         // TODO Add support for validating whether attribute's namespace is consistent with the
         // anyAttribute/@namespace.  Either via this method directly (new arguments) or in the 
         // below support method.

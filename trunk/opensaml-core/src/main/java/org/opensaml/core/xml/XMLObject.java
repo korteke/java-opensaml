@@ -20,6 +20,8 @@ package org.opensaml.core.xml;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -43,9 +45,9 @@ public interface XMLObject {
     /**
      * Gets the DOM representation of this XMLObject, if one exists.
      * 
-     * @return the DOM representation of this XMLObject
+     * @return the DOM representation of this XMLObject, or null
      */
-    public Element getDOM();
+    @Nullable public Element getDOM();
 
     /**
      * Gets the QName for this element. This QName <strong>MUST</strong> contain the namespace URI, namespace prefix,
@@ -54,63 +56,63 @@ public interface XMLObject {
      * 
      * @return the QName for this attribute
      */
-    public QName getElementQName();
+    @Nonnull public QName getElementQName();
 
     /**
      * Get the IDIndex holding the ID-to-XMLObject index mapping, rooted at this XMLObject's subtree.
      * 
      * @return the IDIndex owned by this XMLObject
      */
-    public IDIndex getIDIndex();
+    @Nonnull public IDIndex getIDIndex();
     
     /**
      * Gets the {@link NamespaceManager} instance for this object.
      * 
      * @return the namespace manager for this object
      */
-    public NamespaceManager getNamespaceManager();
+    @Nonnull public NamespaceManager getNamespaceManager();
 
     /**
      * Gets the namespaces that are scoped to this element.
      * 
      * @return the namespaces that are scoped to this element
      */
-    public Set<Namespace> getNamespaces();
+    @Nonnull public Set<Namespace> getNamespaces();
 
     /**
      * Gets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
      * 
      * @return value of the XML Schema noNamespaceSchemaLocation attribute for this object
      */
-    public String getNoNamespaceSchemaLocation();
+    @Nullable public String getNoNamespaceSchemaLocation();
 
     /**
      * Gets an unmodifiable list of child elements in the order that they will appear in the DOM.
      * 
      * @return ordered list of child elements
      */
-    public List<XMLObject> getOrderedChildren();
+    @Nullable public List<XMLObject> getOrderedChildren();
 
     /**
      * Gets the parent of this element or null if there is no parent.
      * 
      * @return the parent of this element or null
      */
-    public XMLObject getParent();
+    @Nullable public XMLObject getParent();
 
     /**
      * Gets the value of the XML Schema schemaLocation attribute for this object.
      * 
      * @return schema location defined for this object
      */
-    public String getSchemaLocation();
+    @Nullable public String getSchemaLocation();
 
     /**
-     * Gets the XML schema type of this element. This translates to contents the xsi:type attribute for the element.
+     * Gets the XML schema type of this element. This translates to the contents of the xsi:type attribute.
      * 
-     * @return XML schema type of this element
+     * @return XML schema type of this element, or null
      */
-    public QName getSchemaType();
+    @Nullable public QName getSchemaType();
 
     /**
      * Checks if this XMLObject has children.
@@ -146,50 +148,50 @@ public interface XMLObject {
     public void releaseParentDOM(boolean propagateRelease);
 
     /**
-     * Find the XMLObject which is identified by the specified ID attribute, within the subtree of XMLObjects which has
+     * Find the XMLObject identified by the specified ID attribute, within the subtree of XMLObjects which has
      * this XMLObject as its root.
      * 
      * @param id the ID attribute to resolve to an XMLObject
-     * @return the XMLObject identified by the specified ID attribute value
+     * @return the XMLObject identified by the specified ID attribute value, or null
      */
-    public XMLObject resolveID(String id);
+    @Nullable public XMLObject resolveID(@Nonnull final String id);
 
     /**
-     * Find the XMLObject which is identified by the specified ID attribute, from the root of the tree of XMLObjects in
+     * Find the XMLObject identified by the specified ID attribute, from the root of the tree of XMLObjects in
      * which this XMLObject is a member.
      * 
      * @param id the ID attribute to resolve to an XMLObject
-     * @return the XMLObject identified by the specified ID attribute value
+     * @return the XMLObject identified by the specified ID attribute value, or null
      */
-    public XMLObject resolveIDFromRoot(String id);
+    @Nullable public XMLObject resolveIDFromRoot(@Nonnull final String id);
 
     /**
      * Sets the DOM representation of this XMLObject.
      * 
      * @param dom DOM representation of this XMLObject
      */
-    public void setDOM(Element dom);
+    public void setDOM(@Nullable final Element dom);
 
     /**
      * Sets the value of the XML Schema noNamespaceSchemaLocation attribute for this object.
      * 
      * @param location value of the XML Schema noNamespaceSchemaLocation attribute for this object
      */
-    public void setNoNamespaceSchemaLocation(String location);
+    public void setNoNamespaceSchemaLocation(@Nullable final String location);
 
     /**
      * Sets the parent of this element.
      * 
      * @param parent the parent of this element
      */
-    public void setParent(XMLObject parent);
+    public void setParent(@Nullable final XMLObject parent);
 
     /**
      * Sets the value of the XML Schema schemaLocation attribute for this object.
      * 
      * @param location value of the XML Schema schemaLocation attribute for this object
      */
-    public void setSchemaLocation(String location);
+    public void setSchemaLocation(@Nullable final String location);
     
     /**
      * Gets whether the object declares that its element content
@@ -211,7 +213,7 @@ public interface XMLObject {
      * 
      * @return whether the object's content model is null
      */
-    public Boolean isNil();
+    @Nullable public Boolean isNil();
 
     /**
      * 
@@ -234,7 +236,7 @@ public interface XMLObject {
      * 
      * @return whether the object's content model is null
      */
-    public XSBooleanValue isNilXSBoolean();
+    @Nullable public XSBooleanValue isNilXSBoolean();
 
     /**
      * Sets whether the object declares that its element content
@@ -256,7 +258,7 @@ public interface XMLObject {
      * 
      * @param newNil whether the object's content model is expressed as null
      */
-    public void setNil(Boolean newNil);
+    public void setNil(@Nullable final Boolean newNil);
 
     /**
      * Sets whether the object declares that its element content
@@ -278,6 +280,6 @@ public interface XMLObject {
      * 
      * @param newNil whether the object's content model is expressed as null
      */
-    public void setNil(XSBooleanValue newNil);
+    public void setNil(@Nullable final XSBooleanValue newNil);
 
 }

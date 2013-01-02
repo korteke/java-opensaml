@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
@@ -45,7 +47,7 @@ public class XSBooleanValue {
      * @param newValue the value
      * @param numericRepresentation whether to use a numeric or lexical representation
      */
-    public XSBooleanValue(Boolean newValue, boolean numericRepresentation) {
+    public XSBooleanValue(@Nullable final Boolean newValue, boolean numericRepresentation) {
         numeric = numericRepresentation;
         value = newValue;
     }
@@ -55,7 +57,7 @@ public class XSBooleanValue {
      * 
      * @return the boolean value
      */
-    public Boolean getValue() {
+    @Nullable public Boolean getValue() {
         return value;
     }
 
@@ -64,7 +66,7 @@ public class XSBooleanValue {
      * 
      * @param newValue the boolean value
      */
-    public void setValue(Boolean newValue) {
+    public void setValue(@Nullable final Boolean newValue) {
         value = newValue;
     }
 
@@ -83,7 +85,7 @@ public class XSBooleanValue {
      * @param numericRepresentation whether to use the numeric or lexical representation
      */
     public void setNumericRepresentation(boolean numericRepresentation) {
-        this.numeric = numericRepresentation;
+        numeric = numericRepresentation;
     }
     
     /** {@inheritDoc} */
@@ -111,7 +113,7 @@ public class XSBooleanValue {
     }
     
     /** {@inheritDoc} */
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if(obj == this){
             return true;
         }
@@ -164,7 +166,7 @@ public class XSBooleanValue {
      * 
      * @return the boolean value
      */
-    public static XSBooleanValue valueOf(String booleanString) {
+    public static XSBooleanValue valueOf(@Nullable final String booleanString) {
         String trimmedBooleanString = StringSupport.trimOrNull(booleanString);
         if (trimmedBooleanString != null) {
             if ("1".equals(trimmedBooleanString)) {

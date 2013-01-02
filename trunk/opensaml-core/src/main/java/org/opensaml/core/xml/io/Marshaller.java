@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.io;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,7 +39,7 @@ public interface Marshaller {
      * 
      * @throws MarshallingException thrown if there is a problem marshalling the given object
      */
-    public Element marshall(XMLObject xmlObject) throws MarshallingException;
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException;
 
     /**
      * Marshall this element, and its children, into a W3C DOM element. If the document does not have a Document Element
@@ -50,7 +52,8 @@ public interface Marshaller {
      * 
      * @throws MarshallingException thrown if there is a problem marshalling the given object
      */
-    public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException;
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Document document)
+            throws MarshallingException;
 
     /**
      * Marshall the given XMLObject and append it as a child to the given parent element.
@@ -65,5 +68,6 @@ public interface Marshaller {
      * 
      * @throws MarshallingException thrown if the given XMLObject can not be marshalled.
      */
-    public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException;
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Element parentElement)
+            throws MarshallingException;
 }

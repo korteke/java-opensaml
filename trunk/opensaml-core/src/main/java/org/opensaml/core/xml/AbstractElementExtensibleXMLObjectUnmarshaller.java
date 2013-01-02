@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
@@ -37,8 +39,8 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
      * 
      * {@inheritDoc}
      */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         ElementExtensibleXMLObject any = (ElementExtensibleXMLObject) parentXMLObject;
         any.getUnknownXMLObjects().add(childXMLObject);
     }
@@ -48,7 +50,8 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
      * 
      * {@inheritDoc}
      */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
     }
 
     /**
@@ -56,6 +59,6 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
      * 
      * {@inheritDoc}
      */
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
     }
 }

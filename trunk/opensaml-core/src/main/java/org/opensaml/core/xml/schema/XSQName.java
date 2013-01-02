@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.schema;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -39,12 +40,12 @@ public interface XSQName extends XMLObject {
      * 
      * @return the QName content of the element
      */
-    public QName getValue();
+    @Nullable public QName getValue();
     
     /**
      * Sets the QName content of the element.
      * 
      * @param newValue the QName content of the element
      */
-    public void setValue(QName newValue);
+    public void setValue(@Nullable final QName newValue);
 }

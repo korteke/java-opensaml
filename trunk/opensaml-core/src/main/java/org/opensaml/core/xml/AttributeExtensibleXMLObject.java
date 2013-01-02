@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.util.AttributeMap;
 
 /**
@@ -31,5 +33,5 @@ public interface AttributeExtensibleXMLObject extends XMLObject {
      * 
      * @return a map of the attributes
      */
-    public AttributeMap getUnknownAttributes();
+    @Nonnull public AttributeMap getUnknownAttributes();
 }

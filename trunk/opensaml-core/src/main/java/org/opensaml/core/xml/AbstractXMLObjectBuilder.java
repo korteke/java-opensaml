@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
@@ -34,20 +36,22 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
         XMLObjectBuilder<XMLObjectType> {
 
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(QName objectName){
+    public XMLObjectType buildObject(@Nonnull final QName objectName){
         return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix());
     }
     
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(QName objectName, QName schemaType){
+    public XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType){
         return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix(), schemaType);
     }
     
     /** {@inheritDoc} */
-    public abstract XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
+    public abstract XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix);
 
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType) {
+    public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix, @Nullable final QName schemaType) {
         XMLObjectType xmlObject;
 
         xmlObject = buildObject(namespaceURI, localName, namespacePrefix);
@@ -57,7 +61,7 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
     }
 
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(Element element) {
+    public XMLObjectType buildObject(@Nonnull final Element element) {
         XMLObjectType xmlObject;
 
         String localName = element.getLocalName();

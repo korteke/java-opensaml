@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
@@ -40,7 +42,7 @@ public class Namespace {
      * @param uri the URI of the namespace
      * @param prefix the prefix of the namespace
      */
-    public Namespace(String uri, String prefix) {
+    public Namespace(@Nullable final String uri, @Nullable final String prefix) {
         namespaceURI = StringSupport.trimOrNull(uri);
         namespacePrefix = StringSupport.trimOrNull(prefix);
         nsStr = null;

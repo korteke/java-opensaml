@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -39,13 +40,13 @@ public interface IdBearing {
      * 
      * @return The <code>@xml:id</code> attribute value or <code>null</code>.
      */
-    public String getXMLId();
+    @Nullable public String getXMLId();
 
     /**
      * Sets the <code>@xml:id</code> attribute value.
      * 
      * @param newId The <code>@xml:id</code> attribute value
      */
-    public void setXMLId(String newId);
+    public void setXMLId(@Nullable final String newId);
 
 }

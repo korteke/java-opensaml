@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.util.AttributeMap;
 
 /**
@@ -27,7 +30,7 @@ public abstract class AbstractExtensibleXMLObject extends AbstractElementExtensi
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** xs:anyAttribute for this element. */
-    private AttributeMap anyAttributes;
+    private final AttributeMap anyAttributes;
 
     /**
      * Constructor.
@@ -36,13 +39,14 @@ public abstract class AbstractExtensibleXMLObject extends AbstractElementExtensi
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    public AbstractExtensibleXMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    public AbstractExtensibleXMLObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         anyAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return anyAttributes;
     }
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.io;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.w3c.dom.Element;
 
@@ -34,5 +36,5 @@ public interface Unmarshaller {
      * 
      * @throws UnmarshallingException thrown if an error occurs unmarshalling the DOM element into the XMLObject
      */
-    public XMLObject unmarshall(Element element) throws UnmarshallingException;
+    @Nonnull public XMLObject unmarshall(@Nonnull final Element element) throws UnmarshallingException;
 }

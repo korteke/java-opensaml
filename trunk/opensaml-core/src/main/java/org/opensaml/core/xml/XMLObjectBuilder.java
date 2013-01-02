@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.w3c.dom.Element;
@@ -35,7 +37,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObjectType buildObject(QName objectName);
+    @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName);
     
     /**
      * Creates an XMLObject with a given fully qualified name and schema type.
@@ -45,7 +47,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObjectType buildObject(QName objectName, QName schemaType);
+    @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType);
 
     /**
      * Creates an XMLObject with a given fully qualified name.
@@ -56,7 +58,8 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix);
+    @Nonnull public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix);
 
     /**
      * Creates an XMLObject with a given fully qualified name.
@@ -68,7 +71,8 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObjectType buildObject(String namespaceURI, String localName, String namespacePrefix, QName schemaType);
+    @Nonnull public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix, @Nullable final QName schemaType);
 
     /**
      * Creates an XMLObject using information from the given DOM element. This method must set the QName for the Element
@@ -80,5 +84,5 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    public XMLObjectType buildObject(Element element);
+    @Nonnull public XMLObjectType buildObject(@Nonnull final Element element);
 }

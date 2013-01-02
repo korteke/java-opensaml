@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
@@ -31,7 +32,7 @@ import org.w3c.dom.Attr;
 public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractElementExtensibleXMLObjectUnmarshaller {
     
     /** Constructor. */
-    public AbstractExtensibleXMLObjectUnmarshaller(){
+    public AbstractExtensibleXMLObjectUnmarshaller() {
         super();
     }
 
@@ -40,7 +41,8 @@ public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractEl
      * 
      * {@inheritDoc}
      */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
         QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
                 .getPrefix());

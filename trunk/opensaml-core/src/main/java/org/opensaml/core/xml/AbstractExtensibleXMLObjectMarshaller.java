@@ -19,6 +19,7 @@ package org.opensaml.core.xml;
 
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
@@ -45,7 +46,8 @@ public abstract class AbstractExtensibleXMLObjectMarshaller extends AbstractElem
      * 
      * {@inheritDoc}
      */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
         Attr attribute;
         Document document = domElement.getOwnerDocument();
