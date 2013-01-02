@@ -17,21 +17,24 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
- * Builder for XMLObjects from {@link org.opensaml.xmlsec.signature}
+ * Builder for XMLObjects from {@link org.opensaml.xmlsec.signature}.
  * 
  * @param <XMLSignatureType> the type of XMLObject being built
  */
 public interface XMLSignatureBuilder<XMLSignatureType extends XMLObject> extends XMLObjectBuilder<XMLSignatureType> {
     
     /**
-     * Builds an XMLObject using the default name and namespace information provided XML Signature specifications.
+     * Builds an XMLObject using the default name and namespace information provided by the XML Signature
+     * specifications.
      * 
      * @return built XMLObject
      */
-    public XMLSignatureType buildObject();
+    @Nonnull public XMLSignatureType buildObject();
 
 }

@@ -24,6 +24,8 @@ import java.security.NoSuchProviderException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
@@ -57,7 +59,9 @@ public final class AlgorithmSupport {
     private static Set<String> ecdsaAlgorithmURIs;
     
     /** Constructor. */
-    private AlgorithmSupport() { }
+    private AlgorithmSupport() {
+        
+    }
 
     /**
      * Get the Java security JCA/JCE algorithm identifier associated with an algorithm URI.
@@ -65,7 +69,7 @@ public final class AlgorithmSupport {
      * @param algorithmURI the algorithm URI to evaluate
      * @return the Java algorithm identifier, or null if the mapping is unavailable or indeterminable from the URI
      */
-    public static String getAlgorithmID(String algorithmURI) {
+    @Nullable public static String getAlgorithmID(@Nonnull final String algorithmURI) {
         return StringSupport.trimOrNull(JCEMapper.translateURItoJCEID(algorithmURI));
     }
 
@@ -75,7 +79,7 @@ public final class AlgorithmSupport {
      * @param signatureAlgorithm the signature method algorithm URI
      * @return true if URI indicates HMAC, false otherwise
      */
-    public static boolean isHMAC(String signatureAlgorithm) {
+    public static boolean isHMAC(@Nonnull final String signatureAlgorithm) {
         String algoClass = StringSupport.trimOrNull(JCEMapper.getAlgorithmClassFromURI(signatureAlgorithm));
         return ApacheXMLSecurityConstants.ALGO_CLASS_MAC.equals(algoClass);
     }
@@ -86,14 +90,14 @@ public final class AlgorithmSupport {
      * @param algorithmURI the algorithm URI to evaluate
      * @return the Java key algorithm specifier, or null if the mapping is unavailable or indeterminable from the URI
      */
-    public static String getKeyAlgorithm(String algorithmURI) {
+    @Nullable public static String getKeyAlgorithm(@Nonnull final String algorithmURI) {
         // The default Apache config file currently only includes the key algorithm for
         // the block ciphers and key wrap URI's. Note: could use a custom config file which contains others.
         String apacheValue = StringSupport.trimOrNull(JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI));
         if (apacheValue != null) {
             return apacheValue;
         }
-    
+      
         // HMAC uses any symmetric key, so there is no implied specific key algorithm
         if (isHMAC(algorithmURI)) {
             return null;
@@ -102,11 +106,9 @@ public final class AlgorithmSupport {
         // As a last ditch fallback, check some known common and supported ones.
         if (rsaAlgorithmURIs.contains(algorithmURI)) {
             return "RSA";
-        }
-        if (dsaAlgorithmURIs.contains(algorithmURI)) {
+        } else if (dsaAlgorithmURIs.contains(algorithmURI)) {
             return "DSA";
-        }
-        if (ecdsaAlgorithmURIs.contains(algorithmURI)) {
+        } else if (ecdsaAlgorithmURIs.contains(algorithmURI)) {
             return "ECDSA";
         }
     
@@ -120,7 +122,7 @@ public final class AlgorithmSupport {
      * @return the length of the key indicated by the algorithm URI, or null if the length is either unavailable or
      *         indeterminable from the URI
      */
-    public static Integer getKeyLength(String algorithmURI) {
+    @Nullable public static Integer getKeyLength(@Nonnull final String algorithmURI) {
         Logger log = getLogger();
         String algoClass = StringSupport.trimOrNull(JCEMapper.getAlgorithmClassFromURI(algorithmURI));
     
@@ -128,10 +130,9 @@ public final class AlgorithmSupport {
                 || ApacheXMLSecurityConstants.ALGO_CLASS_SYMMETRIC_KEY_WRAP.equals(algoClass)) {
     
             try {
-                int keyLength = JCEMapper.getKeyLengthFromURI(algorithmURI);
-                return new Integer(keyLength);
+                return JCEMapper.getKeyLengthFromURI(algorithmURI);
             } catch (NumberFormatException e) {
-                log.warn("XML Security config contained invalid key length value for algorithm URI: " + algorithmURI);
+                log.warn("XML Security config contained invalid key length value for algorithm URI {}", algorithmURI);
             }
         }
     
@@ -147,7 +148,8 @@ public final class AlgorithmSupport {
      * @throws NoSuchAlgorithmException thrown if the specified algorithm is invalid
      * @throws KeyException thrown if the length of the key to generate could not be determined
      */
-    public static SecretKey generateSymmetricKey(String algoURI) throws NoSuchAlgorithmException, KeyException {
+    @Nonnull public static SecretKey generateSymmetricKey(@Nonnull final String algoURI)
+            throws NoSuchAlgorithmException, KeyException {
         Logger log = getLogger();
         String jceAlgorithmName = getKeyAlgorithm(algoURI);
         if (Strings.isNullOrEmpty(jceAlgorithmName)) {
@@ -174,7 +176,7 @@ public final class AlgorithmSupport {
      * @throws NoSuchProviderException  provider not found
      * @throws NoSuchAlgorithmException  algorithm not found
      */
-    public static KeyPair generateKeyPair(String algoURI, int keyLength) 
+    @Nonnull public static KeyPair generateKeyPair(@Nonnull final String algoURI, int keyLength) 
             throws NoSuchAlgorithmException, NoSuchProviderException {
         String jceAlgorithmName = JCEMapper.getJCEKeyAlgorithmFromURI(algoURI);
         return KeySupport.generateKeyPair(jceAlgorithmName, keyLength, null);
@@ -188,11 +190,10 @@ public final class AlgorithmSupport {
      * @throws KeyException 
      * @throws NoSuchAlgorithmException algorithm not found
      */
-    public static Credential generateSymmetricKeyAndCredential(String algorithmURI) 
+    @Nonnull public static Credential generateSymmetricKeyAndCredential(@Nonnull final String algorithmURI) 
             throws NoSuchAlgorithmException, KeyException {
         SecretKey key = generateSymmetricKey(algorithmURI);
-        BasicCredential credential = new BasicCredential(key);
-        return credential;
+        return new BasicCredential(key);
     }
 
     /**
@@ -205,8 +206,8 @@ public final class AlgorithmSupport {
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
      */
-    public static Credential generateKeyPairAndCredential(String algorithmURI, int keyLength, boolean includePrivate) 
-            throws NoSuchAlgorithmException, NoSuchProviderException {
+    @Nonnull public static Credential generateKeyPairAndCredential(@Nonnull final String algorithmURI, int keyLength,
+            boolean includePrivate) throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair keyPair = generateKeyPair(algorithmURI, keyLength);
         BasicCredential credential = new BasicCredential(keyPair.getPublic());
         if (includePrivate) {
@@ -220,7 +221,7 @@ public final class AlgorithmSupport {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(AlgorithmSupport.class);
     }
 
@@ -231,19 +232,21 @@ public final class AlgorithmSupport {
             Init.init();
         }
 
-        // Additonal algorithm URI to JCA key algorithm mappins, beyond what is currently
+        // Additonal algorithm URI to JCA key algorithm mappings, beyond what is currently
         // supplied in the Apache XML Security mapper config.
         dsaAlgorithmURIs = new LazySet<String>();
-        dsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_DSA);
+        dsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1);
 
         ecdsaAlgorithmURIs = new LazySet<String>();
         ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1);
+        ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256);
+        ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384);
+        ecdsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512);
 
         rsaAlgorithmURIs = new HashSet<String>(10);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384);
-        rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160);
         rsaAlgorithmURIs.add(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5);

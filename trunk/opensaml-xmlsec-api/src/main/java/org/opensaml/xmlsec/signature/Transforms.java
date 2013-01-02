@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,25 +30,25 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public interface Transforms extends XMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Transforms";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transforms";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "TransformsType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "TransformsType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
-     * Get the list of Transform child elements
+     * Get the list of Transform child elements.
      * 
      * @return a List of Transform child elements
      */
-    public List<Transform> getTransforms();
+    @Nonnull public List<Transform> getTransforms();
 
 }

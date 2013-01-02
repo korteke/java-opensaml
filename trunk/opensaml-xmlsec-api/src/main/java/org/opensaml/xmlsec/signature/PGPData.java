@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
@@ -28,46 +29,46 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public interface PGPData extends XMLObject, ElementExtensibleXMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "PGPData";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PGPData";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "PGPDataType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "PGPDataType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
-     * Get PGPKeyID child element
+     * Get PGPKeyID child element.
      * 
      * @return the PGPKeyID child element
      */
-    public PGPKeyID getPGPKeyID();
+    @Nullable public PGPKeyID getPGPKeyID();
 
     /**
-     * Set PGPKeyID child element
+     * Set PGPKeyID child element.
      * 
      * @param newPGPKeyID the new PGPKeyID
      */
-    public void setPGPKeyID(PGPKeyID newPGPKeyID);
+    public void setPGPKeyID(@Nullable final PGPKeyID newPGPKeyID);
 
     /**
-     * Get PGPKeyPacket child element
+     * Get PGPKeyPacket child element.
      * 
      * @return the PGPKeyPacket child element
      */
-    public PGPKeyPacket getPGPKeyPacket();
+    @Nullable public PGPKeyPacket getPGPKeyPacket();
 
     /**
-     * Set PGPKeyPacket child element
+     * Set PGPKeyPacket child element.
      * 
      * @param newPGPKeyPacket the new PGPKeyPacket
      */
-    public void setPGPKeyPacket(PGPKeyPacket newPGPKeyPacket);
+    public void setPGPKeyPacket(@Nullable final PGPKeyPacket newPGPKeyPacket);
 
 }

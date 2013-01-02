@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature;
 
 import java.math.BigInteger;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
@@ -49,13 +50,13 @@ public interface X509SerialNumber extends XMLObject {
      * 
      * @return the integer
      */
-    public BigInteger getValue();
+    @Nullable public BigInteger getValue();
 
     /**
      * Sets the integer.
      * 
      * @param newValue the integer value
      */
-    public void setValue(BigInteger newValue);
+    public void setValue(@Nullable final BigInteger newValue);
 
 }

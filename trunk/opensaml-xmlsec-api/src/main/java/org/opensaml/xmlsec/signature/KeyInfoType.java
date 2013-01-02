@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.signature;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -44,21 +46,21 @@ public interface KeyInfoType extends XMLObject {
      * 
      * @return the Id attribute value
      */
-    public String getID();
+    @Nullable public String getID();
 
     /**
      * Set the Id attribute value.
      * 
      * @param newID the new Id attribute value
      */
-    public void setID(String newID);
+    public void setID(@Nullable final String newID);
 
     /**
      * Get the list of all XMLObject children.
      * 
      * @return the list of XMLObject children
      */
-    public List<XMLObject> getXMLObjects();
+    @Nonnull public List<XMLObject> getXMLObjects();
 
     /**
      * Get the list of XMLObject children whose type or element QName matches the specified QName.
@@ -67,56 +69,56 @@ public interface KeyInfoType extends XMLObject {
      * 
      * @return the matching list of XMLObject children
      */
-    public List<XMLObject> getXMLObjects(QName typeOrName);
+    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
      * Get the list of KeyName child elements.
      * 
      * @return the list of KeyName child elements
      */
-    public List<KeyName> getKeyNames();
+    @Nonnull public List<KeyName> getKeyNames();
 
     /**
      * Get the list of KeyValue child elements.
      * 
      * @return the list of KeyValue child elements
      */
-    public List<KeyValue> getKeyValues();
+    @Nonnull public List<KeyValue> getKeyValues();
 
     /**
      * Get the list of RetrievalMethod child elements.
      * 
      * @return the list of RetrievalMethod child elements
      */
-    public List<RetrievalMethod> getRetrievalMethods();
+    @Nonnull public List<RetrievalMethod> getRetrievalMethods();
 
     /**
      * Get the list of X509Data child elements.
      * 
      * @return the list of X509Data child elements
      */
-    public List<X509Data> getX509Datas();
+    @Nonnull public List<X509Data> getX509Datas();
 
     /**
      * Get the list of PGPData child elements.
      * 
      * @return the list of PGPData child elements
      */
-    public List<PGPData> getPGPDatas();
+    @Nonnull public List<PGPData> getPGPDatas();
 
     /**
      * Get the list of SPKIData child elements.
      * 
      * @return the list of SPKIData child elements
      */
-    public List<SPKIData> getSPKIDatas();
+    @Nonnull public List<SPKIData> getSPKIDatas();
 
     /**
      * Get the list of MgmtData child elements.
      * 
      * @return the list of MgmtData child elements
      */
-    public List<MgmtData> getMgmtDatas();
+    @Nonnull public List<MgmtData> getMgmtDatas();
 
     /**
      * Get the list of AgreementMethod child elements.
@@ -126,7 +128,7 @@ public interface KeyInfoType extends XMLObject {
      * 
      * @return the list of AgreementMethod child elements
      */
-    public List<AgreementMethod> getAgreementMethods();
+    @Nonnull public List<AgreementMethod> getAgreementMethods();
 
     /**
      * Get the list of EncryptedKey child elements
@@ -136,6 +138,6 @@ public interface KeyInfoType extends XMLObject {
      * 
      * @return the list of EncryptedKey child elements
      */
-    public List<EncryptedKey> getEncryptedKeys();
+    @Nonnull public List<EncryptedKey> getEncryptedKeys();
 
 }

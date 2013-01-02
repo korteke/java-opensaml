@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature;
 
 import java.math.BigInteger;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
@@ -41,13 +42,13 @@ public interface CryptoBinary extends XSBase64Binary {
      * 
      * @return the BigInteger representation of the element's content
      */
-    public BigInteger getValueBigInt();
+    @Nullable public BigInteger getValueBigInt();
 
     /**
      * Convenience method to set the value of the element as a BigInteger type.
      * 
      * @param bigInt the new BigInteger representation of the element's content
      */
-    public void setValueBigInt(BigInteger bigInt);
+    public void setValueBigInt(@Nullable final BigInteger bigInt);
 
 }

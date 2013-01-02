@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import javax.annotation.Nonnull;
+
 import org.apache.xml.security.signature.XMLSignature;
 
 /**
@@ -32,5 +34,5 @@ public interface ContentReference {
      *
      * @param signature the signature object
      */
-    public void createReference(XMLSignature signature);
+    public void createReference(@Nonnull final XMLSignature signature);
 }

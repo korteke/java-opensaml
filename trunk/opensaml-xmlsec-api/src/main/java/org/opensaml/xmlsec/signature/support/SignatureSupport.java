@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.SecurityConfiguration;
@@ -24,7 +27,6 @@ import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
-import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
@@ -36,7 +38,9 @@ import org.slf4j.LoggerFactory;
 public final class SignatureSupport {
     
     /** Constructor. */
-    private SignatureSupport() { }
+    private SignatureSupport() {
+        
+    }
     
     
     /**
@@ -44,7 +48,7 @@ public final class SignatureSupport {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(SignatureSupport.class);
     }
 
@@ -86,7 +90,7 @@ public final class SignatureSupport {
      * <p>
      * The KeyInfo to be generated is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
      * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
-     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
+     * name. If the latter is omitted, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
      * of the security configuration's named generator manager will be used.
      * </p>
      * 
@@ -96,8 +100,9 @@ public final class SignatureSupport {
      * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
      * @throws SecurityException thrown if there is an error generating the KeyInfo from the signing credential
      */
-    public static void prepareSignatureParams(Signature signature, Credential signingCredential,
-            SecurityConfiguration config, String keyInfoGenName) throws SecurityException {
+    public static void prepareSignatureParams(@Nonnull final Signature signature,
+            @Nonnull final Credential signingCredential, @Nullable final SecurityConfiguration config,
+            @Nullable final String keyInfoGenName) throws SecurityException {
         Logger log = getLogger();
     
         SecurityConfiguration secConfig;
@@ -107,14 +112,14 @@ public final class SignatureSupport {
             secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
         }
     
-        // The algorithm URI is derived from the credential
+        // The algorithm URI is derived from the credential.
         String signAlgo = signature.getSignatureAlgorithm();
         if (signAlgo == null) {
             signAlgo = secConfig.getSignatureAlgorithmURI(signingCredential);
             signature.setSignatureAlgorithm(signAlgo);
         }
     
-        // If we're doing HMAC, set the output length
+        // If we're doing HMAC, set the output length.
         if (AlgorithmSupport.isHMAC(signAlgo)) {
             if (signature.getHMACOutputLength() == null) {
                 signature.setHMACOutputLength(secConfig.getSignatureHMACOutputLength());

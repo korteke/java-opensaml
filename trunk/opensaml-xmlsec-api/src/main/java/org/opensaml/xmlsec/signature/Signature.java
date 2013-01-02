@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.signature;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -50,28 +52,28 @@ public interface Signature extends XMLObject {
      * 
      * @return the canonicalization algorithm used to create the signature content
      */
-    public String getCanonicalizationAlgorithm();
+    @Nullable public String getCanonicalizationAlgorithm();
 
     /**
      * Sets the canonicalization algorithm used to create the signature content.
      * 
      * @param newAlgorithm the canonicalization algorithm used to create the signature content
      */
-    public void setCanonicalizationAlgorithm(String newAlgorithm);
+    public void setCanonicalizationAlgorithm(@Nullable final String newAlgorithm);
 
     /**
      * Gets the algorithm used to compute the signature.
      * 
      * @return the algorithm used to compute the signature
      */
-    public String getSignatureAlgorithm();
+    @Nullable public String getSignatureAlgorithm();
 
     /**
      * Sets the algorithm used to compute the signature.
      * 
      * @param newAlgorithm the algorithm used to compute the signature
      */
-    public void setSignatureAlgorithm(String newAlgorithm);
+    public void setSignatureAlgorithm(@Nullable final String newAlgorithm);
     
     /**
      * Gets the HMAC output length value, optionally used when signing
@@ -79,7 +81,7 @@ public interface Signature extends XMLObject {
      * 
      * @return the HMACOutputLength value
      */
-    public Integer getHMACOutputLength();
+    @Nullable public Integer getHMACOutputLength();
     
     /**
      * Sets the HMAC output length value, optionally used when signing
@@ -87,40 +89,40 @@ public interface Signature extends XMLObject {
      * 
      * @param length the new HMACOutputLength value
      */
-    public void setHMACOutputLength(Integer length);
+    public void setHMACOutputLength(@Nullable final Integer length);
 
     /**
      * Gets the signature signing credential.
      * 
      * @return the signature signing credential
      */
-    public Credential getSigningCredential();
+    @Nullable public Credential getSigningCredential();
 
     /**
      * Sets the signature signing credential.
      * 
      * @param newCredential the signature signing credential
      */
-    public void setSigningCredential(Credential newCredential);
+    public void setSigningCredential(@Nullable final Credential newCredential);
 
     /**
      * Gets the key info added to this signature.
      * 
      * @return the key info added to this signature
      */
-    public KeyInfo getKeyInfo();
+    @Nullable public KeyInfo getKeyInfo();
 
     /**
      * Sets the key info added to this signature.
      * 
      * @param newKeyInfo the key info added to this signature
      */
-    public void setKeyInfo(KeyInfo newKeyInfo);
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
 
     /**
      * Gets the list of signature content references.
      * 
      * @return the list of signature content references
      */
-    public List<ContentReference> getContentReferences();
+    @Nonnull public List<ContentReference> getContentReferences();
 }

@@ -26,11 +26,11 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public interface PgenCounter extends CryptoBinary {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "PgenCounter";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PgenCounter";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
 }

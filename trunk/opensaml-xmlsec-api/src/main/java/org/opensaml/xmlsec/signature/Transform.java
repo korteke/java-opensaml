@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.signature;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,59 +31,59 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public interface Transform extends XMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Transform";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transform";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "TransformType";
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "TransformType";
 
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
-    /** Algorithm attribute name */
-    public final static String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    /** Algorithm attribute name. */
+    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
-     * Get the Algorithm URI attribute value
+     * Get the Algorithm URI attribute value.
      * 
      * @return the Algorithm URI attribute value
      */
-    public String getAlgorithm();
+    @Nullable public String getAlgorithm();
 
     /**
      * 
-     * Set the Algorithm URI attribute value
+     * Set the Algorithm URI attribute value.
      * 
      * @param newAlgorithm the new Algorithm URI attribute value
      */
-    public void setAlgorithm(String newAlgorithm);
+    public void setAlgorithm(@Nullable final String newAlgorithm);
 
     /**
-     * Get the list of XMLObject children that match a particular QName
+     * Get the list of XMLObject children that match a particular QName.
      * 
      * @param typeOrName the QName of the statements to return
      * 
      * @return the list of XMLObject children that match the given QName
      */
-    public List<XMLObject> getXMLObjects(QName typeOrName);
+    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
-     * Get the list of XPath child elements
+     * Get the list of XPath child elements.
      * 
      * @return list of XPath child elements
      */
-    public List<XPath> getXPaths();
+    @Nonnull public List<XPath> getXPaths();
 
     /**
      * Gets the ordered list of all XMLObject child elements of this element.
      * 
      * @return list of XMLObject children
      */
-    public List<XMLObject> getAllChildren();
+    @Nonnull public List<XMLObject> getAllChildren();
 
 }
