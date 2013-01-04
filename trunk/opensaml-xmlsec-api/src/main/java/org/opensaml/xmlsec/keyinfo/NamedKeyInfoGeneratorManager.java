@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
 import org.opensaml.security.credential.Credential;
@@ -32,10 +35,10 @@ import org.opensaml.security.credential.Credential;
 public class NamedKeyInfoGeneratorManager {
     
     /** The set of named factory managers. */
-    private Map<String, KeyInfoGeneratorManager> managers;
+    private final Map<String, KeyInfoGeneratorManager> managers;
     
     /** The default manager for unnamed factories. */
-    private KeyInfoGeneratorManager defaultManager;
+    private final KeyInfoGeneratorManager defaultManager;
     
     /** Flag indicating whether the default (unnamed) factory manager will be used to 
      * lookup factories for credentials. */
@@ -63,7 +66,7 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @return the set of all manager names currently configured
      */
-    public Set<String> getManagerNames() {
+    @Nonnull public Set<String> getManagerNames() {
         return Collections.unmodifiableSet(managers.keySet());
     }
  
@@ -73,7 +76,7 @@ public class NamedKeyInfoGeneratorManager {
      * @param name the name of the manager to obtain
      * @return the named manager
      */
-    public KeyInfoGeneratorManager getManager(String name) {
+    @Nonnull public KeyInfoGeneratorManager getManager(@Nonnull final String name) {
         KeyInfoGeneratorManager manager = managers.get(name);
         if (manager == null) {
             manager = new KeyInfoGeneratorManager();
@@ -87,7 +90,7 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @param name the name of the manager to remove
      */
-    public void removeManager(String name) {
+    public void removeManager(@Nonnull final String name) {
         managers.remove(name);
     }
     
@@ -98,7 +101,7 @@ public class NamedKeyInfoGeneratorManager {
      * @param name the name of the factory manager
      * @param factory the factory to register
      */
-    public void registerFactory(String name, KeyInfoGeneratorFactory factory) {
+    public void registerFactory(@Nonnull final String name, @Nonnull final KeyInfoGeneratorFactory factory) {
         KeyInfoGeneratorManager manager = getManager(name);
         manager.registerFactory(factory);
     }
@@ -109,7 +112,7 @@ public class NamedKeyInfoGeneratorManager {
      * @param name the name of the factory manager
      * @param factory the factory to de-register
      */
-    public void deregisterFactory(String name, KeyInfoGeneratorFactory factory) {
+    public void deregisterFactory(@Nonnull final String name, @Nonnull final KeyInfoGeneratorFactory factory) {
         KeyInfoGeneratorManager manager = managers.get(name);
         if (manager == null) {
             throw new IllegalArgumentException("Manager with name '" + name + "' does not exist");
@@ -123,7 +126,7 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @param factory the factory to register
      */
-    public void registerDefaultFactory(KeyInfoGeneratorFactory factory) {
+    public void registerDefaultFactory(@Nonnull final KeyInfoGeneratorFactory factory) {
         defaultManager.registerFactory(factory);
     }
     
@@ -132,7 +135,7 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @param factory the factory to de-register
      */
-    public void deregisterDefaultFactory(KeyInfoGeneratorFactory factory) {
+    public void deregisterDefaultFactory(@Nonnull final KeyInfoGeneratorFactory factory) {
         defaultManager.deregisterFactory(factory);
     }
     
@@ -141,7 +144,7 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @return the default factory manager
      */
-    public KeyInfoGeneratorManager getDefaultManager() {
+    @Nonnull public KeyInfoGeneratorManager getDefaultManager() {
         return defaultManager;
     }
     
@@ -152,7 +155,8 @@ public class NamedKeyInfoGeneratorManager {
      * @param credential the credential to evaluate
      * @return a factory for generators appropriate for the specified credential
      */
-    public KeyInfoGeneratorFactory getFactory(String name, Credential credential) {
+    @Nullable public KeyInfoGeneratorFactory getFactory(@Nonnull final String name,
+            @Nonnull final Credential credential) {
         KeyInfoGeneratorManager manager = managers.get(name);
         if (manager == null) {
             throw new IllegalArgumentException("Manager with name '" + name + "' does not exist");

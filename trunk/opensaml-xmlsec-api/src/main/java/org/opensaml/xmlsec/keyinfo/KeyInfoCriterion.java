@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.keyinfo;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -35,7 +37,7 @@ public final class KeyInfoCriterion implements Criterion {
      *
      * @param newKeyInfo the KeyInfo credential criteria to use
      */
-    public KeyInfoCriterion(KeyInfo newKeyInfo) {
+    public KeyInfoCriterion(@Nullable final KeyInfo newKeyInfo) {
        setKeyInfo(newKeyInfo);
     }
 
@@ -44,7 +46,7 @@ public final class KeyInfoCriterion implements Criterion {
      * 
      * @return the KeyInfo credential criteria
      */
-    public KeyInfo getKeyInfo() {
+    @Nullable public KeyInfo getKeyInfo() {
         return keyInfo;
     }
     
@@ -54,7 +56,7 @@ public final class KeyInfoCriterion implements Criterion {
      * @param newKeyInfo the KeyInfo to use as credential criteria
      * 
      */
-    public void setKeyInfo(KeyInfo newKeyInfo) {
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo) {
         // Note: we allow KeyInfo to be null to handle case where application context,
         // other accompanying criteria, etc should be used to resolve credentials.
         keyInfo = newKeyInfo;

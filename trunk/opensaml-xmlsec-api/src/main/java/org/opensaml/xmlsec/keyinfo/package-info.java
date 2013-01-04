@@ -14,18 +14,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/** Classes in support of processing XML Signature KeyInfo material. */
 package org.opensaml.xmlsec.keyinfo;
-
-import org.opensaml.security.credential.CredentialResolver;
-
-/**
- * Specialized {@link CredentialResolver} marker interface for resolvers which resolve
- * credentials based on a {@link KeyInfo} element.
- * 
- * Implementations will typically require an instance of {@link KeyInfoCriterion} within the
- * criteria set which is supplied as input to the resolve methods.
- */
-public interface KeyInfoCredentialResolver extends CredentialResolver {
-
-}

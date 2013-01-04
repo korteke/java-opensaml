@@ -22,6 +22,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.credential.Credential;
 
 /**
@@ -31,7 +36,7 @@ import org.opensaml.security.credential.Credential;
 public class KeyInfoGeneratorManager {
     
     /** The factories being managed, indexed by credential type. */
-    private Map<Class<? extends Credential>, KeyInfoGeneratorFactory> factories;
+    private final Map<Class<? extends Credential>, KeyInfoGeneratorFactory> factories;
     
     /** Constructor. */
     public KeyInfoGeneratorManager() {
@@ -44,7 +49,7 @@ public class KeyInfoGeneratorManager {
      * 
      * @param factory the factory to register
      */
-    public void registerFactory(KeyInfoGeneratorFactory factory) {
+    public void registerFactory(@Nonnull final KeyInfoGeneratorFactory factory) {
         factories.put(factory.getCredentialType(), factory);
     }
     
@@ -53,7 +58,7 @@ public class KeyInfoGeneratorManager {
      * 
      * @param factory the factory to de-register
      */
-    public void deregisterFactory(KeyInfoGeneratorFactory factory) {
+    public void deregisterFactory(@Nonnull final KeyInfoGeneratorFactory factory) {
         factories.remove(factory.getCredentialType());
     }
     
@@ -62,7 +67,7 @@ public class KeyInfoGeneratorManager {
      * 
      * @return the collection of managed factories
      */
-    public Collection<KeyInfoGeneratorFactory> getFactories() {
+    @Nonnull public Collection<KeyInfoGeneratorFactory> getFactories() {
         return Collections.unmodifiableCollection(factories.values());
     }
     
@@ -73,7 +78,9 @@ public class KeyInfoGeneratorManager {
      * @param credential the credential for which to locate a factory
      * @return a KeyInfoGeneratorFactory instance appropriate for the credential
      */
-    public KeyInfoGeneratorFactory getFactory(Credential credential) {
+    @Nullable public KeyInfoGeneratorFactory getFactory(@Nonnull final Credential credential) {
+        Constraint.isNotNull(credential, "Credential cannot be null");
+        
         return factories.get(credential.getCredentialType());
     }
 
