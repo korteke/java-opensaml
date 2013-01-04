@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.keyinfo;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.Credential;
 
 /**
@@ -29,7 +31,7 @@ public interface KeyInfoGeneratorFactory {
      * 
      * @return a new KeyInfoGenerator instance
      */
-    public KeyInfoGenerator newInstance();
+    @Nonnull public KeyInfoGenerator newInstance();
     
     /**
      * Check whether the generators produced by this factory can handle the specified credential.
@@ -38,7 +40,7 @@ public interface KeyInfoGeneratorFactory {
      * @return true if the generators produced by this factory can handle the type of the specified credential,
      *          false otherwise
      */
-    public boolean handles(Credential credential);
+    public boolean handles(@Nonnull final Credential credential);
     
     /**
      * Get the type (interface) of the specific type of credential handled by generators produced by
@@ -46,6 +48,6 @@ public interface KeyInfoGeneratorFactory {
      * 
      * @return the specifc type of credential handled by the generators produced by this factory
      */
-    public Class<? extends Credential> getCredentialType();
+    @Nonnull public Class<? extends Credential> getCredentialType();
     
 }
