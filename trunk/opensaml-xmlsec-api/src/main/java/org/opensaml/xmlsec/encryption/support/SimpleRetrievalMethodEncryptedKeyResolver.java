@@ -20,6 +20,11 @@ package org.opensaml.xmlsec.encryption.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -46,7 +51,9 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
     private final Logger log = LoggerFactory.getLogger(SimpleRetrievalMethodEncryptedKeyResolver.class);
 
     /** {@inheritDoc} */
-    public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
+        Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
+        
         List<EncryptedKey> resolvedEncKeys = new ArrayList<EncryptedKey>();
 
         if (encryptedData.getKeyInfo() == null) {
@@ -56,18 +63,15 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
         for (RetrievalMethod rm : encryptedData.getKeyInfo().getRetrievalMethods()) {
             if (!Objects.equal(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
                 continue;
-            }
-            if (rm.getTransforms() != null) {
-                log.warn("EncryptedKey RetrievalMethod has transforms, can not process");
+            } else if (rm.getTransforms() != null) {
+                log.warn("EncryptedKey RetrievalMethod has transforms, cannot process");
                 continue;
             }
 
             EncryptedKey encKey = dereferenceURI(rm);
             if (encKey == null) {
                 continue;
-            }
-
-            if (matchRecipient(encKey.getRecipient())) {
+            } else if (matchRecipient(encKey.getRecipient())) {
                 resolvedEncKeys.add(encKey);
             }
         }
@@ -81,18 +85,18 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
      * @param rm the RetrievalMethod to process
      * @return the dereferenced EncryptedKey
      */
-    protected EncryptedKey dereferenceURI(RetrievalMethod rm) {
+    @Nullable protected EncryptedKey dereferenceURI(@Nonnull final RetrievalMethod rm) {
         String uri = rm.getURI();
         if (Strings.isNullOrEmpty(uri) || !uri.startsWith("#")) {
-            log.warn("EncryptedKey RetrievalMethod did not contain a same-document URI reference, can not process");
+            log.warn("EncryptedKey RetrievalMethod did not contain a same-document URI reference, cannot process");
             return null;
         }
+        
         XMLObject target = rm.resolveIDFromRoot(uri.substring(1));
         if (target == null) {
             log.warn("EncryptedKey RetrievalMethod URI could not be dereferenced");
             return null;
-        }
-        if (!(target instanceof EncryptedKey)) {
+        } else if (!(target instanceof EncryptedKey)) {
             log.warn("The product of dereferencing the EncryptedKey RetrievalMethod was not an EncryptedKey");
             return null;
         }

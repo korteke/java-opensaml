@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -48,41 +49,41 @@ public interface EncryptedKey extends EncryptedType {
      * 
      * @return the hint about who this encrypted key is intended for
      */
-    public String getRecipient();
+    @Nullable public String getRecipient();
 
     /**
      * Sets the hint about for whom this encrypted key is intended.
      * 
      * @param newRecipient the hint about who this encrypted key is intended for
      */
-    public void setRecipient(String newRecipient);
+    public void setRecipient(@Nullable final String newRecipient);
 
     /**
      * Gets the child element containing pointers to EncryptedData and EncryptedKey elements encrypted using this key.
      * 
      * @return the element containing a list of pointers to encrypted elements
      */
-    public ReferenceList getReferenceList();
+    @Nullable public ReferenceList getReferenceList();
 
     /**
      * Sets the child element containing pointers to EncryptedData and EncryptedKey elements encrypted using this key.
      * 
      * @param newReferenceList the new reference list for this encrypted key
      */
-    public void setReferenceList(ReferenceList newReferenceList);
+    public void setReferenceList(@Nullable final ReferenceList newReferenceList);
 
     /**
      * Gets the child element carrying the human readable name for this key.
      * 
      * @return the human readable name for this key
      */
-    public CarriedKeyName getCarriedKeyName();
+    @Nullable public CarriedKeyName getCarriedKeyName();
 
     /**
      * Sets the child element carrying the human readable name for this key.
      * 
      * @param newCarriedKeyName the human readable name for this key
      */
-    public void setCarriedKeyName(CarriedKeyName newCarriedKeyName);
+    public void setCarriedKeyName(@Nullable final CarriedKeyName newCarriedKeyName);
 
 }

@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -49,27 +50,27 @@ public interface CipherReference extends XMLObject {
      * 
      * @return the URI attribute string
      */
-    public String getURI();
+    @Nullable public String getURI();
 
     /**
      * Set the URI attribute that describes from where to deference the encrypted data.
      * 
      * @param newURI the new URI attribute string value
      */
-    public void setURI(String newURI);
+    public void setURI(@Nullable final String newURI);
 
     /**
      * Get the Transforms child element, which describes which transformations to apply when dereferencing the data.
      * 
      * @return the Transforms child element
      */
-    public Transforms getTransforms();
+    @Nullable public Transforms getTransforms();
 
     /**
      * Set the Transforms child element, which describes which transformations to apply when dereferencing the data.
      * 
      * @param newTransforms the new Transforms child element
      */
-    public void setTransforms(Transforms newTransforms);
+    public void setTransforms(@Nullable final Transforms newTransforms);
 
 }

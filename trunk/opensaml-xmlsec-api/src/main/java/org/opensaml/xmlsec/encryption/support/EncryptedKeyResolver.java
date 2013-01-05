@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.encryption.support;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
@@ -38,7 +40,7 @@ public interface EncryptedKeyResolver {
      * @param encryptedData  the EncryptedData element context in which to resolve
      * @return an iterable of EncryptedKey elements
      */
-    Iterable<EncryptedKey> resolve(EncryptedData encryptedData);
+    @Nonnull Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData);
     
     /**
      * Get the list of recipient criteria used by this resolver, and against which a candidate 
@@ -46,6 +48,6 @@ public interface EncryptedKeyResolver {
      * 
      * @return the list of  recipient criteria
      */
-    List<String> getRecipients();
+    @Nonnull List<String> getRecipients();
 
 }

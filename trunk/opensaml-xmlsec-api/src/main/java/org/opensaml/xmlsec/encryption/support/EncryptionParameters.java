@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 
@@ -46,10 +48,10 @@ public class EncryptionParameters {
     /**
      * Gets the XML Encryption algorithm URI used to encrypt.
      * 
-     * @return the algorithm URI used to encrypt
+     * @return the algorithm URI used to encrypt, or null
      */
-    public String getAlgorithm() {
-        return this.algorithm;
+    @Nullable public String getAlgorithm() {
+        return algorithm;
     }
 
     /**
@@ -57,17 +59,17 @@ public class EncryptionParameters {
      * 
      * @param newAlgorithm the algorithm URI used to encrypt
      */
-    public void setAlgorithm(String newAlgorithm) {
-        this.algorithm = newAlgorithm;
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
+        algorithm = newAlgorithm;
     }
 
     /**
      * Gets the credential used to encrypt.
      * 
-     * @return the credential used to encrypt
+     * @return the credential used to encrypt, or null
      */
-    public Credential getEncryptionCredential() {
-        return this.encryptionCredential;
+    @Nullable public Credential getEncryptionCredential() {
+        return encryptionCredential;
     }
 
     /**
@@ -75,18 +77,18 @@ public class EncryptionParameters {
      * 
      * @param newEncryptionCredential the credential used to encrypt
      */
-    public void setEncryptionCredential(Credential newEncryptionCredential) {
-        this.encryptionCredential = newEncryptionCredential;
+    public void setEncryptionCredential(@Nullable final Credential newEncryptionCredential) {
+        encryptionCredential = newEncryptionCredential;
     }
 
     /**
      * Gets the instance which will be used to generate a KeyInfo
      * object from the encryption credential.
      * 
-     * @return the generator instance
+     * @return the generator instance, or null
      */
-    public KeyInfoGenerator getKeyInfoGenerator() {
-        return this.keyInfoGenerator;
+    @Nullable public KeyInfoGenerator getKeyInfoGenerator() {
+        return keyInfoGenerator;
     }
 
     /**
@@ -95,7 +97,7 @@ public class EncryptionParameters {
      * 
      * @param newKeyInfoGenerator the new generator instance
      */
-    public void setKeyInfoGenerator(KeyInfoGenerator newKeyInfoGenerator) {
-        this.keyInfoGenerator = newKeyInfoGenerator;
+    public void setKeyInfoGenerator(@Nullable final KeyInfoGenerator newKeyInfoGenerator) {
+        keyInfoGenerator = newKeyInfoGenerator;
     }
 }

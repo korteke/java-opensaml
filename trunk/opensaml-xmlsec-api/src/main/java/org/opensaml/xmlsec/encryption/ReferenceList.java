@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -41,20 +42,20 @@ public interface ReferenceList extends XMLObject {
      * 
      * @return the list of reference child elements
      */
-    public List<ReferenceType> getReferences();
+    @Nonnull public List<ReferenceType> getReferences();
 
     /**
      * Get the list of data reference child elements.
      * 
      * @return the list of data reference child elements
      */
-    public List<DataReference> getDataReferences();
+    @Nonnull public List<DataReference> getDataReferences();
 
     /**
      * Get the list of key reference child elements.
      * 
      * @return the list of key reference child elements
      */
-    public List<KeyReference> getKeyReferences();
+    @Nonnull public List<KeyReference> getKeyReferences();
 
 }

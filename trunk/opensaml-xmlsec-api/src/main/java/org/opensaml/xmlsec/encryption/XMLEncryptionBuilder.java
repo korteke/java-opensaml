@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 
@@ -32,6 +34,6 @@ public interface XMLEncryptionBuilder<XMLEncryptionType extends XMLObject> exten
      * 
      * @return built XMLObject
      */
-    public XMLEncryptionType buildObject();
+    @Nonnull public XMLEncryptionType buildObject();
 
 }

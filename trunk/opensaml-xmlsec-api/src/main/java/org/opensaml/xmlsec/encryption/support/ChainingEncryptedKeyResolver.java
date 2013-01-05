@@ -22,6 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.slf4j.Logger;
@@ -49,12 +52,12 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * 
      * @return a list of EncryptedKeyResolver instances
      */
-    public List<EncryptedKeyResolver> getResolverChain() {
+    @Nonnull public List<EncryptedKeyResolver> getResolverChain() {
         return resolvers;
     }
 
     /** {@inheritDoc} */
-    public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
         if (resolvers.isEmpty()) {
             log.warn("Chaining encrypted key resolver resolution was attempted with an empty resolver chain");
             throw new IllegalStateException("The resolver chain is empty");
@@ -68,10 +71,10 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     public class ChainingIterable implements Iterable<EncryptedKey> {
 
         /** The chaining encrypted key resolver which owns this instance. */
-        private ChainingEncryptedKeyResolver parent;
+        private final ChainingEncryptedKeyResolver parent;
 
         /** The EncryptedData context for resolution. */
-        private EncryptedData encryptedData;
+        private final EncryptedData encryptedData;
 
         /**
          * Constructor.
@@ -79,13 +82,14 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
          * @param resolver the ChainingEncryptedKeyResolver parent
          * @param encData the EncryptedData context for resolution
          */
-        public ChainingIterable(ChainingEncryptedKeyResolver resolver, EncryptedData encData) {
+        public ChainingIterable(@Nonnull final ChainingEncryptedKeyResolver resolver,
+                @Nonnull final EncryptedData encData) {
             parent = resolver;
             encryptedData = encData;
         }
 
         /** {@inheritDoc} */
-        public Iterator<EncryptedKey> iterator() {
+        @Nonnull public Iterator<EncryptedKey> iterator() {
             return new ChainingIterator(parent, encryptedData);
         }
 
@@ -101,13 +105,13 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.ChainingIterator.class);
 
         /** The chaining encrypted key resolver which owns this instance. */
-        private ChainingEncryptedKeyResolver parent;
+        private final ChainingEncryptedKeyResolver parent;
 
         /** The EncryptedData context for resolution. */
-        private EncryptedData encryptedData;
+        private final EncryptedData encryptedData;
 
         /** The iterator over resolvers in the chain. */
-        private Iterator<EncryptedKeyResolver> resolverIterator;
+        private final Iterator<EncryptedKeyResolver> resolverIterator;
 
         /** The iterator over EncryptedKey instances from the current resolver. */
         private Iterator<EncryptedKey> keyIterator;
@@ -124,7 +128,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
          * @param resolver the ChainingEncryptedKeyResolver parent
          * @param encData the EncryptedData context for resolution
          */
-        public ChainingIterator(ChainingEncryptedKeyResolver resolver, EncryptedData encData) {
+        public ChainingIterator(@Nonnull final ChainingEncryptedKeyResolver resolver,
+                @Nonnull final EncryptedData encData) {
             parent = resolver;
             encryptedData = encData;
             resolverIterator = parent.getResolverChain().iterator();
@@ -168,9 +173,9 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         /**
          * Get the iterator from the next resolver in the chain.
          * 
-         * @return an iterator of encrypted keys
+         * @return an iterator of encrypted keys, or null if none remain
          */
-        private Iterator<EncryptedKey> getNextKeyIterator() {
+        @Nullable private Iterator<EncryptedKey> getNextKeyIterator() {
             if (resolverIterator.hasNext()) {
                 currentResolver = resolverIterator.next();
                 log.debug("Getting key iterator from next resolver: {}", currentResolver.getClass().toString());
@@ -185,9 +190,9 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         /**
          * Get the next encrypted key that will be returned by this iterator.
          * 
-         * @return the next encrypted key to return
+         * @return the next encrypted key to return, or null if none remain
          */
-        private EncryptedKey getNextKey() {
+        @Nullable private EncryptedKey getNextKey() {
             EncryptedKey tempKey;
 
             if (keyIterator != null) {

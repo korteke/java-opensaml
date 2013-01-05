@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -53,111 +54,111 @@ public interface EncryptedType extends XMLObject {
      * 
      * @return the unique ID for the XML element
      */
-    public String getID();
+    @Nullable public String getID();
 
     /**
      * Sets the unique ID for the XML element.
      * 
      * @param newID the unique ID for the XML element
      */
-    public void setID(String newID);
+    public void setID(@Nullable final String newID);
 
     /**
      * Gets the type information for the plaintext content.
      * 
      * @return the type information for the plaintext content
      */
-    public String getType();
+    @Nullable public String getType();
 
     /**
      * Sets the type information for the plaintext content.
      * 
      * @param newType the type information for the plaintext content
      */
-    public void setType(String newType);
+    public void setType(@Nullable final String newType);
 
     /**
      * Gets the MIME type of the plaintext content.
      * 
      * @return the MIME type of the plaintext content
      */
-    public String getMimeType();
+    @Nullable public String getMimeType();
 
     /**
      * Sets the MIME type of the plaintext content.
      * 
      * @param newMimeType the MIME type of the plaintext content
      */
-    public void setMimeType(String newMimeType);
+    public void setMimeType(@Nullable final String newMimeType);
 
     /**
      * Gets the encoding applied to the plaintext content prior to encryption.
      * 
      * @return the encoding applied to the plaintext content prior to encryption
      */
-    public String getEncoding();
+    @Nullable public String getEncoding();
 
     /**
      * Sets the encoding applied to the plaintext content prior to encryption.
      * 
      * @param newEncoding the encoding applied to the plaintext content prior to encryption
      */
-    public void setEncoding(String newEncoding);
+    public void setEncoding(@Nullable final String newEncoding);
 
     /**
      * Gets the EncryptionMethod child element.
      * 
      * @return the EncryptionMethod child element
      */
-    public EncryptionMethod getEncryptionMethod();
+    @Nullable public EncryptionMethod getEncryptionMethod();
 
     /**
      * Sets the EncryptionMethod child element.
      * 
      * @param newEncryptionMethod the new EncryptionMethod child element
      */
-    public void setEncryptionMethod(EncryptionMethod newEncryptionMethod);
+    public void setEncryptionMethod(@Nullable final EncryptionMethod newEncryptionMethod);
 
     /**
      * Gets the KeyInfo child element.
      * 
      * @return the KeyInfo child element
      */
-    public KeyInfo getKeyInfo();
+    @Nullable public KeyInfo getKeyInfo();
 
     /**
      * Sets the KeyInfo child element.
      * 
      * @param newKeyInfo the new KeyInfo child element
      */
-    public void setKeyInfo(KeyInfo newKeyInfo);
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
 
     /**
      * Gets the CipherData child element.
      * 
      * @return the CipherData child element
      */
-    public CipherData getCipherData();
+    @Nullable public CipherData getCipherData();
 
     /**
      * Sets the CipherData child element.
      * 
      * @param newCipherData the new CipherData child element
      */
-    public void setCipherData(CipherData newCipherData);
+    public void setCipherData(@Nullable final CipherData newCipherData);
 
     /**
      * Gets the EncryptionProperties child element.
      * 
      * @return the EncryptionProperties child element
      */
-    public EncryptionProperties getEncryptionProperties();
+    @Nullable public EncryptionProperties getEncryptionProperties();
 
     /**
      * Sets the EncryptionProperties child element.
      * 
      * @param newEncryptionProperties the new EncryptionProperties child element
      */
-    public void setEncryptionProperties(EncryptionProperties newEncryptionProperties);
+    public void setEncryptionProperties(@Nullable final EncryptionProperties newEncryptionProperties);
 
 }
