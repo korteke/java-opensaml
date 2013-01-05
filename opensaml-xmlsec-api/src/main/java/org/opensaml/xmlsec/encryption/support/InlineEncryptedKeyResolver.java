@@ -20,6 +20,10 @@ package org.opensaml.xmlsec.encryption.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
@@ -30,7 +34,9 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** {@inheritDoc} */
-    public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
+        Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
+        
         List<EncryptedKey> resolvedEncKeys = new ArrayList<EncryptedKey>();
         
         if (encryptedData.getKeyInfo() == null) {

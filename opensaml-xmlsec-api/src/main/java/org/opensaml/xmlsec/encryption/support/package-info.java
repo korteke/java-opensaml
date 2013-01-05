@@ -15,23 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption;
-
-import javax.xml.namespace.QName;
-
-import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
-import org.opensaml.xmlsec.signature.CryptoBinary;
-
-/**
- * XMLObject representing XML Encryption, version 20021210, Public element.
- */
-public interface Public extends CryptoBinary {
-
-    /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Public";
-
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
-
-}
+/** Functional support for XML Encryption. */
+package org.opensaml.xmlsec.encryption.support;

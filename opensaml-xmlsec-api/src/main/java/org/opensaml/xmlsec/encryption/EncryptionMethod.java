@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
@@ -49,41 +50,41 @@ public interface EncryptionMethod extends ElementExtensibleXMLObject {
      * 
      * @return the Algorithm attribute URI attribute string
      */
-    public String getAlgorithm();
+    @Nullable public String getAlgorithm();
 
     /**
      * Sets the algorithm URI attribute used in this EncryptionMethod.
      * 
      * @param newAlgorithm the new Algorithm URI attribute string
      */
-    public void setAlgorithm(String newAlgorithm);
+    public void setAlgorithm(@Nullable final String newAlgorithm);
 
     /**
      * Gets the KeySize child element.
      * 
      * @return the KeySize child element
      */
-    public KeySize getKeySize();
+    @Nullable public KeySize getKeySize();
 
     /**
      * Sets the KeySize child element.
      * 
      * @param newKeySize the new KeySize child element
      */
-    public void setKeySize(KeySize newKeySize);
+    public void setKeySize(@Nullable final KeySize newKeySize);
 
     /**
      * Gets the OAEPparams child element.
      * 
      * @return the OAEPparams child element
      */
-    public OAEPparams getOAEPparams();
+    @Nullable public OAEPparams getOAEPparams();
 
     /**
      * Sets the OAEPparams child element.
      * 
      * @param newOAEPparams the new OAEPparams child element
      */
-    public void setOAEPparams(OAEPparams newOAEPparams);
+    public void setOAEPparams(@Nullable final OAEPparams newOAEPparams);
 
 }

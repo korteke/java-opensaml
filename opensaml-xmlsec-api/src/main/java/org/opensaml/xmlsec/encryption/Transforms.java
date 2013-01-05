@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -49,6 +50,6 @@ public interface Transforms extends XMLObject {
      * 
      * @return a List of Transform child elements
      */
-    public List<Transform> getTransforms();
+    @Nonnull public List<Transform> getTransforms();
 
 }

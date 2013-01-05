@@ -21,12 +21,16 @@ import java.security.Key;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
@@ -95,13 +99,13 @@ public class Encrypter {
     private final Logger log = LoggerFactory.getLogger(Encrypter.class);
 
     /** Unmarshaller used to create EncryptedData objects from DOM element. */
-    private Unmarshaller encryptedDataUnmarshaller;
+    private final Unmarshaller encryptedDataUnmarshaller;
 
     /** Unmarshaller used to create EncryptedData objects from DOM element. */
-    private Unmarshaller encryptedKeyUnmarshaller;
+    private final Unmarshaller encryptedKeyUnmarshaller;
 
     /** Builder instance for building KeyInfo objects. */
-    private XMLSignatureBuilder<KeyInfo> keyInfoBuilder;
+    private final XMLSignatureBuilder<KeyInfo> keyInfoBuilder;
 
     /** The name of the JCA security provider to use. */
     private String jcaProviderName;
@@ -117,8 +121,6 @@ public class Encrypter {
 
         XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
-
-        jcaProviderName = null;
     }
 
     /**
@@ -130,7 +132,7 @@ public class Encrypter {
      * 
      * @return the JCA provider name to use
      */
-    public String getJCAProviderName() {
+    @Nullable public String getJCAProviderName() {
         return jcaProviderName;
     }
 
@@ -143,7 +145,7 @@ public class Encrypter {
      * 
      * @param providerName the JCA provider name to use
      */
-    public void setJCAProviderName(String providerName) {
+    public void setJCAProviderName(@Nullable final String providerName) {
         jcaProviderName = providerName;
     }
 
@@ -156,7 +158,8 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams) throws EncryptionException {
+    @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams) throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, false);
     }
@@ -172,8 +175,9 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams,
-            KeyEncryptionParameters kekParams) throws EncryptionException {
+    @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
+                    throws EncryptionException {
         List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
         kekParamsList.add(kekParams);
         return encryptElement(xmlObject, encParams, kekParamsList, false);
@@ -190,8 +194,9 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams,
-            List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
+    @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
+                    throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, false);
     }
 
@@ -204,8 +209,8 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams)
-            throws EncryptionException {
+    @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams) throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, true);
     }
@@ -221,8 +226,9 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams,
-            KeyEncryptionParameters kekParams) throws EncryptionException {
+    @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
+                    throws EncryptionException {
         List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
         kekParamsList.add(kekParams);
         return encryptElement(xmlObject, encParams, kekParamsList, true);
@@ -239,8 +245,9 @@ public class Encrypter {
      * @return the resulting EncryptedData element
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedData encryptElementContent(XMLObject xmlObject, EncryptionParameters encParams,
-            List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
+    @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
+                    throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, true);
     }
 
@@ -256,8 +263,9 @@ public class Encrypter {
      * 
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public List<EncryptedKey> encryptKey(Key key, List<KeyEncryptionParameters> kekParamsList,
-            Document containingDocument) throws EncryptionException {
+    @Nonnull public List<EncryptedKey> encryptKey(@Nonnull final Key key,
+            @Nonnull final List<KeyEncryptionParameters> kekParamsList, @Nonnull final Document containingDocument)
+                    throws EncryptionException {
 
         checkParams(kekParamsList, false);
 
@@ -280,8 +288,8 @@ public class Encrypter {
      * 
      * @throws EncryptionException exception thrown on encryption errors
      */
-    public EncryptedKey encryptKey(Key key, KeyEncryptionParameters kekParams, Document containingDocument)
-            throws EncryptionException {
+    @Nonnull public EncryptedKey encryptKey(@Nonnull final Key key, @Nonnull final KeyEncryptionParameters kekParams,
+            @Nonnull final Document containingDocument) throws EncryptionException {
 
         checkParams(kekParams, false);
 
@@ -319,14 +327,16 @@ public class Encrypter {
      * @return the new EncryptedKey object
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected EncryptedKey encryptKey(Key targetKey, Key encryptionKey, String encryptionAlgorithmURI,
-            Document containingDocument) throws EncryptionException {
+    @Nonnull protected EncryptedKey encryptKey(@Nonnull final Key targetKey, @Nonnull final Key encryptionKey,
+            @Nonnull final String encryptionAlgorithmURI, @Nonnull final Document containingDocument)
+                    throws EncryptionException {
+        Constraint.isNotNull(encryptionAlgorithmURI, "Encryption algorithm URI cannot be null");
+        Constraint.isNotNull(containingDocument, "Containing document cannot be null");
 
         if (targetKey == null) {
             log.error("Target key for key encryption was null");
             throw new EncryptionException("Target key was null");
-        }
-        if (encryptionKey == null) {
+        } else if (encryptionKey == null) {
             log.error("Encryption key for key encryption was null");
             throw new EncryptionException("Encryption key was null");
         }
@@ -355,16 +365,13 @@ public class Encrypter {
             throw new EncryptionException("Error encrypting element on key encryption", e);
         }
 
-        EncryptedKey encryptedKey;
         try {
             Element encKeyElement = xmlCipher.martial(containingDocument, apacheEncryptedKey);
-            encryptedKey = (EncryptedKey) encryptedKeyUnmarshaller.unmarshall(encKeyElement);
+            return (EncryptedKey) encryptedKeyUnmarshaller.unmarshall(encKeyElement);
         } catch (UnmarshallingException e) {
             log.error("Error unmarshalling EncryptedKey element", e);
             throw new EncryptionException("Error unmarshalling EncryptedKey element");
         }
-
-        return encryptedKey;
     }
 
     /**
@@ -379,8 +386,10 @@ public class Encrypter {
      * 
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected void postProcessApacheEncryptedKey(org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey,
-            Key targetKey, Key encryptionKey, String encryptionAlgorithmURI, Document containingDocument)
+    protected void postProcessApacheEncryptedKey(
+            @Nonnull final org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey,
+            @Nonnull final Key targetKey, @Nonnull final Key encryptionKey,
+            @Nonnull final String encryptionAlgorithmURI, @Nonnull final Document containingDocument)
             throws EncryptionException {
 
         // Workaround for XML-Security library issue. To maximize interop, explicitly express the library
@@ -406,7 +415,6 @@ public class Encrypter {
                 apacheEncryptedKey.getEncryptionMethod().addEncryptionMethodInformation(digestMethodElem);
             }
         }
-
     }
 
     /**
@@ -419,16 +427,16 @@ public class Encrypter {
      * @return the resulting EncryptedData object
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected EncryptedData encryptElement(XMLObject xmlObject, Key encryptionKey, String encryptionAlgorithmURI,
-            boolean encryptContentMode) throws EncryptionException {
+    @Nonnull protected EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
+            @Nonnull final Key encryptionKey, @Nonnull final String encryptionAlgorithmURI, boolean encryptContentMode)
+                    throws EncryptionException {
 
         if (xmlObject == null) {
             log.error("XMLObject for encryption was null");
-            throw new EncryptionException("XMLObject was null");
-        }
-        if (encryptionKey == null) {
+            throw new EncryptionException("XMLObject cannot be null");
+        } else if (encryptionKey == null) {
             log.error("Encryption key for key encryption was null");
-            throw new EncryptionException("Encryption key was null");
+            throw new EncryptionException("Encryption key cannot be null");
         }
         log.debug("Encrypting XMLObject using algorithm URI {} with content mode {}", encryptionAlgorithmURI,
                 encryptContentMode);
@@ -459,16 +467,13 @@ public class Encrypter {
             throw new EncryptionException("Error encrypting XMLObject", e);
         }
 
-        EncryptedData encryptedData;
         try {
             Element encDataElement = xmlCipher.martial(ownerDocument, apacheEncryptedData);
-            encryptedData = (EncryptedData) encryptedDataUnmarshaller.unmarshall(encDataElement);
+            return (EncryptedData) encryptedDataUnmarshaller.unmarshall(encDataElement);
         } catch (UnmarshallingException e) {
             log.error("Error unmarshalling EncryptedData element", e);
             throw new EncryptionException("Error unmarshalling EncryptedData element", e);
         }
-
-        return encryptedData;
     }
 
     /**
@@ -483,8 +488,9 @@ public class Encrypter {
      * @return the resulting EncryptedData object
      * @throws EncryptionException exception thrown on encryption errors
      */
-    private EncryptedData encryptElement(XMLObject xmlObject, EncryptionParameters encParams,
-            List<KeyEncryptionParameters> kekParamsList, boolean encryptContentMode) throws EncryptionException {
+    @Nonnull private EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
+            @Nonnull final EncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList,
+            boolean encryptContentMode) throws EncryptionException {
 
         checkParams(encParams, kekParamsList);
 
@@ -528,7 +534,7 @@ public class Encrypter {
      * @param xmlObject the object to check and marshall
      * @throws EncryptionException thrown if there is an error when marshalling the XMLObject
      */
-    protected void checkAndMarshall(XMLObject xmlObject) throws EncryptionException {
+    protected void checkAndMarshall(@Nonnull final XMLObject xmlObject) throws EncryptionException {
         Element targetElement = xmlObject.getDOM();
         if (targetElement == null) {
             Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
@@ -548,12 +554,11 @@ public class Encrypter {
      * 
      * @throws EncryptionException thrown if any parameters are missing or have invalid values
      */
-    protected void checkParams(EncryptionParameters encParams) throws EncryptionException {
+    protected void checkParams(@Nonnull final EncryptionParameters encParams) throws EncryptionException {
         if (encParams == null) {
             log.error("Data encryption parameters are required");
             throw new EncryptionException("Data encryption parameters are required");
-        }
-        if (Strings.isNullOrEmpty(encParams.getAlgorithm())) {
+        } else if (Strings.isNullOrEmpty(encParams.getAlgorithm())) {
             log.error("Data encryption algorithm URI is required");
             throw new EncryptionException("Data encryption algorithm URI is required");
         }
@@ -567,7 +572,8 @@ public class Encrypter {
      * 
      * @throws EncryptionException thrown if any parameters are missing or have invalid values
      */
-    protected void checkParams(KeyEncryptionParameters kekParams, boolean allowEmpty) throws EncryptionException {
+    protected void checkParams(@Nullable final KeyEncryptionParameters kekParams, boolean allowEmpty)
+            throws EncryptionException {
         if (kekParams == null) {
             if (allowEmpty) {
                 return;
@@ -580,12 +586,13 @@ public class Encrypter {
         if (key == null) {
             log.error("Key encryption credential and contained key are required");
             throw new EncryptionException("Key encryption credential and contained key are required");
-        }
-        if (key instanceof DSAPublicKey) {
+        } else if (key instanceof DSAPublicKey) {
             log.error("Attempt made to use DSA key for encrypted key transport");
             throw new EncryptionException("DSA keys may not be used for encrypted key transport");
-        }
-        if (Strings.isNullOrEmpty(kekParams.getAlgorithm())) {
+        } else if (key instanceof ECPublicKey) {
+            log.error("Attempt made to use EC key for encrypted key transport");
+            throw new EncryptionException("EC keys may not be used for encrypted key transport");
+        } else if (Strings.isNullOrEmpty(kekParams.getAlgorithm())) {
             log.error("Key encryption algorithm URI is required");
             throw new EncryptionException("Key encryption algorithm URI is required");
         }
@@ -599,7 +606,7 @@ public class Encrypter {
      * 
      * @throws EncryptionException thrown if any parameters are missing or have invalid values
      */
-    protected void checkParams(List<KeyEncryptionParameters> kekParamsList, boolean allowEmpty)
+    protected void checkParams(@Nullable final List<KeyEncryptionParameters> kekParamsList, boolean allowEmpty)
             throws EncryptionException {
         if (kekParamsList == null || kekParamsList.isEmpty()) {
             if (allowEmpty) {
@@ -621,8 +628,8 @@ public class Encrypter {
      * @param kekParamsList the key encryption parameters to use
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected void checkParams(EncryptionParameters encParams, List<KeyEncryptionParameters> kekParamsList)
-            throws EncryptionException {
+    protected void checkParams(@Nonnull final EncryptionParameters encParams,
+            @Nullable final List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
 
         checkParams(encParams);
         checkParams(kekParamsList, true);
@@ -641,9 +648,10 @@ public class Encrypter {
      * 
      * @param encryptionAlgorithmURI the encryption algorithm URI
      * @return a randomly generated symmetric key
-     * @throws EncryptionException thrown if the key can not be generated based on the specified algorithm URI
+     * @throws EncryptionException thrown if the key cannot be generated based on the specified algorithm URI
      */
-    protected SecretKey generateEncryptionKey(String encryptionAlgorithmURI) throws EncryptionException {
+    @Nonnull protected SecretKey generateEncryptionKey(@Nonnull final String encryptionAlgorithmURI)
+            throws EncryptionException {
         try {
             log.debug("Generating random symmetric data encryption key from algorithm URI: {}", encryptionAlgorithmURI);
             return AlgorithmSupport.generateSymmetricKey(encryptionAlgorithmURI);

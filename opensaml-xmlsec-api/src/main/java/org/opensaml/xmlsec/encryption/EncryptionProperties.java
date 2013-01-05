@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.encryption;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -51,20 +53,20 @@ public interface EncryptionProperties extends XMLObject {
      * 
      * @return ID attribute
      */
-    public String getID();
+    @Nullable public String getID();
 
     /**
      * Set the ID attribute that uniquely identifies this element.
      * 
      * @param newID the new ID attribute value
      */
-    public void setID(String newID);
+    public void setID(@Nullable final String newID);
 
     /**
      * Get the list of EncryptionProperty child elements.
      * 
      * @return the List of EncryptionProperty child elements
      */
-    public List<EncryptionProperty> getEncryptionProperties();
+    @Nonnull public List<EncryptionProperty> getEncryptionProperties();
 
 }

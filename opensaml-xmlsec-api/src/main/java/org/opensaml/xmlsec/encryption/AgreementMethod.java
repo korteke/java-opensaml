@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
@@ -50,55 +51,55 @@ public interface AgreementMethod extends XMLObject, ElementExtensibleXMLObject {
      * 
      * @return the algorithm URI attribute value
      */
-    public String getAlgorithm();
+    @Nullable public String getAlgorithm();
 
     /**
      * Sets the algorithm URI attribute value for this agreement method.
      * 
      * @param newAlgorithm the new algorithm URI attribute value
      */
-    public void setAlgorithm(String newAlgorithm);
+    public void setAlgorithm(@Nullable final String newAlgorithm);
 
     /**
      * Get the nonce child element used to introduce variability into the generation of keying material.
      * 
      * @return the KA-Nonce child element
      */
-    public KANonce getKANonce();
+    @Nullable public KANonce getKANonce();
 
     /**
      * Set the nonce child element used to introduce variability into the generation of keying material.
      * 
      * @param newKANonce the new KA-Nonce child element
      */
-    public void setKANonce(KANonce newKANonce);
+    public void setKANonce(@Nullable final KANonce newKANonce);
 
     /**
      * Get the child element containing the key generation material for the originator.
      * 
      * @return the OriginatorKeyInfo child element
      */
-    public OriginatorKeyInfo getOriginatorKeyInfo();
+    @Nullable public OriginatorKeyInfo getOriginatorKeyInfo();
 
     /**
      * Set the child element containing the key generation material for the originator.
      * 
      * @param newOriginatorKeyInfo the new OriginatorKeyInfo child element
      */
-    public void setOriginatorKeyInfo(OriginatorKeyInfo newOriginatorKeyInfo);
+    public void setOriginatorKeyInfo(@Nullable final OriginatorKeyInfo newOriginatorKeyInfo);
 
     /**
      * Get the child element containing the key generation material for the recipient.
      * 
      * @return the RecipientKeyInfo child element
      */
-    public RecipientKeyInfo getRecipientKeyInfo();
+    @Nullable public RecipientKeyInfo getRecipientKeyInfo();
 
     /**
      * Set the child element containing the key generation material for the recipient.
      * 
      * @param newRecipientKeyInfo the new RecipientKeyInfo child element
      */
-    public void setRecipientKeyInfo(RecipientKeyInfo newRecipientKeyInfo);
+    public void setRecipientKeyInfo(@Nullable final RecipientKeyInfo newRecipientKeyInfo);
 
 }

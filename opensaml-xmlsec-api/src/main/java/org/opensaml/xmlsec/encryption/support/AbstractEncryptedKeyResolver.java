@@ -20,6 +20,10 @@ package org.opensaml.xmlsec.encryption.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.xmlsec.encryption.DataReference;
@@ -43,7 +47,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
     }
 
     /** {@inheritDoc} */
-    public List<String> getRecipients() {
+    @Nonnull public List<String> getRecipients() {
         return recipients;
     }
     
@@ -54,7 +58,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @param recipient the recipient value to evaluate
      * @return true if the recipient value matches the resolver's criteria, false otherwise
      */
-    protected boolean matchRecipient(String recipient) {
+    protected boolean matchRecipient(@Nullable final String recipient) {
         String trimmedRecipient = StringSupport.trimOrNull(recipient);
         if (trimmedRecipient == null || recipients.isEmpty()) {
             return true;
@@ -72,13 +76,15 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @return true if the encrypted key's carried key name matches that of the encrytped data, 
      *          false otherwise
      */
-    protected boolean matchCarriedKeyName(EncryptedData encryptedData, EncryptedKey encryptedKey) {
+    protected boolean matchCarriedKeyName(@Nonnull final EncryptedData encryptedData,
+            @Nonnull final EncryptedKey encryptedKey) {
+        Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
+        Constraint.isNotNull(encryptedKey, "EncryptedKey cannot be null");
+        
         if (encryptedKey.getCarriedKeyName() == null 
                 || Strings.isNullOrEmpty(encryptedKey.getCarriedKeyName().getValue()) ) {
             return true;
-        }
-        
-        if (encryptedData.getKeyInfo() == null 
+        } else if (encryptedData.getKeyInfo() == null 
                 || encryptedData.getKeyInfo().getKeyNames().isEmpty() ) {
             return false;
         }
@@ -98,22 +104,23 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @return true if any of the encrypted key's data references refer to the encrypted data context,
      *          false otherwise
      */
-    protected boolean matchDataReference(EncryptedData encryptedData, EncryptedKey encryptedKey) {
+    protected boolean matchDataReference(@Nonnull final EncryptedData encryptedData,
+            @Nonnull final EncryptedKey encryptedKey) {
+        Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
+        Constraint.isNotNull(encryptedKey, "EncryptedKey cannot be null");
+
         if (encryptedKey.getReferenceList() == null 
                 || encryptedKey.getReferenceList().getDataReferences().isEmpty() ) {
             return true;
-        }
-        
-        if (Strings.isNullOrEmpty(encryptedData.getID())) {
+        } else if (Strings.isNullOrEmpty(encryptedData.getID())) {
             return false;
         }
         
         List<DataReference> drlist = encryptedKey.getReferenceList().getDataReferences();
         for (DataReference dr : drlist) {
-            if (Strings.isNullOrEmpty(dr.getURI()) || ! dr.getURI().startsWith("#") ) {
+            if (Strings.isNullOrEmpty(dr.getURI()) || !dr.getURI().startsWith("#") ) {
                 continue;
-            }
-            if (dr.resolveIDFromRoot(dr.getURI().substring(1)) == encryptedData) {
+            } else if (dr.resolveIDFromRoot(dr.getURI().substring(1)) == encryptedData) {
                 return true;
             }
         }

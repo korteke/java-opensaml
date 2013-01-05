@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -46,83 +47,83 @@ public interface DHKeyValue extends XMLObject {
      * 
      * @return the P child element
      */
-    public P getP();
+    @Nullable public P getP();
 
     /**
      * Set the P child element.
      * 
      * @param newP the new P child element
      */
-    public void setP(P newP);
+    public void setP(@Nullable final P newP);
 
     /**
      * Get the Q child element.
      * 
      * @return the Q child element
      */
-    public Q getQ();
+    @Nullable public Q getQ();
 
     /**
      * Set the Q child element.
      * 
      * @param newQ the new Q child element
      */
-    public void setQ(Q newQ);
+    public void setQ(@Nullable final Q newQ);
 
     /**
      * Get the Generator child element.
      * 
      * @return the Generator child element
      */
-    public Generator getGenerator();
+    @Nullable public Generator getGenerator();
 
     /**
      * Set the G child element.
      * 
      * @param newGenerator the new G child element
      */
-    public void setGenerator(Generator newGenerator);
+    public void setGenerator(@Nullable final Generator newGenerator);
 
     /**
      * Get the Public element.
      * 
      * @return the Public element
      */
-    public Public getPublic();
+    @Nullable public Public getPublic();
 
     /**
      * Set the Public element.
      * 
      * @param newPublic the new Public child element
      */
-    public void setPublic(Public newPublic);
+    public void setPublic(@Nullable final Public newPublic);
 
     /**
      * Get the seed element.
      * 
      * @return the seed element
      */
-    public Seed getSeed();
+    @Nullable public Seed getSeed();
 
     /**
      * Set the seed element.
      * 
      * @param newSeed new seed element
      */
-    public void setSeed(Seed newSeed);
+    public void setSeed(@Nullable final Seed newSeed);
 
     /**
      * Get the pgenCounter element.
      * 
      * @return the pgenCounter element
      */
-    public PgenCounter getPgenCounter();
+    @Nullable public PgenCounter getPgenCounter();
 
     /**
      * Set the pgenCounter element.
      * 
      * @param newPgenCounter new pgenCounter element
      */
-    public void setPgenCounter(PgenCounter newPgenCounter);
+    public void setPgenCounter(@Nullable final PgenCounter newPgenCounter);
 
 }

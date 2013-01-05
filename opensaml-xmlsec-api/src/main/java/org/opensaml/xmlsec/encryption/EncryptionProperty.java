@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -53,27 +54,27 @@ public interface EncryptionProperty extends AttributeExtensibleXMLObject, Elemen
      * 
      * @return the target URI attribute
      */
-    public String getTarget();
+    @Nullable public String getTarget();
 
     /**
      * Set the target URI attribute which specifies to which element this property applies.
      * 
      * @param newTarget the new target URI attribute
      */
-    public void setTarget(String newTarget);
+    public void setTarget(@Nullable final String newTarget);
 
     /**
      * Get the ID attribute which uniquely identifies this element.
      * 
      * @return the ID attribute value
      */
-    public String getID();
+    @Nullable public String getID();
 
     /**
      * Set the ID attribute which uniquely identifies this element.
      * 
      * @param newID the new ID attribute
      */
-    public void setID(String newID);
+    public void setID(@Nullable final String newID);
 
 }

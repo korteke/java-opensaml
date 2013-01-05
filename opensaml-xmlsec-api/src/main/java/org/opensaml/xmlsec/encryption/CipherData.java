@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -46,26 +47,26 @@ public interface CipherData extends XMLObject {
      * 
      * @return base64-encoded encrypted value
      */
-    public CipherValue getCipherValue();
+    @Nullable public CipherValue getCipherValue();
 
     /**
      * Set the base64-encoded data representing the the encrypted form of the plaintext data.
      * 
      * @param newCipherValue the new base64-encoded encrypted data
      */
-    public void setCipherValue(CipherValue newCipherValue);
+    public void setCipherValue(@Nullable final CipherValue newCipherValue);
 
     /**
      * Get the CipherReference which points to the location encrypted data.
      * 
      * @return CipherReference child element representing the encrypted data
      */
-    public CipherReference getCipherReference();
+    @Nullable public CipherReference getCipherReference();
 
     /**
      * Get the CipherReference which points to the location encrypted data.
      * 
      * @param newCipherReference the new CipherReference child element
      */
-    public void setCipherReference(CipherReference newCipherReference);
+    public void setCipherReference(@Nullable final CipherReference newCipherReference);
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import javax.annotation.Nullable;
+
 
 /**
  * Parameters for encrypting keys.
@@ -42,9 +44,9 @@ public class KeyEncryptionParameters extends EncryptionParameters {
      * 
      * When generating an EncryptedKey, this will be used as the value of the Recipient attribute.
      * 
-     * @return the recipient of the key
+     * @return the recipient of the key, or null
      */
-    public String getRecipient() {
+    @Nullable public String getRecipient() {
         return recipient;
     }
 
@@ -55,7 +57,7 @@ public class KeyEncryptionParameters extends EncryptionParameters {
      * 
      * @param newRecipient the recipient of the key
      */
-    public void setRecipient(String newRecipient) {
-        this.recipient = newRecipient;
+    public void setRecipient(@Nullable final String newRecipient) {
+        recipient = newRecipient;
     }
 }

@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
@@ -43,13 +44,13 @@ public interface ReferenceType extends ElementExtensibleXMLObject {
      * 
      * @return the URI referent attribute value
      */
-    public String getURI();
+    @Nullable public String getURI();
 
     /**
      * Set the URI attribute which indicates the referent of this reference.
      * 
      * @param newURI the new URI attribute value
      */
-    public void setURI(String newURI);
+    public void setURI(@Nullable final String newURI);
 
 }
