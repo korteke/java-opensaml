@@ -111,7 +111,7 @@ public interface SecurityConfiguration {
      * @return an encryption algorithm URI, or null if no mapping is available
      */
     @Nullable public String getKeyTransportEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
-            @Nullable final Integer keyLength, String wrappedKeyAlgorithm);
+            @Nullable final Integer keyLength, @Nullable final String wrappedKeyAlgorithm);
     
     /**
      * Get the key transport encryption algorithm URI for the encryption key contained within the specified credential.
@@ -121,7 +121,7 @@ public interface SecurityConfiguration {
      * @return an encryption algorithm URI mapping, or null if no mapping is available
      */
     @Nullable public String getKeyTransportEncryptionAlgorithmURI(@Nonnull final Credential credential,
-            @Nonnull final String wrappedKeyAlgorithm);
+            @Nullable final String wrappedKeyAlgorithm);
     
     /**
      * Get the encryption algorithm URI to be used when auto-generating random data encryption keys.
