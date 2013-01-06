@@ -27,6 +27,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
 
 /**
  * An implementation of {@link CredentialResolver} which uses a {@link Collection} as the

@@ -36,9 +36,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Trust engine implementation which evaluates an X509Credential token based on PKIX validation processing using
+ * Trust engine implementation which evaluates an {@link X509Credential} token based on PKIX validation processing using
  * validation information from a trusted source.
- * 
  */
 public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Credential> {
 
@@ -92,7 +91,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
 
     /**
-     * Get the PKIXTrustEvaluator instance used to evalute trust.
+     * Get the {@link PKIXTrustEvaluator} instance used to evalute trust.
      * 
      * <p>The parameters of this evaluator may be modified to
      * adjust trust evaluation processing.</p>
@@ -104,7 +103,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
     
     /**
-     * Get the X509CredentialNameEvaluator instance used to evalute a credential 
+     * Get the {@link X509CredentialNameEvaluator} instance used to evalute a credential 
      * against trusted names.
      * 
      * <p>The parameters of this evaluator may be modified to
