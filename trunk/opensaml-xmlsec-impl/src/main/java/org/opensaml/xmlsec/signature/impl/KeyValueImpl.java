@@ -28,25 +28,25 @@ import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyValue}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyValue}.
  */
 public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
     
-    /** DSAKeyValue child element */
+    /** DSAKeyValue child element. */
     private DSAKeyValue dsaKeyValue;
     
-    /** RSAKeyValue child element */
+    /** RSAKeyValue child element. */
     private RSAKeyValue rsaKeyValue;
     
-    /** Wildcard &lt;any&gt; XMLObject child element */
+    /** Wildcard &lt;any&gt; XMLObject child element. */
     private XMLObject unknownXMLObject;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected KeyValueImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

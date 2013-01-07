@@ -22,16 +22,16 @@ import org.opensaml.xmlsec.signature.impl.CryptoBinaryImpl;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Q}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Q}.
  */
 public class QImpl extends CryptoBinaryImpl implements Q {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected QImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

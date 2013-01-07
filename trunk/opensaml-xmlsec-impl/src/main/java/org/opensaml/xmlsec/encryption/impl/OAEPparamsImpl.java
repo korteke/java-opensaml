@@ -21,16 +21,16 @@ import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OAEPparams}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OAEPparams}.
  */
 public class OAEPparamsImpl extends XSBase64BinaryImpl implements OAEPparams {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected OAEPparamsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

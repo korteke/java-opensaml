@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Seed}
+ * Builder of {@link org.opensaml.xmlsec.signature.Seed}.
  */
 public class SeedBuilder extends AbstractXMLObjectBuilder<Seed> implements XMLSignatureBuilder<Seed> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public SeedBuilder() {
     }

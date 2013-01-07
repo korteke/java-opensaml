@@ -30,20 +30,22 @@ import org.opensaml.xmlsec.signature.Transform;
 import org.opensaml.xmlsec.signature.XPath;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.Transform}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.Transform}.
  */
 public class TransformImpl extends AbstractXMLObject implements Transform {
     
+    /** Algorithm attribute value. */
     private String algorithm;
     
+    /** "any" children. */
     private final IndexedXMLObjectChildrenList indexedChildren;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected TransformImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

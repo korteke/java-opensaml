@@ -23,13 +23,13 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.OAEPparams}
+ * Builder of {@link org.opensaml.xmlsec.encryption.OAEPparams}.
  */
-public class OAEPparamsBuilder extends AbstractXMLObjectBuilder<OAEPparams> implements XMLEncryptionBuilder<OAEPparams> {
+public class OAEPparamsBuilder
+    extends AbstractXMLObjectBuilder<OAEPparams> implements XMLEncryptionBuilder<OAEPparams> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public OAEPparamsBuilder() {
     }

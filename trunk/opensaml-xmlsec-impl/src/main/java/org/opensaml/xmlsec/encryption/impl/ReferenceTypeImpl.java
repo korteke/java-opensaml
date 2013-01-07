@@ -29,22 +29,22 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.ReferenceType;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceType}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceType}.
  */
 public class ReferenceTypeImpl extends AbstractXMLObject implements ReferenceType {
     
-    /** URI attribute value */
+    /** URI attribute value. */
     private String uri;
     
-    /** List of &lt;any&gt; XML child elements */
+    /** List of &lt;any&gt; XML child elements. */
     private final IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected ReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

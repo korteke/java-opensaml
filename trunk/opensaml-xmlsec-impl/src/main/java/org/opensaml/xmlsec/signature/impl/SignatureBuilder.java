@@ -26,7 +26,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public class SignatureBuilder extends AbstractXMLObjectBuilder<SignatureImpl> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SignatureBuilder() {
 

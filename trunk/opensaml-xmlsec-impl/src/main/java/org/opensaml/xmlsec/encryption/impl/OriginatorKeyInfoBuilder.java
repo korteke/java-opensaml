@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo}
+ * Builder of {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo}.
  */
 public class OriginatorKeyInfoBuilder extends AbstractXMLObjectBuilder<OriginatorKeyInfo> implements
         XMLEncryptionBuilder<OriginatorKeyInfo> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public OriginatorKeyInfoBuilder() {
     }

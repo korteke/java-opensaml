@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.KeyName}
+ * Builder of {@link org.opensaml.xmlsec.signature.KeyName}.
  */
 public class KeyNameBuilder extends AbstractXMLObjectBuilder<KeyName> implements XMLSignatureBuilder<KeyName> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public KeyNameBuilder() {
     }

@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.PGPKeyPacket}
+ * Builder of {@link org.opensaml.xmlsec.signature.PGPKeyPacket}.
  */
 public class PGPKeyPacketBuilder extends AbstractXMLObjectBuilder<PGPKeyPacket> implements
         XMLSignatureBuilder<PGPKeyPacket> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public PGPKeyPacketBuilder() {
     }

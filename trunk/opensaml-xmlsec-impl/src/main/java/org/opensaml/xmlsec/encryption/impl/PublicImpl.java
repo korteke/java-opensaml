@@ -22,16 +22,16 @@ import org.opensaml.xmlsec.signature.impl.CryptoBinaryImpl;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Public}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Public}.
  */
 public class PublicImpl extends CryptoBinaryImpl implements Public {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected PublicImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

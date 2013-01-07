@@ -39,7 +39,8 @@ public class CipherDataBuilder extends AbstractXMLObjectBuilder<CipherData> impl
 
     /** {@inheritDoc} */
     public CipherData buildObject() {
-        return buildObject(EncryptionConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
+        return buildObject(EncryptionConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME,
+                EncryptionConstants.XMLENC_PREFIX);
     }
 
 }

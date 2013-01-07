@@ -20,16 +20,16 @@ package org.opensaml.xmlsec.encryption.impl;
 import org.opensaml.xmlsec.encryption.KeyReference;
 
 /**
- *
+ * Concrete implementation of {@link KeyReference}.
  */
 public class KeyReferenceImpl extends ReferenceTypeImpl implements KeyReference {
     
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected KeyReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

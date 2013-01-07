@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Modulus}
+ * Builder of {@link org.opensaml.xmlsec.signature.Modulus}.
  */
 public class ModulusBuilder extends AbstractXMLObjectBuilder<Modulus> implements XMLSignatureBuilder<Modulus> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public ModulusBuilder() {
     }

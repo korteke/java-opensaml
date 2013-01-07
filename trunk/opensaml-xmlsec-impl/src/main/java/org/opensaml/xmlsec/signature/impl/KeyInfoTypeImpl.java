@@ -38,22 +38,22 @@ import org.opensaml.xmlsec.signature.SPKIData;
 import org.opensaml.xmlsec.signature.X509Data;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfoType}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfoType}.
  */
 public class KeyInfoTypeImpl extends AbstractXMLObject implements KeyInfoType {
     
-    /** The list of XMLObject child elements */
+    /** The list of XMLObject child elements. */
     private final IndexedXMLObjectChildrenList indexedChildren;
     
-    /** The Id attribute value */
+    /** The Id attribute value. */
     private String id;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected KeyInfoTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

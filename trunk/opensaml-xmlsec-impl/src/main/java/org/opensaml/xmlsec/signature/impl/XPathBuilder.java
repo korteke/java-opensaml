@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XPath;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.XPath}
+ * Builder of {@link org.opensaml.xmlsec.signature.XPath}.
  */
 public class XPathBuilder extends AbstractXMLObjectBuilder<XPath> implements XMLSignatureBuilder<XPath> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public XPathBuilder() {
     }

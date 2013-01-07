@@ -27,10 +27,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -90,7 +93,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * 
      * @return returns the X500DNHandler instance
      */
-    public X500DNHandler getX500DNHandler() {
+    @Nonnull public X500DNHandler getX500DNHandler() {
         return x500DNHandler;
     }
 
@@ -99,21 +102,19 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * 
      * @param handler the new X500DNHandler instance
      */
-    public void setX500DNHandler(X500DNHandler handler) {
-        if (handler == null) {
-            throw new IllegalArgumentException("X500DNHandler may not be null");
-        }
-        x500DNHandler = handler;
+    public void setX500DNHandler(@Nonnull final X500DNHandler handler) {
+        x500DNHandler = Constraint.isNotNull(handler, "X500DNHandler cannot be null");
     }
 
     /** {@inheritDoc} */
-    public boolean handles(XMLObject keyInfoChild) {
+    public boolean handles(@Nonnull final XMLObject keyInfoChild) {
         return keyInfoChild instanceof X509Data;
     }
 
     /** {@inheritDoc} */
-    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild,
-            CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
+            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
+            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
 
         if (!handles(keyInfoChild)) {
             return null;
@@ -131,7 +132,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         List<X509CRL> crls = extractCRLs(x509Data);
 
         PublicKey resolvedPublicKey = null;
-        if (kiContext != null && kiContext.getKey() != null && kiContext.getKey() instanceof PublicKey) {
+        if (kiContext.getKey() != null && kiContext.getKey() instanceof PublicKey) {
             resolvedPublicKey = (PublicKey) kiContext.getKey();
         }
         X509Certificate entityCert = findEntityCert(certs, x509Data, resolvedPublicKey);
@@ -144,9 +145,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
 
-        if (kiContext != null) {
-            cred.getKeyNames().addAll(kiContext.getKeyNames());
-        }
+        cred.getKeyNames().addAll(kiContext.getKeyNames());
 
         CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
@@ -165,7 +164,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @return a list of X509CRLs
      * @throws SecurityException thrown if there is an error extracting CRL's
      */
-    private List<X509CRL> extractCRLs(X509Data x509Data) throws SecurityException {
+    @Nonnull private List<X509CRL> extractCRLs(@Nonnull final X509Data x509Data) throws SecurityException {
         List<X509CRL> crls = null;
         try {
             crls = KeyInfoSupport.getCRLs(x509Data);
@@ -185,7 +184,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @return a list of X509Certificates
      * @throws SecurityException thrown if there is an error extracting certificates
      */
-    private List<X509Certificate> extractCertificates(X509Data x509Data) throws SecurityException {
+    @Nonnull private List<X509Certificate> extractCertificates(@Nonnull final X509Data x509Data)
+            throws SecurityException {
         List<X509Certificate> certs = null;
         try {
             certs = KeyInfoSupport.getCertificates(x509Data);
@@ -205,7 +205,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @param resolvedKey a key which might have previously been resolved from a KeyValue
      * @return the end-entity certificate, if found
      */
-    protected X509Certificate findEntityCert(List<X509Certificate> certs, X509Data x509Data, PublicKey resolvedKey) {
+    @Nullable protected X509Certificate findEntityCert(@Nullable final List<X509Certificate> certs,
+            @Nonnull final X509Data x509Data, @Nullable final PublicKey resolvedKey) {
         if (certs == null || certs.isEmpty()) {
             return null;
         }
@@ -261,7 +262,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @param key key to use as search criteria
      * @return the matching certificate, or null
      */
-    protected X509Certificate findCertFromKey(List<X509Certificate> certs, PublicKey key) {
+    @Nullable protected X509Certificate findCertFromKey(@Nonnull final List<X509Certificate> certs,
+            @Nullable final PublicKey key) {
         if (key != null) {
             for (X509Certificate cert : certs) {
                 if (cert.getPublicKey().equals(key)) {
@@ -279,7 +281,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @param names X509 subject names to use as search criteria
      * @return the matching certificate, or null
      */
-    protected X509Certificate findCertFromSubjectNames(List<X509Certificate> certs, List<X509SubjectName> names) {
+    @Nullable protected X509Certificate findCertFromSubjectNames(@Nonnull final List<X509Certificate> certs,
+            @Nonnull final List<X509SubjectName> names) {
         for (X509SubjectName subjectName : names) {
             if (!Strings.isNullOrEmpty(subjectName.getValue())) {
                 X500Principal subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
@@ -300,7 +303,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @param serials X509 issuer serials to use as search criteria
      * @return the matching certificate, or null
      */
-    protected X509Certificate findCertFromIssuerSerials(List<X509Certificate> certs, List<X509IssuerSerial> serials) {
+    @Nullable protected X509Certificate findCertFromIssuerSerials(@Nonnull final List<X509Certificate> certs,
+            @Nonnull final List<X509IssuerSerial> serials) {
         for (X509IssuerSerial issuerSerial : serials) {
             if (issuerSerial.getX509IssuerName() == null || issuerSerial.getX509SerialNumber() == null) {
                 continue;
@@ -327,7 +331,8 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @param skis X509 subject key identifiers to use as search criteria
      * @return the matching certificate, or null
      */
-    protected X509Certificate findCertFromSubjectKeyIdentifier(List<X509Certificate> certs, List<X509SKI> skis) {
+    @Nullable protected X509Certificate findCertFromSubjectKeyIdentifier(@Nonnull final List<X509Certificate> certs,
+            @Nonnull final List<X509SKI> skis) {
         for (X509SKI ski : skis) {
             if (!Strings.isNullOrEmpty(ski.getValue())) {
                 byte[] xmlValue = Base64Support.decode(ski.getValue());

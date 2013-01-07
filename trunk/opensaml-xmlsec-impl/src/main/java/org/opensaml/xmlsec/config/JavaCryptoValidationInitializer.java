@@ -57,7 +57,7 @@ public class JavaCryptoValidationInitializer implements Initializer {
         boolean valid = true;
         
         // XML Encryption spec requires AES support (128 and 256).
-        // Some JRE's are known to ship with no JCE's that support
+        // Some JREs are known to ship with no JCEs that support
         // the ISO10126Padding padding scheme.
         
         String errorMsgAESPadding = "The JCE providers currently configured in the JVM do not support\n"
@@ -81,7 +81,8 @@ public class JavaCryptoValidationInitializer implements Initializer {
                 ConfigurationService.getConfigurationProperties().getProperty(CONFIG_PROPERTY_FAIL_IS_FATAL, "false");
             if ("true".equalsIgnoreCase(isFatal) || "1".equals(isFatal)) {
                 log.warn("Configuration indicates an invalid crypto configuration should be fatal");
-                throw new InitializationException("A fatal error was encountered validating required crypto capabilities");
+                throw new InitializationException(
+                        "A fatal error was encountered validating required crypto capabilities");
             }
         }
 

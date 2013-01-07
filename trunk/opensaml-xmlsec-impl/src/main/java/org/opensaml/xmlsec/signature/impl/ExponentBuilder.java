@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Exponent}
+ * Builder of {@link org.opensaml.xmlsec.signature.Exponent}.
  */
 public class ExponentBuilder extends AbstractXMLObjectBuilder<Exponent> implements XMLSignatureBuilder<Exponent> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public ExponentBuilder() {
     }

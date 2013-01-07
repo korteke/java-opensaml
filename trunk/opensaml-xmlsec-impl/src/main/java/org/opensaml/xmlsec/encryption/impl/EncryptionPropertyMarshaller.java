@@ -52,7 +52,8 @@ public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshalle
             attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) || ep.getUnknownAttributes().isIDAttribute(entry.getKey())) {
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
+                    || ep.getUnknownAttributes().isIDAttribute(entry.getKey())) {
                 attribute.getOwnerElement().setIdAttributeNode(attribute, true);
             }
         }

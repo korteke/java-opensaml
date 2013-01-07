@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.keyinfo.impl.provider;
 
 import java.security.Key;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoCredentialContext;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
@@ -35,20 +37,19 @@ public abstract class AbstractKeyInfoProvider implements KeyInfoProvider {
      * @param cred the Credential to evaluate
      * @return the Key contained in the credential, or null if it does not contain a key.
      */
-    protected Key extractKeyValue(Credential cred) {
-        if (cred == null) {
-            return null;
-        }
-        if (cred.getPublicKey() != null) {
-            return cred.getPublicKey();
-        } 
-        // This could happen if key is derived, e.g. key agreement, etc
-        if (cred.getSecretKey() != null) {
-            return cred.getSecretKey();
-        }
-        // Perhaps unlikely, but go ahead and check
-        if (cred.getPrivateKey() != null) {
-            return cred.getPrivateKey(); 
+    @Nullable protected Key extractKeyValue(@Nullable final Credential cred) {
+        if (cred != null) {
+            if (cred.getPublicKey() != null) {
+                return cred.getPublicKey();
+            } 
+            // This could happen if key is derived, e.g. key agreement, etc
+            if (cred.getSecretKey() != null) {
+                return cred.getSecretKey();
+            }
+            // Perhaps unlikely, but go ahead and check
+            if (cred.getPrivateKey() != null) {
+                return cred.getPrivateKey(); 
+            }
         }
         return null;
     }
@@ -61,10 +62,10 @@ public abstract class AbstractKeyInfoProvider implements KeyInfoProvider {
      * 
      * @return a new KeyInfo credential context
      */
-    protected KeyInfoCredentialContext buildCredentialContext(KeyInfoResolutionContext kiContext) {
+    @Nullable protected KeyInfoCredentialContext buildCredentialContext(
+            @Nullable final KeyInfoResolutionContext kiContext) {
         // Simple for now, might do other stuff later.
-        // Just want to provide a single place to build credential contexts for
-        // a provider.
+        // Just want to provide a single place to build credential contexts for a provider.
         if (kiContext != null) {
             return new KeyInfoCredentialContext(kiContext.getKeyInfo());
         } else {

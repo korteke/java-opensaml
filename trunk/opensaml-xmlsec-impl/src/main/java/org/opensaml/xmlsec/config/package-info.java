@@ -15,24 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature.impl;
-
-import org.opensaml.xmlsec.signature.G;
-
-/**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.G}.
- */
-public class GImpl extends CryptoBinaryImpl implements G {
-
-    /**
-     * Constructor.
-     *
-     * @param namespaceURI the namespace the element is in
-     * @param elementLocalName the local name of the XML element this Object represents
-     * @param namespacePrefix the prefix for the given namespace
-     */
-    protected GImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-}
+/** Configuration and initialization of security. */
+package org.opensaml.xmlsec.config;

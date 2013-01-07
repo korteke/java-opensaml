@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.P}
+ * Builder of {@link org.opensaml.xmlsec.signature.P}.
  */
 public class PBuilder extends AbstractXMLObjectBuilder<P> implements XMLSignatureBuilder<P> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public PBuilder() {
     }
@@ -41,7 +40,8 @@ public class PBuilder extends AbstractXMLObjectBuilder<P> implements XMLSignatur
 
     /** {@inheritDoc} */
     public P buildObject() {
-        return buildObject(SignatureConstants.XMLSIG_NS, P.DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, P.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 
 }

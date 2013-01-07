@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.RSAKeyValue}
+ * Builder of {@link org.opensaml.xmlsec.signature.RSAKeyValue}.
  */
 public class RSAKeyValueBuilder extends AbstractXMLObjectBuilder<RSAKeyValue> implements
         XMLSignatureBuilder<RSAKeyValue> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public RSAKeyValueBuilder() {
     }

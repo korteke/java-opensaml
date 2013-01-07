@@ -21,6 +21,9 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -48,25 +51,28 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
     private final Logger log = LoggerFactory.getLogger(DSAKeyValueProvider.class);
 
     /** {@inheritDoc} */
-    public boolean handles(XMLObject keyInfoChild) {
+    public boolean handles(@Nonnull final XMLObject keyInfoChild) {
         return getDSAKeyValue(keyInfoChild) != null;
     }
 
     /** {@inheritDoc} */
-    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
-            CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
+            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
+            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
         
         DSAKeyValue keyValue = getDSAKeyValue(keyInfoChild);
         if (keyValue == null) {
             return null;
         }
         
-        KeyAlgorithmCriterion algorithmCriteria = criteriaSet.get(KeyAlgorithmCriterion.class);
-        if (algorithmCriteria != null 
-                && algorithmCriteria.getKeyAlgorithm() != null 
-                && ! algorithmCriteria.getKeyAlgorithm().equals("DSA")) {
-            log.debug("Criterion specified non-DSA key algorithm, skipping");
-            return null;
+        if (criteriaSet != null) {
+            KeyAlgorithmCriterion algorithmCriteria = criteriaSet.get(KeyAlgorithmCriterion.class);
+            if (algorithmCriteria != null 
+                    && algorithmCriteria.getKeyAlgorithm() != null 
+                    && !"DSA".equals(algorithmCriteria.getKeyAlgorithm())) {
+                log.debug("Criterion specified non-DSA key algorithm, skipping");
+                return null;
+            }
         }
         
         log.debug("Attempting to extract credential from a DSAKeyValue");
@@ -80,9 +86,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
             throw new SecurityException("Error extracting DSA key value", e);
         }
         BasicCredential cred = new BasicCredential(pubKey);
-        if (kiContext != null) {
-            cred.getKeyNames().addAll(kiContext.getKeyNames());
-        }
+        cred.getKeyNames().addAll(kiContext.getKeyNames());
         
         CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
@@ -101,16 +105,15 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
      * @param xmlObject an XML object, presumably either a {@link KeyValue} or an {@link DSAKeyValue}
      * @return the DSAKeyValue which was found, or null if none
      */
-    protected DSAKeyValue getDSAKeyValue(XMLObject xmlObject) {
-        if (xmlObject == null) {return null; }
+    protected DSAKeyValue getDSAKeyValue(@Nonnull final XMLObject xmlObject) {
         
         if (xmlObject instanceof DSAKeyValue) {
             return (DSAKeyValue) xmlObject;
-        }
-        
-        if (xmlObject instanceof KeyValue) {
+        } else if (xmlObject instanceof KeyValue) {
             return ((KeyValue) xmlObject).getDSAKeyValue();
+        } else {
+            return null;
         }
-        return null;
     }
+    
 }

@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.SPKISexp}
+ * Builder of {@link org.opensaml.xmlsec.signature.SPKISexp}.
  */
 public class SPKISexpBuilder extends AbstractXMLObjectBuilder<SPKISexp> implements XMLSignatureBuilder<SPKISexp> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public SPKISexpBuilder() {
     }

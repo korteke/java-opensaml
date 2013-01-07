@@ -20,6 +20,8 @@ package org.opensaml.xmlsec.keyinfo.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
@@ -87,7 +89,7 @@ public class CollectionKeyInfoCredentialResolver extends CollectionCredentialRes
      *
      * @param credentials the credential collection which is the backing store for the resolver
      */
-    public CollectionKeyInfoCredentialResolver(Collection<Credential> credentials) {
+    public CollectionKeyInfoCredentialResolver(@Nonnull final Collection<Credential> credentials) {
         super(credentials);
     }
 

@@ -21,16 +21,16 @@ import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.signature.impl.KeyInfoTypeImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.RecipientKeyInfo}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.RecipientKeyInfo}.
  */
 public class RecipientKeyInfoImpl extends KeyInfoTypeImpl implements RecipientKeyInfo {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected RecipientKeyInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

@@ -21,16 +21,16 @@ import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPKeyID}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPKeyID}.
  */
 public class PGPKeyIDImpl extends XSBase64BinaryImpl implements PGPKeyID {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected PGPKeyIDImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

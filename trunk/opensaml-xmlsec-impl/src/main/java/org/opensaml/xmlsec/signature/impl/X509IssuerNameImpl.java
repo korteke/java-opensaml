@@ -21,16 +21,16 @@ import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.signature.X509IssuerName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerName}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerName}.
  */
 public class X509IssuerNameImpl extends XSStringImpl implements X509IssuerName {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected X509IssuerNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

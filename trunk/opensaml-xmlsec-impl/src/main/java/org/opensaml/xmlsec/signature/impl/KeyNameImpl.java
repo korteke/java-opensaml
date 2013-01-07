@@ -21,16 +21,16 @@ import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.signature.KeyName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyName}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyName}.
  */
 public class KeyNameImpl extends XSStringImpl implements KeyName {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected KeyNameImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

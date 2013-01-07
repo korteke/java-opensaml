@@ -21,16 +21,16 @@ import org.opensaml.core.xml.schema.impl.XSIntegerImpl;
 import org.opensaml.xmlsec.encryption.KeySize;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.KeySize}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.KeySize}.
  */
 public class KeySizeImpl extends XSIntegerImpl implements KeySize {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected KeySizeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.Q}
+ * Builder of {@link org.opensaml.xmlsec.encryption.Q}.
  */
 public class QBuilder extends AbstractXMLObjectBuilder<Q> implements XMLEncryptionBuilder<Q> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public QBuilder() {
     }

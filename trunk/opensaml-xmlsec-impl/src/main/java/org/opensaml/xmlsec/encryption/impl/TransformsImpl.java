@@ -28,18 +28,19 @@ import org.opensaml.xmlsec.encryption.Transforms;
 import org.opensaml.xmlsec.signature.Transform;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Transforms}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Transforms}.
  */
 public class TransformsImpl extends AbstractXMLObject implements Transforms {
     
+    /** Transform child elements. */
     private final XMLObjectChildrenList transforms;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected TransformsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

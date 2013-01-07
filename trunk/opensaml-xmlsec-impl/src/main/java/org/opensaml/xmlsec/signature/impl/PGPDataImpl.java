@@ -31,25 +31,25 @@ import org.opensaml.xmlsec.signature.PGPKeyID;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPData}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPData}.
  */
 public class PGPDataImpl extends AbstractXMLObject implements PGPData {
     
-    /** PGPKeyID child element value */
+    /** PGPKeyID child element value. */
     private PGPKeyID pgpKeyID;
     
-    /** PGPKeyPacket child element value */
+    /** PGPKeyPacket child element value. */
     private PGPKeyPacket pgpKeyPacket;
     
-    /** List of &lt;any&gt; wildcard XMLObject children */
+    /** List of &lt;any&gt; wildcard XMLObject children. */
     private final IndexedXMLObjectChildrenList xmlChildren;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected PGPDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

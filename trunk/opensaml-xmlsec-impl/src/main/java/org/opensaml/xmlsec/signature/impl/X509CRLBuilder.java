@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.X509CRL}
+ * Builder of {@link org.opensaml.xmlsec.signature.X509CRL}.
  */
 public class X509CRLBuilder extends AbstractXMLObjectBuilder<X509CRL> implements XMLSignatureBuilder<X509CRL> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public X509CRLBuilder() {
     }

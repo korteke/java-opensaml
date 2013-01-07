@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.DSAKeyValue}
+ * Builder of {@link org.opensaml.xmlsec.signature.DSAKeyValue}.
  */
 public class DSAKeyValueBuilder extends AbstractXMLObjectBuilder<DSAKeyValue> implements
         XMLSignatureBuilder<DSAKeyValue> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public DSAKeyValueBuilder() {
     }

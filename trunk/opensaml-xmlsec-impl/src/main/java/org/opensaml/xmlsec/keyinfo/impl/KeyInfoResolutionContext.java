@@ -23,6 +23,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
@@ -53,14 +56,14 @@ public class KeyInfoResolutionContext {
      * These may have for example been extracted from KeyName elements present,
      * or may have been inferred from the context in which the KeyInfo exists or
      * is being used. */
-    private Set<String> keyNames;
+    private final Set<String> keyNames;
     
     /** Get the key currently known to be represented by the KeyInfo. */
     private Key key;
     
     /** This list provides KeyInfo resolvers and providers in a particular processing
      * environment access to credentials that may have already been previously resolved. */
-    private Collection<Credential> resolvedCredentials;
+    private final Collection<Credential> resolvedCredentials;
     
     /** Extensible map of properties used to share state amongst providers and/or resolver logic. */
     private final Map<String, Object> properties;
@@ -71,7 +74,7 @@ public class KeyInfoResolutionContext {
      * @param credentials a reference to the collection in which credentials previously
      *          resolved in a processing flow are being stored
      */
-    public KeyInfoResolutionContext(Collection<Credential> credentials) {
+    public KeyInfoResolutionContext(@Nonnull final Collection<Credential> credentials) {
         resolvedCredentials = Collections.unmodifiableCollection(credentials);
         properties = new LazyMap<String, Object>();
         keyNames = new LazySet<String>();
@@ -82,7 +85,7 @@ public class KeyInfoResolutionContext {
      * 
      * @return Returns the keyInfo.
      */
-    public KeyInfo getKeyInfo() {
+    @Nullable public KeyInfo getKeyInfo() {
         return keyInfo;
     }
     
@@ -91,7 +94,7 @@ public class KeyInfoResolutionContext {
      * 
      * @param newKeyInfo The keyInfo to set.
      */
-    public void setKeyInfo(KeyInfo newKeyInfo) {
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo) {
         keyInfo = newKeyInfo;
     }
     
@@ -106,7 +109,7 @@ public class KeyInfoResolutionContext {
      * @return the set of key names
      * 
      * */
-    public Set<String> getKeyNames() {
+    @Nonnull public Set<String> getKeyNames() {
         return keyNames;
     }
     
@@ -116,7 +119,7 @@ public class KeyInfoResolutionContext {
      * @return the key currently known to be represented by the KeyInfo
      *          or null if not currently known
      */
-    public Key getKey() {
+    @Nullable public Key getKey() {
         return key;
     }
     
@@ -125,7 +128,7 @@ public class KeyInfoResolutionContext {
      * 
      * @param newKey the new Key
      */
-    public void setKey(Key newKey) {
+    public void setKey(@Nullable final Key newKey) {
         key = newKey;
     }
     
@@ -134,7 +137,7 @@ public class KeyInfoResolutionContext {
      * 
      * @return Returns the keyValueCredential.
      */
-    public Collection<Credential> getResolvedCredentials() {
+    @Nonnull public Collection<Credential> getResolvedCredentials() {
         return resolvedCredentials;
     }
     
@@ -143,7 +146,7 @@ public class KeyInfoResolutionContext {
      * 
      * @return Returns the properties.
      */
-    public Map<String, Object> getProperties() {
+    @Nonnull public Map<String, Object> getProperties() {
         return properties;
     }
 }
