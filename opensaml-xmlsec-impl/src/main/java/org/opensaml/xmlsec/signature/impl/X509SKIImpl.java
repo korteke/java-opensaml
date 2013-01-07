@@ -21,16 +21,16 @@ import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.signature.X509SKI;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SKI}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SKI}.
  */
 public class X509SKIImpl extends XSBase64BinaryImpl implements X509SKI {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected X509SKIImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

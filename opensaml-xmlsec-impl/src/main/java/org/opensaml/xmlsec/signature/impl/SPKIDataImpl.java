@@ -30,19 +30,19 @@ import org.opensaml.xmlsec.signature.SPKIData;
 import org.opensaml.xmlsec.signature.SPKISexp;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.SPKIData}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.SPKIData}.
  */
 public class SPKIDataImpl extends AbstractXMLObject implements SPKIData {
     
-    /** The list of XMLObject child elements */
+    /** The list of XMLObject child elements. */
     private final IndexedXMLObjectChildrenList indexedChildren;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected SPKIDataImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

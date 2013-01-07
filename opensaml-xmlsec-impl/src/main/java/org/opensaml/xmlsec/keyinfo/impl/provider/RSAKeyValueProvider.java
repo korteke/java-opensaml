@@ -21,6 +21,9 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -48,24 +51,27 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
     private final Logger log = LoggerFactory.getLogger(RSAKeyValueProvider.class);
 
     /** {@inheritDoc} */
-    public boolean handles(XMLObject keyInfoChild) {
+    public boolean handles(@Nonnull final XMLObject keyInfoChild) {
         return getRSAKeyValue(keyInfoChild) != null;
     }
 
     /** {@inheritDoc} */
-    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild,
-            CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException {
+    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
+            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
+            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
 
         RSAKeyValue keyValue = getRSAKeyValue(keyInfoChild);
         if (keyValue == null) {
             return null;
         }
 
-        KeyAlgorithmCriterion algorithmCriteria = criteriaSet.get(KeyAlgorithmCriterion.class);
-        if (algorithmCriteria != null && algorithmCriteria.getKeyAlgorithm() != null
-                && !algorithmCriteria.getKeyAlgorithm().equals("RSA")) {
-            log.debug("Criterion specified non-RSA key algorithm, skipping");
-            return null;
+        if (criteriaSet != null) {
+            KeyAlgorithmCriterion algorithmCriteria = criteriaSet.get(KeyAlgorithmCriterion.class);
+            if (algorithmCriteria != null && algorithmCriteria.getKeyAlgorithm() != null
+                    && !"RSA".equals(algorithmCriteria.getKeyAlgorithm())) {
+                log.debug("Criterion specified non-RSA key algorithm, skipping");
+                return null;
+            }
         }
 
         log.debug("Attempting to extract credential from an RSAKeyValue");
@@ -78,9 +84,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
             throw new SecurityException("Error extracting RSA key value", e);
         }
         BasicCredential cred = new BasicCredential(pubKey);
-        if (kiContext != null) {
-            cred.getKeyNames().addAll(kiContext.getKeyNames());
-        }
+        cred.getKeyNames().addAll(kiContext.getKeyNames());
 
         CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
@@ -99,18 +103,14 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
      * @param xmlObject an XML object, presumably either a {@link KeyValue} or an {@link RSAKeyValue}
      * @return the RSAKeyValue which was found, or null if none
      */
-    protected RSAKeyValue getRSAKeyValue(XMLObject xmlObject) {
-        if (xmlObject == null) {
-            return null;
-        }
+    @Nullable protected RSAKeyValue getRSAKeyValue(@Nonnull final XMLObject xmlObject) {
 
         if (xmlObject instanceof RSAKeyValue) {
             return (RSAKeyValue) xmlObject;
-        }
-
-        if (xmlObject instanceof KeyValue) {
+        } else if (xmlObject instanceof KeyValue) {
             return ((KeyValue) xmlObject).getRSAKeyValue();
+        } else {
+            return null;
         }
-        return null;
     }
 }

@@ -20,16 +20,16 @@ package org.opensaml.xmlsec.signature.impl;
 import org.opensaml.xmlsec.signature.Modulus;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.Exponent}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.Exponent}.
  */
 public class ModulusImpl extends CryptoBinaryImpl implements Modulus {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected ModulusImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

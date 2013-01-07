@@ -25,7 +25,8 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 /**
  * Builder of {@link org.opensaml.xmlsec.encryption.DHKeyValue}.
  */
-public class DHKeyValueBuilder extends AbstractXMLObjectBuilder<DHKeyValue> implements XMLEncryptionBuilder<DHKeyValue> {
+public class DHKeyValueBuilder
+    extends AbstractXMLObjectBuilder<DHKeyValue> implements XMLEncryptionBuilder<DHKeyValue> {
 
     /** Constructor. */
     public DHKeyValueBuilder() {

@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -67,24 +71,20 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  */
 public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredentialResolver {
     
-    /** The resovler which is used to resolve local credentials. */
-    private CredentialResolver localCredResolver;
+    /** The resolver which is used to resolve local credentials. */
+    private final CredentialResolver localCredResolver;
 
     /**
      * Constructor.
      *
-     * @param keyInfoProviders the list of KeyInfoProvider's to use in this resolver
+     * @param keyInfoProviders the list of {@link KeyInfoProvider}s to use in this resolver
      * @param localCredentialResolver resolver of local credentials
      */
-    public LocalKeyInfoCredentialResolver(List<KeyInfoProvider> keyInfoProviders,
-            CredentialResolver localCredentialResolver) {
+    public LocalKeyInfoCredentialResolver(@Nonnull final List<KeyInfoProvider> keyInfoProviders,
+            @Nonnull final CredentialResolver localCredentialResolver) {
         super(keyInfoProviders);
         
-        if (localCredentialResolver == null) {
-            throw new IllegalArgumentException("Local credential resolver must be supplied");
-        }
-        
-        localCredResolver = localCredentialResolver;
+        localCredResolver = Constraint.isNotNull(localCredentialResolver, "Local credential resolver cannot be null");
     }
     
     /**
@@ -95,13 +95,14 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      *
      * @return resolver of local credentials
      */
-    public CredentialResolver getLocalCredentialResolver() {
+    @Nonnull public CredentialResolver getLocalCredentialResolver() {
         return localCredResolver;
     }
 
     /** {@inheritDoc} */
-    protected void postProcess(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws ResolverException {
+    protected void postProcess(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
+                    throws ResolverException {
         
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
@@ -130,7 +131,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      * @param credential the credential to evaluate
      * @return true if the credential has either a private or secret key, false otherwise
      */
-    protected boolean isLocalCredential(Credential credential) {
+    protected boolean isLocalCredential(@Nonnull final Credential credential) {
         return credential.getPrivateKey() != null || credential.getSecretKey() != null;
     }
 
@@ -142,7 +143,8 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      * @throws ResolverException  thrown if there is a problem resolving credentials from the 
      *          local credential resolver
      */
-    protected Collection<? extends Credential> resolveByKeyName(String keyName) throws ResolverException {
+    @Nonnull protected Collection<? extends Credential> resolveByKeyName(@Nonnull final String keyName)
+            throws ResolverException {
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyNameCriterion(keyName) );
@@ -164,7 +166,8 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      * @throws ResolverException  thrown if there is a problem resolving credentials from the 
      *          local credential resolver
      */
-    protected Collection<? extends Credential> resolveByPublicKey(PublicKey publicKey) throws ResolverException {
+    @Nonnull protected Collection<? extends Credential> resolveByPublicKey(@Nonnull final PublicKey publicKey)
+            throws ResolverException {
         ArrayList<Credential> localCreds = new ArrayList<Credential>();
         
         CriteriaSet criteriaSet = new CriteriaSet( new PublicKeyCriterion(publicKey) );

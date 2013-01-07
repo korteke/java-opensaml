@@ -28,22 +28,22 @@ import org.opensaml.xmlsec.signature.Modulus;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.RSAKeyValue}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.RSAKeyValue}.
  */
 public class RSAKeyValueImpl extends AbstractXMLObject implements RSAKeyValue {
     
-    /** Modulus child element value */
+    /** Modulus child element value. */
     private Modulus modulus;
     
-    /** Exponent child element value */
+    /** Exponent child element value. */
     private Exponent exponent;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected RSAKeyValueImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

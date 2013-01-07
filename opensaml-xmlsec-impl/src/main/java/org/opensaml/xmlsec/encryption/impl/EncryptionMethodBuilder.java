@@ -23,7 +23,7 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionMethod}
+ * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionMethod}.
  */
 public class EncryptionMethodBuilder extends AbstractXMLObjectBuilder<EncryptionMethod> implements
         XMLEncryptionBuilder<EncryptionMethod> {

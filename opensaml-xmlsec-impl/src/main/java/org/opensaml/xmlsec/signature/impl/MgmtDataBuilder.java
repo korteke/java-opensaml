@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.MgmtData}
+ * Builder of {@link org.opensaml.xmlsec.signature.MgmtData}.
  */
 public class MgmtDataBuilder extends AbstractXMLObjectBuilder<MgmtData> implements XMLSignatureBuilder<MgmtData> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public MgmtDataBuilder() {
     }

@@ -21,16 +21,16 @@ import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.signature.impl.KeyInfoTypeImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo}.
  */
 public class OriginatorKeyInfoImpl extends KeyInfoTypeImpl implements OriginatorKeyInfo {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected OriginatorKeyInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

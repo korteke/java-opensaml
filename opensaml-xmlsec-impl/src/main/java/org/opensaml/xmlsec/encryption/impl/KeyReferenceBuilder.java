@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.KeyReference}
+ * Builder of {@link org.opensaml.xmlsec.encryption.KeyReference}.
  */
 public class KeyReferenceBuilder extends AbstractXMLObjectBuilder<KeyReference> implements
         XMLEncryptionBuilder<KeyReference> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public KeyReferenceBuilder() {
     }

@@ -27,25 +27,25 @@ import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.Transforms;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.RetrievalMethod}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.RetrievalMethod}.
  */
 public class RetrievalMethodImpl extends AbstractXMLObject implements RetrievalMethod {
     
-    /** URI attribute value */
+    /** URI attribute value. */
     private String uri;
     
-    /** Type attribute value */
+    /** Type attribute value. */
     private String type;
     
-    /** Transforms attribute value */
+    /** Transforms attribute value. */
     private Transforms transforms;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected RetrievalMethodImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

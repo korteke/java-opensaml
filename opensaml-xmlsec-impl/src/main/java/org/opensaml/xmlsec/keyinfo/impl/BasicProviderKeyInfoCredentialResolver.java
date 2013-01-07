@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -49,10 +51,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link KeyInfoCredentialResolver} which resolves credentials based on a {@link KeyInfo} element
- * using a configured list of {@link KeyInfoProvider}'s and optional post-processing hooks.
+ * using a configured list of {@link KeyInfoProvider}s and optional post-processing hooks.
  * 
  * <p>
- * The majority of the processing of the KeyInfo and extraction of {@link Credential}'s from the KeyInfo is handled by
+ * The majority of the processing of the KeyInfo and extraction of {@link Credential}s from the KeyInfo is handled by
  * instances of {@link KeyInfoProvider}. An ordered list of KeyInfoProviders must be supplied to the resolver when it
  * is constructed.
  * </p>
@@ -109,14 +111,14 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
     private final Logger log = LoggerFactory.getLogger(BasicProviderKeyInfoCredentialResolver.class);
 
     /** List of KeyInfo providers that are registered on this instance. */
-    private List<KeyInfoProvider> providers;
+    private final List<KeyInfoProvider> providers;
 
     /**
      * Constructor.
      * 
      * @param keyInfoProviders the list of KeyInfoProvider's to use in this resolver
      */
-    public BasicProviderKeyInfoCredentialResolver(List<KeyInfoProvider> keyInfoProviders) {
+    public BasicProviderKeyInfoCredentialResolver(@Nonnull final List<KeyInfoProvider> keyInfoProviders) {
         super();
 
         providers = new ArrayList<KeyInfoProvider>();
@@ -128,17 +130,23 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * 
      * @return the list of providers configured for this resolver instance
      */
-    protected List<KeyInfoProvider> getProviders() {
+    @Nonnull protected List<KeyInfoProvider> getProviders() {
         return providers;
     }
 
     /** {@inheritDoc} */
-    protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
-        KeyInfoCriterion kiCriteria = criteriaSet.get(KeyInfoCriterion.class);
+    @Nonnull protected Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
+            throws ResolverException {
+        
+        KeyInfoCriterion kiCriteria = null;
+        if (criteriaSet != null) {
+            kiCriteria = criteriaSet.get(KeyInfoCriterion.class);
+        }
+
         if (kiCriteria == null) {
             log.error("No KeyInfo criteria supplied, resolver could not process");
-            throw new ResolverException("Credential criteria set did not contain an instance of"
-                    + "KeyInfoCredentialCriteria");
+            throw new ResolverException(
+                    "Credential criteria set did not contain an instance of KeyInfoCredentialCriteria");
         }
         KeyInfo keyInfo = kiCriteria.getKeyInfo();
 
@@ -177,8 +185,9 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param credentials the list which will store the resolved credentials
      * @throws ResolverException thrown if there is an error during processing
      */
-    private void processKeyInfo(KeyInfo keyInfo, KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws ResolverException {
+    private void processKeyInfo(@Nonnull final KeyInfo keyInfo, @Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
+                    throws ResolverException {
 
         // Initialize the resolution context that will be used by the provider plugins.
         // This processes the KeyName and the KeyValue children, if either are present.
@@ -215,7 +224,8 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param credentials the list which will store the resolved credentials
      * @throws ResolverException thrown if there is an error during processing
      */
-    protected void postProcess(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet, List<Credential> credentials)
+    protected void postProcess(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
             throws ResolverException {
 
     }
@@ -230,8 +240,9 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * 
      * @throws ResolverException thrown if there is an error during processing
      */
-    protected void postProcessEmptyCredentials(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws ResolverException {
+    protected void postProcessEmptyCredentials(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
+                    throws ResolverException {
 
     }
 
@@ -247,8 +258,9 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param credentials the list which will store the resolved credentials
      * @throws ResolverException thrown if there is a provider error processing the KeyInfo children
      */
-    protected void processKeyInfoChildren(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            List<Credential> credentials) throws ResolverException {
+    protected void processKeyInfoChildren(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
+                    throws ResolverException {
 
         for (XMLObject keyInfoChild : kiContext.getKeyInfo().getXMLObjects()) {
 
@@ -256,7 +268,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
                 continue;
             }
 
-            log.debug("Processing KeyInfo child with qname: {}", keyInfoChild.getElementQName());
+            log.debug("Processing KeyInfo child with QName: {}", keyInfoChild.getElementQName());
             Collection<Credential> childCreds = processKeyInfoChild(kiContext, criteriaSet, keyInfoChild);
 
             if (childCreds != null && !childCreds.isEmpty()) {
@@ -264,12 +276,13 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             } else {
                 // Not really an error or warning if KeyName doesn't produce a credential
                 if (keyInfoChild instanceof KeyName) {
-                    log.debug("KeyName, with value {}, did not independently produce a credential based on any registered providers",
-                                    ((KeyName) keyInfoChild).getValue());
+                    log.debug("KeyName {} did not independently produce a credential based on any registered providers",
+                            ((KeyName) keyInfoChild).getValue());
 
                 } else {
-                    log.warn("No credentials could be extracted from KeyInfo child with qname {} by any registered provider",
-                                    keyInfoChild.getElementQName());
+                    log.warn(
+                        "No credentials could be extracted from KeyInfo child with QName {} by any registered provider",
+                            keyInfoChild.getElementQName());
                 }
             }
         }
@@ -288,8 +301,8 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @return the collection of resolved credentials, or null
      * @throws ResolverException thrown if there is a provider error processing the KeyInfo child
      */
-    protected Collection<Credential> processKeyInfoChild(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet,
-            XMLObject keyInfoChild) throws ResolverException {
+    @Nullable protected Collection<Credential> processKeyInfoChild(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final XMLObject keyInfoChild) throws ResolverException {
 
         for (KeyInfoProvider provider : getProviders()) {
 
@@ -329,8 +342,8 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param criteriaSet the credential criteria used to resolve credentials
      * @throws ResolverException thrown if there is an error processing the KeyValue children
      */
-    protected void initResolutionContext(KeyInfoResolutionContext kiContext, KeyInfo keyInfo, CriteriaSet criteriaSet)
-            throws ResolverException {
+    protected void initResolutionContext(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nonnull final KeyInfo keyInfo, @Nullable final CriteriaSet criteriaSet) throws ResolverException {
 
         kiContext.setKeyInfo(keyInfo);
 
@@ -361,7 +374,8 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param keyValues the KeyValue children to evaluate
      * @throws ResolverException thrown if there is an error resolving the key from the KeyValue
      */
-    protected void resolveKeyValue(KeyInfoResolutionContext kiContext, CriteriaSet criteriaSet, List<KeyValue> keyValues)
+    protected void resolveKeyValue(@Nonnull final KeyInfoResolutionContext kiContext,
+            @Nullable final CriteriaSet criteriaSet, @Nonnull final List<KeyValue> keyValues)
             throws ResolverException {
 
         for (KeyValue keyValue : keyValues) {
@@ -387,7 +401,8 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @return a basic credential with the specified key and key names
      * @throws ResolverException if there is an error building the credential
      */
-    protected Credential buildBasicCredential(Key key, Set<String> keyNames) throws ResolverException {
+    @Nullable protected Credential buildBasicCredential(@Nullable final Key key, @Nonnull final Set<String> keyNames)
+            throws ResolverException {
         if (key == null) {
             log.debug("Key supplied was null, could not build credential");
             return null;
@@ -409,18 +424,17 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
                     basicCred = new BasicCredential(publicKey, privateKey);
                 } else {
                     log.error("Failed to derive public key from private key");
-                    return null;
                 }
             } catch (KeyException e) {
                 log.error("Could not derive public key from private key", e);
-                return null;
             }
         } else {
             log.error(String.format("Key was of an unsupported type '%s'", key.getClass().getName()));
-            return null;
         }
-        
-        basicCred.getKeyNames().addAll(keyNames);
+
+        if (basicCred != null) {
+            basicCred.getKeyNames().addAll(keyNames);
+        }
 
         return basicCred;
     }
@@ -431,20 +445,19 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      * @param cred the Credential to evaluate
      * @return the Key contained in the credential, or null if it does not contain a key.
      */
-    protected Key extractKeyValue(Credential cred) {
-        if (cred == null) {
-            return null;
-        }
-        if (cred.getPublicKey() != null) {
-            return cred.getPublicKey();
-        }
-        // This could happen if key is derived, e.g. key agreement, etc
-        if (cred.getSecretKey() != null) {
-            return cred.getSecretKey();
-        }
-        // Perhaps unlikely, but go ahead and check
-        if (cred.getPrivateKey() != null) {
-            return cred.getPrivateKey();
+    @Nullable protected Key extractKeyValue(@Nullable final Credential cred) {
+        if (cred != null) {
+            if (cred.getPublicKey() != null) {
+                return cred.getPublicKey();
+            }
+            // This could happen if key is derived, e.g. key agreement, etc
+            if (cred.getSecretKey() != null) {
+                return cred.getSecretKey();
+            }
+            // Perhaps unlikely, but go ahead and check
+            if (cred.getPrivateKey() != null) {
+                return cred.getPrivateKey();
+            }
         }
         return null;
     }

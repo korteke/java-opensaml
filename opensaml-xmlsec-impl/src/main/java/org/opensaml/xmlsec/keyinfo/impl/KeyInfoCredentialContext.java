@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.keyinfo.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
@@ -26,14 +28,14 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 public class KeyInfoCredentialContext implements CredentialContext {
     
     /** The KeyInfo context. */
-    private KeyInfo keyInfo;
+    private final KeyInfo keyInfo;
     
     /**
      * Constructor.
      *
      * @param ki the KeyInfo context 
      */
-    public KeyInfoCredentialContext(KeyInfo ki) {
+    public KeyInfoCredentialContext(@Nonnull final KeyInfo ki) {
        keyInfo = ki; 
     }
     
@@ -42,7 +44,7 @@ public class KeyInfoCredentialContext implements CredentialContext {
      * 
      * @return the KeyInfo context
      */
-    public KeyInfo getKeyInfo() {
+    @Nonnull public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 }

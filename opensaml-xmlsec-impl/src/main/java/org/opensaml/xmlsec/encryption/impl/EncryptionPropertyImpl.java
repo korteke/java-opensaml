@@ -29,29 +29,29 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}.
  */
 public class EncryptionPropertyImpl extends AbstractXMLObject implements
         org.opensaml.xmlsec.encryption.EncryptionProperty {
     
-    /** Target attribute value */
+    /** Target attribute value. */
     private String target;
     
-    /** Id attribute value */
+    /** Id attribute value. */
     private String id;
     
-    /** Child elements from the &lt;any&gt; content model */
+    /** Child elements from the &lt;any&gt; content model. */
     private final IndexedXMLObjectChildrenList unknownChildren;
     
-    /** "anyAttribute" attributes */
+    /** "anyAttribute" attributes. */
     private final AttributeMap unknownAttributes;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected EncryptionPropertyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}
+ * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}.
  */
 public class EncryptionPropertyBuilder extends AbstractXMLObjectBuilder<EncryptionProperty> implements
         XMLEncryptionBuilder<EncryptionProperty> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public EncryptionPropertyBuilder() {
     }

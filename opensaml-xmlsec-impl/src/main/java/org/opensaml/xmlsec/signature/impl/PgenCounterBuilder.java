@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.PgenCounter}
+ * Builder of {@link org.opensaml.xmlsec.signature.PgenCounter}.
  */
 public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> implements
         XMLSignatureBuilder<PgenCounter> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public PgenCounterBuilder() {
     }

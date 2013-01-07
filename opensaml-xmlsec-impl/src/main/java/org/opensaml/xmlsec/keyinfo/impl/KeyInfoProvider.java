@@ -19,6 +19,9 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -46,8 +49,9 @@ public interface KeyInfoProvider {
      * @throws SecurityException if there is an error during credential resolution.  
      *          Note: failure to resolve a credential is not an error.
      */
-    public Collection<Credential> process(KeyInfoCredentialResolver resolver, XMLObject keyInfoChild, 
-            CriteriaSet criteriaSet, KeyInfoResolutionContext kiContext) throws SecurityException;
+    @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
+            @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
+            @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException;
     
     /**
      * Evaluate whether the given provider should attempt to handle resolving a credential
@@ -60,6 +64,6 @@ public interface KeyInfoProvider {
      * 
      * @return true if the provider should attempt to resolve credentials, false otherwise
      */
-    public boolean handles(XMLObject keyInfoChild);
+    public boolean handles(@Nonnull final XMLObject keyInfoChild);
 
 }

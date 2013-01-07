@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.Seed}
+ * Builder of {@link org.opensaml.xmlsec.encryption.Seed}.
  */
 public class SeedBuilder extends AbstractXMLObjectBuilder<Seed> implements XMLEncryptionBuilder<Seed> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public SeedBuilder() {
     }

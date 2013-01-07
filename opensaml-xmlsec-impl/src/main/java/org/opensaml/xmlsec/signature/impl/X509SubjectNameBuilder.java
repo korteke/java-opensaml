@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.X509SubjectName}
+ * Builder of {@link org.opensaml.xmlsec.signature.X509SubjectName}.
  */
 public class X509SubjectNameBuilder extends AbstractXMLObjectBuilder<X509SubjectName> implements
         XMLSignatureBuilder<X509SubjectName> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public X509SubjectNameBuilder() {
     }

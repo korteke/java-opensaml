@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.KANonce}
+ * Builder of {@link org.opensaml.xmlsec.encryption.KANonce}.
  */
 public class KANonceBuilder extends AbstractXMLObjectBuilder<KANonce> implements XMLEncryptionBuilder<KANonce> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public KANonceBuilder() {
     }

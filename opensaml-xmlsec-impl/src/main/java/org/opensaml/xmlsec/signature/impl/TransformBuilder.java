@@ -23,13 +23,12 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Transform}
+ * Builder of {@link org.opensaml.xmlsec.signature.Transform}.
  */
 public class TransformBuilder extends AbstractXMLObjectBuilder<Transform> implements XMLSignatureBuilder<Transform> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public TransformBuilder() {
     }

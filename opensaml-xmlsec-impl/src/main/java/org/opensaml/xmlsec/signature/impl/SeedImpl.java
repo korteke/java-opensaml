@@ -20,16 +20,16 @@ package org.opensaml.xmlsec.signature.impl;
 import org.opensaml.xmlsec.signature.Seed;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.Seed}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.Seed}.
  */
 public class SeedImpl extends CryptoBinaryImpl implements Seed {
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected SeedImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

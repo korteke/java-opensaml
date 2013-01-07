@@ -39,9 +39,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * A marshaller for {@link org.opensaml.xmlsec.signature.Signature} objects. This marshaller is really a no-op class. All
- * the creation of the signature DOM elements is handled by {@link org.opensaml.xmlsec.signature.Signer} when it signs the
- * object.
+ * A marshaller for {@link org.opensaml.xmlsec.signature.Signature} objects. This marshaller is really a no-op class.
+ * All the creation of the signature DOM elements is handled by {@link org.opensaml.xmlsec.signature.Signer} when it
+ * signs the object.
  */
 public class SignatureMarshaller implements Marshaller {
 
@@ -88,7 +88,7 @@ public class SignatureMarshaller implements Marshaller {
     }
 
     /**
-     * Creates the signature elements but does not compute the signatuer.
+     * Creates the signature elements but does not compute the signature.
      * 
      * @param signature the XMLObject to be signed
      * @param document the owning document

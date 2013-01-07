@@ -33,37 +33,37 @@ import org.opensaml.xmlsec.signature.Seed;
 import org.opensaml.xmlsec.signature.Y;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.DSAKeyValue}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.DSAKeyValue}.
  */
 public class DSAKeyValueImpl extends AbstractXMLObject implements DSAKeyValue {
     
-    /** P child element */
+    /** P child element. */
     private P p;
     
-    /** Q child element */
+    /** Q child element. */
     private Q q;
     
-    /** G child element */
+    /** G child element. */
     private G g;
     
-    /** Y child element */
+    /** Y child element. */
     private Y y;
     
-    /** J child element */
+    /** J child element. */
     private J j;
     
-    /** Seed child element */
+    /** Seed child element. */
     private Seed seed;
     
-    /** PgenCounter child element */
+    /** PgenCounter child element. */
     private PgenCounter pgenCounter;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected DSAKeyValueImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

@@ -19,6 +19,9 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
@@ -41,7 +44,7 @@ import com.google.common.base.Strings;
 public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     
     /** The set of options configured for the factory. */
-    private BasicOptions options;
+    private final BasicOptions options;
     
     /**
      * Constructor.
@@ -58,7 +61,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     }
 
     /** {@inheritDoc} */
-    public boolean handles(Credential credential) {
+    public boolean handles(@Nonnull final Credential credential) {
         // This top-level class can handle any Credential type, with output limited to basic Credential information
         return true;
     }
@@ -132,7 +135,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
      * 
      * @return a new instance of factory/generator options
      */
-    protected BasicOptions newOptions() {
+    @Nonnull protected BasicOptions newOptions() {
         return new BasicOptions();
     }
     
@@ -142,7 +145,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
      * 
      * @return the options instance
      */
-    protected BasicOptions getOptions() {
+    @Nonnull protected BasicOptions getOptions() {
         return options;
     }
     
@@ -153,24 +156,28 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     public class BasicKeyInfoGenerator implements KeyInfoGenerator {
         
         /** The set of options to be used by the generator.*/
-        private BasicOptions options;
+        private final BasicOptions options;
        
         /** Builder for KeyInfo objects. */
-        private KeyInfoBuilder keyInfoBuilder;
+        private final KeyInfoBuilder keyInfoBuilder;
        
         /**
          * Constructor.
          * 
          * @param newOptions the options to be used by the generator
          */
-        protected BasicKeyInfoGenerator(BasicOptions newOptions) {
+        protected BasicKeyInfoGenerator(@Nonnull final BasicOptions newOptions) {
             options = newOptions;
-            keyInfoBuilder = 
-                (KeyInfoBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
+            keyInfoBuilder = (KeyInfoBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+                    KeyInfo.DEFAULT_ELEMENT_NAME);
         }
 
         /** {@inheritDoc} */
-        public KeyInfo generate(Credential credential) throws SecurityException {
+        @Nullable public KeyInfo generate(@Nullable final Credential credential) throws SecurityException {
+            if (credential == null) {
+                return null;
+            }
+            
             KeyInfo keyInfo = keyInfoBuilder.buildObject();
             
             processKeyNames(keyInfo, credential);
@@ -190,10 +197,10 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
          * @param keyInfo the KeyInfo that is being built
          * @param credential the Credential that is geing processed
          */
-        protected void processKeyNames(KeyInfo keyInfo, Credential credential) {
+        protected void processKeyNames(@Nonnull final KeyInfo keyInfo, @Nonnull final Credential credential) {
             if (options.emitKeyNames) {
                 for (String keyNameValue : credential.getKeyNames()) {
-                    if ( ! Strings.isNullOrEmpty(keyNameValue)) {
+                    if (!Strings.isNullOrEmpty(keyNameValue)) {
                         KeyInfoSupport.addKeyName(keyInfo, keyNameValue);
                     }
                 }
@@ -205,10 +212,10 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
          * @param keyInfo the KeyInfo that is being built
          * @param credential the Credential that is geing processed
          */
-        protected void processEntityID(KeyInfo keyInfo, Credential credential) {
+        protected void processEntityID(@Nonnull final KeyInfo keyInfo, @Nonnull final Credential credential) {
             if (options.emitEntityIDAsKeyName) {
                 String keyNameValue = credential.getEntityId();
-                if ( ! Strings.isNullOrEmpty(keyNameValue)) {
+                if (!Strings.isNullOrEmpty(keyNameValue)) {
                     KeyInfoSupport.addKeyName(keyInfo, keyNameValue);
                 }
             }
@@ -219,7 +226,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
          * @param keyInfo the KeyInfo that is being built
          * @param credential the Credential that is geing processed
          */
-        protected void processPublicKey(KeyInfo keyInfo, Credential credential) {
+        protected void processPublicKey(@Nonnull final KeyInfo keyInfo, @Nonnull final Credential credential) {
             if (options.emitPublicKeyValue) {
                 if (credential.getPublicKey() != null) {
                     KeyInfoSupport.addPublicKey(keyInfo, credential.getPublicKey());

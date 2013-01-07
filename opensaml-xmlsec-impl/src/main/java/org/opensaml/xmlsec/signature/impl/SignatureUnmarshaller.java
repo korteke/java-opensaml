@@ -75,8 +75,8 @@ public class SignatureUnmarshaller implements Unmarshaller {
             org.apache.xml.security.keys.KeyInfo xmlSecKeyInfo = xmlSignature.getKeyInfo();
             if (xmlSecKeyInfo != null) {
                 log.debug("Adding KeyInfo to Signature");
-                Unmarshaller unmarshaller =
-                        XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(xmlSecKeyInfo.getElement());
+                Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
+                        xmlSecKeyInfo.getElement());
                 KeyInfo keyInfo = (KeyInfo) unmarshaller.unmarshall(xmlSecKeyInfo.getElement());
                 signature.setKeyInfo(keyInfo);
             }

@@ -30,19 +30,19 @@ import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.opensaml.xmlsec.encryption.ReferenceType;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceList}
+ * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceList}.
  */
 public class ReferenceListImpl extends AbstractXMLObject implements ReferenceList {
     
-    /** ReferenceType child elements */
+    /** ReferenceType child elements. */
     private final IndexedXMLObjectChildrenList indexedChildren;
     
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix namespace prefix
      */
     protected ReferenceListImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

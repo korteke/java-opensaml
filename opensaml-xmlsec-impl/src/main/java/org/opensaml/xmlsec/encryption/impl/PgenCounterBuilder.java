@@ -23,14 +23,13 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.PgenCounter}
+ * Builder of {@link org.opensaml.xmlsec.encryption.PgenCounter}.
  */
 public class PgenCounterBuilder extends AbstractXMLObjectBuilder<PgenCounter> implements
         XMLEncryptionBuilder<PgenCounter> {
 
     /**
-     * Constructor
-     * 
+     * Constructor.
      */
     public PgenCounterBuilder() {
     }

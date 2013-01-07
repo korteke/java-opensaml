@@ -28,22 +28,22 @@ import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerSerial}
+ * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerSerial}.
  */
 public class X509IssuerSerialImpl extends AbstractXMLObject implements X509IssuerSerial {
     
-    /** X509IssuerName child element */
+    /** X509IssuerName child element. */
     private X509IssuerName issuerName;
     
-    /** X509SerialNumber child element */
+    /** X509SerialNumber child element. */
     private X509SerialNumber serialNumber;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
      */
     protected X509IssuerSerialImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

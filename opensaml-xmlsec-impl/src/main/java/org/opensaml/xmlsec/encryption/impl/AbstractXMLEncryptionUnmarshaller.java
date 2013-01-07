@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -37,22 +39,23 @@ public abstract class AbstractXMLEncryptionUnmarshaller extends AbstractXMLObjec
     /**
      * {@inheritDoc}
      */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         log.debug("Ignoring unknown element {}", childXMLObject.getElementQName());
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         log.debug("Ignorning unknown attribute {}", attribute.getLocalName());
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         log.debug("Ignoring element content {}", elementContent);
     }
 }

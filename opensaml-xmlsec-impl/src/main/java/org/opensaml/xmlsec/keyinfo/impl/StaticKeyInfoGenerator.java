@@ -17,6 +17,11 @@
 
 package org.opensaml.xmlsec.keyinfo.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -56,12 +61,12 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      *
      * @param newKeyInfo the KeyInfo used as the basis to return new KeyInfo objects from this generator
      */
-    public StaticKeyInfoGenerator(KeyInfo newKeyInfo) {
+    public StaticKeyInfoGenerator(@Nonnull final KeyInfo newKeyInfo) {
         setKeyInfo(newKeyInfo);
     }
 
     /** {@inheritDoc} */
-    public KeyInfo generate(Credential credential) throws SecurityException {
+    @Nonnull public KeyInfo generate(@Nullable final Credential credential) throws SecurityException {
         if (keyInfo.getParent() == null) {
             return keyInfo;
         } else {
@@ -74,7 +79,7 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      * 
      * @return the currently held KeyInfo object
      */
-    public KeyInfo getKeyInfo() {
+    @Nonnull public KeyInfo getKeyInfo() {
         return keyInfo;
     }
     
@@ -83,11 +88,8 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      * 
      * @param newKeyInfo the new KeyInfo object
      */
-    public void setKeyInfo(KeyInfo newKeyInfo) {
-        if (newKeyInfo == null) {
-            throw new IllegalArgumentException("KeyInfo may not be null");
-        }
-        keyInfo = newKeyInfo;
+    public void setKeyInfo(@Nonnull final KeyInfo newKeyInfo) {
+        keyInfo = Constraint.isNotNull(newKeyInfo, "KeyInfo cannot be null");
     }
     
     /**
@@ -97,7 +99,7 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      * @return a new KeyInfo object cloned from the original
      * @throws SecurityException thrown in there are marshalling or unmarshalling errors during cloning
      */
-    private KeyInfo clone(KeyInfo origKeyInfo) throws SecurityException {
+    @Nonnull private KeyInfo clone(@Nonnull final KeyInfo origKeyInfo) throws SecurityException {
         // A brute force approach to cloning:
         //   1) marshall the original (if necessary)
         //   2) unmarshall a new object around the cached or newly marshalled DOM.
@@ -137,13 +139,13 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      * @return a KeyInfo marshaller
      * @throws SecurityException thrown if there is an error obtaining the marshaller from the configuration
      */
-    private Marshaller getMarshaller() throws SecurityException {
-        if (keyInfoMarshaller != null) {
-            return keyInfoMarshaller;
-        }
-        keyInfoMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+    @Nonnull private Marshaller getMarshaller() throws SecurityException {
         if (keyInfoMarshaller == null) {
-            throw new SecurityException("Could not obtain KeyInfo marshaller from the configuration");
+            keyInfoMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(
+                    KeyInfo.DEFAULT_ELEMENT_NAME);
+            if (keyInfoMarshaller == null) {
+                throw new SecurityException("Could not obtain KeyInfo marshaller from the configuration");
+            }
         }
         return keyInfoMarshaller;
     }
@@ -154,13 +156,13 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      * @return a KeyInfo unmarshaller
      * @throws SecurityException thrown if there is an error obtaining the unmarshaller from the configuration
      */
-    private Unmarshaller getUnmarshaller() throws SecurityException {
-        if (keyInfoUnmarshaller != null) {
-            return keyInfoUnmarshaller;
-        }
-        keyInfoUnmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+    @Nonnull private Unmarshaller getUnmarshaller() throws SecurityException {
         if (keyInfoUnmarshaller == null) {
-            throw new SecurityException("Could not obtain KeyInfo unmarshaller from the configuration");
+            keyInfoUnmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
+                    KeyInfo.DEFAULT_ELEMENT_NAME);
+            if (keyInfoUnmarshaller == null) {
+                throw new SecurityException("Could not obtain KeyInfo unmarshaller from the configuration");
+            }
         }
         return keyInfoUnmarshaller;
     }

@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -44,7 +46,7 @@ public class StaticKeyInfoCredentialResolver extends StaticCredentialResolver im
      *
      * @param credentials collection of credentials to be held by this resolver
      */
-    public StaticKeyInfoCredentialResolver(List<Credential> credentials) {
+    public StaticKeyInfoCredentialResolver(@Nonnull final List<Credential> credentials) {
         super(credentials);
     }
     
@@ -53,7 +55,7 @@ public class StaticKeyInfoCredentialResolver extends StaticCredentialResolver im
      *
      * @param credential a single credential to be held by this resolver
      */
-    public StaticKeyInfoCredentialResolver(Credential credential) {
+    public StaticKeyInfoCredentialResolver(@Nonnull final Credential credential) {
         super(credential);
     }
 

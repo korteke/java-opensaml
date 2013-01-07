@@ -22,6 +22,10 @@ import java.security.interfaces.DSAParams;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
@@ -33,7 +37,6 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
 
 /**
  * Basic in-memory implementation of {@link SecurityConfiguration}.
@@ -47,7 +50,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     private final Logger log = LoggerFactory.getLogger(BasicSecurityConfiguration.class);
     
     /** JCA algorithm to signature URI mappings. */
-    private Map<String, String> signatureAlgorithms;
+    private final Map<String, String> signatureAlgorithms;
     
     /** Signature canonicalization algorithm URI. */
     private String signatureCanonicalization;
@@ -59,10 +62,10 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     private Integer signatureHMACOutputLength;
     
     /** JCA algorithm to data encryption URI mappings. */
-    private Map<DataEncryptionIndex, String> dataEncryptionAlgorithms;
+    private final Map<DataEncryptionIndex, String> dataEncryptionAlgorithms;
     
     /** JCA algorithm to key transport encryption URI mappings. */
-    private Map<KeyTransportEncryptionIndex, String> keyTransportEncryptionAlgorithms;
+    private final Map<KeyTransportEncryptionIndex, String> keyTransportEncryptionAlgorithms;
     
     /** Encryption algorithm URI for auto-generated data encryption keys. */
     private String autoGenEncryptionURI;
@@ -71,10 +74,10 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     private NamedKeyInfoGeneratorManager keyInfoGeneratorManager;
     
     /** Set of named KeyInfoCredentialResolvers. */
-    private Map<String, KeyInfoCredentialResolver> keyInfoCredentialResolvers;
+    private final Map<String, KeyInfoCredentialResolver> keyInfoCredentialResolvers;
     
     /** Default DSA key family parameters. */
-    private Map<Integer, DSAParams> dsaParams;
+    private final Map<Integer, DSAParams> dsaParams;
     
     /** Constructor. */
     public BasicSecurityConfiguration() {
@@ -88,12 +91,12 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     // Signature-related config
     
     /** {@inheritDoc} */
-    public String getSignatureAlgorithmURI(String jcaAlgorithmName) {
+    @Nullable public String getSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName) {
         return signatureAlgorithms.get(jcaAlgorithmName);
     }
     
     /** {@inheritDoc} */
-    public String getSignatureAlgorithmURI(Credential credential) {
+    @Nullable public String getSignatureAlgorithmURI(@Nonnull final Credential credential) {
         Key key = CredentialSupport.extractSigningKey(credential);
         if (key == null) {
             log.debug("Could not extract signing key from credential, unable to map to algorithm URI");
@@ -111,7 +114,8 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param jcaAlgorithmName the JCA algorithm name to register
      * @param algorithmURI the algorithm URI to register
      */
-    public void registerSignatureAlgorithmURI(String jcaAlgorithmName, String algorithmURI) {
+    public void registerSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nonnull final String algorithmURI) {
         signatureAlgorithms.put(jcaAlgorithmName, algorithmURI);
     }
     
@@ -120,12 +124,12 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param jcaAlgorithmName the JCA algorithm name to deregister
      */
-    public void deregisterSignatureAlgorithmURI(String jcaAlgorithmName) {
+    public void deregisterSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName) {
         signatureAlgorithms.remove(jcaAlgorithmName);
     }
 
     /** {@inheritDoc} */
-    public String getSignatureCanonicalizationAlgorithm() {
+    @Nullable public String getSignatureCanonicalizationAlgorithm() {
         return signatureCanonicalization;
     }
     
@@ -134,12 +138,12 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param algorithmURI a canonicalization algorithm URI
      */
-    public void setSignatureCanonicalizationAlgorithm(String algorithmURI) {
+    public void setSignatureCanonicalizationAlgorithm(@Nullable final String algorithmURI) {
         signatureCanonicalization = algorithmURI;
     }
 
     /** {@inheritDoc} */
-    public String getSignatureReferenceDigestMethod() {
+    @Nullable public String getSignatureReferenceDigestMethod() {
         return signatureReferenceDigestMethod;
     }
     
@@ -148,12 +152,12 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param algorithmURI a digest method algorithm URI
      */
-    public void setSignatureReferenceDigestMethod(String algorithmURI) {
+    public void setSignatureReferenceDigestMethod(@Nullable final String algorithmURI) {
         signatureReferenceDigestMethod = algorithmURI;
     }
  
     /** {@inheritDoc} */
-    public Integer getSignatureHMACOutputLength() {
+    @Nullable public Integer getSignatureHMACOutputLength() {
         return signatureHMACOutputLength;
     }
     
@@ -163,14 +167,15 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param length the HMAC output length value to use when performing HMAC signing (may be null)
      */
-    public void setSignatureHMACOutputLength(Integer length) {
+    public void setSignatureHMACOutputLength(@Nullable final Integer length) {
         signatureHMACOutputLength = length;
     }
     
     //  Encryption-related config
     
     /** {@inheritDoc} */
-    public String getDataEncryptionAlgorithmURI(String jcaAlgorithmName, Integer keyLength) {
+    @Nullable public String getDataEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nullable final Integer keyLength) {
         DataEncryptionIndex index = new DataEncryptionIndex(jcaAlgorithmName, keyLength);
         String algorithmURI = dataEncryptionAlgorithms.get(index);
         if (algorithmURI != null) {
@@ -187,7 +192,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /** {@inheritDoc} */
-    public String getDataEncryptionAlgorithmURI(Credential credential) {
+    @Nullable public String getDataEncryptionAlgorithmURI(@Nonnull final Credential credential) {
         Key key = CredentialSupport.extractEncryptionKey(credential);
         if (key == null) {
             log.debug("Could not extract data encryption key from credential, unable to map to algorithm URI");
@@ -207,7 +212,8 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param keyLength the key length to register (may be null)
      * @param algorithmURI the algorithm URI to register
      */
-    public void registerDataEncryptionAlgorithmURI(String jcaAlgorithmName, Integer keyLength, String algorithmURI) {
+    public void registerDataEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nullable final Integer keyLength, @Nonnull final String algorithmURI) {
         DataEncryptionIndex index = new DataEncryptionIndex(jcaAlgorithmName, keyLength);
         dataEncryptionAlgorithms.put(index, algorithmURI);
     }
@@ -218,14 +224,15 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param jcaAlgorithmName the JCA algorithm name to deregister
      * @param keyLength the key length to deregister (may be null)
      */
-    public void deregisterDataEncryptionAlgorithmURI(String jcaAlgorithmName, Integer keyLength) {
+    public void deregisterDataEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nullable final Integer keyLength) {
         DataEncryptionIndex index = new DataEncryptionIndex(jcaAlgorithmName, keyLength);
         dataEncryptionAlgorithms.remove(index);
     }
     
     /** {@inheritDoc} */
-    public String getKeyTransportEncryptionAlgorithmURI(String jcaAlgorithmName, Integer keyLength,
-            String wrappedKeyAlgorithm) {
+    public String getKeyTransportEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nullable final Integer keyLength, @Nullable final String wrappedKeyAlgorithm) {
         
         KeyTransportEncryptionIndex index = 
             new KeyTransportEncryptionIndex(jcaAlgorithmName, keyLength, wrappedKeyAlgorithm);
@@ -262,7 +269,8 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /** {@inheritDoc} */
-    public String getKeyTransportEncryptionAlgorithmURI(Credential credential, String wrappedKeyAlgorithm) {
+    @Nullable public String getKeyTransportEncryptionAlgorithmURI(@Nonnull final Credential credential,
+            @Nullable final String wrappedKeyAlgorithm) {
         Key key = CredentialSupport.extractEncryptionKey(credential);
         if (key == null) {
             log.debug("Could not extract key transport encryption key from credential, unable to map to algorithm URI");
@@ -283,8 +291,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param wrappedKeyAlgorithm the JCA algorithm name of the key to be encrypted (may be null)
      * @param algorithmURI the algorithm URI to register
      */
-    public void registerKeyTransportEncryptionAlgorithmURI(String jcaAlgorithmName, Integer keyLength,
-            String wrappedKeyAlgorithm, String algorithmURI) {
+    public void registerKeyTransportEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nullable final Integer keyLength, @Nullable final String wrappedKeyAlgorithm,
+            @Nonnull final String algorithmURI) {
         
         KeyTransportEncryptionIndex index = 
             new KeyTransportEncryptionIndex(jcaAlgorithmName, keyLength, wrappedKeyAlgorithm);
@@ -298,8 +307,8 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param keyLength the key length to deregister (may be null)
      * @param wrappedKeyAlgorithm the JCA algorithm name of the key to be encrypted (may be null)
      */
-    public void deregisterKeyTransportEncryptionAlgorithmURI(String jcaAlgorithmName, Integer keyLength,
-            String wrappedKeyAlgorithm) {
+    public void deregisterKeyTransportEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
+            @Nullable final Integer keyLength, @Nullable final String wrappedKeyAlgorithm) {
         
         KeyTransportEncryptionIndex index = 
             new KeyTransportEncryptionIndex(jcaAlgorithmName, keyLength, wrappedKeyAlgorithm);
@@ -308,7 +317,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /** {@inheritDoc} */
-    public String getAutoGeneratedDataEncryptionKeyAlgorithmURI() {
+    @Nullable public String getAutoGeneratedDataEncryptionKeyAlgorithmURI() {
         return autoGenEncryptionURI;
     }
     
@@ -317,7 +326,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param algorithmURI the encryption algorithm URI to use
      */
-    public void setAutoGeneratedDataEncryptionKeyAlgorithmURI(String algorithmURI) {
+    public void setAutoGeneratedDataEncryptionKeyAlgorithmURI(@Nullable final String algorithmURI) {
         autoGenEncryptionURI = algorithmURI;
     }
     
@@ -325,7 +334,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     // KeyInfo-related config
     
     /** {@inheritDoc} */
-    public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager() {
+    @Nullable public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager() {
         return keyInfoGeneratorManager;
     }
     /**
@@ -333,12 +342,12 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param keyInfoManager the KeyInfoGenerator manager to use
      */
-    public void setKeyInfoGeneratorManager(NamedKeyInfoGeneratorManager keyInfoManager) {
+    public void setKeyInfoGeneratorManager(@Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
         keyInfoGeneratorManager = keyInfoManager;
     }
     
     /** {@inheritDoc} */
-    public KeyInfoCredentialResolver getDefaultKeyInfoCredentialResolver() {
+    @Nullable public KeyInfoCredentialResolver getDefaultKeyInfoCredentialResolver() {
         return keyInfoCredentialResolvers.get(KEYINFO_RESOLVER_DEFAULT_CONFIG);
     }
     
@@ -347,12 +356,12 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param resolver the default KeyInfoCredentialResolver
      */
-    public void setDefaultKeyInfoCredentialResolver(KeyInfoCredentialResolver resolver) {
+    public void setDefaultKeyInfoCredentialResolver(@Nullable final KeyInfoCredentialResolver resolver) {
         keyInfoCredentialResolvers.put(KEYINFO_RESOLVER_DEFAULT_CONFIG, resolver);
     }
 
     /** {@inheritDoc} */
-    public KeyInfoCredentialResolver getKeyInfoCredentialResolver(String name) {
+    @Nullable public KeyInfoCredentialResolver getKeyInfoCredentialResolver(@Nonnull final String name) {
         return keyInfoCredentialResolvers.get(name);
     }
     
@@ -362,7 +371,8 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param name the name of the configuration
      * @param resolver the KeyInfoCredentialResolver to register
      */
-    public void registerKeyInfoCredentialResolver(String name, KeyInfoCredentialResolver resolver) {
+    public void registerKeyInfoCredentialResolver(@Nonnull final String name,
+            @Nonnull final KeyInfoCredentialResolver resolver) {
         keyInfoCredentialResolvers.put(name, resolver);
     }
     
@@ -371,14 +381,14 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * 
      * @param name the name of the configuration
      */
-    public void deregisterKeyInfoCredentialResolver(String name) {
+    public void deregisterKeyInfoCredentialResolver(@Nonnull final String name) {
         keyInfoCredentialResolvers.remove(name);
     }
  
     // Miscellaneous config
 
     /** {@inheritDoc} */
-    public DSAParams getDSAParams(int keyLength) {
+    @Nullable public DSAParams getDSAParams(int keyLength) {
         return dsaParams.get(keyLength);
     }
     
@@ -389,7 +399,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
      * @param keyLength the key length of the DSA parameters 
      * @param params the default DSA parameters instance
      */
-    public void setDSAParams(int keyLength, DSAParams params) {
+    public void setDSAParams(int keyLength, @Nonnull final DSAParams params) {
         dsaParams.put(keyLength, params);
     }
     
@@ -400,10 +410,10 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     protected class DataEncryptionIndex {
         
         /** The JCA key algorithm name. */
-        private String keyAlgorithm;
+        private final String keyAlgorithm;
         
         /** The key length.  Optional, may be null. */
-        private Integer keyLength;
+        private final Integer keyLength;
         
         /**
          * Constructor.
@@ -411,11 +421,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
          * @param jcaAlgorithmName the JCA algorithm name
          * @param length the key length (optional, may be null)
          */
-        protected DataEncryptionIndex(String jcaAlgorithmName, Integer length) {
-            if (Strings.isNullOrEmpty(jcaAlgorithmName)) {
-                throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
-            }
-            keyAlgorithm = StringSupport.trimOrNull(jcaAlgorithmName);
+        protected DataEncryptionIndex(@Nonnull final String jcaAlgorithmName, @Nullable final Integer length) {
+            keyAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(jcaAlgorithmName),
+                    "JCA Algorithm name cannot be null or empty");
             keyLength = length;
         }
         
@@ -423,20 +431,17 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         public boolean equals(Object obj) {
             if(obj == this){
                 return true;
-            }
-            
-            if (! (obj instanceof DataEncryptionIndex)) {
+            } else if (!(obj instanceof DataEncryptionIndex)) {
                 return false;
             }
             DataEncryptionIndex other = (DataEncryptionIndex) obj;
             
-            if (! this.keyAlgorithm.equals(other.keyAlgorithm)) {
+            if (!keyAlgorithm.equals(other.keyAlgorithm)) {
                 return false;
-            }
-            if (this.keyLength == null) {
+            } else if (keyLength == null) {
                 return other.keyLength == null;
             } else {
-                return this.keyLength.equals(other.keyLength);
+                return keyLength.equals(other.keyLength);
             }
             
         }
@@ -464,13 +469,13 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     protected class KeyTransportEncryptionIndex {
         
         /** The JCA key algorithm name. */
-        private String keyAlgorithm;
+        private final String keyAlgorithm;
         
         /** The key length.  Optional, may be null. */
-        private Integer keyLength;
+        private final Integer keyLength;
         
         /** The JCA key algorithm name of the key to be encrypted. */
-        private String wrappedAlgorithm;
+        private final String wrappedAlgorithm;
         
         /**
          * Constructor.
@@ -479,11 +484,10 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
          * @param length the key length (optional, may be null)
          * @param wrappedKeyAlgorithm the JCA algorithm name of the key to be encrypted (optional, may be null)
          */
-        protected KeyTransportEncryptionIndex(String jcaAlgorithmName, Integer length, String wrappedKeyAlgorithm) {
-            if (Strings.isNullOrEmpty(jcaAlgorithmName)) {
-                throw new IllegalArgumentException("JCA Algorithm name may not be null or empty");
-            }
-            keyAlgorithm = StringSupport.trimOrNull(jcaAlgorithmName);
+        protected KeyTransportEncryptionIndex(@Nonnull final String jcaAlgorithmName,
+                @Nullable final Integer length, @Nullable final String wrappedKeyAlgorithm) {
+            keyAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(jcaAlgorithmName),
+                    "JCA Algorithm name cannot be null or empty");
             keyLength = length;
             wrappedAlgorithm = StringSupport.trimOrNull(wrappedKeyAlgorithm);
         }
@@ -492,29 +496,29 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
         public boolean equals(Object obj) {
             if(obj == this){
                 return true;
-            }
-            
-            if (! (obj instanceof KeyTransportEncryptionIndex)) {
+            } else if (!(obj instanceof KeyTransportEncryptionIndex)) {
                 return false;
             }
             KeyTransportEncryptionIndex other = (KeyTransportEncryptionIndex) obj;
             
-            if (! this.keyAlgorithm.equals(other.keyAlgorithm)) {
+            if (!keyAlgorithm.equals(other.keyAlgorithm)) {
                 return false;
             }
-            if (this.keyLength == null) {
+            
+            if (keyLength == null) {
                 if (other.keyLength != null) {
                     return false;
                 }
             } else {
-                if (! this.keyLength.equals(other.keyLength)) {
+                if (!keyLength.equals(other.keyLength)) {
                     return false;
                 }
             }
-            if (this.wrappedAlgorithm == null) {
+            
+            if (wrappedAlgorithm == null) {
                 return other.wrappedAlgorithm == null;
             } else {
-                return this.wrappedAlgorithm.equals(other.wrappedAlgorithm);
+                return wrappedAlgorithm.equals(other.wrappedAlgorithm);
             }
         }
 
