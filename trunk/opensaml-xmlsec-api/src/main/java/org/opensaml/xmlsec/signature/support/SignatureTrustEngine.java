@@ -42,7 +42,7 @@ public interface SignatureTrustEngine extends TrustEngine<Signature> {
      * 
      * @return a KeyInfoCredentialResolver instance
      */
-    @Nonnull public KeyInfoCredentialResolver getKeyInfoResolver();
+    @Nullable public KeyInfoCredentialResolver getKeyInfoResolver();
 
     /**
      * Determines whether a raw signature over specified content is valid and signed by a trusted credential.
