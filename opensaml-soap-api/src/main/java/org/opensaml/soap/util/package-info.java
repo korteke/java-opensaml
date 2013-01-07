@@ -15,25 +15,5 @@
  * limitations under the License.
  */
 
+/** General SOAP utility classes. */
 package org.opensaml.soap.util;
-
-/** SOAP Related Constants. */
-public final class SOAPConstants {
-    
-    /** SOAP 1.1 namespace. */
-    public static final String SOAP11_NS = "http://schemas.xmlsoap.org/soap/envelope/";
-
-    /** SOAP 1.1 prefix. */
-    public static final String SOAP11_PREFIX = "soap11";
-
-    /** SOAP 1.2 namespace. */
-    public static final String SOAP12_NS = "http://www.w3.org/2003/05/soap-envelope";
-
-    /** SOAP 1.2 prefix. */
-    public static final String SOAP12_PREFIX = "soap12";
-
-    /** Constructor. */
-    private SOAPConstants() {
-        
-    }
-}
