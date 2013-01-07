@@ -55,7 +55,7 @@ public interface Credential {
      * 
      * @return key names for this credential
      */
-    @Nullable public Collection<String> getKeyNames();
+    @Nonnull public Collection<String> getKeyNames();
 
     /**
      * Gets the public key for the entity.
