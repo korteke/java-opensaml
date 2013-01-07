@@ -17,6 +17,10 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -58,7 +62,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
     private final Logger log = LoggerFactory.getLogger(BaseSignatureTrustEngine.class);
 
     /** KeyInfo credential resolver used to obtain the signing credential from a Signature's KeyInfo. */
-    private KeyInfoCredentialResolver keyInfoCredentialResolver;
+    private final KeyInfoCredentialResolver keyInfoCredentialResolver;
 
     /**
      * Constructor.
@@ -66,16 +70,12 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
      *            Signature's KeyInfo element.
      */
-    public BaseSignatureTrustEngine(KeyInfoCredentialResolver keyInfoResolver) {
-        if (keyInfoResolver == null) {
-            throw new IllegalArgumentException("KeyInfo credential resolver may not be null");
-        }
-
-        keyInfoCredentialResolver = keyInfoResolver;
+    public BaseSignatureTrustEngine(@Nonnull final KeyInfoCredentialResolver keyInfoResolver) {
+        keyInfoCredentialResolver = Constraint.isNotNull(keyInfoResolver, "KeyInfo credential resolver cannot be null");
     }
 
     /** {@inheritDoc} */
-    public KeyInfoCredentialResolver getKeyInfoResolver() {
+    @Nullable public KeyInfoCredentialResolver getKeyInfoResolver() {
         return keyInfoCredentialResolver;
     }
 
@@ -90,7 +90,8 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      *         otherwise false
      * @throws SecurityException if an error occurs during signature verification or trust processing
      */
-    protected boolean validate(Signature signature, TrustBasisType trustBasis) throws SecurityException {
+    protected boolean validate(@Nonnull final Signature signature, @Nullable final TrustBasisType trustBasis)
+            throws SecurityException {
 
         log.debug("Attempting to verify signature and establish trust using KeyInfo-derived credentials");
 
@@ -133,8 +134,8 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * 
      * @throws SecurityException if an error occurs during trust processing
      */
-    protected abstract boolean evaluateTrust(Credential untrustedCredential, TrustBasisType trustBasis)
-            throws SecurityException;
+    protected abstract boolean evaluateTrust(@Nonnull final Credential untrustedCredential,
+            @Nullable final TrustBasisType trustBasis) throws SecurityException;
 
     /**
      * Attempt to verify a signature using the key from the supplied credential.
@@ -143,7 +144,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @param credential the credential containing the candidate validation key
      * @return true if the signature can be verified using the key from the credential, otherwise false
      */
-    protected boolean verifySignature(Signature signature, Credential credential) {
+    protected boolean verifySignature(@Nonnull final Signature signature, @Nonnull final Credential credential) {
         SignatureValidator validator = new SignatureValidator(credential);
         try {
             validator.validate(signature);
@@ -163,16 +164,15 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @param trustBasisCriteria the set of trusted credential criteria
      * @throws SecurityException thrown if required values are absent or otherwise invalid
      */
-    protected void checkParams(Signature signature, CriteriaSet trustBasisCriteria) throws SecurityException {
+    protected void checkParams(@Nonnull final Signature signature, @Nonnull final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
 
         if (signature == null) {
-            throw new SecurityException("Signature was null");
-        }
-        if (trustBasisCriteria == null) {
-            throw new SecurityException("Trust basis criteria set was null");
-        }
-        if (trustBasisCriteria.isEmpty()) {
-            throw new SecurityException("Trust basis criteria set was empty");
+            throw new SecurityException("Signature cannot be null");
+        } else if (trustBasisCriteria == null) {
+            throw new SecurityException("Trust basis criteria set cannot be null");
+        } else if (trustBasisCriteria.isEmpty()) {
+            throw new SecurityException("Trust basis criteria set cannot be empty");
         }
     }
 
@@ -185,23 +185,20 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @param trustBasisCriteria the set of trusted credential criteria
      * @throws SecurityException thrown if required values are absent or otherwise invalid
      */
-    protected void checkParamsRaw(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria)
+    protected void checkParamsRaw(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+            @Nonnull final String algorithmURI, @Nonnull final CriteriaSet trustBasisCriteria)
             throws SecurityException {
 
         if (signature == null || signature.length == 0) {
-            throw new SecurityException("Signature byte array was null or empty");
-        }
-        if (content == null || content.length == 0) {
-            throw new SecurityException("Content byte array was null or empty");
-        }
-        if (Strings.isNullOrEmpty(algorithmURI)) {
-            throw new SecurityException("Signature algorithm was null or empty");
-        }
-        if (trustBasisCriteria == null) {
-            throw new SecurityException("Trust basis criteria set was null");
-        }
-        if (trustBasisCriteria.isEmpty()) {
-            throw new SecurityException("Trust basis criteria set was empty");
+            throw new SecurityException("Signature byte array cannot be null or empty");
+        } else if (content == null || content.length == 0) {
+            throw new SecurityException("Content byte array cannot be null or empty");
+        } else if (Strings.isNullOrEmpty(algorithmURI)) {
+            throw new SecurityException("Signature algorithm cannot be null or empty");
+        } else if (trustBasisCriteria == null) {
+            throw new SecurityException("Trust basis criteria set cannot be null");
+        } else if (trustBasisCriteria.isEmpty()) {
+            throw new SecurityException("Trust basis criteria set cannot be empty");
         }
     }
 
