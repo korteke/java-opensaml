@@ -73,7 +73,7 @@ public interface X500DNHandler {
      * 
      * @throws IllegalArgumentException if the specified format is not understood by the implementation
      */
-    @Nonnull public String getName(@Nonnull final X500Principal principal, String format);
+    @Nonnull public String getName(@Nonnull final X500Principal principal, @Nonnull final String format);
     
     /**
      * Returns the distinguished name in ASN.1 DER encoded form.
