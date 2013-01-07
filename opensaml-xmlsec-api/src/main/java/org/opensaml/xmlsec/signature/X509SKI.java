@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
-/** MLObject representing XML Digital Signature, version 20020212, X509SKI element. */
+/** XMLObject representing XML Digital Signature, version 20020212, X509SKI element. */
 public interface X509SKI extends XSBase64Binary {
 
     /** Element local name. */
