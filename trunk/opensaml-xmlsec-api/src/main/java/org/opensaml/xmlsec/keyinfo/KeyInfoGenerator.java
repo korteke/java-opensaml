@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.keyinfo;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
@@ -36,6 +37,6 @@ public interface KeyInfoGenerator {
      * @return a new KeyInfo object
      * @throws SecurityException thrown if there is any error generating the new KeyInfo from the credential
      */
-    @Nonnull public KeyInfo generate(@Nonnull final Credential credential) throws SecurityException;
+    @Nonnull public KeyInfo generate(@Nullable final Credential credential) throws SecurityException;
 
 }
