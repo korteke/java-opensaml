@@ -19,6 +19,11 @@ package org.opensaml.xmlsec.signature.support;
 
 import java.security.Key;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.opensaml.security.credential.Credential;
@@ -37,22 +42,26 @@ public class SignatureValidator {
     private final Logger log = LoggerFactory.getLogger(SignatureValidator.class);
 
     /** Credential used to validate signature. */
-    private Credential validationCredential;
+    private final Credential validationCredential;
 
     /**
      * Constructor.
      * 
      * @param validatingCredential credential used to validate the signature
      */
-    public SignatureValidator(Credential validatingCredential) {
-        validationCredential = validatingCredential;
+    public SignatureValidator(@Nonnull final Credential validatingCredential) {
+        validationCredential = Constraint.isNotNull(validatingCredential, "Validating credential cannot be null");
     }
 
     /** {@inheritDoc} */
-    public void validate(Signature signature) throws SignatureException {
+    public void validate(@Nonnull final Signature signature) throws SignatureException {
         log.debug("Attempting to validate signature using key from supplied credential");
 
-        XMLSignature xmlSig = buildSignature(signature);
+        XMLSignature xmlSig = getXMLSignature(signature);
+        if (xmlSig == null) {
+            log.debug("No native XMLSignature object associated with Signature XMLObject");
+            throw new SignatureException("Native XMLSignature object not available for validation");
+        }
 
         Key validationKey = CredentialSupport.extractVerificationKey(validationCredential);
         if (validationKey == null) {
@@ -74,20 +83,20 @@ public class SignatureValidator {
         }
 
         log.debug("Signature did not validate against the credential's key");
-
         throw new SignatureException("Signature did not validate against the credential's key");
     }
 
     /**
-     * Constructs an {@link XMLSignature} from the given signature object.
+     * Access the {@link XMLSignature} from the given signature object.
      * 
      * @param signature the signature
      * 
-     * @return the constructed XMLSignature
+     * @return the related XMLSignature
      */
-    protected XMLSignature buildSignature(Signature signature) {
-        log.debug("Creating XMLSignature object");
-
+    @Nullable protected XMLSignature getXMLSignature(@Nonnull final Signature signature) {
+        Constraint.isNotNull(signature, "Signature cannot be null");
+        
+        log.debug("Accessing XMLSignature object");
         return ((SignatureImpl) signature).getXMLSignature();
     }
 

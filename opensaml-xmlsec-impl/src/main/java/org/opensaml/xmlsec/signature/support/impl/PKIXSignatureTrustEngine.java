@@ -19,7 +19,11 @@ package org.opensaml.xmlsec.signature.support.impl;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -61,13 +65,13 @@ public class PKIXSignatureTrustEngine extends
     private final Logger log = LoggerFactory.getLogger(PKIXSignatureTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private PKIXValidationInformationResolver pkixResolver;
+    private final PKIXValidationInformationResolver pkixResolver;
 
     /** The external PKIX trust evaluator used to establish trust. */
-    private PKIXTrustEvaluator pkixTrustEvaluator;
+    private final PKIXTrustEvaluator pkixTrustEvaluator;
     
     /** The external credential name evaluator used to establish trusted name compliance. */
-    private X509CredentialNameEvaluator credNameEvaluator;
+    private final X509CredentialNameEvaluator credNameEvaluator;
 
     /**
      * Constructor.
@@ -80,15 +84,12 @@ public class PKIXSignatureTrustEngine extends
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
      *            Signature's KeyInfo element.
      */
-    public PKIXSignatureTrustEngine(PKIXValidationInformationResolver resolver,
-            KeyInfoCredentialResolver keyInfoResolver) {
+    public PKIXSignatureTrustEngine(@Nonnull final PKIXValidationInformationResolver resolver,
+            @Nonnull final KeyInfoCredentialResolver keyInfoResolver) {
 
         super(keyInfoResolver);
-        if (resolver == null) {
-            throw new IllegalArgumentException("PKIX trust information resolver may not be null");
-        }
-        pkixResolver = resolver;
-
+        
+        pkixResolver = Constraint.isNotNull(resolver, "PKIX trust information resolver cannot be null");
         pkixTrustEvaluator = new CertPathPKIXTrustEvaluator();
         credNameEvaluator = new BasicX509CredentialNameEvaluator();
     }
@@ -102,20 +103,14 @@ public class PKIXSignatureTrustEngine extends
      * * @param pkixEvaluator the PKIX trust evaluator to use
      * @param nameEvaluator the X.509 credential name evaluator to use (may be null)
      */
-    public PKIXSignatureTrustEngine(PKIXValidationInformationResolver resolver,
-            KeyInfoCredentialResolver keyInfoResolver, PKIXTrustEvaluator pkixEvaluator, 
-            X509CredentialNameEvaluator nameEvaluator) {
+    public PKIXSignatureTrustEngine(@Nonnull final PKIXValidationInformationResolver resolver,
+            @Nonnull final KeyInfoCredentialResolver keyInfoResolver, @Nonnull final PKIXTrustEvaluator pkixEvaluator, 
+            @Nullable final X509CredentialNameEvaluator nameEvaluator) {
 
         super(keyInfoResolver);
-        if (resolver == null) {
-            throw new IllegalArgumentException("PKIX trust information resolver may not be null");
-        }
-        pkixResolver = resolver;
-
-        if (pkixEvaluator == null) {
-            throw new IllegalArgumentException("PKIX trust evaluator may not be null");
-        }
-        pkixTrustEvaluator = pkixEvaluator;
+        
+        pkixResolver = Constraint.isNotNull(resolver, "PKIX trust information resolver cannot be null");
+        pkixTrustEvaluator = Constraint.isNotNull(pkixEvaluator, "PKIX trust evaluator cannot be null");
         credNameEvaluator = nameEvaluator;
     }
     
@@ -127,7 +122,7 @@ public class PKIXSignatureTrustEngine extends
      * 
      * @return the PKIX trust evaluator instance that will be used
      */
-    public PKIXTrustEvaluator getPKIXTrustEvaluator() {
+    @Nonnull public PKIXTrustEvaluator getPKIXTrustEvaluator() {
         return pkixTrustEvaluator;
     }
     
@@ -140,18 +135,20 @@ public class PKIXSignatureTrustEngine extends
      * 
      * @return the PKIX trust evaluator instance that will be used
      */
-    public X509CredentialNameEvaluator getX509CredentialNameEvaluator() {
+    @Nullable public X509CredentialNameEvaluator getX509CredentialNameEvaluator() {
         return credNameEvaluator;
     }
 
     /** {@inheritDoc} */
-    public PKIXValidationInformationResolver getPKIXResolver() {
+    @Nonnull public PKIXValidationInformationResolver getPKIXResolver() {
         return pkixResolver;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) throws SecurityException {
+    public boolean validate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
 
+        // In our case, the trust basis can't be null.
         checkParams(signature, trustBasisCriteria);
 
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair  = 
@@ -166,8 +163,9 @@ public class PKIXSignatureTrustEngine extends
     }
 
     /** {@inheritDoc} */
-    public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
-            Credential candidateCredential) throws SecurityException {
+    public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+            @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
+            @Nullable final Credential candidateCredential) throws SecurityException {
 
         if (candidateCredential == null || CredentialSupport.extractVerificationKey(candidateCredential) == null) {
             log.debug("Candidate credential was either not supplied or did not contain verification key");
@@ -175,6 +173,7 @@ public class PKIXSignatureTrustEngine extends
             return false;
         }
 
+        // In our case, the trust basis can't be null.
         checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
 
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
@@ -199,8 +198,9 @@ public class PKIXSignatureTrustEngine extends
     }
 
     /** {@inheritDoc} */
-    protected boolean evaluateTrust(Credential untrustedCredential,
-            Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair) throws SecurityException {
+    protected boolean evaluateTrust(@Nonnull final Credential untrustedCredential,
+            @Nullable final Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair)
+                    throws SecurityException {
 
         if (!(untrustedCredential instanceof X509Credential)) {
             log.debug("Can not evaluate trust of non-X509Credential");
@@ -210,6 +210,10 @@ public class PKIXSignatureTrustEngine extends
 
         Set<String> trustedNames = validationPair.getFirst();
         Iterable<PKIXValidationInformation> validationInfoSet = validationPair.getSecond();
+        if (validationInfoSet == null) {
+            log.debug("PKIX validation information not available. Aborting PKIX validation");
+            return false;
+        }
         
         if (!checkNames(trustedNames, untrustedX509Credential)) {
             log.debug("Evaluation of credential against trusted names failed. Aborting PKIX validation");
@@ -241,8 +245,8 @@ public class PKIXSignatureTrustEngine extends
      *         PKIXValidationInformation
      * @throws SecurityException thrown if there is an error resolving the information from the trusted resolver
      */
-    protected Pair<Set<String>, Iterable<PKIXValidationInformation>> resolveValidationInfo(
-            CriteriaSet trustBasisCriteria) throws SecurityException {
+    @Nonnull protected Pair<Set<String>, Iterable<PKIXValidationInformation>> resolveValidationInfo(
+            @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException {
 
         Set<String> trustedNames = null;
         if (pkixResolver.supportsTrustedNameResolution()) {
@@ -263,10 +267,7 @@ public class PKIXSignatureTrustEngine extends
             throw new SecurityException("Error resolving trusted PKIX validation information", e);
         }
 
-        Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
-            new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
-
-        return validationPair;
+        return new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
     }
     
     /**
@@ -279,8 +280,8 @@ public class PKIXSignatureTrustEngine extends
      * @return true if evaluation is successful, false otherwise
      * @throws SecurityException thrown if there is an error evaluation the credential
      */
-    protected boolean checkNames(Set<String> trustedNames, X509Credential untrustedCredential) 
-            throws SecurityException {
+    protected boolean checkNames(@Nullable final Set<String> trustedNames,
+            @Nonnull final X509Credential untrustedCredential)  throws SecurityException {
         
         if (credNameEvaluator == null) {
             log.debug("No credential name evaluator was available, skipping trusted name evaluation");

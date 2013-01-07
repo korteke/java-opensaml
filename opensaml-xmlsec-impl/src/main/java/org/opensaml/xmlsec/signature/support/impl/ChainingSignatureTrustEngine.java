@@ -20,6 +20,9 @@ package org.opensaml.xmlsec.signature.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -33,7 +36,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Evaluate a signature in sequence using a chain of subordinate trust engines. If the signature may be established as
  * trusted by any of the subordinate engines, the token is considered trusted. Otherwise it is considered untrusted.
- * 
  */
 public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
 
@@ -41,7 +43,7 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
     private final Logger log = LoggerFactory.getLogger(ChainingSignatureTrustEngine.class);
 
     /** The chain of subordinate trust engines. */
-    private List<SignatureTrustEngine> engines;
+    private final List<SignatureTrustEngine> engines;
 
     /** Constructor. */
     public ChainingSignatureTrustEngine() {
@@ -53,18 +55,19 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    public List<SignatureTrustEngine> getChain() {
+    @Nonnull public List<SignatureTrustEngine> getChain() {
         return engines;
     }
 
     /** {@inheritDoc} */
-    public KeyInfoCredentialResolver getKeyInfoResolver() {
+    @Nullable public KeyInfoCredentialResolver getKeyInfoResolver() {
         // Chaining signature trust engine does not support an attached KeyInfoResolver
         return null;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Signature token, CriteriaSet trustBasisCriteria) throws SecurityException {
+    public boolean validate(@Nonnull final Signature token, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
         for (SignatureTrustEngine engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
                 log.debug("Signature was trusted by chain member: {}", engine.getClass().getName());
@@ -75,8 +78,9 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
     }
 
     /** {@inheritDoc} */
-    public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
-            Credential candidateCredential) throws SecurityException {
+    public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+            @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
+            @Nonnull final Credential candidateCredential) throws SecurityException {
         for (SignatureTrustEngine engine : engines) {
             if (engine.validate(signature, content, algorithmURI, trustBasisCriteria, candidateCredential)) {
                 log.debug("Signature was trusted by chain member: {}", engine.getClass().getName());

@@ -19,6 +19,10 @@ package org.opensaml.xmlsec.signature.support;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -52,7 +56,7 @@ public class Signer {
      * @param xmlObjects an orderded list of XMLObject to be signed
      * @throws SignatureException  thrown if there is an error computing the signature
      */
-    public static void signObjects(List<Signature> xmlObjects) throws SignatureException {
+    public static void signObjects(@Nonnull final List<Signature> xmlObjects) throws SignatureException {
         for (Signature xmlObject : xmlObjects) {
             signObject(xmlObject);
         }
@@ -64,7 +68,9 @@ public class Signer {
      * @param signature the signature to computer the signature on
      * @throws SignatureException thrown if there is an error computing the signature
      */
-    public static void signObject(Signature signature) throws SignatureException {
+    public static void signObject(@Nonnull final Signature signature) throws SignatureException {
+        Constraint.isNotNull(signature, "Signature cannot be null");
+        
         Logger log = getLogger();
         try {
             XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
@@ -72,7 +78,8 @@ public class Signer {
             if (xmlSignature == null) {
                 log.error("Unable to compute signature, Signature XMLObject does not have the XMLSignature "
                         + "created during marshalling.");
-                throw new SignatureException("XMLObject does not have an XMLSignature instance, unable to compute signature");
+                throw new SignatureException(
+                        "XMLObject does not have XMLSignature instance, unable to compute signature");
             }
             log.debug("Computing signature over XMLSignature object");
             xmlSignature.sign(CredentialSupport.extractSigningKey(signature.getSigningCredential()));
@@ -87,7 +94,7 @@ public class Signer {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(Signer.class);
     }
 

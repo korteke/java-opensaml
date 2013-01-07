@@ -17,6 +17,10 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -56,10 +60,10 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     private final Logger log = LoggerFactory.getLogger(ExplicitKeySignatureTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private CredentialResolver credentialResolver;
+    private final CredentialResolver credentialResolver;
 
     /** The external explicit key trust engine to use as a basis for trust in this implementation. */
-    private ExplicitKeyTrustEvaluator keyTrust;
+    private final ExplicitKeyTrustEvaluator keyTrust;
 
     /**
      * Constructor.
@@ -68,24 +72,24 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
      *            Signature's KeyInfo element.
      */
-    public ExplicitKeySignatureTrustEngine(CredentialResolver resolver, KeyInfoCredentialResolver keyInfoResolver) {
+    public ExplicitKeySignatureTrustEngine(@Nonnull final CredentialResolver resolver,
+            @Nonnull final KeyInfoCredentialResolver keyInfoResolver) {
         super(keyInfoResolver);
-        if (resolver == null) {
-            throw new IllegalArgumentException("Credential resolver may not be null");
-        }
-        credentialResolver = resolver;
-
+        
+        credentialResolver = Constraint.isNotNull(resolver, "Credential resolver cannot be null");
         keyTrust = new ExplicitKeyTrustEvaluator();
     }
 
     /** {@inheritDoc} */
-    public CredentialResolver getCredentialResolver() {
+    @Nonnull public CredentialResolver getCredentialResolver() {
         return credentialResolver;
     }
 
     /** {@inheritDoc} */
-    public boolean validate(Signature signature, CriteriaSet trustBasisCriteria) throws SecurityException {
+    public boolean validate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
 
+        // In our case, the trust basis can't be null.
         checkParams(signature, trustBasisCriteria);
 
         CriteriaSet criteriaSet = new CriteriaSet();
@@ -110,7 +114,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         }
 
         // If the credentials extracted from Signature's KeyInfo (if any) did not verify the
-        // signature and/or establish trust, as a fall back attempt to verify the signature with
+        // signature and/or establish trust, as a fall back attempt verify the signature with
         // the trusted credentials directly.
         log.debug("Attempting to verify signature using trusted credentials");
 
@@ -125,9 +129,11 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    public boolean validate(byte[] signature, byte[] content, String algorithmURI, CriteriaSet trustBasisCriteria,
-            Credential candidateCredential) throws SecurityException {
+    public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+            @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
+            @Nullable final Credential candidateCredential) throws SecurityException {
 
+        // In our case, the trust basis can't be null.
         checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
 
         CriteriaSet criteriaSet = new CriteriaSet();
@@ -178,8 +184,8 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    protected boolean evaluateTrust(Credential untrustedCredential, Iterable<Credential> trustedCredentials)
-            throws SecurityException {
+    protected boolean evaluateTrust(@Nonnull final Credential untrustedCredential,
+            @Nullable final Iterable<Credential> trustedCredentials) throws SecurityException {
 
         return keyTrust.validate(untrustedCredential, trustedCredentials);
     }
