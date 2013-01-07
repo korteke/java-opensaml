@@ -24,9 +24,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
@@ -67,7 +70,7 @@ public final class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param mustUnderstand whether mustUnderstand is true or false
      */
-    public static void addSOAP11MustUnderstandAttribute(XMLObject soapObject, boolean mustUnderstand) {
+    public static void addSOAP11MustUnderstandAttribute(@Nonnull final XMLObject soapObject, boolean mustUnderstand) {
         if (soapObject instanceof MustUnderstandBearing) {
             ((MustUnderstandBearing) soapObject).setSOAP11MustUnderstand(new XSBooleanValue(mustUnderstand, true));
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -75,7 +78,8 @@ public final class SOAPHelper {
                     MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME,
                     new XSBooleanValue(mustUnderstand, true).toString());
         } else {
-            throw new IllegalArgumentException("Specified object was neither MustUnderBearing nor AttributeExtensible");
+            throw new IllegalArgumentException(
+                    "Specified object was neither MustUnderstandBearing nor AttributeExtensible");
         }
     }
 
@@ -86,7 +90,7 @@ public final class SOAPHelper {
      * 
      * @return value of the mustUnderstand attribute, or false if not present
      */
-    public static boolean getSOAP11MustUnderstandAttribute(XMLObject soapObject) {
+    public static boolean getSOAP11MustUnderstandAttribute(@Nonnull final XMLObject soapObject) {
         if (soapObject instanceof MustUnderstandBearing) {
             XSBooleanValue value = ((MustUnderstandBearing) soapObject).isSOAP11MustUnderstandXSBoolean();
             if (value != null) {
@@ -96,7 +100,7 @@ public final class SOAPHelper {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME));
-            return Objects.equal("1", value);
+            return Objects.equal("1", value) || Objects.equal("true", value);
         }
         return false;
     }
@@ -107,12 +111,13 @@ public final class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param actorURI the URI of the actor
      */
-    public static void addSOAP11ActorAttribute(XMLObject soapObject, String actorURI) {
+    public static void addSOAP11ActorAttribute(@Nonnull final XMLObject soapObject, @Nonnull final String actorURI) {
+        String value = Constraint.isNotNull(StringSupport.trimOrNull(actorURI), "Actor URI cannot be null or empty");
         if (soapObject instanceof ActorBearing) {
-            ((ActorBearing) soapObject).setSOAP11Actor(actorURI);
+            ((ActorBearing) soapObject).setSOAP11Actor(value);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes().put(ActorBearing.SOAP11_ACTOR_ATTR_NAME,
-                    actorURI);
+                    value);
         } else {
             throw new IllegalArgumentException("Specified object was neither ActorBearing nor AttributeExtensible");
         }
@@ -125,7 +130,7 @@ public final class SOAPHelper {
      * 
      * @return the value of the actor attribute, or null if not present
      */
-    public static String getSOAP11ActorAttribute(XMLObject soapObject) {
+    @Nullable public static String getSOAP11ActorAttribute(@Nonnull final XMLObject soapObject) {
         String value = null;
         if (soapObject instanceof ActorBearing) {
             value = StringSupport.trimOrNull(((ActorBearing) soapObject).getSOAP11Actor());
@@ -148,7 +153,10 @@ public final class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param encodingStyle the encoding style to add
      */
-    public static void addSOAP11EncodingStyle(XMLObject soapObject, String encodingStyle) {
+    public static void addSOAP11EncodingStyle(@Nonnull final XMLObject soapObject,
+            @Nonnull final String encodingStyle) {
+        String value = Constraint.isNotNull(StringSupport.trimOrNull(encodingStyle),
+                "Encoding style to add cannot be null or empty");
         if (soapObject instanceof EncodingStyleBearing) {
             EncodingStyleBearing esb = (EncodingStyleBearing) soapObject;
             List<String> list = esb.getSOAP11EncodingStyles();
@@ -156,14 +164,14 @@ public final class SOAPHelper {
                 list = new LazyList<String>();
                 esb.setSOAP11EncodingStyles(list);
             }
-            list.add(encodingStyle);
+            list.add(value);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             AttributeMap am = ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes();
             String list = am.get(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME);
             if (list == null) {
-                list = encodingStyle;
+                list = value;
             } else {
-                list = list + " " + encodingStyle;
+                list = list + " " + value;
             }
             am.put(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME, list);
         } else {
@@ -178,7 +186,10 @@ public final class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param encodingStyles the list of encoding styles to add
      */
-    public static void addSOAP11EncodingStyles(XMLObject soapObject, List<String> encodingStyles) {
+    public static void addSOAP11EncodingStyles(@Nonnull final XMLObject soapObject,
+            @Nonnull final List<String> encodingStyles) {
+        Constraint.isNotEmpty(encodingStyles, "Encoding styles list cannot be empty");
+        
         if (soapObject instanceof EncodingStyleBearing) {
             ((EncodingStyleBearing) soapObject).setSOAP11EncodingStyles(encodingStyles);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -198,7 +209,7 @@ public final class SOAPHelper {
      * 
      * @return the list of encoding styles, or null if not present
      */
-    public static List<String> getSOAP11EncodingStyles(XMLObject soapObject) {
+    @Nullable public static List<String> getSOAP11EncodingStyles(@Nonnull final XMLObject soapObject) {
         if (soapObject instanceof EncodingStyleBearing) {
             List<String> value = ((EncodingStyleBearing) soapObject).getSOAP11EncodingStyles();
             if (value != null) {
@@ -221,12 +232,16 @@ public final class SOAPHelper {
      * @param soapObject object to which the encoding style attribute should be added
      * @param style the encoding style
      */
-    public static void addSOAP12EncodingStyleAttribute(XMLObject soapObject, String style) {
+    public static void addSOAP12EncodingStyleAttribute(@Nonnull final XMLObject soapObject,
+            @Nonnull final String style) {
+        String value = Constraint.isNotNull(StringSupport.trimOrNull(style),
+                "Encoding style to add cannot be null or empty");
+        
         if (soapObject instanceof org.opensaml.soap.soap12.EncodingStyleBearing) {
-            ((org.opensaml.soap.soap12.EncodingStyleBearing) soapObject).setSOAP12EncodingStyle(style);
+            ((org.opensaml.soap.soap12.EncodingStyleBearing) soapObject).setSOAP12EncodingStyle(value);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes().put(
-                    org.opensaml.soap.soap12.EncodingStyleBearing.SOAP12_ENCODING_STYLE_ATTR_NAME, style);
+                    org.opensaml.soap.soap12.EncodingStyleBearing.SOAP12_ENCODING_STYLE_ATTR_NAME, value);
         } else {
             throw new IllegalArgumentException(
                     "Specified object was neither EncodingStyleBearing nor AttribtueExtensible");
@@ -240,7 +255,7 @@ public final class SOAPHelper {
      * 
      * @return the encoding style or null if it is not set on the object
      */
-    public static String getSOAP12EncodingStyleAttribute(XMLObject soapObject) {
+    @Nullable public static String getSOAP12EncodingStyleAttribute(@Nonnull final XMLObject soapObject) {
         String style = null;
         if (soapObject instanceof org.opensaml.soap.soap12.EncodingStyleBearing) {
             style = ((org.opensaml.soap.soap12.EncodingStyleBearing) soapObject).getSOAP12EncodingStyle();
@@ -261,7 +276,7 @@ public final class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param mustUnderstand whether mustUnderstand is true or false
      */
-    public static void addSOAP12MustUnderstandAttribute(XMLObject soapObject, boolean mustUnderstand) {
+    public static void addSOAP12MustUnderstandAttribute(@Nonnull final XMLObject soapObject, boolean mustUnderstand) {
         if (soapObject instanceof org.opensaml.soap.soap12.MustUnderstandBearing) {
             ((org.opensaml.soap.soap12.MustUnderstandBearing) soapObject)
                     .setSOAP12MustUnderstand(new XSBooleanValue(mustUnderstand, false));
@@ -270,7 +285,8 @@ public final class SOAPHelper {
                     org.opensaml.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME,
                     new XSBooleanValue(mustUnderstand, false).toString());
         } else {
-            throw new IllegalArgumentException("Specified object was neither MustUnderstandBearing nor AttributeExtensible");
+            throw new IllegalArgumentException(
+                    "Specified object was neither MustUnderstandBearing nor AttributeExtensible");
         }
     }
 
@@ -281,7 +297,7 @@ public final class SOAPHelper {
      * 
      * @return value of the mustUnderstand attribute, or false if not present
      */
-    public static boolean getSOAP12MustUnderstandAttribute(XMLObject soapObject) {
+    public static boolean getSOAP12MustUnderstandAttribute(@Nonnull final XMLObject soapObject) {
         if (soapObject instanceof org.opensaml.soap.soap12.MustUnderstandBearing) {
             XSBooleanValue value = ((org.opensaml.soap.soap12.MustUnderstandBearing) soapObject)
                     .isSOAP12MustUnderstandXSBoolean();
@@ -304,7 +320,7 @@ public final class SOAPHelper {
      * @param soapObject the SOAP object to add the attribute to
      * @param relay whether relay is true or false
      */
-    public static void addSOAP12RelayAttribute(XMLObject soapObject, boolean relay) {
+    public static void addSOAP12RelayAttribute(@Nonnull final XMLObject soapObject, boolean relay) {
         if (soapObject instanceof org.opensaml.soap.soap12.RelayBearing) {
             ((org.opensaml.soap.soap12.RelayBearing) soapObject).setSOAP12Relay(new XSBooleanValue(relay, false));
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -312,7 +328,7 @@ public final class SOAPHelper {
                     org.opensaml.soap.soap12.RelayBearing.SOAP12_RELAY_ATTR_NAME,
                     new XSBooleanValue(relay, false).toString());
         } else {
-            throw new IllegalArgumentException("Specified object was neither RelyBearing nor AttributeExtensible");
+            throw new IllegalArgumentException("Specified object was neither RelayBearing nor AttributeExtensible");
         }
     }
 
@@ -323,7 +339,7 @@ public final class SOAPHelper {
      * 
      * @return value of the relay attribute, or false if not present
      */
-    public static boolean getSOAP12RelayAttribute(XMLObject soapObject) {
+    public static boolean getSOAP12RelayAttribute(@Nonnull final XMLObject soapObject) {
         if (soapObject instanceof org.opensaml.soap.soap12.RelayBearing) {
             XSBooleanValue value = ((org.opensaml.soap.soap12.RelayBearing) soapObject).isSOAP12RelayXSBoolean();
             if (value != null) {
@@ -344,12 +360,14 @@ public final class SOAPHelper {
      * @param soapObject object to which the rol attribute should be added
      * @param role the role
      */
-    public static void addSOAP12RoleAttribute(XMLObject soapObject, String role) {
+    public static void addSOAP12RoleAttribute(@Nonnull final XMLObject soapObject, @Nonnull final String role) {
+        String value = Constraint.isNotNull(StringSupport.trimOrNull(role), "Role cannot be null or empty");
+        
         if (soapObject instanceof org.opensaml.soap.soap12.RoleBearing) {
-            ((org.opensaml.soap.soap12.RoleBearing) soapObject).setSOAP12Role(role);
+            ((org.opensaml.soap.soap12.RoleBearing) soapObject).setSOAP12Role(value);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
             ((AttributeExtensibleXMLObject) soapObject).getUnknownAttributes().put(
-                    org.opensaml.soap.soap12.RoleBearing.SOAP12_ROLE_ATTR_NAME, role);
+                    org.opensaml.soap.soap12.RoleBearing.SOAP12_ROLE_ATTR_NAME, value);
         } else {
             throw new IllegalArgumentException(
                     "Specified object was neither RoleBearing nor AttribtueExtensible");
@@ -363,7 +381,7 @@ public final class SOAPHelper {
      * 
      * @return the role or null if it is not set on the object
      */
-    public static String getSOAP12RoleAttribute(XMLObject soapObject) {
+    @Nullable public static String getSOAP12RoleAttribute(@Nonnull final XMLObject soapObject) {
         String role = null;
         if (soapObject instanceof org.opensaml.soap.soap12.RoleBearing) {
             role = ((org.opensaml.soap.soap12.RoleBearing) soapObject).getSOAP12Role();
@@ -378,55 +396,6 @@ public final class SOAPHelper {
         return role;
     }
 
-    /**
-     * Adds a <code>soap11:actor</code> attribute to the given SOAP object.
-     * 
-     * @param soapObject the SOAP object to add the attribute to
-     * @param actorURI the URI of the actor
-     * 
-     * @deprecated use instead {@link #addSOAP11ActorAttribute(XMLObject, String)}.
-     */
-    public static void addActorAttribute(XMLObject soapObject, String actorURI) {
-        addSOAP11ActorAttribute(soapObject, actorURI);
-    }
-
-    /**
-     * Adds a single encoding style to the given SOAP object. If an existing <code>soap11:encodingStyle</code> attribute
-     * is present, the given style will be added to the existing list.
-     * 
-     * @param soapObject the SOAP object to add the attribute to
-     * @param encodingStyle the encoding style to add
-     * 
-     * @deprecated use instead {@link #addSOAP11EncodingStyle(XMLObject, String)}.
-     */
-    public static void addEncodingStyle(XMLObject soapObject, String encodingStyle) {
-        addSOAP11EncodingStyle(soapObject, encodingStyle);
-    }
-
-    /**
-     * Adds a <code>soap11:encodingStyle</code> attribute to the given SOAP object.
-     * 
-     * @param soapObject the SOAP object to add the attribute to
-     * @param encodingStyles the list of encoding styles to add
-     * 
-     * @deprecated use instead {@link #addSOAP11EncodingStyles(XMLObject, List)}.
-     */
-    public static void addEncodingStyles(XMLObject soapObject, List<String> encodingStyles) {
-        addSOAP11EncodingStyles(soapObject, encodingStyles);
-    }
-
-    /**
-     * Adds a <code>soap11:mustUnderstand</code> attribute to the given SOAP object.
-     * 
-     * @param soapObject the SOAP object to add the attribute to
-     * @param mustUnderstand whether mustUnderstand is true or false
-     * 
-     * @deprecated use instead {@link #addSOAP11MustUnderstandAttribute(XMLObject, boolean)}.
-     */
-    public static void addMustUnderstandAttribute(XMLObject soapObject, boolean mustUnderstand) {
-        addSOAP11MustUnderstandAttribute(soapObject, mustUnderstand);
-    }
-    
     /**
      * Add a header block to the SOAP envelope contained within the specified message context's
      * {@link MessageContext#getOutboundMessage()}.
