@@ -20,7 +20,6 @@ package org.opensaml.core.xml;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 /**
@@ -33,7 +32,7 @@ public interface ElementExtensibleXMLObject extends XMLObject {
      * 
      * @return list of XMLObjects added to this XMLObject as part of the "any" content model
      */
-    @Nullable public List<XMLObject> getUnknownXMLObjects();
+    @Nonnull public List<XMLObject> getUnknownXMLObjects();
     
     /**
      * Gets the list of XMLObjects added to this XMLObject as part of the "any" content model,
@@ -42,5 +41,5 @@ public interface ElementExtensibleXMLObject extends XMLObject {
      * @param typeOrName the QName of the statements to return
      * @return list of XMLObjects added to this XMLObject as part of the "any" content model
      */
-    @Nullable public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName);
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName);
 }
