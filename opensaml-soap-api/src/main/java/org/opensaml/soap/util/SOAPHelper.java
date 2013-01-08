@@ -17,7 +17,6 @@
 
 package org.opensaml.soap.util;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +38,7 @@ import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.AttributeMap;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.soap11.EncodingStyleBearing;
@@ -49,9 +49,10 @@ import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
-import org.opensaml.ws.message.MessageContext;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
 /**
  * Helper methods for working with SOAP.
@@ -398,24 +399,25 @@ public final class SOAPHelper {
 
     /**
      * Add a header block to the SOAP envelope contained within the specified message context's
-     * {@link MessageContext#getOutboundMessage()}.
+     * {@link MessageContext#getMessage()}.
      * 
      * @param messageContext the message context being processed
      * @param headerBlock the header block to add
      */
-    public static void addHeaderBlock(MessageContext messageContext, XMLObject headerBlock) {
-        XMLObject outboundEnvelope = messageContext.getOutboundMessage();
-        if (outboundEnvelope == null) {
-            throw new IllegalArgumentException("Message context does not contain a SOAP envelope");
-        }
+    public static void addHeaderBlock(@Nonnull final MessageContext<? extends XMLObject> messageContext,
+            @Nonnull final XMLObject headerBlock) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        Constraint.isNotNull(messageContext.getMessage(), "Message context cannot be empty");
+        
+        XMLObject outboundEnvelope = messageContext.getMessage();
         
         // SOAP 1.1 Envelope
         if (outboundEnvelope instanceof Envelope) {
             addSOAP11HeaderBlock((Envelope) outboundEnvelope, headerBlock);
+        } else {
+            //TODO SOAP 1.2 support when object providers are implemented
+            throw new IllegalArgumentException("Message context did not contain a SOAP Envelope");
         }
-        
-        //TODO SOAP 1.2 support when object providers are implemented
-        
     }
 
     /**
@@ -424,11 +426,14 @@ public final class SOAPHelper {
      * @param envelope the SOAP 1.1 envelope to process
      * @param headerBlock the header to add
      */
-    public static void addSOAP11HeaderBlock(Envelope envelope, XMLObject headerBlock) {
+    public static void addSOAP11HeaderBlock(@Nonnull final Envelope envelope, @Nonnull final XMLObject headerBlock) {
+        Constraint.isNotNull(envelope, "Envelope cannot be null");
+        Constraint.isNotNull(headerBlock, "Header block cannot be null");
+        
         Header envelopeHeader = envelope.getHeader();
         if (envelopeHeader == null) {
-            envelopeHeader = (Header) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Header.DEFAULT_ELEMENT_NAME)
-                .buildObject(Header.DEFAULT_ELEMENT_NAME);
+            envelopeHeader = (Header) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+                    Header.DEFAULT_ELEMENT_NAME).buildObject(Header.DEFAULT_ELEMENT_NAME);
             envelope.setHeader(envelopeHeader);
         }
         
@@ -437,52 +442,26 @@ public final class SOAPHelper {
 
     /**
      * Get a header block from the SOAP envelope contained within the specified message context's
-     * {@link MessageContext#getInboundMessage()}.
+     * {@link MessageContext#getMessage()}.
      * 
-     * @param msgContext the message context being processed
+     * @param messageContext the message context being processed
      * @param headerName the name of the header block to return 
      * @param targetNodes the explicitly specified SOAP node actors (1.1) or roles (1.2) for which the header is desired
      * @param isFinalDestination true specifies that headers targeted for message final destination should be returned,
      *          false means they should not be returned
      * @return the list of matching header blocks
      */
-    public static List<XMLObject> getInboundHeaderBlock(MessageContext msgContext, QName headerName,
-            Set<String> targetNodes, boolean isFinalDestination) {
-        XMLObject inboundEnvelope = msgContext.getInboundMessage();
-        if (inboundEnvelope == null) {
-            throw new IllegalArgumentException("Message context does not contain an inbound SOAP envelope");
-        }
+    @Nonnull public static List<XMLObject> getInboundHeaderBlock(
+            @Nonnull final MessageContext<? extends XMLObject> messageContext, @Nonnull final QName headerName,
+            @Nullable Set<String> targetNodes, boolean isFinalDestination) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        Constraint.isNotNull(messageContext.getMessage(), "Message context cannot be empty");
+        
+        XMLObject inboundEnvelope = messageContext.getMessage();
         
         // SOAP 1.1 Envelope
         if (inboundEnvelope instanceof Envelope) {
             return getSOAP11HeaderBlock((Envelope) inboundEnvelope, headerName, targetNodes, isFinalDestination);
-        }
-        
-        //TODO SOAP 1.2 support when object providers are implemented
-        return Collections.emptyList();
-    }
-
-    /**
-     * Get a header block from the SOAP envelope contained within the specified message context's
-     * {@link MessageContext#getOutboundMessage()}.
-     * 
-     * @param msgContext the message context being processed
-     * @param headerName the name of the header block to return 
-     * @param targetNodes the explicitly specified SOAP node actors (1.1) or roles (1.2) for which the header is desired
-     * @param isFinalDestination true specifies that headers targeted for message final destination should be returned,
-     *          false specifies they should not be returned
-     * @return the list of matching header blocks
-     */
-    public static List<XMLObject> getOutboundHeaderBlock(MessageContext msgContext, QName headerName,
-            Set<String> targetNodes, boolean isFinalDestination) {
-        XMLObject outboundEnvelope = msgContext.getOutboundMessage();
-        if (outboundEnvelope == null) {
-            throw new IllegalArgumentException("Message context does not contain an outbound SOAP envelope");
-        }
-        
-        // SOAP 1.1 Envelope
-        if (outboundEnvelope instanceof Envelope) {
-            return getSOAP11HeaderBlock((Envelope) outboundEnvelope, headerName, targetNodes, isFinalDestination);
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
@@ -499,13 +478,17 @@ public final class SOAPHelper {
      *          false specifies they should not be returned
      * @return the list of matching header blocks
      */
-    public static List<XMLObject> getSOAP11HeaderBlock(Envelope envelope, QName headerName, Set<String> targetNodes,
-            boolean isFinalDestination) {
+    @Nonnull public static List<XMLObject> getSOAP11HeaderBlock(@Nonnull final Envelope envelope,
+            @Nonnull final QName headerName, @Nullable final Set<String> targetNodes, boolean isFinalDestination) {
+        Constraint.isNotNull(envelope, "Envelope cannot be null");
+        Constraint.isNotNull(headerName, "Header name cannot be null");
+        
         Header envelopeHeader = envelope.getHeader();
         if (envelopeHeader == null) {
             return Collections.emptyList();
         }
-        ArrayList<XMLObject> headers = new ArrayList<XMLObject>();
+        
+        LazyList<XMLObject> headers = new LazyList<XMLObject>();
         for (XMLObject header : envelopeHeader.getUnknownXMLObjects(headerName)) {
             if (isSOAP11HeaderTargetedToNode(header, targetNodes, isFinalDestination)) {
                 headers.add(header);
@@ -525,8 +508,8 @@ public final class SOAPHelper {
      *          false specifies they should not be returned
      * @return the list of matching header blocks
      */
-    public static boolean isSOAP11HeaderTargetedToNode(XMLObject header, Set<String> nodeActors,
-            boolean isFinalDestination) {
+    public static boolean isSOAP11HeaderTargetedToNode(@Nonnull final XMLObject header,
+            @Nullable final Set<String> nodeActors, boolean isFinalDestination) {
         String headerActor = getSOAP11ActorAttribute(header);
         if (headerActor == null) {
             if (isFinalDestination) {
@@ -541,14 +524,16 @@ public final class SOAPHelper {
     }
 
     /**
-     * Determine whether the inbound message represented by the message context 
+     * Determine whether the message represented by the message context 
      * contains a SOAP Envelope.
      * 
      * @param messageContext the current message context
-     * @return true if the inbound message contains a SOAP Envelope, false otherwise
+     * @return true iff the message context contains a SOAP Envelope
      */
-    public static boolean isInboundSOAPMessage(MessageContext messageContext) {
-        XMLObject inboundMessage = messageContext.getInboundMessage();
+    public static boolean isSOAPMessage(@Nonnull final MessageContext<? extends XMLObject> messageContext) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        
+        XMLObject inboundMessage = messageContext.getMessage();
         if (inboundMessage == null) {
             return false;
         }
@@ -570,14 +555,11 @@ public final class SOAPHelper {
      * @param detailAttributes the 'detail' element attributes
      * @return the new Fault element object
      */
-    public static Fault buildSOAP11Fault(QName faultCode, String faultString, String faultActor,
-            List<XMLObject> detailChildren, Map<QName, String> detailAttributes) {
-        if (faultCode == null) {
-            throw new IllegalArgumentException("Argument for 'faultcode' may not be null");
-        }
-        if (faultString == null) {
-            throw new IllegalArgumentException("Argument for 'faultstring' may not be null");
-        }
+    public static Fault buildSOAP11Fault(@Nonnull final QName faultCode, @Nonnull final String faultString,
+            @Nullable final String faultActor, @Nullable final List<XMLObject> detailChildren,
+            @Nullable final Map<QName, String> detailAttributes) {
+        Constraint.isNotNull(faultCode, "faultcode cannot be null");
+        Constraint.isNotNull(faultString, "faultstring cannot be null");
         
         XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory(); 
         
@@ -590,7 +572,7 @@ public final class SOAPHelper {
         
         faultCodeObj.setValue(faultCode);
         faultObj.setCode(faultCodeObj);
-        
+
         faultStringObj.setValue(faultString);
         faultObj.setMessage(faultStringObj);
         
@@ -605,10 +587,8 @@ public final class SOAPHelper {
         if (detailChildren != null && !detailChildren.isEmpty()) {
             detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
                 .buildObject(Detail.DEFAULT_ELEMENT_NAME);
-            for (XMLObject xo : detailChildren) {
-                if (xo != null) {
-                    detailObj.getUnknownXMLObjects().add(xo);
-                }
+            for (XMLObject xo : Iterables.filter(detailChildren, Predicates.notNull())) {
+                detailObj.getUnknownXMLObjects().add(xo);
             }
         }
         if (detailAttributes != null && !detailAttributes.isEmpty()) {
