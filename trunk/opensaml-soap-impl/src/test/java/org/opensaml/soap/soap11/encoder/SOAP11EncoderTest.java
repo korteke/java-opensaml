@@ -199,7 +199,7 @@ public class SOAP11EncoderTest extends XMLObjectBaseTestCase {
             XSAny tHeader =
                 (XSAny) builderFactory.getBuilder(XMLObjectProviderRegistrySupport.getDefaultProviderQName()).buildObject(tHeaderName);
             tHeader.setTextContent(context.transaction);
-            SOAPHelper.addMustUnderstandAttribute(tHeader, true);
+            SOAPHelper.addSOAP11MustUnderstandAttribute(tHeader, true);
             env.getHeader().getUnknownXMLObjects().add(tHeader);
         }
     }
