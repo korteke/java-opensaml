@@ -19,7 +19,6 @@ package org.opensaml.core.xml.util;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -85,7 +84,8 @@ public class IndexedXMLObjectChildrenListTest {
 
         Assert.assertEquals(indexedList.get(
                 child1.getElementQName()).size(), 1, "List gotten by element QName index should have had 1 element");
-        Assert.assertNull(indexedList.get(child1.getSchemaType()), "List gotten by type QName index should have been null");
+        Assert.assertTrue(indexedList.get(
+                child1.getSchemaType()).isEmpty(), "List gotten by type QName index should have been empty");
     }
 
     /**
@@ -106,7 +106,8 @@ public class IndexedXMLObjectChildrenListTest {
         indexedList.remove(child1);
         Assert.assertEquals(indexedList.get(
                 child1.getElementQName()).size(), 1, "List gotten by element QName index should have had 1 element");
-        Assert.assertNull(indexedList.get(child1.getSchemaType()), "List gotten by type QName index should have been null");
+        Assert.assertTrue(indexedList.get(
+                child1.getSchemaType()).isEmpty(), "List gotten by type QName index should have been empty");
     }
 
     /**
@@ -147,6 +148,10 @@ public class IndexedXMLObjectChildrenListTest {
         Assert.assertEquals(type2SchemaSublist
                 .size(), 2, "Schema Type2 index sublist did not have expected number of elements");
 
+        elementNameSublist.clear();
+        Assert.assertEquals(elementNameSublist
+                .size(), 0, "Element name index sublist did not have expected number of elements");
+        
         SimpleXMLObject child7 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         type1SchemaSublist.add(child7);
         Assert.assertTrue(type1SchemaSublist.contains(child7));
