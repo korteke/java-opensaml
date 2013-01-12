@@ -20,12 +20,10 @@ package org.opensaml.core.xml.util;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -56,7 +54,6 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
     private static String ns3Prefix = "testNS3";
     
     private static QName elementName = new QName(ns1, "TestElementName", ns1Prefix);
-    private static QName typeName = new QName(ns2, "TestTypeName", ns2Prefix);
     
     private XMLObjectBuilder<XSAny> xsAnyBuilder;
     
@@ -174,16 +171,6 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
             Assert.fail("Did not find expected namespace in object from QName: " +  name.toString());
         }
         
-    }
-    
-    private Set<Namespace> buildNamespaceSet(QName ... names) {
-        LazySet<Namespace> namespaces = new LazySet<Namespace>();
-        for (QName name : names) {
-            if (name != null) {
-                namespaces.add(buildNamespace(name));
-            }
-        }
-        return namespaces;
     }
     
     private Namespace buildNamespace(QName name) {

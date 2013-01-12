@@ -33,7 +33,6 @@ import org.custommonkey.xmlunit.Diff;
 import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.core.config.InitializationService;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
