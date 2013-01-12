@@ -19,7 +19,6 @@ package org.opensaml.core.xml.util;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;

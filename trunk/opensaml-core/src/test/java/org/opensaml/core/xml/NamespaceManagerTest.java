@@ -24,7 +24,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
@@ -265,16 +264,6 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
             Assert.fail("Did not find expected namespace in object from QName: " +  name.toString());
         }
         
-    }
-    
-    private Set<Namespace> buildNamespaceSet(QName ... names) {
-        LazySet<Namespace> namespaces = new LazySet<Namespace>();
-        for (QName name : names) {
-            if (name != null) {
-                namespaces.add(buildNamespace(name));
-            }
-        }
-        return namespaces;
     }
     
     private Namespace buildNamespace(QName name) {

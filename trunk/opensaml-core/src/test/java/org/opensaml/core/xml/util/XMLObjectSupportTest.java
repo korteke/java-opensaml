@@ -19,7 +19,6 @@ package org.opensaml.core.xml.util;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
