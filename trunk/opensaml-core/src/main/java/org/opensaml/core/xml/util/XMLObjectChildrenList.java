@@ -22,14 +22,18 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+
 /**
- * Resizable list for the children of XMLObjects. This list implements all optional List operations and does not all for
+ * Resizable list for the children of XMLObjects. This list implements all optional List operations and does nothing for
  * null elements. XMLObjects added to, or removed from, this list will have their parent object appropriately set and,
  * the underlying DOM will be released during mutation opertions.
  * 
@@ -41,7 +45,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     private final XMLObject parent;
 
     /** List of elements. */
-    private List<ElementType> elements;
+    private final List<ElementType> elements;
 
     /**
      * Constructs an empty list with all added XMLObjects being assigned the given parent XMLObject.
@@ -49,7 +53,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * @param newParent the parent for all the added XMLObjects
      */
     public XMLObjectChildrenList(@Nonnull final XMLObject newParent) {
-        Constraint.isNotNull(newParent, "Parent may not be null");
+        Constraint.isNotNull(newParent, "Parent cannot be null");
 
         parent = newParent;
         elements = new LazyList<ElementType>();
@@ -65,13 +69,18 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * @param newParent the parent for all the added XMLObjects
      * @param newElements the elements to be added
      */
-    public XMLObjectChildrenList(@Nonnull final XMLObject newParent, Collection<ElementType> newElements) {
-        Constraint.isNotNull(newParent, "Parent may not be null");
+    public XMLObjectChildrenList(@Nonnull final XMLObject newParent,
+            @Nonnull final Collection<ElementType> newElements) {
+        Constraint.isNotNull(newParent, "Parent cannot be null");
+        Constraint.isNotNull(newElements, "Initial collection cannot be null");
 
         parent = newParent;
         elements = new LazyList<ElementType>();
 
-        addAll(newElements);
+        // This does call our add, which handles the null case properly, but
+        // I didn't want to depend on that implementation. Keeping the fail silently
+        // behavior means not using an Immutable collection copy.
+        addAll(Collections2.filter(newElements, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
@@ -84,19 +93,20 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * 
      * @param element the element to check for
      * 
-     * @return true if the element is in this list, false if not
+     * @return true iff the element is in this list
      */
-    public boolean contains(ElementType element) {
+    public boolean contains(@Nonnull final ElementType element) {
         return elements.contains(element);
     }
 
     /** {@inheritDoc} */
-    public ElementType get(int index) {
+    @Nonnull public ElementType get(int index) {
         return elements.get(index);
     }
 
     /**
-     * Replaces the XMLObject at the specified index with the given element.
+     * Replaces the XMLObject at the specified index with the given element. A null
+     * input is ignored and returned.
      * 
      * <p>An IllegalArgumentException is thrown if the given XMLObject already has a parent
      * other than the parent given at list construction time.
@@ -106,7 +116,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * 
      * @return the replaced XMLObject
      */
-    public ElementType set(int index, ElementType element) {
+    @Nullable public ElementType set(int index, @Nullable final ElementType element) {
         if (element == null) {
             return null;
         }
@@ -129,7 +139,8 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     }
 
     /**
-     * Adds the given XMLObject to this list.
+     * Adds the given XMLObject to this list. A null element is ignored, as is
+     * an element already in the list.
      * 
      * <p>An IllegalArgumentException is thrown if the given XMLObject already has a parent
      * other than the parent given at list construction time.
@@ -137,7 +148,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * @param index index at which to add the given XMLObject
      * @param element element to be stored at the given index
      */
-    public void add(int index, ElementType element) {
+    public void add(int index, @Nullable final ElementType element) {
         if (element == null || elements.contains(element)) {
             return;
         }
@@ -150,7 +161,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     }
 
     /** {@inheritDoc} */
-    public ElementType remove(int index) {
+    @Nonnull public ElementType remove(int index) {
         ElementType element = elements.remove(index);
 
         if (element != null) {
@@ -168,12 +179,11 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * 
      * @param element the element to be removed
      * 
-     * @return true if the element was in the list and removed, false if not
+     * @return true iff the element was in the list and removed
      */
-    public boolean remove(ElementType element) {
-        boolean elementRemoved = false;
+    public boolean remove(@Nullable final ElementType element) {
 
-        elementRemoved = elements.remove(element);
+        boolean elementRemoved = elements.remove(element);
         if (elementRemoved) {
             if (element != null) {
                 element.releaseParentDOM(true);
@@ -194,7 +204,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
      * 
      * @param element the element to set the parent on
      */
-    protected void setParent(ElementType element) {
+    protected void setParent(@Nonnull final ElementType element) {
         XMLObject elemParent = element.getParent();
         if (elemParent != null && elemParent != parent) {
             throw new IllegalArgumentException(element.getElementQName()

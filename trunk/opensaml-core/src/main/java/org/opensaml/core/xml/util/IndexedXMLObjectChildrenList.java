@@ -22,13 +22,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 
 /**
  * A list which indexes XMLObjects by their schema type and element QName for quick retrival based on those items.
@@ -39,14 +45,14 @@ import org.opensaml.core.xml.XMLObject;
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
     /** Index of objects by type and name. */
-    private Map<QName, List<ElementType>> objectIndex;
+    private final Map<QName, List<ElementType>> objectIndex;
 
     /**
      * Constructor.
      * 
      * @param parent the parent of the {@link XMLObject}s added to the list
      */
-    public IndexedXMLObjectChildrenList(XMLObject parent) {
+    public IndexedXMLObjectChildrenList(@Nonnull final XMLObject parent) {
         super(parent);
         objectIndex = new LazyMap<QName, List<ElementType>>();
     }
@@ -57,20 +63,20 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * @param parent the parent of all elements
      * @param col collection to add to this list
      */
-    public IndexedXMLObjectChildrenList(XMLObject parent, Collection<ElementType> col) {
+    public IndexedXMLObjectChildrenList(@Nonnull final XMLObject parent, @Nonnull final Collection<ElementType> col) {
         super(parent);
+        Constraint.isNotNull(col, "Initial collection cannot be null");
+        
         objectIndex = new LazyMap<QName, List<ElementType>>();
-        addAll(col);
+        
+        // This does call our add, which handles the null case properly, but
+        // I didn't want to depend on that implementation. Keeping the fail silently
+        // behavior means not using an Immutable collection copy.
+        addAll(Collections2.filter(col, Predicates.notNull()));
     }
 
-    /**
-     * Inserts the specified element at the specified position in this list. Shifts the element currently at that
-     * position (if any) and any subsequent elements to the right (adds one to their indices).
-     * 
-     * @param index index of element to add
-     * @param element element to be stored at the specified position
-     */
-    public void add(int index, ElementType element) {
+    /** {@inheritDoc} */
+    public void add(int index, @Nullable final ElementType element) {
         super.add(index, element);
         indexElement(element);
     }
@@ -82,22 +88,36 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
     }
 
     /**
-     * Retrieves all the SAMLObjects that have given schema type or element name.
+     * Retrieves all the SAMLObjects that have given schema type or element name, or a
+     * null if no such objects exist.
      * 
      * @param typeOrName the schema type or element name
      * 
      * @return list of SAMLObjects that have given schema type or element name or null
      */
-    public List<ElementType> get(QName typeOrName) {
+    @Nonnull public List<ElementType> get(@Nonnull final QName typeOrName) {
+        checkAndCreateIndex(typeOrName);
         return objectIndex.get(typeOrName);
     }
 
     /**
-     * Indexes the given SAMLObject by type and element name.
+     * Check for the existence of an index for the specified QName and create it
+     * if it doesn't exist.
+     * 
+     * @param index the index to check
+     */
+    protected void checkAndCreateIndex(QName index) {
+        if (!objectIndex.containsKey(index)) {
+            objectIndex.put(index, new LazyList<ElementType>());
+        }
+    }
+
+    /**
+     * Indexes the given SAMLObject by type and element name. A null input is ignored.
      * 
      * @param element the SAMLObject to index
      */
-    protected void indexElement(ElementType element) {
+    protected void indexElement(@Nullable final ElementType element) {
         if (element == null) {
             return;
         }
@@ -117,12 +137,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * @param element the element to be indexed
      */
     protected void indexElement(QName index, ElementType element) {
-        List<ElementType> objects = objectIndex.get(index);
-        if (objects == null) {
-            objects = new LazyList<ElementType>();
-            objectIndex.put(index, objects);
-        }
-
+        List<ElementType> objects = get(index);
         objects.add(element);
     }
 
@@ -133,10 +148,9 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * 
      * @return true if the element was in the list and removed, false if not
      */
-    public boolean remove(ElementType element) {
-        boolean elementRemoved = false;
-
-        elementRemoved = super.remove(element);
+    public boolean remove(@Nullable final ElementType element) {
+        
+        boolean elementRemoved = super.remove(element);
         if (elementRemoved) {
             removeElementFromIndex(element);
         }
@@ -144,15 +158,8 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
         return elementRemoved;
     }
 
-    /**
-     * Removes the element at the specified position in this list. Shifts any subsequent elements to the left (subtracts
-     * one from their indices). Returns the element that was removed from the list
-     * 
-     * @param index the index of the element to remove
-     * 
-     * @return the element removed from the list
-     */
-    public ElementType remove(int index) {
+    /** {@inheritDoc} */
+    @Nonnull public ElementType remove(int index) {
         ElementType returnValue = super.remove(index);
 
         removeElementFromIndex(returnValue);
@@ -161,11 +168,12 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
     }
 
     /**
-     * Removes the given element from the schema type and element qname index.
+     * Removes the given element from the schema type and element QName index. A null input is
+     * ignored.
      * 
      * @param element the element to remove from the index
      */
-    protected void removeElementFromIndex(ElementType element) {
+    protected void removeElementFromIndex(@Nullable final ElementType element) {
         if (element == null) {
             return;
         }
@@ -184,26 +192,13 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * @param index the id of the index
      * @param element the element to be removed from that index
      */
-    protected void removeElementFromIndex(QName index, ElementType element) {
-        List<ElementType> objects = objectIndex.get(index);
-        if (objects != null) {
-            objects.remove(element);
-        }
-
-        if (objects.size() == 0) {
-            objectIndex.remove(index);
-        }
+    protected void removeElementFromIndex(@Nonnull final QName index, @Nonnull final ElementType element) {
+        List<ElementType> objects = get(index);
+        objects.remove(element);
     }
 
-    /**
-     * Replaces the element at the specified position in this list with the specified element.
-     * 
-     * @param index index of element to replace
-     * @param element element to be stored at the specified position
-     * 
-     * @return the element previously at the specified position
-     */
-    public ElementType set(int index, ElementType element) {
+    /** {@inheritDoc} */
+    @Nullable public ElementType set(int index, @Nullable final ElementType element) {
         ElementType returnValue = super.set(index, element);
 
         removeElementFromIndex(returnValue);
@@ -214,18 +209,15 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
 
     /**
      * Returns a view of the list that only contains elements stored under the given index. The returned list is backed
-     * by this list so and supports all optional operations, so changes made to the returned list are reflected in this
+     * by this list and supports all optional operations, so changes made to the returned list are reflected in this
      * list.
      * 
      * @param index index of the elements returned in the list view
      * 
      * @return a view of this list that contains only the elements stored under the given index
      */
-    public List<? extends ElementType> subList(QName index) {
-        if (!objectIndex.containsKey(index)) {
-            objectIndex.put(index, new LazyList<ElementType>());
-        }
-
+    @Nonnull public List<? extends ElementType> subList(@Nonnull final QName index) {
+        checkAndCreateIndex(index);
         return new ListView<ElementType>(this, index);
     }
 }
@@ -240,10 +232,10 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
 class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> {
 
     /** List that backs this view. */
-    private IndexedXMLObjectChildrenList<ElementType> backingList;
+    private final IndexedXMLObjectChildrenList<ElementType> backingList;
 
     /** Index that points to the list, in the backing list, that this view operates on. */
-    private QName index;
+    private final QName index;
 
     /** List, in the backing list, that the given index points to. */
     private List<ElementType> indexList;
@@ -254,39 +246,43 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
      * @param newBackingList the list that backs this view
      * @param newIndex the element schema type or name of the sublist this view operates on
      */
-    public ListView(IndexedXMLObjectChildrenList<ElementType> newBackingList, QName newIndex) {
+    public ListView(@Nonnull final IndexedXMLObjectChildrenList<ElementType> newBackingList,
+            @Nonnull final QName newIndex) {
         backingList = newBackingList;
         index = newIndex;
         indexList = backingList.get(index);
     }
 
     /** {@inheritDoc} */
-    public boolean add(ElementType o) {
+    public boolean add(@Nullable final ElementType o) {
         boolean result = backingList.add(o);
         indexList = backingList.get(index);
         return result;
     }
 
     /** {@inheritDoc} */
-    public void add(int newIndex, ElementType element) {
+    public void add(int newIndex, @Nullable final ElementType element) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
-    public boolean addAll(Collection<? extends ElementType> c) {
+    public boolean addAll(@Nonnull final Collection<? extends ElementType> c) {
         boolean result = backingList.addAll(c);
         indexList = backingList.get(index);
         return result;
     }
 
     /** {@inheritDoc} */
-    public boolean addAll(int i, Collection<? extends ElementType> c) {
+    public boolean addAll(int i, @Nonnull final Collection<? extends ElementType> c) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
     public void clear() {
-        backingList.clear();
+        // Create a copy of the current list to avoid a potential concurrent modification error.
+        LazyList<ElementType> copy = new LazyList<ElementType>();
+        copy.addAll(indexList);
+        backingList.removeAll(copy);
         indexList = backingList.get(index);
     }
 
@@ -297,23 +293,23 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
      * 
      * @return true if the element is in this list, false if not
      */
-    public boolean contains(Object element) {
+    public boolean contains(@Nonnull final Object element) {
         return indexList.contains(element);
     }
 
     /** {@inheritDoc} */
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(@Nonnull final Collection<?> c) {
         return indexList.containsAll(c);
     }
 
     /** {@inheritDoc} */
-    public ElementType get(int newIndex) {
+    @Nonnull public ElementType get(int newIndex) {
         return indexList.get(newIndex);
     }
 
     /** {@inheritDoc} */
-    public int indexOf(Object o) {
-        return backingList.indexOf(o);
+    public int indexOf(@Nonnull final Object o) {
+        return indexList.indexOf(o);
     }
 
     /** {@inheritDoc} */
@@ -322,38 +318,38 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
     }
 
     /** {@inheritDoc} */
-    public int lastIndexOf(Object o) {
-        return backingList.lastIndexOf(o);
+    public int lastIndexOf(@Nonnull final Object o) {
+        return indexList.lastIndexOf(o);
     }
 
     /** {@inheritDoc} */
-    public ElementType remove(int newIndex) {
+    @Nonnull public ElementType remove(int newIndex) {
         throw new UnsupportedOperationException();
     }
 
     /** {@inheritDoc} */
-    public boolean remove(Object o) {
+    public boolean remove(@Nullable final Object o) {
         boolean result = backingList.remove(o);
         indexList = backingList.get(index);
         return result;
     }
 
     /** {@inheritDoc} */
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(@Nonnull final Collection<?> c) {
         boolean result = backingList.removeAll(c);
         indexList = backingList.get(index);
         return result;
     }
 
     /** {@inheritDoc} */
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(@Nonnull final Collection<?> c) {
         boolean result = backingList.retainAll(c);
         indexList = backingList.get(index);
         return result;
     }
 
     /** {@inheritDoc} */
-    public ElementType set(int newIndex, ElementType element) {
+    public ElementType set(int newIndex, @Nonnull final ElementType element) {
         throw new UnsupportedOperationException();
     }
 
@@ -363,12 +359,12 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
     }
 
     /** {@inheritDoc} */
-    public Object[] toArray() {
+    @Nonnull public Object[] toArray() {
         return indexList.toArray();
     }
 
     /** {@inheritDoc} */
-    public <T extends Object> T[] toArray(T[] a) {
+    @Nonnull public <T extends Object> T[] toArray(@Nonnull final T[] a) {
         return indexList.toArray(a);
     }
 }
