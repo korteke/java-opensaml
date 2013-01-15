@@ -15,25 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.client;
-
-import org.opensaml.soap.client.SOAPClient.SOAPRequestParameters;
-import org.opensaml.ws.message.BaseMessageContext;
-
-/** Basic {@link SOAPMessageContext} implementation. */
-public class BasicSOAPMessageContext extends BaseMessageContext implements SOAPMessageContext {
-
-    /** Binding/transport-specific SOAP request parameters. */
-    private SOAPRequestParameters requestParameters;
-
-    /** {@inheritDoc} */
-    public SOAPRequestParameters getSOAPRequestParameters() {
-        return requestParameters;
-    }
-
-    /** {@inheritDoc} */
-    public void setSOAPRequestParameters(SOAPRequestParameters parameters) {
-        requestParameters = parameters;
-    }
-
-}
+/** SOAP HTTP client functionality. */
+package org.opensaml.soap.client.http;

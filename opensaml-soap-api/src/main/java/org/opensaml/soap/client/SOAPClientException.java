@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.client;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.common.SOAPException;
 
 /** Exception indicating an error sending or receiving a SOAP message. */
@@ -35,7 +37,7 @@ public class SOAPClientException extends SOAPException {
      * 
      * @param message exception message
      */
-    public SOAPClientException(String message) {
+    public SOAPClientException(@Nullable final String message) {
         super(message);
     }
 
@@ -44,7 +46,7 @@ public class SOAPClientException extends SOAPException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SOAPClientException(Exception wrappedException) {
+    public SOAPClientException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -54,7 +56,7 @@ public class SOAPClientException extends SOAPException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SOAPClientException(String message, Exception wrappedException) {
+    public SOAPClientException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
