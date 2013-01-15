@@ -15,25 +15,5 @@
  * limitations under the License.
  */
 
+/** Provided implementations of the SOAP 1.1 XMLObject interfaces. */
 package org.opensaml.soap.soap11.impl;
-
-import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.soap.common.SOAPObjectBuilder;
-import org.opensaml.soap.soap11.FaultString;
-
-/**
- * Builder of {@link org.opensaml.soap.soap11.impl.FaultStringImpl} objects.
- */
-public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString>
-    implements SOAPObjectBuilder<FaultString> {
-
-    /** {@inheritDoc} */
-    public FaultString buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new FaultStringImpl(namespaceURI, localName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public FaultString buildObject() {
-        return buildObject(null, FaultString.DEFAULT_ELEMENT_LOCAL_NAME, null);
-    }
-}
