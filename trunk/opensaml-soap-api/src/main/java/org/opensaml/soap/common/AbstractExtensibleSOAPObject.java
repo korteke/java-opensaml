@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -31,7 +33,7 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 
 /**
- * Abstract class implementating validation and element and attribute extensibility.
+ * Abstract class implementing element and attribute extensibility.
  */
 public class AbstractExtensibleSOAPObject extends AbstractXMLObject implements SOAPObject,
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
@@ -49,14 +51,15 @@ public class AbstractExtensibleSOAPObject extends AbstractXMLObject implements S
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    protected AbstractExtensibleSOAPObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AbstractExtensibleSOAPObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
         unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
         children.addAll(unknownXMLObjects);
@@ -65,17 +68,17 @@ public class AbstractExtensibleSOAPObject extends AbstractXMLObject implements S
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return attributes;
     }
 }
