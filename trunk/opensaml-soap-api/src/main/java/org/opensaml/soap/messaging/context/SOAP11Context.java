@@ -25,7 +25,7 @@ import org.opensaml.soap.soap11.Envelope;
 /**
  * Subcontext that carries information about the SOAP 1.1 message transport.
  */
-public class Soap11Context extends BaseContext {
+public class SOAP11Context extends BaseContext {
     
     //TODO handle storage for understood headers here also?
 
