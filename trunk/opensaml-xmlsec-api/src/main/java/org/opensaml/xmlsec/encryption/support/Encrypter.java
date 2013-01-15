@@ -118,9 +118,12 @@ public class Encrypter {
         UnmarshallerFactory unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         encryptedDataUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedData.DEFAULT_ELEMENT_NAME);
         encryptedKeyUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
+        Constraint.isNotNull(encryptedDataUnmarshaller, "EncryptedData unmarshaller not configured");
+        Constraint.isNotNull(encryptedKeyUnmarshaller, "EncryptedKey unmarshaller not configured");
 
         XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.getBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
+        Constraint.isNotNull(keyInfoBuilder, "KeyInfo builder not configured");
     }
 
     /**
@@ -537,8 +540,12 @@ public class Encrypter {
     protected void checkAndMarshall(@Nonnull final XMLObject xmlObject) throws EncryptionException {
         Element targetElement = xmlObject.getDOM();
         if (targetElement == null) {
-            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
             try {
+                Marshaller marshaller =
+                        XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
+                if (marshaller == null) {
+                    throw new MarshallingException("No marshaller available for " + xmlObject.getElementQName());
+                }
                 targetElement = marshaller.marshall(xmlObject);
             } catch (MarshallingException e) {
                 log.error("Error marshalling target XMLObject", e);

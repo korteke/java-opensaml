@@ -36,6 +36,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.xml.security.Init;
@@ -45,6 +46,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.security.credential.Credential;
@@ -487,7 +489,20 @@ public class Decrypter {
             }
 
             try {
-                xmlObject = unmarshallerFactory.getUnmarshaller(element).unmarshall(element);
+                Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
+                if (unmarshaller == null) {
+                    unmarshaller = unmarshallerFactory.getUnmarshaller(
+                            XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+                    if (unmarshaller == null) {
+                        String errorMsg = "No unmarshaller available for " + QNameSupport.getNodeQName(element);
+                        log.error(errorMsg);
+                        throw new UnmarshallingException(errorMsg);
+                    } else {
+                        log.debug("No unmarshaller was registered for {}. Using default unmarshaller.",
+                                QNameSupport.getNodeQName(element));
+                    }
+                }
+                xmlObject = unmarshaller.unmarshall(element);
             } catch (UnmarshallingException e) {
                 log.error("There was an error during unmarshalling of the decrypted element", e);
                 throw new DecryptionException("Unmarshalling error during decryption", e);
