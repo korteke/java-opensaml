@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.util.SOAPConstants;
@@ -41,13 +42,13 @@ public interface ActorBearing {
      * 
      * @return return the attribute vlue
      */
-    public String getSOAP11Actor();
+    @Nullable public String getSOAP11Actor();
     
     /**
      * Set the attribute value.
      * 
      * @param newActor the new attribute value
      */
-    public void setSOAP11Actor(String newActor);
+    public void setSOAP11Actor(@Nullable final String newActor);
 
 }

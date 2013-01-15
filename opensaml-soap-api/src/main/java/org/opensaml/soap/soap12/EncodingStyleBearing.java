@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap12;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.util.SOAPConstants;
@@ -38,13 +39,13 @@ public interface EncodingStyleBearing {
      * 
      * @return return the attribute value
      */
-    public String getSOAP12EncodingStyle();
+    @Nullable public String getSOAP12EncodingStyle();
     
     /**
      * Set the attribute value.
      * 
      * @param newEncodingStyle the new attribute value
      */
-    public void setSOAP12EncodingStyle(String newEncodingStyle);
+    public void setSOAP12EncodingStyle(@Nullable final String newEncodingStyle);
 
 }

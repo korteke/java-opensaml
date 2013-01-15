@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.common.SOAPObject;
@@ -46,54 +47,54 @@ public interface Fault extends SOAPObject {
      * 
      * @return the fault code for this fault
      */
-    public FaultCode getCode();
+    @Nullable public FaultCode getCode();
     
     /**
      * Sets the fault code for this fault.
      * 
      * @param newFaultCode the fault code for this fault
      */
-    public void setCode(FaultCode newFaultCode);
+    public void setCode(@Nullable final FaultCode newFaultCode);
     
     /**
      * Gets the fault string for this fault.
      * 
      * @return the fault string for this fault
      */
-    public FaultString getMessage();
+    @Nullable public FaultString getMessage();
     
     /**
      * Sets the fault string for this fault.
      * 
      * @param newMessage the fault string for this fault
      */
-    public void setMessage(FaultString newMessage);
+    public void setMessage(@Nullable final FaultString newMessage);
     
     /**
      * Gets the URI of the fault actor for this fault.
      * 
      * @return the URI of the fault actor for this fault
      */
-    public FaultActor getActor();
+    @Nullable public FaultActor getActor();
     
     /**
      * Sets the URI of the fault actor for this fault.
      * 
      * @param newActor the URI of the fault actor for this fault
      */
-    public void setActor(FaultActor newActor);
+    public void setActor(@Nullable final FaultActor newActor);
     
     /**
      * Gets details of this fault.
      * 
      * @return details of this fault
      */
-    public Detail getDetail();
+    @Nullable public Detail getDetail();
     
     /**
      * Sets details of this fault.
      * 
      * @param newDetail details of this fault
      */
-    public void setDetail(Detail newDetail);
+    public void setDetail(@Nullable final Detail newDetail);
 }

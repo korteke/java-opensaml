@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -39,27 +40,27 @@ public interface MustUnderstandBearing {
      * 
      * @return return the attribute vlue
      */
-    public Boolean isSOAP11MustUnderstand();
+    @Nullable public Boolean isSOAP11MustUnderstand();
     
     /**
      * Get the attribute value.
      * 
      * @return return the attribute vlue
      */
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean();
+    @Nullable public XSBooleanValue isSOAP11MustUnderstandXSBoolean();
     
     /**
      * Set the attribute value.
      * 
      * @param newMustUnderstand the new attribute value
      */
-    public void setSOAP11MustUnderstand(Boolean newMustUnderstand);
+    public void setSOAP11MustUnderstand(@Nullable final Boolean newMustUnderstand);
     
     /**
      * Set the attribute value.
      * 
      * @param newMustUnderstand the new attribute value
      */
-    public void setSOAP11MustUnderstand(XSBooleanValue newMustUnderstand);
+    public void setSOAP11MustUnderstand(@Nullable final XSBooleanValue newMustUnderstand);
 
 }

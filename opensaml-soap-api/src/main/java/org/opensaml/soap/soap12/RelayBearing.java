@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap12;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -39,27 +40,27 @@ public interface RelayBearing {
      * 
      * @return return the attribute vlue
      */
-    public Boolean isSOAP12Relay();
+    @Nullable public Boolean isSOAP12Relay();
     
     /**
      * Get the attribute value.
      * 
      * @return return the attribute vlue
      */
-    public XSBooleanValue isSOAP12RelayXSBoolean();
+    @Nullable public XSBooleanValue isSOAP12RelayXSBoolean();
     
     /**
      * Set the attribute value.
      * 
      * @param newRelay the new attribute value
      */
-    public void setSOAP12Relay(Boolean newRelay);
+    public void setSOAP12Relay(@Nullable final Boolean newRelay);
     
     /**
      * Set the attribute value.
      * 
      * @param newRelay the new attribute value
      */
-    public void setSOAP12Relay(XSBooleanValue newRelay);
+    public void setSOAP12Relay(@Nullable final XSBooleanValue newRelay);
 
 }

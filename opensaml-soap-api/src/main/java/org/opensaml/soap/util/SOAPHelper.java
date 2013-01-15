@@ -39,7 +39,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.soap.messaging.context.Soap11Context;
+import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.soap11.EncodingStyleBearing;
@@ -410,7 +410,7 @@ public final class SOAPHelper {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
         // SOAP 1.1 Envelope
-        Soap11Context soap11 = messageContext.getSubcontext(Soap11Context.class, false);
+        SOAP11Context soap11 = messageContext.getSubcontext(SOAP11Context.class, false);
         if (soap11 != null) {
             addSOAP11HeaderBlock(soap11.getEnvelope(), headerBlock);
         } else {
@@ -455,7 +455,7 @@ public final class SOAPHelper {
             @Nullable Set<String> targetNodes, boolean isFinalDestination) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        Soap11Context soap11 = messageContext.getSubcontext(Soap11Context.class, false);
+        SOAP11Context soap11 = messageContext.getSubcontext(SOAP11Context.class, false);
         
         // SOAP 1.1 Envelope
         if (soap11 != null) {
