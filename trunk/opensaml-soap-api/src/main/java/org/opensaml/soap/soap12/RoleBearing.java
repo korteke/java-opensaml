@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap12;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.util.SOAPConstants;
@@ -38,13 +39,13 @@ public interface RoleBearing {
      * 
      * @return return the attribute vlue
      */
-    public String getSOAP12Role();
+    @Nullable public String getSOAP12Role();
     
     /**
      * Set the attribute value.
      * 
      * @param newRole the new attribute value
      */
-    public void setSOAP12Role(String newRole);
+    public void setSOAP12Role(@Nullable final String newRole);
 
 }

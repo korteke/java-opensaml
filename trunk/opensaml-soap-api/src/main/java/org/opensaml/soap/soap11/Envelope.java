@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -48,26 +49,26 @@ public interface Envelope extends SOAPObject, ElementExtensibleXMLObject, Attrib
      * 
      * @return the header of this envelope
      */
-    public Header getHeader();
+    @Nullable public Header getHeader();
     
     /**
      * Sets the header of this envelope.
      * 
      * @param newHeader the header of this envelope
      */
-    public void setHeader(Header newHeader);
+    public void setHeader(@Nullable final Header newHeader);
     
     /**
      * Gets the body of this envelope.
      * 
      * @return the body of this envelope
      */
-    public Body getBody();
+    @Nullable public Body getBody();
     
     /**
      * Sets the body of this envelope.
      * 
      * @param newBody the body of this envelope
      */
-    public void setBody(Body newBody);
+    public void setBody(@Nullable final Body newBody);
 }
