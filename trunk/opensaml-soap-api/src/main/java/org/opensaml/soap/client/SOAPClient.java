@@ -19,8 +19,10 @@ package org.opensaml.soap.client;
 
 import javax.annotation.concurrent.ThreadSafe;
 
+import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.security.SecurityException;
 import org.opensaml.soap.common.SOAPException;
+
 
 /**
  * An interface for a very basic SOAP client.
@@ -35,14 +37,14 @@ public interface SOAPClient {
      * Sends a message and waits for a response.
      * 
      * @param endpoint the endpoint to which to send the message
-     * @param messageContext the message context containing the outbound SOAP message
+     * @param context the operation context containing the outbound SOAP message
      * 
-     * @throws SOAPClientException thrown if there is a problem sending the message or receiving the response or if the
+     * @throws SOAPException thrown if there is a problem sending the message or receiving the response or if the
      *             response is a SOAP fault
      * @throws SecurityException thrown if the response does not meet any security policy associated with the message
      *             context
      */
-    public void send(String endpoint, SOAPMessageContext messageContext) throws SOAPException, SecurityException;
+    public void send(String endpoint, InOutOperationContext context) throws SOAPException, SecurityException;
 
     /** Marker interface for binding/transport request parameters. */
     public interface SOAPRequestParameters {};

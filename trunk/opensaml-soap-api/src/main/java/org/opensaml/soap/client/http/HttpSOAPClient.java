@@ -23,37 +23,44 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.messaging.context.InOutOperationContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.security.SecurityException;
 import org.opensaml.soap.client.SOAPClient;
+import org.opensaml.soap.client.SOAPClientContext;
 import org.opensaml.soap.client.SOAPClientException;
 import org.opensaml.soap.client.SOAPFaultException;
-import org.opensaml.soap.client.SOAPMessageContext;
 import org.opensaml.soap.common.SOAPException;
+import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
-import org.opensaml.ws.security.SecurityPolicy;
-import org.opensaml.ws.security.SecurityPolicyResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import com.google.common.base.Function;
 
 /**
  * SOAP client that uses HTTP as the underlying transport and POST as the binding.
@@ -69,54 +76,124 @@ public class HttpSOAPClient implements SOAPClient {
     private final Logger log = LoggerFactory.getLogger(HttpSOAPClient.class);
 
     /** HTTP client used to send requests and receive responses. */
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
 
     /** Pool of XML parsers used to parser incoming responses. */
-    private ParserPool parserPool;
+    private final ParserPool parserPool;
 
+    /**
+     * Strategy used to look up the {@link SOAPClientContext} associated with the
+     * outbound message context.
+     */
+    private Function<MessageContext, SOAPClientContext> soapClientContextLookupStrategy;
+
+    /**
+     * Strategy used to look up the {@link SOAP11Context} associated with the
+     * outbound message context.
+     */
+    private Function<MessageContext, SOAP11Context> soap11ContextLookupStrategy;
+    
     /**
      * Constructor.
      * 
      * @param client Client used to make outbound HTTP requests. This client SHOULD employ a
-     *            {@link org.apache.commons.httpclient.MultiThreadedHttpConnectionManager} and may be shared with other
-     *            objects.
+     *            thread-safe {@link HttpClient} and may be shared with other objects.
      * @param parser pool of XML parsers used to parse incoming responses
      */
-    public HttpSOAPClient(HttpClient client, ParserPool parser) {
-        if (client == null) {
-            throw new IllegalArgumentException("HtppClient may not be null");
-        }
-        httpClient = client;
-
-        if (parser == null) {
-            throw new IllegalArgumentException("ParserPool may not be null");
-        }
-        parserPool = parser;
+    public HttpSOAPClient(@Nonnull final HttpClient client, @Nonnull final ParserPool parser) {
+        httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
+        parserPool = Constraint.isNotNull(parser, "ParserPool cannot be null");
+        
+        soapClientContextLookupStrategy =
+                new ChildContextLookup<MessageContext, SOAPClientContext>(SOAPClientContext.class, false);
+        soap11ContextLookupStrategy =
+                new ChildContextLookup<MessageContext, SOAP11Context>(SOAP11Context.class, false);
     }
 
+    /**
+     * Gets the strategy used to look up the {@link SOAPClientContext} associated with the outbound message
+     * context.
+     * 
+     * @return strategy used to look up the {@link SOAPClientContext} associated with the outbound message
+     *         context
+     */
+    @Nonnull public Function<MessageContext, SOAPClientContext> getSOAPClientContextLookupStrategy() {
+        return soapClientContextLookupStrategy;
+    }
+
+    /**
+     * Sets the strategy used to look up the {@link SOAPClientContext} associated with the outbound message
+     * context.
+     * 
+     * @param strategy strategy used to look up the {@link SOAPClientContext} associated with the outbound
+     *            message context
+     */
+    public void setSOAPClientContextLookupStrategy(
+            @Nonnull final Function<MessageContext, SOAPClientContext> strategy) {
+        soapClientContextLookupStrategy =
+                Constraint.isNotNull(strategy, "SOAP client context lookup strategy cannot be null");
+    }
+
+    /**
+     * Gets the strategy used to look up the {@link SOAP11Context} associated with the outbound message
+     * context.
+     * 
+     * @return strategy used to look up the {@link SOAP11Context} associated with the outbound message
+     *         context
+     */
+    @Nonnull public Function<MessageContext, SOAP11Context> getSOAP11ContextLookupStrategy() {
+        return soap11ContextLookupStrategy;
+    }
+
+    /**
+     * Sets the strategy used to look up the {@link SOAP11Context} associated with the outbound message
+     * context.
+     * 
+     * @param strategy strategy used to look up the {@link SOAP11Context} associated with the outbound
+     *            message context
+     */
+    public void setSOAP11ContextLookupStrategy(
+            @Nonnull final Function<MessageContext, SOAP11Context> strategy) {
+        soap11ContextLookupStrategy =
+                Constraint.isNotNull(strategy, "SOAP 1.1 context lookup strategy cannot be null");
+    }
+    
     /** {@inheritDoc} */
-    public void send(String endpoint, SOAPMessageContext messageContext) throws SOAPException, SecurityException {
-        PostMethod post = null;
+    public void send(String endpoint, InOutOperationContext context) throws SOAPException, SecurityException {
+        Constraint.isNotNull(context, "Operation context cannot be null");
+        
+        final SOAP11Context soapCtx = soap11ContextLookupStrategy.apply(context.getOutboundMessageContext());
+        final SOAPClientContext clientCtx = soapClientContextLookupStrategy.apply(context.getOutboundMessageContext());
+
+        HttpSOAPRequestParameters soapRequestParams = null;
+        
+        if (soapCtx == null || soapCtx.getEnvelope() == null) {
+            throw new SOAPClientException("Operation context did not contain an outbound SOAP Envelope");
+        } else if (clientCtx != null) {
+            soapRequestParams = (HttpSOAPRequestParameters) clientCtx.getSOAPRequestParameters();
+        }
+        
+        HttpPost post = null;
         try {
-            post = createPostMethod(endpoint, (HttpSOAPRequestParameters) messageContext.getSOAPRequestParameters(),
-                    (Envelope) messageContext.getOutboundMessage());
+            post = createPostMethod(endpoint, soapRequestParams, soapCtx.getEnvelope());
 
-            int result = httpClient.executeMethod(post);
-            log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", result, endpoint);
+            HttpResponse result = httpClient.execute(post);
+            int code = result.getStatusLine().getStatusCode();
+            log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
 
-            if (result == HttpStatus.SC_OK) {
-                processSuccessfulResponse(post, messageContext);
-            } else if (result == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                processFaultResponse(post, messageContext);
+            if (code == HttpStatus.SC_OK) {
+                processSuccessfulResponse(post, context);
+            } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                processFaultResponse(post, context);
             } else {
-                throw new SOAPClientException("Received " + result + " HTTP response status code from HTTP request to "
+                throw new SOAPClientException("Received " + code + " HTTP response status code from HTTP request to "
                         + endpoint);
             }
         } catch (IOException e) {
             throw new SOAPClientException("Unable to send request to " + endpoint, e);
         } finally {
             if (post != null) {
-                post.releaseConnection();
+                post.reset();
             }
         }
     }
@@ -132,14 +209,14 @@ public class HttpSOAPClient implements SOAPClient {
      * 
      * @throws SOAPClientException thrown if the message could not be marshalled
      */
-    protected PostMethod createPostMethod(String endpoint, HttpSOAPRequestParameters requestParams, Envelope message)
+    protected HttpPost createPostMethod(String endpoint, HttpSOAPRequestParameters requestParams, Envelope message)
             throws SOAPClientException {
         log.debug("POSTing SOAP message to {}", endpoint);
 
-        PostMethod post = new PostMethod(endpoint);
-        post.setRequestEntity(createRequestEntity(message, Charset.forName("UTF-8")));
+        HttpPost post = new HttpPost(endpoint);
+        post.setEntity(createRequestEntity(message, Charset.forName("UTF-8")));
         if (requestParams != null && requestParams.getSoapAction() != null) {
-            post.setRequestHeader(HttpSOAPRequestParameters.SOAP_ACTION_HEADER, requestParams.getSoapAction());
+            post.setHeader(HttpSOAPRequestParameters.SOAP_ACTION_HEADER, requestParams.getSoapAction());
         }
 
         return post;
@@ -155,16 +232,19 @@ public class HttpSOAPClient implements SOAPClient {
      * 
      * @throws SOAPClientException thrown if the message could not be marshalled
      */
-    protected RequestEntity createRequestEntity(Envelope message, Charset charset) throws SOAPClientException {
+    protected HttpEntity createRequestEntity(Envelope message, Charset charset) throws SOAPClientException {
         try {
-            Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(message);
+            Marshaller marshaller = Constraint.isNotNull(
+                    XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(message),
+                    "SOAP Envelope marshaller not available");
             ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
 
             if (log.isDebugEnabled()) {
-                log.debug("Outbound SOAP message is:\n" + SerializeSupport.prettyPrintXML(marshaller.marshall(message)));
+                log.debug("Outbound SOAP message is:\n" +
+                        SerializeSupport.prettyPrintXML(marshaller.marshall(message)));
             }
             SerializeSupport.writeNode(marshaller.marshall(message), arrayOut);
-            return new ByteArrayRequestEntity(arrayOut.toByteArray(), "text/xml");
+            return new ByteArrayEntity(arrayOut.toByteArray(), ContentType.create("text/xml", charset));
         } catch (MarshallingException e) {
             throw new SOAPClientException("Unable to marshall SOAP envelope", e);
         }
@@ -174,16 +254,21 @@ public class HttpSOAPClient implements SOAPClient {
      * Processes a successful, as determined by an HTTP 200 status code, response.
      * 
      * @param httpMethod the HTTP method used to send the request and receive the response
-     * @param messageContext current messages context
+     * @param context current operation context
      * 
-     * @throws SOAPClientException thrown if there is a problem reading the response from the {@link PostMethod}
+     * @throws SOAPClientException thrown if there is a problem reading the response from the {@link HttpPost}
      */
-    protected void processSuccessfulResponse(PostMethod httpMethod, SOAPMessageContext messageContext)
+    protected void processSuccessfulResponse(HttpPost httpMethod, InOutOperationContext context)
             throws SOAPClientException {
         try {
-            Envelope response = unmarshallResponse(httpMethod.getResponseBodyAsStream());
-            messageContext.setInboundMessage(response);
-            evaluateSecurityPolicy(messageContext);
+            if (httpMethod.getEntity() == null) {
+                throw new SOAPClientException("No response body from server");
+            }
+            Envelope response = unmarshallResponse(httpMethod.getEntity().getContent());
+            context.setInboundMessageContext(new MessageContext());
+            context.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).setEnvelope(response);
+            //TODO: goes away?
+            //evaluateSecurityPolicy(messageContext);
         } catch (IOException e) {
             throw new SOAPClientException("Unable to read response", e);
         }
@@ -193,28 +278,45 @@ public class HttpSOAPClient implements SOAPClient {
      * Processes a SOAP fault, as determined by an HTTP 500 status code, response.
      * 
      * @param httpMethod the HTTP method used to send the request and receive the response
-     * @param messageContext current messages context
+     * @param context current operation context
      * 
      * @throws SOAPClientException thrown if the response can not be read from the {@link PostMethod}
      * @throws SOAPFaultException an exception containing the SOAP fault
      */
-    protected void processFaultResponse(PostMethod httpMethod, SOAPMessageContext messageContext)
+    protected void processFaultResponse(HttpPost httpMethod, InOutOperationContext context)
             throws SOAPClientException, SOAPFaultException {
         try {
-            Envelope response = unmarshallResponse(httpMethod.getResponseBodyAsStream());
-            messageContext.setInboundMessage(response);
-
-            List<XMLObject> faults = response.getBody().getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
-            if (faults.size() < 1) {
-                throw new SOAPClientException("HTTP status code was 500 but SOAP response did not contain a Fault");
+            if (httpMethod.getEntity() == null) {
+                throw new SOAPClientException("No response body from server");
             }
-            Fault fault = (Fault) faults.get(0);
+            Envelope response = unmarshallResponse(httpMethod.getEntity().getContent());
+            context.setInboundMessageContext(new MessageContext());
+            context.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).setEnvelope(response);
 
-            log.debug("SOAP fault code {} with message {}", fault.getCode().getValue(), fault.getMessage().getValue());
-            SOAPFaultException faultException = new SOAPFaultException("SOAP Fault: " + fault.getCode().getValue()
-                    + " Fault Message: " + fault.getMessage().getValue());
-            faultException.setFault(fault);
-            throw faultException;
+            if (response.getBody() != null) {
+                List<XMLObject> faults = response.getBody().getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+                if (faults.size() < 1) {
+                    throw new SOAPClientException("HTTP status code was 500 but SOAP response did not contain a Fault");
+                }
+                
+                String code = "(not set)";
+                String msg = "(not set)";
+                Fault fault = (Fault) faults.get(0);
+                if (fault.getCode() != null) {
+                    code = fault.getCode().getValue().toString();
+                }
+                if (fault.getMessage() != null) {
+                    msg = fault.getMessage().getValue();
+                }
+                
+                log.debug("SOAP fault code {} with message {}", code, msg);
+                SOAPFaultException faultException = new SOAPFaultException("SOAP Fault: " + code
+                        + " Fault Message: " + msg);
+                faultException.setFault(fault);
+                throw faultException;
+            } else {
+                throw new SOAPClientException("HTTP status code was 500 but SOAP response did not contain a Body");
+            }
         } catch (IOException e) {
             throw new SOAPClientException("Unable to read response", e);
         }
@@ -235,12 +337,14 @@ public class HttpSOAPClient implements SOAPClient {
             if (log.isDebugEnabled()) {
                 log.debug("Inbound SOAP message was:\n" + SerializeSupport.prettyPrintXML(responseElem));
             }
-            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(responseElem);
+            Unmarshaller unmarshaller = Constraint.isNotNull(
+                    XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(responseElem),
+                    "SOAP envelope unmarshaller not available");
             return (Envelope) unmarshaller.unmarshall(responseElem);
         } catch (XMLParserException e) {
             throw new SOAPClientException("Unable to parse the XML within the response", e);
         } catch (UnmarshallingException e) {
-            throw new SOAPClientException("unable to unmarshall the response DOM", e);
+            throw new SOAPClientException("Unable to unmarshall the response DOM", e);
         }
     }
 
@@ -253,7 +357,9 @@ public class HttpSOAPClient implements SOAPClient {
      * 
      * @throws SOAPClientException thrown if there is a problem resolving or evaluating a security policy
      */
-    protected void evaluateSecurityPolicy(SOAPMessageContext messageContext) throws SOAPClientException {
+    protected void evaluateSecurityPolicy(SOAPClientContext messageContext) throws SOAPClientException {
+        //TODO: I think this goes away, with the policy layer living outside the client?
+        /*
         SecurityPolicyResolver policyResolver = messageContext.getSecurityPolicyResolver();
         if (policyResolver == null) {
             return;
@@ -275,5 +381,6 @@ public class HttpSOAPClient implements SOAPClient {
         } catch (SecurityException e) {
             throw new SOAPClientException("Inbound SOAP response does not meet security policy", e);
         }
+        */
     }
 }

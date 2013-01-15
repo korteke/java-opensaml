@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.client;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.common.SOAPException;
 import org.opensaml.soap.soap11.Fault;
 
@@ -39,7 +41,7 @@ public class SOAPFaultException extends SOAPException {
      * 
      * @param message exception message
      */
-    public SOAPFaultException(String message) {
+    public SOAPFaultException(@Nullable final String message) {
         super(message);
     }
 
@@ -48,7 +50,7 @@ public class SOAPFaultException extends SOAPException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SOAPFaultException(Exception wrappedException) {
+    public SOAPFaultException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -58,7 +60,7 @@ public class SOAPFaultException extends SOAPException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SOAPFaultException(String message, Exception wrappedException) {
+    public SOAPFaultException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 
@@ -67,7 +69,7 @@ public class SOAPFaultException extends SOAPException {
      * 
      * @return fault that caused the exception
      */
-    public Fault getFault() {
+    @Nullable public Fault getFault() {
         return soapFault;
     }
 
@@ -76,7 +78,7 @@ public class SOAPFaultException extends SOAPException {
      * 
      * @param fault fault that caused the exception
      */
-    public void setFault(Fault fault) {
+    public void setFault(@Nullable final Fault fault) {
         soapFault = fault;
     }
 }

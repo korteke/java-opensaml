@@ -15,40 +15,35 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.client.http;
+package org.opensaml.soap.client;
 
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
+import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.soap.client.SOAPClient.SOAPRequestParameters;
 
-/** HTTP transported SOAP request parameters. */
-@ThreadSafe
-public class HttpSOAPRequestParameters implements SOAPRequestParameters {
+/** Message context for SOAP client messages. */
+public class SOAPClientContext extends BaseContext {
 
-    /** Name of the HTTP SOAPAction header. */
-    public static final String SOAP_ACTION_HEADER = "SOAPAction";
-
-    /** HTTP SOAPAction header. */
-    private String soapAction;
+    /** Binding/transport-specific SOAP request parameters. */
+    private SOAPRequestParameters requestParameters;
 
     /**
-     * Constructor.
-     * 
-     * @param action value for the SOAPAction HTTP header
+     * Gets a set of binding/transport-specific request parameters.
+     *
+     * @return set of binding/transport-specific request parameters
      */
-    public HttpSOAPRequestParameters(@Nullable final String action) {
-        soapAction = StringSupport.trimOrNull(action);
+    @Nullable public SOAPRequestParameters getSOAPRequestParameters() {
+        return requestParameters;
     }
 
     /**
-     * Gets the HTTP SOAPAction header.
-     * 
-     * @return HTTP SOAPAction header
+     * Sets a set of binding/transport-specific request parameters.
+     *
+     * @param parameters a set of binding/transport-specific request parameters
      */
-    @Nullable public String getSoapAction() {
-        return soapAction;
+    public void setSOAPRequestParameters(@Nullable final SOAPRequestParameters parameters) {
+        requestParameters = parameters;
     }
+
 }
