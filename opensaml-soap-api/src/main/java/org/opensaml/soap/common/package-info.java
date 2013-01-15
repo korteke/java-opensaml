@@ -15,26 +15,5 @@
  * limitations under the License.
  */
 
+/** Common classes shared across SOAP versions, clients, and transports. */
 package org.opensaml.soap.common;
-
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.xml.namespace.QName;
-
-import org.opensaml.ws.message.handler.Handler;
-
-/**
- * Interface for {@link Handler}s that are specific to SOAP message processing.
- */
-public interface SOAPHandler extends Handler {
-    
-    /**
-     * Get the set of SOAP header names that the handler
-     * indicates it understands.
-     * 
-     * @return unmodifiable set of understood header names, possibly empty
-     */
-    @Nonnull public Set<QName> understandsHeaders();
-
-}
