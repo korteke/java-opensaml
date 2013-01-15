@@ -29,6 +29,9 @@ import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerChain;
 import org.opensaml.messaging.handler.MessageHandlerException;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+
 /**
  * A basic implementation of {@link MessageHandlerChain}.
  * 
@@ -76,10 +79,8 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
     /** {@inheritDoc} */
     public void doInvoke(@Nonnull final MessageContext<MessageType> msgContext) throws MessageHandlerException {
         if (members != null) {
-            for (MessageHandler handler: members) {
-                if (handler != null) {
-                    handler.invoke(msgContext);
-                }
+            for (MessageHandler handler: Iterables.filter(members, Predicates.notNull())) {
+                handler.invoke(msgContext);
             }
         }
     }
