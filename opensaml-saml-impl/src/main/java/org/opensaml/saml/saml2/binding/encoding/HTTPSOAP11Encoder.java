@@ -31,7 +31,7 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.soap.common.SOAPObjectBuilder;
-import org.opensaml.soap.messaging.context.Soap11Context;
+import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
@@ -120,7 +120,7 @@ public class HTTPSOAP11Encoder extends BaseSAML2MessageEncoder {
      * @param envelope the SOAP envelope
      */
     protected void storeSOAPEnvelope(Envelope envelope) {
-        getMessageContext().getSubcontext(Soap11Context.class, true).setEnvelope(envelope);
+        getMessageContext().getSubcontext(SOAP11Context.class, true).setEnvelope(envelope);
     }
 
     /**
@@ -129,7 +129,7 @@ public class HTTPSOAP11Encoder extends BaseSAML2MessageEncoder {
      * @return the previously stored SOAP envelope
      */
     protected Envelope getSOAPEnvelope() {
-        return getMessageContext().getSubcontext(Soap11Context.class, true).getEnvelope();
+        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
     }
 
     /**
