@@ -138,8 +138,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
                 .isSameNode(apacheResolvedElement), "Apache ID resolver found different element");
 
         // Verify signature of the decrypted content - this is where bug was reported.
-        SignatureValidator sigValidator = new SignatureValidator(signingCredential);
-        sigValidator.validate(decryptedSignature);
+        SignatureValidator.validate(decryptedSignature, signingCredential);
     }
 
     /** Just a sanity check that unit test is set up correctly. 
@@ -152,9 +151,8 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(xmlObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
 
-        SignatureValidator sigValidator = new SignatureValidator(signingCredential);
         try {
-            sigValidator.validate(sxo.getSignature());
+            SignatureValidator.validate(sxo.getSignature(), signingCredential);
         } catch (SignatureException e) {
             Assert.fail("Signature validation failed: " + e);
         }

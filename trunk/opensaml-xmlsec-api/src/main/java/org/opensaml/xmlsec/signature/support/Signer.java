@@ -17,25 +17,21 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
-import org.apache.xml.security.Init;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible for creating the digital signatures for the given signable XMLObjects.
+ * A service class which is responsible for cryptographically computing and storing the 
+ * actual digital signature content held within a {@link Signature} instance.
  * 
- * This must be done as a seperate step because in order to support the following cases:
+ * This must be done as a separate step because in order to support the following cases:
  * <ul>
  * <li>Multiple signable objects appear in the DOM tree, in which case the order that the objects should be signed in
  * is not known (e.g. object 1 could appear first in the tree, but contain a reference to signable object 2)</li>
@@ -44,21 +40,24 @@ import org.slf4j.LoggerFactory;
  * </ul>
  */
 public class Signer {
+    
+    /** The cached signer provider instance to use. */
+    private static SignerProvider signerInstance;
 
     /** Constructor. */
-    protected Signer() {
-
-    }
+    protected Signer() { }
 
     /**
      * Signs the given XMLObject in the order provided.
      * 
-     * @param xmlObjects an orderded list of XMLObject to be signed
+     * @param signatures an ordered list of XMLObject to be signed
      * @throws SignatureException  thrown if there is an error computing the signature
      */
-    public static void signObjects(@Nonnull final List<Signature> xmlObjects) throws SignatureException {
-        for (Signature xmlObject : xmlObjects) {
-            signObject(xmlObject);
+    public static void signObjects(@Nonnull final List<Signature> signatures) throws SignatureException {
+        SignerProvider signer = getSignerProvider();
+        getLogger().debug("Using a signer of implementation: {}", signer.getClass().getName());
+        for (Signature signature : signatures) {
+            signer.signObject(signature);
         }
     }
 
@@ -69,24 +68,28 @@ public class Signer {
      * @throws SignatureException thrown if there is an error computing the signature
      */
     public static void signObject(@Nonnull final Signature signature) throws SignatureException {
-        Constraint.isNotNull(signature, "Signature cannot be null");
-        
-        Logger log = getLogger();
-        try {
-            XMLSignature xmlSignature = ((SignatureImpl) signature).getXMLSignature();
-
-            if (xmlSignature == null) {
-                log.error("Unable to compute signature, Signature XMLObject does not have the XMLSignature "
-                        + "created during marshalling.");
-                throw new SignatureException(
-                        "XMLObject does not have XMLSignature instance, unable to compute signature");
+        SignerProvider signer = getSignerProvider();
+        getLogger().debug("Using a signer of implemenation: {}", signer.getClass().getName());
+        signer.signObject(signature);
+    }
+    
+    /**
+     * Obtain the {@link SignerProvider} instance to be used.
+     * 
+     * @return the SignerProvider
+     * @throws SignatureException if a SignerProvider could not be loaded
+     */
+    @Nonnull private static SignerProvider getSignerProvider() throws SignatureException {
+        if (signerInstance == null) {
+            ServiceLoader<SignerProvider> loader = ServiceLoader.load(SignerProvider.class);
+            Iterator<SignerProvider> iterator = loader.iterator();
+            if (iterator.hasNext()) {
+                signerInstance = iterator.next();
+            } else {
+                throw new SignatureException("Could not load a signer implementation via service API");
             }
-            log.debug("Computing signature over XMLSignature object");
-            xmlSignature.sign(CredentialSupport.extractSigningKey(signature.getSigningCredential()));
-        } catch (XMLSecurityException e) {
-            log.error("An error occured computing the digital signature", e);
-            throw new SignatureException("Signature computation error", e);
         }
+        return signerInstance;
     }
     
     /**
@@ -98,14 +101,4 @@ public class Signer {
         return LoggerFactory.getLogger(Signer.class);
     }
 
-    /*
-     * Initialize the Apache XML security library if it hasn't been already
-     */
-    static {
-        Logger log = getLogger();
-        if (!Init.isInitialized()) {
-            log.debug("Initializing XML security library");
-            Init.init();
-        }
-    }
 }
