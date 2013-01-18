@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * A service class that cryptographically validates an XML Signature {@link Signature} 
  * using a candidate validation {@link Credential}.
  */
-public class SignatureValidator {
+public final class SignatureValidator {
     
     /** The cached signature validation provider instance to use. */
     private static SignatureValidationProvider validatorInstance;
