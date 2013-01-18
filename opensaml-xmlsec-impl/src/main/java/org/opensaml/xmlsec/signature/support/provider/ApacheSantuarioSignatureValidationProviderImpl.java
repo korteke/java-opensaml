@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature.support;
+package org.opensaml.xmlsec.signature.support.provider;
 
 import java.security.Key;
 
@@ -30,32 +30,26 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
+import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureValidationProvider;
+import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A validator that validates an XML Signature on its content.
+ * Implementation of {@link SignatureValidationProvider} which is based on the Apache Santuario library
+ * and is used with {@link Signature} instances which are instances of {@link SignatureImpl}. 
  */
-public class SignatureValidator {
+public class ApacheSantuarioSignatureValidationProviderImpl implements SignatureValidationProvider {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SignatureValidator.class);
 
-    /** Credential used to validate signature. */
-    private final Credential validationCredential;
-
-    /**
-     * Constructor.
-     * 
-     * @param validatingCredential credential used to validate the signature
-     */
-    public SignatureValidator(@Nonnull final Credential validatingCredential) {
-        validationCredential = Constraint.isNotNull(validatingCredential, "Validating credential cannot be null");
-    }
-
     /** {@inheritDoc} */
-    public void validate(@Nonnull final Signature signature) throws SignatureException {
+    public void validate(@Nonnull final Signature signature, @Nonnull final Credential validationCredential) 
+            throws SignatureException {
         log.debug("Attempting to validate signature using key from supplied credential");
+        Constraint.isNotNull(validationCredential, "Validation credential cannot be null");
 
         XMLSignature xmlSig = getXMLSignature(signature);
         if (xmlSig == null) {

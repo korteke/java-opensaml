@@ -127,12 +127,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
         
-        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
-        sigValidator.validate(signature);
+        SignatureValidator.validate(signature, goodCredential);
 
         try {
-            sigValidator = new SignatureValidator(badCredential);
-            sigValidator.validate(signature);
+            SignatureValidator.validate(signature, badCredential);
             Assert.fail("Validated signature with invalid secret key");
         } catch (SignatureException e) {
             // expected
@@ -160,12 +158,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
         
-        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
-        sigValidator.validate(signature);
+        SignatureValidator.validate(signature, goodCredential);
 
         try {
-            sigValidator = new SignatureValidator(badCredential);
-            sigValidator.validate(signature);
+            SignatureValidator.validate(signature, badCredential);
             Assert.fail("Validated signature with invalid secret key");
         } catch (SignatureException e) {
             // expected

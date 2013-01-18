@@ -17,10 +17,6 @@
 
 package org.opensaml.xmlsec.signature.support;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -48,6 +44,9 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -108,12 +107,10 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
         
-        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
-        sigValidator.validate(signature);
+        SignatureValidator.validate(signature, goodCredential);
 
         try {
-            sigValidator = new SignatureValidator(badCredential);
-            sigValidator.validate(signature);
+            SignatureValidator.validate(signature, badCredential);
             Assert.fail("Validated signature with improper public key");
         } catch (SignatureException e) {
             // expected

@@ -109,12 +109,10 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(signedElement);
         signature = (Signature) sxo.getOrderedChildren().get(1);
 
-        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
-        sigValidator.validate(signature);
+        SignatureValidator.validate(signature, goodCredential);
 
         try {
-            sigValidator = new SignatureValidator(badCredential);
-            sigValidator.validate(signature);
+            SignatureValidator.validate(signature, badCredential);
             Assert.fail("Validated signature with improper public key");
         } catch (SignatureException e) {
             // expected
@@ -150,8 +148,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled deatched Signature: \n" + SerializeSupport.nodeToString(signatureElement));
         }
 
-        SignatureValidator sigValidator = new SignatureValidator(goodCredential);
-        sigValidator.validate(signature);
+        SignatureValidator.validate(signature, goodCredential);
     }
 
     /**

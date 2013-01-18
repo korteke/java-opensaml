@@ -145,9 +145,8 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @return true if the signature can be verified using the key from the credential, otherwise false
      */
     protected boolean verifySignature(@Nonnull final Signature signature, @Nonnull final Credential credential) {
-        SignatureValidator validator = new SignatureValidator(credential);
         try {
-            validator.validate(signature);
+            SignatureValidator.validate(signature, credential);
         } catch (SignatureException e) {
             log.debug("Signature validation using candidate validation credential failed", e);
             return false;

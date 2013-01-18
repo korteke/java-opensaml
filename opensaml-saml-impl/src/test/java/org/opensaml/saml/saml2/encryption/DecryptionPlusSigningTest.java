@@ -161,9 +161,8 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
             (Response) unmarshallerFactory.getUnmarshaller(parsedResponse).unmarshall(parsedResponse);
         
         // Validate Response signature first time
-        SignatureValidator firstSigValidator = new SignatureValidator(signingCred);
         try {
-            firstSigValidator.validate(newResponse.getSignature());
+            SignatureValidator.validate(newResponse.getSignature(), signingCred);
         } catch (SignatureException e1) {
             Assert.fail("First Response signature validation failed");
         }
@@ -186,9 +185,8 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         assertXMLEquals(targetDOM, decryptedAssertion);
         
         // Validate Response signature second time
-        SignatureValidator secondSigValidator = new SignatureValidator(signingCred);
         try {
-            secondSigValidator.validate(newResponse.getSignature());
+            SignatureValidator.validate(newResponse.getSignature(), signingCred);
         } catch (SignatureException e1) {
             Assert.fail("Second Response signature validation failed");
         }
