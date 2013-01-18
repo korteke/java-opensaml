@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * element ID conflicts that would invalidate the signature</li>
  * </ul>
  */
-public class Signer {
+public final class Signer {
     
     /** The cached signer provider instance to use. */
     private static SignerProvider signerInstance;
