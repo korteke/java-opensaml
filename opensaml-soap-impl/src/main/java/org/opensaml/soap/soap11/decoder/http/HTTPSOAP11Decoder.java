@@ -17,22 +17,47 @@
 
 package org.opensaml.soap.soap11.decoder.http;
 
-import net.shibboleth.utilities.java.support.xml.ParserPool;
+import java.io.IOException;
 
-import org.opensaml.soap.soap11.decoder.SOAP11Decoder;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.message.decoder.MessageDecodingException;
-import org.opensaml.ws.transport.http.HTTPInTransport;
+import javax.servlet.http.HttpServletRequest;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
+import org.opensaml.messaging.handler.MessageHandler;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.soap.messaging.context.SOAP11Context;
+import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Basic SOAP 1.1 over decoder for HTTP transport.
+ * Basic SOAP 1.1 decoder for HTTP transport.
+ * 
+ * <p>
+ * This decoder takes a mandatory {@link MessageHandler} instance which is used to determine
+ * populate the message that is returned as the {@link MessageContext#getMessage()}.
+ * </p>
+ * 
+ *  <p>
+ *  A SOAP message oriented message exchange style might just populate the Envelope as the message.
+ *  An application-specific payload-oriented message exchange would handle a specific type
+ * of payload structure.  
+ * </p>
+ * 
+ * @param <MessageType> the message type of the message context on which to operate
  */
-public class HTTPSOAP11Decoder extends SOAP11Decoder {
+public class HTTPSOAP11Decoder<MessageType extends XMLObject> 
+    extends BaseHttpServletRequestXmlMessageDecoder<MessageType> {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
+    
+    /** Message handler to use in processing the message body. */
+    private MessageHandler<MessageType> bodyHandler;
     
     /** Constructor. */
     public HTTPSOAP11Decoder() {
@@ -40,30 +65,65 @@ public class HTTPSOAP11Decoder extends SOAP11Decoder {
     }
 
     /**
-     * Constructor.
+     * Get the configured body handler MessageHandler.
      * 
-     * @param pool parser pool used to deserialize messages
+     * @return Returns the bodyHandler.
      */
-    public HTTPSOAP11Decoder(ParserPool pool) {
-        super(pool);
+    public MessageHandler<MessageType> getBodyHandler() {
+        return bodyHandler;
+    }
+
+    /**
+     * Set the configured body handler MessageHandler.
+     * 
+     * @param newBodyHandler The bodyHandler to set.
+     */
+    public void setBodyHandler(MessageHandler<MessageType> newBodyHandler) {
+        bodyHandler = newBodyHandler;
     }
 
     /** {@inheritDoc} */
-    protected void doDecode(MessageContext messageContext) throws MessageDecodingException {
-        
-        if (!(messageContext.getInboundMessageTransport() instanceof HTTPInTransport)) {
-            log.error("Invalid inbound message transport type, this decoder only support HTTPInTransport");
-            throw new MessageDecodingException(
-                    "Invalid inbound message transport type, this decoder only support HTTPInTransport");
-        }
+    protected void doDecode() throws MessageDecodingException {
+        MessageContext<MessageType> messageContext = new MessageContext<MessageType>();
+        HttpServletRequest request = getHttpServletRequest();
 
-        HTTPInTransport inTransport = (HTTPInTransport) messageContext.getInboundMessageTransport();
-        if (!inTransport.getHTTPMethod().equalsIgnoreCase("POST")) {
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP POST method");
         }
-        
-        super.doDecode(messageContext);
 
+        log.debug("Unmarshalling SOAP message");
+        Envelope soapMessage;
+        try {
+            soapMessage = (Envelope) unmarshallMessage(request.getInputStream());
+            messageContext.getSubcontext(SOAP11Context.class, true).setEnvelope(soapMessage);
+        } catch (IOException e) {
+            log.error("Unable to obtain input stream from HttpServletRequest", e);
+            throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
+        }
+        
+        try {
+            getBodyHandler().invoke(messageContext);
+        } catch (MessageHandlerException e) {
+            log.error("Error processing SOAP Envelope body", e);
+            throw new MessageDecodingException("Error processing SOAP Envelope body", e);
+        }
+        
+        if (messageContext.getMessage() == null) {
+            log.warn("Body handler did not properly populate the message in message context");
+            throw new MessageDecodingException("Body handler did not properly populate the message in message context");
+        }
+        
+        setMessageContext(messageContext);
+        
     }
+    
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (getBodyHandler() == null) {
+            throw new ComponentInitializationException("Body handler MessageHandler cannot be null");
+        }
+    }    
 
 }
