@@ -27,6 +27,11 @@
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>edu.vt.middleware</groupId>
+            <artifactId>vt-crypt</artifactId>
+        </dependency>
 
         <!-- Provided Dependencies -->
 

@@ -18,25 +18,11 @@
     <dependencies>
         <!-- Compile Dependencies -->
         <dependency>
-            <!-- Required if you're using the HttpResource or HttpClientBuilder -->
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>edu.vt.middleware</groupId>
-            <artifactId>vt-crypt</artifactId>
-        </dependency>
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
 
         <!-- Provided Dependencies -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-        </dependency>
 
         <!-- Runtime Dependencies -->
 
