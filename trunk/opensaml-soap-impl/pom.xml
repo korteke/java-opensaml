@@ -24,6 +24,10 @@
         </dependency>
 
         <!-- Provided Dependencies -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
 
         <!-- Runtime Dependencies -->
 
@@ -33,6 +37,17 @@
             <artifactId>opensaml-core</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
         
