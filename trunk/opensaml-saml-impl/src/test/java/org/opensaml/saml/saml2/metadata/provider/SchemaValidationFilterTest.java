@@ -34,7 +34,7 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        inCommonMDURL = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
+        inCommonMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
     }
 
     @Test
