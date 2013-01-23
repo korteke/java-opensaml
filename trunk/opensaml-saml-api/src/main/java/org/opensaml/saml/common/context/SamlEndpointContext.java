@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
  */
 public class SamlEndpointContext extends BaseContext {
 
-    /** The entityId of the SAML entity. */
+    /** The SAML entity endpoint. */
     private Endpoint endpoint;
 
     /**
@@ -44,7 +44,7 @@ public class SamlEndpointContext extends BaseContext {
      * 
      * @param newEndpoint the new endpoint
      */
-    public void setEntityId(@Nullable final Endpoint newEndpoint) {
+    public void setEndpoint(@Nullable final Endpoint newEndpoint) {
         endpoint = newEndpoint;
     }
 
