@@ -46,8 +46,8 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        //mdUrl = "http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml";
-        mdUrl="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml";
+        //mdUrl = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
+        mdUrl="http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml?content-type=text%2Fplain&view=co";
         badMDURL = "http://www.google.com/";
         backupFilePath = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "metadata.xml";
         metadataProvider = new FileBackedHTTPMetadataProvider(mdUrl, 1000 * 5, backupFilePath);
