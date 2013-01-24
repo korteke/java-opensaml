@@ -37,7 +37,10 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLTestHelper;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
+import org.opensaml.saml.common.context.SamlEndpointContext;
+import org.opensaml.saml.common.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.context.SamlProtocolContext;
+import org.opensaml.saml.common.context.SamlSigningContext;
 import org.opensaml.saml.saml2.binding.encoding.HTTPPostSimpleSignEncoder;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
@@ -46,6 +49,7 @@ import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
@@ -54,6 +58,7 @@ import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.mock.MockSignatureSigningConfiguration;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -303,9 +308,12 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
         MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(buildInboundSAMLMessage());
         messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState(expectedRelayValue);
-        //TODO
-        //messageContext.setPeerEntityEndpoint(samlEndpoint);
-        //messageContext.setOutboundSAMLMessageSigningCredential(signingX509Cred);
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
+            .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        
+        MockSignatureSigningConfiguration mockSigningConfig = new MockSignatureSigningConfiguration();
+        mockSigningConfig.setSigningCredential(signingX509Cred);
+        messageContext.getSubcontext(SamlSigningContext.class, true).setSigningConfiguration(mockSigningConfig);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         
