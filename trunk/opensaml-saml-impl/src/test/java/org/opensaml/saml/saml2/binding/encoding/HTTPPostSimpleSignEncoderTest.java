@@ -185,8 +185,8 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState("relay");
         messageContext.getSubcontext(SamlPeerEntityContext.class, true)
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
-        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         
+        KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         MockSignatureSigningConfiguration mockSigningConfig = new MockSignatureSigningConfiguration();
         mockSigningConfig.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
         messageContext.getSubcontext(SamlSigningContext.class, true).setSigningConfiguration(mockSigningConfig);
