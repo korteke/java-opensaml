@@ -288,15 +288,19 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         Set<Namespace> namespaces = xmlObject.getNamespaces();
 
         for (Namespace namespace : namespaces) {
+            log.trace("Candiate namespace from getNamespaces(): {}", namespace.toString());
             if (!xmlObject.getNamespaceManager().getNamespaceDeclarations().contains(namespace)) {
+                log.trace("NamespaceManager getNamespaceDeclarations() did NOT contain namespace: {}",
+                        namespace.toString());
                 if(Objects.equal(namespace.getNamespacePrefix(), XmlConstants.XML_PREFIX)
                         || Objects.equal(namespace.getNamespaceURI(), XmlConstants.XML_NS)) {
                     //the "xml" namespace never needs to be declared
                     continue;
                 }
                 
-                String declared = NamespaceSupport.lookupNamespaceURI(domElement, domElement, 
+                String declared = NamespaceSupport.lookupNamespaceURI(domElement, null, 
                         namespace.getNamespacePrefix());
+                log.trace("Lookup of prefix '{}' returned '{}'", namespace.getNamespacePrefix(),  declared);
                 if (declared != null && namespace.getNamespaceURI().equals(declared)) {
                     log.trace("Namespace {} has already been declared on an ancestor of {} no need to add it here", 
                             namespace, xmlObject.getElementQName());
