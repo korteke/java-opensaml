@@ -288,7 +288,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         Set<Namespace> namespaces = xmlObject.getNamespaces();
 
         for (Namespace namespace : namespaces) {
-            log.trace("Candiate namespace from getNamespaces(): {}", namespace.toString());
+            log.trace("Candidate namespace from getNamespaces(): {}", namespace.toString());
             if (!xmlObject.getNamespaceManager().getNamespaceDeclarations().contains(namespace)) {
                 log.trace("NamespaceManager getNamespaceDeclarations() did NOT contain namespace: {}",
                         namespace.toString());
