@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -169,8 +170,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             throw new MessageEncodingException("Endpoint URL " + endpoint + " is not a valid URL", e);
         }
 
-        List<Pair<String, String>> queryParams = UriSupport.parseQueryString(endpointUrl.getQuery());
-        queryParams.clear();
+        List<Pair<String, String>> queryParams = new ArrayList<Pair<String,String>>();
         
         SAMLObject outboundMessage = messageContext.getMessage();
 
@@ -198,8 +198,9 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
             queryParams.add(new Pair<String, String>("Signature", generateSignature(signingCredential, sigAlgURI,
                     sigMaterial)));
-            endpointUrl = UriSupport.setQuery(endpointUrl, queryParams);
         }
+        
+        endpointUrl = UriSupport.setQuery(endpointUrl, queryParams);
 
         return endpointUrl.toASCIIString();
     }
