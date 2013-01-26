@@ -98,7 +98,6 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
-        System.out.println(response.getRedirectedUrl());
         Assert.assertEquals(response.getRedirectedUrl().hashCode(), 1442679212);
     }
     
@@ -155,7 +154,6 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        System.out.println(response.getRedirectedUrl());
         String queryString = new URL(response.getRedirectedUrl()).getQuery();
         
         Assert.assertNotNull(HTTPTransportUtils.getRawQueryStringParameter(queryString, "Signature"), 
