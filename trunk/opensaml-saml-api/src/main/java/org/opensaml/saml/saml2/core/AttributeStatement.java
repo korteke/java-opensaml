@@ -43,16 +43,16 @@ public interface AttributeStatement extends Statement {
         new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 
     /**
-     * Gets the attribtues expressed in this statement.
+     * Gets the attributes expressed in this statement.
      * 
-     * @return the attribtues expressed in this statement
+     * @return the attributes expressed in this statement
      */
     public List<Attribute> getAttributes();
 
     /**
-     * Gets the encrypted attribtues expressed in this statement.
+     * Gets the encrypted attributes expressed in this statement.
      * 
-     * @return the encrypted attribtues expressed in this statement
+     * @return the encrypted attributes expressed in this statement
      */
     public List<EncryptedAttribute> getEncryptedAttributes();
 
