@@ -32,7 +32,6 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureValidationProvider;
-import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public class ApacheSantuarioSignatureValidationProviderImpl implements SignatureValidationProvider {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SignatureValidator.class);
+    private final Logger log = LoggerFactory.getLogger(ApacheSantuarioSignatureValidationProviderImpl.class);
 
     /** {@inheritDoc} */
     public void validate(@Nonnull final Signature signature, @Nonnull final Credential validationCredential) 
