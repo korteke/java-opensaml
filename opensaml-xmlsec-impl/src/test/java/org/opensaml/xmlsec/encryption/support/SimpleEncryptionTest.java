@@ -95,7 +95,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         targetFile = "/data/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
         
         algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
-        kekURIRSA = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15;
+        kekURIRSA = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP;
         kekURIAES = EncryptionConstants.ALGO_ID_KEYWRAP_AES128;
     }
     
