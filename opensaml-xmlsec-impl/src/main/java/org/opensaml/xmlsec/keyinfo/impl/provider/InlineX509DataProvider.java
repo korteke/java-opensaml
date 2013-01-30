@@ -63,15 +63,14 @@ import com.google.common.base.Strings;
  * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} from
  * an {@link X509Data} child of KeyInfo.
  * 
- * This provider supports only inline {@link X509Certificate}'s and {@link X509CRL}'s. If only one certificate is
- * present, it is assumed to be the end-entity certificate containing the public key represented by this KeyInfo. If
- * multiple certificates are present, and any instances of {@link X509SubjectName}, {@link X509IssuerSerial}, or
- * {@link X509SKI} are also present, they will be used to identify the end-entity certificate, in accordance with the
- * XML Signature specification. If a public key from a previously resolved {@link KeyValue} is available in the
- * resolution context, it will also be used to identify the end-entity certificate. If the end-entity certificate can
- * not otherwise be identified, the cert contained in the first X509Certificate element will be treated as the
- * end-entity certificate.
- * 
+ * This provider supports only inline {@link X509Certificate}'s and {@link org.opensaml.xmlsec.signature.X509CRL}s.
+ * If only one certificate is present, it is assumed to be the end-entity certificate containing the public key
+ * represented by this KeyInfo. If multiple certificates are present, and any instances of {@link X509SubjectName},
+ * {@link X509IssuerSerial}, or {@link X509SKI} are also present, they will be used to identify the end-entity certificate,
+ * in accordance with the XML Signature specification. If a public key from a previously resolved {@link KeyValue} is
+ * available in the resolution context, it will also be used to identify the end-entity certificate. If the end-entity
+ * certificate can not otherwise be identified, the cert contained in the first X509Certificate element will be treated
+ * as the end-entity certificate.
  */
 public class InlineX509DataProvider extends AbstractKeyInfoProvider {
 
@@ -158,19 +157,19 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     }
 
     /**
-     * Extract CRL's from the X509Data.
+     * Extract CRLs from the X509Data.
      * 
      * @param x509Data the X509Data element
      * @return a list of X509CRLs
-     * @throws SecurityException thrown if there is an error extracting CRL's
+     * @throws SecurityException thrown if there is an error extracting CRLs
      */
     @Nonnull private List<X509CRL> extractCRLs(@Nonnull final X509Data x509Data) throws SecurityException {
         List<X509CRL> crls = null;
         try {
             crls = KeyInfoSupport.getCRLs(x509Data);
         } catch (CRLException e) {
-            log.error("Error extracting CRL's from X509Data", e);
-            throw new SecurityException("Error extracting CRL's from X509Data", e);
+            log.error("Error extracting CRLs from X509Data", e);
+            throw new SecurityException("Error extracting CRLs from X509Data", e);
         }
 
         log.debug("Found {} X509CRLs", crls.size());
@@ -285,7 +284,14 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             @Nonnull final List<X509SubjectName> names) {
         for (X509SubjectName subjectName : names) {
             if (!Strings.isNullOrEmpty(subjectName.getValue())) {
-                X500Principal subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
+                X500Principal subjectX500Principal = null;
+                try {
+                    subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
+                } catch (IllegalArgumentException e) {
+                    log.warn("X500 subject name '{}' could not be parsed by configured X500DNHandler '{}'",
+                            subjectName.getValue(), x500DNHandler.getClass().getName());
+                    return null;
+                }
                 for (X509Certificate cert : certs) {
                     if (cert.getSubjectX500Principal().equals(subjectX500Principal)) {
                         return cert;
@@ -312,7 +318,14 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
             BigInteger serialNumber = issuerSerial.getX509SerialNumber().getValue();
             if (!Strings.isNullOrEmpty(issuerNameValue)) {
-                X500Principal issuerX500Principal = x500DNHandler.parse(issuerNameValue);
+                X500Principal issuerX500Principal = null;
+                try {
+                    issuerX500Principal = x500DNHandler.parse(issuerNameValue);
+                } catch (IllegalArgumentException e) {
+                    log.warn("X500 issuer name '{}' could not be parsed by configured X500DNHandler '{}'",
+                            issuerNameValue, x500DNHandler.getClass().getName());
+                    return null;
+                }
                 for (X509Certificate cert : certs) {
                     if (cert.getIssuerX500Principal().equals(issuerX500Principal)
                             && cert.getSerialNumber().equals(serialNumber)) {
