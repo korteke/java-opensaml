@@ -72,55 +72,52 @@ public class UrlBuilder {
      * 
      * @param baseURL URL to parse and use as basis for creating other URLs
      * 
-     * @throws IllegalArgumentException thrown if the given base URL is not well formed
+     * @throws MalformedURLException thrown if the given base URL is not well formed
+     * 
      */
-    public UrlBuilder(String baseURL) {
-        try {
-            URL url = new URL(baseURL);
-
-            setScheme(url.getProtocol());
-
-            String userInfo = url.getUserInfo();
-            if (!Strings.isNullOrEmpty(userInfo)) {
-                if (userInfo.contains(":")) {
-                    String[] userInfoComps = userInfo.split(":");
-                    setUsername(UriSupport.urlDecode(userInfoComps[0]));
-                    setPassword(UriSupport.urlDecode(userInfoComps[1]));
-                } else {
-                    setUsername(userInfo);
-                }
+    public UrlBuilder(String baseURL) throws MalformedURLException {
+        URL url = new URL(baseURL);
+        
+        setScheme(url.getProtocol());
+        
+        String userInfo = url.getUserInfo();
+        if (!Strings.isNullOrEmpty(userInfo)) {
+            if (userInfo.contains(":")) {
+                String[] userInfoComps = userInfo.split(":");
+                setUsername(UriSupport.urlDecode(userInfoComps[0]));
+                setPassword(UriSupport.urlDecode(userInfoComps[1]));
+            } else {
+                setUsername(userInfo);
             }
-
-            setHost(url.getHost());
-            setPort(url.getPort());
-            setPath(url.getPath());
-
-            queryParams = new ArrayList<Pair<String, String>>();
-            String queryString = url.getQuery();
-            if (!Strings.isNullOrEmpty(queryString)) {
-                String[] queryComps = queryString.split("&");
-                String queryComp;
-                String[] paramComps;
-                String paramName;
-                String paramValue;
-                for (int i = 0; i < queryComps.length; i++) {
-                    queryComp = queryComps[i];
-                    if (!queryComp.contains("=")) {
-                        paramName = UriSupport.urlDecode(queryComp);
-                        queryParams.add(new Pair<String, String>(paramName, null));
-                    } else {
-                        paramComps = queryComp.split("=");
-                        paramName = UriSupport.urlDecode(paramComps[0]);
-                        paramValue = UriSupport.urlDecode(paramComps[1]);
-                        queryParams.add(new Pair<String, String>(paramName, paramValue));
-                    }
-                }
-            }
-
-            setFragment(url.getRef());
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Given URL is not well formed", e);
         }
+        
+        setHost(url.getHost());
+        setPort(url.getPort());
+        setPath(url.getPath());
+        
+        queryParams = new ArrayList<Pair<String, String>>();
+        String queryString = url.getQuery();
+        if (!Strings.isNullOrEmpty(queryString)) {
+            String[] queryComps = queryString.split("&");
+            String queryComp;
+            String[] paramComps;
+            String paramName;
+            String paramValue;
+            for (int i = 0; i < queryComps.length; i++) {
+                queryComp = queryComps[i];
+                if (!queryComp.contains("=")) {
+                    paramName = UriSupport.urlDecode(queryComp);
+                    queryParams.add(new Pair<String, String>(paramName, null));
+                } else {
+                    paramComps = queryComp.split("=");
+                    paramName = UriSupport.urlDecode(paramComps[0]);
+                    paramValue = UriSupport.urlDecode(paramComps[1]);
+                    queryParams.add(new Pair<String, String>(paramName, paramValue));
+                }
+            }
+        }
+        
+        setFragment(url.getRef());
     }
 
     /**

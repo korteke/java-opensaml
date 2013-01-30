@@ -17,6 +17,8 @@
 
 package org.opensaml.util.net;
 
+import java.net.MalformedURLException;
+
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
@@ -27,9 +29,10 @@ public class UrlBuilderTest {
     
     /**
      * Test with scheme and host.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder1(){
+    public void testURLBuilder1() throws MalformedURLException{
         String url = "http://www.example.com";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "http");
@@ -46,9 +49,10 @@ public class UrlBuilderTest {
     
     /**
      * Test with scheme, host, and path.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder2(){
+    public void testURLBuilder2() throws MalformedURLException{
         String url = "https://www.example.com/foo/index.html";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "https");
@@ -65,9 +69,10 @@ public class UrlBuilderTest {
     
     /**
      * Test with scheme, host, port, path, and query params.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder3(){
+    public void testURLBuilder3() throws MalformedURLException{
         String url = "http://www.example.com:8080/index.html?attrib1=value1&attrib2=value&attrib3";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "http");
@@ -84,9 +89,10 @@ public class UrlBuilderTest {
     
     /**
      * Test with scheme, host, and fragment.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder4(){
+    public void testURLBuilder4() throws MalformedURLException{
         String url = "https://www.example.com#anchor";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "https");
@@ -103,9 +109,10 @@ public class UrlBuilderTest {
 
     /**
      * Test with scheme, host, port, path, query params, and anchor.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder5(){
+    public void testURLBuilder5() throws MalformedURLException{
         String url = "http://www.example.com/index.html?attrib1=value1&attrib2=value&attrib3#anchor";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "http");
@@ -122,9 +129,10 @@ public class UrlBuilderTest {
     
     /**
      * Test with scheme, username, password, and host.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder6(){
+    public void testURLBuilder6() throws MalformedURLException{
         String url = "http://user:pass@www.example.com";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "http");
@@ -141,9 +149,10 @@ public class UrlBuilderTest {
     
     /**
      * Test with scheme, username, and host.
+     * @throws MalformedURLException 
      */
     @Test
-    public void testURLBuilder7(){
+    public void testURLBuilder7() throws MalformedURLException{
         String url = "http://user@www.example.com";
         UrlBuilder builder1 = new UrlBuilder(url);
         Assert.assertEquals(builder1.getScheme(), "http");
