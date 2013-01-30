@@ -10,7 +10,7 @@
         </description>
     </product>
     <p:product xmlns:p="http://example.com/product-info" id="1166">
-        <p:name>XSLT Perfect IDE</p:name>
+        <p:name><![CDATA[<strong>XSLT Perfect IDE</strong>]]></p:name>
         <p:description xmlns:html="http://www.w3.org/1999/xhtml" xmlns:xl="http://www.w3.org/1999/xlink">
             <p:code>red</p:code>
             <html:code>blue</html:code>
