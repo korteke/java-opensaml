@@ -51,7 +51,14 @@
             <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
             <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
-        
+
+        <!-- XML Schema boolean -->
+        <ObjectProvider qualifiedName="xs:boolean">
+            <BuilderClass className="org.opensaml.core.xml.schema.impl.XSBooleanBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSBooleanMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSBooleanUnmarshaller"/>
+        </ObjectProvider>
+                
     </ObjectProviders>
 
 </XMLTooling>
