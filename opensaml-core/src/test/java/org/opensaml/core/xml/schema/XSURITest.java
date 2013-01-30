@@ -34,7 +34,7 @@ import org.opensaml.core.xml.schema.impl.XSURIBuilder;
 import org.w3c.dom.Document;
 
 /**
- * Unit test for {@link XSURi}
+ * Unit test for {@link XSURI}
  */
 public class XSURITest extends XMLObjectBaseTestCase {
     

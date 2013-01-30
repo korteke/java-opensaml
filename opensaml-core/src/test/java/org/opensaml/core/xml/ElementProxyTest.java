@@ -27,9 +27,7 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.w3c.dom.Document;
 
-/**
- * Tests the {@link org.opensaml.xml.ElementProxy} class.
- */
+/** Test unmarshalling content for which no specific object providers were registered. */
 public class ElementProxyTest extends XMLObjectBaseTestCase {
 
     /**
