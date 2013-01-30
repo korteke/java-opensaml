@@ -92,5 +92,10 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXmlMessageDecoder<S
         
         setMessageContext(messageContext);
     }
+    
+    /** {@inheritDoc} */
+    protected XMLObject getMessageToLog() {
+        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
+    }
 
 }

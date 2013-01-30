@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
@@ -160,5 +161,10 @@ public class HTTPSOAP11Encoder extends BaseSAML2MessageEncoder {
         envelope.setBody(body);
 
         return envelope;
+    }
+    
+    /** {@inheritDoc} */
+    protected XMLObject getMessageToLog() {
+        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
     }
 }

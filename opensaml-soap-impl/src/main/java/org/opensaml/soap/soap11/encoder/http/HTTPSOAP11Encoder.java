@@ -199,4 +199,9 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
         }
     }
     
+    /** {@inheritDoc} */
+    protected XMLObject getMessageToLog() {
+        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
+    }
+    
 }
