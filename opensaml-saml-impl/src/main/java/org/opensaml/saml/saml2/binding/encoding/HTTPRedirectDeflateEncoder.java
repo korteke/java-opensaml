@@ -20,9 +20,7 @@ package org.opensaml.saml.saml2.binding.encoding;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -46,6 +44,7 @@ import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.util.net.UrlBuilder;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
@@ -162,15 +161,16 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     protected String buildRedirectURL(MessageContext<SAMLObject> messageContext, String endpoint, String message)
             throws MessageEncodingException {
         log.debug("Building URL to redirect client to");
-
-        URI endpointUrl;
+        
+        UrlBuilder urlBuilder = null;
         try {
-            endpointUrl = new URI(endpoint);
-        } catch (URISyntaxException e) {
+            urlBuilder = new UrlBuilder(endpoint);
+        } catch (MalformedURLException e) {
             throw new MessageEncodingException("Endpoint URL " + endpoint + " is not a valid URL", e);
         }
 
-        List<Pair<String, String>> queryParams = new ArrayList<Pair<String,String>>();
+        List<Pair<String, String>> queryParams = urlBuilder.getQueryParams();
+        queryParams.clear();
         
         SAMLObject outboundMessage = messageContext.getMessage();
 
@@ -200,9 +200,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
                     sigMaterial)));
         }
         
-        endpointUrl = UriSupport.setQuery(endpointUrl, queryParams);
-
-        return endpointUrl.toASCIIString();
+        return urlBuilder.buildURL();
     }
 
     /**
