@@ -212,4 +212,31 @@ public class IndexedXMLObjectChildrenListTest {
         List<SimpleXMLObject> sublist = (List<SimpleXMLObject>) indexedList.subList(type1);
         Assert.assertTrue(child3 == sublist.get(sublist.lastIndexOf(child3)));
     }
+    
+    public void testSublistClear() {
+        SimpleXMLObject parentObject = sxoBuilder.buildObject();
+        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
+
+        SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
+        indexedList.add(child1);
+
+        SimpleXMLObject child2 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type2);
+        indexedList.add(child2);
+        
+        SimpleXMLObject child3 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
+        indexedList.add(child3);
+        
+        SimpleXMLObject child4 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
+        indexedList.add(child4);
+        
+        Assert.assertEquals(4, indexedList.size());
+        
+        List<SimpleXMLObject> sublist = (List<SimpleXMLObject>) indexedList.subList(type1);
+        Assert.assertEquals(3, sublist.size());
+        
+        sublist.clear();
+        Assert.assertEquals(0, sublist.size());
+        Assert.assertEquals(1, indexedList.size());
+        Assert.assertTrue(indexedList.contains(child2));
+    }
 }
