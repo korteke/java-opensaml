@@ -107,7 +107,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                 unmarshallAttribute(xmlObject, (Attr) childNode);
             } else if (childNode.getNodeType() == Node.ELEMENT_NODE) {
                 unmarshallChildElement(xmlObject, (Element) childNode);
-            } else if (childNode.getNodeType() == Node.TEXT_NODE) {
+            } else if (childNode.getNodeType() == Node.TEXT_NODE 
+                    || childNode.getNodeType() == Node.CDATA_SECTION_NODE) {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
         }
