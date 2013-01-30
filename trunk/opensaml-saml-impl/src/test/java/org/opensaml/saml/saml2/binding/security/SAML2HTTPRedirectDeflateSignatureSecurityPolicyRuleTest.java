@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.binding.security;
 
-import java.net.URI;
+import java.net.MalformedURLException;
 import java.security.KeyException;
 import java.security.PrivateKey;
 import java.security.cert.CertificateException;
@@ -27,7 +27,6 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
@@ -52,6 +51,7 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.util.net.UrlBuilder;
 import org.opensaml.ws.transport.InTransport;
 import org.opensaml.ws.transport.http.HTTPInTransport;
 import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
@@ -303,10 +303,14 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         
         // The Spring mock object doesn't convert between the query params and the getParameter apparently,
         // so have to set them both ways.
-        URI redirectedUrl = URI.create(response.getRedirectedUrl());
-        List<Pair<String, String>> queryParams = UriSupport.parseQueryString(redirectedUrl.getQuery());
-        request.setQueryString(UriSupport.buildQuery(queryParams));
-        for (Pair<String, String> param : queryParams) {
+        UrlBuilder urlBuilder = null;
+        try {
+            urlBuilder = new UrlBuilder(response.getRedirectedUrl());
+        } catch (MalformedURLException e) {
+            Assert.fail("Could not parse redirect url: " + response.getRedirectedUrl());
+        }
+        request.setQueryString(urlBuilder.buildQueryString());
+        for (Pair<String, String> param : urlBuilder.getQueryParams()) {
             request.setParameter(param.getFirst(), param.getSecond());
         }
         
