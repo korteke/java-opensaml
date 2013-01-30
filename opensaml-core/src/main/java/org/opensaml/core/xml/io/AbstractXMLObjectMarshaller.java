@@ -22,13 +22,12 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import net.shibboleth.utilities.java.support.xml.XmlConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -72,9 +71,9 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     /** {@inheritDoc} */
     @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
         try {
-            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Document document = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
             return marshall(xmlObject, document);
-        } catch (ParserConfigurationException e) {
+        } catch (XMLParserException e) {
             throw new MarshallingException("Unable to create Document to place marshalled elements in", e);
         }
     }
