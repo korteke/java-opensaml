@@ -60,18 +60,12 @@ public abstract class BaseHttpServletResponseXmlMessageEncoder<MessageType exten
      */
     protected void logEncodedMessage() {
         if (protocolMessageLog.isDebugEnabled() ){
-            MessageContext messageContext = getMessageContext();
-            if (messageContext.getMessage() == null) {
+            XMLObject message = getMessageToLog();
+            if (message == null) {
                 log.warn("Encoded message was null, nothing to log");
-                return;
-            } else if (!(messageContext.getMessage() instanceof XMLObject)) {
-                log.warn("Encoded message was not an instance of XMLObject, was a: {}", 
-                        messageContext.getMessage().getClass().getName());
                 return;
             }
             
-            XMLObject message = (XMLObject) messageContext.getMessage();
-        
             try {
                 Element dom = XMLObjectSupport.marshall(message);
                 protocolMessageLog.debug("\n" + SerializeSupport.prettyPrintXML(dom));
@@ -79,6 +73,15 @@ public abstract class BaseHttpServletResponseXmlMessageEncoder<MessageType exten
                 log.error("Unable to marshall message for logging purposes", e);
             }
         }
+    }
+    
+    /**
+     * Get the XMLObject which will be logged as the protocol message.
+     * 
+     * @return the XMLObject message considered to be the protocol message for logging purposes
+     */
+    protected XMLObject getMessageToLog() {
+        return getMessageContext().getMessage();
     }
 
     /**

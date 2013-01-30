@@ -125,5 +125,10 @@ public class HTTPSOAP11Decoder<MessageType extends XMLObject>
             throw new ComponentInitializationException("Body handler MessageHandler cannot be null");
         }
     }    
+    
+    /** {@inheritDoc} */
+    protected XMLObject getMessageToLog() {
+        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
+    }
 
 }

@@ -20,6 +20,7 @@ package org.opensaml.messaging.decoder.servlet;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -32,7 +33,6 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,18 +111,12 @@ public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extend
      */
     protected void logDecodedMessage() {
         if (protocolMessageLog.isDebugEnabled() ){
-            MessageContext messageContext = getMessageContext();
-            if (messageContext.getMessage() == null) {
+            XMLObject message = getMessageToLog();
+            if (message == null) {
                 log.warn("Decoded message was null, nothing to log");
-                return;
-            } else if (!(messageContext.getMessage() instanceof XMLObject)) {
-                log.warn("Decoded message was not an instance of XMLObject, was a: {}", 
-                        messageContext.getMessage().getClass().getName());
                 return;
             }
             
-            XMLObject message = (XMLObject) messageContext.getMessage();
-        
             try {
                 Element dom = XMLObjectSupport.marshall(message);
                 protocolMessageLog.debug("\n" + SerializeSupport.prettyPrintXML(dom));
@@ -132,6 +126,15 @@ public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extend
         }
     }
     
+    /**
+     * Get the XMLObject which will be logged as the protocol message.
+     * 
+     * @return the XMLObject message considered to be the protocol message for logging purposes
+     */
+    protected XMLObject getMessageToLog() {
+        return getMessageContext().getMessage();
+    }
+
     /**
      * Helper method that deserializes and unmarshalls the message from the given stream.
      * 
