@@ -26,7 +26,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
-import org.opensaml.saml.common.context.SamlProtocolContext;
+import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

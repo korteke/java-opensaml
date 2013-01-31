@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.context.SamlProtocolContext;
+import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;

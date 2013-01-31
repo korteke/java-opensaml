@@ -15,36 +15,37 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.context;
+package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
+import org.opensaml.xmlsec.SignatureSigningConfiguration;
 
 /**
- * Context that carries information about SAML artifact usage.
+ * Context that carries information about a SAML signature operations.
  */
-public class SamlArtifactContext extends BaseContext {
+public class SamlSigningContext extends BaseContext {
 
-    /** The entityId of the SAML entity. */
-    private byte[] artifactType;
+    /** The signing configuration. */
+    private SignatureSigningConfiguration signingConfiguration;
 
     /**
-     * Gets the artifact type.
+     * Gets the signing configuration.
      * 
-     * @return artifact type, may be null
+     * @return the signing configuration
      */
-    @Nullable public byte[] getArtifactType() {
-        return artifactType;
+    @Nullable public SignatureSigningConfiguration getSigningConfiguration() {
+        return signingConfiguration;
     }
 
     /**
-     * Sets the artifact type.
+     * Sets the signing configuration.
      * 
-     * @param type the new artifact type
+     * @param configuration the new signing configuration
      */
-    public void setArtifactType(@Nullable final byte[] type) {
-        artifactType = type;
+    public void setSigningConfiguration(@Nullable final SignatureSigningConfiguration configuration) {
+        signingConfiguration = configuration;
     }
 
 }

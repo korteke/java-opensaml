@@ -24,9 +24,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.context.SamlPeerEntityContext;
-import org.opensaml.saml.common.context.SamlEndpointContext;
-import org.opensaml.saml.common.context.SamlProtocolContext;
+import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
+import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
