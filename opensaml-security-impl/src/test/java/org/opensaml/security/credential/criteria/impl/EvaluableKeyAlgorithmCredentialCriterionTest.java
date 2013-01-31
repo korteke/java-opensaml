@@ -48,7 +48,7 @@ public class EvaluableKeyAlgorithmCredentialCriterionTest {
     }
     
     @Test
-    public void testSatifsy() {
+    public void testSatisfy() {
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
