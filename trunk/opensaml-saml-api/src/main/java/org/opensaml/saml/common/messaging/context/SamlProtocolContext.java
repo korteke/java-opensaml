@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.context;
+package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;

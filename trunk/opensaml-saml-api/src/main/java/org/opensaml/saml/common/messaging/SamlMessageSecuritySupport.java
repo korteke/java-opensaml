@@ -26,7 +26,7 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.common.context.SamlSigningContext;
+import org.opensaml.saml.common.messaging.context.SamlSigningContext;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;

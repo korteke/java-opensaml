@@ -15,39 +15,36 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.context;
+package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nullable;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.messaging.context.BaseContext;
 
 /**
- * Subcontext that carries information about a SAML peer entity.  This context will often
- * contain subcontexts, whose data is construed to be scoped to that peer entity.
+ * Context that carries information about SAML artifact usage.
  */
-public class SamlPeerEntityContext extends BaseContext {
+public class SamlArtifactContext extends BaseContext {
 
     /** The entityId of the SAML entity. */
-    private String entityId;
+    private byte[] artifactType;
 
     /**
-     * Gets the entityId of the SAML entity.
+     * Gets the artifact type.
      * 
-     * @return entityId of the SAML entity, may be null
+     * @return artifact type, may be null
      */
-    @Nullable @NotEmpty public String getEntityId() {
-        return entityId;
+    @Nullable public byte[] getArtifactType() {
+        return artifactType;
     }
 
     /**
-     * Sets the entityId of the SAML entity.
+     * Sets the artifact type.
      * 
-     * @param id the new entityId
+     * @param type the new artifact type
      */
-    public void setEntityId(@Nullable final String id) {
-        entityId = id;
+    public void setArtifactType(@Nullable final byte[] type) {
+        artifactType = type;
     }
 
 }

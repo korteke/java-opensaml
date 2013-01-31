@@ -15,37 +15,39 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.context;
+package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.opensaml.messaging.context.BaseContext;
-import org.opensaml.xmlsec.SignatureSigningConfiguration;
 
 /**
- * Context that carries information about a SAML signature operations.
+ * Subcontext that carries information about a SAML peer entity.  This context will often
+ * contain subcontexts, whose data is construed to be scoped to that peer entity.
  */
-public class SamlSigningContext extends BaseContext {
+public class SamlPeerEntityContext extends BaseContext {
 
-    /** The signing configuration. */
-    private SignatureSigningConfiguration signingConfiguration;
+    /** The entityId of the SAML entity. */
+    private String entityId;
 
     /**
-     * Gets the signing configuration.
+     * Gets the entityId of the SAML entity.
      * 
-     * @return the signing configuration
+     * @return entityId of the SAML entity, may be null
      */
-    @Nullable public SignatureSigningConfiguration getSigningConfiguration() {
-        return signingConfiguration;
+    @Nullable @NotEmpty public String getEntityId() {
+        return entityId;
     }
 
     /**
-     * Sets the signing configuration.
+     * Sets the entityId of the SAML entity.
      * 
-     * @param configuration the new signing configuration
+     * @param id the new entityId
      */
-    public void setSigningConfiguration(@Nullable final SignatureSigningConfiguration configuration) {
-        signingConfiguration = configuration;
+    public void setEntityId(@Nullable final String id) {
+        entityId = id;
     }
 
 }

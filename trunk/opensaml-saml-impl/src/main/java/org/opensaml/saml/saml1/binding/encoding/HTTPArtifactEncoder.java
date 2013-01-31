@@ -35,7 +35,7 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
-import org.opensaml.saml.common.context.SamlArtifactContext;
+import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.binding.artifact.AbstractSAML1Artifact;

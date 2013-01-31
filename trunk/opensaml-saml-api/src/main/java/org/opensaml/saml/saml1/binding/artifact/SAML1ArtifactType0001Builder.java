@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.context.SamlLocalEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlLocalEntityContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
