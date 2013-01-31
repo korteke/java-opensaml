@@ -51,7 +51,7 @@ public class EvaluableUsageCredentialCriterionTest {
     }
     
     @Test
-    public void testSatifsyExactMatch() {
+    public void testSatisfyExactMatch() {
         EvaluableUsageCredentialCriterion evalCrit = new EvaluableUsageCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }

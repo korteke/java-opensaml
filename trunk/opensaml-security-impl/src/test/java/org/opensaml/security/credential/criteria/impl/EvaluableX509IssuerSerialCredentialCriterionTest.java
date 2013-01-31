@@ -88,7 +88,7 @@ public class EvaluableX509IssuerSerialCredentialCriterionTest {
     }
     
     @Test
-    public void testSatifsy() {
+    public void testSatisfy() {
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }

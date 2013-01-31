@@ -87,19 +87,19 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     }
     
     @Test
-    public void testSatifsyByCert() {
+    public void testSatisfyByCert() {
         certSelector.setCertificate(entityCert);
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
-    public void testSatifsyByKey() {
+    public void testSatisfyByKey() {
         certSelector.setSubjectPublicKey(entityCert.getPublicKey());
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
-    public void testSatifsyBySubjectName() {
+    public void testSatisfyBySubjectName() {
         certSelector.setSubject(subjectName);
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }

@@ -89,7 +89,7 @@ public class EvaluableX509DigestCredentialCriterionTest {
     }
     
     @Test
-    public void testSatifsy() {
+    public void testSatisfy() {
         EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
     }
