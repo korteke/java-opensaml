@@ -18,7 +18,7 @@
 package org.opensaml.saml.saml1.binding.encoding;
 
 import java.io.IOException;
-import java.net.URI;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,6 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
@@ -44,6 +43,7 @@ import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilder;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
+import org.opensaml.util.net.UrlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,13 +123,21 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
     protected void doEncode() throws MessageEncodingException {
         MessageContext<SAMLObject> messageContext = getMessageContext();
 
-        URI endpointUrl = getEndpointURL(messageContext);
-
-        List<Pair<String, String>> params = UriSupport.parseQueryString(endpointUrl.getQuery());
+        String endpointUrl = getEndpointURL(messageContext).toString();
+        
+        UrlBuilder urlBuilder = null;
+        try {
+            urlBuilder = new UrlBuilder(endpointUrl);
+        } catch (MalformedURLException e) {
+            throw new MessageEncodingException("Endpoint URL " + endpointUrl + " is not a valid URL", e);
+        }
+        
+        List<Pair<String, String>> queryParams = urlBuilder.getQueryParams();
+        queryParams.clear();
 
         String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            params.add(new Pair<String, String>("TARGET", relayState));
+            queryParams.add(new Pair<String, String>("TARGET", relayState));
         }
 
         SAML1ArtifactBuilder artifactBuilder;
@@ -165,12 +173,10 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
                 throw new MessageEncodingException("Unable to marshall assertion to be represented as an artifact", e);
             }
             artifactString = artifact.base64Encode();
-            params.add(new Pair<String, String>("SAMLart", artifactString));
+            queryParams.add(new Pair<String, String>("SAMLart", artifactString));
         }
 
-        endpointUrl = UriSupport.setQuery(endpointUrl, params);
-
-        String encodedEndpoint = endpointUrl.toASCIIString();
+        String encodedEndpoint = urlBuilder.buildURL();
         log.debug("Sending redirect to URL {} to relying party {}", encodedEndpoint, 
                 getInboundMessageIssuer(messageContext));
         

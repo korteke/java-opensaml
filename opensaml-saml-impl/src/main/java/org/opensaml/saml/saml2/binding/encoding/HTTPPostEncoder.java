@@ -141,7 +141,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
         }
         
         String endpointURL = getEndpointURL(messageContext).toString();
-        setResponseDestination(outboundMessage, endpointURL);
+        SAMLBindingSupport.setSaml2ResponseDestination(outboundMessage, endpointURL);
 
         postEncode(messageContext, endpointURL);
     }

@@ -122,5 +122,17 @@ public final class SAMLBindingSupport {
             }
         }
     }
+    
+    /**
+     * Sets the destination attribute on the outbound message if it is a {@link StatusResponseType} message.
+     * 
+     * @param outboundMessage outbound SAML message
+     * @param endpointURL destination endpoint
+     */
+    public static void setSaml2ResponseDestination(SAMLObject outboundMessage, String endpointURL) {
+        if (outboundMessage instanceof StatusResponseType) {
+            ((StatusResponseType) outboundMessage).setDestination(endpointURL);
+        }
+    }
 
 }

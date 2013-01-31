@@ -121,18 +121,6 @@ public abstract class BaseSAML2MessageEncoder extends BaseHttpServletResponseXml
     }
 
     /**
-     * Sets the destination attribute on the outbound message if it is a {@link StatusResponseType} message.
-     * 
-     * @param outboundMessage outbound SAML message
-     * @param endpointURL destination endpoint
-     */
-    protected void setResponseDestination(SAMLObject outboundMessage, String endpointURL) {
-        if (outboundMessage instanceof StatusResponseType) {
-            ((StatusResponseType) outboundMessage).setDestination(endpointURL);
-        }
-    }
-
-    /**
      * Signs the given SAML message if it a {@link SignableSAMLObject} and this encoder has signing credentials.
      * 
      * @param messageContext current message context
