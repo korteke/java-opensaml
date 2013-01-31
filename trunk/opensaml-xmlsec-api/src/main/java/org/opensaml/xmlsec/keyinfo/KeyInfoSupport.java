@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.keyinfo;
 import java.math.BigInteger;
 import java.security.KeyException;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CRLException;
@@ -36,6 +37,7 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,6 +47,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -52,6 +55,8 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.G;
@@ -63,6 +68,7 @@ import org.opensaml.xmlsec.signature.P;
 import org.opensaml.xmlsec.signature.Q;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
@@ -454,6 +460,36 @@ public class KeyInfoSupport {
     }
 
     /**
+     * Build an {@link X509Digest} containing the digest of the specified certificate.
+     * 
+     * @param javaCert the Java X509Certificate to digest
+     * @param algorithmURI  digest algorithm URI
+     * @return a new X509Digest object
+     * @throws NoSuchAlgorithmException if the algorithm specified cannot be used
+     * @throws CertificateEncodingException if the certificate cannot be encoded
+     */
+    @Nonnull public static X509Digest buildX509Digest(@Nonnull final X509Certificate javaCert,
+            @Nonnull final String algorithmURI) throws NoSuchAlgorithmException, CertificateEncodingException {
+        Constraint.isNotNull(javaCert, "Certificate cannot be null");
+
+        String jceAlg = AlgorithmSupport.getAlgorithmID(algorithmURI);
+        if (jceAlg == null) {
+            throw new NoSuchAlgorithmException("No JCE algorithm found for " + algorithmURI);
+        }
+        MessageDigest md = MessageDigest.getInstance(jceAlg);
+        byte[] hash = md.digest(javaCert.getEncoded());
+        
+        XMLObjectBuilder<X509Digest> builder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+                X509Digest.DEFAULT_ELEMENT_NAME);
+        X509Digest xmlDigest = Constraint.isNotNull(builder, "X509Digest builder not available").buildObject(
+                X509Digest.DEFAULT_ELEMENT_NAME);
+        xmlDigest.setAlgorithm(algorithmURI);
+        xmlDigest.setValue(Base64Support.encode(hash, Base64Support.CHUNKED));
+        
+        return xmlDigest;
+    }    
+    
+    /**
      * Converts a Java DSA or RSA public key into the corresponding XMLObject and stores it in a {@link KeyInfo} in a
      * new {@link KeyValue} element.
      * 
@@ -559,8 +595,33 @@ public class KeyInfoSupport {
     }
 
     /**
-     * Extracts all the public keys within the given {@link KeyInfo}'s {@link KeyValue}s. This method only supports DSA
-     * and RSA key types.
+     * Builds a {@link DEREncodedKeyValue} XMLObject from the Java security public key type.
+     * 
+     * @param pk the native Java {@link PublicKey} to convert
+     * @return a {@link DEREncodedKeyValue} XMLObject
+     * @throws NoSuchAlgorithmException if the key type is unsupported
+     * @throws InvalidKeySpecException if the key type does not support X.509 SPKI encoding
+     */
+    @Nonnull public static DEREncodedKeyValue buildDEREncodedPublicKey(@Nonnull final PublicKey pk)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Constraint.isNotNull(pk, "Public key cannot be null");
+        
+        XMLObjectBuilder<DEREncodedKeyValue> builder =
+                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+                        DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+        DEREncodedKeyValue keyValue = Constraint.isNotNull(builder,
+                "DEREncodedKeyValue builder not available").buildObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+        
+        KeyFactory keyFactory = KeyFactory.getInstance(pk.getAlgorithm());
+        X509EncodedKeySpec keySpec = keyFactory.getKeySpec(pk, X509EncodedKeySpec.class);
+        keyValue.setValue(Base64Support.encode(keySpec.getEncoded(), Base64Support.CHUNKED));
+        
+        return keyValue;
+    }        
+    
+    /**
+     * Extracts all the public keys within the given {@link KeyInfo}'s {@link KeyValue}s and
+     * {@link DEREncodedKeyValue}s.
      * 
      * @param keyInfo {@link KeyInfo} to extract the keys out of
      * 
@@ -574,7 +635,7 @@ public class KeyInfoSupport {
 
         List<PublicKey> keys = new LinkedList<PublicKey>();
 
-        if (keyInfo == null || keyInfo.getKeyValues() == null) {
+        if (keyInfo == null) {
             return keys;
         }
 
@@ -585,6 +646,12 @@ public class KeyInfoSupport {
             }
         }
 
+        for (XMLObject keyDescriptor : keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME)) {
+            PublicKey newKey = getKey((DEREncodedKeyValue) keyDescriptor);
+            if (newKey != null) {
+                keys.add(newKey);
+            }
+        }        
         return keys;
     }
 
@@ -744,6 +811,42 @@ public class KeyInfoSupport {
         }
     }
 
+    /**
+     * Extracts the public key within the {@link DEREncodedKeyValue}.
+     * 
+     * @param keyValue the {@link DEREncodedKeyValue} to extract the key from
+     * 
+     * @return a native Java security {@link java.security.Key} object
+     * 
+     * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
+     */
+    @Nonnull public static PublicKey getKey(@Nonnull final DEREncodedKeyValue keyValue) throws KeyException{
+        String[] supportedKeyTypes = { "RSA", "DSA", "EC"};
+        
+        Constraint.isNotNull(keyValue, "DEREncodedKeyValue cannot be null");
+        if (keyValue.getValue() == null) {
+            throw new KeyException("No data found in key value element");
+        }
+        byte[] encodedKey = Base64Support.decode(keyValue.getValue());
+
+        // Iterate over the supported key types until one produces a public key.
+        for (String keyType : supportedKeyTypes) {
+            try {
+                KeyFactory keyFactory = KeyFactory.getInstance(keyType);
+                X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
+                PublicKey publicKey = keyFactory.generatePublic(keySpec);
+                if (publicKey != null) {
+                    return publicKey;
+                }
+            } catch (NoSuchAlgorithmException e) {
+                // Do nothing, try the next type
+            } catch (InvalidKeySpecException e) {
+                // Do nothing, try the next type
+            }
+        }
+        throw new KeyException("DEREncodedKeyValue did not contain a supported key type");
+    }
+    
     /**
      * Get the Java certificate factory singleton.
      * 
