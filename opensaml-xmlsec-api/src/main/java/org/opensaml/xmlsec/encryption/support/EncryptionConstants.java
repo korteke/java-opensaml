@@ -18,7 +18,7 @@
 package org.opensaml.xmlsec.encryption.support;
 
 /**
- * Constants defined in or related to the XML Encryption specification, version 20021210.
+ * Constants defined in or related to the XML Encryption 1.0 and 1.1 specifications.
  */
 public final class EncryptionConstants {
 
@@ -64,10 +64,10 @@ public final class EncryptionConstants {
     // *************************************************
     // Key Transport
     // *************************************************
-    /** Key Transport - REQUIRED RSA-v1.5. */
+    /** Key Transport - OPTIONAL RSA-v1.5. */
     public static final String ALGO_ID_KEYTRANSPORT_RSA15 = XMLENC_NS + "rsa-1_5";
 
-    /** Key Transport - REQUIRED RSA-OAEP. */
+    /** Key Transport - REQUIRED RSA-OAEP (including MGF1 with SHA1). */
     public static final String ALGO_ID_KEYTRANSPORT_RSAOAEP = XMLENC_NS + "rsa-oaep-mgf1p";
 
     // *************************************************
@@ -94,7 +94,7 @@ public final class EncryptionConstants {
     // *************************************************
     // Message Digest
     // *************************************************
-    /** Message Digest - RECOMMENDED SHA256. */
+    /** Message Digest - REQUIRED SHA256. */
     public static final String ALGO_ID_DIGEST_SHA256 = XMLENC_NS + "sha256";
 
     /** Message Digest - OPTIONAL SHA512. */
@@ -103,6 +103,30 @@ public final class EncryptionConstants {
     /** Message Digest - OPTIONAL RIPEMD-160. */
     public static final String ALGO_ID_DIGEST_RIPEMD160 = XMLENC_NS + "ripemd160";
 
+    // *********************************************************
+    // Some additional algorithm URIs from XML Encryption 1.1
+    // *********************************************************
+    /** XML Encryption 1.1 namespace. */
+    public static final String XMLENC11_NS = "http://www.w3.org/2009/xmlenc11#";
+
+    /** XML Encryption 1.1 QName prefix. */
+    public static final String XMLENC11_PREFIX = "xenc11";
+    
+    /** Key Transport - OPTIONAL RSA-OAEP.  */
+    public static final String ALGO_ID_KEYTRANSPORT_RSAOAEP11 = XMLENC11_NS + "rsa-oaep";
+
+    /** Block Encryption - REQUIRED AES128-GCM. */
+    public static final String ALGO_ID_BLOCKCIPHER_AES128_GCM = XMLENC11_NS + "aes128-gcm";
+        
+    /** Block Encryption - OPTIONAL AES192-GCM. */
+    public static final String ALGO_ID_BLOCKCIPHER_AES192_GCM = XMLENC11_NS + "aes192-gcm";
+
+    /** Block Encryption - OPTIONAL AES256-GCM. */
+    public static final String ALGO_ID_BLOCKCIPHER_AES256_GCM = XMLENC11_NS + "aes256-gcm";
+
+    /** URI for DerivedKey. */
+    public static final String TYPE_DERIVED_KEY = XMLENC11_NS + "DerivedKey";
+        
     /** Constructor. */
     private EncryptionConstants() {
 
