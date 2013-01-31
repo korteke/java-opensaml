@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.net.UriSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -87,7 +86,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         SAMLObject outboundMessage = messageContext.getMessage();
 
         String endpointURL = getEndpointURL(messageContext).toString();
-        setResponseDestination(outboundMessage, endpointURL);
+        SAMLBindingSupport.setSaml2ResponseDestination(outboundMessage, endpointURL);
 
         removeSignature(outboundMessage);
 
@@ -194,7 +193,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);
             Pair<String, String> sigAlg = new Pair<String, String>("SigAlg", sigAlgURI);
             queryParams.add(sigAlg);
-            String sigMaterial = UriSupport.buildQuery(queryParams);
+            String sigMaterial = urlBuilder.buildQueryString();
 
             queryParams.add(new Pair<String, String>("Signature", generateSignature(signingCredential, sigAlgURI,
                     sigMaterial)));
