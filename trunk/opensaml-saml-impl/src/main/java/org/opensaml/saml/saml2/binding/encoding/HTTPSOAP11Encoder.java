@@ -89,9 +89,6 @@ public class HTTPSOAP11Encoder extends BaseSAML2MessageEncoder {
         if (samlMessage == null) {
             throw new MessageEncodingException("No outbound SAML message contained in message context");
         }
-
-        //TODO decide on this
-        signMessage(messageContext);
         
         Envelope envelope = buildSOAPMessage(samlMessage);
         storeSOAPEnvelope(envelope);
