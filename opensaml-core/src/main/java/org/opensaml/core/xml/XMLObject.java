@@ -51,8 +51,7 @@ public interface XMLObject {
 
     /**
      * Gets the QName for this element. This QName <strong>MUST</strong> contain the namespace URI, namespace prefix,
-     * and local element name. Changes made to the returned QName are not reflected by the QName held by this element,
-     * that is, the returned QName is a copy of the internal QName member of this class.
+     * and local element name.
      * 
      * @return the QName for this attribute
      */

@@ -105,7 +105,7 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     @Nonnull public QName getElementQName() {
-        return new QName(elementQname.getNamespaceURI(), elementQname.getLocalPart(), elementQname.getPrefix());
+        return elementQname;
     }
 
     /** {@inheritDoc} */
