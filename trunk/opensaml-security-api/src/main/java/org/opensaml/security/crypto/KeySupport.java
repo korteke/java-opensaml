@@ -34,6 +34,7 @@ import java.security.PublicKey;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateCrtKey;
@@ -309,6 +310,21 @@ public final class KeySupport {
         return (DSAPrivateKey) key;
     }
 
+    /**
+     * Build Java EC private key from base64 encoding.
+     * 
+     * @param base64EncodedKey base64-encoded EC private key
+     * @return a native Java ECPrivateKey
+     * @throws KeyException thrown if there is an error constructing key
+     */
+    public static ECPrivateKey buildJavaECPrivateKey(String base64EncodedKey)  throws KeyException {
+        PrivateKey key =  buildJavaPrivateKey(base64EncodedKey);
+        if (! (key instanceof ECPrivateKey)) {
+            throw new KeyException("Generated key was not an ECPrivateKey instance");
+        }
+        return (ECPrivateKey) key;
+    }
+    
     /**
      * Build Java private key from base64 encoding. The key should have no password.
      * 
