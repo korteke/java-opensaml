@@ -49,7 +49,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //TODO pull allowed URL scheme check out in to a separate class
-//TODO not sure if message signing should be in here either, it's not really part of the encoding process
 
 /**
  * Base class for SAML 2 message encoders.

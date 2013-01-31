@@ -31,7 +31,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
@@ -63,45 +62,10 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostSimpleSignEncoder.class);
 
-    //TODO get rid of this flag and ops if decided not to have encoders do protocol message signing
-    
-    /**
-     * Flag to indicate whether the SAML 2 protocol message should additionally be signed using the XML Signature, in
-     * addition to SimpleSign.
-     */
-    private boolean signWithXmlSignature;
-
 
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML2_POST_SIMPLE_SIGN_BINDING_URI;
-    }
-    
-    /**
-     * Get the flag to indicate whether the SAML 2 protocol message should be 
-     * signed using the XML Signature, in addition to SimpleSign.
-     * 
-     * @return the signWithXmlSignature flag
-     */
-    public boolean isSignWithXmlSignature() {
-        return signWithXmlSignature;
-    }
-
-    /**
-     * Set the flag to indicate whether the SAML 2 protocol message should be 
-     * signed using the XML Signature, in addition to SimpleSign.
-     * 
-     * @param newSignWithXmlSignature the new signWithXmlSignature 
-     */
-    public void setSignWithXmlSignature(boolean newSignWithXmlSignature) {
-        signWithXmlSignature = newSignWithXmlSignature;
-    }
-
-    /** {@inheritDoc} */
-    protected void signMessage(MessageContext<SAMLObject> messageContext) throws MessageEncodingException {
-        if (signWithXmlSignature) {
-            super.signMessage(messageContext);
-        }
     }
 
     /** {@inheritDoc} */

@@ -143,9 +143,6 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             ((ResponseAbstractType) outboundMessage).setRecipient(endpointURL);
         }
         
-        //TODO decide on this
-        signMessage(messageContext);
-
         postEncode(messageContext, endpointURL);
     }
 
