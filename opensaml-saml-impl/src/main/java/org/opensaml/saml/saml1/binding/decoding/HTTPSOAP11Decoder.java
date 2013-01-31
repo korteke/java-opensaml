@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.binding.decoding;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLSOAPDecoderBodyHandler;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.soap.messaging.context.SOAP11Context;
-import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * SAML 1.1 HTTP SOAP 1.1 binding decoder.
  */
-public class HTTPSOAP11Decoder extends BaseHttpServletRequestXmlMessageDecoder<SAMLObject> 
+public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.HTTPSOAP11Decoder<SAMLObject> 
         implements SAMLMessageDecoder {
-
+    
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
+
+    /**
+     * Constructor.
+     */
+    public HTTPSOAP11Decoder() {
+        super();
+        setBodyHandler(new SAMLSOAPDecoderBodyHandler());
+    }
 
     /** {@inheritDoc} */
     public String getBindingURI() {
@@ -50,52 +49,10 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXmlMessageDecoder<S
 
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
-        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
-        HttpServletRequest request = getHttpServletRequest();
+        super.doDecode();
 
-        if (!"POST".equalsIgnoreCase(request.getMethod())) {
-            throw new MessageDecodingException("This message decoder only supports the HTTP POST method");
-        }
-
-        log.debug("Unmarshalling SOAP message");
-        Envelope soapMessage;
-        try {
-            soapMessage = (Envelope) unmarshallMessage(request.getInputStream());
-            messageContext.getSubcontext(SOAP11Context.class, true).setEnvelope(soapMessage);
-        } catch (IOException e) {
-            log.error("Unable to obtain input stream from HttpServletRequest", e);
-            throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
-        }
-
-        List<XMLObject> soapBodyChildren = soapMessage.getBody().getUnknownXMLObjects();
-        if (soapBodyChildren.size() < 1 || soapBodyChildren.size() > 1) {
-            log.error("Unexpected number of children in the SOAP body, " + soapBodyChildren.size()
-                    + ".  Unable to extract SAML message");
-            throw new MessageDecodingException(
-                    "Unexpected number of children in the SOAP body, unable to extract SAML message");
-        }
-
-        XMLObject incommingMessage = soapBodyChildren.get(0);
-        if (!(incommingMessage instanceof SAMLObject)) {
-            log.error("Unexpected SOAP body content.  Expected a SAML request but recieved {}", incommingMessage
-                    .getElementQName());
-            throw new MessageDecodingException("Unexpected SOAP body content.  Expected a SAML request but recieved "
-                    + incommingMessage.getElementQName());
-        }
-
-        SAMLObject samlMessage = (SAMLObject) incommingMessage;
+        SAMLObject samlMessage = getMessageContext().getMessage();
         log.debug("Decoded SOAP messaged which included SAML message of type {}", samlMessage.getElementQName());
-        messageContext.setMessage(samlMessage);
-
-        //TODO 
-        //populateMessageContext(samlMsgCtx);
-        
-        setMessageContext(messageContext);
-    }
-    
-    /** {@inheritDoc} */
-    protected XMLObject getMessageToLog() {
-        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
     }
 
 }
