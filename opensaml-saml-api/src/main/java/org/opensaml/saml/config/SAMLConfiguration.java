@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.config;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -29,7 +33,7 @@ import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
  * 
  * <p>
  * The configuration instance to use would typically be retrieved from the {@link ConfigurationService}.
- * </p
+ * </p>
  * 
  */
 public class SAMLConfiguration {
@@ -45,6 +49,22 @@ public class SAMLConfiguration {
 
     /** SAML 2 Artifact factory. */
     private SAML2ArtifactBuilderFactory saml2ArtifactBuilderFactory;
+    
+    /** The list of schemes allowed to appear in binding URLs when encoding a message. 
+     * Defaults to 'http' and 'https'. */
+    private List<String> allowedBindingURLSchemes;
+    
+
+    /**
+     * Constructor.
+     *
+     */
+    public SAMLConfiguration() {
+        ArrayList<String> schemes = new ArrayList<String>();
+        schemes.add("http");
+        schemes.add("https");
+        setAllowedBindingURLSchemes(schemes);
+    }
 
     /**
      * Gets the date format used to string'ify SAML's {@link org.joda.time.DateTime} objects.
@@ -56,7 +76,7 @@ public class SAMLConfiguration {
             DateTimeFormatter formatter = DateTimeFormat.forPattern(defaultDateFormat);
             dateFormatter = formatter.withChronology(ISOChronology.getInstanceUTC());
         }
-
+        
         return dateFormatter;
     }
 
@@ -108,5 +128,33 @@ public class SAMLConfiguration {
      */
     public void setSAML2ArtifactBuilderFactory(SAML2ArtifactBuilderFactory factory) {
         saml2ArtifactBuilderFactory = factory;
+    }
+
+    /**
+     * Gets the unmodifiable list of schemes allowed to appear in binding URLs when encoding a message. 
+     * Defaults to 'http' and 'https'.
+     * 
+     * @return list of URL schemes allowed to appear in a message
+     */
+    public List<String> getAllowedBindingURLSchemes() {
+        return Collections.unmodifiableList(allowedBindingURLSchemes);
+    }
+
+    /**
+     * Sets the list of schemes allowed to appear in binding URLs when encoding a message. 
+     * The list will be copied.
+     * 
+     * <p>Note, the appearance of schemes such as 'javascript' may open the system up to attacks 
+     * (e.g. cross-site scripting attacks).
+     * </p>
+     * 
+     * @param schemes URL schemes allowed to appear in a message
+     */
+    public void setAllowedBindingURLSchemes(List<String> schemes) {
+        if (schemes == null || schemes.isEmpty()) {
+            allowedBindingURLSchemes = Collections.emptyList();
+        } else {
+            allowedBindingURLSchemes = new ArrayList<String>(schemes);
+        }
     }
 }

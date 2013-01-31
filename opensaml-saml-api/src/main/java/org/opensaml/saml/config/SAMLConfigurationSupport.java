@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.config;
 
+import java.util.List;
+
 import org.joda.time.format.DateTimeFormatter;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
@@ -88,5 +90,23 @@ public final class SAMLConfigurationSupport {
      */
     public static void setSAML2ArtifactBuilderFactory(SAML2ArtifactBuilderFactory factory) {
         ConfigurationService.get(SAMLConfiguration.class).setSAML2ArtifactBuilderFactory(factory);
+    }
+    
+    /**
+     * Get the allowed URL schemes.
+     * 
+     * @return the list of allowed URL schemes
+     */
+    public static List<String> getAllowedBindingUrlSchemes() {
+        return ConfigurationService.get(SAMLConfiguration.class).getAllowedBindingURLSchemes();
+    }
+    
+    /**
+     * Set the allowed URL schemes.
+     * 
+     * @param schemes the new list of allowed URL schemes
+     */
+    public static void setAllowedBindingUrlSchemes(List<String>schemes) {
+        ConfigurationService.get(SAMLConfiguration.class).setAllowedBindingURLSchemes(schemes);
     }
 }

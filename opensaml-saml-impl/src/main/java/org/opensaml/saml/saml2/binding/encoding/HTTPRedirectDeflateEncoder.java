@@ -37,6 +37,7 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.common.messaging.SamlMessageSecuritySupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
@@ -187,7 +188,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             queryParams.add(new Pair<String, String>("RelayState", relayState));
         }
 
-        Credential signingCredential = getContextSigningCredential(messageContext);
+        Credential signingCredential = SamlMessageSecuritySupport.getContextSigningCredential(messageContext);
         if (signingCredential != null) {
             // TODO pull SecurityConfiguration from SAMLMessageContext? needs to be added
             String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);
