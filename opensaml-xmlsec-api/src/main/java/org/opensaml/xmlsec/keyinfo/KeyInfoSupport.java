@@ -595,15 +595,17 @@ public class KeyInfoSupport {
     }
 
     /**
-     * Builds a {@link DEREncodedKeyValue} XMLObject from the Java security public key type.
+     * Converts a Java public key into the corresponding XMLObject and stores it in a {@link KeyInfo} in a
+     * new {@link DEREncodedKeyValue} element.
      * 
+     * @param keyInfo the {@link KeyInfo} element to which to add the key
      * @param pk the native Java {@link PublicKey} to convert
-     * @return a {@link DEREncodedKeyValue} XMLObject
      * @throws NoSuchAlgorithmException if the key type is unsupported
      * @throws InvalidKeySpecException if the key type does not support X.509 SPKI encoding
      */
-    @Nonnull public static DEREncodedKeyValue buildDEREncodedPublicKey(@Nonnull final PublicKey pk)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static void addDEREncodedPublicKey(@Nonnull final KeyInfo keyInfo,
+            @Nonnull final PublicKey pk) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Constraint.isNotNull(keyInfo, "KeyInfo cannot be null");
         Constraint.isNotNull(pk, "Public key cannot be null");
         
         XMLObjectBuilder<DEREncodedKeyValue> builder =
@@ -616,7 +618,7 @@ public class KeyInfoSupport {
         X509EncodedKeySpec keySpec = keyFactory.getKeySpec(pk, X509EncodedKeySpec.class);
         keyValue.setValue(Base64Support.encode(keySpec.getEncoded(), Base64Support.CHUNKED));
         
-        return keyValue;
+        keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).add(keyValue);
     }        
     
     /**
