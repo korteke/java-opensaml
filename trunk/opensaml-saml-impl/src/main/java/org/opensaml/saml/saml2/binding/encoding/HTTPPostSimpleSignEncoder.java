@@ -31,6 +31,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.common.messaging.SamlMessageSecuritySupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
@@ -74,7 +75,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         super.populateVelocityContext(velocityContext, messageContext, endpointURL);
 
-        Credential signingCredential = getContextSigningCredential(messageContext);
+        Credential signingCredential = SamlMessageSecuritySupport.getContextSigningCredential(messageContext);
         if (signingCredential == null) {
             log.debug("No signing credential was supplied, skipping HTTP-Post simple signing");
             return;
