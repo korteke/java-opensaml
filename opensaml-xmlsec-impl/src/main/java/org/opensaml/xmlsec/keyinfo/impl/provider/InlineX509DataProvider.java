@@ -34,6 +34,7 @@ import javax.security.auth.x500.X500Principal;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -45,12 +46,14 @@ import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
 import org.opensaml.xmlsec.signature.X509SubjectName;
@@ -66,11 +69,11 @@ import com.google.common.base.Strings;
  * This provider supports only inline {@link X509Certificate}'s and {@link org.opensaml.xmlsec.signature.X509CRL}s.
  * If only one certificate is present, it is assumed to be the end-entity certificate containing the public key
  * represented by this KeyInfo. If multiple certificates are present, and any instances of {@link X509SubjectName},
- * {@link X509IssuerSerial}, or {@link X509SKI} are also present, they will be used to identify the end-entity certificate,
- * in accordance with the XML Signature specification. If a public key from a previously resolved {@link KeyValue} is
- * available in the resolution context, it will also be used to identify the end-entity certificate. If the end-entity
- * certificate can not otherwise be identified, the cert contained in the first X509Certificate element will be treated
- * as the end-entity certificate.
+ * {@link X509IssuerSerial}, {@link X509SKI}, or {@link X509Digest} are also present, they will be used to identify
+ * the end-entity certificate, in accordance with the XML Signature specification. If a public key from a previously
+ * resolved {@link KeyValue} is available in the resolution context, it will also be used to identify the end-entity
+ * certificate. If the end-entity certificate can not otherwise be identified, the cert contained in the first
+ * X509Certificate element will be treated as the end-entity certificate.
  */
 public class InlineX509DataProvider extends AbstractKeyInfoProvider {
 
@@ -246,6 +249,13 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             return cert;
         }
 
+        // Check against any subject key identifiers
+        cert = findCertFromDigest(certs, x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME));
+        if (cert != null) {
+            log.debug("End-entity certificate resolved by matching X509Digest");
+            return cert;
+        }
+        
         // TODO use some heuristic algorithm to try and figure it out based on the cert list alone.
         // This would be in X509Utils or somewhere else external to this class.
 
@@ -359,4 +369,41 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
+
+    /**
+     * Find the certificate from the chain that matches one of the specified digests.
+     * 
+     * @param certs list of certificates to evaluate
+     * @param digests X509 digests to use as search criteria
+     * @return the matching certificate, or null
+     */
+    @Nullable protected X509Certificate findCertFromDigest(@Nonnull final List<X509Certificate> certs,
+            @Nonnull final List<XMLObject> digests) {
+        byte[] certValue;
+        byte[] xmlValue;
+        X509Digest digest;
+        
+        for (XMLObject xo : digests) {
+            digest = (X509Digest) xo;
+            if (!StringSupport.isEmpty(digest.getValue()) && !StringSupport.isEmpty(digest.getAlgorithm())) {
+                String alg = AlgorithmSupport.getAlgorithmID(digest.getAlgorithm());
+                if (alg == null) {
+                    log.warn("Algorithm {} not supported", digest.getAlgorithm());
+                    continue;
+                }
+                xmlValue = Base64Support.decode(digest.getValue());
+                for (X509Certificate cert : certs) {
+                    try {
+                        certValue = X509Support.getX509Digest(cert, alg);
+                        if (certValue != null && Arrays.equals(xmlValue, certValue)) {
+                            return cert;
+                        }
+                    } catch (SecurityException e) {
+                        // Ignore as no match.
+                    }
+                }
+            }
+        }
+        return null;
+    } 
 }

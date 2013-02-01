@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.CRLException;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
@@ -290,6 +293,28 @@ public class X509Support {
         } catch (IOException e) {
             getLogger().error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
             return null;
+        }
+    }
+
+    /**
+     * Get the XML Signature-compliant digest of an X.509 certificate.
+     * 
+     * @param certificate an X.509 certificate
+     * @param jcaAlgorithm JCA algorithm identifier
+     * @return the raw digest of the certificate
+     * @throws SecurityException is algorithm is unsupported or encoding is not possible
+     */
+    @Nonnull public static byte[] getX509Digest(@Nonnull final X509Certificate certificate,
+            @Nonnull final String jcaAlgorithm) throws SecurityException {
+        try {
+            MessageDigest hasher = MessageDigest.getInstance(jcaAlgorithm);
+            return hasher.digest(certificate.getEncoded());
+        } catch (CertificateEncodingException e) {
+            getLogger().error("Unable to encode certificate for digest operation", e);
+            throw new SecurityException("Unable to encode certificate for digest operation", e);
+        } catch (NoSuchAlgorithmException e) {
+            getLogger().error("Algorithm {} is unsupported", jcaAlgorithm);
+            throw new SecurityException("Algorithm " + jcaAlgorithm + " is unsupported", e);
         }
     }
     
