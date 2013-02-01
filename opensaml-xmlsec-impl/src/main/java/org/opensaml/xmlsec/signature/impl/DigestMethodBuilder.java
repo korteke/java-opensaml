@@ -18,9 +18,9 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Builder of {@link org.opensaml.xmlsec.signature.DigestMethod}.
@@ -42,7 +42,7 @@ public class DigestMethodBuilder extends AbstractXMLObjectBuilder<DigestMethod> 
 
     /** {@inheritDoc} */
     public DigestMethod buildObject() {
-        return buildObject(EncryptionConstants.XMLENC_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME,
-                EncryptionConstants.XMLENC_PREFIX);
+        return buildObject(SignatureConstants.XMLSIG_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
 }
