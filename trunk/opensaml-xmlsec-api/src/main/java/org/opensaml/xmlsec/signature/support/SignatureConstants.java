@@ -33,7 +33,7 @@ public final class SignatureConstants {
     public static final String XMLSIG_PREFIX = "ds";
     
     /** XML Signature 1.1 QName prefix. */
-    public static final String XMLSIG11_PREFIX = "dsig11";
+    public static final String XMLSIG11_PREFIX = "ds11";
 
     /** Algorithm URI prefix used by RFC 4051. */
     public static final String MORE_ALGO_NS = "http://www.w3.org/2001/04/xmldsig-more#";
