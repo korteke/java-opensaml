@@ -242,7 +242,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Test resolution with multiple certs, end-entity cert identified by X509SubjectName.
+     * Test resolution with multiple certs, end-entity cert identified by X509SKI.
      * 
      * @throws SecurityException on error resolving credentials
      * @throws ResolverException on error resolving credentials
