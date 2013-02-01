@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds11:X509Digest xmlns:ds11="http://www.w3.org/2009/xmldsig11#" Algorithm="http://www.w3.org/2000/09/xmldsig#sha1">someX509Digest</ds11:X509Digest>

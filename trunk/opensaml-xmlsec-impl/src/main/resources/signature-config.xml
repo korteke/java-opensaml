@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns="http://www.opensaml.org/xmltooling-config">
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:ds11="http://www.w3.org/2009/xmldsig11#" xmlns="http://www.opensaml.org/xmltooling-config">
     
     <ObjectProviders>
         
@@ -253,6 +253,50 @@
             <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryUnmarshaller"/>
         </ObjectProvider>        
 
+        <!-- 1.1 Stuff -->
+
+        <!-- DEREncodedKeyValue -->
+        <ObjectProvider qualifiedName="ds11:DEREncodedKeyValue">
+            <BuilderClass className="org.opensaml.xmlsec.signature.impl.DEREncodedKeyValueBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.DEREncodedKeyValueMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.DEREncodedKeyValueUnmarshaller"/>
+        </ObjectProvider>
+
+        <!-- ECKeyValue -->
+        <ObjectProvider qualifiedName="ds11:ECKeyValue">
+            <BuilderClass className="org.opensaml.xmlsec.signature.impl.ECKeyValueBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.ECKeyValueMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.ECKeyValueUnmarshaller"/>
+        </ObjectProvider>
+
+        <!-- KeyInfoReference -->
+        <ObjectProvider qualifiedName="ds11:KeyInfoReference">
+            <BuilderClass className="org.opensaml.xmlsec.signature.impl.KeyInfoReferenceBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyInfoReferenceMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyInfoReferenceUnmarshaller"/>
+        </ObjectProvider>
+
+        <!-- NamedCurve -->
+        <ObjectProvider qualifiedName="ds11:NamedCurve">
+            <BuilderClass className="org.opensaml.xmlsec.signature.impl.NamedCurveBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.NamedCurveMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.NamedCurveUnmarshaller"/>
+        </ObjectProvider>
+
+        <!-- PublicKey -->
+        <ObjectProvider qualifiedName="ds11:PublicKey">
+            <BuilderClass className="org.opensaml.xmlsec.signature.impl.PublicKeyBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.CryptoBinaryUnmarshaller"/>
+        </ObjectProvider>
+
+        <!-- X509Digest -->
+        <ObjectProvider qualifiedName="ds11:X509Digest">
+            <BuilderClass className="org.opensaml.xmlsec.signature.impl.X509DigestBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.X509DigestMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.X509DigestUnmarshaller"/>
+        </ObjectProvider>
+        
     </ObjectProviders>
     
 </XMLTooling>
