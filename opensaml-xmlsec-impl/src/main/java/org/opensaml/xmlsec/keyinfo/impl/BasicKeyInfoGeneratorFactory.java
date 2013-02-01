@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.keyinfo.impl;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -56,7 +58,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     }
     
     /** {@inheritDoc} */
-    public Class<? extends Credential> getCredentialType() {
+    @Nonnull public Class<? extends Credential> getCredentialType() {
         return Credential.class;
     }
 
@@ -67,7 +69,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     }
 
     /** {@inheritDoc} */
-    public KeyInfoGenerator newInstance() {
+    @Nonnull public KeyInfoGenerator newInstance() {
         //TODO lock options during cloning ?
         BasicOptions newOptions = options.clone();
         return new BasicKeyInfoGenerator(newOptions);
@@ -125,7 +127,24 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
      */
     public void setEmitPublicKeyValue(boolean newValue) {
         options.emitPublicKeyValue = newValue;
-        
+    }
+    
+    /**
+     * Get the option to emit the value of {@link Credential#getPublicKey()} as a DEREncodedKeyValue element.
+     *
+     * @return the option value
+     */
+    public boolean emitPublicDEREncodedKeyValue() {
+        return options.emitPublicDEREncodedKeyValue;
+    }
+          
+    /**
+     * Set the option to emit the value of {@link Credential#getPublicKey()} as a DEREncodedKeyValue element.
+     *
+     * @param newValue the new option value to set
+     */
+    public void setEmitPublicDEREncodedKeyValue(boolean newValue) {
+        options.emitPublicDEREncodedKeyValue = newValue;
     }
     
     /**
@@ -224,12 +243,23 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         /** Process the value of {@link Credential#getPublicKey()}.
          * 
          * @param keyInfo the KeyInfo that is being built
-         * @param credential the Credential that is geing processed
+         * @param credential the Credential that is being processed
+         * @throws SecurityException if the public key can't be encoded properly
          */
-        protected void processPublicKey(@Nonnull final KeyInfo keyInfo, @Nonnull final Credential credential) {
-            if (options.emitPublicKeyValue) {
-                if (credential.getPublicKey() != null) {
+        protected void processPublicKey(@Nonnull final KeyInfo keyInfo, @Nonnull final Credential credential)
+            throws SecurityException {
+            if (credential.getPublicKey() != null) {
+                if (options.emitPublicKeyValue) {
                     KeyInfoSupport.addPublicKey(keyInfo, credential.getPublicKey());
+                }
+                if (options.emitPublicDEREncodedKeyValue) {
+                    try {
+                        KeyInfoSupport.addDEREncodedPublicKey(keyInfo, credential.getPublicKey());
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new SecurityException("Can't DER-encode key, unsupported key algorithm", e);
+                    } catch (InvalidKeySpecException e) {
+                        throw new SecurityException("Can't DER-encode key, invalid key specification", e);
+                    }
                 }
             }
         }
@@ -248,6 +278,9 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         
         /** Emit the value of {@link Credential#getPublicKey()} as a KeyValue element. */
         private boolean emitPublicKeyValue;
+        
+        /** Emit the value of {@link Credential#getPublicKey()} as a DEREncodedKeyValue element. */
+        private boolean emitPublicDEREncodedKeyValue;
         
         /** {@inheritDoc} */
         protected BasicOptions clone() {
