@@ -385,7 +385,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         
         for (XMLObject xo : digests) {
             digest = (X509Digest) xo;
-            if (!StringSupport.isEmpty(digest.getValue()) && !StringSupport.isEmpty(digest.getAlgorithm())) {
+            if (!Strings.isNullOrEmpty(digest.getValue()) && !Strings.isNullOrEmpty(digest.getAlgorithm())) {
                 String alg = AlgorithmSupport.getAlgorithmID(digest.getAlgorithm());
                 if (alg == null) {
                     log.warn("Algorithm {} not supported", digest.getAlgorithm());
