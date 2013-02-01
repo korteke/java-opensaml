@@ -46,8 +46,10 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Tests the factory and impl for X509KeyInfoGenerator.
@@ -94,6 +96,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
             + "vow2xjxlzVcux2BZsUZYjBa07ZmNNBtF7WaQqH7l2OBCAdnBhvme5i/e0LK3Ivys" + "+hcVyvCXs5XtFTFWDAVYvzQ6";
 
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
+    private String entityCertDigestBase64 = "w+E2z13/aCCFAQWscM4BaH8U4M4=";
 
     private X509Certificate caCert;
 
@@ -125,6 +128,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     private BigInteger serialNumber;
 
     private byte[] subjectKeyIdentifier;
+    
+    private byte[] x509Digest;
 
     private String altName1, altName2, altName3;
 
@@ -158,6 +163,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         issuerName = new X500Principal("cn=ca.example.org, O=Internet2");
         serialNumber = new BigInteger("49");
         subjectKeyIdentifier = Base64Support.decode(entityCertSKIBase64);
+        x509Digest = Base64Support.decode(entityCertDigestBase64);
 
         altName1 = "asimov.example.org";
         altName1Type = X509Support.DNS_ALT_NAME;
@@ -423,6 +429,31 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         byte[] skiValue = Base64Support.decode(StringSupport.trimOrNull(ski.getValue()));
         Assert.assertTrue(Arrays.equals(subjectKeyIdentifier, skiValue), "Unexpected SKI value found");
     }
+    
+    /**
+     * Test emit X509Digest in X509Data.
+     * @throws SecurityException
+     */
+    @Test
+    public void testEmitX509Digest() throws SecurityException {
+        factory.setEmitX509Digest(true);
+        factory.setX509DigestAlgorithmURI(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        
+        generator = factory.newInstance();
+        KeyInfo keyInfo = generator.generate(credential);
+        
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
+        
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
+        X509Data x509Data = keyInfo.getX509Datas().get(0);
+        Assert.assertEquals(x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME).size(), 1,
+                "Unexpected number of X509Digest elements");
+        X509Digest digest = (X509Digest) x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME).get(0);
+        byte[] digestValue = Base64Support.decode(StringSupport.trimOrNull(digest.getValue()));
+        Assert.assertTrue(Arrays.equals(x509Digest, digestValue), "Unexpected SHA-1 digest value found");
+    }
+
 
     /**
      * Test emit subject DN as key name.
