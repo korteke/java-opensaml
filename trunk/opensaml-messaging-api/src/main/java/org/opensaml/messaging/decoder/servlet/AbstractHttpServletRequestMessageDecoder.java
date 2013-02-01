@@ -24,6 +24,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
+import org.opensaml.messaging.decoder.MessageDecodingException;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
@@ -49,6 +50,12 @@ public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> exte
         request = servletRequest;
     }
     
+    /** {@inheritDoc} */
+    public void decode() throws MessageDecodingException {
+        super.decode();
+        getMessageContext().getSubcontext(HttpServletRequestContext.class, true).setHttpServletRequest(getHttpServletRequest());
+    }
+
     /** {@inheritDoc} */
     protected void doDestroy() {
         request = null;
