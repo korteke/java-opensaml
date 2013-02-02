@@ -30,7 +30,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.messaging.context.SamlBindingContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
@@ -77,8 +79,7 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXmlMessage
         messageContext.setMessage(samlMessage);
         log.debug("Decoded SAML message");
 
-        //TODO
-        //populateMessageContext(samlMsgCtx);
+        populateBindingContext(messageContext);
         
         setMessageContext(messageContext);
     }
@@ -110,4 +111,17 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXmlMessage
             throw new MessageDecodingException("Unable to Base64 decode and inflate SAML message", e);
         }
     }
+    
+    /**
+     * Populate the context which carries information specific to this binding.
+     * 
+     * @param messageContext the current message context
+     */
+    protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
+        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+        bindingContext.setBindingUri(getBindingURI());
+        bindingContext.setHasBindingSignature(!Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
+        bindingContext.setIntendedDestinationEndpointUriRequired(SAMLBindingSupport.isMessageSigned(messageContext));
+    }
+    
 }
