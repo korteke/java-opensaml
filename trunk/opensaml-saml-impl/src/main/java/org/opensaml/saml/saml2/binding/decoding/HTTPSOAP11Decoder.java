@@ -17,10 +17,12 @@
 
 package org.opensaml.saml.saml2.binding.decoding;
 
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLSOAPDecoderBodyHandler;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.messaging.context.SamlBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +53,22 @@ public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.HTT
     protected void doDecode() throws MessageDecodingException {
         super.doDecode();
         
+        populateBindingContext(getMessageContext());
+        
         SAMLObject samlMessage = getMessageContext().getMessage();
         log.debug("Decoded SOAP messaged which included SAML message of type {}", samlMessage.getElementQName());
+    }
+    
+    /**
+     * Populate the context which carries information specific to this binding.
+     * 
+     * @param messageContext the current message context
+     */
+    protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
+        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+        bindingContext.setBindingUri(getBindingURI());
+        bindingContext.setHasBindingSignature(false);
+        bindingContext.setIntendedDestinationEndpointUriRequired(false);
     }
 
 }

@@ -27,7 +27,9 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
+import org.opensaml.saml.common.messaging.context.SamlBindingContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,8 +46,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder
     
     /** {@inheritDoc} */
     public String getBindingURI() {
-        // TODO Auto-generated method stub
-        return null;
+        return SAMLConstants.SAML2_ARTIFACT_BINDING_URI;
     }
 
     /** {@inheritDoc} */
@@ -59,8 +60,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder
         
         processArtifact(messageContext, request);
 
-        //TODO
-        //populateMessageContext(samlMsgCtx);
+        populateBindingContext(messageContext);
         
         setMessageContext(messageContext);
     }
@@ -84,6 +84,18 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder
         
         // TODO decode artifact; resolve issuer resolution endpoint; dereference using ArtifactResolve
         // over synchronous backchannel binding; store resultant protocol message as the inbound SAML message.
+    }
+    
+    /**
+     * Populate the context which carries information specific to this binding.
+     * 
+     * @param messageContext the current message context
+     */
+    protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
+        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+        bindingContext.setBindingUri(getBindingURI());
+        bindingContext.setHasBindingSignature(false);
+        bindingContext.setIntendedDestinationEndpointUriRequired(false);
     }
 
 }
