@@ -17,8 +17,11 @@
 
 package org.opensaml.saml.saml2.binding.encoding;
 
+import java.net.URI;
 import java.net.URL;
 import java.security.KeyPair;
+
+import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -37,7 +40,6 @@ import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xmlsec.mock.MockSignatureSigningConfiguration;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
@@ -154,11 +156,13 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        String queryString = new URL(response.getRedirectedUrl()).getQuery();
+        //String queryString = new URL(response.getRedirectedUrl()).getQuery();
+        String queryString = new URI(response.getRedirectedUrl()).getRawQuery();
+        System.out.println(queryString);
         
-        Assert.assertNotNull(HTTPTransportUtils.getRawQueryStringParameter(queryString, "Signature"), 
+        Assert.assertNotNull(UriSupport.getRawQueryStringParameter(queryString, "Signature"), 
                 "Signature parameter was not found");
-        Assert.assertNotNull(HTTPTransportUtils.getRawQueryStringParameter(queryString, "SigAlg"), 
+        Assert.assertNotNull(UriSupport.getRawQueryStringParameter(queryString, "SigAlg"), 
                 "SigAlg parameter was not found");
         
         // Note: to test that actual signature is cryptographically correct, really need a known good test vector.
