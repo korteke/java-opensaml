@@ -21,10 +21,11 @@ import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.net.UriSupport;
+
 import org.opensaml.saml.common.binding.SAMLMessageContext;
 import org.opensaml.saml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
 import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.transport.http.HTTPTransportUtils;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +116,7 @@ public class SAML2HTTPRedirectDeflateSignatureRule extends BaseSAMLSimpleSignatu
      * @return true if parameter was found, false otherwise
      */
     private boolean appendParameter(StringBuilder builder, String queryString, String paramName) {
-        String rawParam = HTTPTransportUtils.getRawQueryStringParameter(queryString, paramName);
+        String rawParam = UriSupport.getRawQueryStringParameter(queryString, paramName);
         if (rawParam == null) {
             return false;
         }
