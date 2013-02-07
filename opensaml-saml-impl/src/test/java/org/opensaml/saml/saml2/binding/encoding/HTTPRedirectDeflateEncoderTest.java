@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.binding.encoding;
 
 import java.net.URI;
-import java.net.URL;
 import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.net.UriSupport;
@@ -156,9 +155,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        //String queryString = new URL(response.getRedirectedUrl()).getQuery();
         String queryString = new URI(response.getRedirectedUrl()).getRawQuery();
-        System.out.println(queryString);
         
         Assert.assertNotNull(UriSupport.getRawQueryStringParameter(queryString, "Signature"), 
                 "Signature parameter was not found");
