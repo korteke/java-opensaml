@@ -26,11 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
-import org.opensaml.saml.common.messaging.SamlMessageSecuritySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-//TODO pull allowed URL scheme check out in to a separate class
 
 /**
  * Base class for SAML 1 message encoders.
@@ -51,19 +48,11 @@ public abstract class BaseSAML1MessageEncoder extends BaseHttpServletResponseXml
      * @throws MessageEncodingException throw if no relying party endpoint is available
      */
     protected URI getEndpointURL(MessageContext<SAMLObject> messageContext) throws MessageEncodingException {
-        URI endpointUrl;
         try {
-            endpointUrl = SAMLBindingSupport.getEndpointURL(messageContext);
+            return SAMLBindingSupport.getEndpointURL(messageContext);
         } catch (BindingException e) {
             throw new MessageEncodingException("Could not obtain message endpoint URL", e);
         }
-
-        //TODO
-        if (!SamlMessageSecuritySupport.checkUrlScheme(endpointUrl.getScheme())) {
-            throw new MessageEncodingException("Relying party endpoint used the untrusted URL scheme "
-                    + endpointUrl.getScheme());
-        }
-        return endpointUrl;
     }
     
 }
