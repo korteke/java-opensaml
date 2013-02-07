@@ -23,7 +23,6 @@ import java.net.URISyntaxException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -38,9 +37,6 @@ import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.util.net.BasicUrlComparator;
-import org.opensaml.util.net.UriComparator;
-import org.opensaml.util.net.UriException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -165,8 +161,8 @@ public final class SAMLBindingSupport {
     public static boolean isMessageSigned(@Nonnull final MessageContext<SAMLObject> messageContext) {
         SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(),
                 "SAML message was not present in message context");
-        if (samlMessage instanceof SignableSAMLObject) {
-            return ((SignableSAMLObject)samlMessage).isSigned();
+        if (samlMessage instanceof SignableSAMLObject && ((SignableSAMLObject)samlMessage).isSigned()) {
+            return true;
         } else {
             SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, false);
             if (bindingContext != null) {
@@ -227,7 +223,7 @@ public final class SAMLBindingSupport {
             // don't treat as an error, just return null
             return null;
         } else {
-            LOG.error("Invalid SAML message type encountered: {}", samlMessage.getElementQName().toString());
+            LOG.error("Unknown SAML message type encountered: {}", samlMessage.getElementQName().toString());
             throw new MessageException("Invalid SAML message type encountered");
         }
         return messageDestination;
@@ -250,104 +246,6 @@ public final class SAMLBindingSupport {
         }
         
         return requestContext.getHttpServletRequest().getRequestURL().toString();
-    }
-
-    /**
-     * Compare the message endpoint URI's specified.
-     * 
-     * <p>The comparison is performed using {@link BasicUrlComparator}.</p>
-     * 
-     * <p>Subclasses should override if binding-specific behavior is required.
-     * In this case, see also {@link #getActualReceiverEndpointUri(SAMLMessageContext)}.</p>
-     * 
-     * @param messageDestination the intended message destination endpoint URI
-     * @param receiverEndpoint the endpoint URI at which the message was received
-     * 
-     * @return true if the endpoints are equivalent, false otherwise
-     * 
-     * @throws UriException if one of the URI's to evaluate is invalid 
-     */
-    public static boolean compareEndpointUris(@Nonnull @NotEmpty final String messageDestination, 
-            @Nonnull @NotEmpty final String receiverEndpoint) throws UriException {
-        return compareEndpointUris(messageDestination, receiverEndpoint, new BasicUrlComparator());
-    }
-    
-    /**
-     * Compare the message endpoint URI's specified.
-     * 
-     * <p>The comparison is performed using the specified instance of {@link UriComparator}.</p>
-     * 
-     * @param messageDestination the intended message destination endpoint URI
-     * @param receiverEndpoint the endpoint URI at which the message was received
-     * @param comparator the comparator instance to use
-     * 
-     * @return true if the endpoints are equivalent, false otherwise
-     * 
-     * @throws UriException if one of the URI's to evaluate is invalid 
-     */
-    public static boolean compareEndpointUris(@Nonnull @NotEmpty final String messageDestination, 
-            @Nonnull @NotEmpty final String receiverEndpoint, 
-            @Nonnull final UriComparator comparator) throws UriException {
-        Constraint.isNotNull(messageDestination, "Message destination URI was null");
-        Constraint.isNotNull(receiverEndpoint, "Receiver endpoint URI was null");
-        Constraint.isNotNull(comparator, "UriComparator was null");
-        return comparator.compare(messageDestination, receiverEndpoint);
-    }
-    
-    /**
-     * Check the validity of the SAML protocol message receiver endpoint against
-     * requirements indicated in the message.
-     * 
-     * @param messageContext current message context
-     * @param comparator the URI comparator instance to use, if null an internal default will be used
-     * 
-     * @return true if the message was received at an endpoint consistent with message requirements, 
-     *              false otherwise
-     * 
-     * @throws MessageException thrown if there is a problem decoding and processing
-     *              the message Destination or receiver endpoint information
-     */
-    public static boolean checkEndpointUri(@Nonnull final MessageContext<SAMLObject> messageContext, 
-            @Nullable final UriComparator comparator) throws MessageException {
-        
-        LOG.debug("Checking SAML message intended destination endpoint against receiver endpoint");
-        
-        String messageDestination = StringSupport.trimOrNull(getIntendedDestinationEndpointUri(messageContext));
-        
-        boolean bindingRequires = isIntendedDestinationEndpointUriRequired(messageContext);
-        
-        if (messageDestination == null) {
-            if (bindingRequires) {
-                LOG.error("SAML message intended destination endpoint URI required by binding was empty");
-                throw new SecurityException("SAML message intended destination (required by binding) was not present");
-            } else {
-                LOG.debug("SAML message intended destination endpoint in message was empty, not required by binding, skipping");
-                return true;
-            }
-        }
-        
-        String receiverEndpoint = StringSupport.trimOrNull(getActualReceiverEndpointUri(messageContext));
-        
-        LOG.debug("Intended message destination endpoint: {}", messageDestination);
-        LOG.debug("Actual message receiver endpoint: {}", receiverEndpoint);
-        
-        boolean matched;
-        try {
-            if (comparator != null) {
-                matched = compareEndpointUris(messageDestination, receiverEndpoint, comparator);
-            } else {
-                matched = compareEndpointUris(messageDestination, receiverEndpoint);
-            }
-        } catch (UriException e) {
-            throw new MessageException("Error comparing endpoint URI's", e);
-        }
-        if (!matched) {
-            LOG.error("SAML message intended destination endpoint '{}' did not match the recipient endpoint '{}'",
-                    messageDestination, receiverEndpoint);
-        } else {
-            LOG.debug("SAML message intended destination endpoint matched recipient endpoint");
-        }
-        return matched;
     }
 
 }
