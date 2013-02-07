@@ -22,12 +22,14 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
-import org.opensaml.ws.message.handler.Handler;
+import org.opensaml.messaging.handler.MessageHandler;
 
 /**
- * Interface for {@link Handler}s that are specific to SOAP message processing.
+ * Interface for {@link MessageHandler}s that are specific to SOAP message processing.
+ * 
+ *  @param <MessageType> the type of message being handled
  */
-public interface SOAPHandler extends Handler {
+public interface SOAPHandler<MessageType> extends MessageHandler<MessageType> {
     
     /**
      * Get the set of SOAP header names that the handler

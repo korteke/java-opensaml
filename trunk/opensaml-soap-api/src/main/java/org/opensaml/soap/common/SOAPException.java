@@ -19,12 +19,10 @@ package org.opensaml.soap.common;
 
 import javax.annotation.Nullable;
 
-import org.opensaml.ws.WSException;
-
 /**
  * Base SOAP exception.
  */
-public class SOAPException extends WSException {
+public class SOAPException extends Exception {
 
     /** Serial version UID. */
     private static final long serialVersionUID = 1374150092262909937L;
