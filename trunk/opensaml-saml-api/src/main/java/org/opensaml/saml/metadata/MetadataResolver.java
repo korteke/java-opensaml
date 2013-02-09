@@ -27,10 +27,10 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 /**
  * A metadata resolver that scans SAML metadata for Entities that match a given set of criteria.
  * 
- * Note, this interface differs from a {@link org.opensaml.saml.saml2.metadata.provider.MetadataProvider} in that the
+ * Note, this interface differs from a {@link MetadataProvider} in that the
  * provider is focused on reading in batches of metadata and making them accessible while the resolver is focused on
  * searching for metadata. The resolution process may simply search a static batch or metadata provided by a
- * {@link org.opensaml.saml.saml2.metadata.provider.MetadataProvider} or it may do something more dynamic such as querying a
+ * {@link MetadataProvider} or it may do something more dynamic such as querying a
  * remote service.
  * 
  * At a minimum, a {@link MetadataResolver} implementation MUST support the following criteria:
