@@ -17,39 +17,33 @@
 
 package org.opensaml.util.storage;
 
-import com.google.common.base.Optional;
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
- * Exposes capabilities of a {@link StorageService} implementation.
+ * Extension of {@link StorageService} that maintains its data with client-side storage.
  */
-public interface StorageCapabilities {
+@ThreadSafe
+public interface ClientStorageService extends StorageService {
+
+    /**
+     * Reconstitute stored data from client request.
+     * 
+     * @param request   client request
+     * @throws IOException  if an error occurs reconstituing the data
+     */
+    public void load(@Nonnull final ServletRequest request) throws IOException;
     
     /**
-     * Gets max size of context labels in characters.
+     * Preserve stored data in client.
      * 
-     * @return  max size of context labels in characters, if any
+     * @param response  response to client
+     * @throws IOException  if an error occurs preserving the data
      */
-    public Optional<Integer> getContextSize();
-
-    /**
-     * Gets max size of keys in characters.
-     * 
-     * @return  max size of keys in characters, if any
-     */
-    public Optional<Integer> getKeySize();
-
-    /**
-     * Gets max size of string values in characters.
-     * 
-     * @return  max size of string values in characters, if any
-     */
-    public Optional<Integer> getStringSize();
+    public void save(@Nonnull final ServletResponse response) throws IOException;
     
-    /**
-     * Gets max size of text values in characters.
-     * 
-     * @return  max size of text values in characters, if any
-     */
-    public Optional<Long> getTextSize();
-
 }
