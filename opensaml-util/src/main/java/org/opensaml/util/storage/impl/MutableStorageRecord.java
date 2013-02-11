@@ -15,27 +15,20 @@
  * limitations under the License.
  */
 
-package org.opensaml.util.storage;
+package org.opensaml.util.storage.impl;
 
 import javax.annotation.Nonnull;
+
+import org.opensaml.util.storage.StorageRecord;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import com.google.common.base.Optional;
 
 /**
- * Represents a versioned record in a {@link StorageService}.
+ * Exposes mutation of {@link StorageRecord} properties.
  */
-public class StorageRecord {
-
-    /** Version field. */
-    private int version;
-    
-    /** Value field. */
-    private String value;
-    
-    /** Expiration field. */
-    private Long expiration;
+public class MutableStorageRecord extends StorageRecord {
     
     /**
      * Constructor.
@@ -43,46 +36,17 @@ public class StorageRecord {
      * @param val   value
      * @param exp   optional expiration
      */
-    public StorageRecord(@Nonnull @NotEmpty final String val, @Nonnull final Optional<Long> exp) {
-        version = 1;
-        value = val;
-        expiration = exp.orNull();
-    }
-    
-    /**
-     * Get the record version.
-     * 
-     * @return  the record version
-     */
-    public int getVersion() {
-        return version;
-    }
-
-    /**
-     * Get the record value.
-     * 
-     * @return  the record value
-     */
-    @Nonnull public String getValue() {
-        return value;
-    }
-
-    /**
-     * Get the optional record expiration.
-     * 
-     * @return  the optional record expiration
-     */
-    @Nonnull public Optional<Long> getExpiration() {
-        return Optional.fromNullable(expiration);
-    }
+    public MutableStorageRecord(@Nonnull @NotEmpty final String val, @Nonnull final Optional<Long> exp) {
+        super(val, exp);
+    }    
 
     /**
      * Set the record value.
      * 
      * @param val   the new record value
      */
-    protected void setValue(@Nonnull @NotEmpty final String val) {
-        value = val;
+    public void setValue(@Nonnull @NotEmpty final String val) {
+        super.setValue(val);
     }
     
     /**
@@ -90,8 +54,8 @@ public class StorageRecord {
      * 
      * @param exp   the new record expiration
      */
-    protected void setExpiration(@Nonnull Optional<Long> exp) {
-        expiration = exp.orNull();
+    public void setExpiration(@Nonnull Optional<Long> exp) {
+        super.setExpiration(exp);
     }
     
     /**
@@ -99,8 +63,8 @@ public class StorageRecord {
      * 
      * @return  the updated version
      */
-    protected int incrementVersion() {
-        return ++version;
+    public int incrementVersion() {
+        return super.incrementVersion();
     }
     
 }
