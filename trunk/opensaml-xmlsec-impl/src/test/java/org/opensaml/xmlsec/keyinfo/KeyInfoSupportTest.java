@@ -22,6 +22,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.math.BigInteger;
 import java.security.KeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
@@ -29,6 +30,7 @@ import java.security.cert.CertificateException;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +42,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.G;
@@ -52,10 +55,12 @@ import org.opensaml.xmlsec.signature.RSAKeyValue;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
 import org.opensaml.xmlsec.signature.X509SubjectName;
 import org.opensaml.xmlsec.signature.Y;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 import com.google.common.base.Strings;
 
@@ -90,6 +95,9 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      * AF:B9:F9:1D:C2:45:18:CC:B8:21:E2:A7:47:BC:49:BD:19:B5:78:28
      */
     private final String cert1SKIPlainBase64 = "r7n5HcJFGMy4IeKnR7xJvRm1eCg=";
+    
+    /** Test cert 1 SHA-1 digest. */
+    private final String cert1DigestBase64 = "EmkP8ttMw28A/JoA3KcO11eez7Q=";
 
     /** Test cert 1. */
     private final String cert1 = "MIICgjCCAeugAwIBAgIBEzANBgkqhkiG9w0BAQUFADBAMQswCQYDVQQGEwJVUzEa"
@@ -266,7 +274,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Test converting XML X509Certificate to java.security.cert.X509Certificte.
+     * Test converting XML X509Certificate to java.security.cert.X509Certificate.
      * 
      * @throws CertificateException
      */
@@ -522,7 +530,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(javaKey, javaDSAPubKey1, "Inserted DSA public key was not the expected value");
 
         keyInfo.getKeyValues().clear();
-    }
+    }    
 
     /** Tests adding a public key as a KeyValue to KeyInfo. */
     @Test
@@ -547,6 +555,60 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         keyInfo.getKeyValues().clear();
     }
 
+    /** Tests adding a public key as a DEREncodedKeyValue to KeyInfo. */
+    @Test
+    public void testAddDEREncodedDSAPublicKey() {
+       keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        
+        try {
+            KeyInfoSupport.addDEREncodedPublicKey(keyInfo, javaDSAPubKey1);
+        } catch (NoSuchAlgorithmException e) {
+            Assert.fail("Unsupported key algorithm: " + e);
+        } catch (InvalidKeySpecException e) {
+            Assert.fail("Unsupported key specification: " + e);
+        }
+        DEREncodedKeyValue kv = (DEREncodedKeyValue) keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).get(0);
+        Assert.assertNotNull(kv, "KeyValue was null");
+        
+        DSAPublicKey javaKey = null;
+        try {
+            javaKey = (DSAPublicKey) KeyInfoSupport.getKey(kv);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+        
+        Assert.assertEquals(javaDSAPubKey1, javaKey, "Inserted RSA public key was not the expected value");
+        
+        keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+    }
+    
+    /** Tests adding a public key as a DEREncodedKeyValue to KeyInfo. */
+    @Test
+    public void testAddDEREncodedRSAPublicKey() {
+       keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        
+        try {
+            KeyInfoSupport.addDEREncodedPublicKey(keyInfo, javaRSAPubKey1);
+        } catch (NoSuchAlgorithmException e) {
+            Assert.fail("Unsupported key algorithm: " + e);
+        } catch (InvalidKeySpecException e) {
+            Assert.fail("Unsupported key specification: " + e);
+        }
+        DEREncodedKeyValue kv = (DEREncodedKeyValue) keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).get(0);
+        Assert.assertNotNull(kv, "KeyValue was null");
+        
+        RSAPublicKey javaKey = null;
+        try {
+            javaKey = (RSAPublicKey) KeyInfoSupport.getKey(kv);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+        
+        Assert.assertEquals(javaRSAPubKey1, javaKey, "Inserted RSA public key was not the expected value");
+        
+        keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+    }
+    
     /**
      * Tests adding a certificate as a X509Data/X509Certificate to KeyInfo.
      * 
@@ -637,5 +699,26 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(noExtCert);
         X509SKI noExtXMLSKI = KeyInfoSupport.buildX509SKI(noExtCert);
         Assert.assertNull(noExtXMLSKI, "Building X509SKI from cert without SKI should have generated null");
+    }
+
+    /**
+     * Tests building a new X509Digest from a certificate.
+     * @throws CertificateException 
+     * @throws NoSuchAlgorithmException
+     */
+    @Test
+    public void testBuildDigest() throws CertificateException {
+        byte[] digestValue = Base64Support.decode(cert1DigestBase64);
+        X509Digest xmlDigest = null;
+        try {
+            xmlDigest = KeyInfoSupport.buildX509Digest(javaCert1, SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        } catch (NoSuchAlgorithmException e) {
+            Assert.fail("Digest algorithm missing: " + e);
+        }
+        Assert.assertNotNull(xmlDigest, "Constructed X509Digest was null");
+        Assert.assertFalse(Strings.isNullOrEmpty(xmlDigest.getValue()), "Digest value was empty");
+        byte[] xmlValue = Base64Support.decode(xmlDigest.getValue());
+        Assert.assertNotNull(xmlValue, "Decoded X509Digest value was null");
+        Assert.assertTrue(Arrays.equals(digestValue, xmlValue), "Incorrect digest value");
     }
 }
