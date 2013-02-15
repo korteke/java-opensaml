@@ -89,6 +89,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         "pkJf5neHUinKAqgoRfPXowudZg1Zl8DjzoOBn+MNHRrR5KYbVGvdHcxoJLCwVB/v";
     
     private String entityCertSKIBase64 = "OBGBOSNoqgroOhl9RniD0sMlRa4=";
+    private String entityCertDigestBase64 = "xSZMa2KvZfsOQzv86Ho/5VmwY4E=";
 
 
     private X509Certificate caCert;
@@ -128,7 +129,30 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         new X500Principal("cn=foobar.example.org, O=Internet2");
         new X500Principal("cn=ca.example.org, O=Internet2");
         Base64Support.decode(entityCertSKIBase64);
+        Base64Support.decode(entityCertDigestBase64);
     }
+
+    protected void evalCredential(Credential credential) {
+        Assert.assertNotNull(credential, "Credential was null");
+        
+        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
+        X509Credential x509Credential = (X509Credential) credential;
+        
+        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
+        Assert.assertEquals(pubKey, x509Credential.getPublicKey(), "Expected public key value not found");
+        
+        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
+        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
+        
+        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
+        Assert.assertEquals(entityCert, x509Credential.getEntityCertificate(), "Expected X509Certificate value not found");
+        
+        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
+        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
+    }
+    
     
     /**
      * Test resolution with multiple certs, end-entity cert identified by KeyValue.
@@ -149,22 +173,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(credential, "Credential was null");
         Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
-        X509Credential x509Credential = (X509Credential) credential;
-        
-        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
-        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
-        
-        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
-        
-        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
-        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
-        
-        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
+        evalCredential(credential);
     }
     
     /**
@@ -186,22 +195,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(credential, "Credential was null");
         Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
-        X509Credential x509Credential = (X509Credential) credential;
-        
-        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
-        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
-        
-        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
-        
-        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
-        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
-        
-        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
+        evalCredential(credential);
     }
     
     /**
@@ -223,22 +217,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(credential, "Credential was null");
         Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
-        X509Credential x509Credential = (X509Credential) credential;
-        
-        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
-        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
-        
-        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
-        
-        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
-        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
-        
-        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
+        evalCredential(credential);
     }
     
     /**
@@ -260,22 +239,30 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(credential, "Credential was null");
         Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
         
-        Assert.assertTrue(credential instanceof X509Credential, "Credential is not of the expected type");
-        X509Credential x509Credential = (X509Credential) credential;
-        
-        Assert.assertNotNull(x509Credential.getPublicKey(), "Public key was null");
-        Assert.assertEquals(x509Credential.getPublicKey(), pubKey, "Expected public key value not found");
-        
-        Assert.assertEquals(x509Credential.getKeyNames().size(), 2, "Wrong number of key names");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Foo"), "Expected key name value not found");
-        Assert.assertTrue(x509Credential.getKeyNames().contains("Bar"), "Expected key name value not found");
-        
-        Assert.assertNotNull(x509Credential.getEntityCertificate(), "Entity certificate was null");
-        Assert.assertEquals(x509Credential.getEntityCertificate(), entityCert, "Expected X509Certificate value not found");
-        
-        Assert.assertEquals(x509Credential.getEntityCertificateChain().size(), 2, "Wrong number of certs in cert chain found");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(entityCert), "Cert not found in cert chain");
-        Assert.assertTrue(x509Credential.getEntityCertificateChain().contains(caCert), "Cert not found in cert chain");
+        evalCredential(credential);
     }
 
+
+    /**
+     * Test resolution with multiple certs, end-entity cert identified by X509Digest.
+     * 
+     * @throws SecurityException on error resolving credentials
+     * @throws ResolverException on error resolving credentials
+     */
+    @Test
+    public void testResolutionWithDigest() throws SecurityException, ResolverException {
+        KeyInfo keyInfo = 
+            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithDigest.xml");
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
+        Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
+        
+        Assert.assertTrue(iter.hasNext(), "No credentials were found");
+        
+        Credential credential = iter.next();
+        Assert.assertNotNull(credential, "Credential was null");
+        Assert.assertFalse(iter.hasNext(), "Too many credentials returned");
+        
+        evalCredential(credential);
+    }
+    
 }

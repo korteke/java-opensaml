@@ -31,6 +31,7 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
@@ -91,6 +92,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     @Test
     public void testEmitPublicKey() throws SecurityException, KeyException {
         factory.setEmitPublicKeyValue(true);
+        factory.setEmitPublicDEREncodedKeyValue(true);
         
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
@@ -98,10 +100,15 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1, "Unexpected number of KeyInfo children");
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");
         Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Unexpected number of KeyValue elements");
+        Assert.assertEquals(keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).size(), 1,
+                "Unexpected number of DEREncodedKeyValue elements");
         PublicKey generatedKey = KeyInfoSupport.getKey(keyInfo.getKeyValues().get(0));
         Assert.assertEquals(generatedKey, pubKey, "Unexpected key value");
+        PublicKey generatedKey2 = KeyInfoSupport.getKey((DEREncodedKeyValue) keyInfo.getXMLObjects(
+                DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).get(0));
+        Assert.assertEquals(pubKey, generatedKey2, "Unexpected key value");
     }
     
     /**
@@ -158,6 +165,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory.setEmitKeyNames(true);
         factory.setEmitEntityIDAsKeyName(true);
         factory.setEmitPublicKeyValue(true);
+        factory.setEmitPublicDEREncodedKeyValue(true);
         
         keyInfo = generator.generate(credential);
         
@@ -168,7 +176,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 4, "Unexpected # of KeyInfo children found");
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 5, "Unexpected # of KeyInfo children found");
     }
 
 }

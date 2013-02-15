@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:KeyName>Foo</ds:KeyName>
+    <ds:KeyName>Bar</ds:KeyName>
+    <ds11:DEREncodedKeyValue xmlns:ds11="http://www.w3.org/2009/xmldsig11#">
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw/WnsbA8frhQ+8EoPgMr
+      QjpINjt20U/MvsvmoAgQnAgEF4OYt9Vj9/2YvMO4NvX1fNDFzoYRyOMrypF7skAP
+      cITUhdcPSEpI4nsf5yFZLziK/tQ26RsccE7WhpGB8eHu9tfseelgyioorvmt+JCo
+      P15c5rYUuIfVC+eEsYolw344q6N61OACHETuySL0a1+GFu3WoISXte1pQIst7HKv
+      BbHH41HEWAxT6e0hlD5PyKL4lBJadGHXg8Zz4r2jV2n6+Ox7raEWmtVCGFxsAoCR
+      alu6nvs2++5Nnb4C1SE640esfYhfeMd5JYfsTNMaQ8sZLpsWdglAGpa/Q87K19LI
+      wwIDAQAB
+    </ds11:DEREncodedKeyValue> 
+</ds:KeyInfo>
