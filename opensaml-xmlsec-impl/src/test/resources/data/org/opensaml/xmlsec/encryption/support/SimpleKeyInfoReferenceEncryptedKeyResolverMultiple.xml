@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:SignableSimpleElement xmlns:test="http://www.example.org/testObjects">
+    
+    <test:SignableSimpleElement>
+        <xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:ds11="http://www.w3.org/2009/xmldsig11#">
+                <ds11:KeyInfoReference URI="#encKeyID1"/>
+                <ds11:KeyInfoReference URI="#encKeyID3"/>
+            </ds:KeyInfo>
+        </xenc:EncryptedData>
+    </test:SignableSimpleElement>
+    
+    <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="encKeyID1">
+        <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Recipient="foo"/>
+    </ds:KeyInfo>
+    <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="encKeyID2">        
+        <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Recipient="bar"/>
+    </ds:KeyInfo>
+    <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="encKeyID3">
+        <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Recipient="baz"/>
+    </ds:KeyInfo>
+</test:SignableSimpleElement>
