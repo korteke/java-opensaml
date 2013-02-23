@@ -17,6 +17,8 @@
 
 package org.opensaml.security.x509.impl;
 
+import java.util.Set;
+
 import org.opensaml.security.x509.PKIXValidationOptions;
 
 /**
@@ -30,12 +32,24 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
    
     /** Value for RevocationEnabled when forced. */
     private boolean revocationEnabled;
+    
+    /** Disable policy mapping flag. */
+    private boolean policyMappingInhibit;
 
+    /** Flag for disallowing the "any" policy OID. */
+    private boolean anyPolicyInhibit;
+
+    /** Acceptable policy OIDs. */
+    private Set<String> initialPolicies;
+    
     /** Constructor. */
     public CertPathPKIXValidationOptions() {
         super();
         forceRevocationEnabled = false;
         revocationEnabled = true;
+        policyMappingInhibit = false;
+        anyPolicyInhibit = false;
+        initialPolicies = null;
     }
     
     /**
@@ -90,4 +104,66 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
         revocationEnabled = flag;
     }
 
+    /**
+     * Returns the value of the policy mapping inhibited flag of the underlying CertPath Provider.
+     * 
+     * @return Returns the policyMappingInhibit boolean.
+     */
+    public boolean isPolicyMappingInhibited() {
+        return policyMappingInhibit;
+    }
+
+    /**
+     * Sets the policy mapping inhibited flag for the underlying CertPath Provider.
+     * See also RFC 5280, section 6.1.1 (e).
+     * 
+     * <p>Default is: <b>false</b></p>
+     * 
+     * @param flag the policyMappingInhibit boolean to set.
+     */
+    public void setPolicyMappingInhibit(boolean flag) {
+        policyMappingInhibit = flag;
+    }
+
+    /**
+     * Returns the value of the any policy inhibited flag of the underlying CertPath Provider.
+     * 
+     * @return Returns the anyPolicyInhibit boolean.
+     */
+    public boolean isAnyPolicyInhibited() {
+        return anyPolicyInhibit;
+    }
+
+    /**
+     * Sets the any policy inhibited flag for the underlying CertPath Provider.
+     * See also RFC 5280, section 6.1.1 (g).
+     * 
+     * <p>Default is: <b>false</b></p>
+     * 
+     * @param flag the anyPolicyInhibit boolean to set.
+     */
+    public void setAnyPolicyInhibit(boolean flag) {
+        anyPolicyInhibit = flag;
+     }
+
+    /**
+     * Returns the set of initial policies (OID strings) of the underlying CertPath Provider.
+     * See also RFC 5280, section 6.1.1 (c).
+     * 
+     * @return Returns the initialPolicies set.
+     */
+    public Set<String> getInitialPolicies() {
+        return initialPolicies;
+    }
+
+    /**
+     * Sets the initial policy identifiers (OID strings) for the underlying CertPath Provider,
+     * i.e. those policies that are acceptable to the certificate user.
+     * See also RFC 5280, section 6.1.1 (c).
+     * 
+     * @param newPolicies the initial set of policy identifiers (OID strings)
+     */
+    public void setInitialPolicies(Set<String> newPolicies) {
+        initialPolicies = newPolicies;
+    }    
 }
