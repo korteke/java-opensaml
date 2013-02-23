@@ -144,7 +144,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
      * This method is not supported for this transport implementation. It always returns -1;
      */
     public int getStatusCode() {
-        return 1;
+        return -1;
     }
 
     /**
