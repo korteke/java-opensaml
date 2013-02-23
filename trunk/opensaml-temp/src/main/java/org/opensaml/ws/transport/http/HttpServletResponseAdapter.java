@@ -208,9 +208,9 @@ public class HttpServletResponseAdapter implements HTTPOutTransport {
         }
 
         // HttpServletRequest requires certain headers be set by special methods
-        if (name.equalsIgnoreCase("Content-Type")) {
+        if ("Content-Type".equalsIgnoreCase(name)) {
             httpServletResponse.setContentType(value);
-        } else if (name.equalsIgnoreCase("Content-Length")) {
+        } else if ("Content-Length".equalsIgnoreCase(name)) {
             httpServletResponse.setContentLength(Integer.parseInt(value));
         }
 

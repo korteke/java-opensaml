@@ -68,9 +68,9 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
     /** {@inheritDoc} */
     public String getHeaderValue(String name) {
         // This appears to be necessary for at least some HttpServletRequest impls
-        if (name.equalsIgnoreCase("Content-Type")) {
+        if ("Content-Type".equalsIgnoreCase(name)) {
             return httpServletRequest.getContentType();
-        } else if (name.equalsIgnoreCase("Content-Length")) {
+        } else if ("Content-Length".equalsIgnoreCase(name)) {
             return Integer.toString(httpServletRequest.getContentLength());
         }
         return httpServletRequest.getHeader(name);
