@@ -195,10 +195,16 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
 
         boolean isForceRevocationEnabled = false;
         boolean forcedRevocation = false;
+        boolean policyMappingInhibited = false;
+        boolean anyPolicyInhibited = false;
+        Set<String> initialPolicies = null;        
         if (options instanceof CertPathPKIXValidationOptions) {
            CertPathPKIXValidationOptions certpathOptions = (CertPathPKIXValidationOptions) options;
            isForceRevocationEnabled = certpathOptions.isForceRevocationEnabled();
            forcedRevocation = certpathOptions.isRevocationEnabled();
+           policyMappingInhibited = certpathOptions.isPolicyMappingInhibited();
+           anyPolicyInhibited = certpathOptions.isAnyPolicyInhibited();
+           initialPolicies = certpathOptions.getInitialPolicies();
         }
         
         if (isForceRevocationEnabled) {
@@ -214,6 +220,17 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             }
         }
 
+        params.setPolicyMappingInhibited(policyMappingInhibited);
+        params.setAnyPolicyInhibited(anyPolicyInhibited);
+
+        if (initialPolicies != null && !initialPolicies.isEmpty()) {
+            log.debug("PKIXBuilderParameters#setInitialPolicies is being set to: {}", initialPolicies.toString());
+            params.setInitialPolicies(initialPolicies);
+            params.setExplicitPolicyRequired(true);
+        }
+
+        log.trace("PKIXBuilderParameters successfully created: {}", params.toString());
+        
         return params;
     }
 
