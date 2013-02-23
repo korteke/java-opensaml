@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,13 +56,19 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     private PKIXValidationInformation info;
     
     private X509Credential cred;
-
+    
+    private CertPathPKIXValidationOptions opts;
+       
+    private static Set testPolicy1 = Collections.singleton("1.3.6.1.4.1.32473.2011.6.20");
+    private static Set testPolicy2 = Collections.singleton("1.3.6.1.4.1.32473.2011.6.21");
+    
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         pkixEvaluator = new CertPathPKIXTrustEvaluator();
         info = null;
         cred = null;
+        opts = null;
     }
     
     @Test
@@ -309,7 +316,58 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         
         testValidateFailure("Valid path was specified, but depth exceeded max path depth", info, cred);
     }
-    
+
+    public void testAnyPolicy() {
+        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.1.crt.pem");
+        info = getPKIXInfoSet(
+                getCertificates("mdt-root.crt.pem"),
+                EMPTY_CRLS,
+                2 );
+        opts = getPKIXOptions(testPolicy1, false, false);
+
+        testValidateSuccess("Intermediate CA with anyPolicy (2.5.29.32.0) entry permitted", info, cred, opts);
+    }
+
+    public void testExplicitPolicy() {
+        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.1.crt.pem");
+        info = getPKIXInfoSet(
+                getCertificates("mdt-root.crt.pem"),
+                EMPTY_CRLS,
+                2 );
+        opts = getPKIXOptions(testPolicy1, false, true);
+
+        testValidateFailure("Intermediate CA with anyPolicy (2.5.29.32.0), but anyPolicy is inhibited", info, cred, opts);
+
+        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.2.crt.pem");
+
+        testValidateSuccess("Intermediate CA with explicit policy " + testPolicy1, info, cred, opts);
+
+        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
+
+        testValidateSuccess("Intermediate CA with explicit policies " + testPolicy1 + ", " + testPolicy2, info, cred, opts);
+    }
+
+    public void testExplicitPolicyMap() {
+        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
+        info = getPKIXInfoSet(
+                getCertificates("mdt-root.crt.pem"),
+                EMPTY_CRLS,
+                2 );
+        opts = getPKIXOptions(testPolicy2, false, true);
+
+        testValidateSuccess("Intermediate CA with policy mapping, and mapping is permitted", info, cred, opts);
+    }
+
+    public void testExplicitPolicyNoMap() {
+        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
+        info = getPKIXInfoSet(
+                getCertificates("mdt-root.crt.pem"),
+                EMPTY_CRLS,
+                2 );
+        opts = getPKIXOptions(testPolicy2, true, true);
+
+        testValidateFailure("Intermediate CA with policy mapping, but mapping is inhibited", info, cred, opts);
+    }    
     
     /********************
      * Helper methods.  *
@@ -349,7 +407,31 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
             // do nothing, failure expected
         }
     }
+
+    private void testValidateSuccess(String message, PKIXValidationInformation info, X509Credential cred,
+                CertPathPKIXValidationOptions opts) {
+        try {
+            PKIXTrustEvaluator pkixEvaluator = new CertPathPKIXTrustEvaluator(opts);
+            if ( !pkixEvaluator.validate(info, cred) ) {
+                Assert.fail("Evaluation of X509Credential failed, success was expected: " + message);
+            }
+        } catch (SecurityException e) {
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
+        }
+    }
     
+    private void testValidateFailure(String message, PKIXValidationInformation info, X509Credential cred,
+                CertPathPKIXValidationOptions opts) {
+        try {
+            PKIXTrustEvaluator pkixEvaluator = new CertPathPKIXTrustEvaluator(opts);
+            if ( pkixEvaluator.validate(info, cred) ) {
+                Assert.fail("Evaluation of X509Credential succeeded, failure was expected: " + message);
+            }
+        } catch (SecurityException e) {
+            Assert.fail("Evaluation failed due to processing exception: " + e.getMessage());
+        }
+    }
+            
     private BasicX509Credential getCredential(String entityCertFileName, String ... chainMembers) {
         
         X509Certificate entityCert = getCertificate(entityCertFileName);
@@ -371,6 +453,18 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     private PKIXValidationInformation getPKIXInfoSet(Collection<X509Certificate> certs,
                 Collection<X509CRL> crls, Integer depth) {
         return new BasicPKIXValidationInformation(certs, crls, depth);
+    }
+    
+
+    private CertPathPKIXValidationOptions getPKIXOptions(Set<String> initialPolicies,
+                boolean policyMappingInhibit, boolean anyPolicyInhibit) {
+        CertPathPKIXValidationOptions opts = new CertPathPKIXValidationOptions();
+
+        opts.setInitialPolicies(initialPolicies);
+        opts.setPolicyMappingInhibit(policyMappingInhibit);
+        opts.setAnyPolicyInhibit(anyPolicyInhibit);
+
+        return opts;
     }
     
     private Collection<X509Certificate> getCertificates(String ... certNames) {
