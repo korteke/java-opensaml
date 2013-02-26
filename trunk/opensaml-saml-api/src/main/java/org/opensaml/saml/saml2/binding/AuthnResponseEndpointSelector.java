@@ -44,7 +44,6 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
     private final Logger log = LoggerFactory.getLogger(AuthnResponseEndpointSelector.class);
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
     public Endpoint selectEndpoint() {
         if (getEntityRoleMetadata() == null) {
             log.debug("Unable to select endpoint, no entity role metadata available.");
@@ -70,11 +69,10 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
                                 getEntityMetadata().getEntityID() });
                 endpoint = selectEndpointByACSIndex(request, (List<IndexedEndpoint>) endpoints);
             } else if (request.getAssertionConsumerServiceURL() != null) {
-                log
-                        .debug(
-                                "Selecting endpoint by ACS URL '{}' and protocol binding '{}' for request '{}' from entity '{}'",
-                                new Object[] { request.getAssertionConsumerServiceURL(), request.getProtocolBinding(),
-                                        request.getID(), getEntityMetadata().getEntityID() });
+                log.debug(
+                        "Selecting endpoint by ACS URL '{}' and protocol binding '{}' for request '{}' from entity '{}'",
+                        new Object[] { request.getAssertionConsumerServiceURL(), request.getProtocolBinding(),
+                                request.getID(), getEntityMetadata().getEntityID() });
                 endpoint = selectEndpointByACSURL(request, (List<IndexedEndpoint>) endpoints);
             }
         }
@@ -144,17 +142,16 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
         Integer acsIndex = request.getAssertionConsumerServiceIndex();
         for (IndexedEndpoint endpoint : endpoints) {
             if (endpoint == null || !getSupportedIssuerBindings().contains(endpoint.getBinding())) {
-                log
-                        .debug(
-                                "Endpoint '{}' with binding '{}' discarded because it requires an unsupported outbound binding.",
-                                endpoint.getLocation(), endpoint.getBinding());
+                log.debug(
+                        "Endpoint '{}' with binding '{}' discarded because it requires an unsupported outbound binding.",
+                        endpoint.getLocation(), endpoint.getBinding());
                 continue;
             }
 
             if (Objects.equal(acsIndex, endpoint.getIndex())) {
                 return endpoint;
             } else {
-                log.debug("Endpoint '{}' with index '{}' discard because it does have the required index '{}'",
+                log.debug("Endpoint '{}' with index '{}' discarded because it does have the required index '{}'",
                         new Object[] { endpoint.getLocation(), endpoint.getIndex(), acsIndex });
             }
         }
@@ -186,21 +183,27 @@ public class AuthnResponseEndpointSelector extends BasicEndpointSelector {
 
             if (acsBinding != null) {
                 if (!Objects.equal(acsBinding, endpoint.getBinding())) {
-                    log.debug("Endpoint '{}' with binding '{}' discarded because it does not meet protocol binding selection criteria",
-                                    endpoint.getLocation(), endpoint.getBinding());
+                    log.debug(
+                            "Endpoint '{}' with binding '{}' discarded because it does not meet protocol binding selection criteria",
+                            endpoint.getLocation(), endpoint.getBinding());
                     continue;
                 }
             }
-
-            if (Objects.equal(endpoint.getLocation(), request.getAssertionConsumerServiceURL())
-                    || Objects.equal(endpoint.getResponseLocation(), request
-                            .getAssertionConsumerServiceURL())) {
-                return endpoint;
+            
+            String responseLocation = StringSupport.trim(endpoint.getResponseLocation());
+            if (responseLocation != null) {
+                if (Objects.equal(responseLocation, request.getAssertionConsumerServiceURL())) {
+                    return endpoint;
+                }
             } else {
-                log.debug(
-                        "Endpoint '{}' discarded because neither its Location nor ResponseLocation match ACS URL '{}'",
-                        endpoint.getLocation(), request.getAssertionConsumerServiceURL());
+                String location = StringSupport.trim(endpoint.getLocation());
+                if (location != null && Objects.equal(location, request.getAssertionConsumerServiceURL())) {
+                    return endpoint;
+                }
             }
+
+            log.debug("Endpoint with Location '{}' discarded because neither its Location nor ResponseLocation match ACS URL '{}'",
+                    endpoint.getLocation(), request.getAssertionConsumerServiceURL());
         }
 
         log.warn("Relying party '{}' requested the response to be returned to endpoint with ACS URL '{}' "
