@@ -265,13 +265,15 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
             processConditionalRetrievalHeaders(getMethod);
 
             byte[] rawMetadata = getMetadataBytesFromResponse(getMethod);
-            log.debug("Successfully fetched {}bytes of metadata from {}", rawMetadata.length, getMetadataURI());
+            log.debug("Successfully fetched {} bytes of metadata from {}", rawMetadata.length, getMetadataURI());
 
             return rawMetadata;
         } catch (IOException e) {
             String errMsg = "Error retrieving metadata from " + metadataURI;
             log.error(errMsg, e);
             throw new MetadataProviderException(errMsg, e);
+        } finally {
+            getMethod.releaseConnection();
         }
     }
 
