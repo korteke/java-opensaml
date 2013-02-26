@@ -84,7 +84,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Tests the {@link HTTPMetadataProvider#getRole(String, javax.xml.namespace.QName) method.
+     * Tests the {@link HTTPMetadataProvider#getRole(String, javax.xml.namespace.QName)} method.
      */
     @Test
     public void testGetRole() throws MetadataProviderException{
@@ -94,7 +94,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Test the {@link HTTPMetadataProvider#getRole(String, javax.xml.namespace.QName, String) method.
+     * Test the {@link HTTPMetadataProvider#getRole(String, javax.xml.namespace.QName, String)} method.
      */
     @Test
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException{

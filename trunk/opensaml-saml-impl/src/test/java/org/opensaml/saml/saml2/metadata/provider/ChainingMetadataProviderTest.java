@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.metadata.provider;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -95,7 +94,7 @@ public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor2.getEntityID(), entityID2, "Entity's ID does not match requested ID");
     }
 
-    /** Tests the {@link ChainingMetadataProvider#getRole(String, javax.xml.namespace.QName) method.  */
+    /** Tests the {@link ChainingMetadataProvider#getRole(String, javax.xml.namespace.QName)} method.  */
     @Test
     public void testGetRole() throws MetadataProviderException {
         List<RoleDescriptor> roles = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -107,7 +106,7 @@ public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(roles2.size(), 1, "Unexpected number of roles");
     }
 
-    /** Test the {@link ChainingMetadataProvider#getRole(String, javax.xml.namespace.QName, String) method.  */
+    /** Test the {@link ChainingMetadataProvider#getRole(String, javax.xml.namespace.QName, String)} method.  */
     @Test
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException {
         RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
