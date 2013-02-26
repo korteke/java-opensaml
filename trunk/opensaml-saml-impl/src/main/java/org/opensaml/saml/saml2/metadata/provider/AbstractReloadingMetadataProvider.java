@@ -213,7 +213,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
     public synchronized void destroy() {
         refresMetadataTask.cancel();
         
-        if(createdOwnTaskTimer){
+        if (createdOwnTaskTimer) {
             taskTimer.cancel();
         }
         
@@ -256,20 +256,20 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
             if (mdBytes == null) {
                 log.debug("Metadata from '{}' has not changed since last refresh", mdId);
                 processCachedMetadata(mdId, now);
-                log.info(
-                        "Metadata from '{}' unchanged since last refresh, next refresh will occur at approximately {}",
-                        getMetadataIdentifier(), nextRefresh);
             } else {
                 log.debug("Processing new metadata from '{}'", mdId);
                 processNewMetadata(mdId, now, mdBytes);
             }
         } catch (Exception e) {
-            log.debug("Error occurred while attempting to refresh metadata from '{}', "
-                    + "next refresh will occur in approximately {}ms", mdId, minRefreshDelay);
-            refresMetadataTask = new RefreshMetadataTask();
-            taskTimer.schedule(refresMetadataTask, minRefreshDelay);
+            log.debug("Error occurred while attempting to refresh metadata from '" + mdId + "'", e);
+            nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(minRefreshDelay);
             throw new MetadataProviderException(e);
         } finally {
+            refresMetadataTask = new RefreshMetadataTask();
+            long nextRefreshDelay = nextRefresh.getMillis() - System.currentTimeMillis();
+            taskTimer.schedule(refresMetadataTask, nextRefreshDelay);
+            log.info("Next refresh cycle for metadata provider '{}' will occur on '{}' ('{}' local time)",
+                    new Object[] {mdId, nextRefresh, nextRefresh.toDateTime(DateTimeZone.getDefault()),});
             lastRefresh = now;
         }
     }
@@ -322,13 +322,10 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
         log.debug("Computing new expiration time for cached metadata from '{}", metadataIdentifier);
         DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(cachedMetadata,
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
-        log.debug("Expiration of cached metadata from '{}' will occur at {}", metadataIdentifier,
-                metadataExpirationTime.toString());
 
         expirationTime = metadataExpirationTime;
         long nextRefreshDelay = computeNextRefreshDelay(expirationTime);
         nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(nextRefreshDelay);
-        taskTimer.schedule(new RefreshMetadataTask(), nextRefreshDelay);
     }
 
     /**
@@ -365,13 +362,11 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      */
     protected void processPreExpiredMetadata(String metadataIdentifier, DateTime refreshStart, byte[] metadataBytes,
             XMLObject metadata) {
-        log.warn("Entire metadata document from '{}' was expired at time of loading", metadataIdentifier);
+        log.warn("Entire metadata document from '{}' was expired at time of loading, existing metadata retained",
+                metadataIdentifier);
 
         lastUpdate = refreshStart;
-        taskTimer.schedule(new RefreshMetadataTask(), getMinRefreshDelay());
         nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(getMinRefreshDelay());
-        log.info("Existing metadata retained, next refresh from '{}' will occur at approximately {}",
-                getMetadataIdentifier(), nextRefresh);
     }
 
     /**
@@ -421,12 +416,10 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
             expirationTime = metadataExpirationTime;
             nextRefreshDelay = computeNextRefreshDelay(expirationTime);
         }
-        taskTimer.schedule(new RefreshMetadataTask(), nextRefreshDelay);
         nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(nextRefreshDelay);
 
         emitChangeEvent();
-        log.info("New metadata loaded from '{}', next refresh will occur at approximately {}", getMetadataIdentifier(),
-                nextRefresh.toDateTime(DateTimeZone.getDefault()));
+        log.info("New metadata succesfully loaded for '{}'", getMetadataIdentifier());
     }
 
     /**
@@ -506,11 +499,11 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
         /** {@inheritDoc} */
         public void run() {
             try {
-                if(!isInitialized()){
+                if (!isInitialized()) {
                     // just in case the metadata provider was destroyed before this task runs
                     return;
                 }
-                   
+                
                 refresh();
             } catch (MetadataProviderException e) {
                 // nothing to do, error message already logged by refreshMetadata()
