@@ -23,12 +23,15 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.utils.IdResolver;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
 
@@ -76,12 +79,11 @@ public class SAMLSignatureProfileValidator {
 
         Reference ref = validateReference(apacheSig);
 
-        String uri = ref.getURI();
-        String id = signableObject.getSignatureReferenceID();
-
-        validateReferenceURI(uri, id);
+        validateReferenceURI(ref.getURI(), signableObject);
 
         validateTransforms(ref);
+        
+        validateObjectChildren(apacheSig);
     }
 
     /**
@@ -116,6 +118,47 @@ public class SAMLSignatureProfileValidator {
     }
 
     /**
+     * Validate the Signature's Reference URI.
+     * 
+     * First validate the Reference URI against the parent's ID itself.  Then validate that the 
+     * URI (if non-empty) resolves to the same Element node as is cached by the SignableSAMLObject.
+     * 
+     * 
+     * @param uri the Signature Reference URI attribute value
+     * @param signableObject the SignableSAMLObject whose signature is being validated
+     * @throws SignatureException  if the URI is invalid or doesn't resolve to the expected DOM node
+     */
+    protected void validateReferenceURI(String uri, SignableSAMLObject signableObject) throws SignatureException {
+        String id = signableObject.getSignatureReferenceID();
+        validateReferenceURI(uri, id);
+        
+        if (Strings.isNullOrEmpty(uri)) {
+            return;
+        }
+        
+        String uriID = uri.substring(1);
+        
+        Element expected = signableObject.getDOM();
+        if (expected == null) {
+            log.error("SignableSAMLObject does not have a cached DOM Element.");
+            throw new SignatureException("SignableSAMLObject does not have a cached DOM Element.");
+        }
+        Document doc = expected.getOwnerDocument();
+        
+        Element resolved = IdResolver.getElementById(doc, uriID);
+        if (resolved == null) {
+            log.error("Apache xmlsec IdResolver could not resolve the Element for id reference: {}", uriID);
+            throw new SignatureException("Apache xmlsec IdResolver could not resolve the Element for id reference: "
+                    + uriID);
+        }
+        
+        if (!expected.isSameNode(resolved)) {
+            log.error("Signature Reference URI '{}' did not resolve to the expected parent Element", uri);
+            throw new SignatureException("Signature Reference URI did not resolve to the expected parent Element");
+        }
+    }
+    
+    /**
      * Validate the Reference URI and parent ID attribute values.
      * 
      * The URI must either be null or empty (indicating that the entire enclosing document was signed), or else it must
@@ -134,9 +177,7 @@ public class SAMLSignatureProfileValidator {
                 log.error("SignableSAMLObject did not contain an ID attribute");
                 throw new SignatureException("SignableSAMLObject did not contain an ID attribute");
             } else if (uri.length() < 2 || !id.equals(uri.substring(1))) {
-                log
-                        .error(String.format("Reference URI '%s' did not point to SignableSAMLObject with ID '%s'",
-                                uri, id));
+                log.error("Reference URI '{}' did not point to SignableSAMLObject with ID '{}'", uri, id);
                 throw new SignatureException("Reference URI did not point to parent ID");
             }
         }
@@ -200,4 +241,16 @@ public class SAMLSignatureProfileValidator {
         }
     }
 
+    /**
+     * Validate that the Signature instance does not contain any ds:Object children.
+     *
+     * @param apacheSig the Apache XML Signature instance
+     * @throws SignatureException if the signature contains ds:Object children
+     */
+    protected void validateObjectChildren(XMLSignature apacheSig) throws SignatureException {
+        if (apacheSig.getObjectLength() > 0) {
+            log.error("Signature contained {} ds:Object child element(s)", apacheSig.getObjectLength());
+            throw new SignatureException("Signature contained illegal ds:Object children");
+        }
+    }
 }
