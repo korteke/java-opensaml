@@ -95,6 +95,12 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
         Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-MissingEnvelopedTransform.xml");
         assertValidationFail("Invalid signature - missing Enveloped Transform", sig);
     }
+
+    @Test
+    public void testInvalidDuplicateIDs() {
+        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-DuplicateIDs.xml");
+        assertValidationFail("Invalid signature - duplicate IDs", sig);
+    }    
     
     /**
      * Get the signature to validated.  Assume the document element of the file is 
