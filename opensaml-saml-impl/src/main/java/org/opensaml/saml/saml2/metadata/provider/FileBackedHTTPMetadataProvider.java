@@ -24,7 +24,6 @@ import java.util.Timer;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -79,6 +78,13 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
             String backupFilePath) throws MetadataProviderException {
         super(backgroundTaskTimer, client, metadataURL);
         setBackupFile(backupFilePath);
+    }
+    
+    /** {@inheritDoc} */
+    public synchronized void destroy() {
+        metadataBackupFile = null;
+
+        super.destroy();
     }
 
     /**
