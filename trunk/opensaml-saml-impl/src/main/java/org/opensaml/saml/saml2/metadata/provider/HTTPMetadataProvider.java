@@ -34,7 +34,6 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -217,6 +216,17 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      */
     public void setMaintainExpiredMetadata(boolean maintain) {
         setRequireValidMetadata(!maintain);
+    }
+
+    /** {@inheritDoc} */
+    public synchronized void destroy() {
+        httpClient = null;
+        metadataURI = null;
+        cachedMetadataETag = null;
+        cachedMetadataLastModified = null;
+        authScope = null;
+        
+        super.destroy();
     }
 
     /** {@inheritDoc} */

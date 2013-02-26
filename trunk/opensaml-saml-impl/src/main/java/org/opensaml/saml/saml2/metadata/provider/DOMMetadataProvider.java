@@ -20,9 +20,6 @@ package org.opensaml.saml.saml2.metadata.provider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.saml2.metadata.provider.FilterException;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -55,6 +52,14 @@ public class DOMMetadataProvider extends AbstractObservableMetadataProvider impl
         metadataElement = mdElement;
     }
 
+    /** {@inheritDoc} */
+    public synchronized void destroy() {
+        metadata = null;
+        metadataElement = null;
+   
+        super.destroy();
+    }    
+    
     /** {@inheritDoc} */
     protected XMLObject doGetMetadata() throws MetadataProviderException {
         return metadata;

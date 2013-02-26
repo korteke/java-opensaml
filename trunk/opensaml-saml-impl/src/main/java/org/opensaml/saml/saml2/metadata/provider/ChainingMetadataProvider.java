@@ -331,9 +331,22 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
         return observers;
     }
 
+    /** {@inheritDoc} */
+    public synchronized void destroy() {
+        super.destroy();
+        
+        for(MetadataProvider provider : providers){
+            if(provider instanceof BaseMetadataProvider){
+                ((BaseMetadataProvider)provider).destroy();
+            }
+        }
+        
+        providers = Collections.emptyList();
+        observers = Collections.emptyList();
+    }
+    
     /**
-     * Convenience method for calling
-     * {@link org.opensaml.saml.saml2.metadata.provider.ObservableMetadataProvider.Observer#onEvent(MetadataProvider)} on
+     * Convenience method for calling {@link ObservableMetadataProvider.Observer#onEvent(MetadataProvider)} on
      * every registered Observer passing in this provider.
      */
     protected void emitChangeEvent() {

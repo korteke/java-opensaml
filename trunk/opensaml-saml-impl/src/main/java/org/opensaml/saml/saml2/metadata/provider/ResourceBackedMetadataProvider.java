@@ -23,7 +23,6 @@ import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.resource.ResourceException;
 
 import org.joda.time.DateTime;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,6 +111,14 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
         setRequireValidMetadata(!maintain);
     }
 
+    /** {@inheritDoc} */
+    public synchronized void destroy() {
+        metadataResource = null;
+        lastResourceUpdate = null;
+        
+        super.destroy();
+    }
+    
     /** {@inheritDoc} */
     protected String getMetadataIdentifier() {
         return metadataResource.getLocation();

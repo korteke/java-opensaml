@@ -24,7 +24,6 @@ import java.util.Timer;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,6 +124,13 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
         setRequireValidMetadata(!maintain);
     }
 
+    /** {@inheritDoc} */
+    public synchronized void destroy() {
+        metadataFile = null;
+          
+        super.destroy();
+    }
+    
     /** {@inheritDoc} */
     protected String getMetadataIdentifier() {
         return metadataFile.getAbsolutePath();
