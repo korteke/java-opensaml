@@ -71,7 +71,7 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Tests the {@link ResourceBackedMetadataProvider#getRole(String, javax.xml.namespace.QName) method.
+     * Tests the {@link ResourceBackedMetadataProvider#getRole(String, javax.xml.namespace.QName)} method.
      */
     @Test
     public void testGetRole() throws MetadataProviderException {
@@ -81,7 +81,7 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Test the {@link ResourceBackedMetadataProvider#getRole(String, javax.xml.namespace.QName, String) method.
+     * Test the {@link ResourceBackedMetadataProvider#getRole(String, javax.xml.namespace.QName, String)} method.
      */
     @Test
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException {
