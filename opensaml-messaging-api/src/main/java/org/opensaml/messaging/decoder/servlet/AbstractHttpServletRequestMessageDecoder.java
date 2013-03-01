@@ -53,7 +53,6 @@ public abstract class AbstractHttpServletRequestMessageDecoder<MessageType> exte
     /** {@inheritDoc} */
     public void decode() throws MessageDecodingException {
         super.decode();
-        getMessageContext().getSubcontext(HttpServletRequestContext.class, true).setHttpServletRequest(getHttpServletRequest());
     }
 
     /** {@inheritDoc} */
