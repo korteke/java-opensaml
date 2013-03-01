@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlLocalEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlSelfEntityContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
      * @return the local entityId
      */
     private String getLocalEntityId(MessageContext<SAMLObject> requestContext) {
-        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
         Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
         Constraint.isNotNull(localContext.getEntityId(), "LocalEntityContext contained a null entityId");
         return localContext.getEntityId();

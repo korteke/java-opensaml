@@ -27,7 +27,7 @@ import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicEndpointSelector;
-import org.opensaml.saml.common.messaging.context.SamlLocalEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlSelfEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlMetadataContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
@@ -114,7 +114,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * @return the local entityId
      */
     private String getLocalEntityId(MessageContext<SAMLObject> requestContext) {
-        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
         Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
         Constraint.isNotNull(localContext.getEntityId(), "LocalEntityContext contained a null entityId");
         return localContext.getEntityId();
@@ -140,7 +140,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * @return local entity role metadata
      */
     private RoleDescriptor getLocalEntityRoleMetadata(MessageContext<SAMLObject> requestContext) {
-        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
         Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
         SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
         Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");
@@ -155,7 +155,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * @return the local entity metadata
      */
     private EntityDescriptor getLocalEntityMetadata(MessageContext<SAMLObject> requestContext) {
-        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
         Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
         SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
         Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");

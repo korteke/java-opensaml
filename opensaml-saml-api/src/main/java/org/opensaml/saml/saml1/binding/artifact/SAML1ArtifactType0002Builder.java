@@ -26,7 +26,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BasicEndpointSelector;
 import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml.common.messaging.context.SamlLocalEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlSelfEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlMetadataContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Assertion;
@@ -104,7 +104,7 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
      * @return local entity role metadata
      */
     private RoleDescriptor getLocalEntityRoleMetadata(MessageContext<SAMLObject> requestContext) {
-        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
         Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
         SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
         Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");
@@ -119,7 +119,7 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
      * @return the local entity metadata
      */
     private EntityDescriptor getLocalEntityMetadata(MessageContext<SAMLObject> requestContext) {
-        SamlLocalEntityContext localContext = requestContext.getSubcontext(SamlLocalEntityContext.class, false);
+        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
         Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
         SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
         Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");

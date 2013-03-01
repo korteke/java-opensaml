@@ -24,10 +24,10 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import org.opensaml.messaging.context.BaseContext;
 
 /**
- * Subcontext that carries information about the SAML local entity.  This context will often
- * contain subcontexts, whose data is construed to be scoped to that local entity.
+ * Subcontext that carries information about the SAML "self" entity.  This context will often
+ * contain subcontexts, whose data is construed to be scoped to that self entity.
  */
-public class SamlLocalEntityContext extends BaseContext {
+public class SamlSelfEntityContext extends BaseContext {
 
     /** The entityId of the SAML entity. */
     private String entityId;
