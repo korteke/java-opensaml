@@ -15,37 +15,37 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.decoder.servlet;
+package org.opensaml.messaging.context.navigate;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
-import org.opensaml.messaging.context.BaseContext;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
+import org.opensaml.messaging.context.MessageContext;
 
 /**
- * Context for holding the current {@link HttpServletRequest}.
+ *  A lookup strategy that returns an instance of {@link HttpServletRequest} supplied at construction time.
  */
-public class HttpServletRequestContext extends BaseContext {
+public class MockHttpServletRequestLookupStrategy 
+        implements ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> {
     
-    /** The HttpServletRequest. */
-    private HttpServletRequest httpServletRequest;
+    /** The servlet request. */
+    private HttpServletRequest servletRequest;
 
     /**
-     * Get the HttpServletRequest. 
-     * 
-     * @return Returns the httpServletRequest.
+     * Constructor.
+     *
+     * @param request the HttpServletRequest
      */
-    @Nullable public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+    public MockHttpServletRequestLookupStrategy(HttpServletRequest request) {
+        super();
+        servletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
     }
 
-    /**
-     * Set the HttpServletRequest. 
-     * 
-     * @param httpServletRequest The httpServletRequest to set.
-     */
-    public void setHttpServletRequest(@Nullable final HttpServletRequest newHttpServletRequest) {
-        httpServletRequest = newHttpServletRequest;
+    /** {@inheritDoc} */
+    @Nullable public HttpServletRequest apply(@Nullable MessageContext input) {
+        return servletRequest;
     }
 
 }

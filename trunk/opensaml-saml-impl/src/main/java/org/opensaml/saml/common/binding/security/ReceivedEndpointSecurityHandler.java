@@ -19,13 +19,16 @@ package org.opensaml.saml.common.binding.security;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.apache.bcel.generic.LOOKUPSWITCH;
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
@@ -47,6 +50,9 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
     
     /** The URI comparator to use in performing the validation. */
     private UriComparator uriComparator;
+    
+    /** Lookup strategy for resolving the HttpServletRequest. */
+    private ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> requestLookupStrategy;
 
     /**
      * Constructor.
@@ -72,6 +78,25 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
      */
     public void setUriComparator(@Nonnull final UriComparator comparator) {
        uriComparator = Constraint.isNotNull(comparator, "UriComparator may not be null");
+    }
+
+    /**
+     * Get the HttpServletRequest lookup strategy to use. 
+     * 
+     * @return the lookup strategy
+     */
+    public ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> getRequestLookupStrategy() {
+        return requestLookupStrategy;
+    }
+
+    /**
+     * Set the HttpServletRequest lookup strategy to use. 
+     * 
+     * @param strategy the new lookup strategy
+     */
+    public void setRequestLookupStrategy(
+            @Nonnull final ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> strategy) {
+        requestLookupStrategy = Constraint.isNotNull(strategy, "HttpServletRequest lookup strategy may no be null");
     }
 
     /** {@inheritDoc} */
@@ -140,7 +165,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
         String receiverEndpoint;
         try {
             receiverEndpoint = StringSupport.trimOrNull(
-                    SAMLBindingSupport.getActualReceiverEndpointUri(messageContext));
+                    SAMLBindingSupport.getActualReceiverEndpointUri(messageContext, requestLookupStrategy));
         } catch (MessageException e) {
             throw new MessageHandlerException("Error obtaining message received endpoint URI", e);
         }

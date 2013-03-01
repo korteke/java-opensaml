@@ -22,13 +22,14 @@ import java.net.URISyntaxException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.decoder.servlet.HttpServletRequestContext;
+import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlBindingContext;
@@ -234,18 +235,20 @@ public final class SAMLBindingSupport {
      * Extract the transport endpoint URI at which this message was received.
      * 
      * @param messageContext current message context
+     * @param requestLookupStrategy the strategy used to look up the HttpServletRequest
      * @return string representing the transport endpoint URI at which the current message was received
-     * @throws MessageException thrown if the endpoint can not be extracted from the message
+     * @throws MessageException thrown if the endpoint can not be looked up from the message
      *                              context and converted to a string representation
      */
-    public static String getActualReceiverEndpointUri(@Nonnull final MessageContext<SAMLObject> messageContext) 
-            throws MessageException {
-        HttpServletRequestContext requestContext = messageContext.getSubcontext(HttpServletRequestContext.class, false);
-        if (requestContext == null || requestContext.getHttpServletRequest() == null) {
-            throw new MessageException("HttpServletRequest could not be obtained from message context");
+    public static String getActualReceiverEndpointUri(@Nonnull final MessageContext<SAMLObject> messageContext, 
+            @Nonnull final ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> requestLookupStrategy) 
+                    throws MessageException {
+        HttpServletRequest request = requestLookupStrategy.apply(messageContext);
+        if (request == null) {
+            throw new MessageException("HttpServletRequest could not be looked up from message context");
         }
         
-        return requestContext.getHttpServletRequest().getRequestURL().toString();
+        return request.getRequestURL().toString();
     }
 
 }
