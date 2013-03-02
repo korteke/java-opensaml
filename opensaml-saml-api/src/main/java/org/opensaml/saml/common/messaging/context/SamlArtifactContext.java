@@ -26,8 +26,17 @@ import org.opensaml.messaging.context.BaseContext;
  */
 public class SamlArtifactContext extends BaseContext {
 
-    /** The entityId of the SAML entity. */
+    /** The artifact type. */
     private byte[] artifactType;
+    
+    /** The artifact source entityID. */
+    private String sourceEntityId;
+    
+    /** The artifact source attribute resolutions server endpoint URL. */
+    private String sourceAttributeResolutionServiceEndpointUrl;
+    
+    /** The artifact source attribute resolutions server endpoint index. */
+    private Integer sourceAttributeResolutionServiceEndpointIndex;
 
     /**
      * Gets the artifact type.
@@ -45,6 +54,60 @@ public class SamlArtifactContext extends BaseContext {
      */
     public void setArtifactType(@Nullable final byte[] type) {
         artifactType = type;
+    }
+
+    /**
+     * Get the artifact source entityID.
+     * 
+     * @return the source entityID, may be null
+     */
+    @Nullable public String getSourceEntityId() {
+        return sourceEntityId;
+    }
+
+    /**
+     * Set the artifact source entityID.
+     * 
+     * @param entityId the new source entityID
+     */
+    public void setSourceEntityId(@Nullable final String entityId) {
+        sourceEntityId = entityId;
+    }
+
+    /**
+     * Get the source attribute resolution service endpoint URL.
+     * 
+     * @return the URL
+     */
+    @Nullable public String getSourceAttributeResolutionServiceEndpointUrl() {
+        return sourceAttributeResolutionServiceEndpointUrl;
+    }
+
+    /**
+     * Set the source attribute resolution service endpoint URL.
+     * 
+     * @param sourceAttributeResolutionServiceEndpointUrl the new URL
+     */
+    public void setSourceAttributeResolutionServiceEndpointUrl(@Nullable final String url) {
+        sourceAttributeResolutionServiceEndpointUrl = url;
+    }
+
+    /**
+     * Get the source attribute resolution service endpoint index.
+     * 
+     * @return the index
+     */
+    @Nullable public Integer getSourceAttributeResolutionServiceEndpointIndex() {
+        return sourceAttributeResolutionServiceEndpointIndex;
+    }
+
+    /**
+     * Set the source attribute resolution service endpoint index.
+     * 
+     * @param index the new index
+     */
+    public void setSourceAttributeResolutionServiceEndpointIndex(@Nullable final Integer index) {
+        sourceAttributeResolutionServiceEndpointIndex = index;
     }
 
 }
