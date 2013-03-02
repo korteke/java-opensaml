@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlSelfEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
     public SAML1ArtifactType0001 buildArtifact(MessageContext<SAMLObject> requestContext, Assertion assertion) {
         try {
             MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
-            byte[] source = sha1Digester.digest(getLocalEntityId(requestContext).getBytes());
+            byte[] source = sha1Digester.digest(getSourceEntityId(requestContext).getBytes());
 
             SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
             byte[] assertionHandle = new byte[20];
@@ -59,6 +59,16 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
             throw new InternalError("JVM does not support required cryptography algorithms: SHA-1 and/or SHA1PRNG.");
         }
     }
+    
+    /**
+     * Get the artifact context.
+     * 
+     * @param requestContext the current message context
+     * @return the SAML artifact context, or null
+     */
+    protected SamlArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
+        return requestContext.getSubcontext(SamlArtifactContext.class, false);
+    }
 
     /**
      * Get the local entityId.
@@ -67,10 +77,12 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
      * 
      * @return the local entityId
      */
-    private String getLocalEntityId(MessageContext<SAMLObject> requestContext) {
-        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
-        Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
-        Constraint.isNotNull(localContext.getEntityId(), "LocalEntityContext contained a null entityId");
-        return localContext.getEntityId();
+    protected String getSourceEntityId(MessageContext<SAMLObject> requestContext) {
+        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
+        Constraint.isNotNull(artifactContext, "Message context did not contain a SamlArtifactContext");
+        Constraint.isNotNull(artifactContext.getSourceEntityId(), 
+                "SamlArtifactContext did not contain a source entityID");
+        return artifactContext.getSourceEntityId();
     }
+    
 }

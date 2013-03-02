@@ -23,19 +23,9 @@ import java.security.SecureRandom;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.BasicEndpointSelector;
-import org.opensaml.saml.common.messaging.context.SamlSelfEntityContext;
-import org.opensaml.saml.common.messaging.context.SamlMetadataContext;
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
-import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
-import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,18 +45,18 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
     /** {@inheritDoc} */
     public SAML2ArtifactType0004 buildArtifact(MessageContext<SAMLObject> requestContext) {
         try {
-            IndexedEndpoint acsEndpoint = (IndexedEndpoint) getAcsEndpoint(requestContext);
-            if (acsEndpoint == null) {
+            Integer arsIndex = getArsEndpointIndex(requestContext);
+            if (arsIndex == null) {
                 return null;
             }
 
-            byte[] endpointIndex = intToByteArray(acsEndpoint.getIndex());
+            byte[] endpointIndex = intToByteArray(arsIndex);
             byte[] trimmedIndex = new byte[2];
             trimmedIndex[0] = endpointIndex[2];
             trimmedIndex[1] = endpointIndex[3];
 
             MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
-            byte[] source = sha1Digester.digest(getLocalEntityId(requestContext).getBytes());
+            byte[] source = sha1Digester.digest(getSourceEntityId(requestContext).getBytes());
 
             SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
             byte[] assertionHandle;
@@ -79,33 +69,35 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
             throw new InternalError("JVM does not support required cryptography algorithms: SHA-1/SHA1PRNG.");
         }
     }
-
+    
     /**
-     * Gets the source location used to for the artifacts created by this encoder.
+     * Get the artifact context.
+     * 
+     * @param requestContext the current message context
+     * @return the SAML artifact context, or null
+     */
+    protected SamlArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
+        return requestContext.getSubcontext(SamlArtifactContext.class, false);
+    }
+    
+    /**
+     * Gets the index of the source artifact resolution service.
      * 
      * @param requestContext current request context
      * 
-     * @return source location used to for the artifacts created by this encoder
+     * @return the index of the attribute resolution service
      */
-    protected Endpoint getAcsEndpoint(MessageContext<SAMLObject> requestContext) {
-        BasicEndpointSelector selector = new BasicEndpointSelector();
-        selector.setEndpointType(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
-        selector.getSupportedIssuerBindings().add(SAMLConstants.SAML2_SOAP11_BINDING_URI);
-        selector.setMetadataProvider(getMetadataProvider(requestContext));
-        selector.setEntityMetadata(getLocalEntityMetadata(requestContext));
-        selector.setEntityRoleMetadata(getLocalEntityRoleMetadata(requestContext));
+    protected Integer getArsEndpointIndex(MessageContext<SAMLObject> requestContext) {
+        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
 
-        Endpoint acsEndpoint = selector.selectEndpoint();
-
-        if (acsEndpoint == null) {
-            log.error("No artifact resolution service endpoint defined for the entity "
-                    + getOutboundMessageIssuer(requestContext));
+        if (artifactContext == null || artifactContext.getSourceAttributeResolutionServiceEndpointIndex() == null) {
+            log.error("No artifact resolution service endpoint index is available");
             return null;
         }
 
-        return acsEndpoint;
+        return artifactContext.getSourceAttributeResolutionServiceEndpointIndex();
     }
-    
+
     /**
      * Get the local entityId.
      * 
@@ -113,62 +105,12 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * 
      * @return the local entityId
      */
-    private String getLocalEntityId(MessageContext<SAMLObject> requestContext) {
-        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
-        Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
-        Constraint.isNotNull(localContext.getEntityId(), "LocalEntityContext contained a null entityId");
-        return localContext.getEntityId();
-    }
-    
-    /**
-     * Get the outbound message issuer.
-     * 
-     * @param requestContext  the message context
-     * @return the outbound message issuer
-     */
-    private String getOutboundMessageIssuer(MessageContext<SAMLObject> requestContext) {
-        BasicMessageMetadataContext basicContext = 
-                requestContext.getSubcontext(BasicMessageMetadataContext.class, false);
-        Constraint.isNotNull(basicContext, "Message context did not contain a BasicMessageMetadataContext");
-        return basicContext.getMessageIssuer();
-    }
-    
-    /**
-     * Get the local entity role metadata.
-     * 
-     * @param requestContext the message context
-     * @return local entity role metadata
-     */
-    private RoleDescriptor getLocalEntityRoleMetadata(MessageContext<SAMLObject> requestContext) {
-        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
-        Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
-        SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
-        Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");
-        return mdContext.getRoleDescriptor();
-        
-    }
-
-    /**
-     * Get the local entity metadata.
-     * 
-     * @param requestContext the message context
-     * @return the local entity metadata
-     */
-    private EntityDescriptor getLocalEntityMetadata(MessageContext<SAMLObject> requestContext) {
-        SamlSelfEntityContext localContext = requestContext.getSubcontext(SamlSelfEntityContext.class, false);
-        Constraint.isNotNull(localContext, "Message context did not contain a LocalEntityContext");
-        SamlMetadataContext mdContext = localContext.getSubcontext(SamlMetadataContext.class, false);
-        Constraint.isNotNull(mdContext, "LocalEntityContext did not contain a SamlMetadataContext");
-        return mdContext.getEntityDescriptor();
-    }
-
-    /**
-     * @param requestContext
-     * @return
-     */
-    private MetadataProvider getMetadataProvider(MessageContext<SAMLObject> requestContext) {
-        // TODO Auto-generated method stub
-        return null;
+    protected String getSourceEntityId(MessageContext<SAMLObject> requestContext) {
+        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
+        Constraint.isNotNull(artifactContext, "Message context did not contain a SamlArtifactContext");
+        Constraint.isNotNull(artifactContext.getSourceEntityId(), 
+                "SamlArtifactContext did not contain a source entityID");
+        return artifactContext.getSourceEntityId();
     }
 
     /**
