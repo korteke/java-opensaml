@@ -965,6 +965,15 @@ public class Decrypter {
         Element targetElement = xmlObject.getDOM();
         if (targetElement == null) {
             Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(xmlObject);
+            if (marshaller == null) {
+                marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(
+                        XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+                if (marshaller == null) {
+                    String errorMsg = "No marshaller available for " + xmlObject.getElementQName();
+                    log.error(errorMsg);
+                    throw new DecryptionException(errorMsg);
+                }
+            }
             try {
                 targetElement = marshaller.marshall(xmlObject);
             } catch (MarshallingException e) {
