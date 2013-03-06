@@ -28,8 +28,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -38,7 +40,6 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.provider.ObservableMetadataProvider;
-import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.MutableCredential;
 import org.opensaml.security.credential.UsageType;
@@ -89,15 +90,10 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * Constructor.
      * 
      * @param metadataProvider provider of the metadata
-     * 
-     * @throws IllegalArgumentException thrown if the supplied provider is null
      */
-    public MetadataCredentialResolver(MetadataProvider metadataProvider) {
+    public MetadataCredentialResolver(@Nonnull final MetadataProvider metadataProvider) {
         super();
-        if (metadataProvider == null) {
-            throw new IllegalArgumentException("Metadata provider may not be null");
-        }
-        metadata = metadataProvider;
+        metadata = Constraint.isNotNull(metadataProvider, "Metadata provider cannot be null");
 
         cache = new HashMap<MetadataCacheKey, SoftReference<Collection<Credential>>>();
 
@@ -113,6 +109,15 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
     }
 
+    /**
+     * Get the metadata provider instance used by this resolver.
+     *
+     * @return the resolver's metadata provider instance
+     */
+    public MetadataProvider getMetadataProvider() {
+        return metadata;
+    }
+    
     /**
      * Get the KeyInfo credential resolver used by this metadata resolver to handle KeyInfo elements.
      * 
