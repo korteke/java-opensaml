@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SAMLConfigurationInitializer implements Initializer {
     
+    /** Logger. */
     private Logger log = LoggerFactory.getLogger(SAMLConfigurationInitializer.class);
 
     /** {@inheritDoc} */
