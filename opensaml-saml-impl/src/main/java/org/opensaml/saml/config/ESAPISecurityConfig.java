@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import org.owasp.esapi.SecurityConfiguration;
 
 /**
@@ -30,10 +32,27 @@ import org.owasp.esapi.SecurityConfiguration;
  */
 public class ESAPISecurityConfig implements SecurityConfiguration {
 
+    /** The singleton instance of this class. */
+    private static volatile SecurityConfiguration instance;
+    
     /** Constructor. */
     public ESAPISecurityConfig() {
     }
 
+    /**
+     * Factory method which implements the singleton pattern per the ESAPI reference impl.
+     *
+     * @return the singleton instance of this class
+     */
+    @Nonnull public static SecurityConfiguration getInstance() {
+        synchronized (ESAPISecurityConfig.class) {
+            if ( instance == null ) {
+                instance = new ESAPISecurityConfig();
+            }
+        }
+        return instance;
+    }
+    
     /** {@inheritDoc} */
     public String getAccessControlImplementation() {
         return null;
