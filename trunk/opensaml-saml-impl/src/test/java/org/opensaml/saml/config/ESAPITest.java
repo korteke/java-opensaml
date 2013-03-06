@@ -29,13 +29,20 @@ import org.testng.annotations.Test;
  */
 public class ESAPITest extends OpenSAMLInitBaseTestCase {
     
+    private String systemPropertyKey = "org.owasp.esapi.SecurityConfiguration";
+    private String opensamlConfigImpl = ESAPISecurityConfig.class.getName();
+    
     /**
      *  Tests that basic initialization has happened.
      */
     @Test
     public void testInit() {
+        Assert.assertEquals(opensamlConfigImpl, System.getProperty(systemPropertyKey));
+        
         SecurityConfiguration sc = ESAPI.securityConfiguration();
         Assert.assertNotNull(sc, "ESAPI SecurityConfiguration was null");
+        
+        Assert.assertTrue(sc instanceof ESAPISecurityConfig);
         
         Encoder encoder = ESAPI.encoder();
         Assert.assertNotNull(encoder, "ESAPI Encoder was null");
