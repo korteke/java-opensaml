@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -26,8 +27,6 @@ import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.FilterException;
-import org.opensaml.saml.saml2.metadata.provider.MetadataFilter;
 import org.opensaml.saml.security.SAMLSignatureProfileValidator;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
@@ -182,7 +181,9 @@ public class SignatureValidationFilter implements MetadataFilter {
                 log.error("RoleDescriptor '{}' subordinate to entity '{}' failed signature verification, " 
                        + "removing from metadata provider", 
                        roleChild.getElementQName(), entityID); 
-               roleIter.remove();
+                // Note that this is ok since we're iterating over an IndexedXMLObjectChildrenList directly,
+                // rather than a sublist like in processEntityGroup, and iterator remove() is supported there.
+                roleIter.remove();
             }
         }
         
@@ -224,6 +225,10 @@ public class SignatureValidationFilter implements MetadataFilter {
             verifySignature(entitiesDescriptor, entitiesDescriptor.getName(), true);
         }
         
+        // Can't use IndexedXMLObjectChildrenList sublist iterator remove() to remove members,
+        // so just note them in a set and then remove after iteration has completed.
+        HashSet<XMLObject> toRemove = new HashSet<XMLObject>();
+        
         Iterator<EntityDescriptor> entityIter = entitiesDescriptor.getEntityDescriptors().iterator();
         while (entityIter.hasNext()) {
             EntityDescriptor entityChild = entityIter.next();
@@ -240,8 +245,13 @@ public class SignatureValidationFilter implements MetadataFilter {
             } catch (FilterException e) {
                log.error("EntityDescriptor '{}' failed signature verification, removing from metadata provider", 
                        entityChild.getEntityID()); 
-               entityIter.remove();
+               toRemove.add(entityChild);
             }
+        }
+
+        if (!toRemove.isEmpty()) {
+            entitiesDescriptor.getEntityDescriptors().removeAll(toRemove);
+            toRemove.clear();
         }
         
         Iterator<EntitiesDescriptor> entitiesIter = entitiesDescriptor.getEntitiesDescriptors().iterator();
@@ -253,10 +263,13 @@ public class SignatureValidationFilter implements MetadataFilter {
             } catch (FilterException e) {
                log.error("EntitiesDescriptor '{}' failed signature verification, removing from metadata provider", 
                        entitiesChild.getName()); 
-               entitiesIter.remove();
+               toRemove.add(entitiesChild);
             }
         }
         
+        if (!toRemove.isEmpty()) {
+            entitiesDescriptor.getEntitiesDescriptors().removeAll(toRemove);
+        }
     }
 
     /**
