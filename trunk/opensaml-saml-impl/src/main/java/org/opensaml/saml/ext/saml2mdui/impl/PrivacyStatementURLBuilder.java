@@ -18,13 +18,11 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
-
 
 /**
- * Builder of {@link org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL} objects.
- * @author Rod Widdowson
+ * Builder of {@link PrivacyStatementURL} objects.
  */
 public class PrivacyStatementURLBuilder extends AbstractSAMLObjectBuilder<PrivacyStatementURL> {
 
@@ -37,9 +35,8 @@ public class PrivacyStatementURLBuilder extends AbstractSAMLObjectBuilder<Privac
 
     /** {@inheritDoc} */
     public PrivacyStatementURL buildObject() {
-        return buildObject(UIInfo.MDUI_NS, 
-                           PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
-                           UIInfo.MDUI_PREFIX);
+        return buildObject(SAMLConstants.SAML20MDUI_NS, PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
+                SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */

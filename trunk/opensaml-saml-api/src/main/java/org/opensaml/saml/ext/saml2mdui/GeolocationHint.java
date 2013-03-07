@@ -20,6 +20,7 @@ package org.opensaml.saml.ext.saml2mdui;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * IPHint.
@@ -38,8 +39,8 @@ public interface GeolocationHint extends SAMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeolocationHint";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DiscoHints.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, DiscoHints.MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
      * Gets the Hint.

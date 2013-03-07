@@ -22,11 +22,9 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Description;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -58,12 +56,8 @@ public class DescriptionTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test
-    public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                Description.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        Description name = (Description) buildXMLObject(qname);
+    public void testSingleElementMarshall() {        
+        Description name = (Description) buildXMLObject(Description.DEFAULT_ELEMENT_NAME);
         
         name.setValue(expectValue);
         name.setXMLLang(expectLang);

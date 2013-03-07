@@ -18,7 +18,7 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
-import org.opensaml.saml.ext.saml2mdui.DiscoHints;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 
 /**
@@ -35,9 +35,8 @@ public class GeolocationHintBuilder extends AbstractSAMLObjectBuilder<Geolocatio
 
     /** {@inheritDoc} */
     public GeolocationHint buildObject() {
-        return buildObject(DiscoHints.MDUI_NS, 
-                           GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME, 
-                           DiscoHints.MDUI_PREFIX);
+        return buildObject(SAMLConstants.SAML20MDUI_NS, GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */

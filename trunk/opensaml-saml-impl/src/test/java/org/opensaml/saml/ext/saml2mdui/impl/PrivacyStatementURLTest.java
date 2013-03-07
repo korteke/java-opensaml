@@ -22,11 +22,9 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -59,11 +57,7 @@ public class PrivacyStatementURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        PrivacyStatementURL url = (PrivacyStatementURL) buildXMLObject(qname);
+        PrivacyStatementURL url = (PrivacyStatementURL) buildXMLObject(PrivacyStatementURL.DEFAULT_ELEMENT_NAME);
         
         url.setValue(expectValue);
         url.setXMLLang(expectLang);

@@ -21,16 +21,12 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -68,11 +64,7 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                Keywords.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        Keywords keywords = (Keywords) buildXMLObject(qname);
+        Keywords keywords = (Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME);
         keywords.setXMLLang(expectedLang);
         keywords.setKeywords(expectedWords);
 

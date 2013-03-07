@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2mdui;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 /**
@@ -37,7 +38,7 @@ public interface PrivacyStatementURL extends LocalizedURI {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PrivacyStatementURL";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
 }
