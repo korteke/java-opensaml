@@ -26,7 +26,7 @@ import org.opensaml.saml.ext.saml1md.SourceID;
  */
 public class SourceIDBuilder extends AbstractSAMLObjectBuilder<SourceID> {
 
-    /** Constructor */
+    /** Constructor. */
     public SourceIDBuilder() {
 
     }

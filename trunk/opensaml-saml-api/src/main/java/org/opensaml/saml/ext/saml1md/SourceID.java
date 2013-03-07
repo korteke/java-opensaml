@@ -24,13 +24,14 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 1 Metadata extension SourceID
+ * SAML 1 Metadata extension SourceID.
  */
 public interface SourceID extends SAMLObject, XSString {
     
-    /** Element name, no namespace */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SourceID";
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SourceID";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
 }

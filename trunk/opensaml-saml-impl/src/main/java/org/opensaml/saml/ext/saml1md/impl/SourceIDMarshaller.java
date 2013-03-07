@@ -17,27 +17,13 @@
 
 package org.opensaml.saml.ext.saml1md.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.ext.saml1md.SourceID;
-import org.w3c.dom.Element;
 
-import com.google.common.base.Strings;
 
 /**
  * Marshaller of {@link SourceID} objects.
  */
-public class SourceIDMarshaller extends AbstractSAMLObjectMarshaller {
+public class SourceIDMarshaller extends XSStringMarshaller {
 
-    /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        SourceID sourceID = (SourceID) xmlObject;
-
-        if (!Strings.isNullOrEmpty(sourceID.getValue())) {
-            ElementSupport.appendTextContent(domElement, sourceID.getValue());
-        }
-    }
 }
