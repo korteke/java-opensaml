@@ -59,7 +59,13 @@ public interface UIInfo extends SAMLObject {
      */
     public List <DisplayName> getDisplayNames();
     
-    /** Get the Keywords. */
+    /** 
+     * Get the keywords.
+     * 
+     * The <Keywords> element specifies a set of keywords associated with the entity.
+     *  
+     * @return a list of keywords
+     */
     public List <Keywords> getKeywords();
     
     /**

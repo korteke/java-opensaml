@@ -38,12 +38,13 @@ import org.xml.sax.SAXException;
  * A convenience builder for creating {@link Schema}s for validating SAML 1_0, 1_1, and 2_0.
  * 
  * Additional schema may be registered by {@link #addExtensionSchema(String)} with the given argument a relative or
- * absolute path that will be resolved against the classpath. Note that relative paths are relative to <strong>this</strong>
- * class. Also, schema files must be provided in the order they are referenced, that is if schema B depends on schema A
- * then schema A must appear first in the list of registered extension schemas.
+ * absolute path that will be resolved against the classpath. Note that relative paths are relative to
+ * <strong>this</strong> class. Also, schema files must be provided in the order they are referenced, that is
+ * if schema B depends on schema A then schema A must appear first in the list of registered extension schemas.
  * 
- * Schemas may use a schema location attribute. These schema locations will be resolved by the {@link ClasspathResolver}.
- * If schema locations are used they will be resolved and will meet the aformentioned schema ordering requirement.
+ * Schemas may use a schema location attribute. These schema locations will be resolved by the
+ * {@link ClasspathResolver}. If schema locations are used they will be resolved and will meet the aforementioned
+ * schema ordering requirement.
  * 
  * The schema objects produced here are thread safe and should be re-used, to that end the schema builder will cache
  * created schema using {@link SoftReference}s, allowing the VM to reclaim the memory used by schemas if necessary.
@@ -57,8 +58,14 @@ public final class SAMLSchemaBuilder {
     private static SoftReference<Schema> saml11Schema;
 
     /** Classpath relative location of basic XML schemas. */
-    private static String[] baseXMLSchemas = { "/schema/xml.xsd", "/schema/XMLSchema.xsd",
-            "/schema/xmldsig-core-schema.xsd", "/schema/xenc-schema.xsd", };
+    private static String[] baseXMLSchemas = {
+        "/schema/xml.xsd",
+        "/schema/XMLSchema.xsd",
+        "/schema/xmldsig-core-schema.xsd",
+        "/schema/xenc-schema.xsd",
+        "/schema/xmldsig11-schema.xsd",
+        "/schema/xenc11-schema.xsd",
+    };
 
     /** Classpath relative location of SOAP 1_1 schemas. */
     private static String[] soapSchemas = { "/schema/soap-envelope.xsd", };
@@ -106,16 +113,20 @@ public final class SAMLSchemaBuilder {
         "/schema/saml-schema-protocol-2.0.xsd",
         "/schema/saml-schema-x500-2.0.xsd",
         "/schema/saml-schema-xacml-2.0.xsd",
-        "/schema/sstc-saml-delegation.xsd",
-        "/schema/sstc-saml-idp-discovery.xsd",
-        "/schema/sstc-saml-metadata-ext-query.xsd",
-        "/schema/sstc-saml-protocol-ext-thirdparty.xsd",
-        "/schema/sstc-saml1x-metadata.xsd",
     };
 
     /** Classpath relative location of SAML extension schemas. */
-    private static String[] baseExtSchemas = { "/schema/sstc-saml-protocol-ext-thirdparty.xsd",
-            "/schema/sstc-saml-metadata-ext-query.xsd", "/schema/sstc-saml1x-metadata.xsd", };
+    private static String[] baseExtSchemas = {
+        "/schema/sstc-saml1x-metadata.xsd",
+        "/schema/sstc-saml-idp-discovery.xsd",
+        "/schema/sstc-saml-protocol-ext-thirdparty.xsd",
+        "/schema/sstc-saml-metadata-ext-query.xsd",
+        "/schema/sstc-saml-delegation.xsd",
+        "/schema/sstc-saml-metadata-ui-v1.0.xsd",
+        "/schema/sstc-metadata-attr.xsd",
+        "/schema/saml-metadata-rpi-v1.0.xsd",
+        "/schema/saml-async-slo-v1.0.xsd",
+        };
 
     /** Additional schema locations relative to classpath. */
     private static List<String> extensionSchema = new ArrayList<String>();
