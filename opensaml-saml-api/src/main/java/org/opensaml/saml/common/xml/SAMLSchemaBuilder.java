@@ -125,6 +125,7 @@ public final class SAMLSchemaBuilder {
         "/schema/sstc-saml-metadata-ui-v1.0.xsd",
         "/schema/sstc-metadata-attr.xsd",
         "/schema/saml-metadata-rpi-v1.0.xsd",
+        "/schema/sstc-saml-channel-binding-ext-v1.0.xsd",
         "/schema/saml-async-slo-v1.0.xsd",
         };
 
