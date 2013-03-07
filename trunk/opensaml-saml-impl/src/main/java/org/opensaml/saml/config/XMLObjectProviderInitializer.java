@@ -39,6 +39,7 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
         "/saml2-metadata-ui-config.xml",
         "/saml2-protocol-config.xml",
         "/saml2-protocol-thirdparty-config.xml",
+        "/saml2-protocol-aslo-config.xml",
         };
 
     /** {@inheritDoc} */
