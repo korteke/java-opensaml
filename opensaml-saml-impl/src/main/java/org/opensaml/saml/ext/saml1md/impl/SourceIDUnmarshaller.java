@@ -17,19 +17,12 @@
 
 package org.opensaml.saml.ext.saml1md.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.ext.saml1md.SourceID;
 
 /**
  * Unmarshaller for {@link SourceID} objects.
  */
-public class SourceIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class SourceIDUnmarshaller extends XSStringUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(XMLObject samlObject, String elementContent) {
-        SourceID sourceID = (SourceID) samlObject;
-
-        sourceID.setValue(elementContent);
-    }
 }
