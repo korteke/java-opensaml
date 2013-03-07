@@ -21,13 +21,10 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Logo;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -83,11 +80,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                Logo.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        Logo logo = (Logo) buildXMLObject(qname);
+        Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
         
         logo.setURL(expectedURL);
         logo.setWidth(expectedWidth);
@@ -99,11 +92,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                Logo.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        Logo logo = (Logo) buildXMLObject(qname);
+        Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
         
         logo.setURL(expectedURL);
         logo.setWidth(expectedWidth);

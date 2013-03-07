@@ -21,9 +21,7 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -74,19 +72,14 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         UIInfo uiinfo = (UIInfo) unmarshallElement(singleElementFile);
-        //
-        // No contents sanity to check
-        //
+        
+        Assert.assertNotNull(uiinfo, "UIInfo");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                UIInfo.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        UIInfo uiinfo = (UIInfo) buildXMLObject(qname);
+        UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, uiinfo);
     }

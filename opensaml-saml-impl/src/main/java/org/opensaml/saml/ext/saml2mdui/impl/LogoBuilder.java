@@ -18,11 +18,11 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.Logo;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
- * Builder of {@link org.opensaml.saml.ext.saml2mdui.Logo} objects.
+ * Builder of {@link Logo} objects.
  */
 public class LogoBuilder extends AbstractSAMLObjectBuilder<Logo> {
 
@@ -35,9 +35,8 @@ public class LogoBuilder extends AbstractSAMLObjectBuilder<Logo> {
 
     /** {@inheritDoc} */
     public Logo buildObject() {
-        return buildObject(UIInfo.MDUI_NS, 
-                           Logo.DEFAULT_ELEMENT_LOCAL_NAME, 
-                           UIInfo.MDUI_PREFIX);
+        return buildObject(SAMLConstants.SAML20MDUI_NS, Logo.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */

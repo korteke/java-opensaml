@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * See IdP Discovery and Login UI Metadata Extension Profile.
@@ -32,18 +33,20 @@ import org.opensaml.saml.common.SAMLObject;
  * Reflects the DiscoHints 
  */
 public interface DiscoHints extends SAMLObject {
-    /** Namespace for Discovery Service metadata extensions. */
-    public static final String MDUI_NS = "urn:oasis:names:tc:SAML:metadata:ui";
-
-    /** Default namespace prefix used by this library. */
-    public static final String  MDUI_PREFIX = "mdui";
 
     /** Name of the element inside the Extensions. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoHints";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "DiscoHintsType";
+           
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** 
      * The <IPHint> element specifies a set of [CIDR] blocks associated with, 

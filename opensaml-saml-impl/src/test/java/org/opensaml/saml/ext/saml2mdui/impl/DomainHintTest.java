@@ -23,11 +23,9 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -62,11 +60,7 @@ public class DomainHintTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                DomainHint.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        DomainHint hint = (DomainHint) buildXMLObject(qname);
+        DomainHint hint = (DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME);
         
         hint.setHint(expectedHint);
 

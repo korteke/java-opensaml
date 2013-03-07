@@ -18,10 +18,11 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 
 /**
- * Builder of {@link org.opensaml.saml.ext.saml2mdui.UIInfo}.
+ * Builder of {@link DiscoHints}.
  */
 public class DiscoHintsBuilder extends AbstractSAMLObjectBuilder<DiscoHints> {
 
@@ -34,9 +35,8 @@ public class DiscoHintsBuilder extends AbstractSAMLObjectBuilder<DiscoHints> {
 
     /** {@inheritDoc} */
     public DiscoHints buildObject() {
-        return buildObject(DiscoHints.MDUI_NS, 
-                           DiscoHints.DEFAULT_ELEMENT_LOCAL_NAME, 
-                           DiscoHints.MDUI_PREFIX);
+        return buildObject(SAMLConstants.SAML20MDUI_NS, DiscoHints.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */

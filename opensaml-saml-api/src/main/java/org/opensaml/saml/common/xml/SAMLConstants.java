@@ -212,6 +212,15 @@ public final class SAMLConstants {
     /** SAML V2.0 Metadata Extension for Entity Attributes QName prefix. */
     public static final String SAML20MDATTR_PREFIX = "mdattr";
 
+    /** SAML V2.0 Metadata Extension for Discovery and Login UI schema ID . */
+    public static final String SAML20MDUI_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-metadata-ui-v1.0.xsd";
+
+    /** SAML V2.0 Metadata Extension for Discovery and Login UI XML Namespace. */
+    public static final String SAML20MDUI_NS = "urn:oasis:names:tc:SAML:metadata:ui";
+
+    /** SAML V2.0 Metadata Extension for Discovery and Login UI QName prefix. */
+    public static final String SAML20MDUI_PREFIX = "mdui";
+    
     /** SAML 2.0 DCE PAC Attribute Profile schema Id. */
     public static final String SAML20DCE_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-dce-2.0.xsd";
 

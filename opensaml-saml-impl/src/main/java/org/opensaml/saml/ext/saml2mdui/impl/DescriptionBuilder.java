@@ -18,12 +18,11 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.Description;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
- * Builder of {@link org.opensaml.saml.ext.saml2mdui.Description} objects.
- * @author Rod Widdowson
+ * Builder of {@link Description} objects.
  */
 public class DescriptionBuilder extends AbstractSAMLObjectBuilder<Description> {
     /**
@@ -35,9 +34,8 @@ public class DescriptionBuilder extends AbstractSAMLObjectBuilder<Description> {
 
     /** {@inheritDoc} */
     public Description buildObject() {
-        return buildObject(UIInfo.MDUI_NS, 
-                           Description.DEFAULT_ELEMENT_LOCAL_NAME, 
-                           UIInfo.MDUI_PREFIX);
+        return buildObject(SAMLConstants.SAML20MDUI_NS, Description.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */

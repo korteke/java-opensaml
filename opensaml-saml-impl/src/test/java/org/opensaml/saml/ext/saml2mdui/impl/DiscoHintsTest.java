@@ -21,9 +21,7 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -31,7 +29,6 @@ import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 import org.opensaml.saml.ext.saml2mdui.IPHint;
-import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -72,11 +69,7 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(UIInfo.MDUI_NS, 
-                                DiscoHints.DEFAULT_ELEMENT_LOCAL_NAME, 
-                                UIInfo.MDUI_PREFIX);
-        
-        DiscoHints hints = (DiscoHints) buildXMLObject(qname);
+        DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, hints);
     }

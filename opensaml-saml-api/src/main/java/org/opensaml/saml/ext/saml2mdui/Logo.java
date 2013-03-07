@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * Localized logo type.
@@ -37,8 +38,15 @@ public interface Logo extends LangBearing, SAMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Logo";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(UIInfo.MDUI_NS, 
-            DEFAULT_ELEMENT_LOCAL_NAME, UIInfo.MDUI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
+    
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "LogoType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Attribute label. */
     public static final String HEIGHT_ATTR_NAME = "height";
