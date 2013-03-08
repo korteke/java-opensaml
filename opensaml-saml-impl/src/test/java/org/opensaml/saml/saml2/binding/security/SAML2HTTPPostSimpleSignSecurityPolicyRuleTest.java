@@ -374,8 +374,10 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends
         Document doc = parserPool.parse(new ByteArrayInputStream(htmlContentString.getBytes()));
         // html
         Element current = doc.getDocumentElement();
-        // body
+        // head
         current = ElementSupport.getFirstChildElement(current);
+        // body
+        current = ElementSupport.getNextSiblingElement(current);
         // form
         current = ElementSupport.getFirstChildElement(current);
         current = ElementSupport.getNextSiblingElement(current);
