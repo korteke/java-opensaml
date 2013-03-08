@@ -120,7 +120,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
-        Assert.assertEquals(response.getContentAsString().hashCode(), 742802882);
+        Assert.assertEquals(response.getContentAsString().hashCode(), 621462245);
     }
 
     @Test
@@ -161,7 +161,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
-        Assert.assertEquals(response.getContentAsString().hashCode(), -481805865);
+        Assert.assertEquals(response.getContentAsString().hashCode(), -169497068);
     }
     
     @Test
