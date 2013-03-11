@@ -109,7 +109,7 @@ public final class AlgorithmSupport {
         } else if (dsaAlgorithmURIs.contains(algorithmURI)) {
             return "DSA";
         } else if (ecdsaAlgorithmURIs.contains(algorithmURI)) {
-            return "ECDSA";
+            return "EC";
         }
     
         return null;

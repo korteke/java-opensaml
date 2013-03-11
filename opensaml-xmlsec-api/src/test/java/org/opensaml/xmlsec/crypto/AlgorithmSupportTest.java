@@ -55,7 +55,7 @@ public class AlgorithmSupportTest {
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_DSA), "DSA");
-        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1), "ECDSA");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1), "EC");
         
         // Mac related.  No specific key algorithm is indicated, any symmetric key will do. Should always return null;
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
