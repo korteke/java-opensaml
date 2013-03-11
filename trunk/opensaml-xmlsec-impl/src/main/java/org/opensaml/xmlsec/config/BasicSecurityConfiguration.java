@@ -109,9 +109,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /**
-     * Register a mapping from the specified JCA algorithm name to a signature algorithm URI.
+     * Register a mapping from the specified JCA key algorithm name to a signature algorithm URI.
      * 
-     * @param jcaAlgorithmName the JCA algorithm name to register
+     * @param jcaAlgorithmName the JCA key algorithm name to register
      * @param algorithmURI the algorithm URI to register
      */
     public void registerSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName,
@@ -120,9 +120,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /**
-     * Deregister a mapping for the specified JCA algorithm name.
+     * Deregister a mapping for the specified JCA key algorithm name.
      * 
-     * @param jcaAlgorithmName the JCA algorithm name to deregister
+     * @param jcaAlgorithmName the JCA key algorithm name to deregister
      */
     public void deregisterSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName) {
         signatureAlgorithms.remove(jcaAlgorithmName);
@@ -206,9 +206,9 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /**
-     * Register a mapping from the specified JCA algorithm name to an encryption algorithm URI.
+     * Register a mapping from the specified JCA key algorithm name to an encryption algorithm URI.
      * 
-     * @param jcaAlgorithmName the JCA algorithm name to register
+     * @param jcaAlgorithmName the JCA key algorithm name to register
      * @param keyLength the key length to register (may be null)
      * @param algorithmURI the algorithm URI to register
      */
@@ -219,7 +219,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
     
     /**
-     * Deregister a mapping for the specified JCA algorithm name.
+     * Deregister a mapping for the specified JCA key algorithm name.
      * 
      * @param jcaAlgorithmName the JCA algorithm name to deregister
      * @param keyLength the key length to deregister (may be null)
@@ -284,7 +284,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
 
     /**
-     * Register a mapping from the specified JCA algorithm name to an encryption algorithm URI.
+     * Register a mapping from the specified JCA key algorithm name to an encryption algorithm URI.
      * 
      * @param jcaAlgorithmName the JCA algorithm name to register
      * @param keyLength the key length to register (may be null)
@@ -301,7 +301,7 @@ public class BasicSecurityConfiguration implements SecurityConfiguration {
     }
 
     /**
-     * Deregister a mapping for the specified JCA algorithm name.
+     * Deregister a mapping for the specified JCA key algorithm name.
      * 
      * @param jcaAlgorithmName the JCA algorithm name to deregister
      * @param keyLength the key length to deregister (may be null)
