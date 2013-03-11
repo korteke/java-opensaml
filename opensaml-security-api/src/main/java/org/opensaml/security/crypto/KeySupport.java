@@ -455,7 +455,7 @@ public final class KeySupport {
         keyMatchAlgorithms = new LazyMap<String, String>();
         keyMatchAlgorithms.put("RSA", "SHA1withRSA");
         keyMatchAlgorithms.put("DSA", "SHA1withDSA");
-        keyMatchAlgorithms.put("ECDSA", "SHA1withECDSA");
+        keyMatchAlgorithms.put("EC", "SHA1withECDSA");
     }
 
 }
