@@ -98,11 +98,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         if (log.isTraceEnabled()) {
             log.trace("Unmarshalling other child nodes of DOM Element {}", QNameSupport.getNodeQName(domElement));
         }
-        NodeList childNodes = domElement.getChildNodes();
-        Node childNode;
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            childNode = childNodes.item(i);
-
+        Node childNode = domElement.getFirstChild();
+        while (childNode != null) {
             if (childNode.getNodeType() == Node.ATTRIBUTE_NODE) {
                 unmarshallAttribute(xmlObject, (Attr) childNode);
             } else if (childNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -111,6 +108,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                     || childNode.getNodeType() == Node.CDATA_SECTION_NODE) {
                 unmarshallTextContent(xmlObject, (Text) childNode);
             }
+            
+            childNode = childNode.getNextSibling();
         }
 
         xmlObject.setDOM(domElement);
