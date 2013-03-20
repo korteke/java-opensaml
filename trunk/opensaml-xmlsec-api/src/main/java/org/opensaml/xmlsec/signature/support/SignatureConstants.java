@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.support;
 
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
 /**
  * Constants defined in or related to the XML Signature 1.0 and 1.1 specifications and
  * related RFCs.
@@ -256,6 +258,19 @@ public final class SignatureConstants {
     /** Signature - Optional DSAwithSHA256 (DSS). */
     // Apache XML-Security doesn't support this
     // public static final String ALGO_ID_SIGNATURE_DSA_SHA256 = XMLSIG11_NS + "dsa-sha256";
+    
+    // *********************************************************
+    // Alias in some additional algorithm URI's used in XML 
+    // Signature, but defined in XML Encryption.
+    // *********************************************************
+    /** Message Digest - SHA256 (Note: Defined by XML Encryption). */
+    public static final String ALGO_ID_DIGEST_SHA256 = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
+    
+    /** Message Digest - SHA512 (Note: Defined by XML Encryption). */
+    public static final String ALGO_ID_DIGEST_SHA512 = EncryptionConstants.ALGO_ID_DIGEST_SHA512;
+    
+    /** Message Digest - RIPEMD-160 (Note: Defined by XML Encryption). */
+    public static final String ALGO_ID_DIGEST_RIPEMD160 = EncryptionConstants.ALGO_ID_DIGEST_RIPEMD160;
     
     
     /** Constructor. */
