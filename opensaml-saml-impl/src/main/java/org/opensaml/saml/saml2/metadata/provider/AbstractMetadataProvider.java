@@ -417,6 +417,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
                 throw e;
             } else {
                 log.error("Metadata provider failed to properly initializing, continuing on without metadata", e);
+                initialized = true;
             }
         }
     }
