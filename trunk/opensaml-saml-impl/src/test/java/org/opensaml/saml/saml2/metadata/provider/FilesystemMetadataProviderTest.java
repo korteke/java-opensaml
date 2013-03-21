@@ -202,6 +202,15 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
             Assert.fail("Filesystem metadata provider init failed with non-existent file and fail fast = false");
         }
         
+        // Test that things don't blow up when initialized, no fail fast, but have no data.
+        try {
+            Assert.assertNull(metadataProvider.getMetadata());
+            EntityDescriptor entity = metadataProvider.getEntityDescriptor(entityID);
+            Assert.assertNull(entity, "Retrieved entity descriptor was not null"); 
+        } catch (MetadataProviderException e) {
+            Assert.fail("Metadata provider behaved non-gracefully when initialized with fail fast = false");
+        }
+        
         // Filesystem timestamp may only have 1-second precision, so need to sleep for a couple of seconds just 
         // to make sure that the new copied file's timestamp is later than the Jodatime lastRefresh time
         // in the metadata provider.
