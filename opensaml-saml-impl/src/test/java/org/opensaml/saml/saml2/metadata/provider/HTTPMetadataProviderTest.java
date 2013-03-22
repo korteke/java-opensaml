@@ -36,6 +36,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private String inCommonMDURL;
+    private String badMDURL;
     private String entitiesDescriptorName;
     private String entityID;
     private String supportedProtocol;
@@ -45,6 +46,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         inCommonMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
+        badMDURL = "http://www.google.com/";
         entitiesDescriptorName = "urn:mace:incommon";
         entityID = "urn:mace:incommon:washington.edu";
         supportedProtocol ="urn:oasis:names:tc:SAML:1.1:protocol";
@@ -100,5 +102,38 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     public void testGetRoleWithSupportedProtocol() throws MetadataProviderException{
         RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME, supportedProtocol);
         Assert.assertNotNull(role, "Roles for entity descriptor was null");
+    }
+    
+    /**
+     * Test fail-fast = true with known bad metadata URL.
+     */
+    public void testFailFastBadURL() throws MetadataProviderException {
+        metadataProvider = new HTTPMetadataProvider(badMDURL, 1000 * 5);
+        
+        metadataProvider.setFailFastInitialization(true);
+        metadataProvider.setParserPool(parserPool);
+        
+        try {
+            metadataProvider.initialize();
+            Assert.fail("metadata provider claims to have parsed known invalid data");
+        } catch (MetadataProviderException e) {
+            //expected, do nothing
+        }
+    }
+    
+    /**
+     * Test fail-fast = false with known bad metadata URL.
+     */
+    public void testNoFailFastBadURL() throws MetadataProviderException {
+        metadataProvider = new HTTPMetadataProvider(badMDURL, 1000 * 5);
+        
+        metadataProvider.setFailFastInitialization(false);
+        metadataProvider.setParserPool(parserPool);
+        
+        try {
+            metadataProvider.initialize();
+        } catch (MetadataProviderException e) {
+            Assert.fail("Provider failed init with fail-fast=false");
+        }
     }
 }
