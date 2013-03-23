@@ -303,6 +303,9 @@ public class XMLConfigurator {
             log.trace("Creating instance of {}", className);
             // TODO switch to thread context class loader, this seems more correct. Need to test and verify.
             // ClassLoader classLoader = this.getClass().getClassLoader();
+            // if (classLoader == null) {
+            //    classLoader = ClassLoader.getSystemClassLoader();
+            // }
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             Class clazz = classLoader.loadClass(className);
             Constructor constructor = clazz.getConstructor();
