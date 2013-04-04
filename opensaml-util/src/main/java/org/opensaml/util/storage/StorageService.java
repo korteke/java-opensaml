@@ -203,7 +203,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the cleanup process
      */
     public void updateContext(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final Optional<Long> expiration) throws IOException;
+            @Nonnull final Optional<Long> expiration) throws IOException;
 
     /**
      * Forcibly removes all records in a given context along with any
