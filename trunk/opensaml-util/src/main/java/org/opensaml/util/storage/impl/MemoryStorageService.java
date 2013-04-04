@@ -346,9 +346,8 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
             Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
             if (dataMap != null) {    
                 Long now = System.currentTimeMillis();
-                Optional<Long> exp;
                 for (MutableStorageRecord record : dataMap.values()) {
-                    exp = record.getExpiration();
+                    final Optional<Long> exp = record.getExpiration();
                     if (!exp.isPresent() || now < (exp.get() * 1000)) {
                         record.setExpiration(expiration);
                     }
@@ -434,12 +433,10 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
             try {
                 writeLock.lock();
                 
-                Map<String, MutableStorageRecord> context;
-                
                 Collection<Map<String, MutableStorageRecord>> contexts = contextMap.values();
                 Iterator<Map<String, MutableStorageRecord>> i = contexts.iterator();
                 while (i.hasNext()) {
-                    context = i.next(); 
+                    final Map<String, MutableStorageRecord> context = i.next(); 
                     if (reapWithLock(i.next(), now)) {
                         purged = true;
                         if (context.isEmpty()) {
