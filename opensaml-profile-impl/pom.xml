@@ -7,16 +7,21 @@
     <parent>
         <groupId>org.opensaml</groupId>
         <artifactId>opensaml-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>opensaml-profile-impl</name>
+    <name>OpenSAML :: Profile Implementations</name>
     <artifactId>opensaml-profile-impl</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- Compile Dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-profile-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Provided Dependencies -->
 
