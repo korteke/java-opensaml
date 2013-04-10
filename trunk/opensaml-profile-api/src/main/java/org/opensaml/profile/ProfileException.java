@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.profile;
+package org.opensaml.profile;
 
-/** Exception thrown if there is a problem with processing a profile request. */
+/** Exception thrown if there is a problem with processing a profile action. */
 public class ProfileException extends Exception {
 
     /** Serial version UID. */

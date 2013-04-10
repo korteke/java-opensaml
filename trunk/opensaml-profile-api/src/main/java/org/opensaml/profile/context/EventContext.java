@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.profile;
+package org.opensaml.profile.context;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +25,7 @@ import org.opensaml.messaging.context.BaseContext;
 /**
  * A context component which holds the result of a profile action that produces an "event".
  * 
- * <p>Objects that operate on contexts and want to signal the result in the form of an "event" to
+ * <p>Actions that operate on contexts and want to signal the result in the form of an "event" to
  * a sibling or parent component can create or modify an EventContext. The context contains a
  * generic type that represents an event of meaning to a surrounding processing model, such as
  * a workflow.</p>

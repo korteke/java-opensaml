@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.profile;
+package org.opensaml.profile.context;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

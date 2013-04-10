@@ -16,6 +16,6 @@
  */
 
 /**
- * Classes related to profile contexts and actions.
+ * Context classes in support of profile behavior.
  */
-package org.opensaml.messaging.profile;
+package org.opensaml.profile.context;
