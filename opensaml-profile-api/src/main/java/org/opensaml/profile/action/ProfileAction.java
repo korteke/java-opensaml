@@ -15,10 +15,14 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.profile;
+package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
+
 import javax.annotation.concurrent.ThreadSafe;
+
+import org.opensaml.profile.ProfileException;
+import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
@@ -27,6 +31,11 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 /**
  * Interface for actions that operate on a {@link ProfileRequestContext}.
+ * 
+ * <p>Actions are expected to interact with the environment, access data,
+ * and produce results using the context tree provided at execution time.
+ * They signal state transitions by attaching an {@link org.opensaml.profile.context.EventContext}
+ * to the tree.</p>
  * 
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message

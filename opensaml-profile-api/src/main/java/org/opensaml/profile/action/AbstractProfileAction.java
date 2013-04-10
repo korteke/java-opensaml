@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.profile;
+package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
+
+import org.opensaml.profile.ProfileException;
+import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentValidationException;
@@ -49,6 +52,11 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
         setId(getClass().getName());
     }
 
+    /** {@inheritDoc} */
+    public synchronized void setId(String componentId) {
+        super.setId(componentId);
+    }
+    
     /** {@inheritDoc} */
     public void validate() throws ComponentValidationException {
         
