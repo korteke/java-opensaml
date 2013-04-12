@@ -76,7 +76,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      * 
      * @throws ProfileException thrown if there is a problem executing the profile action
      */
-    public void doExecute(
+    protected void doExecute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
         throw new ProfileException("This operation is not implemented.");
