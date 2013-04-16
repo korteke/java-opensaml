@@ -28,6 +28,35 @@
         <!-- Runtime Dependencies -->
 
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-profile-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <version>${spring.version}</version>
+            <artifactId>spring-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <version>${spring.version}</version>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Managed Dependencies -->
     </dependencies>
