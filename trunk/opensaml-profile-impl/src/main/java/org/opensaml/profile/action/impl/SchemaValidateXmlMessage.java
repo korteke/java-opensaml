@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  * @event {@link org.opensaml.profile.action.EventIds#INVALID_MSG_CTX} "No inbound message context or message"
  * @event {@link #SCHEMA_INVALID} "Inbound message was schema invalid"
- * @pre None
+ * @pre ProfileRequestContext.getInboundMessageContext().getMessage().getDOM()
  * @post None.
  */
 public class SchemaValidateXmlMessage extends AbstractProfileAction<XMLObject, Object> {
