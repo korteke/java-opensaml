@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/testObjects" xmlns:test="http://www.example.org/testObjects">
+<simpleType name="childType">
+   <restriction base="string">
+      <maxLength value="1024"/>
+   </restriction>
+</simpleType>
+<element name="SimpleElement" type="test:childType"/>
+
+</schema>
