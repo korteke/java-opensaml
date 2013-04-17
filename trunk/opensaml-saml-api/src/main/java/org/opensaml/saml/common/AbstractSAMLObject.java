@@ -45,6 +45,11 @@ public abstract class AbstractSAMLObject extends AbstractXMLObject {
         
         return super.equals(obj);
     }
+    
+    /** {@inheritDoc} */
+    public final int hashCode() {
+        return super.hashCode();
+    }
 
     /**
      * A helper function for derived classes that checks to see if the old and new value are equal and if so releases
