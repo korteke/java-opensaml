@@ -18,7 +18,6 @@
 package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
-import javax.annotation.concurrent.ThreadSafe;
 
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -36,7 +35,6 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-@ThreadSafe
 public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType> extends
         AbstractIdentifiableInitializableComponent implements ValidatableComponent,
         ProfileAction<InboundMessageType, OutboundMessageType> {
@@ -66,8 +64,37 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     public void execute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
-        doExecute(profileRequestContext);
+        
+        if (doPreExecute(profileRequestContext)) {
+            try {
+                doExecute(profileRequestContext);
+            } finally {
+                doPostExecute(profileRequestContext);
+            }
+        }
     }
+    
+    /**
+     * Called prior to execution, actions may override this method to perform pre-processing for a
+     * request.
+     * 
+     * <p>If false is returned, execution will not proceed, and the action should attach an
+     * {@link org.opensaml.profile.context.EventContext} to the context tree to signal how
+     * to continue with overall workflow processing.</p>
+     * 
+     * <p>If returning successfully, the last step should be to return the result of the
+     * superclass version of this method.</p>
+     * 
+     * @param profileRequestContext the current IdP profile request context
+     * @return  true iff execution should proceed
+     * 
+     * @throws ProfileException thrown if there is a problem executing the profile action
+     */
+    protected boolean doPreExecute(
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
+            throws ProfileException {
+        return true;
+    }    
     
     /**
      * Performs this action. Actions must override this method to perform their work.
@@ -82,4 +109,17 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
         throw new ProfileException("This operation is not implemented.");
     }
 
+    /**
+     * Called after execution, actions may override this method to perform post-processing for a
+     * request.
+     * 
+     * <p>Actions must not "fail" during this step and will not have the opportunity to signal
+     * events at this stage. This method will not be called if {@link #doPreExecute} fails, but
+     * is called if an exception is raised by {@link #doExecute}.</p>
+     * 
+     * @param profileRequestContext the current IdP profile request context
+     */
+    protected void doPostExecute(
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
+    }    
 }

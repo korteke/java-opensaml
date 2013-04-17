@@ -19,8 +19,6 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 
-import javax.annotation.concurrent.ThreadSafe;
-
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -37,10 +35,11 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
  * They signal state transitions by attaching an {@link org.opensaml.profile.context.EventContext}
  * to the tree.</p>
  * 
+ * <p>Actions may be stateful or stateless, and are therefore not inherently thread-safe.</p>
+ * 
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-@ThreadSafe
 public interface ProfileAction<InboundMessageType, OutboundMessageType> extends
         IdentifiableComponent, InitializableComponent, ValidatableComponent {
 

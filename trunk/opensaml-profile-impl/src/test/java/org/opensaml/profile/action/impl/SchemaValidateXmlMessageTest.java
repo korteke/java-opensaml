@@ -75,7 +75,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
 
         ProfileRequestContext profileRequestContext = new ProfileRequestContext();
 
-        action.doExecute(profileRequestContext);
+        action.execute(profileRequestContext);
 
         ActionTestingSupport.assertEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
     }
@@ -91,7 +91,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
         ProfileRequestContext profileRequestContext =
                 new RequestContextBuilder().setInboundMessage(simpleXml).buildProfileRequestContext();
         
-        action.doExecute(profileRequestContext);
+        action.execute(profileRequestContext);
 
         ActionTestingSupport.assertEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
     }
@@ -111,7 +111,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
         ProfileRequestContext profileRequestContext =
                 new RequestContextBuilder().setInboundMessage(invalidXml).buildProfileRequestContext();
                 
-        action.doExecute(profileRequestContext);
+        action.execute(profileRequestContext);
 
         ActionTestingSupport.assertEvent(profileRequestContext, SchemaValidateXmlMessage.SCHEMA_INVALID);
     }
@@ -130,7 +130,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
         ProfileRequestContext profileRequestContext =
                 new RequestContextBuilder().setInboundMessage(validXml).buildProfileRequestContext();
         
-        action.doExecute(profileRequestContext);
+        action.execute(profileRequestContext);
 
         ActionTestingSupport.assertProceedEvent(profileRequestContext);
     }

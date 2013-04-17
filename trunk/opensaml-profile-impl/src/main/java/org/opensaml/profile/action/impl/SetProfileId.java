@@ -33,7 +33,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
  *
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  * @pre None
- * @post ProfileRequestContext.profileId set
+ * @post ProfileRequestContext.profileId != null
  */
 public class SetProfileId extends AbstractProfileAction {
 
@@ -49,15 +49,6 @@ public class SetProfileId extends AbstractProfileAction {
         super();
 
         profileId = Constraint.isNotNull(StringSupport.trimOrNull(id), "Profile ID cannot be null or empty");
-    }
-
-    /**
-     * Gets the ID of the profile in use.
-     * 
-     * @return ID of the profile in use
-     */
-    public String getProfileId() {
-        return profileId;
     }
 
     /** {@inheritDoc} */

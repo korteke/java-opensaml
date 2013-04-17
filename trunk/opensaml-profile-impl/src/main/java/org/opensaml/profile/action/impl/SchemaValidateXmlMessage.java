@@ -35,7 +35,6 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -44,7 +43,7 @@ import org.xml.sax.SAXException;
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  * @event {@link org.opensaml.profile.action.EventIds#INVALID_MSG_CTX} "No inbound message context or message"
  * @event {@link #SCHEMA_INVALID} "Inbound message was schema invalid"
- * @pre ProfileRequestContext.getInboundMessageContext().getMessage().getDOM()
+ * @pre ProfileRequestContext.getInboundMessageContext().getMessage().getDOM() != null
  * @post None.
  */
 public class SchemaValidateXmlMessage extends AbstractProfileAction<XMLObject, Object> {
@@ -58,6 +57,9 @@ public class SchemaValidateXmlMessage extends AbstractProfileAction<XMLObject, O
     /** Schema used to validate incoming messages. */
     private final Schema validationSchema;
 
+    /** The message to validate. */
+    private XMLObject message;
+    
     /**
      * Constructor.
      * 
@@ -77,38 +79,44 @@ public class SchemaValidateXmlMessage extends AbstractProfileAction<XMLObject, O
     }
 
     /** {@inheritDoc} */
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext<XMLObject, Object> profileRequestContext)
+            throws ProfileException {
+        
+        final MessageContext<XMLObject> msgCtx = profileRequestContext.getInboundMessageContext();
+        if (msgCtx == null) {
+            log.debug("Action {}: Inbound message context is null, unable to proceed", getId());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
+            return false;
+        }
+
+        message = msgCtx.getMessage();
+        if (message == null) {
+            log.debug("Action {}: Inbound message context did not contain a message, unable to proceed", getId());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
+            return false;
+        }
+
+        if (message.getDOM() == null) {
+            log.debug("Action {}: Inbound message doesn't contain a DOM, unable to proceed", getId());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
+            return false;
+        }
+        
+        return super.doPreExecute(profileRequestContext);
+    }
+    
+    /** {@inheritDoc} */
     protected void doExecute(@Nonnull final ProfileRequestContext<XMLObject, Object> profileRequestContext)
             throws ProfileException {
 
         log.debug("Action {}: Attempting to schema validate incoming message", getId());
 
-        final MessageContext<XMLObject> msgCtx = profileRequestContext.getInboundMessageContext();
-        if (msgCtx == null) {
-            log.debug("Action {}: Inbound message context is null, unable to proceed", getId());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
-            return;
-        }
-
-        final XMLObject request = msgCtx.getMessage();
-        if (request == null) {
-            log.debug("Action {}: Inbound message context did not contain a message, unable to proceed", getId());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
-            return;
-        }
-
-        final Element requestElem = request.getDOM();
-        if (requestElem == null) {
-            log.debug("Action {}: Inbound message doesn't contain a DOM, unable to proceed", getId());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
-            return;
-        }
-
         try {
             final Validator schemaValidator = validationSchema.newValidator();
-            schemaValidator.validate(new DOMSource(requestElem));
+            schemaValidator.validate(new DOMSource(message.getDOM()));
         } catch (SAXException e) {
-            log.debug("Action {}: Incoming request {} is not schema valid",
-                    new Object[] {getId(), request.getElementQName(), e});
+            log.debug("Action {}: Incoming message {} is not schema-valid",
+                    new Object[] {getId(), message.getElementQName(), e});
             ActionSupport.buildEvent(profileRequestContext, SCHEMA_INVALID);
             return;
         } catch (IOException e) {
