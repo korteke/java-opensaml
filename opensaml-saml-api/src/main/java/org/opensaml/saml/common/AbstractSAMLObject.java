@@ -47,7 +47,7 @@ public abstract class AbstractSAMLObject extends AbstractXMLObject {
     }
     
     /** {@inheritDoc} */
-    public final int hashCode() {
+    public int hashCode() {
         return super.hashCode();
     }
 
