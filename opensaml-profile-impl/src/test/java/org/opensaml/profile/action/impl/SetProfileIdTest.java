@@ -32,8 +32,7 @@ public class SetProfileIdTest {
 
     @Test
     public void testInstantiation() {
-        SetProfileId action = new SetProfileId("foo");
-        Assert.assertEquals(action.getProfileId(), "foo");
+        new SetProfileId("foo");
 
         try {
             new SetProfileId(null);
