@@ -19,8 +19,6 @@ package org.opensaml.soap.soap11.decoder.http;
 
 import java.io.IOException;
 
-import javax.annotation.Nullable;
-
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.xml.XMLObject;
@@ -28,7 +26,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.handler.MessageHandler;
+import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
@@ -122,31 +120,20 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         return Resources.toByteArray(getClass().getResource(resourceName));
     }
 
-    public class TestEnvelopeBodyHandler implements MessageHandler<Envelope> {
+    public class TestEnvelopeBodyHandler extends AbstractMessageHandler<Envelope> {
         /** {@inheritDoc} */
-        public void invoke(MessageContext msgContext) throws MessageHandlerException {
+        protected void doInvoke(MessageContext msgContext) throws MessageHandlerException {
             Envelope env = (Envelope) msgContext.getSubcontext(SOAP11Context.class).getEnvelope();
             msgContext.setMessage(env);
         }
-
-        /** {@inheritDoc} */
-        @Nullable public String getId() {
-            return null;
-        }
     }
     
-    public class TestPayloadBodyHandler implements MessageHandler<Envelope> {
+    public class TestPayloadBodyHandler extends AbstractMessageHandler<Envelope> {
         /** {@inheritDoc} */
-        public void invoke(MessageContext msgContext) throws MessageHandlerException {
+        protected void doInvoke(MessageContext msgContext) throws MessageHandlerException {
             Envelope env = (Envelope) msgContext.getSubcontext(SOAP11Context.class).getEnvelope();
             msgContext.setMessage(env.getBody().getUnknownXMLObjects().get(0));
         }
-
-        /** {@inheritDoc} */
-        @Nullable public String getId() {
-            return null;
-        }
-        
     }
     
 }
