@@ -24,8 +24,6 @@ import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
-import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 
 //TODO perf metrics
@@ -36,9 +34,9 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType> extends
-        AbstractIdentifiableInitializableComponent implements ValidatableComponent,
-        ProfileAction<InboundMessageType, OutboundMessageType> {
+public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType>
+    extends AbstractIdentifiableInitializableComponent
+    implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
     /**
      * Constructor.
@@ -54,11 +52,6 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     /** {@inheritDoc} */
     public synchronized void setId(String componentId) {
         super.setId(componentId);
-    }
-    
-    /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-        
     }
 
     /** {@inheritDoc} */

@@ -24,7 +24,6 @@ import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
-import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 
 /**
@@ -40,8 +39,8 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-public interface ProfileAction<InboundMessageType, OutboundMessageType> extends
-        IdentifiableComponent, InitializableComponent, ValidatableComponent {
+public interface ProfileAction<InboundMessageType, OutboundMessageType>
+    extends IdentifiableComponent, InitializableComponent {
 
     /**
      * Performs this action.
