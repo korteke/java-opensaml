@@ -20,6 +20,7 @@ package org.opensaml.messaging.handler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -31,23 +32,12 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the type of message being handled
  */
-public abstract class AbstractMessageHandler<MessageType> implements MessageHandler<MessageType> {
-
-    /** The handler unique identifier. */
-    private String id;
-
-    /** {@inheritDoc} */
-    @Nullable public String getId() {
-        return id;
-    }
+public abstract class AbstractMessageHandler<MessageType>
+    extends AbstractIdentifiableInitializableComponent implements MessageHandler<MessageType> {
     
-    /**
-     * Set the handler's unique identifier.
-     * 
-     * @param newId the handler's new unique identifier
-     */
+    /** {@inheritDoc} */
     public void setId(@Nullable final String newId) {
-        id = newId;
+        super.setId(newId);
     }
 
     /** {@inheritDoc} */

@@ -20,6 +20,7 @@ package org.opensaml.messaging.handler;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 import org.opensaml.messaging.context.MessageContext;
 
@@ -30,7 +31,7 @@ import org.opensaml.messaging.context.MessageContext;
  *
  * @param <MessageType> the type of message being handled
  */
-public interface MessageHandler<MessageType> extends IdentifiableComponent {
+public interface MessageHandler<MessageType> extends IdentifiableComponent, InitializableComponent {
     
     /**
      * Invoke the handler on the specified message context.
