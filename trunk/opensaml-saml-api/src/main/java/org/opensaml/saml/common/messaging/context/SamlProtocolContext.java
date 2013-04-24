@@ -34,9 +34,6 @@ public class SamlProtocolContext extends BaseContext {
     /** The SAML protocol in use. */
     private String protocol;
 
-    /** The relay state associated with the message. */
-    private String relayState;
-
     /** The role in which the SAML entity is operating. */
     private QName role;
 
@@ -76,21 +73,4 @@ public class SamlProtocolContext extends BaseContext {
         role = samlRole;
     }
 
-    /**
-     * Gets the relay state associated with this protocol exchange.
-     * 
-     * @return relay state associated with this protocol exchange, may be null
-     */
-    @Nullable @NotEmpty public String getRelayState() {
-        return relayState;
-    }
-
-    /**
-     * Sets the relay state associated with this protocol exchange.
-     * 
-     * @param state relay state associated with this protocol exchange
-     */
-    public void setRelayState(@Nullable String state) {
-        relayState = StringSupport.trimOrNull(state);
-    }
 }

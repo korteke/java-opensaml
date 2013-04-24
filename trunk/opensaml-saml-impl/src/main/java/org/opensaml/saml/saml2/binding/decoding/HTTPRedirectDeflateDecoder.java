@@ -33,7 +33,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.messaging.context.SamlBindingContext;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +62,7 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXmlMessage
 
         String relayState = request.getParameter("RelayState");
         log.debug("Decoded RelayState: {}", relayState);
-        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState(relayState);
+        SAMLBindingSupport.setRelayState(messageContext, relayState);
 
         InputStream samlMessageIns;
         if (!Strings.isNullOrEmpty(request.getParameter("SAMLRequest"))) {

@@ -26,9 +26,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.messaging.context.SamlBindingContext;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder
 
         String relayState = StringSupport.trim(request.getParameter("RelayState"));
         log.debug("Decoded SAML relay state of: {}", relayState);
-        messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState(relayState);
+        SAMLBindingSupport.setRelayState(messageContext, relayState);
         
         processArtifact(messageContext, request);
 

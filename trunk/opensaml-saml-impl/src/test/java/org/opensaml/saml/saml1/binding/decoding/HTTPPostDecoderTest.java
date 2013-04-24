@@ -26,7 +26,8 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.common.messaging.context.SamlBindingContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
@@ -72,7 +73,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         MessageContext<SAMLObject> messageContext = decoder.getMessageContext();
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
-        Assert.assertEquals(messageContext.getSubcontext(SamlProtocolContext.class).getRelayState(), expectedRelayValue);
+        Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
     }
 
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {

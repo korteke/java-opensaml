@@ -36,7 +36,7 @@ import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlBindingContext;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +59,26 @@ public final class SAMLBindingSupport {
      * @return the relay state or null
      */
     @Nullable public static String getRelayState(@Nonnull final MessageContext<SAMLObject> messageContext) {
-        SamlProtocolContext protocolContext = messageContext.getSubcontext(SamlProtocolContext.class);
-        if (protocolContext == null) { 
+        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class);
+        if (bindingContext == null) { 
             return null;
         } else {
-            return protocolContext.getRelayState();
+            return bindingContext.getRelayState();
+        }
+    }
+    
+    /**
+     * Set the SAML protocol relay state on a message context.
+     * 
+     * @param messageContext the message context on which to operate
+     * @return the relay state or null
+     */
+    public static void setRelayState(@Nonnull final MessageContext<SAMLObject> messageContext, 
+            @Nullable String relayState) {
+        String trimmedState = StringSupport.trimOrNull(relayState);
+        if (trimmedState != null) {
+            SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+            bindingContext.setRelayState(trimmedState);
         }
     }
     
