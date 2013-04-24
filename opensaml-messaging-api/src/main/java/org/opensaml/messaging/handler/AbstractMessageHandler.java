@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.handler;
 
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -36,6 +38,15 @@ import org.opensaml.messaging.context.MessageContext;
 public abstract class AbstractMessageHandler<MessageType>
     extends AbstractIdentifiableInitializableComponent implements MessageHandler<MessageType> {
     
+    /**
+     * Constructor.
+     *
+     */
+    public AbstractMessageHandler() {
+        super();
+        setId(UUID.randomUUID().toString());
+    }
+
     /** {@inheritDoc} */
     public void setId(@Nullable final String newId) {
         super.setId(newId);
