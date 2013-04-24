@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -36,7 +37,6 @@ import org.opensaml.saml.common.messaging.context.SamlBindingContext;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
-import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,15 +134,33 @@ public final class SAMLBindingSupport {
     }
     
     /**
-     * Sets the destination attribute on the outbound message if it is a {@link StatusResponseType} message.
+     * Sets the destination attribute on the outbound message if it is a 
+     * {@link org.opensaml.saml.saml1.core.ResponseAbstractType} message.
      * 
      * @param outboundMessage outbound SAML message
      * @param endpointURL destination endpoint
      */
-    public static void setSaml2ResponseDestination(@Nonnull final SAMLObject outboundMessage, 
-            @Nullable final String endpointURL) {
-        if (outboundMessage instanceof StatusResponseType) {
-            ((StatusResponseType) outboundMessage).setDestination(endpointURL);
+    public static void setSaml1ResponseRecipient(@Nonnull final SAMLObject outboundMessage, 
+            @Nonnull @NotEmpty final String endpointURL) {
+        if (outboundMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
+            ((org.opensaml.saml.saml1.core.ResponseAbstractType) outboundMessage).setRecipient(endpointURL);
+        }
+    }
+    
+    /**
+     * Sets the destination attribute on an outbound message if it is either a 
+     * {@link org.opensaml.saml.saml2.core.RequestAbstractType} or a 
+     * {@link org.opensaml.saml.saml2.core.StatusResponseType} message.
+     * 
+     * @param outboundMessage outbound SAML message
+     * @param endpointURL destination endpoint
+     */
+    public static void setSaml2Destination(@Nonnull final SAMLObject outboundMessage, 
+            @Nonnull @NotEmpty final String endpointURL) {
+        if (outboundMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
+            ((org.opensaml.saml.saml2.core.RequestAbstractType) outboundMessage).setDestination(endpointURL);
+        } else if (outboundMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
+            ((org.opensaml.saml.saml2.core.StatusResponseType) outboundMessage).setDestination(endpointURL);
         }
     }
     

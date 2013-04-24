@@ -25,6 +25,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.binding.SAMLOutboundDestinationHandler;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
@@ -98,6 +99,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SamlPeerEntityContext.class, true)
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
         
+        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.invoke(messageContext);
+        
         MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPPostEncoder encoder = new HTTPPostEncoder();
@@ -139,6 +143,9 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SamlPeerEntityContext.class, true)
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
         
+        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.invoke(messageContext);
+        
         MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPPostEncoder encoder = new HTTPPostEncoder();
@@ -155,6 +162,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
-        Assert.assertEquals(response.getContentAsString().hashCode(), 1039626476);
+        Assert.assertEquals(response.getContentAsString().hashCode(), -1498470454);
+        
     }
 }
