@@ -28,6 +28,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.binding.SAMLOutboundDestinationHandler;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
@@ -87,6 +88,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SamlPeerEntityContext.class, true)
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
         
+        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.invoke(messageContext);
+        
         MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
@@ -144,6 +148,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         MockSignatureSigningConfiguration mockSigningConfig = new MockSignatureSigningConfiguration();
         mockSigningConfig.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
         messageContext.getSubcontext(SamlSigningContext.class, true).setSigningConfiguration(mockSigningConfig);
+        
+        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.invoke(messageContext);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         

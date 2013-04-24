@@ -138,10 +138,6 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             throw new MessageEncodingException("No outbound SAML message contained in message context");
         }
         String endpointURL = getEndpointURL(messageContext).toString();
-
-        if (outboundMessage instanceof ResponseAbstractType) {
-            ((ResponseAbstractType) outboundMessage).setRecipient(endpointURL);
-        }
         
         postEncode(messageContext, endpointURL);
     }

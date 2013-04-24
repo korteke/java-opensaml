@@ -87,7 +87,6 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         SAMLObject outboundMessage = messageContext.getMessage();
 
         String endpointURL = getEndpointURL(messageContext).toString();
-        SAMLBindingSupport.setSaml2ResponseDestination(outboundMessage, endpointURL);
 
         removeSignature(outboundMessage);
 

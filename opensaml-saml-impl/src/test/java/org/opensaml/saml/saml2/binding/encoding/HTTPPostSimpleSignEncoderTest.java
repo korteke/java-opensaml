@@ -27,6 +27,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.binding.SAMLOutboundDestinationHandler;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
@@ -103,6 +104,9 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SamlProtocolContext.class, true).setRelayState("relay");
         messageContext.getSubcontext(SamlPeerEntityContext.class, true)
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        
+        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.invoke(messageContext);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         
