@@ -18,9 +18,11 @@
 package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.BaseContext;
 
@@ -31,6 +33,9 @@ import com.google.common.base.Strings;
  */
 public class SamlBindingContext extends BaseContext {
     
+    /** The relay state associated with the message. */
+    private String relayState;
+    
     /** The binding URI. */
     private String bindingUri;
     
@@ -40,6 +45,24 @@ public class SamlBindingContext extends BaseContext {
     /** Flag indicating whether the binding in use requires the presence within the message 
      * of information indicating the intended message destination endpoint URI. */
     private boolean isIntendedDestinationEndpointUriRequired;
+    
+    /**
+     * Gets the relay state.
+     * 
+     * @return relay state associated with this protocol exchange, may be null
+     */
+    @Nullable @NotEmpty public String getRelayState() {
+        return relayState;
+    }
+
+    /**
+     * Sets the relay state.
+     * 
+     * @param state relay state associated with this protocol exchange
+     */
+    public void setRelayState(@Nullable String state) {
+        relayState = StringSupport.trimOrNull(state);
+    }
 
     /**
      * Get the SAML binding URI.

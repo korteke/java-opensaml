@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.binding.decoding;
 
 import java.io.ByteArrayOutputStream;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,7 +33,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
@@ -81,7 +80,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = decoder.getMessageContext();
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
-        Assert.assertEquals(messageContext.getSubcontext(SamlProtocolContext.class).getRelayState(), expectedRelayValue);
+        Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
     }
 
     @Test
@@ -96,7 +95,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         MessageContext<SAMLObject> messageContext = decoder.getMessageContext();
 
         Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
-        Assert.assertEquals(messageContext.getSubcontext(SamlProtocolContext.class).getRelayState(), expectedRelayValue);
+        Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
     }
 
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {
