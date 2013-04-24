@@ -40,11 +40,11 @@ import org.xml.sax.SAXException;
 /**
  * An action that schema validates inbound XML messages.
  * 
- * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
- * @event {@link org.opensaml.profile.action.EventIds#INVALID_MSG_CTX} "No inbound message context or message"
- * @event {@link #SCHEMA_INVALID} "Inbound message was schema invalid"
- * @pre ProfileRequestContext.getInboundMessageContext().getMessage().getDOM() != null
- * @post None.
+ * @event
+ * {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID} <br/>
+ * {@link org.opensaml.profile.action.EventIds#INVALID_MSG_CTX} <br/>
+ * {@link #SCHEMA_INVALID}
+ * @pre <pre>ProfileRequestContext.getInboundMessageContext().getMessage().getDOM() != null</pre>
  */
 public class SchemaValidateXmlMessage extends AbstractProfileAction<XMLObject, Object> {
 
