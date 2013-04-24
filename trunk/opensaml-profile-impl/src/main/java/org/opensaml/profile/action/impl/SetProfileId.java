@@ -30,10 +30,8 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 /**
  * A profile action that sets the ID of the profile in use.
  * 
- *
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
- * @pre None
- * @post ProfileRequestContext.profileId != null
+ * @post <pre>ProfileRequestContext.profileId != null</pre>
  */
 public class SetProfileId extends AbstractProfileAction {
 
