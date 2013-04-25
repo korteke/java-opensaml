@@ -19,10 +19,10 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 
-import org.junit.Assert;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /** Unit test for {@link AbstractProfileAction}. */
@@ -67,7 +67,8 @@ public class AbstractProfileActionTest {
 
         try {
             action.execute(new ProfileRequestContext());
-        } catch (ProfileException e) {
+        } catch (NullPointerException e) {
+            Assert.assertTrue(e.getSuppressed()[0] instanceof ProfileException);
             Assert.assertTrue(action.didPre);
             Assert.assertFalse(action.didExec);
             Assert.assertFalse(action.didPost);
@@ -83,7 +84,8 @@ public class AbstractProfileActionTest {
 
         try {
             action.execute(new ProfileRequestContext());
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
+            Assert.assertTrue(e.getSuppressed()[0] instanceof IllegalArgumentException);
             Assert.assertTrue(action.didPre);
             Assert.assertFalse(action.didExec);
             Assert.assertTrue(action.didPost);

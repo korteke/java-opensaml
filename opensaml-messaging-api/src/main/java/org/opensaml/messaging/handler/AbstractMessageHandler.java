@@ -56,9 +56,10 @@ public abstract class AbstractMessageHandler<MessageType>
     public void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        // The try/catch logic is designed to favor a checked ProfileException raised by
-        // the doExecute step over any unchecked errors. It also favors an unchecked error
-        // from doExecute over one raised by doPostExecute.
+        // The try/catch logic is designed to suppress a checked exception raised by
+        // the doInvoke step by any unchecked errors in the doPostInvoke method.
+        // The original exception is logged, and can be accessed from the suppressing
+        // error object using the Java 7 API.
         
         if (doPreInvoke(messageContext)) {
             try {
@@ -66,19 +67,25 @@ public abstract class AbstractMessageHandler<MessageType>
             } catch (MessageHandlerException e) {
                 try {
                     doPostInvoke(messageContext, e);
-                } catch (RuntimeException re) {
-                    Logger.getInstance(AbstractMessageHandler.class).warn(
-                            "Runtime exception thrown by doPostInvoke of " + getId(), re);
+                } catch (Throwable t) {
+                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                            + " Unchecked exception/error thrown by doPostInvoke, "
+                            + "superseding a MessageHandlerException ", e);
+                    t.addSuppressed(e);
+                    throw t;
                 }
                 throw e;
-            } catch (RuntimeException e) {
+            } catch (Throwable t) {
                 try {
-                    doPostInvoke(messageContext, e);
-                } catch (RuntimeException re) {
-                    Logger.getInstance(AbstractMessageHandler.class).warn(
-                            "Runtime exception thrown by doPostInvoke of " + getId(), re);
+                    doPostInvoke(messageContext);
+                } catch (Throwable t2) {
+                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                            + " Unchecked exception/error thrown by doPostInvoke, "
+                            + "superseding an unchecked exception/error ", t);
+                    t2.addSuppressed(t);
+                    throw t2;
                 }
-                throw e;
+                throw t;
             }
 
             doPostInvoke(messageContext);

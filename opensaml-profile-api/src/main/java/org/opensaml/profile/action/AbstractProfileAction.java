@@ -20,6 +20,7 @@ package org.opensaml.profile.action;
 import javax.annotation.Nonnull;
 
 import org.apache.log4j.Logger;
+import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -59,9 +60,10 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
         
-        // The try/catch logic is designed to favor a checked ProfileException raised by
-        // the doExecute step over any unchecked errors. It also favors an unchecked error
-        // from doExecute over one raised by doPostExecute.
+        // The try/catch logic is designed to suppress a checked exception raised by
+        // the doInvoke step by any unchecked errors in the doPostInvoke method.
+        // The original exception is logged, and can be accessed from the suppressing
+        // error object using the Java 7 API.
         
         if (doPreExecute(profileRequestContext)) {
             try {
@@ -69,19 +71,25 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             } catch (ProfileException e) {
                 try {
                     doPostExecute(profileRequestContext, e);
-                } catch (RuntimeException re) {
-                    Logger.getInstance(AbstractProfileAction.class).warn(
-                            "Runtime exception thrown by doPostExecute of " + getId(), re);
+                } catch (Throwable t) {
+                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                            + " Unchecked exception/error thrown by doPostInvoke, "
+                            + "superseding a MessageHandlerException ", e);
+                    t.addSuppressed(e);
+                    throw t;
                 }
                 throw e;
-            } catch (RuntimeException e) {
+            } catch (Throwable t) {
                 try {
-                    doPostExecute(profileRequestContext, e);
-                } catch (RuntimeException re) {
-                    Logger.getInstance(AbstractProfileAction.class).warn(
-                            "Runtime exception thrown by doPostExecute of " + getId(), re);
+                    doPostExecute(profileRequestContext);
+                } catch (Throwable t2) {
+                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                            + " Unchecked exception/error thrown by doPostInvoke, "
+                            + "superseding an unchecked exception/error ", t);
+                    t2.addSuppressed(t);
+                    throw t2;
                 }
-                throw e;
+                throw t;
             }
 
             doPostExecute(profileRequestContext);
@@ -159,4 +167,14 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             @Nonnull final Exception e) {
         doPostExecute(profileRequestContext);
     }    
+
+    /**
+     * Return a prefix for logging messages for this component.
+     * 
+     * @return a string for insertion at the beginning of any log messages
+     */
+    @Nonnull protected String getLogPrefix() {
+        return "Profile Action " + getId() + ":";
+    }
+
 }
