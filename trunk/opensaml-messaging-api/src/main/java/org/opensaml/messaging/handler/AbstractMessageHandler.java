@@ -51,7 +51,7 @@ public abstract class AbstractMessageHandler<MessageType>
     public void setId(@Nullable final String newId) {
         super.setId(newId);
     }
-
+    
     /** {@inheritDoc} */
     public void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
@@ -145,6 +145,15 @@ public abstract class AbstractMessageHandler<MessageType>
     protected void doPostInvoke(@Nonnull final MessageContext<MessageType> messageContext,
             @Nonnull final Exception e) {
         doPostInvoke(messageContext);
+    }
+    
+    /**
+     * Return a prefix for logging messages for this component.
+     * 
+     * @return a string for insertion at the beginning of any log messages
+     */
+    @Nonnull protected String getLogPrefix() {
+        return "Message Handler " + getId() + ":";
     }
     
 }
