@@ -20,7 +20,6 @@ package org.opensaml.profile.action;
 import javax.annotation.Nonnull;
 
 import org.apache.log4j.Logger;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -72,7 +71,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
                 try {
                     doPostExecute(profileRequestContext, e);
                 } catch (Throwable t) {
-                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                    Logger.getInstance(AbstractProfileAction.class).warn(getLogPrefix()
                             + " Unchecked exception/error thrown by doPostInvoke, "
                             + "superseding a MessageHandlerException ", e);
                     t.addSuppressed(e);
@@ -83,7 +82,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
                 try {
                     doPostExecute(profileRequestContext);
                 } catch (Throwable t2) {
-                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                    Logger.getInstance(AbstractProfileAction.class).warn(getLogPrefix()
                             + " Unchecked exception/error thrown by doPostInvoke, "
                             + "superseding an unchecked exception/error ", t);
                     t2.addSuppressed(t);
