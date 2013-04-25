@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.profile.action.impl;
+package org.opensaml.messaging.handler.impl;
 
 import javax.xml.validation.Schema;
 
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
-import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.action.impl.SchemaValidateXmlMessage;
-import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.messaging.handler.impl.SchemaValidateXmlMessage;
 import net.shibboleth.utilities.java.support.resource.ClasspathResource;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
@@ -41,15 +39,15 @@ import org.testng.annotations.Test;
 public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
 
     /** Simple xml object schema file. */
-    private static final String SCHEMA_FILE = "org/opensaml/profile/action/impl/schemaValidateXmlMessageTest-schema.xsd";
+    private static final String SCHEMA_FILE = "org/opensaml/messaging/handler/impl/schemaValidateXmlMessageTest-schema.xsd";
 
     /** Invalid xml file. */
     private static final String INVALID_XML_FILE =
-            "org/opensaml/profile/action/impl/schemaValidateXmlMessageTest-invalid.xml";
+            "org/opensaml/messaging/handler/impl/schemaValidateXmlMessageTest-invalid.xml";
 
     /** Valid xml file. */
     private static final String VALID_XML_FILE =
-            "org/opensaml/profile/action/impl/schemaValidateXmlMessageTest-valid.xml";
+            "org/opensaml/messaging/handler/impl/schemaValidateXmlMessageTest-valid.xml";
 
     /** The simple xml object schema. */
     private Schema schema;
@@ -68,39 +66,47 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
     }
 
     /** Test a null inbound message context. */
-    @Test public void testNullInboundMessageContext() throws Exception {
+    @Test
+    public void testNullInboundMessageContext() throws Exception {
 
-        SchemaValidateXmlMessage action = new SchemaValidateXmlMessage(schema);
-        action.initialize();
+        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        handler.initialize();
 
-        ProfileRequestContext profileRequestContext = new ProfileRequestContext();
+        MessageContext messageContext = new MessageContext();
 
-        action.execute(profileRequestContext);
-
-        ActionTestingSupport.assertEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
+        try {
+            handler.invoke(messageContext);
+        } catch (MessageHandlerException e) {
+            
+        }
     }
 
     /** Test a null dom. */
     @Test public void testNullDom() throws Exception {
 
-        SchemaValidateXmlMessage action = new SchemaValidateXmlMessage(schema);
-        action.initialize();
+        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        handler.initialize();
+
+        MessageContext messageContext = new MessageContext();
 
         SimpleXMLObject simpleXml = new SimpleXMLObjectBuilder().buildObject();
 
-        ProfileRequestContext profileRequestContext =
-                new RequestContextBuilder().setInboundMessage(simpleXml).buildProfileRequestContext();
+        messageContext.setMessage(simpleXml);
         
-        action.execute(profileRequestContext);
-
-        ActionTestingSupport.assertEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
+        try {
+            handler.invoke(messageContext);
+        } catch (MessageHandlerException e) {
+            
+        }
     }
 
     /** Test validation of an invalid xml file. */
     @Test public void testInvalidSchema() throws Exception {
 
-        SchemaValidateXmlMessage action = new SchemaValidateXmlMessage(schema);
-        action.initialize();
+        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        handler.initialize();
+
+        MessageContext messageContext = new MessageContext();
 
         Resource invalidXmlResource = new ClasspathResource(INVALID_XML_FILE);
         invalidXmlResource.initialize();
@@ -108,30 +114,30 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
         XMLObject invalidXml =
                 XMLObjectSupport.unmarshallFromInputStream(parserPool, invalidXmlResource.getInputStream());
 
-        ProfileRequestContext profileRequestContext =
-                new RequestContextBuilder().setInboundMessage(invalidXml).buildProfileRequestContext();
+        messageContext.setMessage(invalidXml);
                 
-        action.execute(profileRequestContext);
-
-        ActionTestingSupport.assertEvent(profileRequestContext, SchemaValidateXmlMessage.SCHEMA_INVALID);
+        try {
+            handler.invoke(messageContext);
+        } catch (MessageHandlerException e) {
+            
+        }
     }
 
     /** Test validation of a valid xml file. */
     @Test public void testValidSchema() throws Exception {
 
-        SchemaValidateXmlMessage action = new SchemaValidateXmlMessage(schema);
-        action.initialize();
+        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        handler.initialize();
+
+        MessageContext messageContext = new MessageContext();
 
         Resource validXmlResource = new ClasspathResource(VALID_XML_FILE);
         validXmlResource.initialize();
 
         XMLObject validXml = XMLObjectSupport.unmarshallFromInputStream(parserPool, validXmlResource.getInputStream());
 
-        ProfileRequestContext profileRequestContext =
-                new RequestContextBuilder().setInboundMessage(validXml).buildProfileRequestContext();
+        messageContext.setMessage(validXml);
         
-        action.execute(profileRequestContext);
-
-        ActionTestingSupport.assertProceedEvent(profileRequestContext);
+        handler.invoke(messageContext);
     }
 }
