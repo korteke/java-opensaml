@@ -18,10 +18,9 @@
 package org.opensaml.util.storage;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
-import com.google.common.base.Optional;
 
 /**
  * Represents a versioned record in a {@link StorageService}.
@@ -41,12 +40,12 @@ public class StorageRecord {
      * Constructor.
      *
      * @param val   value
-     * @param exp   optional expiration
+     * @param exp   expiration, or null if none
      */
-    public StorageRecord(@Nonnull @NotEmpty final String val, @Nonnull final Optional<Long> exp) {
+    public StorageRecord(@Nonnull @NotEmpty final String val, @Nullable final Long exp) {
         version = 1;
         value = val;
-        expiration = exp.orNull();
+        expiration = exp;
     }
     
     /**
@@ -68,12 +67,12 @@ public class StorageRecord {
     }
 
     /**
-     * Get the optional record expiration.
+     * Get the record expiration.
      * 
-     * @return  the optional record expiration
+     * @return  the record expiration, or null if none
      */
-    @Nonnull public Optional<Long> getExpiration() {
-        return Optional.fromNullable(expiration);
+    @Nullable public Long getExpiration() {
+        return expiration;
     }
 
     /**
@@ -86,12 +85,12 @@ public class StorageRecord {
     }
     
     /**
-     * Set the optional record expiration.
+     * Set the record expiration.
      * 
-     * @param exp   the new record expiration
+     * @param exp   the new record expiration, or null if none
      */
-    protected void setExpiration(@Nonnull Optional<Long> exp) {
-        expiration = exp.orNull();
+    protected void setExpiration(@Nullable Long exp) {
+        expiration = exp;
     }
     
     /**

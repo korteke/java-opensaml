@@ -18,12 +18,11 @@
 package org.opensaml.util.storage.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.util.storage.StorageRecord;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
-import com.google.common.base.Optional;
 
 /**
  * Exposes mutation of {@link StorageRecord} properties.
@@ -34,35 +33,23 @@ public class MutableStorageRecord extends StorageRecord {
      * Constructor.
      *
      * @param val   value
-     * @param exp   optional expiration
+     * @param exp   expiration, or null if none
      */
-    public MutableStorageRecord(@Nonnull @NotEmpty final String val, @Nonnull final Optional<Long> exp) {
+    public MutableStorageRecord(@Nonnull @NotEmpty final String val, @Nullable final Long exp) {
         super(val, exp);
     }    
 
-    /**
-     * Set the record value.
-     * 
-     * @param val   the new record value
-     */
+    /** {@inheritDoc} */
     public void setValue(@Nonnull @NotEmpty final String val) {
         super.setValue(val);
     }
-    
-    /**
-     * Set the optional record expiration.
-     * 
-     * @param exp   the new record expiration
-     */
-    public void setExpiration(@Nonnull Optional<Long> exp) {
+
+    /** {@inheritDoc} */
+    public void setExpiration(@Nullable Long exp) {
         super.setExpiration(exp);
     }
-    
-    /**
-     * Increment the record version and returns the new value.
-     * 
-     * @return  the updated version
-     */
+
+    /** {@inheritDoc} */
     public int incrementVersion() {
         return super.incrementVersion();
     }

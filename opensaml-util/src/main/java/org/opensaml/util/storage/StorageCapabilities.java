@@ -17,10 +17,6 @@
 
 package org.opensaml.util.storage;
 
-import javax.annotation.Nonnull;
-
-import com.google.common.base.Optional;
-
 /**
  * Exposes capabilities of a {@link StorageService} implementation.
  */
@@ -29,29 +25,29 @@ public interface StorageCapabilities {
     /**
      * Gets max size of context labels in characters.
      * 
-     * @return  max size of context labels in characters, if any
+     * @return  max size of context labels in characters
      */
-    @Nonnull public Optional<Integer> getContextSize();
+    public int getContextSize();
 
     /**
      * Gets max size of keys in characters.
      * 
-     * @return  max size of keys in characters, if any
+     * @return  max size of keys in characters
      */
-    @Nonnull public Optional<Integer> getKeySize();
+    public int getKeySize();
 
     /**
      * Gets max size of string values in characters.
      * 
-     * @return  max size of string values in characters, if any
+     * @return  max size of string values in characters
      */
-    @Nonnull public Optional<Integer> getStringSize();
+    public int getStringSize();
     
     /**
      * Gets max size of text values in characters.
      * 
-     * @return  max size of text values in characters, if any
+     * @return  max size of text values in characters
      */
-    @Nonnull public Optional<Long> getTextSize();
+    public long getTextSize();
 
 }

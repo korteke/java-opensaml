@@ -42,10 +42,10 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.util.storage.StorageCapabilities;
 import org.opensaml.util.storage.StorageRecord;
 import org.opensaml.util.storage.StorageService;
+import org.opensaml.util.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
@@ -161,128 +161,141 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     @Nonnull public StorageCapabilities getCapabilities() {
         return STORAGE_CAPS;
     }
-
+    
     /** {@inheritDoc} */
-    public boolean createString(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value, @Nonnull Optional<Long> expiration) throws IOException {
-
-        final Lock writeLock = lock.writeLock();
-        
-        try {
-            writeLock.lock();
-            
-            // Create new context if necessary.
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap == null) {
-                dataMap = new HashMap();
-                contextMap.put(context, dataMap);
-            }
-            
-            // Check for a duplicate.
-            StorageRecord record = dataMap.get(key);
-            if (record != null) {
-                // Not yet expired?
-                Optional<Long> exp = record.getExpiration();
-                if (!exp.isPresent() || System.currentTimeMillis() < (exp.get() * 1000)) {
-                    return false;
-                }
-                
-                // It's dead, so we can just remove it now and create the new record.
-            }
-            
-            dataMap.put(key, new MutableStorageRecord(value, expiration));
-            log.debug("Inserted record '{}' in context '{}' with expiration '{}'",
-                    new Object[] { key, context, expiration.or(0L)});
-            
-            return true;
-            
-        } finally {
-            writeLock.unlock();
-        }
+    public boolean createString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value) throws IOException {
+        return createStringImpl(context, key, value, null);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Pair<Optional<Integer>, Optional<StorageRecord>> readString(@Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nonnull Optional<Integer> version) throws IOException {
-
-        Lock readLock = lock.readLock();
-        try {
-            readLock.lock();
-            
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap == null) {
-                return new Pair(Optional.absent(), Optional.absent());
-            }
-
-            StorageRecord record = dataMap.get(key);
-            if (record == null) {
-                return new Pair(Optional.absent(), Optional.absent());
-            } else {
-                Optional<Long> exp = record.getExpiration();
-                if (exp.isPresent() && System.currentTimeMillis() >= (exp.get() * 1000)) {
-                    return new Pair(Optional.absent(), Optional.absent());
-                }
-            }
-            
-            if (version.isPresent() && record.getVersion() == version.get()) {
-                // Nothing's changed, so just echo back the version.
-                return new Pair(version, Optional.absent());
-            }
-            
-            return new Pair(Optional.of(record.getVersion()), Optional.of(record));
-            
-        } finally {
-            readLock.unlock();
-        }
+    public boolean createString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, final long expiration) throws IOException {
+        return createStringImpl(context, key, value, expiration);
+    }
+    
+    /** {@inheritDoc} */
+    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
+            @Nonnull @NotEmpty String value) throws IOException {
+        return createStringImpl(context, key, value, null);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Optional<Integer> updateString(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull Optional<String> value, @Nonnull Optional<Long> expiration, @Nonnull Optional<Integer> version)
+    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
+            @Nonnull @NotEmpty String value, final long expiration) throws IOException {
+        return createStringImpl(context, key, value, expiration);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public StorageRecord readString(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException {
+        return readStringImpl(context, key, null).getSecond();
+    }
+
+    /** {@inheritDoc} */
+    @Nonnull public Pair<Integer, StorageRecord> readString(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, final int version) throws IOException {
+        return readStringImpl(context, key, version);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public StorageRecord readText(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException {
+        return readStringImpl(context, key, null).getSecond();
+    }
+
+    /** {@inheritDoc} */
+    @Nonnull public Pair<Integer, StorageRecord> readText(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, final int version) throws IOException {
+        return readStringImpl(context, key, version);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateString(@Nonnull String context, @Nonnull String key, @Nonnull String value)
             throws IOException {
-
-        final Lock writeLock = lock.writeLock();
-        
         try {
-            writeLock.lock();
-
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap == null) {
-                return Optional.absent();
-            }            
-            
-            MutableStorageRecord record = dataMap.get(key);
-            if (record == null) {
-                return Optional.absent();
-            } else {
-                Optional<Long> exp = record.getExpiration();
-                if (exp.isPresent() && System.currentTimeMillis() >= (exp.get() * 1000)) {
-                    return Optional.absent();
-                }
-            }
-    
-            if (version.isPresent() && version.get() != record.getVersion()) {
-                // Caller is out of sync.
-                return Optional.of(-1);
-            }
-    
-            if (value.isPresent()) {
-                record.setValue(value.get());
-                record.incrementVersion();
-            }
-    
-            record.setExpiration(expiration);
-    
-            log.debug("Updated record '{}' in context '{}' with expiration '{}'",
-                    new Object[] { key, context, expiration.or(0L)});
-
-            return Optional.of(record.getVersion());
-            
-        } finally {
-            writeLock.unlock();
+            return updateStringImpl(null, context, key, value, null);
+        } catch (VersionMismatchException e) {
+            throw new IOException("Unexpected exception thrown by update.", e);
         }
     }
 
+    /** {@inheritDoc} */
+    @Nullable public Integer updateString(@Nonnull String context, @Nonnull String key, @Nonnull String value,
+            long expiration) throws IOException {
+        try {
+            return updateStringImpl(null, context, key, value, expiration);
+        } catch (VersionMismatchException e) {
+            throw new IOException("Unexpected exception thrown by update.", e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateStringWithVersion(int version, @Nonnull String context, @Nonnull String key,
+            @Nonnull String value) throws IOException, VersionMismatchException {
+        return updateStringImpl(version, context, key, value, null);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateStringWithVersion(int version, @Nonnull String context, @Nonnull String key,
+            @Nonnull String value, long expiration) throws IOException, VersionMismatchException {
+        return updateStringImpl(version, context, key, value, expiration);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateStringExpiration(@Nonnull String context, @Nonnull String key) throws IOException {
+        try {
+            return updateStringImpl(null, context, key, null, null);
+        } catch (VersionMismatchException e) {
+            throw new IOException("Unexpected exception thrown by update.", e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateStringExpiration(@Nonnull String context, @Nonnull String key, long expiration)
+            throws IOException {
+        try {
+            return updateStringImpl(null, context, key, null, expiration);
+        } catch (VersionMismatchException e) {
+            throw new IOException("Unexpected exception thrown by update.", e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateText(@Nonnull String context, @Nonnull String key, @Nonnull String value)
+            throws IOException {
+        return updateString(context, key, value);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateText(@Nonnull String context, @Nonnull String key, @Nonnull String value,
+            long expiration) throws IOException {
+        return updateString(context, key, value, expiration);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateTextWithVersion(int version, @Nonnull String context, @Nonnull String key,
+            @Nonnull String value) throws IOException, VersionMismatchException {
+        return updateStringImpl(version, context, key, value, null);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateTextWithVersion(int version, @Nonnull String context, @Nonnull String key,
+            @Nonnull String value, long expiration) throws IOException, VersionMismatchException {
+        return updateStringImpl(version, context, key, value, expiration);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateTextExpiration(@Nonnull String context, @Nonnull String key) throws IOException {
+        return updateStringExpiration(context, key);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateTextExpiration(@Nonnull String context, @Nonnull String key, long expiration)
+            throws IOException {
+        return updateStringExpiration(context, key, expiration);
+    }
+    
     /** {@inheritDoc} */
     public boolean deleteString(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key) throws IOException {
 
@@ -311,31 +324,30 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     }
 
     /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value, @Nonnull Optional<Long> expiration) throws IOException {
-        return createString(context, key, value, expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nonnull public Pair<Optional<Integer>, Optional<StorageRecord>> readText(@Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nonnull Optional<Integer> version) throws IOException {
-        return readString(context, key, version);
-    }
-
-    /** {@inheritDoc} */
-    @Nonnull public Optional<Integer> updateText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull Optional<String> value, @Nonnull Optional<Long> expiration, @Nonnull Optional<Integer> version)
-            throws IOException {
-        return updateString(context, key, value, expiration, version);
-    }
-
-    /** {@inheritDoc} */
     public boolean deleteText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key) throws IOException {
         return deleteString(context, key);
     }
 
     /** {@inheritDoc} */
-    public void updateContext(@Nonnull @NotEmpty String context, @Nonnull Optional<Long> expiration)
+    public void updateContextExpiration(@Nonnull @NotEmpty final String context) throws IOException {
+        updateContextExpirationImpl(context, null);
+    }
+
+    /** {@inheritDoc} */
+    public void updateContextExpiration(@Nonnull @NotEmpty final String context, final long expiration)
+            throws IOException {
+        updateContextExpirationImpl(context, expiration);
+    }
+    
+    /**
+     * Internal method to implement context update functions.
+     * 
+     * @param context       a storage context label
+     * @param expiration    a new expiration timestamp, or null
+     * 
+     * @throws IOException  if errors occur in the cleanup process
+     */
+    public void updateContextExpirationImpl(@Nonnull @NotEmpty String context, @Nullable Long expiration)
             throws IOException {
 
         final Lock writeLock = lock.writeLock();
@@ -347,12 +359,12 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
             if (dataMap != null) {    
                 Long now = System.currentTimeMillis();
                 for (MutableStorageRecord record : dataMap.values()) {
-                    final Optional<Long> exp = record.getExpiration();
-                    if (!exp.isPresent() || now < (exp.get() * 1000)) {
+                    final Long exp = record.getExpiration();
+                    if (exp == null || now < (exp * 1000)) {
                         record.setExpiration(expiration);
                     }
                 }
-                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration.or(0L));
+                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
             }
         } finally {
             writeLock.unlock();
@@ -395,6 +407,158 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
             writeLock.unlock();
         }
     }
+
+    /**
+     * Internal method to implement creation functions.
+     * 
+     * @param context       a storage context label
+     * @param key           a key unique to context
+     * @param value         value to store
+     * @param expiration    expiration for record, or null
+     * 
+     * @return  true iff record was inserted, false iff a duplicate was found
+     * @throws IOException  if fatal errors occur in the insertion process 
+     */
+    private boolean createStringImpl(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
+            @Nonnull @NotEmpty String value, @Nullable Long expiration) throws IOException {
+
+        final Lock writeLock = lock.writeLock();
+        
+        try {
+            writeLock.lock();
+            
+            // Create new context if necessary.
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap == null) {
+                dataMap = new HashMap();
+                contextMap.put(context, dataMap);
+            }
+            
+            // Check for a duplicate.
+            StorageRecord record = dataMap.get(key);
+            if (record != null) {
+                // Not yet expired?
+                Long exp = record.getExpiration();
+                if (exp == null || System.currentTimeMillis() < (exp * 1000)) {
+                    return false;
+                }
+                
+                // It's dead, so we can just remove it now and create the new record.
+            }
+            
+            dataMap.put(key, new MutableStorageRecord(value, expiration));
+            log.debug("Inserted record '{}' in context '{}' with expiration '{}'",
+                    new Object[] { key, context, expiration });
+            
+            return true;
+            
+        } finally {
+            writeLock.unlock();
+        }
+    }
+    
+    /**
+     * Internal method to implement read functions.
+     *
+     * @param context       a storage context label
+     * @param key           a key unique to context
+     * @param version       only return record if newer than optionally supplied version
+     * 
+     * @return  a pair consisting of the version of the record read back, if any, and the record itself
+     * @throws IOException  if errors occur in the read process 
+     */
+    @Nonnull private Pair<Integer, StorageRecord> readStringImpl(@Nonnull @NotEmpty String context,
+            @Nonnull @NotEmpty String key, @Nullable Integer version) throws IOException {
+
+        Lock readLock = lock.readLock();
+        try {
+            readLock.lock();
+            
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap == null) {
+                return new Pair();
+            }
+
+            StorageRecord record = dataMap.get(key);
+            if (record == null) {
+                return new Pair();
+            } else {
+                Long exp = record.getExpiration();
+                if (exp != null && System.currentTimeMillis() >= (exp * 1000)) {
+                    return new Pair();
+                }
+            }
+            
+            if (version != null && record.getVersion() == version) {
+                // Nothing's changed, so just echo back the version.
+                return new Pair(version, null);
+            }
+            
+            return new Pair(record.getVersion(), record);
+            
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    /**
+     * Internal method to implement update functions.
+     * 
+     * @param version       only update if the current version matches this value
+     * @param context       a storage context label
+     * @param key           a key unique to context
+     * @param value         updated value
+     * @param expiration    expiration for record. or null
+     * 
+     * @return the version of the record after update, null if no record exists
+     * @throws IOException  if errors occur in the update process
+     * @throws VersionMismatchException if the record has already been updated to a newer version
+     */
+    @Nullable private Integer updateStringImpl(@Nullable Integer version, @Nonnull @NotEmpty String context,
+            @Nonnull @NotEmpty String key, @Nullable String value, @Nullable Long expiration)
+                    throws IOException, VersionMismatchException {
+
+        final Lock writeLock = lock.writeLock();
+        
+        try {
+            writeLock.lock();
+
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap == null) {
+                return null;
+            }
+            
+            MutableStorageRecord record = dataMap.get(key);
+            if (record == null) {
+                return null;
+            } else {
+                Long exp = record.getExpiration();
+                if (exp != null && System.currentTimeMillis() >= (exp * 1000)) {
+                    return null;
+                }
+            }
+    
+            if (version != null && version != record.getVersion()) {
+                // Caller is out of sync.
+                throw new VersionMismatchException();
+            }
+    
+            if (value != null) {
+                record.setValue(value);
+                record.incrementVersion();
+            }
+    
+            record.setExpiration(expiration);
+    
+            log.debug("Updated record '{}' in context '{}' with expiration '{}'",
+                    new Object[] { key, context, expiration });
+
+            return record.getVersion();
+            
+        } finally {
+            writeLock.unlock();
+        }
+    }
     
     /**
      * Locates and removes expired records from the input map.
@@ -406,12 +570,12 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
      * 
      * @return  true iff anything was purged
      */
-    protected boolean reapWithLock(@Nonnull Map<String, MutableStorageRecord> dataMap, final long expiration) {
+    private boolean reapWithLock(@Nonnull Map<String, MutableStorageRecord> dataMap, final long expiration) {
         
         return Iterables.removeIf(dataMap.entrySet(), new Predicate<Entry<String, MutableStorageRecord>>() {
                 public boolean apply(@Nullable Entry<String, MutableStorageRecord> entry) {
-                    Optional<Long> exp = entry.getValue().getExpiration();
-                    return exp.isPresent() && (exp.get() * 1000) <= expiration;
+                    Long exp = entry.getValue().getExpiration();
+                    return exp != null && (exp * 1000) <= expiration;
                 }
             }
         );
@@ -463,23 +627,23 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     protected static class Capabilities implements StorageCapabilities {
 
         /** {@inheritDoc} */
-        public Optional<Integer> getContextSize() {
-            return Optional.absent();
+        public int getContextSize() {
+            return Integer.MAX_VALUE;
         }
 
         /** {@inheritDoc} */
-        public Optional<Integer> getKeySize() {
-            return Optional.absent();
+        public int getKeySize() {
+            return Integer.MAX_VALUE;
         }
 
         /** {@inheritDoc} */
-        public Optional<Integer> getStringSize() {
-            return Optional.absent();
+        public int getStringSize() {
+            return Integer.MAX_VALUE;
         }
 
         /** {@inheritDoc} */
-        public Optional<Long> getTextSize() {
-            return Optional.absent();
+        public long getTextSize() {
+            return Long.MAX_VALUE;
         }
         
     }
