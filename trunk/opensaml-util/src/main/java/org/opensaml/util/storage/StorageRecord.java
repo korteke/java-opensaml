@@ -17,15 +17,21 @@
 
 package org.opensaml.util.storage;
 
+import java.io.IOException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Represents a versioned record in a {@link StorageService}.
+ * 
+ * @param <Type> the object type represented by the record
  */
-public class StorageRecord {
+@NotThreadSafe
+public class StorageRecord<Type> {
 
     /** Version field. */
     private int version;
@@ -67,6 +73,17 @@ public class StorageRecord {
     }
 
     /**
+     * Get the record value, using a custom deserialization process.
+     * 
+     * @param serializer a custom (de)serialization process to apply
+     * @return  the record value
+     * @throws IOException if deserialization fails
+     */
+    @Nonnull public Type getValue(@Nonnull final StorageSerializer<Type> serializer) throws IOException {
+        return serializer.deserialize(value);
+    }
+    
+    /**
      * Get the record expiration.
      * 
      * @return  the record expiration, or null if none
@@ -82,6 +99,18 @@ public class StorageRecord {
      */
     protected void setValue(@Nonnull @NotEmpty final String val) {
         value = val;
+    }
+
+    /**
+     * Set the record value, using a custom serialization process.
+     * 
+     * @param instance  the new record value
+     * @param serializer a custom serialization process to apply
+     * @throws IOException if serialization fails
+     */
+    protected void setValue(@Nonnull final Type instance, @Nonnull final StorageSerializer<Type> serializer)
+            throws IOException {
+        value = serializer.serialize(instance);
     }
     
     /**

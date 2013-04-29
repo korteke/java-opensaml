@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
@@ -34,14 +33,11 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
+import org.opensaml.util.storage.AbstractStorageService;
 import org.opensaml.util.storage.StorageCapabilities;
 import org.opensaml.util.storage.StorageRecord;
-import org.opensaml.util.storage.StorageService;
 import org.opensaml.util.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +49,7 @@ import com.google.common.collect.Iterables;
 /**
  * Implementation of {@link StorageService} that stores data in-memory with no persistence.
  */
-public class MemoryStorageService extends AbstractDestructableIdentifiableInitializableComponent implements
-        StorageService {
+public class MemoryStorageService extends AbstractStorageService {
 
     /** Static instance of capabilities interface. */
     private static final StorageCapabilities STORAGE_CAPS = new Capabilities();
@@ -62,99 +57,24 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(MemoryStorageService.class);
 
-    /**
-     * Number of milliseconds between cleanup checks. Default value: {@value} (5 minutes)
-     */
-    private long cleanupInterval = 300000;
-
-    /** Timer used to schedule cleanup tasks. */
-    private Timer cleanupTaskTimer;
-
-    /** Task that cleans up expired records. */
-    private CleanupTask cleanupTask;
-    
     /** Map of contexts. */
     private Map<String, Map<String, MutableStorageRecord>> contextMap;
     
     /** A shared lock to synchronize access. */
     private ReadWriteLock lock;
-
-
-    /**
-     * Gets the number of milliseconds between one cleanup and another. A value of 0 or less indicates that no
-     * cleanup will be performed.
-     * 
-     * @return number of milliseconds between one cleanup and another
-     */
-    public long getCleanupInterval() {
-        return cleanupInterval;
-    }
-
-    /**
-     * Sets the number of milliseconds between one cleanup and another. A value of 0 or less indicates that no
-     * cleanup will be performed.
-     * 
-     * This setting cannot be changed after the service has been initialized.
-     * 
-     * @param interval number of milliseconds between one cleanup and another
-     */
-    public synchronized void setCleanupInterval(long interval) {
-        if (isInitialized()) {
-            return;
-        }
-
-        cleanupInterval = interval;
-    }
-
-    /**
-     * Gets the timer used to schedule cleanup tasks.
-     * 
-     * @return timer used to schedule cleanup tasks
-     */
-    @Nullable public Timer getCleanupTaskTimer() {
-        return cleanupTaskTimer;
-    }
-
-    /**
-     * Sets the timer used to schedule cleanup tasks.
-     * 
-     * This setting can not be changed after the service has been initialized.
-     * 
-     * @param timer timer used to schedule configuration reload tasks
-     */
-    public synchronized void setCleanupTaskTimer(@Nullable final Timer timer) {
-        if (isInitialized()) {
-            return;
-        }
-
-        cleanupTaskTimer = timer;
-    }
     
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         contextMap = new HashMap<String, Map<String, MutableStorageRecord>>();
         lock = new ReentrantReadWriteLock(true);
-
-        if (cleanupInterval > 0) {
-            Constraint.isNotNull(cleanupTaskTimer, "Cleanup task timer cannot be null");
-            cleanupTask = new CleanupTask();
-            cleanupTaskTimer.schedule(cleanupTask, cleanupInterval, cleanupInterval);
-        }
     }
 
     /** {@inheritDoc} */
     protected void doDestroy() {
-        cleanupTask.cancel();
-        cleanupTask = null;
+        super.doDestroy();
         contextMap = null;
         lock = null;
-        super.doDestroy();
-    }
-
-    /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-
     }
 
     /** {@inheritDoc} */
@@ -175,18 +95,6 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     }
     
     /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value) throws IOException {
-        return createStringImpl(context, key, value, null);
-    }
-
-    /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value, final long expiration) throws IOException {
-        return createStringImpl(context, key, value, expiration);
-    }
-
-    /** {@inheritDoc} */
     @Nullable public StorageRecord readString(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException {
         return readStringImpl(context, key, null).getSecond();
@@ -194,18 +102,6 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
 
     /** {@inheritDoc} */
     @Nonnull public Pair<Integer, StorageRecord> readString(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, final int version) throws IOException {
-        return readStringImpl(context, key, version);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public StorageRecord readText(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key) throws IOException {
-        return readStringImpl(context, key, null).getSecond();
-    }
-
-    /** {@inheritDoc} */
-    @Nonnull public Pair<Integer, StorageRecord> readText(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, final int version) throws IOException {
         return readStringImpl(context, key, version);
     }
@@ -262,41 +158,6 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateText(@Nonnull String context, @Nonnull String key, @Nonnull String value)
-            throws IOException {
-        return updateString(context, key, value);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateText(@Nonnull String context, @Nonnull String key, @Nonnull String value,
-            long expiration) throws IOException {
-        return updateString(context, key, value, expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextWithVersion(int version, @Nonnull String context, @Nonnull String key,
-            @Nonnull String value) throws IOException, VersionMismatchException {
-        return updateStringImpl(version, context, key, value, null);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextWithVersion(int version, @Nonnull String context, @Nonnull String key,
-            @Nonnull String value, long expiration) throws IOException, VersionMismatchException {
-        return updateStringImpl(version, context, key, value, expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextExpiration(@Nonnull String context, @Nonnull String key) throws IOException {
-        return updateStringExpiration(context, key);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextExpiration(@Nonnull String context, @Nonnull String key, long expiration)
-            throws IOException {
-        return updateStringExpiration(context, key, expiration);
-    }
-    
-    /** {@inheritDoc} */
     public boolean deleteString(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key) throws IOException {
 
         final Lock writeLock = lock.writeLock();
@@ -324,11 +185,6 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     }
 
     /** {@inheritDoc} */
-    public boolean deleteText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key) throws IOException {
-        return deleteString(context, key);
-    }
-
-    /** {@inheritDoc} */
     public void updateContextExpiration(@Nonnull @NotEmpty final String context) throws IOException {
         updateContextExpirationImpl(context, null);
     }
@@ -339,38 +195,6 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
         updateContextExpirationImpl(context, expiration);
     }
     
-    /**
-     * Internal method to implement context update functions.
-     * 
-     * @param context       a storage context label
-     * @param expiration    a new expiration timestamp, or null
-     * 
-     * @throws IOException  if errors occur in the cleanup process
-     */
-    public void updateContextExpirationImpl(@Nonnull @NotEmpty String context, @Nullable Long expiration)
-            throws IOException {
-
-        final Lock writeLock = lock.writeLock();
-        
-        try {
-            writeLock.lock();
-
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap != null) {    
-                Long now = System.currentTimeMillis();
-                for (MutableStorageRecord record : dataMap.values()) {
-                    final Long exp = record.getExpiration();
-                    if (exp == null || now < (exp * 1000)) {
-                        record.setExpiration(expiration);
-                    }
-                }
-                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
-            }
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
     /** {@inheritDoc} */
     public void deleteContext(@Nonnull @NotEmpty String context) throws IOException {
         
@@ -561,6 +385,38 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
     }
     
     /**
+     * Internal method to implement context update functions.
+     * 
+     * @param context       a storage context label
+     * @param expiration    a new expiration timestamp, or null
+     * 
+     * @throws IOException  if errors occur in the cleanup process
+     */
+    public void updateContextExpirationImpl(@Nonnull @NotEmpty String context, @Nullable Long expiration)
+            throws IOException {
+
+        final Lock writeLock = lock.writeLock();
+        
+        try {
+            writeLock.lock();
+
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap != null) {    
+                Long now = System.currentTimeMillis();
+                for (MutableStorageRecord record : dataMap.values()) {
+                    final Long exp = record.getExpiration();
+                    if (exp == null || now < (exp * 1000)) {
+                        record.setExpiration(expiration);
+                    }
+                }
+                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }    
+    
+    /**
      * Locates and removes expired records from the input map.
      * 
      * <p>This method <strong>MUST</strong> be called while holding a write lock.</p>
@@ -581,44 +437,43 @@ public class MemoryStorageService extends AbstractDestructableIdentifiableInitia
         );
     }
 
-    /**
-     * A task that removes expired records.
-     */
-    protected class CleanupTask extends TimerTask {
-
-        /** {@inheritDoc} */
-        public void run() {
-            log.info("Running cleanup task");
-            
-            final Long now = System.currentTimeMillis();
-            final Lock writeLock = lock.writeLock();
-            boolean purged = false;
-            
-            try {
-                writeLock.lock();
+    /** {@inheritDoc} */
+    @Nullable protected TimerTask getCleanupTask() {
+        return new TimerTask() {
+            /** {@inheritDoc} */
+            public void run() {
+                log.info("Running cleanup task");
                 
-                Collection<Map<String, MutableStorageRecord>> contexts = contextMap.values();
-                Iterator<Map<String, MutableStorageRecord>> i = contexts.iterator();
-                while (i.hasNext()) {
-                    final Map<String, MutableStorageRecord> context = i.next(); 
-                    if (reapWithLock(i.next(), now)) {
-                        purged = true;
-                        if (context.isEmpty()) {
-                            i.remove();
+                final Long now = System.currentTimeMillis();
+                final Lock writeLock = lock.writeLock();
+                boolean purged = false;
+                
+                try {
+                    writeLock.lock();
+                    
+                    Collection<Map<String, MutableStorageRecord>> contexts = contextMap.values();
+                    Iterator<Map<String, MutableStorageRecord>> i = contexts.iterator();
+                    while (i.hasNext()) {
+                        final Map<String, MutableStorageRecord> context = i.next(); 
+                        if (reapWithLock(i.next(), now)) {
+                            purged = true;
+                            if (context.isEmpty()) {
+                                i.remove();
+                            }
                         }
                     }
+                    
+                } finally {
+                    writeLock.unlock();
                 }
                 
-            } finally {
-                writeLock.unlock();
+                if (purged) {
+                    log.info("Purged expired record(s) from storage");
+                } else {
+                    log.info("No expired records found in storage");
+                }
             }
-            
-            if (purged) {
-                log.info("Purged expired record(s) from storage");
-            } else {
-                log.info("No expired records found in storage");
-            }
-        }
+        };
     }
     
     /**
