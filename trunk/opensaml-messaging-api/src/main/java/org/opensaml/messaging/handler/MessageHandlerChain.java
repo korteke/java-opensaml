@@ -19,7 +19,8 @@ package org.opensaml.messaging.handler;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 
 
 /**
@@ -36,6 +37,6 @@ public interface MessageHandlerChain<MessageType> extends MessageHandler<Message
      * 
      * @return the list of members of the handler chain
      */
-    @Nullable public List<MessageHandler<MessageType>> getHandlers();
+    @NonnullAfterInit @NonnullElements public List<MessageHandler<MessageType>> getHandlers();
     
 }
