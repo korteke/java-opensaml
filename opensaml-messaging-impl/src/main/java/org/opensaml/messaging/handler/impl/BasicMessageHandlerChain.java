@@ -18,10 +18,14 @@
 package org.opensaml.messaging.handler.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -30,7 +34,7 @@ import org.opensaml.messaging.handler.MessageHandlerChain;
 import org.opensaml.messaging.handler.MessageHandlerException;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Collections2;
 
 /**
  * A basic implementation of {@link MessageHandlerChain}.
@@ -41,7 +45,7 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
     implements MessageHandlerChain<MessageType> {
 
     /** The list of members of the handler chain. */
-    private List<MessageHandler<MessageType>> members;
+    @NonnullAfterInit @NonnullElements private List<MessageHandler<MessageType>> members;
     
     /** 
      * {@inheritDoc}
@@ -52,7 +56,7 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
      * </p>
      * 
      * */
-    @Nullable public List<MessageHandler<MessageType>> getHandlers() {
+    @NonnullAfterInit @NonnullElements public List<MessageHandler<MessageType>> getHandlers() {
         return members;
     }
     
@@ -66,20 +70,20 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
      * 
      * @param handlers the list of message handler members
      */
-    public void setHandlers(@Nullable final List<MessageHandler<MessageType>> handlers) {
+    public void setHandlers(@Nullable @NonnullElements final List<MessageHandler<MessageType>> handlers) {
         if (handlers != null) {
             ArrayList<MessageHandler<MessageType>> newMembers = new ArrayList<MessageHandler<MessageType>>();
-            newMembers.addAll(handlers);
+            newMembers.addAll(Collections2.filter(handlers, Predicates.notNull()));
             members = newMembers;
         } else {
-            members = null;
+            members = Collections.EMPTY_LIST;
         }
     }
 
     /** {@inheritDoc} */
     public void doInvoke(@Nonnull final MessageContext<MessageType> msgContext) throws MessageHandlerException {
         if (members != null) {
-            for (MessageHandler handler: Iterables.filter(members, Predicates.notNull())) {
+            for (MessageHandler handler: members) {
                 handler.invoke(msgContext);
             }
         }
