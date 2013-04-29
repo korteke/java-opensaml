@@ -37,9 +37,11 @@ import org.xml.sax.SAXException;
 /**
  * A handler that schema validates an XML-based message.
  * 
+ * @param <MessageType> type of message on which to operate
+ * 
  * @pre <pre>MessageContext.getMessage().getDOM() != null</pre>
  */
-public class SchemaValidateXmlMessage extends AbstractMessageHandler<XMLObject> {
+public class SchemaValidateXmlMessage<MessageType extends XMLObject> extends AbstractMessageHandler<MessageType> {
 
     /** Class logger. */
     private Logger log = LoggerFactory.getLogger(SchemaValidateXmlMessage.class);
@@ -66,7 +68,7 @@ public class SchemaValidateXmlMessage extends AbstractMessageHandler<XMLObject> 
     }
 
     /** {@inheritDoc} */
-    protected boolean doPreInvoke(@Nonnull final MessageContext<XMLObject> messageContext)
+    protected boolean doPreInvoke(@Nonnull final MessageContext<MessageType> messageContext)
             throws MessageHandlerException {
         
         if (messageContext.getMessage() == null) {
@@ -84,7 +86,7 @@ public class SchemaValidateXmlMessage extends AbstractMessageHandler<XMLObject> 
     }
     
     /** {@inheritDoc} */
-    protected void doInvoke(@Nonnull final MessageContext<XMLObject> messageContext)
+    protected void doInvoke(@Nonnull final MessageContext<MessageType> messageContext)
             throws MessageHandlerException {
 
         log.debug("{} Attempting to schema validate incoming message", getLogPrefix());

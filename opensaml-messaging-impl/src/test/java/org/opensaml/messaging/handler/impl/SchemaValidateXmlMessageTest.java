@@ -84,7 +84,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
     /** Test a null dom. */
     @Test public void testNullDom() throws Exception {
 
-        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        SchemaValidateXmlMessage<SimpleXMLObject> handler = new SchemaValidateXmlMessage(schema);
         handler.initialize();
 
         MessageContext messageContext = new MessageContext();
