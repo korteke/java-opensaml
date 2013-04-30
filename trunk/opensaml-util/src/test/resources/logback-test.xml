@@ -9,8 +9,6 @@
         </encoder>
     </appender>
 
-    <logger name="org.opensaml" level="debug" />
-
     <root>
         <level value="warn" />
         <appender-ref ref="STDOUT" />

@@ -136,9 +136,16 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     
     /** {@inheritDoc} */
     protected void doDestroy() {
-        cleanupTask.cancel();
-        cleanupTask = null;
+        if (cleanupTask != null) {
+            cleanupTask.cancel();
+            cleanupTask = null;
+        }
         super.doDestroy();
+    }
+
+    /** {@inheritDoc} */
+    public synchronized void setId(String componentId) {
+        super.setId(componentId);
     }
     
     /** {@inheritDoc} */
