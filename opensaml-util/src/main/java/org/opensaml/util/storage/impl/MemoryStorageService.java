@@ -429,7 +429,7 @@ public class MemoryStorageService extends AbstractStorageService {
     private boolean reapWithLock(@Nonnull Map<String, MutableStorageRecord> dataMap, final long expiration) {
         
         return Iterables.removeIf(dataMap.entrySet(), new Predicate<Entry<String, MutableStorageRecord>>() {
-                public boolean apply(@Nullable Entry<String, MutableStorageRecord> entry) {
+                public boolean apply(@Nullable final Entry<String, MutableStorageRecord> entry) {
                     Long exp = entry.getValue().getExpiration();
                     return exp != null && (exp * 1000) <= expiration;
                 }
@@ -455,7 +455,7 @@ public class MemoryStorageService extends AbstractStorageService {
                     Iterator<Map<String, MutableStorageRecord>> i = contexts.iterator();
                     while (i.hasNext()) {
                         final Map<String, MutableStorageRecord> context = i.next(); 
-                        if (reapWithLock(i.next(), now)) {
+                        if (reapWithLock(context, now)) {
                             purged = true;
                             if (context.isEmpty()) {
                                 i.remove();

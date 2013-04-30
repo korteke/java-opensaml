@@ -128,4 +128,21 @@ public abstract class StorageServiceTest {
             Assert.assertNull(rec);
         }
     }
+    
+    @Test
+    public void expiration() throws IOException, InterruptedException {
+        String context = Long.toString(random.nextLong());
+        
+        for (int i = 1; i <= 100; i++) {
+            shared.createText(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 5);
+        }
+
+        Thread.sleep(5 * 1000);
+        
+        for (int i = 1; i <= 100; i++) {
+            StorageRecord rec = shared.readText(context, Integer.toString(i));
+            Assert.assertNull(rec);
+        }
+    }
+    
 }
