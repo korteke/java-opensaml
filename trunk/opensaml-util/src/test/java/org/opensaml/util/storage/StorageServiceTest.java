@@ -145,4 +145,24 @@ public abstract class StorageServiceTest {
         }
     }
     
+    @Test
+    public void updates() throws IOException, VersionMismatchException {
+        String key = "key";
+        String context = Long.toString(random.nextLong());
+        
+        shared.createString(context, key, "foo");
+        
+        shared.updateStringWithVersion(1, context, key, "bar");
+        
+        try {
+            shared.updateStringWithVersion(1, context, key, "baz");
+            Assert.fail("updateStringWithVersion should have failed");
+        } catch (VersionMismatchException e) {
+            // expected
+        }
+        
+        StorageRecord rec = shared.readString(context, key);
+        Assert.assertNotNull(rec);
+        Assert.assertEquals(rec.getVersion(), 2);
+    }
 }
