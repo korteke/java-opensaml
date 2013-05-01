@@ -36,7 +36,6 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
     /** {@inheritDoc} */
     @Nonnull protected StorageService getStorageService() {
         MemoryStorageService ss = new MemoryStorageService();
-        ss.setId("mem");
         ss.setCleanupInterval(1000);
         ss.setCleanupTaskTimer(new Timer());
         return ss;
@@ -45,7 +44,6 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
     @Test
     public void invalidConfig() {
         MemoryStorageService ss = new MemoryStorageService();
-        ss.setId("foo");
         
         try {
             ss.initialize();
@@ -60,7 +58,6 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
     @Test
     public void validConfig() throws ComponentInitializationException {
         MemoryStorageService ss = new MemoryStorageService();
-        ss.setId("foo");
         ss.setCleanupTaskTimer(new Timer());
         
         ss.initialize();
