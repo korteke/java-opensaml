@@ -17,97 +17,127 @@
 
 package org.opensaml.util.storage;
 
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
+import java.io.IOException;
 
-import org.joda.time.DateTime;
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Tracks information associated with messages in order to detect message replays.
+ * Tracks non-replayable values in order to detect replays of the values, commonly used to track message identifiers.
  * 
- * This class is thread-safe and uses a basic reentrant lock to avoid corruption of the underlying store, as well as to
- * prevent race conditions with respect to replay checking.
+ * <p>This class is thread-safe and uses a synchronized method to prevent race conditions within the underlying
+ * store (lacking an atomic "check and insert" operation).</p>
  */
-@Deprecated
-public class ReplayCache {
+@ThreadSafe
+public class ReplayCache extends AbstractDestructableIdentifiableInitializableComponent {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(ReplayCache.class);
 
     /** Backing storage for the replay cache. */
-    private Map<String, ReplayCacheEntry> storage;
+    private StorageService storage;
 
-    /** Time, in milliseconds, that message state is valid. */
-    private long entryDuration;
-
-    /** Replay cache lock. */
-    private ReentrantLock cacheLock;
+    /** Flag controlling behavior on storage failure. */
+    private boolean strict;
+    
+    /**
+     * Get the backing store for the cache.
+     * 
+     * @return the backing store.
+     */
+    @NonnullAfterInit public StorageService getStorage() {
+        return storage;
+    }
+    
 
     /**
-     * Constructor.
+     * Set the backing store for the cache.
      * 
-     * @param cacheStorage the backing data store for this service
-     * @param duration default length of time that message state is valid
+     * @param storageService backing store to use
      */
-    public ReplayCache(Map<String, ReplayCacheEntry> cacheStorage, long duration) {
-        storage = cacheStorage;
-        entryDuration = duration;
-        cacheLock = new ReentrantLock(true);
+    public void setStorage(@Nonnull final StorageService storageService) {
+        storage = storageService;
+    }
+    
+
+    /**
+     * Get the strictness flag.
+     * 
+     * @return true iff we should treat storage failures as a replay
+     */
+    public boolean isStrict() {
+        return strict;
     }
 
     /**
-     * Checks if the message has been replayed. If the message has not been seen before then it is added to the list of
-     * seen of messages for the default duration.
+     * Set the strictness flag.
      * 
-     * @param issuerId unique ID of the message issuer
-     * @param messageId unique ID of the message
-     * 
-     * @return true if the given message ID has been seen before
+     * @param flag true iff we should treat storage failures as a replay
      */
-    public boolean isReplay(String issuerId, String messageId) {
-        log.debug("Attempting to acquire lock for replay cache check");
-        cacheLock.lock();
-        log.debug("Lock acquired");
+    public void setStrict(boolean flag) {
+        strict = flag;
+    }
+
+
+    /** {@inheritDoc} */ 
+    public void doInitialize() throws ComponentInitializationException {
+        if (storage == null) {
+            throw new ComponentInitializationException("StorageService cannot be null");
+        }
+    }
+    
+    /** {@inheritDoc} */
+    public synchronized void setId(@Nonnull @NotEmpty String componentId) {
+        super.setId(componentId);
+    }
+    
+    /**
+     * Returns true iff the check value is not found in the cache, and stores it.
+     * 
+     * @param context   a context label to subdivide the cache
+     * @param s         value to check
+     * @param expires   time (in seconds since epoch) for disposal of value from cache
+     * 
+     * @return true iff the check value is not found in the cache
+     */
+    public synchronized boolean check(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
+            final long expires) {
+
+        String key;
+        
+        StorageCapabilities caps = storage.getCapabilities();
+        if (context.length() > caps.getContextSize()) {
+            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
+            return false;
+        } else if (s.length() > caps.getKeySize()) {
+            key = DigestUtils.sha1(s).toString();
+        } else {
+            key = s;
+        }
 
         try {
-            boolean replayed = true;
-            String entryHash = issuerId + messageId;
-
-            ReplayCacheEntry cacheEntry = storage.get(entryHash);
-
-            if (cacheEntry == null || cacheEntry.isExpired()) {
-                if (log.isDebugEnabled()) {
-                    if (cacheEntry == null) {
-                        log.debug("Message ID {} was not a replay", messageId);
-                    } else if (cacheEntry.isExpired()) {
-                        log.debug("Message ID {} expired in replay cache at {}", messageId, cacheEntry
-                                .getExpirationTime().toString());
-                        storage.remove(entryHash);
-                    }
-                }
-                replayed = false;
-                addMessageID(entryHash, new DateTime().plus(entryDuration));
+            StorageRecord entry = storage.readString(context, key);
+            if (entry == null) {
+                log.debug("Value '{}' was not a replay, adding to cache with expiration time {}", s, expires);
+                storage.createString(context, key, "x", expires);
+                return true;
             } else {
-                log.debug("Replay of message ID {} detected in replay cache, will expire at {}", messageId, cacheEntry
-                        .getExpirationTime().toString());
+                log.debug("Replay of value '{}' detected in cache, expires at {}", s, entry.getExpiration());
+                return false;
             }
-
-            return replayed;
-        } finally {
-            cacheLock.unlock();
+        } catch (IOException e) {
+            log.error("Exception reading/writing to storage service, returning {}", e, strict ? "failure" : "success");
+            return !strict;
         }
     }
 
-    /**
-     * Acquires a write lock and adds the message state to the underlying storage service.
-     * 
-     * @param messageId unique ID of the message
-     * @param expiration time the message state expires
-     */
-    protected void addMessageID(String messageId, DateTime expiration) {
-        log.debug("Writing message ID {} to replay cache with expiration time {}", messageId, expiration.toString());
-        storage.put(messageId, new ReplayCacheEntry(messageId, expiration));
-    }
 }

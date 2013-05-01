@@ -17,16 +17,17 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import java.util.HashMap;
 
 import org.opensaml.saml.common.binding.security.MessageReplayRule;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.util.storage.ReplayCache;
-import org.opensaml.util.storage.ReplayCacheEntry;
+import org.opensaml.util.storage.StorageService;
+import org.opensaml.util.storage.impl.MemoryStorageService;
 
 /**
  * Testing SAML message replay security policy rule.
@@ -35,7 +36,7 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
 
     private String messageID;
 
-    private HashMap<String, ReplayCacheEntry> storageEngine;
+    private StorageService storageService;
 
     private ReplayCache replayCache;
 
@@ -47,11 +48,27 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
         messageContext.setInboundMessageIssuer("issuer");
         messageContext.setInboundSAMLMessageId(messageID);
 
-        storageEngine = new HashMap<String, ReplayCacheEntry>();
-        replayCache = new ReplayCache(storageEngine, 60 * 10 * 1000);
+        storageService = new MemoryStorageService();
+        storageService.initialize();
+        
+        replayCache = new ReplayCache();
+        replayCache.setStorage(storageService);
+        replayCache.initialize();
+        
         rule = new MessageReplayRule(replayCache);
     }
 
+    @AfterMethod
+    protected void tearDown() {
+        rule = null;
+        
+        replayCache.destroy();
+        replayCache = null;
+        
+        storageService.destroy();
+        storageService = null;
+    }
+    
     /**
      * Test valid message ID.
      */
@@ -90,12 +107,11 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     @Test
     public void testReplayValidWithExpiration() throws InterruptedException {
         // Set rule with 3 second expiration, with no clock skew
-        ReplayCache replayCache = new ReplayCache(storageEngine, 1000 * 3);
-        rule = new MessageReplayRule(replayCache);
+        ((MessageReplayRule) rule).setExpires(3);
         assertRuleSuccess("Message ID was valid");
 
-        // Now sleep for 5 seconds to be sure has expired, and retry same message id
-        Thread.sleep(5 * 1000);
+        // Now sleep for 4 seconds to be sure has expired, and retry same message id
+        Thread.sleep(4000L);
         assertRuleSuccess("Message ID was valid, no replay due to expiration");
     }
 
