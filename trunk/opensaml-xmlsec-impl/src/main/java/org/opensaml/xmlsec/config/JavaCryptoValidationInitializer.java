@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.config;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -77,8 +78,8 @@ public class JavaCryptoValidationInitializer implements Initializer {
         }
         
         if (!valid) {
-            String isFatal = 
-                ConfigurationService.getConfigurationProperties().getProperty(CONFIG_PROPERTY_FAIL_IS_FATAL, "false");
+            Properties props = ConfigurationService.getConfigurationProperties(); 
+            String isFatal = (props != null) ? props.getProperty(CONFIG_PROPERTY_FAIL_IS_FATAL, "false") : "false";
             if ("true".equalsIgnoreCase(isFatal) || "1".equals(isFatal)) {
                 log.warn("Configuration indicates an invalid crypto configuration should be fatal");
                 throw new InitializationException(
