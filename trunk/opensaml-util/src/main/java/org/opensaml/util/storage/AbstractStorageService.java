@@ -56,7 +56,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      *
      */
     public AbstractStorageService() {
-        
+        setId(getClass().getName());
     }
 
     /**
