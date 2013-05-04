@@ -17,37 +17,12 @@
 
 package org.opensaml.saml.common.messaging.context;
 
-import javax.annotation.Nullable;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
-import org.opensaml.messaging.context.BaseContext;
 
 /**
  * Subcontext that carries information about a SAML peer entity.  This context will often
  * contain subcontexts, whose data is construed to be scoped to that peer entity.
  */
-public class SamlPeerEntityContext extends BaseContext {
-
-    /** The entityId of the SAML entity. */
-    private String entityId;
-
-    /**
-     * Gets the entityId of the SAML entity.
-     * 
-     * @return entityId of the SAML entity, may be null
-     */
-    @Nullable @NotEmpty public String getEntityId() {
-        return entityId;
-    }
-
-    /**
-     * Sets the entityId of the SAML entity.
-     * 
-     * @param id the new entityId
-     */
-    public void setEntityId(@Nullable final String id) {
-        entityId = id;
-    }
+public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityContext {
+    
 
 }

@@ -17,124 +17,119 @@
 
 package org.opensaml.saml.saml2.binding.security;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.opensaml.saml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
-import org.opensaml.saml.saml2.binding.security.SAML2AuthnRequestsSignedRule;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.messaging.context.SamlBindingContext;
+import org.opensaml.saml.common.messaging.context.SamlMetadataContext;
+import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
-import org.opensaml.saml.saml2.core.NameID;
-import org.opensaml.saml.saml2.core.Response;
-import org.opensaml.saml.saml2.metadata.provider.DOMMetadataProvider;
-import org.opensaml.ws.transport.InTransport;
-import org.opensaml.ws.transport.http.HTTPInTransport;
-import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.w3c.dom.Document;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 
 /**
  * Test SAML 2 AuthnRequetsSigned rule.
  */
-public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest 
-    extends BaseSAMLSecurityPolicyRuleTestCase<AuthnRequest, Response, NameID> {
- 
-    /** Issuer for signing required case. */
-    private final String issuerSigningRequired = "urn:test:issuer:required";
+public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
     
-    /** Issuer for signing not required case. */
-    private final String issuerSigningNotRequired = "urn:test:issuer:notrequired";
+    private SAML2AuthnRequestsSignedRule handler;
+    
+    private MessageContext<SAMLObject> messageContext;
+ 
+    private final String issuer = "urn:test:issuer";
+    
+    private SPSSODescriptor spssoDescriptor;
 
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        String mdfile = "/data/org/opensaml/saml/saml2/binding/Metadata-AuthnRequestsSigned.xml";
-        Document mdDoc = parserPool.parse(SAML2AuthnRequestsSignedSecurityPolicyRuleTest.class.getResourceAsStream(mdfile));
-        DOMMetadataProvider metadataProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
-        metadataProvider.initialize();
+        handler = new SAML2AuthnRequestsSignedRule();
+        handler.initialize();
         
-        messageContext.setMetadataProvider(metadataProvider);
+        spssoDescriptor = buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        spssoDescriptor.setAuthnRequestsSigned(false);
         
-        rule = new SAML2AuthnRequestsSignedRule();
+        messageContext = new MessageContext<SAMLObject>();
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(issuer);
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
+            .getSubcontext(SamlMetadataContext.class, true).setRoleDescriptor(spssoDescriptor);
     }
     
     /**
      * Test message not signed, signing not required.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testNotSignedAndNotRequired() {
+    public void testNotSignedAndNotRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-        messageContext.setInboundSAMLMessage(authnRequest);
-        messageContext.setInboundMessageIssuer(issuerSigningNotRequired);
+        messageContext.setMessage(authnRequest);
         
-        assertRuleSuccess("Protocol message was not signed and was not required to be signed");
+        handler.invoke(messageContext);
     }
     
     
     /**
      * Test message not signed, signing required.
+     * @throws MessageHandlerException 
      */
-    @Test
-    public void testNotSignedAndRequired() {
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNotSignedAndRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-        messageContext.setInboundSAMLMessage(authnRequest);
-        messageContext.setInboundMessageIssuer(issuerSigningRequired);
+        messageContext.setMessage(authnRequest);
         
-        assertRuleFailure("Protocol message signature was not signed but was required to be signed");
+        spssoDescriptor.setAuthnRequestsSigned(true);
+        
+        handler.invoke(messageContext);
     }
     
     /**
      * Test message XML signed, signing not required.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testSignedAndNotRequired() {
+    public void testSignedAndNotRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
-        messageContext.setInboundSAMLMessage(authnRequest);
-        messageContext.setInboundMessageIssuer(issuerSigningNotRequired);
+        messageContext.setMessage(authnRequest);
         
-        assertRuleSuccess("Protocol message was signed and was not required to be signed");
+        handler.invoke(messageContext);
     }
  
     /**
      * Test message XML signed, signing required.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testSignedAndRequired() {
+    public void testSignedAndRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
-        messageContext.setInboundSAMLMessage(authnRequest);
-        messageContext.setInboundMessageIssuer(issuerSigningRequired);
+        messageContext.setMessage(authnRequest);
         
-        assertRuleSuccess("Protocol message signature was signed but was required to be signed");
+        spssoDescriptor.setAuthnRequestsSigned(true);
+        
+        handler.invoke(messageContext);
     }
     
     /**
      * Test message simple signed, signing not required.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testSimpleSignedAndRequired() {
+    public void testSimpleSignedAndRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-        messageContext.setInboundSAMLMessage(authnRequest);
-        messageContext.setInboundMessageIssuer(issuerSigningRequired);
+        messageContext.setMessage(authnRequest);
         
-        HttpServletRequestAdapter inTransport = (HttpServletRequestAdapter) messageContext.getInboundMessageTransport();
-        MockHttpServletRequest request  = (MockHttpServletRequest) inTransport.getWrappedRequest();
-        request.setParameter("Signature", "some-signature-value");
+        spssoDescriptor.setAuthnRequestsSigned(true);
         
-        assertRuleSuccess("Protocol message was simple signed and was required to be signed");
-    }
-
-    /** {@inheritDoc} */
-    protected InTransport buildInTransport() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        HTTPInTransport inTransport = new HttpServletRequestAdapter(request);
+        messageContext.getSubcontext(SamlBindingContext.class, true).setHasBindingSignature(true);
         
-        request.setMethod("POST");
-        
-        return inTransport; 
+        handler.invoke(messageContext);
     }
     
 }

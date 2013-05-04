@@ -17,11 +17,31 @@
 
 package org.opensaml.saml.common.messaging.context;
 
-
 /**
- * Subcontext that carries information about the SAML "self" entity.  This context will often
- * contain subcontexts, whose data is construed to be scoped to that self entity.
+ * Abstract base class for subcontexts that carry information about a SAML entity which may be authenticated.
+ * This context will often contain subcontexts, whose data is construed to be scoped to that entity.
  */
-public class SamlSelfEntityContext extends AbstractSamlEntityContext {
+public class AbstractAuthenticatableSamlEntityContext extends AbstractSamlEntityContext {
+    
+    /** Flag indicating whether the SAML peer entity has been authenticated. */
+    private boolean authenticated;
+
+    /**
+     * Gets the flag indicating whether the SAML peer entity has been authenticated.
+     * 
+     * @return Returns the authenticated falg.
+     */
+    public boolean isAuthenticated() {
+        return authenticated;
+    }
+
+    /**
+     * Sets the flag indicating whether the SAML peer entity has been authenticated.
+     * 
+     * @param flag The flag to set.
+     */
+    public void setAuthenticated(boolean flag) {
+        authenticated = flag;
+    }
 
 }

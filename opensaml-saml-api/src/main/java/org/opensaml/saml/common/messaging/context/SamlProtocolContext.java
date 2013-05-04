@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nullable;
-import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -26,16 +25,12 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.messaging.context.BaseContext;
 
 /**
- * Subcontext that carries information about the ongoing SAML protocol. This context usually appears as a subcontext of
- * the {@link org.opensaml.messaging.context.MessageContext} that carries the actual SAML message.
+ * Subcontext that carries information about the ongoing SAML protocol.
  */
 public class SamlProtocolContext extends BaseContext {
 
     /** The SAML protocol in use. */
     private String protocol;
-
-    /** The role in which the SAML entity is operating. */
-    private QName role;
 
     /**
      * Gets the SAML protocol in use.
@@ -53,24 +48,6 @@ public class SamlProtocolContext extends BaseContext {
      */
     public void setProtocol(@Nullable final String samlProtocol) {
         protocol = StringSupport.trimOrNull(samlProtocol);
-    }
-
-    /**
-     * Gets the role in which the SAML entity is operating.
-     * 
-     * @return role in which the SAML entity is operating, may be null
-     */
-    @Nullable public QName getRole() {
-        return role;
-    }
-
-    /**
-     * Sets the role in which the SAML entity is operating.
-     * 
-     * @param samlRole role in which the SAML entity is operating
-     */
-    public void setRole(@Nullable final QName samlRole) {
-        role = samlRole;
     }
 
 }

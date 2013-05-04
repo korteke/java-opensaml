@@ -17,16 +17,18 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.security.MetadataCriterion;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.security.trust.TrustEngine;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.ws.security.provider.BaseTrustEngineRule;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
@@ -37,42 +39,46 @@ import com.google.common.base.Strings;
 /**
  * Base class for SAML security policy rules which evaluate a signature with a signature trust engine.
  */
-public abstract class BaseSAMLXMLSignatureSecurityPolicyRule extends BaseTrustEngineRule<Signature> {
+public abstract class BaseSAMLXMLSignatureSecurityPolicyRule extends BaseTrustEngineRule<Signature, SAMLObject> {
     
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(BaseSAMLXMLSignatureSecurityPolicyRule.class);
-    
-    /**
-     * Constructor.
-     *
-     * @param engine Trust engine used to verify the signature
-     */
-    public BaseSAMLXMLSignatureSecurityPolicyRule(TrustEngine<Signature> engine) {
-        super(engine);
-    }
 
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext messageContext)
-        throws SecurityPolicyException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Supplied message context was not an instance of SAMLMessageContext, can not build criteria set from SAML metadata parameters");
-            throw new SecurityPolicyException("Supplied message context was not an instance of SAMLMessageContext");
-        }
-        
-        SAMLMessageContext samlContext = (SAMLMessageContext) messageContext;
+    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<SAMLObject> messageContext)
+        throws MessageHandlerException {
         
         CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIDCriterion(entityID) );
         }
         
-        MetadataCriterion mdCriteria = 
-            new MetadataCriterion(samlContext.getPeerEntityRole(), samlContext.getInboundSAMLProtocol());
+        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
+        Constraint.isNotNull(peerContext, "SamlPeerEntityContext was null");
+        Constraint.isNotNull(peerContext.getRole(), "SAML peer role was null");
+        
+        SamlProtocolContext protocolContext = getSamlProtocolContext(messageContext);
+        Constraint.isNotNull(protocolContext, "SamlProtocolContext was null");
+        Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
+        
+        MetadataCriterion mdCriteria = new MetadataCriterion(peerContext.getRole(), protocolContext.getProtocol());
+        
         criteriaSet.add(mdCriteria);
         
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
         return criteriaSet;
+    }
+    
+    /**
+     * Get the current SAML Protocol context.
+     * 
+     * @param messageContext the current message context
+     * @return the current SAML protocol context
+     */
+    protected SamlProtocolContext getSamlProtocolContext(MessageContext<SAMLObject> messageContext) {
+        //TODO is this the final resting place?
+        return messageContext.getSubcontext(SamlProtocolContext.class, false);
     }
 
 }
