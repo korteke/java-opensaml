@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.security.provider;
+package org.opensaml.security.messaging.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.security.provider;
+package org.opensaml.security.messaging.impl;
 
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -35,9 +35,9 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
