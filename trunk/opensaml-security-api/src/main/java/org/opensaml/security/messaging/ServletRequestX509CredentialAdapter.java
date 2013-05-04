@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.security;
+package org.opensaml.security.messaging;
 
 import java.security.PublicKey;
 import java.security.cert.X509CRL;

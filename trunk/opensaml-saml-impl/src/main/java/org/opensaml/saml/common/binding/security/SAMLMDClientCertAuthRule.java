@@ -26,7 +26,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.security.MetadataCriterion;
-import org.opensaml.ws.security.provider.BaseClientCertAuthRule;
+import org.opensaml.security.messaging.impl.BaseClientCertAuthRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

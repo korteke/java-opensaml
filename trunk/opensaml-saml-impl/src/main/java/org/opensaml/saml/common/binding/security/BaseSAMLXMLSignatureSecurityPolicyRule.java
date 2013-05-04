@@ -29,7 +29,7 @@ import org.opensaml.saml.security.MetadataCriterion;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.ws.security.provider.BaseTrustEngineRule;
+import org.opensaml.security.messaging.impl.BaseTrustEngineRule;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

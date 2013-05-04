@@ -22,6 +22,11 @@
             <artifactId>opensaml-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-messaging-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -30,6 +35,10 @@
         </dependency>
 
         <!-- Provided Dependencies -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
 
         <!-- Runtime Dependencies -->
 

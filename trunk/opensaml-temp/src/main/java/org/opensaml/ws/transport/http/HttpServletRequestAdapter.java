@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
+import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
