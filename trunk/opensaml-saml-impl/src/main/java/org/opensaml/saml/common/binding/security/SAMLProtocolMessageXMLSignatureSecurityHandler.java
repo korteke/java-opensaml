@@ -29,27 +29,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SAML security policy rule which validates the signature (if present) on the {@link SAMLObject} which represents the
+ * SAML security message handler which validates the signature (if present) on the {@link SAMLObject} which represents the
  * SAML protocol message being processed.
  * 
  * <p>
  * If the message is not an instance of {@link SignableSAMLObject}, then no processing is performed. If signature
  * validation is successful, and the SAML message context issuer was not previously authenticated, then the context's
- * issuer authentication state will be set to <code>true</code>.
+ * authentication state will be set to <code>true</code>.
  * </p>
  * 
  * <p>
- * If an optional {@link Validator} for {@link Signature} objects is supplied, this validator will be used to validate
+ * If an optional {@link SAMLSignatureProfileValidator} or subclass is supplied, this validator will be used to validate
  * the XML Signature element prior to the actual cryptographic validation of the signature. This might for example be
  * used to enforce certain signature profile requirements or to detect signatures upon which it would be unsafe to
- * attempt cryptographic processing. When using the single argument constructuor form, the validator will default to
- * {@link SAMLSignatureProfileValidator}.
+ * attempt cryptographic processing. The validator will default to {@link SAMLSignatureProfileValidator}.
  * </p>
  */
-public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLXMLSignatureSecurityPolicyRule {
+public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLSignatureSecurityHandler {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLProtocolMessageXMLSignatureSecurityPolicyRule.class);
+    private final Logger log = LoggerFactory.getLogger(SAMLProtocolMessageXMLSignatureSecurityHandler.class);
 
     //TODO decide whether this should be an interface with an impl
     /** Validator for XML Signature instances. */
@@ -61,7 +60,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
      * Signature pre-validator defaults to {@link SAMLSignatureProfileValidator}.
      * 
      */
-    public SAMLProtocolMessageXMLSignatureSecurityPolicyRule() {
+    public SAMLProtocolMessageXMLSignatureSecurityHandler() {
         setSigValidator(new SAMLSignatureProfileValidator());
     }
 

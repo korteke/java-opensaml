@@ -46,13 +46,13 @@ import org.testng.annotations.Test;
 
 
 /**
- * Test SAML client cert auth rule.
+ * Test SAML client cert auth message handler.
  */
-public class SAMLMDClientCertAuthRuleTest extends XMLObjectBaseTestCase {
+public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext<SAMLObject> messageContext;
     
-    private SAMLMDClientCertAuthRule handler;
+    private SAMLMDClientCertAuthSecurityHandler handler;
     
     private MockHttpServletRequest request;
     
@@ -114,7 +114,7 @@ public class SAMLMDClientCertAuthRuleTest extends XMLObjectBaseTestCase {
     
     
     /** Constructor. */
-    public SAMLMDClientCertAuthRuleTest() {
+    public SAMLMDClientCertAuthSecurityHandlerTest() {
         
     }
 
@@ -149,7 +149,7 @@ public class SAMLMDClientCertAuthRuleTest extends XMLObjectBaseTestCase {
         nameOptions.setEvaluateSubjectDN(false);
         nameOptions.getSubjectAltNames().clear();
         
-        handler = new SAMLMDClientCertAuthRule();
+        handler = new SAMLMDClientCertAuthSecurityHandler();
         handler.setTrustEngine(engine);
         handler.setHttpServletRequest(request);
         handler.setCertificateNameOptions(nameOptions);

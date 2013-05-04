@@ -68,11 +68,11 @@ import org.w3c.dom.Element;
 /**
  * Test SAML simple signature via HTTP POST-SimpleSign binding
  */
-public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
+public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext<SAMLObject> messageContext;
     
-    private SAML2HTTPPostSimpleSignRule handler;
+    private SAML2HTTPPostSimpleSignSecurityHandler handler;
     
     private X509Certificate signingCert;
 
@@ -170,7 +170,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends XMLObjectBase
      * 
      * @throws Exception
      */
-    public SAML2HTTPPostSimpleSignSecurityPolicyRuleTest() throws Exception {
+    public SAML2HTTPPostSimpleSignSecurityHandlerTest() throws Exception {
         signingCert = X509Support.decodeCertificate(signingCertBase64);
         signingPrivateKey = KeySupport.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
 
@@ -206,7 +206,7 @@ public class SAML2HTTPPostSimpleSignSecurityPolicyRuleTest extends XMLObjectBase
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
 
-        handler = new SAML2HTTPPostSimpleSignRule();
+        handler = new SAML2HTTPPostSimpleSignSecurityHandler();
         handler.setHttpServletRequest(buildServletRequest());
         handler.setTrustEngine(engine);
         handler.setParser(parserPool);

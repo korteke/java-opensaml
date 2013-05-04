@@ -46,13 +46,13 @@ import org.testng.annotations.Test;
 
 
 /**
- * Test SAML protocol message XML signature rule.
+ * Test SAML protocol message XML signature message handler.
  */
-public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
+public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext<SAMLObject> messageContext;
     
-    private SAMLProtocolMessageXMLSignatureSecurityPolicyRule handler;
+    private SAMLProtocolMessageXMLSignatureSecurityHandler handler;
     
     
     private X509Certificate signingCert;
@@ -113,7 +113,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
     
     
     /** Constructor. */
-    public SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest() {
+    public SAMLProtocolMessageXMLSignatureSecurityHandlerTest() {
         
     }
 
@@ -143,7 +143,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         TrustEngine<Signature> engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        handler = new SAMLProtocolMessageXMLSignatureSecurityPolicyRule();
+        handler = new SAMLProtocolMessageXMLSignatureSecurityHandler();
         handler.setTrustEngine(engine);
         handler.initialize();
         

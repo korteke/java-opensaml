@@ -38,7 +38,7 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
+import org.opensaml.saml.common.binding.security.BaseSAMLSimpleSignatureSecurityHandler;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
@@ -50,12 +50,12 @@ import org.w3c.dom.Document;
 import com.google.common.base.Strings;
 
 /**
- * Security policy which evaluates simple "blob" signatures according to the SAML 2 HTTP-POST-SimpleSign binding.
+ * Message handler which evaluates simple "blob" signatures according to the SAML 2 HTTP-POST-SimpleSign binding.
  */
-public class SAML2HTTPPostSimpleSignRule extends BaseSAMLSimpleSignatureSecurityPolicyRule {
+public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignatureSecurityHandler {
 
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SAML2HTTPPostSimpleSignRule.class);
+    private Logger log = LoggerFactory.getLogger(SAML2HTTPPostSimpleSignSecurityHandler.class);
 
     /** Parser pool to use to process KeyInfo request parameter. */
     private ParserPool parserPool;

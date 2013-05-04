@@ -25,7 +25,7 @@ import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 
 /**
- * Options for deriving message context issuer names from an X.509 certificate. Used by {@link BaseClientCertAuthRule}.
+ * Options for deriving message context issuer names from an X.509 certificate. Used by {@link BaseClientCertAuthSecurityHandler}.
  */
 public class CertificateNameOptions implements Cloneable {
 

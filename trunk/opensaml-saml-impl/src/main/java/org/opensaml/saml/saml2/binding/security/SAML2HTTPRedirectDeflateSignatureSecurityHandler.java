@@ -26,19 +26,19 @@ import net.shibboleth.utilities.java.support.net.UriSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
+import org.opensaml.saml.common.binding.security.BaseSAMLSimpleSignatureSecurityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 /**
- * Security policy which evaluates simple "blob" signatures according to the SAML 2 HTTP-Redirect DEFLATE binding.
+ * Message handler which evaluates simple "blob" signatures according to the SAML 2 HTTP-Redirect DEFLATE binding.
  */
-public class SAML2HTTPRedirectDeflateSignatureRule extends BaseSAMLSimpleSignatureSecurityPolicyRule {
+public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSimpleSignatureSecurityHandler {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAML2HTTPRedirectDeflateSignatureRule.class);
+    private final Logger log = LoggerFactory.getLogger(SAML2HTTPRedirectDeflateSignatureSecurityHandler.class);
 
     /** {@inheritDoc} */
     protected boolean ruleHandles(HttpServletRequest request, MessageContext<SAMLObject> messgaeContext)
