@@ -21,7 +21,7 @@ package org.opensaml.saml.common.messaging.context;
  * Abstract base class for subcontexts that carry information about a SAML entity which may be authenticated.
  * This context will often contain subcontexts, whose data is construed to be scoped to that entity.
  */
-public class AbstractAuthenticatableSamlEntityContext extends AbstractSamlEntityContext {
+public abstract class AbstractAuthenticatableSamlEntityContext extends AbstractSamlEntityContext {
     
     /** Flag indicating whether the SAML peer entity has been authenticated. */
     private boolean authenticated;
