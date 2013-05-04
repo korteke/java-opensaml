@@ -33,9 +33,9 @@ import org.testng.annotations.Test;
 /**
  * Test SAML 2 AuthnRequetsSigned rule.
  */
-public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
+public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTestCase {
     
-    private SAML2AuthnRequestsSignedRule handler;
+    private SAML2AuthnRequestsSignedSecurityHandler handler;
     
     private MessageContext<SAMLObject> messageContext;
  
@@ -46,7 +46,7 @@ public class SAML2AuthnRequestsSignedSecurityPolicyRuleTest extends XMLObjectBas
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        handler = new SAML2AuthnRequestsSignedRule();
+        handler = new SAML2AuthnRequestsSignedSecurityHandler();
         handler.initialize();
         
         spssoDescriptor = buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME);

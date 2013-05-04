@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
  * @param <TokenType> type of token which is being evaluated by the underlying trust engine
  * @param <MessageType> type of message contained in the message context being evaluated
  */
-public abstract class BaseTrustEngineRule<TokenType, MessageType> extends AbstractMessageHandler<MessageType> {
+public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType> extends AbstractMessageHandler<MessageType> {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseTrustEngineRule.class);
+    private final Logger log = LoggerFactory.getLogger(BaseTrustEngineSecurityHandler.class);
 
     /** Trust engine used to verify the particular token type. */
     private TrustEngine<TokenType> trustEngine;

@@ -26,24 +26,32 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.security.MetadataCriterion;
-import org.opensaml.security.messaging.impl.BaseClientCertAuthRule;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.EntityIDCriterion;
+import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.messaging.impl.BaseTrustEngineSecurityHandler;
+import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * SAML specialization of {@link BaseClientCertAuthRule} which provides support for X509Credential 
- * trust engine validation based on SAML metadata.
- */
-public class SAMLMDClientCertAuthRule extends BaseClientCertAuthRule<SAMLObject> {
+import com.google.common.base.Strings;
 
+/**
+ * Base class for SAML security message handlers which evaluate a signature with a signature trust engine.
+ */
+public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngineSecurityHandler<Signature, SAMLObject> {
+    
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLMDClientCertAuthRule.class);
+    private final Logger log = LoggerFactory.getLogger(BaseSAMLXMLSignatureSecurityHandler.class);
 
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<SAMLObject> messageContext) 
+    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<SAMLObject> messageContext)
         throws MessageHandlerException {
         
-        CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
+        CriteriaSet criteriaSet = new CriteriaSet();
+        if (!Strings.isNullOrEmpty(entityID)) {
+            criteriaSet.add(new EntityIDCriterion(entityID) );
+        }
         
         SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
         Constraint.isNotNull(peerContext, "SamlPeerEntityContext was null");
@@ -56,7 +64,9 @@ public class SAMLMDClientCertAuthRule extends BaseClientCertAuthRule<SAMLObject>
         MetadataCriterion mdCriteria = new MetadataCriterion(peerContext.getRole(), protocolContext.getProtocol());
         
         criteriaSet.add(mdCriteria);
-
+        
+        criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
+        
         return criteriaSet;
     }
     
@@ -71,21 +81,4 @@ public class SAMLMDClientCertAuthRule extends BaseClientCertAuthRule<SAMLObject>
         return messageContext.getSubcontext(SamlProtocolContext.class, false);
     }
 
-    /** {@inheritDoc} */
-    protected String getCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext) {
-        return messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId();
-    }
-
-    /** {@inheritDoc} */
-    protected void setAuthenticatedCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext,
-            String entityID) {
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(entityID);
-    }
-
-    /** {@inheritDoc} */
-    protected void setAuthenticatedState(MessageContext<SAMLObject> messageContext, boolean authenticated) {
-        //TODO this may change
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setAuthenticated(authenticated);
-    }
-    
 }

@@ -51,10 +51,10 @@ import com.google.common.base.Strings;
  * Base class for security-oriented message handlers which verify simple "blob" signatures computed 
  * over some components of a request.
  */
-public abstract class BaseSAMLSimpleSignatureSecurityPolicyRule extends AbstractMessageHandler<SAMLObject>{
+public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMessageHandler<SAMLObject>{
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseSAMLSimpleSignatureSecurityPolicyRule.class);
+    private final Logger log = LoggerFactory.getLogger(BaseSAMLSimpleSignatureSecurityHandler.class);
 
     /** Signature trust engine used to validate raw signatures. */
     private SignatureTrustEngine trustEngine;

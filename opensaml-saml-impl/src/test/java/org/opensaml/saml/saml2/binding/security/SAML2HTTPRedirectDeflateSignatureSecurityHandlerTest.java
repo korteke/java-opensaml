@@ -66,11 +66,11 @@ import org.testng.annotations.Test;
 /**
  * Test SAML simple signature for HTTP Redirect DEFLATE binding.
  */
-public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
+public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext<SAMLObject> messageContext;
     
-    private SAML2HTTPRedirectDeflateSignatureRule handler;
+    private SAML2HTTPRedirectDeflateSignatureSecurityHandler handler;
     
     private X509Certificate signingCert;
     private String signingCertBase64 = 
@@ -163,7 +163,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest extends XML
     /** Constructor. 
      * @throws CertificateException 
      * @throws KeyException */
-    public SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest() throws CertificateException, KeyException {
+    public SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest() throws CertificateException, KeyException {
         signingCert = X509Support.decodeCertificate(signingCertBase64);
         signingPrivateKey = KeySupport.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
         
@@ -191,7 +191,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest extends XML
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        handler = new SAML2HTTPRedirectDeflateSignatureRule();
+        handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
         handler.setHttpServletRequest(buildServletRequest());
         handler.setTrustEngine(engine);
         handler.initialize();

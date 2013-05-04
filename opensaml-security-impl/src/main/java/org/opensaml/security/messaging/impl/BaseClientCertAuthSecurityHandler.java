@@ -83,10 +83,10 @@ import com.google.common.base.Strings;
  * 
  * @param <MessageType> type of message contained in the message context being evaluated
  */
-public abstract class BaseClientCertAuthRule<MessageType> extends BaseTrustEngineRule<X509Credential, MessageType> {
+public abstract class BaseClientCertAuthSecurityHandler<MessageType> extends BaseTrustEngineSecurityHandler<X509Credential, MessageType> {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseClientCertAuthRule.class);
+    private final Logger log = LoggerFactory.getLogger(BaseClientCertAuthSecurityHandler.class);
 
     /** Options for deriving client cert presenter entity ID's from an X.509 certificate. */
     private CertificateNameOptions certNameOptions;
@@ -310,7 +310,7 @@ public abstract class BaseClientCertAuthRule<MessageType> extends BaseTrustEngin
      * 
      * <p>
      * The first one of the above which is successfully evaluated by the trust engine using criteria built from
-     * {@link BaseTrustEngineRule#buildCriteriaSet(String, MessageContext)} will be returned.
+     * {@link BaseTrustEngineSecurityHandler#buildCriteriaSet(String, MessageContext)} will be returned.
      * </p>
      * 
      * @param requestCredential the X509Credential derived from the request

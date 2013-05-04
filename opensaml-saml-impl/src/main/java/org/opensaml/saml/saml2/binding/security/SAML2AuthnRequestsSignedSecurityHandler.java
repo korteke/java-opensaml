@@ -32,13 +32,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 /**
- * Security policy rule implementation that enforces the AuthnRequestsSigned flag of 
+ * Message handler implementation that enforces the AuthnRequestsSigned flag of 
  * SAML 2 metadata element @{link {@link SPSSODescriptor}.
  */
-public class SAML2AuthnRequestsSignedRule extends AbstractMessageHandler<SAMLObject>{
+public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHandler<SAMLObject>{
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAML2AuthnRequestsSignedRule.class);
+    private final Logger log = LoggerFactory.getLogger(SAML2AuthnRequestsSignedSecurityHandler.class);
 
     /** {@inheritDoc} */
     public void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
