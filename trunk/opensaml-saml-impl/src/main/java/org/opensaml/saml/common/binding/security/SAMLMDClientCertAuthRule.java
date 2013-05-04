@@ -17,54 +17,75 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.security.MetadataCriterion;
-import org.opensaml.security.trust.TrustEngine;
-import org.opensaml.security.x509.X509Credential;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.security.provider.CertificateNameOptions;
-import org.opensaml.ws.security.provider.ClientCertAuthRule;
+import org.opensaml.ws.security.provider.BaseClientCertAuthRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SAML specialization of {@link ClientCertAuthRule} which provides support for X509Credential trust engine validation
- * based on SAML metadta.
+ * SAML specialization of {@link BaseClientCertAuthRule} which provides support for X509Credential 
+ * trust engine validation based on SAML metadata.
  */
-public class SAMLMDClientCertAuthRule extends ClientCertAuthRule {
+public class SAMLMDClientCertAuthRule extends BaseClientCertAuthRule<SAMLObject> {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(SAMLMDClientCertAuthRule.class);
 
-    /**
-     * Constructor.
-     * 
-     * @param engine Trust engine used to verify the request X509Credential
-     * @param nameOptions options for deriving issuer names from an X.509 certificate
-     */
-    public SAMLMDClientCertAuthRule(TrustEngine<X509Credential> engine, CertificateNameOptions nameOptions) {
-        super(engine, nameOptions);
-    }
-
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext messageContext) 
-        throws SecurityPolicyException {
+    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<SAMLObject> messageContext) 
+        throws MessageHandlerException {
         
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.error("Supplied message context was not an instance of SAMLMessageContext, can not build criteria set from SAML metadata parameters");
-            throw new SecurityPolicyException("Supplied message context was not an instance of SAMLMessageContext");
-        }
-        
-        SAMLMessageContext samlContext = (SAMLMessageContext) messageContext;
-
         CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
-        MetadataCriterion mdCriteria = 
-            new MetadataCriterion(samlContext.getPeerEntityRole(), samlContext.getInboundSAMLProtocol());
+        
+        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
+        Constraint.isNotNull(peerContext, "SamlPeerEntityContext was null");
+        Constraint.isNotNull(peerContext.getRole(), "SAML peer role was null");
+        
+        SamlProtocolContext protocolContext = getSamlProtocolContext(messageContext);
+        Constraint.isNotNull(protocolContext, "SamlProtocolContext was null");
+        Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
+        
+        MetadataCriterion mdCriteria = new MetadataCriterion(peerContext.getRole(), protocolContext.getProtocol());
+        
         criteriaSet.add(mdCriteria);
 
         return criteriaSet;
     }
+    
+    /**
+     * Get the current SAML Protocol context.
+     * 
+     * @param messageContext the current message context
+     * @return the current SAML protocol context
+     */
+    protected SamlProtocolContext getSamlProtocolContext(MessageContext<SAMLObject> messageContext) {
+        //TODO is this the final resting place?
+        return messageContext.getSubcontext(SamlProtocolContext.class, false);
+    }
+
+    /** {@inheritDoc} */
+    protected String getCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext) {
+        return messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId();
+    }
+
+    /** {@inheritDoc} */
+    protected void setAuthenticatedCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext,
+            String entityID) {
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(entityID);
+    }
+
+    /** {@inheritDoc} */
+    protected void setAuthenticatedState(MessageContext<SAMLObject> messageContext, boolean authenticated) {
+        //TODO this may change
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setAuthenticated(authenticated);
+    }
+    
 }

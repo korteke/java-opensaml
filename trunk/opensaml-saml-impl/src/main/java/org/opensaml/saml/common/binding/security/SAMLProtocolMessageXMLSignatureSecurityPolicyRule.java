@@ -17,13 +17,12 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.security.SAMLSignatureProfileValidator;
-import org.opensaml.security.trust.TrustEngine;
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.security.SecurityPolicyException;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
@@ -61,23 +60,33 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
      * 
      * Signature pre-validator defaults to {@link SAMLSignatureProfileValidator}.
      * 
-     * @param engine Trust engine used to verify the signature
      */
-    public SAMLProtocolMessageXMLSignatureSecurityPolicyRule(TrustEngine<Signature> engine) {
-        super(engine);
-        sigValidator = new SAMLSignatureProfileValidator();
+    public SAMLProtocolMessageXMLSignatureSecurityPolicyRule() {
+        setSigValidator(new SAMLSignatureProfileValidator());
+    }
+
+    /**
+     * Get the validator for XML Signature instances.
+     * 
+     * @return Returns the sigValidator.
+     */
+    public SAMLSignatureProfileValidator getSigValidator() {
+        return sigValidator;
+    }
+
+    /**
+     * Set the validator for XML Signature instances.
+     * 
+     * @param validator The sigValidator to set.
+     */
+    public void setSigValidator(SAMLSignatureProfileValidator validator) {
+        sigValidator = validator;
     }
 
     /** {@inheritDoc} */
-    public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
-        if (!(messageContext instanceof SAMLMessageContext)) {
-            log.debug("Invalid message context type, this policy rule only supports SAMLMessageContext");
-            return;
-        }
+    public void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
 
-        SAMLMessageContext samlMsgCtx = (SAMLMessageContext) messageContext;
-
-        SAMLObject samlMsg = samlMsgCtx.getInboundSAMLMessage();
+        SAMLObject samlMsg = messageContext.getMessage();
         if (!(samlMsg instanceof SignableSAMLObject)) {
             log.debug("Extracted SAML message was not a SignableSAMLObject, can not process signature");
             return;
@@ -91,7 +100,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
 
         performPreValidation(signature);
 
-        doEvaluate(signature, signableObject, samlMsgCtx);
+        doEvaluate(signature, signableObject, messageContext);
     }
 
     /**
@@ -100,33 +109,35 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
      * 
      * @param signature the signature which is being evaluated
      * @param signableObject the signable object which contained the signature
-     * @param samlMsgCtx the SAML message context being processed
-     * @throws SecurityPolicyException thrown if the signature fails validation
+     * @param messageContext the SAML message context being processed
+     * @throws MessageHandlerException thrown if the signature fails validation
      */
-    protected void doEvaluate(Signature signature, SignableSAMLObject signableObject, SAMLMessageContext samlMsgCtx)
-            throws SecurityPolicyException {
+    protected void doEvaluate(Signature signature, SignableSAMLObject signableObject, 
+            MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
 
-        String contextIssuer = samlMsgCtx.getInboundMessageIssuer();
-        if (contextIssuer != null) {
+        //TODO authentication flags - on peer or on message?
+        
+        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, false);
+        if (peerContext != null && peerContext.getEntityId() != null) {
+            String contextEntityID = peerContext.getEntityId();
             String msgType = signableObject.getElementQName().toString();
-            log.debug("Attempting to verify signature on signed SAML protocol message using context issuer message type: {}",
-                            msgType);
-
-            if (evaluate(signature, contextIssuer, samlMsgCtx)) {
+            log.debug("Attempting to verify signature on signed SAML protocol message type: {}", msgType);
+            
+            if (evaluate(signature, contextEntityID, messageContext)) {
                 log.info("Validation of protocol message signature succeeded, message type: {}", msgType);
-                if (!samlMsgCtx.isInboundSAMLMessageAuthenticated()) {
+                if (!peerContext.isAuthenticated()) {
                     log.debug("Authentication via protocol message signature succeeded for context issuer entity ID {}",
-                            contextIssuer);
-                    samlMsgCtx.setInboundSAMLMessageAuthenticated(true);
+                            contextEntityID);
+                    peerContext.setAuthenticated(true);
                 }
             } else {
-                log.debug("Validation of protocol message signature failed for context issuer '" + contextIssuer
+                log.debug("Validation of protocol message signature failed for context issuer '" + contextEntityID
                         + "', message type: " + msgType);
-                throw new SecurityPolicyException("Validation of protocol message signature failed");
+                throw new MessageHandlerException("Validation of protocol message signature failed");
             }
         } else {
             log.debug("Context issuer unavailable, can not attempt SAML protocol message signature validation");
-            throw new SecurityPolicyException("Context issuer unavailable, can not validate signature");
+            throw new MessageHandlerException("Context issuer unavailable, can not validate signature");
         }
     }
 
@@ -136,22 +147,22 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRule extends BaseSAMLX
      * @return the configured Signature validator, or null
      */
     protected SAMLSignatureProfileValidator getSignaturePrevalidator() {
-        return sigValidator;
+        return getSigValidator();
     }
 
     /**
      * Perform pre-validation on the Signature token.
      * 
      * @param signature the signature to evaluate
-     * @throws SecurityPolicyException thrown if the signature element fails pre-validation
+     * @throws MessageHandlerException thrown if the signature element fails pre-validation
      */
-    protected void performPreValidation(Signature signature) throws SecurityPolicyException {
+    protected void performPreValidation(Signature signature) throws MessageHandlerException {
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
             } catch (SignatureException e) {
                 log.debug("Protocol message signature failed signature pre-validation", e);
-                throw new SecurityPolicyException("Protocol message signature failed signature pre-validation", e);
+                throw new MessageHandlerException("Protocol message signature failed signature pre-validation", e);
             }
         }
     }

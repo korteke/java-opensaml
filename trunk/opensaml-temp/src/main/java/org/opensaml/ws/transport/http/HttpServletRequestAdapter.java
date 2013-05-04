@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
 import org.slf4j.Logger;
@@ -126,7 +127,7 @@ public class HttpServletRequestAdapter implements HTTPInTransport {
         if (peerCredential == null) {
             try {
                 peerCredential = new ServletRequestX509CredentialAdapter(httpServletRequest);
-            } catch (IllegalArgumentException e) {
+            } catch (SecurityException e) {
                 log.info("Wrapped HTTP servlet request did not contain a client certificate");
             }
         }

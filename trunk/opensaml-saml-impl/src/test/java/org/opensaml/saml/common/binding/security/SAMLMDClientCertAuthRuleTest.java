@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.common.binding.security;
 
-import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.SAMLTestHelper;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -35,28 +33,32 @@ import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
+import org.opensaml.ws.security.ServletRequestX509CredentialAdapter;
+import org.opensaml.ws.security.provider.CertificateNameOptions;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
 /**
- * Test SAML protocol message XML signature rule.
+ * Test SAML client cert auth rule.
  */
-public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
+public class SAMLMDClientCertAuthRuleTest extends XMLObjectBaseTestCase {
     
     private MessageContext<SAMLObject> messageContext;
     
-    private SAMLProtocolMessageXMLSignatureSecurityPolicyRule handler;
+    private SAMLMDClientCertAuthRule handler;
+    
+    private MockHttpServletRequest request;
     
     
-    private X509Certificate signingCert;
-    private String signingCertBase64 = 
+    private X509Certificate validCert;
+    private String validCertBase64 = 
         "MIIDzjCCAragAwIBAgIBMTANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
         "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDUyMTE4MjM0MFoX" +
         "DTE3MDUxODE4MjM0MFowMTESMBAGA1UEChMJSW50ZXJuZXQyMRswGQYDVQQDExJm" +
@@ -79,7 +81,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
         "vow2xjxlzVcux2BZsUZYjBa07ZmNNBtF7WaQqH7l2OBCAdnBhvme5i/e0LK3Ivys" +
         "+hcVyvCXs5XtFTFWDAVYvzQ6";
     
-    private PrivateKey signingPrivateKey;
     private X509Certificate otherCert1;
     private String otherCert1Base64 = 
         "MIIECTCCAvGgAwIBAgIBMzANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
@@ -107,26 +108,25 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
     
     private CollectionCredentialResolver credResolver;
     private List<Credential> trustedCredentials;
-    private BasicX509Credential signingX509Cred;
+    private BasicX509Credential validX509Cred;
     
     private String issuer;
     
     
     /** Constructor. */
-    public SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest() {
+    public SAMLMDClientCertAuthRuleTest() {
         
     }
 
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        issuer = "SomeCoolIssuer";
+        validCert = X509Support.decodeCertificate(validCertBase64);
         
-        signingCert = X509Support.decodeCertificate(signingCertBase64);
-        //signingPrivateKey = SecurityTestHelper.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
+        issuer = X509Support.getCommonNames(validCert.getSubjectX500Principal()).get(0);
         
-        signingX509Cred = new BasicX509Credential(signingCert);
-        signingX509Cred.setEntityId(issuer);
+        validX509Cred = new BasicX509Credential(validCert);
+        validX509Cred.setEntityId(issuer);
         
         otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
         
@@ -138,13 +138,21 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
         
-        //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
-        //Testing with inline cert
-        KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
-        TrustEngine<Signature> engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        TrustEngine<X509Credential> engine = new ExplicitX509CertificateTrustEngine(credResolver);
         
-        handler = new SAMLProtocolMessageXMLSignatureSecurityPolicyRule();
+        request = new MockHttpServletRequest();
+        request.setAttribute(ServletRequestX509CredentialAdapter.X509_CERT_REQUEST_ATTRIBUTE, 
+                new X509Certificate[] {validCert});
+        
+        CertificateNameOptions nameOptions = new CertificateNameOptions();
+        nameOptions.setEvaluateSubjectCommonName(true);
+        nameOptions.setEvaluateSubjectDN(false);
+        nameOptions.getSubjectAltNames().clear();
+        
+        handler = new SAMLMDClientCertAuthRule();
         handler.setTrustEngine(engine);
+        handler.setHttpServletRequest(request);
+        handler.setCertificateNameOptions(nameOptions);
         handler.initialize();
         
         messageContext = new MessageContext<SAMLObject>();
@@ -155,24 +163,24 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
     }
     
     /**
-     * Test context issuer set, valid signature with trusted credential.
+     * Test context issuer set, request with trusted credential.
      * @throws MessageHandlerException 
      */
     @Test
     public void testSuccess() throws MessageHandlerException {
-        trustedCredentials.add(signingX509Cred);
+        trustedCredentials.add(validX509Cred);
         
         handler.invoke(messageContext);
         
         Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
-        //TODO before this was evaling isInboundSAMLMessageAuthenticated
+        //TODO this may change
         Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
     /**
-     * Test context issuer set, valid signature with untrusted credential.
+     * Test context issuer set, request with untrusted credential.
      * @throws MessageHandlerException 
      */
     @Test(expectedExceptions=MessageHandlerException.class)
@@ -181,29 +189,22 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
     }
     
     /**
-     * Test context issuer set, invalid signature with trusted credential.
+     * Test context issuer not set, request with trusted credential.
      * @throws MessageHandlerException 
      */
-    @Test(expectedExceptions=MessageHandlerException.class)
-    public void testInvalidSignature() throws MessageHandlerException {
-        trustedCredentials.add(signingX509Cred);
-        
-        AuthnRequest request  = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest-InvalidSignature.xml"); 
-        messageContext.setMessage(request);
-        
-        handler.invoke(messageContext);
-    }
-    
-    /**
-     * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
-     */
-    @Test(expectedExceptions=MessageHandlerException.class)
+    @Test
     public void testNoContextIssuer() throws MessageHandlerException {
-        messageContext.removeSubcontext(SamlPeerEntityContext.class);
+        trustedCredentials.add(validX509Cred);
+        
+        messageContext.getSubcontext(SamlPeerEntityContext.class).setEntityId(null);
         
         handler.invoke(messageContext);
+        
+        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), 
+                issuer, "Unexpected value for Issuer found");
+        //TODO this may change
+        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
+                "Unexpected value for context authentication state");
     }
     
 
@@ -213,47 +214,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityPolicyRuleTest extends XMLOb
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
         
         return request;
-        
-        /*
-        AuthnRequest request = (AuthnRequest) buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME);
-        request.setIssuer(buildIssuer());
-        request.setID("abc123");
-        request.setIssueInstant(new DateTime());
-        
-        Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
-        signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
-        signature.setSigningCredential(signingX509Cred);
-        
-        X509KeyInfoGeneratorFactory kiFactory = new X509KeyInfoGeneratorFactory();
-        kiFactory.setEmitEntityCertificate(true);
-        KeyInfo keyInfo = null;
-        try {
-            keyInfo = kiFactory.newInstance().generate(signingX509Cred);
-        } catch (SecurityException e1) {
-            fail("Error generating KeyInfo from signing credential");
-        }
-        
-        signature.setKeyInfo(keyInfo);
-        
-        request.setSignature(signature);
-        
-        try {
-            SAMLConfigurationSupport.getMarshallerFactory().getMarshaller(request).marshall(request);
-        } catch (MarshallingException e) {
-            fail("Error marshalling message for signing");
-        }
-        
-        Signer.signObject(signature);
-        
-        try {
-            XMLHelper.writeNode(request.getDOM(), new FileWriter("signed-authn-request-test.xml"));
-        } catch (IOException e) {
-            fail("Error writing node to file: " + e);
-        }
-        
-        return request;
-        */
     }
 
 }

@@ -28,21 +28,21 @@ import java.util.List;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
+import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLTestHelper;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.binding.SAMLMessageContext;
-import org.opensaml.saml.common.binding.security.BaseSAMLSecurityPolicyRuleTestCase;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.messaging.context.SamlSigningContext;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.binding.encoding.HTTPRedirectDeflateEncoder;
 import org.opensaml.saml.saml2.core.AuthnRequest;
-import org.opensaml.saml.saml2.core.NameID;
-import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
@@ -52,9 +52,6 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.util.net.UrlBuilder;
-import org.opensaml.ws.transport.InTransport;
-import org.opensaml.ws.transport.http.HTTPInTransport;
-import org.opensaml.ws.transport.http.HttpServletRequestAdapter;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.mock.MockSignatureSigningConfiguration;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
@@ -69,8 +66,11 @@ import org.testng.annotations.Test;
 /**
  * Test SAML simple signature for HTTP Redirect DEFLATE binding.
  */
-public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest 
-    extends BaseSAMLSecurityPolicyRuleTestCase<AuthnRequest, Response, NameID> {
+public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest extends XMLObjectBaseTestCase {
+    
+    private MessageContext<SAMLObject> messageContext;
+    
+    private SAML2HTTPRedirectDeflateSignatureRule handler;
     
     private X509Certificate signingCert;
     private String signingCertBase64 = 
@@ -191,59 +191,70 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        rule = new SAML2HTTPRedirectDeflateSignatureRule(engine);
+        handler = new SAML2HTTPRedirectDeflateSignatureRule();
+        handler.setHttpServletRequest(buildServletRequest());
+        handler.setTrustEngine(engine);
+        handler.initialize();
         
-        messageContext.setInboundMessageIssuer(issuer);
-        ((SAMLMessageContext) messageContext).setInboundSAMLMessageAuthenticated(false);
-        messageContext.setPeerEntityRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext = new MessageContext<SAMLObject>();
+        messageContext.setMessage(buildInboundSAMLMessage());
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(issuer);
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SamlProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
     }
     
     /**
      * Test context issuer set, valid signature with trusted credential.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testSuccess() {
+    public void testSuccess() throws MessageHandlerException {
         trustedCredentials.add(signingX509Cred);
         
-        assertRuleSuccess("Protocol message was signed with trusted credential known to trust engine resolver");
-        SAMLMessageContext samlContext = messageContext;
-        Assert.assertEquals(samlContext.getInboundMessageIssuer(), issuer, "Unexpected value for Issuer found");
-        Assert.assertTrue(samlContext.isInboundSAMLMessageAuthenticated(), 
+        handler.invoke(messageContext);
+        
+        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), issuer, 
+                "Unexpected value for Issuer found");
+        //TODO before this was evaling isInboundSAMLMessageAuthenticated
+        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
+     * @throws MessageHandlerException 
      */
-    @Test
-    public void testUntrustedCredential() {
-        assertRuleFailure("Protocol message was signed with credential unknown to trust engine resolver");
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testUntrustedCredential() throws MessageHandlerException {
+        handler.invoke(messageContext);
     }
     
     /**
      * Test context issuer set, invalid signature with trusted credential.
+     * @throws MessageHandlerException 
      */
-    @Test
-    public void testInvalidSignature() {
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testInvalidSignature() throws MessageHandlerException {
         trustedCredentials.add(signingX509Cred);
         
-        HttpServletRequestAdapter inTransport = (HttpServletRequestAdapter) messageContext.getInboundMessageTransport();
-        MockHttpServletRequest request = (MockHttpServletRequest) inTransport.getWrappedRequest();
+        MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         String queryString = request.getQueryString();
         request.setQueryString( queryString.replaceFirst("RelayState=", "RelayState=AlteredData") );
         // Really only the query string is necessary to cause failure, but just to be safe...
         request.setParameter("RelayState", "AlteredData" + request.getParameter("RelayState") );
         
-        assertRuleFailure("Protocol message signature was invalid due to modification of the signed content");
+        handler.invoke(messageContext);
     }
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
+     * @throws MessageHandlerException 
      */
-    @Test
-    public void testNoContextIssuer() {
-        messageContext.setInboundMessageIssuer(null);
-        assertRuleFailure("Protocol message signature should have been unevaluable due to absence of context issuer");
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNoContextIssuer() throws MessageHandlerException {
+        messageContext.removeSubcontext(SamlPeerEntityContext.class);
+        
+        handler.invoke(messageContext);
     }
     
 
@@ -256,7 +267,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
     }
     
     /** {@inheritDoc} */
-    protected InTransport buildInTransport() {
+    protected MockHttpServletRequest buildServletRequest() {
         //
         // Encode the "outbound" message context, with simple signature
         //
@@ -297,7 +308,6 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
         
         // Now populate the new "inbound" message context with the "outbound" encoded info
         MockHttpServletRequest request = new MockHttpServletRequest();
-        HTTPInTransport inTransport = new HttpServletRequestAdapter(request);
         
         request.setMethod("GET");
         
@@ -314,7 +324,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityPolicyRuleTest
             request.setParameter(param.getFirst(), param.getSecond());
         }
         
-        return inTransport;
+        return request;
     }
 
 }

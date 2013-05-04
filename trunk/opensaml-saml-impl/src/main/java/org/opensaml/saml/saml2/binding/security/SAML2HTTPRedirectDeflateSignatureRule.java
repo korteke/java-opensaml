@@ -23,10 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.net.UriSupport;
 
-import org.opensaml.saml.common.binding.SAMLMessageContext;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.security.BaseSAMLSimpleSignatureSecurityPolicyRule;
-import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,23 +40,14 @@ public class SAML2HTTPRedirectDeflateSignatureRule extends BaseSAMLSimpleSignatu
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(SAML2HTTPRedirectDeflateSignatureRule.class);
 
-    /**
-     * Constructor.
-     * 
-     * @param engine the trust engine to use
-     */
-    public SAML2HTTPRedirectDeflateSignatureRule(SignatureTrustEngine engine) {
-        super(engine);
-    }
-
     /** {@inheritDoc} */
-    protected boolean ruleHandles(HttpServletRequest request, SAMLMessageContext samlMsgCtx)
-            throws SecurityPolicyException {
+    protected boolean ruleHandles(HttpServletRequest request, MessageContext<SAMLObject> messgaeContext)
+            throws MessageHandlerException {
         return "GET".equals(request.getMethod());
     }
 
     /** {@inheritDoc} */
-    protected byte[] getSignedContent(HttpServletRequest request) throws SecurityPolicyException {
+    protected byte[] getSignedContent(HttpServletRequest request) throws MessageHandlerException {
         // We need the raw non-URL-decoded query string param values for HTTP-Redirect DEFLATE simple signature
         // validation.
         // We have to construct a string containing the signature input by accessing the
@@ -85,16 +76,16 @@ public class SAML2HTTPRedirectDeflateSignatureRule extends BaseSAMLSimpleSignatu
      * 
      * @param queryString the raw HTTP query string from the request
      * @return a string representation of the signed content
-     * @throws SecurityPolicyException thrown if there is an error during request processing
+     * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    private String buildSignedContentString(String queryString) throws SecurityPolicyException {
+    private String buildSignedContentString(String queryString) throws MessageHandlerException {
         StringBuilder builder = new StringBuilder();
 
         // One of these two is mandatory
         if (!appendParameter(builder, queryString, "SAMLRequest")) {
             if (!appendParameter(builder, queryString, "SAMLResponse")) {
                 log.warn("Could not extract either a SAMLRequest or a SAMLResponse from the query string");
-                throw new SecurityPolicyException("Extract of SAMLRequest or SAMLResponse from query string failed");
+                throw new MessageHandlerException("Extract of SAMLRequest or SAMLResponse from query string failed");
             }
         }
         // This is optional
