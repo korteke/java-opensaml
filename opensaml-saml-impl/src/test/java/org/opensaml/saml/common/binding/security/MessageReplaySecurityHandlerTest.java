@@ -17,22 +17,27 @@
 
 package org.opensaml.saml.common.binding.security;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-
-import org.opensaml.saml.common.binding.security.MessageReplayRule;
-import org.opensaml.saml.saml2.core.AttributeQuery;
-import org.opensaml.saml.saml2.core.NameID;
-import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.messaging.context.SamlMessageInfoContext;
+import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.util.storage.ReplayCache;
 import org.opensaml.util.storage.StorageService;
 import org.opensaml.util.storage.impl.MemoryStorageService;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Testing SAML message replay security policy rule.
  */
-public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<AttributeQuery, Response, NameID> {
+public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
+    
+    private MessageContext<SAMLObject> messageContext;
+    
+    private MessageReplaySecurityHandler handler;
 
     private String messageID;
 
@@ -43,10 +48,12 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
+        messageContext = new MessageContext<>();
+        
         messageID = "abc123";
 
-        messageContext.setInboundMessageIssuer("issuer");
-        messageContext.setInboundSAMLMessageId(messageID);
+        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId("issuer");
+        messageContext.getSubcontext(SamlMessageInfoContext.class, true).setMessageId(messageID);
 
         storageService = new MemoryStorageService();
         storageService.initialize();
@@ -55,12 +62,14 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
         replayCache.setStorage(storageService);
         replayCache.initialize();
         
-        rule = new MessageReplayRule(replayCache);
+        handler = new MessageReplaySecurityHandler();
+        handler.setReplayCache(replayCache);
+        handler.initialize();
     }
 
     @AfterMethod
     protected void tearDown() {
-        rule = null;
+        handler = null;
         
         replayCache.destroy();
         replayCache = null;
@@ -71,48 +80,50 @@ public class MessageReplayRuleTest extends BaseSAMLSecurityPolicyRuleTestCase<At
     
     /**
      * Test valid message ID.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testNoReplay() {
-        assertRuleSuccess("Message ID was valid");
+    public void testNoReplay() throws MessageHandlerException {
+        handler.invoke(messageContext);
     }
 
     /**
      * Test valid message ID, distinct ID.
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testNoReplayDistinctIDs() {
-        assertRuleSuccess("Message ID was valid");
+    public void testNoReplayDistinctIDs() throws MessageHandlerException {
+        handler.invoke(messageContext);
 
-        messageContext.setInboundSAMLMessageId("someOther" + messageID);
-        assertRuleSuccess("Message ID was valid, distinct message ID");
-
+        messageContext.getSubcontext(SamlMessageInfoContext.class).setMessageId("someOther" + messageID);
+        handler.invoke(messageContext);
     }
 
     /**
      * Test invalid replay of message ID.
+     * @throws MessageHandlerException 
      */
-    @Test
-    public void testReplay() {
-        assertRuleSuccess("Message ID was valid");
-
-        assertRuleFailure("Message ID was a replay");
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testReplay() throws MessageHandlerException {
+        handler.invoke(messageContext);
+        handler.invoke(messageContext);
     }
 
     /**
      * Test valid replay of message ID due to replay cache expiration.
      * 
      * @throws InterruptedException
+     * @throws MessageHandlerException 
      */
     @Test
-    public void testReplayValidWithExpiration() throws InterruptedException {
+    public void testReplayValidWithExpiration() throws InterruptedException, MessageHandlerException {
         // Set rule with 3 second expiration, with no clock skew
-        ((MessageReplayRule) rule).setExpires(3);
-        assertRuleSuccess("Message ID was valid");
+        handler.setExpires(3);
+        handler.invoke(messageContext);
 
         // Now sleep for 4 seconds to be sure has expired, and retry same message id
         Thread.sleep(4000L);
-        assertRuleSuccess("Message ID was valid, no replay due to expiration");
+        handler.invoke(messageContext);
     }
 
 }
