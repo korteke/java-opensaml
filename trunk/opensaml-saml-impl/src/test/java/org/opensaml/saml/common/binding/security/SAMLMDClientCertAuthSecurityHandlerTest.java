@@ -210,8 +210,6 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler.invoke(messageContext);
         
-        // Note that entityID will now be that contained in the SAML message, since it's 
-        // dynamically resolved by the context.
         Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), 
                 issuer, "Unexpected value for Issuer found");
         //TODO this may change
