@@ -28,6 +28,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
@@ -190,16 +192,26 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     /**
      * Test context issuer not set, request with trusted credential.
+     * Use a SAML 1 Request AttributeQuery, with no resource attrib containing the entityID.
      * @throws MessageHandlerException 
      */
     @Test
     public void testNoContextIssuer() throws MessageHandlerException {
         trustedCredentials.add(validX509Cred);
         
+        // Build a SAML message from which the SAML peer entityID can not be resolved.
+        Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        AttributeQuery query = buildXMLObject(AttributeQuery.DEFAULT_ELEMENT_NAME);
+        query.setResource(null); // Set null for good measure
+        request.setQuery(query);
+        messageContext.setMessage(request);
+        
         messageContext.getSubcontext(SamlPeerEntityContext.class).setEntityId(null);
         
         handler.invoke(messageContext);
         
+        // Note that entityID will now be that contained in the SAML message, since it's 
+        // dynamically resolved by the context.
         Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), 
                 issuer, "Unexpected value for Issuer found");
         //TODO this may change
@@ -207,6 +219,31 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
                 "Unexpected value for context authentication state");
     }
     
+    /**
+     * Test context issuer not set explicitly, resolved dynamically by SamlPeerEntityContext from SAML 2 message, 
+     * request with trusted credential.
+     * @throws MessageHandlerException 
+     */
+    @Test
+    public void testDynamicContextIssuer() throws MessageHandlerException {
+        // Set the expected valid credential entityID to the actual Issuer 
+        // of the AuthnRequest message, to allow proper resolution.
+        validX509Cred.setEntityId("SomeCoolIssuer");
+        trustedCredentials.add(validX509Cred);
+        
+        messageContext.getSubcontext(SamlPeerEntityContext.class).setEntityId(null);
+        
+        
+        handler.invoke(messageContext);
+        
+        // Note that entityID for this test will be that contained in the SAML message,
+        // since it's dynamically resolved by the context.
+        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), 
+                "SomeCoolIssuer", "Unexpected value for Issuer found");
+        //TODO this may change
+        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
+                "Unexpected value for context authentication state");
+    }
 
     /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
