@@ -108,8 +108,8 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
         if (limit == 0) {
             log.info("Reached depth limit for KeyInfoReferences");
         } else {
-            for (XMLObject xo : keyInfo.getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME)) {
-                for (EncryptedKey encKey : resolveKeyInfo(dereferenceURI((KeyInfoReference) xo), limit-1)) {
+            for (KeyInfoReference ref : keyInfo.getKeyInfoReferences()) {
+                for (EncryptedKey encKey : resolveKeyInfo(dereferenceURI(ref), limit-1)) {
                     resolvedEncKeys.add(encKey);
                 }
             }

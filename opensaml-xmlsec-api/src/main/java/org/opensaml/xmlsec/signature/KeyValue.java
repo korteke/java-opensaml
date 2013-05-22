@@ -71,6 +71,20 @@ public interface KeyValue extends XMLObject {
     public void setRSAKeyValue(@Nullable final RSAKeyValue newRSAKeyValue);
 
     /**
+     * Get the ECKeyValue child element.
+     * 
+     * @return the ECKeyValue child element
+     */
+    @Nullable public ECKeyValue getECKeyValue();
+
+    /**
+     * Set the ECKeyValue child element.
+     * 
+     * @param newECKeyValue the new ECKeyValue child element
+     */
+    public void setECKeyValue(@Nullable final ECKeyValue newECKeyValue);
+    
+    /**
      * Get the wildcard &lt;any&gt; XMLObject child element.
      * 
      * @return the wildcard XMLObject child element

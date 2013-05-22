@@ -356,7 +356,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
         resolveKeyValue(kiContext, criteriaSet, keyInfo.getKeyValues());
         
         // Extract the Credential based on the (singular) key from an existing DEREncodedKeyValue(s).
-        resolveKeyValue(kiContext, criteriaSet, keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME));
+        resolveKeyValue(kiContext, criteriaSet, keyInfo.getDEREncodedKeyValues());
     }
 
     /**

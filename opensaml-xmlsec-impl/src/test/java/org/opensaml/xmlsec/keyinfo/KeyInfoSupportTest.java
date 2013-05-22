@@ -567,8 +567,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         } catch (InvalidKeySpecException e) {
             Assert.fail("Unsupported key specification: " + e);
         }
-        DEREncodedKeyValue kv = (DEREncodedKeyValue) keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).get(0);
-        Assert.assertNotNull(kv, "KeyValue was null");
+        DEREncodedKeyValue kv = keyInfo.getDEREncodedKeyValues().get(0);
+        Assert.assertNotNull(kv, "DEREncodedKeyValue was null");
         
         DSAPublicKey javaKey = null;
         try {
@@ -579,7 +579,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(javaDSAPubKey1, javaKey, "Inserted RSA public key was not the expected value");
         
-        keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        keyInfo.getDEREncodedKeyValues().clear();
     }
     
     /** Tests adding a public key as a DEREncodedKeyValue to KeyInfo. */
@@ -594,8 +594,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         } catch (InvalidKeySpecException e) {
             Assert.fail("Unsupported key specification: " + e);
         }
-        DEREncodedKeyValue kv = (DEREncodedKeyValue) keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).get(0);
-        Assert.assertNotNull(kv, "KeyValue was null");
+        DEREncodedKeyValue kv = keyInfo.getDEREncodedKeyValues().get(0);
+        Assert.assertNotNull(kv, "DEREncodedKeyValue was null");
         
         RSAPublicKey javaKey = null;
         try {
@@ -606,7 +606,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(javaRSAPubKey1, javaKey, "Inserted RSA public key was not the expected value");
         
-        keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        keyInfo.getDEREncodedKeyValues().clear();
     }
     
     /**

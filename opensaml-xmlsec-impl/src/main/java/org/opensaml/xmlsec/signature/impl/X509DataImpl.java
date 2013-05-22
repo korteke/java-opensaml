@@ -29,6 +29,7 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
 import org.opensaml.xmlsec.signature.X509SubjectName;
@@ -53,39 +54,44 @@ public class X509DataImpl extends AbstractXMLObject implements X509Data {
 
     /** {@inheritDoc} */
     public List<XMLObject> getXMLObjects() {
-        return (List<XMLObject>) this.indexedChildren;
+        return (List<XMLObject>) indexedChildren;
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getXMLObjects(QName typeOrName) {
-        return (List<XMLObject>) this.indexedChildren.subList(typeOrName);
+        return (List<XMLObject>) indexedChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
     public List<X509IssuerSerial> getX509IssuerSerials() {
-        return (List<X509IssuerSerial>) this.indexedChildren.subList(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
+        return (List<X509IssuerSerial>) indexedChildren.subList(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<X509SKI> getX509SKIs() {
-        return (List<X509SKI>) this.indexedChildren.subList(X509SKI.DEFAULT_ELEMENT_NAME);
+        return (List<X509SKI>) indexedChildren.subList(X509SKI.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<X509SubjectName> getX509SubjectNames() {
-        return (List<X509SubjectName>) this.indexedChildren.subList(X509SubjectName.DEFAULT_ELEMENT_NAME);
+        return (List<X509SubjectName>) indexedChildren.subList(X509SubjectName.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<X509Certificate> getX509Certificates() {
-        return (List<X509Certificate>) this.indexedChildren.subList(X509Certificate.DEFAULT_ELEMENT_NAME);
+        return (List<X509Certificate>) indexedChildren.subList(X509Certificate.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     public List<X509CRL> getX509CRLs() {
-        return (List<X509CRL>) this.indexedChildren.subList(X509CRL.DEFAULT_ELEMENT_NAME);
+        return (List<X509CRL>) indexedChildren.subList(X509CRL.DEFAULT_ELEMENT_NAME);
     }
 
+    /** {@inheritDoc} */
+    public List<X509Digest> getX509Digests() {
+        return (List<X509Digest>) indexedChildren.subList(X509Digest.DEFAULT_ELEMENT_NAME);
+    }
+    
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();

@@ -250,7 +250,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         }
 
         // Check against any subject key identifiers
-        cert = findCertFromDigest(certs, x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME));
+        cert = findCertFromDigest(certs, x509Data.getX509Digests());
         if (cert != null) {
             log.debug("End-entity certificate resolved by matching X509Digest");
             return cert;
@@ -378,13 +378,11 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      * @return the matching certificate, or null
      */
     @Nullable protected X509Certificate findCertFromDigest(@Nonnull final List<X509Certificate> certs,
-            @Nonnull final List<XMLObject> digests) {
+            @Nonnull final List<X509Digest> digests) {
         byte[] certValue;
         byte[] xmlValue;
-        X509Digest digest;
         
-        for (XMLObject xo : digests) {
-            digest = (X509Digest) xo;
+        for (X509Digest digest : digests) {
             if (!Strings.isNullOrEmpty(digest.getValue()) && !Strings.isNullOrEmpty(digest.getAlgorithm())) {
                 String alg = AlgorithmSupport.getAlgorithmID(digest.getAlgorithm());
                 if (alg == null) {
