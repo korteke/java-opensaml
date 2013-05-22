@@ -20,11 +20,12 @@ package org.opensaml.xmlsec.signature.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.KeyValue} objects.
+ * A thread-safe Unmarshaller for {@link KeyValue} objects.
  */
 public class KeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
@@ -37,6 +38,8 @@ public class KeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
             keyValue.setDSAKeyValue((DSAKeyValue) childXMLObject);
         } else if (childXMLObject instanceof RSAKeyValue) {
             keyValue.setRSAKeyValue((RSAKeyValue) childXMLObject);
+        } else if (childXMLObject instanceof ECKeyValue) {
+            keyValue.setECKeyValue((ECKeyValue) childXMLObject);
         } else {
             // There can be only one...
             if (keyValue.getUnknownXMLObject() == null) {

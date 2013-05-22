@@ -618,8 +618,8 @@ public class KeyInfoSupport {
         X509EncodedKeySpec keySpec = keyFactory.getKeySpec(pk, X509EncodedKeySpec.class);
         keyValue.setValue(Base64Support.encode(keySpec.getEncoded(), Base64Support.CHUNKED));
         
-        keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).add(keyValue);
-    }        
+        keyInfo.getDEREncodedKeyValues().add(keyValue);
+    }
     
     /**
      * Extracts all the public keys within the given {@link KeyInfo}'s {@link KeyValue}s and
@@ -648,8 +648,8 @@ public class KeyInfoSupport {
             }
         }
 
-        for (XMLObject keyDescriptor : keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME)) {
-            PublicKey newKey = getKey((DEREncodedKeyValue) keyDescriptor);
+        for (DEREncodedKeyValue keyDescriptor : keyInfo.getDEREncodedKeyValues()) {
+            PublicKey newKey = getKey(keyDescriptor);
             if (newKey != null) {
                 keys.add(newKey);
             }

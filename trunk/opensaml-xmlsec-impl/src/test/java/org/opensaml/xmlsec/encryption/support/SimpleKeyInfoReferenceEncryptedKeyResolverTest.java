@@ -109,7 +109,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getKeyInfoReferences().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -137,7 +137,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         EncryptedData encData = (EncryptedData) sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getKeyInfoReferences().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());

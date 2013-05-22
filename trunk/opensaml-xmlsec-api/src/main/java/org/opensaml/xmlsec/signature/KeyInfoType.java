@@ -86,12 +86,26 @@ public interface KeyInfoType extends XMLObject {
     @Nonnull public List<KeyValue> getKeyValues();
 
     /**
+     * Get the list of DEREncodedKeyValue child elements.
+     * 
+     * @return the list of DEREncodedKeyValue child elements
+     */
+    @Nonnull public List<DEREncodedKeyValue> getDEREncodedKeyValues();
+    
+    /**
      * Get the list of RetrievalMethod child elements.
      * 
      * @return the list of RetrievalMethod child elements
      */
     @Nonnull public List<RetrievalMethod> getRetrievalMethods();
 
+    /**
+     * Get the list of KeyInfoReference child elements.
+     * 
+     * @return the list of KeyInfoReference child elements
+     */
+    @Nonnull public List<KeyInfoReference> getKeyInfoReferences();
+    
     /**
      * Get the list of X509Data child elements.
      * 

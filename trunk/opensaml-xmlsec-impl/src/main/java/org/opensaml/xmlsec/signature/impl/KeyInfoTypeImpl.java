@@ -28,6 +28,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
+import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.opensaml.xmlsec.signature.KeyInfoType;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -93,10 +95,20 @@ public class KeyInfoTypeImpl extends AbstractXMLObject implements KeyInfoType {
     }
 
     /** {@inheritDoc} */
+    public List<DEREncodedKeyValue> getDEREncodedKeyValues() {
+        return (List<DEREncodedKeyValue>) indexedChildren.subList(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+    }
+    
+    /** {@inheritDoc} */
     public List<RetrievalMethod> getRetrievalMethods() {
         return (List<RetrievalMethod>) indexedChildren.subList(RetrievalMethod.DEFAULT_ELEMENT_NAME);
     }
 
+    /** {@inheritDoc} */
+    public List<KeyInfoReference> getKeyInfoReferences() {
+        return (List<KeyInfoReference>) indexedChildren.subList(KeyInfoReference.DEFAULT_ELEMENT_NAME);
+    }
+    
     /** {@inheritDoc} */
     public List<X509Data> getX509Datas() {
         return (List<X509Data>) indexedChildren.subList(X509Data.DEFAULT_ELEMENT_NAME);

@@ -447,9 +447,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
         X509Data x509Data = keyInfo.getX509Datas().get(0);
-        Assert.assertEquals(x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME).size(), 1,
-                "Unexpected number of X509Digest elements");
-        X509Digest digest = (X509Digest) x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME).get(0);
+        Assert.assertEquals(x509Data.getX509Digests().size(), 1, "Unexpected number of X509Digest elements");
+        X509Digest digest = x509Data.getX509Digests().get(0);
         byte[] digestValue = Base64Support.decode(StringSupport.trimOrNull(digest.getValue()));
         Assert.assertTrue(Arrays.equals(x509Digest, digestValue), "Unexpected SHA-1 digest value found");
     }

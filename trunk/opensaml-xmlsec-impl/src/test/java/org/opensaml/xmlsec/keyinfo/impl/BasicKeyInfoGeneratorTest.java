@@ -102,12 +102,11 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");
         Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Unexpected number of KeyValue elements");
-        Assert.assertEquals(keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).size(), 1,
+        Assert.assertEquals(keyInfo.getDEREncodedKeyValues().size(), 1,
                 "Unexpected number of DEREncodedKeyValue elements");
         PublicKey generatedKey = KeyInfoSupport.getKey(keyInfo.getKeyValues().get(0));
         Assert.assertEquals(generatedKey, pubKey, "Unexpected key value");
-        PublicKey generatedKey2 = KeyInfoSupport.getKey((DEREncodedKeyValue) keyInfo.getXMLObjects(
-                DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).get(0));
+        PublicKey generatedKey2 = KeyInfoSupport.getKey(keyInfo.getDEREncodedKeyValues().get(0));
         Assert.assertEquals(pubKey, generatedKey2, "Unexpected key value");
     }
     

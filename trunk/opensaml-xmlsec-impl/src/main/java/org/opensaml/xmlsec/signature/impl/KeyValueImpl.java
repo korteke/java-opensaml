@@ -24,6 +24,7 @@ import java.util.List;
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 
@@ -37,6 +38,9 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
     
     /** RSAKeyValue child element. */
     private RSAKeyValue rsaKeyValue;
+
+    /** ECKeyValue child element. */
+    private ECKeyValue ecKeyValue;
     
     /** Wildcard &lt;any&gt; XMLObject child element. */
     private XMLObject unknownXMLObject;
@@ -54,32 +58,42 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
 
     /** {@inheritDoc} */
     public DSAKeyValue getDSAKeyValue() {
-        return this.dsaKeyValue;
+        return dsaKeyValue;
     }
 
     /** {@inheritDoc} */
     public void setDSAKeyValue(DSAKeyValue newDSAKeyValue) {
-        this.dsaKeyValue = prepareForAssignment(this.dsaKeyValue, newDSAKeyValue);
+        dsaKeyValue = prepareForAssignment(dsaKeyValue, newDSAKeyValue);
     }
 
     /** {@inheritDoc} */
     public RSAKeyValue getRSAKeyValue() {
-        return this.rsaKeyValue;
+        return rsaKeyValue;
     }
 
     /** {@inheritDoc} */
     public void setRSAKeyValue(RSAKeyValue newRSAKeyValue) {
-        this.rsaKeyValue = prepareForAssignment(this.rsaKeyValue, newRSAKeyValue);
+        rsaKeyValue = prepareForAssignment(rsaKeyValue, newRSAKeyValue);
     }
 
     /** {@inheritDoc} */
+    public ECKeyValue getECKeyValue() {
+        return ecKeyValue;
+    }
+
+    /** {@inheritDoc} */
+    public void setECKeyValue(ECKeyValue newECKeyValue) {
+        ecKeyValue = prepareForAssignment(ecKeyValue, newECKeyValue);
+    }
+    
+    /** {@inheritDoc} */
     public XMLObject getUnknownXMLObject() {
-        return this.unknownXMLObject;
+        return unknownXMLObject;
     }
 
     /** {@inheritDoc} */
     public void setUnknownXMLObject(XMLObject newXMLObject) {
-        this.unknownXMLObject = prepareForAssignment(this.unknownXMLObject, newXMLObject);
+        unknownXMLObject = prepareForAssignment(unknownXMLObject, newXMLObject);
     }
 
     /** {@inheritDoc} */
@@ -91,6 +105,9 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
         }
         if (rsaKeyValue != null) {
             children.add(rsaKeyValue);
+        }
+        if (ecKeyValue != null) {
+            children.add(ecKeyValue);
         }
         if (unknownXMLObject != null) {
             children.add(unknownXMLObject);

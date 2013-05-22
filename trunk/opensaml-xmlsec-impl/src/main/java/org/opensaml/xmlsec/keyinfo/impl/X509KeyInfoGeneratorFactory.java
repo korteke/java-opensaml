@@ -578,8 +578,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
                 @Nonnull final java.security.cert.X509Certificate cert) throws SecurityException {
             if (options.emitX509Digest) {
                 try {
-                    x509Data.getXMLObjects(X509Digest.DEFAULT_ELEMENT_NAME).add(
-                            KeyInfoSupport.buildX509Digest(cert, options.x509DigestAlgorithmURI));
+                    x509Data.getX509Digests().add(KeyInfoSupport.buildX509Digest(cert, options.x509DigestAlgorithmURI));
                 } catch (CertificateEncodingException e) {
                     throw new SecurityException("Can't digest certificate, certificate encoding error", e);
                 } catch (NoSuchAlgorithmException e) {

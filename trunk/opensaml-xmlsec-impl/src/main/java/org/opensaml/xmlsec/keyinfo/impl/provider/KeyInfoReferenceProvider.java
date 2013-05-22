@@ -74,7 +74,7 @@ public class KeyInfoReferenceProvider extends AbstractKeyInfoProvider {
         } else if (!(target instanceof KeyInfo)) {
             log.warn("The product of dereferencing the KeyInfoReference was not a KeyInfo");
             return null;
-        } else if (!((KeyInfo) target).getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty()) {
+        } else if (!((KeyInfo) target).getKeyInfoReferences().isEmpty()) {
             log.warn("The dereferenced KeyInfo contained a KeyInfoReference, cannot process");
             return null;
         }

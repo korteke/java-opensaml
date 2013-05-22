@@ -93,4 +93,10 @@ public interface X509Data extends XMLObject {
      */
     @Nonnull public List<X509CRL> getX509CRLs();
 
+    /**
+     * Get the list of X509Digest child elements.
+     * 
+     * @return the list of X509Digest child elements
+     */
+    @Nonnull public List<X509Digest> getX509Digests();
 }
