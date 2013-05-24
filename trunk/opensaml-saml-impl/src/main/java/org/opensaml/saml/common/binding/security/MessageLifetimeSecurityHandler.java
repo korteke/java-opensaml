@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
 
 import org.joda.time.DateTime;
@@ -70,10 +71,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
      * @param skew The clockSkew to set.
      */
     public void setClockSkew(final int skew) {
-        if (isInitialized()) {
-            throw new UnmodifiableComponentException("Clock skew can not be changed after handler has been initialized");
-        }
-        
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         clockSkew = skew;
     }
 
@@ -92,10 +90,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
      * @param lifetime amount of time, in seconds, for which a message is valid
      */
     public synchronized void setMessageLifetime(final int lifetime) {
-        if (isInitialized()) {
-            throw new UnmodifiableComponentException("Message lifetime can not be changed after handler has been initialized");
-        }
-
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         messageLifetime = lifetime;
     }
 
@@ -114,6 +109,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
      * @param required whether this rule is required to be met
      */
     public void setRequiredRule(boolean required) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         requiredRule = required;
     }
 

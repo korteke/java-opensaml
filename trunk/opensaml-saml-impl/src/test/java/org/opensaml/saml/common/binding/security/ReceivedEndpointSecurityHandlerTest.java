@@ -20,10 +20,11 @@ package org.opensaml.saml.common.binding.security;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.context.navigate.MockHttpServletRequestLookupStrategy;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -51,12 +52,11 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     private ReceivedEndpointSecurityHandler handler;
     
     @BeforeMethod
-    public void setUp() throws MessageException {
+    public void setUp() throws MessageException, ComponentInitializationException {
         messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage((SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml"));
         
         httpRequest = new MockHttpServletRequest();
-        MockHttpServletRequestLookupStrategy requestLookup = new MockHttpServletRequestLookupStrategy(httpRequest);
         
         samlBindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
         samlBindingContext.setBindingUri(SAMLConstants.SAML2_REDIRECT_BINDING_URI);
@@ -66,7 +66,8 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         intendedDestinationUri = SAMLBindingSupport.getIntendedDestinationEndpointUri(messageContext);
         
         handler = new ReceivedEndpointSecurityHandler();
-        handler.setRequestLookupStrategy(requestLookup);
+        handler.setHttpServletRequest(httpRequest);
+        handler.initialize();
     }
     
     @Test

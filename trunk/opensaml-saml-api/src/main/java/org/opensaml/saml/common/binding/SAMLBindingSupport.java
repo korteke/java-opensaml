@@ -268,19 +268,15 @@ public final class SAMLBindingSupport {
      * Extract the transport endpoint URI at which this message was received.
      * 
      * @param messageContext current message context
-     * @param requestLookupStrategy the strategy used to look up the HttpServletRequest
+     * @param request the HttpServletRequest being evaluated
      * @return string representing the transport endpoint URI at which the current message was received
      * @throws MessageException thrown if the endpoint can not be looked up from the message
      *                              context and converted to a string representation
      */
     public static String getActualReceiverEndpointUri(@Nonnull final MessageContext<SAMLObject> messageContext, 
-            @Nonnull final ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> requestLookupStrategy) 
+            @Nonnull final HttpServletRequest request) 
                     throws MessageException {
-        HttpServletRequest request = requestLookupStrategy.apply(messageContext);
-        if (request == null) {
-            throw new MessageException("HttpServletRequest could not be looked up from message context");
-        }
-        
+        Constraint.isNotNull(request, "HttpServletRequest may not be null");
         return request.getRequestURL().toString();
     }
 

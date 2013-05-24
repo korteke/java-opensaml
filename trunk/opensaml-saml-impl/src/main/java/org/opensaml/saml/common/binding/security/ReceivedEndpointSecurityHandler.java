@@ -22,12 +22,13 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
@@ -50,8 +51,8 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
     /** The URI comparator to use in performing the validation. */
     private UriComparator uriComparator;
     
-    /** Lookup strategy for resolving the HttpServletRequest. */
-    private ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> requestLookupStrategy;
+    /** The HttpServletRequest being processed. */
+    private HttpServletRequest httpServletRequest;
 
     /**
      * Constructor.
@@ -76,26 +77,35 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
      * @param comparator the new URI comparator to use
      */
     public void setUriComparator(@Nonnull final UriComparator comparator) {
-       uriComparator = Constraint.isNotNull(comparator, "UriComparator may not be null");
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        uriComparator = Constraint.isNotNull(comparator, "UriComparator may not be null");
+    }
+    
+    /**
+     * Get the HTTP servlet request being processed.
+     * 
+     * @return Returns the request.
+     */
+    public HttpServletRequest getHttpServletRequest() {
+        return httpServletRequest;
     }
 
     /**
-     * Get the HttpServletRequest lookup strategy to use. 
+     * Set the HTTP servlet request being processed.
      * 
-     * @return the lookup strategy
+     * @param request The to set.
      */
-    public ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> getRequestLookupStrategy() {
-        return requestLookupStrategy;
+    public void setHttpServletRequest(HttpServletRequest request) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
     }
 
-    /**
-     * Set the HttpServletRequest lookup strategy to use. 
-     * 
-     * @param strategy the new lookup strategy
-     */
-    public void setRequestLookupStrategy(
-            @Nonnull final ContextDataLookupFunction<MessageContext<?>, HttpServletRequest> strategy) {
-        requestLookupStrategy = Constraint.isNotNull(strategy, "HttpServletRequest lookup strategy may no be null");
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        Constraint.isNotNull(uriComparator, "UriComparator must be supplied");
+        Constraint.isNotNull(httpServletRequest, "HttpServletRequest must be supplied");
     }
 
     /** {@inheritDoc} */
@@ -164,7 +174,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
         String receiverEndpoint;
         try {
             receiverEndpoint = StringSupport.trimOrNull(
-                    SAMLBindingSupport.getActualReceiverEndpointUri(messageContext, requestLookupStrategy));
+                    SAMLBindingSupport.getActualReceiverEndpointUri(messageContext, getHttpServletRequest()));
         } catch (MessageException e) {
             throw new MessageHandlerException("Error obtaining message received endpoint URI", e);
         }

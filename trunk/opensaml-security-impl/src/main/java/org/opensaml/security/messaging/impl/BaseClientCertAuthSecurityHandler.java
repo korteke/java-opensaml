@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -109,7 +110,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType> extends Bas
      * @param request The to set.
      */
     public void setHttpServletRequest(HttpServletRequest request) {
-        httpServletRequest = request;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
     }
 
     /**
@@ -127,15 +129,16 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType> extends Bas
      * @param options The certNameOptions to set.
      */
     public void setCertificateNameOptions(CertificateNameOptions options) {
-        certNameOptions = options;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        certNameOptions = Constraint.isNotNull(options, "CertificateNameOptions may not be null");
     }
     
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        Constraint.isNotNull(httpServletRequest, "HttpServletRequest was null");
-        Constraint.isNotNull(certNameOptions, "CertificateNameOptions was null");
+        Constraint.isNotNull(httpServletRequest, "HttpServletRequest must be supplied");
+        Constraint.isNotNull(certNameOptions, "CertificateNameOptions must be supplied");
     }
 
     /** {@inheritDoc} */

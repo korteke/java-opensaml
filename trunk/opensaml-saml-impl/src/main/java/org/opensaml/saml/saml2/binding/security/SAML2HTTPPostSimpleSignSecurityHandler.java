@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -78,7 +79,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * @param newParserPool The parser to set.
      */
     public void setParser(ParserPool newParserPool) {
-        parserPool = newParserPool;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        parserPool = Constraint.isNotNull(newParserPool, "ParserPool may not be null");
     }
 
     /**
@@ -96,7 +98,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * @param newKeyInfoResolver The keyInfoResolver to set.
      */
     public void setKeyInfoResolver(KeyInfoCredentialResolver newKeyInfoResolver) {
-        keyInfoResolver = newKeyInfoResolver;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        keyInfoResolver = Constraint.isNotNull(newKeyInfoResolver, "KeyInfoCredentialResolver may not be null");
     }
 
     /** {@inheritDoc} */
