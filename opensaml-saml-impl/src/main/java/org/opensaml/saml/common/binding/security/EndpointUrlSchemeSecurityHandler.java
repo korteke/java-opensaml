@@ -26,12 +26,17 @@ import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.SamlMessageSecuritySupport;
 import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class which verifies that the {@link Endpoint} to which a message will be delivered
  * contains a valid URL scheme.
  */
 public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
+    
+    /** Logger. */
+    Logger log = LoggerFactory.getLogger(EndpointUrlSchemeSecurityHandler.class);
 
     /** {@inheritDoc} */
     protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
@@ -41,6 +46,8 @@ public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
         } catch (BindingException e) {
             throw new MessageHandlerException("Could not obtain message endpoint URL", e);
         }
+        
+        log.debug("Checking outbound endpoint for allowed URL scheme: {}", endpointUrl);
         
         if (!SamlMessageSecuritySupport.checkUrlScheme(endpointUrl.getScheme())) {
             throw new MessageHandlerException("Relying party endpoint used the untrusted URL scheme "
