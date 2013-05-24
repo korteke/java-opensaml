@@ -27,6 +27,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handler for outbound SAML protocol messages which adds the destination endpoint URL as the 'recipient'
@@ -35,6 +37,9 @@ import org.opensaml.saml.common.SAMLObject;
  * {@link org.opensaml.saml.saml2.core.StatusResponseType} messages.
  */
 public class SAMLOutboundDestinationHandler extends AbstractMessageHandler<SAMLObject> {
+    
+    /** Logger. */
+    Logger log = LoggerFactory.getLogger(SAMLOutboundDestinationHandler.class);
 
     /** {@inheritDoc} */
     protected void doInvoke(@Nonnull MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
@@ -46,9 +51,11 @@ public class SAMLOutboundDestinationHandler extends AbstractMessageHandler<SAMLO
             String endpointURL = endpointURI.toString();
             
             if (samlMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
+                log.debug("Adding recipient to outbound SAML 1 protocol message: {}", endpointURL);
                 SAMLBindingSupport.setSaml1ResponseRecipient(samlMessage, endpointURL);
             } else if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType
                     || samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
+                log.debug("Adding destination to outbound SAML 2 protocol message: {}", endpointURL);
                 SAMLBindingSupport.setSaml2Destination(samlMessage, endpointURL);
             }
             
