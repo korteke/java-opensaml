@@ -18,6 +18,7 @@
 package org.opensaml.security.messaging.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -35,7 +36,8 @@ import org.slf4j.LoggerFactory;
  * @param <TokenType> type of token which is being evaluated by the underlying trust engine
  * @param <MessageType> type of message contained in the message context being evaluated
  */
-public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType> extends AbstractMessageHandler<MessageType> {
+public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType> 
+        extends AbstractMessageHandler<MessageType> {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(BaseTrustEngineSecurityHandler.class);
@@ -58,7 +60,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType> ext
      * @param engine engine used to validate the untrusted token
      */
     public void setTrustEngine(TrustEngine<TokenType> engine) {
-        trustEngine = engine;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        trustEngine = Constraint.isNotNull(engine, "TrustEngine may not be null");
     }
 
     /** {@inheritDoc} */
