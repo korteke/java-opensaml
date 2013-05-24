@@ -48,7 +48,7 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
             return;
         }
         
-        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, false);
+        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, true);
         if (peerContext == null || Strings.isNullOrEmpty(peerContext.getEntityId())) {
             log.warn("SAML peer entityID was not available, unable to evaluate rule");
             return;
