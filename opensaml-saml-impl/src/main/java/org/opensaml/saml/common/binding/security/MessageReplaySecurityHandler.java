@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -73,7 +74,8 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
      * @param cache The replayCache to set.
      */
     public void setReplayCache(@Nonnull final ReplayCache cache) {
-        replayCache = cache;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        replayCache = Constraint.isNotNull(cache, "ReplayCache may not be null");
     }
 
     /**
@@ -91,6 +93,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
      * @param exp lifetime in seconds of entries
      */
     public void setExpires(final long exp) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         expires = exp;
     }
 

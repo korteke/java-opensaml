@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -114,11 +116,17 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
      * 
      * @throws InterruptedException
      * @throws MessageHandlerException 
+     * @throws ComponentInitializationException 
      */
     @Test
-    public void testReplayValidWithExpiration() throws InterruptedException, MessageHandlerException {
+    public void testReplayValidWithExpiration() throws InterruptedException, MessageHandlerException, ComponentInitializationException {
+        handler = new MessageReplaySecurityHandler();
+        handler.setReplayCache(replayCache);
+        
         // Set rule with 3 second expiration, with no clock skew
         handler.setExpires(3);
+        handler.initialize();
+        
         handler.invoke(messageContext);
 
         // Now sleep for 4 seconds to be sure has expired, and retry same message id

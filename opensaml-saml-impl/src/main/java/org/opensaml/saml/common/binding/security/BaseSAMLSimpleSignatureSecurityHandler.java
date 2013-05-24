@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -83,7 +84,8 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @param engine engine used to validate the signature
      */
     public void setTrustEngine(SignatureTrustEngine engine) {
-        trustEngine = engine;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        trustEngine = Constraint.isNotNull(engine, "TrustEngine may not be null");
     }
 
     /**
@@ -101,7 +103,8 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @param request The to set.
      */
     public void setHttpServletRequest(HttpServletRequest request) {
-        httpServletRequest = request;
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
     }
     
     /**
