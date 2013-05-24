@@ -122,6 +122,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
                 throw new MessageHandlerException("SAML message from issuer " + entityID
                         + " did not contain an ID");
             } else {
+                log.debug("Message contained no ID, rule is optional, skipping further processing");
                 return;
             }
         }
@@ -130,6 +131,8 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
         if (issueInstant == null) {
             issueInstant = new DateTime();
         }
+        
+        log.debug("Evaluating message replay for message ID '{}', issue instant '{}', entityID '{}'", messageId, issueInstant, entityID);
         
         if (!getReplayCache().check(getClass().getName(), messageId, issueInstant.getMillis() / 1000 + expires)) {
             log.warn("Replay detected of message '{}' from issuer '{}'", messageId, entityID);
