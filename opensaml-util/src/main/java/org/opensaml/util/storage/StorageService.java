@@ -32,23 +32,18 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 /**
  * Generic data storage facility. Implementations will vary in how much
- * persistence they can supply, and must support short values of at least 255
- * characters, and long text values of arbitrary size.
- * 
+ * persistence they can supply, and must support a {@link StorageCapabilities}
+ * interface to describe storage limitations.
+ *  
  * <p>Storage is divided into "contexts" identified by a string label.
  * Keys need to be unique only within a given context, so multiple
  * components can share a single store safely as long as they
  * use different labels.</p>
- *
- * <p>The allowable sizes for contexts, keys, and short values can vary
- * and be reported by the implementation to callers, but MUST be at least
- * 255 characters.</p>
+ * 
+ * <p>The allowable sizes for contexts and keys can vary and be reported
+ * by the implementation to callers, but MUST be at least 255 characters.</p>
  * 
  * <p>Expiration is expressed in seconds since the epoch.</p>
- * 
- * <p>It is implementation dependent whether a store partitions records by
- * type (string vs. text) and callers must not mix create/read/update/delete
- * calls of different sizes for a given context and key.</p>
  */
 @ThreadSafe
 public interface StorageService extends InitializableComponent, DestructableComponent,
@@ -62,7 +57,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
     @Nonnull public StorageCapabilities getCapabilities();
 
     /**
-     * Creates a new "string" record in the store with no explicit expiration.
+     * Creates a new record in the store with no explicit expiration.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -71,11 +66,11 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process 
      */
-    public boolean createString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value) throws IOException;
     
     /**
-     * Creates a new "string" record in the store.
+     * Creates a new record in the store with an expiration.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -85,38 +80,11 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process 
      */
-    public boolean createString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, final long expiration) throws IOException;
 
     /**
-     * Creates a new "text" record in the store with no explicit expiration.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         value to store
-     * 
-     * @return  true iff record was inserted, false iff a duplicate was found
-     * @throws IOException  if fatal errors occur in the insertion process 
-     */
-    public boolean createText(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value) throws IOException;
-
-    /**
-     * Creates a new "text" record in the store.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         value to store
-     * @param expiration    expiration for record
-     * 
-     * @return  true iff record was inserted, false iff a duplicate was found
-     * @throws IOException  if fatal errors occur in the insertion process 
-     */
-    public boolean createText(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, final long expiration) throws IOException;
-
-    /**
-     * Creates a new "text" record in the store with no explicit expiration, using a custom serialization
+     * Creates a new record in the store with no explicit expiration, using a custom serialization
      * process for an arbitrary object.
      * 
      * @param context       a storage context label
@@ -127,11 +95,11 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process 
      */
-    public boolean createText(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Object value, @Nonnull final StorageSerializer serializer) throws IOException;
 
     /**
-     * Creates a new "text" record in the store, using a custom serialization
+     * Creates a new record in the store with an expiration, using a custom serialization
      * process for an arbitrary object.
      * 
      * @param context       a storage context label
@@ -143,13 +111,13 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process 
      */
-    public boolean createText(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Object value, @Nonnull final StorageSerializer serializer, final long expiration)
                     throws IOException;
     
     
     /**
-     * Returns an existing "string" record from the store, if one exists.
+     * Returns an existing record from the store, if one exists.
      *
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -157,11 +125,11 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  the record read back, if present, or null
      * @throws IOException  if errors occur in the read process 
      */
-    @Nullable public StorageRecord readString(@Nonnull @NotEmpty final String context,
+    @Nullable public StorageRecord read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException;
     
     /**
-     * Returns an existing "string" record from the store, along with its version.
+     * Returns an existing record from the store, along with its version.
      *
      * <p>The first member of the pair returned will contain the version of the record in the store,
      * or will be null if no record exists. The second member will contain the record read back.
@@ -175,41 +143,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  a pair consisting of the version of the record read back, if any, and the record itself
      * @throws IOException  if errors occur in the read process 
      */
-    @Nonnull public Pair<Integer, StorageRecord> readString(@Nonnull @NotEmpty final String context,
+    @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, final int version) throws IOException;
     
-    /**
-     * Returns an existing "text" record from the store, if one exists.
-     *
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * 
-     * @return  the record read back, if present, or null
-     * @throws IOException  if errors occur in the read process 
-     */
-    @Nullable public StorageRecord readText(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key) throws IOException;
-
-    /**
-     * Returns an existing "text" record from the store, along with its version.
-     *
-     * <p>The first member of the pair returned will contain the version of the record in the store,
-     * or will be null if no record exists. The second member will contain the record read back.
-     * If null, the record either didn't exist (if the first member was also null) or the record
-     * was the same version as that supplied by the caller.</p>
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param version       only return record if newer than supplied version
-     * 
-     * @return  a pair consisting of the version of the record read back, if any, and the record itself
-     * @throws IOException  if errors occur in the read process 
-     */
-    @Nonnull public Pair<Integer, StorageRecord> readText(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, final int version) throws IOException;
     
     /**
-     * Updates an existing "string" record in the store, with no explicit expiration.
+     * Updates an existing record in the store, with no explicit expiration.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -218,11 +157,11 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateString(@Nonnull @NotEmpty final String context,
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value) throws IOException;
 
     /**
-     * Updates an existing "string" record in the store, and sets its expiration.
+     * Updates an existing record in the store, and sets its expiration.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -232,12 +171,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateString(@Nonnull @NotEmpty final String context,
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             final long expiration) throws IOException;
     
     /**
-     * Updates an existing "string" record in the store with no explicit expiration, if a version matches.
+     * Updates an existing record in the store with no explicit expiration, if a version matches.
      * 
      * @param version       only update if the current version matches this value
      * @param context       a storage context label
@@ -248,12 +187,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateStringWithVersion(final int version,
+    @Nullable public Integer updateWithVersion(final int version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value) throws IOException, VersionMismatchException;
 
     /**
-     * Updates an existing "string" record in the store with no explicit expiration, if a version matches.
+     * Updates an existing record in the store and sets its expiration, if a version matches.
      * 
      * @param version       only update if the current version matches this value
      * @param context       a storage context label
@@ -265,100 +204,13 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateStringWithVersion(final int version,
+    @Nullable public Integer updateWithVersion(final int version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, final long expiration) throws IOException,
             VersionMismatchException;
 
     /**
-     * Updates expiration of an existing "string" record in the store to no expiration.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * 
-     * @return the version of the record, null if no record exists
-     * @throws IOException  if errors occur in the update process 
-     */
-    @Nullable public Integer updateStringExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key) throws IOException;
-
-    /**
-     * Updates expiration of an existing "string" record in the store.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param expiration    expiration for record
-     * 
-     * @return the version of the record, null if no record exists
-     * @throws IOException  if errors occur in the update process 
-     */
-    @Nullable public Integer updateStringExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, final long expiration) throws IOException;
-    
-    /**
-     * Updates an existing "text" record in the store, with no explicit expiration.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         updated value
-     * 
-     * @return the version of the record after update, null if no record exists
-     * @throws IOException  if errors occur in the update process 
-     */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value) throws IOException;
-
-    /**
-     * Updates an existing "text" record in the store, and sets its expiration.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         updated value
-     * @param expiration    expiration for record
-     * 
-     * @return the version of the record after update, null if no record exists
-     * @throws IOException  if errors occur in the update process 
-     */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
-            final long expiration) throws IOException;
-    
-    /**
-     * Updates an existing "text" record in the store with no explicit expiration, if a version matches.
-     * 
-     * @param version       only update if the current version matches this value
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         updated value
-     * 
-     * @return the version of the record after update, null if no record exists
-     * @throws IOException  if errors occur in the update process
-     * @throws VersionMismatchException if the record has already been updated to a newer version
-     */
-    @Nullable public Integer updateTextWithVersion(final int version,
-            @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value) throws IOException, VersionMismatchException;
-
-    /**
-     * Updates an existing "text" record in the store and sets its expiration, if a version matches.
-     * 
-     * @param version       only update if the current version matches this value
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         updated value
-     * @param expiration    expiration for record
-     * 
-     * @return the version of the record after update, null if no record exists
-     * @throws IOException  if errors occur in the update process
-     * @throws VersionMismatchException if the record has already been updated to a newer version
-     */
-    @Nullable public Integer updateTextWithVersion(final int version,
-            @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, final long expiration) throws IOException,
-            VersionMismatchException;
-
-    /**
-     * Updates an existing "text" record in the store, with no explicit expiration, using a custom
+     * Updates an existing record in the store, with no explicit expiration, using a custom
      * serialization strategy.
      * 
      * @param context       a storage context label
@@ -369,12 +221,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty final String context,
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer) throws IOException;
 
     /**
-     * Updates an existing "text" record in the store, and sets its expiration, using a custom
+     * Updates an existing record in the store, and sets its expiration, using a custom
      * serialization strategy.
      * 
      * @param context       a storage context label
@@ -386,12 +238,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty final String context,
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, final long expiration) throws IOException;
     
     /**
-     * Updates an existing "text" record in the store with no explicit expiration, if a version matches,
+     * Updates an existing record in the store with no explicit expiration, if a version matches,
      * using a custom serialization strategy.
      * 
      * @param version       only update if the current version matches this value
@@ -404,12 +256,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateTextWithVersion(final int version, @Nonnull @NotEmpty final String context,
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer) throws IOException, VersionMismatchException;
 
     /**
-     * Updates an existing "text" record in the store and sets its expiration, if a version matches,
+     * Updates an existing record in the store and sets its expiration, if a version matches,
      * using a custom serialization strategy.
      * 
      * @param version       only update if the current version matches this value
@@ -423,13 +275,13 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateTextWithVersion(final int version, @Nonnull @NotEmpty final String context,
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, final long expiration)
                     throws IOException, VersionMismatchException;
     
     /**
-     * Updates expiration of an existing "text" record in the store to no expiration.
+     * Updates expiration of an existing record in the store to no expiration.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -437,11 +289,11 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateTextExpiration(@Nonnull @NotEmpty final String context,
+    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException;
 
     /**
-     * Updates expiration of an existing "text" record in the store.
+     * Updates expiration of an existing record in the store.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -450,12 +302,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateTextExpiration(@Nonnull @NotEmpty final String context,
+    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, final long expiration) throws IOException;
     
     
     /**
-     * Deletes an existing "string" record from the store.
+     * Deletes an existing record from the store.
      * 
      * @param context       a storage context label
      * @param key           a key unique to context
@@ -463,20 +315,8 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true iff the record existed and was deleted
      * @throws IOException  if errors occur in the deletion process 
      */
-    public boolean deleteString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
+    public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
             throws IOException;    
-    
-    /**
-     * Deletes an existing "text" record from the store.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * 
-     * @return true iff the record existed and was deleted
-     * @throws IOException  if errors occur in the deletion process 
-     */
-    public boolean deleteText(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
-            throws IOException;
     
     /**
      * Manually trigger a cleanup of expired records. The method <strong>MAY</strong> return without guaranteeing

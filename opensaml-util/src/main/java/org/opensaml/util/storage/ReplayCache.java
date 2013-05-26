@@ -125,10 +125,10 @@ public class ReplayCache extends AbstractDestructableIdentifiableInitializableCo
         }
 
         try {
-            StorageRecord entry = storage.readString(context, key);
+            StorageRecord entry = storage.read(context, key);
             if (entry == null) {
                 log.debug("Value '{}' was not a replay, adding to cache with expiration time {}", s, expires);
-                storage.createString(context, key, "x", expires);
+                storage.create(context, key, "x", expires);
                 return true;
             } else {
                 log.debug("Replay of value '{}' detected in cache, expires at {}", s, entry.getExpiration());

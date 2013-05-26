@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentValidationException;
@@ -33,9 +32,8 @@ import net.shibboleth.utilities.java.support.component.ComponentValidationExcept
 /**
  * Abstract base class for {@link StorageService} implementations.
  * 
- * <p>The base class handles support for a background cleanup task, supplies Text method
- * implementations that call through to unimplemented String-based versions, and handles
- * calling of custom object serializers. 
+ * <p>The base class handles support for a background cleanup task, and handles
+ * calling of custom object serializers.</p>
  */
 public abstract class AbstractStorageService extends AbstractDestructableIdentifiableInitializableComponent
     implements StorageService {
@@ -77,7 +75,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      * 
      * @param interval number of seconds between one cleanup and another
      */
-    public synchronized void setCleanupInterval(long interval) {
+    public synchronized void setCleanupInterval(final long interval) {
         if (isInitialized()) {
             return;
         }
@@ -144,7 +142,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     }
 
     /** {@inheritDoc} */
-    public synchronized void setId(String componentId) {
+    public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
         super.setId(componentId);
     }
     
@@ -154,108 +152,44 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     }
 
     /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value) throws IOException {
-        return createString(context, key, value);
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer) throws IOException {
+        return create(context, key, serializer.serialize(value));
     }
 
     /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value, long expiration) throws IOException {
-        return createString(context, key, value, expiration);
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, final long expiration)
+                    throws IOException {
+        return create(context, key, serializer.serialize(value), expiration);
+    }
+    
+    /** {@inheritDoc} */
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer) throws IOException {
+        return update(context, key, serializer.serialize(value));
     }
 
     /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key, @Nonnull Object value,
-            @Nonnull StorageSerializer serializer) throws IOException {
-        return createString(context, key, serializer.serialize(value));
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, final long expiration)
+                    throws IOException {
+        return update(context, key, serializer.serialize(value), expiration);
     }
 
     /** {@inheritDoc} */
-    public boolean createText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key, @Nonnull Object value,
-            @Nonnull StorageSerializer serializer, long expiration) throws IOException {
-        return createString(context, key, serializer.serialize(value), expiration);
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
+            @Nonnull final StorageSerializer serializer) throws IOException, VersionMismatchException {
+        return updateWithVersion(version, context, key, serializer.serialize(value));
     }
 
     /** {@inheritDoc} */
-    @Nullable public StorageRecord readText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key)
-            throws IOException {
-        return readString(context, key);
-    }
-
-    /** {@inheritDoc} */
-    @Nonnull public Pair<Integer, StorageRecord> readText(@Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, int version) throws IOException {
-        return readString(context, key, version);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value) throws IOException {
-        return updateString(context, key, value);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value, long expiration) throws IOException {
-        return updateString(context, key, value, expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextWithVersion(int version, @Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nonnull @NotEmpty String value)
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
+            @Nonnull final StorageSerializer serializer, final long expiration)
                     throws IOException, VersionMismatchException {
-        return updateStringWithVersion(version, context, key, value);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextWithVersion(int version, @Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nonnull @NotEmpty String value, long expiration)
-                    throws IOException, VersionMismatchException {
-        return updateStringWithVersion(version, context, key, value, expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull Object value, @Nonnull StorageSerializer serializer) throws IOException {
-        return updateString(context, key, serializer.serialize(value));
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull Object value, @Nonnull StorageSerializer serializer, long expiration) throws IOException {
-        return updateString(context, key, serializer.serialize(value), expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextWithVersion(int version, @Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nonnull Object value, @Nonnull StorageSerializer serializer)
-                    throws IOException, VersionMismatchException {
-        return updateStringWithVersion(version, context, key, serializer.serialize(value));
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextWithVersion(int version, @Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nonnull Object value, @Nonnull StorageSerializer serializer,
-            long expiration) throws IOException, VersionMismatchException {
-        return updateStringWithVersion(version, context, key, serializer.serialize(value), expiration);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextExpiration(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key)
-            throws IOException {
-        return updateStringExpiration(context, key);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateTextExpiration(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            long expiration) throws IOException {
-        return updateStringExpiration(context, key, expiration);
-    }
-
-    /** {@inheritDoc} */
-    public boolean deleteText(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key) throws IOException {
-        return deleteString(context, key);
+        return updateWithVersion(version, context, key, serializer.serialize(value), expiration);
     }
 
 }
