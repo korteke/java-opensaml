@@ -38,6 +38,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import org.opensaml.util.storage.AbstractStorageService;
 import org.opensaml.util.storage.StorageCapabilities;
 import org.opensaml.util.storage.StorageRecord;
+import org.opensaml.util.storage.StorageSerializer;
 import org.opensaml.util.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,82 +84,85 @@ public class MemoryStorageService extends AbstractStorageService {
     }
     
     /** {@inheritDoc} */
-    public boolean createString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value) throws IOException {
-        return createStringImpl(context, key, value, null);
+        return createImpl(context, key, value, null);
     }
 
     /** {@inheritDoc} */
-    public boolean createString(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, final long expiration) throws IOException {
-        return createStringImpl(context, key, value, expiration);
+        return createImpl(context, key, value, expiration);
     }
     
     /** {@inheritDoc} */
-    @Nullable public StorageRecord readString(@Nonnull @NotEmpty final String context,
+    @Nullable public StorageRecord read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException {
-        return readStringImpl(context, key, null).getSecond();
+        return readImpl(context, key, null).getSecond();
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Pair<Integer, StorageRecord> readString(@Nonnull @NotEmpty final String context,
+    @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, final int version) throws IOException {
-        return readStringImpl(context, key, version);
+        return readImpl(context, key, version);
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateString(@Nonnull String context, @Nonnull String key, @Nonnull String value)
-            throws IOException {
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value) throws IOException {
         try {
-            return updateStringImpl(null, context, key, value, null);
+            return updateImpl(null, context, key, value, null);
         } catch (VersionMismatchException e) {
             throw new IOException("Unexpected exception thrown by update.", e);
         }
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateString(@Nonnull String context, @Nonnull String key, @Nonnull String value,
-            long expiration) throws IOException {
+    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, final long expiration) throws IOException {
         try {
-            return updateStringImpl(null, context, key, value, expiration);
+            return updateImpl(null, context, key, value, expiration);
         } catch (VersionMismatchException e) {
             throw new IOException("Unexpected exception thrown by update.", e);
         }
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateStringWithVersion(int version, @Nonnull String context, @Nonnull String key,
-            @Nonnull String value) throws IOException, VersionMismatchException {
-        return updateStringImpl(version, context, key, value, null);
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value)
+                    throws IOException, VersionMismatchException {
+        return updateImpl(version, context, key, value, null);
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateStringWithVersion(int version, @Nonnull String context, @Nonnull String key,
-            @Nonnull String value, long expiration) throws IOException, VersionMismatchException {
-        return updateStringImpl(version, context, key, value, expiration);
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, final long expiration)
+                    throws IOException, VersionMismatchException {
+        return updateImpl(version, context, key, value, expiration);
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateStringExpiration(@Nonnull String context, @Nonnull String key) throws IOException {
+    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException {
         try {
-            return updateStringImpl(null, context, key, null, null);
+            return updateImpl(null, context, key, null, null);
         } catch (VersionMismatchException e) {
             throw new IOException("Unexpected exception thrown by update.", e);
         }
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateStringExpiration(@Nonnull String context, @Nonnull String key, long expiration)
-            throws IOException {
+    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, final long expiration) throws IOException {
         try {
-            return updateStringImpl(null, context, key, null, expiration);
+            return updateImpl(null, context, key, null, expiration);
         } catch (VersionMismatchException e) {
             throw new IOException("Unexpected exception thrown by update.", e);
         }
     }
 
     /** {@inheritDoc} */
-    public boolean deleteString(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key) throws IOException {
+    public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key) throws IOException {
 
         final Lock writeLock = lock.writeLock();
         
@@ -196,7 +200,7 @@ public class MemoryStorageService extends AbstractStorageService {
     }
     
     /** {@inheritDoc} */
-    public void deleteContext(@Nonnull @NotEmpty String context) throws IOException {
+    public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
         
         final Lock writeLock = lock.writeLock();
         
@@ -211,7 +215,7 @@ public class MemoryStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    public void reap(@Nonnull @NotEmpty String context) throws IOException {
+    public void reap(@Nonnull @NotEmpty final String context) throws IOException {
 
         final Lock writeLock = lock.writeLock();
         
@@ -243,8 +247,8 @@ public class MemoryStorageService extends AbstractStorageService {
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process 
      */
-    private boolean createStringImpl(@Nonnull @NotEmpty String context, @Nonnull @NotEmpty String key,
-            @Nonnull @NotEmpty String value, @Nullable Long expiration) throws IOException {
+    private boolean createImpl(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
 
         final Lock writeLock = lock.writeLock();
         
@@ -291,8 +295,8 @@ public class MemoryStorageService extends AbstractStorageService {
      * @return  a pair consisting of the version of the record read back, if any, and the record itself
      * @throws IOException  if errors occur in the read process 
      */
-    @Nonnull private Pair<Integer, StorageRecord> readStringImpl(@Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nullable Integer version) throws IOException {
+    @Nonnull private Pair<Integer, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nullable final Integer version) throws IOException {
 
         Lock readLock = lock.readLock();
         try {
@@ -338,8 +342,8 @@ public class MemoryStorageService extends AbstractStorageService {
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable private Integer updateStringImpl(@Nullable Integer version, @Nonnull @NotEmpty String context,
-            @Nonnull @NotEmpty String key, @Nullable String value, @Nullable Long expiration)
+    @Nullable private Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
 
         final Lock writeLock = lock.writeLock();
@@ -392,7 +396,7 @@ public class MemoryStorageService extends AbstractStorageService {
      * 
      * @throws IOException  if errors occur in the cleanup process
      */
-    public void updateContextExpirationImpl(@Nonnull @NotEmpty String context, @Nullable Long expiration)
+    public void updateContextExpirationImpl(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
             throws IOException {
 
         final Lock writeLock = lock.writeLock();
@@ -426,7 +430,7 @@ public class MemoryStorageService extends AbstractStorageService {
      * 
      * @return  true iff anything was purged
      */
-    private boolean reapWithLock(@Nonnull Map<String, MutableStorageRecord> dataMap, final long expiration) {
+    private boolean reapWithLock(@Nonnull final Map<String, MutableStorageRecord> dataMap, final long expiration) {
         
         return Iterables.removeIf(dataMap.entrySet(), new Predicate<Entry<String, MutableStorageRecord>>() {
                 public boolean apply(@Nullable final Entry<String, MutableStorageRecord> entry) {
@@ -492,14 +496,10 @@ public class MemoryStorageService extends AbstractStorageService {
         }
 
         /** {@inheritDoc} */
-        public int getStringSize() {
-            return Integer.MAX_VALUE;
-        }
-
-        /** {@inheritDoc} */
-        public long getTextSize() {
+        public long getValueSize() {
             return Long.MAX_VALUE;
         }
         
     }
+
 }

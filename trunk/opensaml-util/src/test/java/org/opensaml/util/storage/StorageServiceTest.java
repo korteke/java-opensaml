@@ -62,33 +62,33 @@ public abstract class StorageServiceTest {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            shared.createString(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 300);
+            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 300);
         }
         
         for (int i = 1; i <= 100; i++) {
-            StorageRecord rec = shared.readString(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNotNull(rec);
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 1));
         }
 
         for (int i = 1; i <= 100; i++) {
-            shared.updateString(context, Integer.toString(i), Integer.toString(i + 2));
+            shared.update(context, Integer.toString(i), Integer.toString(i + 2));
         }
 
         for (int i = 1; i <= 100; i++) {
-            StorageRecord rec = shared.readString(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNotNull(rec);
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 2));
         }
 
         for (int i = 1; i <= 100; i++) {
-            boolean result = shared.createString(context, Integer.toString(i), Integer.toString(i + 1));
+            boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1));
             Assert.assertFalse(result, "createString should have failed");
         }        
         
         for (int i = 1; i <= 100; i++) {
-            shared.deleteString(context, Integer.toString(i));
-            StorageRecord rec = shared.readString(context, Integer.toString(i));
+            shared.delete(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
     }
@@ -98,33 +98,33 @@ public abstract class StorageServiceTest {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            shared.createText(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 300);
+            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 300);
         }
         
         for (int i = 1; i <= 100; i++) {
-            StorageRecord rec = shared.readText(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNotNull(rec);
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 1));
         }
 
         for (int i = 1; i <= 100; i++) {
-            shared.updateText(context, Integer.toString(i), Integer.toString(i + 2));
+            shared.update(context, Integer.toString(i), Integer.toString(i + 2));
         }
 
         for (int i = 1; i <= 100; i++) {
-            StorageRecord rec = shared.readText(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNotNull(rec);
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 2));
         }
 
         for (int i = 1; i <= 100; i++) {
-            boolean result = shared.createText(context, Integer.toString(i), Integer.toString(i + 1));
+            boolean result = shared.create(context, Integer.toString(i), Integer.toString(i + 1));
             Assert.assertFalse(result, "createText should have failed");
         }        
         
         for (int i = 1; i <= 100; i++) {
-            shared.deleteText(context, Integer.toString(i));
-            StorageRecord rec = shared.readText(context, Integer.toString(i));
+            shared.delete(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
     }
@@ -134,13 +134,13 @@ public abstract class StorageServiceTest {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            shared.createText(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 5);
+            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 5);
         }
 
         Thread.sleep(5 * 1000);
         
         for (int i = 1; i <= 100; i++) {
-            StorageRecord rec = shared.readText(context, Integer.toString(i));
+            StorageRecord rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
     }
@@ -150,18 +150,18 @@ public abstract class StorageServiceTest {
         String key = "key";
         String context = Long.toString(random.nextLong());
         
-        shared.createString(context, key, "foo");
+        shared.create(context, key, "foo");
         
-        shared.updateStringWithVersion(1, context, key, "bar");
+        shared.updateWithVersion(1, context, key, "bar");
         
         try {
-            shared.updateStringWithVersion(1, context, key, "baz");
+            shared.updateWithVersion(1, context, key, "baz");
             Assert.fail("updateStringWithVersion should have failed");
         } catch (VersionMismatchException e) {
             // expected
         }
         
-        StorageRecord rec = shared.readString(context, key);
+        StorageRecord rec = shared.read(context, key);
         Assert.assertNotNull(rec);
         Assert.assertEquals(rec.getVersion(), 2);
     }

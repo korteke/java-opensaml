@@ -35,19 +35,12 @@ public interface StorageCapabilities {
      * @return  max size of keys in characters
      */
     public int getKeySize();
-
-    /**
-     * Gets max size of string values in characters.
-     * 
-     * @return  max size of string values in characters
-     */
-    public int getStringSize();
     
     /**
-     * Gets max size of text values in characters.
+     * Gets max size of values in characters.
      * 
-     * @return  max size of text values in characters
+     * @return  max size of values in characters
      */
-    public long getTextSize();
+    public long getValueSize();
 
 }
