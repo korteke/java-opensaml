@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    Logger log = LoggerFactory.getLogger(EndpointUrlSchemeSecurityHandler.class);
+    private Logger log = LoggerFactory.getLogger(EndpointUrlSchemeSecurityHandler.class);
 
     /** {@inheritDoc} */
     protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
