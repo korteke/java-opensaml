@@ -30,7 +30,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlBindingContext;
@@ -71,7 +70,7 @@ public final class SAMLBindingSupport {
      * Set the SAML protocol relay state on a message context.
      * 
      * @param messageContext the message context on which to operate
-     * @return the relay state or null
+     * @param relayState the relay state to set
      */
     public static void setRelayState(@Nonnull final MessageContext<SAMLObject> messageContext, 
             @Nullable String relayState) {
