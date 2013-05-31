@@ -24,6 +24,10 @@
         </dependency>
 
         <!-- Provided Dependencies -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
 
         <!-- Runtime Dependencies -->
 

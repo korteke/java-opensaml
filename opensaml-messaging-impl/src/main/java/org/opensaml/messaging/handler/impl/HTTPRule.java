@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.ws.security.provider;
+package org.opensaml.messaging.handler.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
