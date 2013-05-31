@@ -17,19 +17,23 @@
 
 package org.opensaml.ws.security.provider;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.ws.message.MessageContext;
-import org.opensaml.ws.security.SecurityPolicyException;
-import org.opensaml.ws.security.SecurityPolicyRule;
-import org.opensaml.ws.transport.http.HTTPTransport;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.AbstractMessageHandler;
+import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A security rule that checks basic HTTP connection properties.
+ * A security message handler that checks basic HTTP request properties.
  */
-public class HTTPRule implements SecurityPolicyRule {
+public class HTTPRule extends AbstractMessageHandler {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPRule.class);
@@ -42,89 +46,152 @@ public class HTTPRule implements SecurityPolicyRule {
 
     /** Whether the request must be secure. */
     private boolean requireSecured;
+    
+    /** The HTTP servlet request being evaluated. */
+    private HttpServletRequest httpServletRequest;
 
     /**
-     * Constructor.
+     * Get the required content type.
      * 
-     * @param type expected content type
-     * @param method expected request method
-     * @param secured whether the request must be secured
+     * @return the required content type
      */
-    public HTTPRule(String type, String method, boolean secured) {
-        requiredContentType = StringSupport.trimOrNull(type);
-        requiredRequestMethod = StringSupport.trimOrNull(method);
+    public String getRequiredContentType() {
+        return requiredContentType;
+    }
+
+    /**
+     * Set the required content type.
+     * 
+     * @param contentType the content type
+     */
+    public void setRequiredContentType(String contentType) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        requiredContentType = contentType;
+        requiredRequestMethod = StringSupport.trimOrNull(contentType);
+    }
+
+    /**
+     * Get the required request method.
+     * 
+     * @return the required request method
+     */
+    public String getRequiredRequestMethod() {
+        return requiredRequestMethod;
+    }
+
+    /**
+     * Set the required request method.
+     * 
+     * @param requestMethod the required request method
+     */
+    public void setRequiredRequestMethod(String requestMethod) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        requiredRequestMethod = StringSupport.trimOrNull(requestMethod);
+    }
+
+    /**
+     * Get whether request is required to be secure.
+     * 
+     * @return true if required to be secure, false otherwise
+     */
+    public boolean isRequireSecured() {
+        return requireSecured;
+    }
+
+    /**
+     * Set whether request is required to be secure. 
+     * 
+     * @param secured true if required to be secure, false otherwise
+     */
+    public void setRequireSecured(boolean secured) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         requireSecured = secured;
     }
 
-    /** {@inheritDoc} */
-    public void evaluate(MessageContext messageContext) throws SecurityPolicyException {
-
-        if (!(messageContext.getInboundMessageTransport() instanceof HTTPTransport)) {
-            log.debug("Message context was did not contain an HTTP transport, unable to evaluate security rule");
-            return;
-        }
-
-        doEvaluate(messageContext);
+    /**
+     * Get the HTTP servlet request instance being evaluated.
+     * 
+     * @return returns the request instance
+     */
+    public HttpServletRequest getHttpServletRequest() {
+        return httpServletRequest;
     }
 
     /**
-     * Evaluates if the message context transport, guaranteed to be of type {@link HTTPTransport}, meets all
-     * requirements.
+     * Set the HTTP servlet request instance being evaluated.
+     * 
+     * @param request the request instance
+     */
+    public void setHttpServletRequest(HttpServletRequest request) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
+    }
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        Constraint.isNotNull(getHttpServletRequest(), "HttpServletRequest may not be null");
+    }
+
+    /**
+     * Evaluates whether the specified HTTP servlet request meets all requirements.
      * 
      * @param messageContext message context being evaluated
      * 
-     * @throws SecurityPolicyException thrown if the message context does not meet the requirements of an evaluated rule
+     * @throws MessageHandlerException thrown if the request does not meet the requirements of the handler
      */
-    protected void doEvaluate(MessageContext messageContext) throws SecurityPolicyException {
-        HTTPTransport transport = (HTTPTransport) messageContext.getInboundMessageTransport();
-        evaluateContentType(transport);
-        evaluateRequestMethod(transport);
-        evaluateSecured(transport);
+    protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
+        evaluateContentType(getHttpServletRequest());
+        evaluateRequestMethod(getHttpServletRequest());
+        evaluateSecured(getHttpServletRequest());
     }
 
     /**
-     * Checks if the transport is of the correct content type.
+     * Checks if the request is of the correct content type.
      * 
-     * @param transport transport being evalauted
+     * @param request the request being evaluated
      * 
-     * @throws SecurityPolicyException thrown if the content type was an unexpected value
+     * @throws MessageHandlerException thrown if the content type was an unexpected value
      */
-    protected void evaluateContentType(HTTPTransport transport) throws SecurityPolicyException {
-        String transportContentType = transport.getHeaderValue("Content-Type");
-        if (requiredContentType != null && !transportContentType.startsWith(requiredContentType)) {
-            log.error("Invalid content type, expected " + requiredContentType + " but was " + transportContentType);
-            throw new SecurityPolicyException("Invalid content type, expected " + requiredContentType + " but was "
-                    + transportContentType);
+    protected void evaluateContentType(HttpServletRequest request) throws MessageHandlerException {
+        String transportContentType = request.getHeader("Content-Type");
+        if (getRequiredContentType() != null && !transportContentType.startsWith(getRequiredContentType())) {
+            log.error("Invalid content type, expected '{}' but was '{}'", getRequiredContentType(), 
+                    transportContentType);
+            throw new MessageHandlerException("Invalid content type, expected " + getRequiredContentType() 
+                    + " but was " + transportContentType);
         }
     }
 
     /**
-     * Checks if the transport is of the correct request method.
+     * Checks if the request contains the correct request method.
      * 
-     * @param transport transport being evalauted
+     * @param request the request being evaluated
      * 
-     * @throws SecurityPolicyException thrown if the request method was an unexpected value
+     * @throws MessageHandlerException thrown if the request method was an unexpected value
      */
-    protected void evaluateRequestMethod(HTTPTransport transport) throws SecurityPolicyException {
-        String transportMethod = transport.getHTTPMethod();
-        if (requiredRequestMethod != null && !transportMethod.equalsIgnoreCase(requiredRequestMethod)) {
-            log.error("Invalid request method, expected " + requiredRequestMethod + " but was " + transportMethod);
-            throw new SecurityPolicyException("Invalid request method, expected " + requiredRequestMethod + " but was "
-                    + transportMethod);
+    protected void evaluateRequestMethod(HttpServletRequest request) throws MessageHandlerException {
+        String transportMethod = request.getMethod();
+        if (getRequiredRequestMethod() != null && !transportMethod.equalsIgnoreCase(getRequiredRequestMethod())) {
+            log.error("Invalid request method, expected '{}' but was '{}'", getRequiredRequestMethod(), 
+                    transportMethod);
+            throw new MessageHandlerException("Invalid request method, expected " + getRequiredRequestMethod() 
+                    + " but was " + transportMethod);
         }
     }
 
     /**
-     * Checks if the transport is secured.
+     * Checks if the request is secured.
      * 
-     * @param transport transport being evalauted
+     * @param request the request being evaluated
      * 
-     * @throws SecurityPolicyException thrown if the transport is not secure and was required to be
+     * @throws MessageHandlerException thrown if the request is not secure and was required to be
      */
-    protected void evaluateSecured(HTTPTransport transport) throws SecurityPolicyException {
-        if (requireSecured && !transport.isConfidential()) {
+    protected void evaluateSecured(HttpServletRequest request) throws MessageHandlerException {
+        if (isRequireSecured() && !request.isSecure()) {
             log.error("Request was required to be secured but was not");
-            throw new SecurityPolicyException("Request was required to be secured but was not");
+            throw new MessageHandlerException("Request was required to be secured but was not");
         }
     }
 }
