@@ -110,10 +110,10 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
      * Sets the name identifier, which must be either a SAML 1 {@link NameIdentifier} 
      * or a SAML 2 {@link NameID} or null.
      * 
-     * @param newMessageId ID of the message, may be null
+     * @param newNameID the name identifier instance
      */
     public void setSubjectNameIdentifier(@Nullable final SAMLObject newNameID) {
-        if (newNameID == null || nameID instanceof NameIdentifier || nameID instanceof NameID) {
+        if (newNameID == null || newNameID instanceof NameIdentifier || newNameID instanceof NameID) {
             nameID = newNameID;
         } else {
             throw new IllegalArgumentException("Argument was not a valid SAML 1 or 2 name identifier type or null: " 
