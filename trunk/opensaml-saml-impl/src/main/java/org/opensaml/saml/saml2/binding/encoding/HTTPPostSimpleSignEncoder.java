@@ -59,10 +59,18 @@ import com.google.common.base.Strings;
  * </p>
  */
 public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
+    
+    /** Default template ID. */
+    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-simplesign-binding.vm";
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostSimpleSignEncoder.class);
-
+    
+    /** Constructor. */
+    public HTTPPostSimpleSignEncoder() {
+        super();
+        setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
+    }
 
     /** {@inheritDoc} */
     public String getBindingURI() {

@@ -109,7 +109,6 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         encoder.setHttpServletResponse(response);
         
         encoder.setVelocityEngine(velocityEngine);
-        encoder.setVelocityTemplateId("/templates/saml2-post-binding.vm");
         
         encoder.initialize();
         encoder.prepareContext();
@@ -153,7 +152,6 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         encoder.setHttpServletResponse(response);
         
         encoder.setVelocityEngine(velocityEngine);
-        encoder.setVelocityTemplateId("/templates/saml2-post-binding.vm");
         
         encoder.initialize();
         encoder.prepareContext();

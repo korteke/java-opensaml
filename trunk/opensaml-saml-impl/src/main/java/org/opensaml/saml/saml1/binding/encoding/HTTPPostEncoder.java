@@ -36,7 +36,6 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
@@ -46,6 +45,9 @@ import org.slf4j.LoggerFactory;
  * SAML 1.X HTTP POST message encoder.
  */
 public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
+    
+    /** Default template ID. */
+    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml1-post-binding.vm";
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostEncoder.class);
@@ -56,6 +58,12 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
     /** ID of the velocity template used when performing POST encoding. */
     private String velocityTemplateId;
     
+    /** Constructor. */
+    public HTTPPostEncoder() {
+        super();
+        setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
+    }
+
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML1_POST_BINDING_URI;
@@ -84,6 +92,8 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
     /**
      * Get the Velocity template id.
      * 
+     * <p>Defaults to {@link #DEFAULT_TEMPLATE_ID}.</p>
+     * 
      * @return return the Velocity template id
      */
     public String getVelocityTemplateId() {
@@ -92,6 +102,8 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
 
     /**
      * Set the Velocity template id.
+     * 
+     * <p>Defaults to {@link #DEFAULT_TEMPLATE_ID}.</p>
      * 
      * @param newVelocityTemplateId the new Velocity template id
      */
