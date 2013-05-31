@@ -31,12 +31,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A security message handler that checks basic HTTP request properties.
+ * A message handler that checks basic HTTP request properties.
  */
-public class HTTPRule extends AbstractMessageHandler {
+public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPRule.class);
+    private final Logger log = LoggerFactory.getLogger(HTTPRequestValidationHandler.class);
 
     /** Expected content type of the request. */
     private String requiredContentType;

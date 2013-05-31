@@ -39,6 +39,12 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
     
