@@ -55,6 +55,9 @@ import org.slf4j.LoggerFactory;
  * SAML 2 Artifact Binding encoder, support both HTTP GET and POST.
  */
 public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
+    
+    /** Default template ID. */
+    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-artifact-binding.vm";
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPArtifactEncoder.class);
@@ -74,17 +77,11 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     /** Default artifact type to use when encoding messages. */
     private byte[] defaultArtifactType;
 
-    /**
-     * Constructor.
-     * 
-     * @param engine velocity engine used to construct the POST form
-     * @param template ID of velocity template used to construct the POST form
-     * @param map artifact map used to store artifact/message bindings
-     */
-    public HTTPArtifactEncoder(VelocityEngine engine, String template, SAMLArtifactMap map) {
+    /** Constructor. */
+    public HTTPArtifactEncoder() {
         super();
-        postEncoding = false;
         defaultArtifactType = SAML2ArtifactType0004.TYPE_CODE;
+        setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
     }
 
     /** {@inheritDoc} */
@@ -135,6 +132,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     /**
      * Get the Velocity template id.
      * 
+     * <p>Defaults to {@link #DEFAULT_TEMPLATE_ID}.</p>
+     * 
      * @return return the Velocity template id
      */
     public String getVelocityTemplateId() {
@@ -143,6 +142,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
     /**
      * Set the Velocity template id.
+     * 
+     * <p>Defaults to {@link #DEFAULT_TEMPLATE_ID}.</p>
      * 
      * @param newVelocityTemplateId the new Velocity template id
      */

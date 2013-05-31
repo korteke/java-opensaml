@@ -115,7 +115,6 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         encoder.setHttpServletResponse(response);
         
         encoder.setVelocityEngine(velocityEngine);
-        encoder.setVelocityTemplateId("/templates/saml2-post-simplesign-binding.vm");
         
         encoder.initialize();
         encoder.prepareContext();
@@ -156,7 +155,6 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         encoder.setHttpServletResponse(response);
         
         encoder.setVelocityEngine(velocityEngine);
-        encoder.setVelocityTemplateId("/templates/saml2-post-simplesign-binding.vm");
         
         encoder.initialize();
         encoder.prepareContext();
@@ -202,7 +200,6 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         encoder.setHttpServletResponse(response);
         
         encoder.setVelocityEngine(velocityEngine);
-        encoder.setVelocityTemplateId("/templates/saml2-post-simplesign-binding.vm");
         
         encoder.initialize();
         encoder.prepareContext();

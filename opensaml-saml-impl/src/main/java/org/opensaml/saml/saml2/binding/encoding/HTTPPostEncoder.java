@@ -48,6 +48,9 @@ import org.w3c.dom.Element;
  * SAML 2.0 HTTP Post binding message encoder.
  */
 public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
+    
+    /** Default template ID. */
+    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-binding.vm";
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostEncoder.class);
@@ -57,6 +60,12 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
 
     /** ID of the Velocity template used when performing POST encoding. */
     private String velocityTemplateId;
+    
+    /** Constructor. */
+    public HTTPPostEncoder() {
+        super();
+        setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
+    }
 
     /** {@inheritDoc} */
     public String getBindingURI() {
@@ -86,6 +95,8 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
     /**
      * Get the Velocity template id.
      * 
+     * <p>Defaults to {@link #DEFAULT_TEMPLATE_ID}.</p>
+     * 
      * @return return the Velocity template id
      */
     public String getVelocityTemplateId() {
@@ -94,6 +105,8 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
 
     /**
      * Set the Velocity template id.
+     * 
+     * <p>Defaults to {@link #DEFAULT_TEMPLATE_ID}.</p>
      * 
      * @param newVelocityTemplateId the new Velocity template id
      */
