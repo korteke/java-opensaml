@@ -28,7 +28,6 @@
         <module>../opensaml-security-api</module>
         <module>../opensaml-xmlsec-api</module>
         <module>../opensaml-messaging-api</module>
-        <module>../opensaml-temp</module>
         <module>../opensaml-soap-api</module>
         <module>../opensaml-saml-api</module>
         <module>../opensaml-xacml-api</module>
