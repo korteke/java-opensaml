@@ -64,10 +64,6 @@ import com.google.common.base.Function;
 
 /**
  * SOAP client that uses HTTP as the underlying transport and POST as the binding.
- * 
- * <strong>NOTE</strong> this client does not provide access to a {@link org.opensaml.ws.transport.InTransport} or
- * {@link org.opensaml.ws.transport.OutTransport}. Therefore any {@link SecurityPolicy} which operates on these object
- * can not be used with this client.
  */
 @ThreadSafe
 public class HttpSOAPClient implements SOAPClient {
