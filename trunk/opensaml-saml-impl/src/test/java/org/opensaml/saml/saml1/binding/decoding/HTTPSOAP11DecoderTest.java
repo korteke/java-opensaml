@@ -26,7 +26,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.soap.messaging.context.SOAP11Context;
-import org.opensaml.ws.message.encoder.MessageEncodingException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -71,7 +70,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(messageContext.getMessage() instanceof Request);
     }
     
-    protected String encodeMessage(XMLObject message) throws MessageEncodingException, MarshallingException {
+    protected String encodeMessage(XMLObject message) throws MarshallingException {
         marshallerFactory.getMarshaller(message).marshall(message);
         return SerializeSupport.nodeToString(message.getDOM());
     }
