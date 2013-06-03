@@ -267,7 +267,7 @@ public class MemoryStorageService extends AbstractStorageService {
             if (record != null) {
                 // Not yet expired?
                 Long exp = record.getExpiration();
-                if (exp == null || System.currentTimeMillis() < (exp * 1000)) {
+                if (exp == null || System.currentTimeMillis() < exp) {
                     return false;
                 }
                 
@@ -312,7 +312,7 @@ public class MemoryStorageService extends AbstractStorageService {
                 return new Pair();
             } else {
                 Long exp = record.getExpiration();
-                if (exp != null && System.currentTimeMillis() >= (exp * 1000)) {
+                if (exp != null && System.currentTimeMillis() >= exp) {
                     return new Pair();
                 }
             }
@@ -361,7 +361,7 @@ public class MemoryStorageService extends AbstractStorageService {
                 return null;
             } else {
                 Long exp = record.getExpiration();
-                if (exp != null && System.currentTimeMillis() >= (exp * 1000)) {
+                if (exp != null && System.currentTimeMillis() >= exp) {
                     return null;
                 }
             }
@@ -409,7 +409,7 @@ public class MemoryStorageService extends AbstractStorageService {
                 Long now = System.currentTimeMillis();
                 for (MutableStorageRecord record : dataMap.values()) {
                     final Long exp = record.getExpiration();
-                    if (exp == null || now < (exp * 1000)) {
+                    if (exp == null || now < exp) {
                         record.setExpiration(expiration);
                     }
                 }
@@ -435,7 +435,7 @@ public class MemoryStorageService extends AbstractStorageService {
         return Iterables.removeIf(dataMap.entrySet(), new Predicate<Entry<String, MutableStorageRecord>>() {
                 public boolean apply(@Nullable final Entry<String, MutableStorageRecord> entry) {
                     Long exp = entry.getValue().getExpiration();
-                    return exp != null && (exp * 1000) <= expiration;
+                    return exp != null && exp <= expiration;
                 }
             }
         );

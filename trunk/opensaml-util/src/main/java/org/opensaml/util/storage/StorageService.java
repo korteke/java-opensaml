@@ -21,9 +21,9 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
@@ -43,9 +43,9 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
  * <p>The allowable sizes for contexts and keys can vary and be reported
  * by the implementation to callers, but MUST be at least 255 characters.</p>
  * 
- * <p>Expiration is expressed in seconds since the epoch.</p>
+ * <p>Expiration is expressed in milliseconds since the beginning of the epoch.</p>
  */
-@ThreadSafe
+@ThreadSafeAfterInit
 public interface StorageService extends InitializableComponent, DestructableComponent,
         IdentifiableComponent, ValidatableComponent {
 
