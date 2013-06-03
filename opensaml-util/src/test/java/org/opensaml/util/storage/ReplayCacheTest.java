@@ -42,7 +42,7 @@ public class ReplayCacheTest {
     protected void setUp() throws Exception {
         context = getClass().getName();
         messageID = "abc123";
-        expiration = System.currentTimeMillis() / 1000 + 180;
+        expiration = System.currentTimeMillis() + 180000;
 
         storageService = new MemoryStorageService();
         storageService.initialize();
@@ -103,13 +103,13 @@ public class ReplayCacheTest {
     @Test
     public void testNonReplayValidByMillisecondExpiriation() throws InterruptedException {
 
-        Assert.assertTrue(replayCache.check(context, messageID, System.currentTimeMillis() / 1000 + 1),
+        Assert.assertTrue(replayCache.check(context, messageID, System.currentTimeMillis() + 1000),
                 "Message was not replay, insert into empty cache");
         
         // Sleep for 2 seconds to make sure replay cache entry has expired
         Thread.sleep(2000L);
         
-        Assert.assertTrue(replayCache.check(context, messageID, System.currentTimeMillis() / 1000 + 1),
+        Assert.assertTrue(replayCache.check(context, messageID, System.currentTimeMillis() + 1000),
                 "Message was not replay, previous cache entry should have expired");
     }
 }
