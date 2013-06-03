@@ -62,7 +62,7 @@ public abstract class StorageServiceTest {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 300);
+            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 300000);
         }
         
         for (int i = 1; i <= 100; i++) {
@@ -98,7 +98,7 @@ public abstract class StorageServiceTest {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 300);
+            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 300000);
         }
         
         for (int i = 1; i <= 100; i++) {
@@ -134,7 +134,7 @@ public abstract class StorageServiceTest {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
-            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() / 1000 + 5);
+            shared.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 5000);
         }
 
         Thread.sleep(5 * 1000);
