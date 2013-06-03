@@ -105,7 +105,7 @@ public class ReplayCache extends AbstractDestructableIdentifiableInitializableCo
      * 
      * @param context   a context label to subdivide the cache
      * @param s         value to check
-     * @param expires   time (in seconds since epoch) for disposal of value from cache
+     * @param expires   time (in milliseconds since beginning of epoch) for disposal of value from cache
      * 
      * @return true iff the check value is not found in the cache
      */
