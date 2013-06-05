@@ -132,9 +132,10 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
             issueInstant = new DateTime();
         }
         
-        log.debug("Evaluating message replay for message ID '{}', issue instant '{}', entityID '{}'", messageId, issueInstant, entityID);
+        log.debug("Evaluating message replay for message ID '{}', issue instant '{}', entityID '{}'", 
+                messageId, issueInstant, entityID);
         
-        if (!getReplayCache().check(getClass().getName(), messageId, issueInstant.getMillis() / 1000 + expires)) {
+        if (!getReplayCache().check(getClass().getName(), messageId, issueInstant.getMillis() + expires*1000)) {
             log.warn("Replay detected of message '{}' from issuer '{}'", messageId, entityID);
             throw new MessageHandlerException("Rejecting replayed message ID '" + messageId + "' from issuer "
                     + entityID);
