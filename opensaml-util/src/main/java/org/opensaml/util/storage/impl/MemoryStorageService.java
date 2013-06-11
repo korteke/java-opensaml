@@ -85,14 +85,40 @@ public class MemoryStorageService extends AbstractStorageService {
     
     /** {@inheritDoc} */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value) throws IOException {
-        return createImpl(context, key, value, null);
-    }
-
-    /** {@inheritDoc} */
-    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, final long expiration) throws IOException {
-        return createImpl(context, key, value, expiration);
+            @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
+        final Lock writeLock = lock.writeLock();
+        
+        try {
+            writeLock.lock();
+            
+            // Create new context if necessary.
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap == null) {
+                dataMap = new HashMap();
+                contextMap.put(context, dataMap);
+            }
+            
+            // Check for a duplicate.
+            StorageRecord record = dataMap.get(key);
+            if (record != null) {
+                // Not yet expired?
+                Long exp = record.getExpiration();
+                if (exp == null || System.currentTimeMillis() < exp) {
+                    return false;
+                }
+                
+                // It's dead, so we can just remove it now and create the new record.
+            }
+            
+            dataMap.put(key, new MutableStorageRecord(value, expiration));
+            log.debug("Inserted record '{}' in context '{}' with expiration '{}'",
+                    new Object[] { key, context, expiration });
+            
+            return true;
+            
+        } finally {
+            writeLock.unlock();
+        }
     }
     
     /** {@inheritDoc} */
@@ -109,17 +135,7 @@ public class MemoryStorageService extends AbstractStorageService {
 
     /** {@inheritDoc} */
     @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value) throws IOException {
-        try {
-            return updateImpl(null, context, key, value, null);
-        } catch (VersionMismatchException e) {
-            throw new IOException("Unexpected exception thrown by update.", e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, final long expiration) throws IOException {
+            @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, value, expiration);
         } catch (VersionMismatchException e) {
@@ -129,31 +145,14 @@ public class MemoryStorageService extends AbstractStorageService {
 
     /** {@inheritDoc} */
     @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value)
-                    throws IOException, VersionMismatchException {
-        return updateImpl(version, context, key, value, null);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, final long expiration)
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
         return updateImpl(version, context, key, value, expiration);
     }
 
     /** {@inheritDoc} */
     @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key) throws IOException {
-        try {
-            return updateImpl(null, context, key, null, null);
-        } catch (VersionMismatchException e) {
-            throw new IOException("Unexpected exception thrown by update.", e);
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, final long expiration) throws IOException {
+            @Nonnull @NotEmpty final String key, @Nullable final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, null, expiration);
         } catch (VersionMismatchException e) {
@@ -161,6 +160,7 @@ public class MemoryStorageService extends AbstractStorageService {
         }
     }
 
+    
     /** {@inheritDoc} */
     public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key) throws IOException {
 
@@ -189,14 +189,27 @@ public class MemoryStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    public void updateContextExpiration(@Nonnull @NotEmpty final String context) throws IOException {
-        updateContextExpirationImpl(context, null);
-    }
-
-    /** {@inheritDoc} */
-    public void updateContextExpiration(@Nonnull @NotEmpty final String context, final long expiration)
+    public void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
             throws IOException {
-        updateContextExpirationImpl(context, expiration);
+        final Lock writeLock = lock.writeLock();
+        
+        try {
+            writeLock.lock();
+
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap != null) {    
+                Long now = System.currentTimeMillis();
+                for (MutableStorageRecord record : dataMap.values()) {
+                    final Long exp = record.getExpiration();
+                    if (exp == null || now < exp) {
+                        record.setExpiration(expiration);
+                    }
+                }
+                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
+            }
+        } finally {
+            writeLock.unlock();
+        }
     }
     
     /** {@inheritDoc} */
@@ -230,55 +243,6 @@ public class MemoryStorageService extends AbstractStorageService {
                     }
                 }
             }
-            
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    /**
-     * Internal method to implement creation functions.
-     * 
-     * @param context       a storage context label
-     * @param key           a key unique to context
-     * @param value         value to store
-     * @param expiration    expiration for record, or null
-     * 
-     * @return  true iff record was inserted, false iff a duplicate was found
-     * @throws IOException  if fatal errors occur in the insertion process 
-     */
-    private boolean createImpl(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
-
-        final Lock writeLock = lock.writeLock();
-        
-        try {
-            writeLock.lock();
-            
-            // Create new context if necessary.
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap == null) {
-                dataMap = new HashMap();
-                contextMap.put(context, dataMap);
-            }
-            
-            // Check for a duplicate.
-            StorageRecord record = dataMap.get(key);
-            if (record != null) {
-                // Not yet expired?
-                Long exp = record.getExpiration();
-                if (exp == null || System.currentTimeMillis() < exp) {
-                    return false;
-                }
-                
-                // It's dead, so we can just remove it now and create the new record.
-            }
-            
-            dataMap.put(key, new MutableStorageRecord(value, expiration));
-            log.debug("Inserted record '{}' in context '{}' with expiration '{}'",
-                    new Object[] { key, context, expiration });
-            
-            return true;
             
         } finally {
             writeLock.unlock();
@@ -387,38 +351,6 @@ public class MemoryStorageService extends AbstractStorageService {
             writeLock.unlock();
         }
     }
-    
-    /**
-     * Internal method to implement context update functions.
-     * 
-     * @param context       a storage context label
-     * @param expiration    a new expiration timestamp, or null
-     * 
-     * @throws IOException  if errors occur in the cleanup process
-     */
-    public void updateContextExpirationImpl(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
-            throws IOException {
-
-        final Lock writeLock = lock.writeLock();
-        
-        try {
-            writeLock.lock();
-
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap != null) {    
-                Long now = System.currentTimeMillis();
-                for (MutableStorageRecord record : dataMap.values()) {
-                    final Long exp = record.getExpiration();
-                    if (exp == null || now < exp) {
-                        record.setExpiration(expiration);
-                    }
-                }
-                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
-            }
-        } finally {
-            writeLock.unlock();
-        }
-    }    
     
     /**
      * Locates and removes expired records from the input map.

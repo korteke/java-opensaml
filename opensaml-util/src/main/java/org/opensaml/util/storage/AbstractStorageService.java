@@ -24,6 +24,8 @@ import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.util.storage.annotation.AnnotationSupport;
+
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -153,26 +155,31 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
     /** {@inheritDoc} */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer) throws IOException {
-        return create(context, key, serializer.serialize(value));
-    }
-
-    /** {@inheritDoc} */
-    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, final long expiration)
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
                     throws IOException {
         return create(context, key, serializer.serialize(value), expiration);
     }
     
     /** {@inheritDoc} */
-    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer) throws IOException {
-        return update(context, key, serializer.serialize(value));
+    public boolean create(@Nonnull final Object value) throws IOException {
+        return create(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
+                AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
-
+    
+    /** {@inheritDoc} */
+    @Nullable public Object read(@Nonnull final Object value) throws IOException {
+        StorageRecord record = read(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+        if (record != null) {
+            AnnotationSupport.setValue(value, record.getValue());
+            AnnotationSupport.setExpiration(value, record.getExpiration());
+            return value;
+        }
+        return null;
+    }
+    
     /** {@inheritDoc} */
     @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, final long expiration)
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
                     throws IOException {
         return update(context, key, serializer.serialize(value), expiration);
     }
@@ -180,16 +187,34 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     /** {@inheritDoc} */
     @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer) throws IOException, VersionMismatchException {
-        return updateWithVersion(version, context, key, serializer.serialize(value));
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, final long expiration)
+            @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
         return updateWithVersion(version, context, key, serializer.serialize(value), expiration);
     }
 
+    /** {@inheritDoc} */
+    @Nullable public Integer update(@Nonnull final Object value) throws IOException {
+        return update(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
+                AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
+    }
+    
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateWithVersion(final int version, @Nonnull final Object value)
+            throws IOException, VersionMismatchException {
+        return updateWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
+                AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Integer updateExpiration(@Nonnull final Object value) throws IOException {
+        return updateExpiration(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
+                AnnotationSupport.getExpiration(value));
+    }
+    
+    /** {@inheritDoc} */
+    public boolean delete(@Nonnull final Object value) throws IOException {
+        return delete(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+    }
+    
 }
