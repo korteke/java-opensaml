@@ -60,7 +60,7 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
         samlObject.releaseDOM();
     }
 
-    @Test
+    @Test(enabled = false)
     public void testSerialization() throws IOException, ClassNotFoundException, MarshallingException {
         
         BasicSAMLArtifactMapEntry origEntry = 
@@ -86,7 +86,7 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
 
     }
     
-    @Test
+    @Test(enabled = false)
     public void testMessageSerialization() {
         BasicSAMLArtifactMapEntry entry = 
             new BasicSAMLArtifactMapEntry(artifact, issuerId, rpId, samlObject, lifetime);
