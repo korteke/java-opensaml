@@ -25,6 +25,7 @@
     <modules>
         <module>../opensaml-util</module>
         <module>../opensaml-core</module>
+        <module>../opensaml-storage-api</module>
         <module>../opensaml-security-api</module>
         <module>../opensaml-xmlsec-api</module>
         <module>../opensaml-messaging-api</module>
@@ -33,6 +34,7 @@
         <module>../opensaml-xacml-api</module>
         <module>../opensaml-xacml-saml-api</module>
         
+        <module>../opensaml-storage-impl</module>
         <module>../opensaml-security-impl</module>
         <module>../opensaml-xmlsec-impl</module>
         <module>../opensaml-messaging-impl</module>
