@@ -20,6 +20,7 @@ package org.opensaml.util.storage;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -45,9 +46,13 @@ public interface StorageSerializer<Type> {
     /**
      * Returns an object recovered from a string produced through the {@link #serialize} method.
      * 
-     * @param s data to deserialize
+     * @param value data to deserialize
+     * @param context context of record, if available
+     * @param key key of record, if available
+     * @param expiration expiration of record, if available/set
      * @return a deserialized object
      * @throws IOException if an error occurs during deserialization
      */
-    @Nonnull public Type deserialize(@Nonnull @NotEmpty final String s) throws IOException;
+    @Nonnull public Type deserialize(@Nonnull @NotEmpty final String value, @Nullable final String context,
+            @Nullable final String key, @Nullable Long expiration) throws IOException;
 }
