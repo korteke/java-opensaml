@@ -19,7 +19,7 @@ package org.opensaml.saml.common.binding.artifact;
 
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.util.storage.ExpiringObject;
+import org.opensaml.storage.ExpiringObject;
 
 /**
  * Maps an artifact to a SAML message and back again.

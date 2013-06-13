@@ -11,12 +11,17 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>opensaml-storage-impl</name>
+    <name>OpenSAML :: Storage Implementation</name>
     <artifactId>opensaml-storage-impl</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- Compile Dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-storage-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Provided Dependencies -->
 
