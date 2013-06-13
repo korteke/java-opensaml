@@ -65,7 +65,7 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
         
         BasicSAMLArtifactMapEntry origEntry = 
             new BasicSAMLArtifactMapEntry(artifact, issuerId, rpId, samlObject, lifetime);
-        DateTime expectedExpiration = origEntry.getExpirationTime();
+        DateTime expectedExpiration = origEntry.getExpirationDateTime();
         
         Object newObject = serializeAndDeserialize(origEntry);
         Assert.assertNotNull(newObject, "Deserialized object was null");
@@ -77,7 +77,7 @@ public class BasicSAMLArtifactMapEntryTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(newEntry.getArtifact(), artifact, "Invalid value for artifact");
         Assert.assertEquals(newEntry.getIssuerId(), issuerId, "Invalid value for issuer ID");
         Assert.assertEquals(newEntry.getRelyingPartyId(), rpId, "Invalid value for relying party ID");
-        Assert.assertEquals(newEntry.getExpirationTime(), expectedExpiration, "Invalid value for expiration time");
+        Assert.assertEquals(newEntry.getExpirationDateTime(), expectedExpiration, "Invalid value for expiration time");
         
         // Test SAMLObject reconstitution
         // It will be unmarshalled and so should already have a DOM

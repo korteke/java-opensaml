@@ -40,7 +40,7 @@ public interface StorageSerializer<Type> {
      * @return a string
      * @throws IOException if an error occurs during serialization
      */
-    @Nonnull @NotEmpty String serialize(@Nonnull final Type instance) throws IOException;
+    @Nonnull @NotEmpty public String serialize(@Nonnull final Type instance) throws IOException;
     
     /**
      * Returns an object recovered from a string produced through the {@link #serialize} method.
@@ -49,5 +49,5 @@ public interface StorageSerializer<Type> {
      * @return a deserialized object
      * @throws IOException if an error occurs during deserialization
      */
-    @Nonnull Type deserialize(@Nonnull @NotEmpty final String s) throws IOException;
+    @Nonnull public Type deserialize(@Nonnull @NotEmpty final String s) throws IOException;
 }
