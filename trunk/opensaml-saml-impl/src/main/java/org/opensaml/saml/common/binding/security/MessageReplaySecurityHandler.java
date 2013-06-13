@@ -32,7 +32,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlMessageInfoContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
-import org.opensaml.util.storage.ReplayCache;
+import org.opensaml.storage.ReplayCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

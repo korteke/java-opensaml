@@ -35,7 +35,7 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
-import org.opensaml.util.storage.AbstractExpiringObject;
+import org.opensaml.storage.AbstractExpiringObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

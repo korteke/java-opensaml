@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-util</artifactId>
+            <artifactId>opensaml-storage-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -87,6 +87,13 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-storage-impl</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>

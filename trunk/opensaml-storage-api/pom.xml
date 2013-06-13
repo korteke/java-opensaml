@@ -11,12 +11,16 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>opensaml-storage-api</name>
+    <name>OpenSAML :: Storage API</name>
     <artifactId>opensaml-storage-api</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- Compile Dependencies -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
 
         <!-- Provided Dependencies -->
 
