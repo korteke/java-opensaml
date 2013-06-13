@@ -97,7 +97,7 @@ public class BasicSAMLArtifactMap implements SAMLArtifactMap {
 
         if (log.isDebugEnabled()) {
             log.debug("Storing new artifact entry '{}' for relying party '{}', expiring at '{}'", new Object[] {
-                    artifact, relyingPartyId, artifactEntry.getExpirationTime()});
+                    artifact, relyingPartyId, artifactEntry.getExpirationDateTime()});
         }
 
         artifactStore.put(artifact, artifactEntry);

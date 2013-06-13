@@ -17,42 +17,89 @@
 
 package org.opensaml.util.storage;
 
-import java.io.Serializable;
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.opensaml.util.storage.annotation.Expiration;
 
-/** Base implementation for {@link ExpiringObject}. */
-@Deprecated
-public abstract class AbstractExpiringObject implements ExpiringObject, Serializable {
-
-    /** Serial version UID. */
-    private static final long serialVersionUID = -5862358212935797056L;
+/**
+ * A base class for objects that have a built-in expiration, suitably annotated for use with
+ * a {@link StorageService}.
+ */
+@Expiration("expiration")
+public abstract class AbstractExpiringObject implements ExpiringObject {
     
-    /** Moment of expiration in UTC. */
-    private long expiration;
+    /** Moment of expiration in milliseconds since the Unix epoch. */
+    @Nonnull private Long expiration;
 
     /**
      * Constructor.
      * 
-     * @param expirationTime time this object should expire
+     * @param expirationTime time this object should expire in milliseconds since the Unix epoch
      */
-    public AbstractExpiringObject(DateTime expirationTime) {
+    public AbstractExpiringObject(@Nonnull final DateTime expirationTime) {
+        Constraint.isNotNull(expirationTime, "Expiration time cannot be null");
+        
         expiration = expirationTime.toDateTime(ISOChronology.getInstanceUTC()).getMillis();
     }
 
-    /** {@inheritDoc} */
-    public DateTime getExpirationTime() {
+    /**
+     * Constructor.
+     * 
+     * @param expirationTime time this object should expire in milliseconds since the Unix epoch
+     */
+    public AbstractExpiringObject(final long expirationTime) {
+        expiration = expirationTime;
+    }
+
+    /**
+     * Gets the expiration time in milliseconds since the Unix epoch.
+     * 
+     * @return the expiration time
+     */
+    public long getExpiration() {
+        return expiration;
+    }
+    
+    /**
+     * Sets the expiration time in milliseconds since the Unix epoch.
+     * 
+     * @param expirationTime the expiration time
+     */
+    void setExpiration(final long expirationTime) {
+        expiration = expirationTime;
+    }
+    
+    /**
+     * Gets the expiration time as an object.
+     * 
+     * @return the expiration time
+     */
+    @Nonnull public DateTime getExpirationDateTime() {
         return new DateTime(expiration, ISOChronology.getInstanceUTC());
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Sets the expiration time from an object.
+     * 
+     * @param expirationTime the expiration time
+     */
+    void setExpirationDateTime(@Nonnull final DateTime expirationTime) {
+        Constraint.isNotNull(expirationTime, "Expiration time cannot be null");
+        
+        expiration = expirationTime.toDateTime(ISOChronology.getInstanceUTC()).getMillis();
+    }
+    
+    /**
+     * Checks whether the object is currently expired.
+     * 
+     * @return true iff the object has expired
+     */
     public boolean isExpired() {
-        return getExpirationTime().isBeforeNow();
+        return getExpirationDateTime().isBeforeNow();
     }
 
-    /** {@inheritDoc} */
-    public void onExpire() {
-        // no-op, implementations should override if they need to do something
-    }
 }
