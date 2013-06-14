@@ -35,7 +35,7 @@ public interface SignatureSigningConfiguration {
      * 
      * @return the signing credential
      */
-    @Nullable Credential getSigningCredential();
+    @Nullable public Credential getSigningCredential();
     
     /**
      * Get the signature algorithm URI to use when signing.

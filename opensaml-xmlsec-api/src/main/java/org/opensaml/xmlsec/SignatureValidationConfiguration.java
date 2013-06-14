@@ -33,20 +33,20 @@ public interface SignatureValidationConfiguration {
      * 
      * @return the list of algorithms
      */
-    @Nullable List<String> getWhitelistedAlgorithmURIs();
+    @Nullable public List<String> getWhitelistedAlgorithmURIs();
     
     /**
      * Get the list of blacklisted algorithm URI's.
      * 
      * @return the list of algorithms
      */
-    @Nullable List<String> getBlacklistedAlgorithmsURIs();
+    @Nullable public List<String> getBlacklistedAlgorithmsURIs();
     
     /**
      * Get the signature trust engine to use.
      * 
      * @return the signature trust engine
      */
-    @Nullable SignatureTrustEngine getSignatureTrustEngine();
+    @Nullable public SignatureTrustEngine getSignatureTrustEngine();
 
 }

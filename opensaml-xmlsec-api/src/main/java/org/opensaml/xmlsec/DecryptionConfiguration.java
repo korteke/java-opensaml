@@ -34,21 +34,21 @@ public interface DecryptionConfiguration {
      * 
      * @return the list of algorithms
      */
-    @Nullable List<String> getWhitelistedAlgorithmURIs();
+    @Nullable public List<String> getWhitelistedAlgorithmURIs();
     
     /**
      * Get the list of blacklisted algorithm URI's.
      * 
      * @return the list of algorithms
      */
-    @Nullable List<String> getBlacklistedAlgorithmsURIs();
+    @Nullable public List<String> getBlacklistedAlgorithmsURIs();
     
     /**
      * The KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
      * 
      * @return the KeyInfoCredentialResolver instance
      */
-    @Nullable KeyInfoCredentialResolver getDataKeyInfoCredentialResolver();
+    @Nullable public KeyInfoCredentialResolver getDataKeyInfoCredentialResolver();
     
     /**
      * The KeyInfoCredentialResolver to use when processing the EncryptedKey/KeyInfo (the
@@ -56,13 +56,13 @@ public interface DecryptionConfiguration {
      * 
      * @return the KeyInfoCredentialResolver instance
      */
-    @Nullable KeyInfoCredentialResolver getKEKKeyInfoCredentialResolver();
+    @Nullable public KeyInfoCredentialResolver getKEKKeyInfoCredentialResolver();
     
     /**
      * Get the EncryptedKeyResolver to use when resolving the EncryptedKey(s) to process.
      * 
      * @return the EncryptedKeyResolver instance
      */
-    @Nullable EncryptedKeyResolver geEncryptedKeyResolver();
+    @Nullable public EncryptedKeyResolver getEncryptedKeyResolver();
     
 }
