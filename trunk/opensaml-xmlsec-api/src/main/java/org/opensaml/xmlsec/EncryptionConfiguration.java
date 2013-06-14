@@ -33,14 +33,14 @@ public interface EncryptionConfiguration {
      * 
      * @return the encryption credential
      */
-    @Nullable Credential getDataEncryptionCredential();
+    @Nullable public Credential getDataEncryptionCredential();
     
     /**
      * Get the encryption credential to use when encrypting the EncryptedKey.
      * 
      * @return the encryption credential
      */
-    @Nullable Credential getKeyTransportEncryptionCredential();
+    @Nullable public Credential getKeyTransportEncryptionCredential();
     
     /**
      * Get the encryption algorithm URI to use when encrypting the EncryptedData.
