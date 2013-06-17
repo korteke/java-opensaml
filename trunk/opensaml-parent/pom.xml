@@ -23,7 +23,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../opensaml-util</module>
         <module>../opensaml-core</module>
         <module>../opensaml-storage-api</module>
         <module>../opensaml-security-api</module>
