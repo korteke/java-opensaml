@@ -28,6 +28,7 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.UrlBuilder;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -45,7 +46,6 @@ import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.binding.artifact.AbstractSAML2Artifact;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilder;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactType0004;
-import org.opensaml.util.net.UrlBuilder;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;

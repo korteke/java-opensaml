@@ -27,6 +27,7 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.UrlBuilder;
 
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
@@ -43,7 +44,6 @@ import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilder;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
-import org.opensaml.util.net.UrlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

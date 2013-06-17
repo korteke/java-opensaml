@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.net.UrlBuilder;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -51,7 +52,6 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.util.net.UrlBuilder;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.mock.MockSignatureSigningConfiguration;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
