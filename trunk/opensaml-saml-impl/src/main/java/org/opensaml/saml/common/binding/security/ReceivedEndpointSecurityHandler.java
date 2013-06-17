@@ -25,6 +25,9 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.BasicUrlComparator;
+import net.shibboleth.utilities.java.support.net.UriComparator;
+import net.shibboleth.utilities.java.support.net.UriException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.MessageException;
@@ -33,9 +36,6 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.util.net.BasicUrlComparator;
-import org.opensaml.util.net.UriComparator;
-import org.opensaml.util.net.UriException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

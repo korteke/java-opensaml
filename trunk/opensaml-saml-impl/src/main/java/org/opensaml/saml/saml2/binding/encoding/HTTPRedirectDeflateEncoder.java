@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
+import net.shibboleth.utilities.java.support.net.UrlBuilder;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -44,7 +45,6 @@ import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.util.net.UrlBuilder;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;

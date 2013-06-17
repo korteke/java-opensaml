@@ -23,8 +23,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaFilteringIterable;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
+import net.shibboleth.utilities.java.support.resolver.EvaluableCriterion;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.SecurityException;
@@ -32,8 +34,6 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
-import org.opensaml.util.criteria.CriteriaFilteringIterable;
-import org.opensaml.util.criteria.EvaluableCriterion;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which filters the returned Credentials

@@ -17,8 +17,9 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
+import net.shibboleth.utilities.java.support.resolver.EvaluableCriterion;
+
 import org.opensaml.security.credential.Credential;
-import org.opensaml.util.criteria.EvaluableCriterion;
 
 /**
  * Marker interface for evaluable credential resolver criteria.
