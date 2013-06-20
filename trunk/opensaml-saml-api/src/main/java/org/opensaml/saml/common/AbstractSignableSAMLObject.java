@@ -56,7 +56,7 @@ public abstract class AbstractSignableSAMLObject extends AbstractSignableXMLObje
      * changed prior to marshalling this object.
      */
     public void setSignature(Signature newSignature) {
-        if(newSignature != null){
+        if(newSignature != null && newSignature.getContentReferences().isEmpty()) {
             newSignature.getContentReferences().add(new SAMLObjectContentReference(this));
         }
         super.setSignature(newSignature);
