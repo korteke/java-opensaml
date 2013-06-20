@@ -22,6 +22,8 @@ import java.util.Set;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -33,7 +35,7 @@ import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.signature.support.ContentReference;
+import org.opensaml.xmlsec.signature.support.ConfigurableContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +71,7 @@ import com.google.common.base.Strings;
  * </p>
  * 
  */
-public class SAMLObjectContentReference implements ContentReference {
+public class SAMLObjectContentReference implements ConfigurableContentReference {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SAMLObjectContentReference.class);
@@ -114,22 +116,15 @@ public class SAMLObjectContentReference implements ContentReference {
         return transforms;
     }
 
-    /**
-     * Gets the algorithm used to digest the content.
-     * 
-     * @return the algorithm used to digest the content
-     */
+    /** {@inheritDoc}. */
     public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
-    /**
-     * Sets the algorithm used to digest the content.
-     * 
-     * @param newAlgorithm the algorithm used to digest the content
-     */
+    /** {@inheritDoc}. */
     public void setDigestAlgorithm(String newAlgorithm) {
-        digestAlgorithm = newAlgorithm;
+        digestAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(newAlgorithm),
+                "Digest algorithm cannot be empty or null");
     }
 
     /** {@inheritDoc} */

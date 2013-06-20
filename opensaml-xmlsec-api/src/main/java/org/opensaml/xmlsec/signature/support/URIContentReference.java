@@ -30,13 +30,15 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.xmlsec.SecurityConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * A generic content reference that uses a URI to reference the content to be signed.
  */
-public class URIContentReference implements ContentReference {
+public class URIContentReference implements ConfigurableContentReference {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(URIContentReference.class);
@@ -58,6 +60,15 @@ public class URIContentReference implements ContentReference {
     public URIContentReference(@Nullable final String refID) {
         referenceID = refID;
         transforms = new LinkedList<String>();
+        
+        // Set defaults
+        SecurityConfiguration globalSecConfig = ConfigurationService.get(SecurityConfiguration.class);
+        if (globalSecConfig != null ) {
+            digestAlgorithm = globalSecConfig.getSignatureReferenceDigestMethod();
+        }
+        if (digestAlgorithm == null) {
+            digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA1;
+        }
     }
 
     /**
@@ -69,20 +80,12 @@ public class URIContentReference implements ContentReference {
         return transforms;
     }
 
-    /**
-     * Gets the algorithm used to digest the content.
-     * 
-     * @return the algorithm used to digest the content
-     */
+    /** {@inheritDoc}. */
     @Nullable public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
-    /**
-     * Sets the algorithm used to digest the content.
-     * 
-     * @param newAlgorithm the algorithm used to digest the content
-     */
+    /** {@inheritDoc}. */
     public void setDigestAlgorithm(@Nonnull final String newAlgorithm) {
         digestAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(newAlgorithm),
                 "Digest algorithm cannot be empty or null");

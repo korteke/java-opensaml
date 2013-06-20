@@ -38,6 +38,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
+import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
@@ -83,23 +84,28 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         super.populateVelocityContext(velocityContext, messageContext, endpointURL);
 
-        Credential signingCredential = SamlMessageSecuritySupport.getContextSigningCredential(messageContext);
-        if (signingCredential == null) {
+        SignatureSigningParameters signingParameters = 
+                SamlMessageSecuritySupport.getContextSigningParameters(messageContext);
+        
+        if (signingParameters == null || signingParameters.getSigningCredential() == null) {
             log.debug("No signing credential was supplied, skipping HTTP-Post simple signing");
             return;
         }
 
-        // TODO pull SecurityConfiguration from SAMLMessageContext? needs to be added
-        // TODO pull binding-specific keyInfoGenName from encoder setting, etc?
-        String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);
+        String sigAlgURI = getSignatureAlgorithmURI(signingParameters);
         velocityContext.put("SigAlg", sigAlgURI);
 
         String formControlData = buildFormDataToSign(velocityContext, messageContext, sigAlgURI);
-        velocityContext.put("Signature", generateSignature(signingCredential, sigAlgURI, formControlData));
+        velocityContext.put("Signature", generateSignature(signingParameters.getSigningCredential(), 
+                sigAlgURI, formControlData));
 
-        KeyInfoGenerator kiGenerator = KeyInfoSupport.getKeyInfoGenerator(signingCredential, null, null);
+        
+        KeyInfoGenerator kiGenerator = signingParameters.getKeyInfoGenerator();
+        if (kiGenerator == null) {
+            kiGenerator = KeyInfoSupport.getKeyInfoGenerator(signingParameters.getSigningCredential(), null, null);
+        }
         if (kiGenerator != null) {
-            String kiBase64 = buildKeyInfo(signingCredential, kiGenerator);
+            String kiBase64 = buildKeyInfo(signingParameters.getSigningCredential(), kiGenerator);
             if (!Strings.isNullOrEmpty(kiBase64)) {
                 velocityContext.put("KeyInfo", kiBase64);
             }
@@ -188,34 +194,33 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         return builder.toString();
     }
-
+    
     /**
-     * Gets the signature algorithm URI to use with the given signing credential.
+     * Gets the signature algorithm URI to use.
      * 
-     * @param credential the credential that will be used to sign the message
-     * @param config the SecurityConfiguration to use (may be null)
+     * @param signingParameters the signing parameters to use
      * 
-     * @return signature algorithm to use with the given signing credential
+     * @return signature algorithm to use with the associated signing credential
      * 
-     * @throws MessageEncodingException thrown if the algorithm URI could not be derived from the supplied credential
+     * @throws MessageEncodingException thrown if the algorithm URI is not supplied explicitly and 
+     *          could not be derived from the supplied credential
      */
-    protected String getSignatureAlgorithmURI(Credential credential, SecurityConfiguration config)
+    protected String getSignatureAlgorithmURI(SignatureSigningParameters signingParameters)
             throws MessageEncodingException {
-
-        SecurityConfiguration secConfig;
-        if (config != null) {
-            secConfig = config;
-        } else {
-            secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
+        
+        if (signingParameters.getSignatureAlgorithmURI() != null) {
+            return signingParameters.getSignatureAlgorithmURI();
+        }
+        
+        SecurityConfiguration globalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
+        if (globalSecurityConfig != null) {
+            String signAlgo = globalSecurityConfig.getSignatureAlgorithmURI(signingParameters.getSigningCredential());
+            if (signAlgo != null) {
+                return signAlgo;
+            }
         }
 
-        String signAlgo = secConfig.getSignatureAlgorithmURI(credential);
-
-        if (signAlgo == null) {
-            throw new MessageEncodingException("The signing credential's algorithm URI could not be derived");
-        }
-
-        return signAlgo;
+        throw new MessageEncodingException("The signing algorithm URI could not be determined");
     }
 
     /**

@@ -15,37 +15,29 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.messaging.context;
+package org.opensaml.xmlsec.signature.support;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.messaging.context.BaseContext;
-import org.opensaml.xmlsec.SignatureSigningConfiguration;
-
 /**
- * Context that carries information about a SAML signature operations.
+ * A specialization of {@link ContentReference} which allows some signature reference properties
+ * to be specified.
  */
-public class SamlSigningContext extends BaseContext {
-
-    /** The signing configuration. */
-    private SignatureSigningConfiguration signingConfiguration;
+public interface ConfigurableContentReference extends ContentReference {
+    
+    /**
+     * Gets the algorithm used to digest the content.
+     * 
+     * @return the algorithm used to digest the content
+     */
+    @Nullable public String getDigestAlgorithm();
 
     /**
-     * Gets the signing configuration.
+     * Sets the algorithm used to digest the content.
      * 
-     * @return the signing configuration
+     * @param newAlgorithm the algorithm used to digest the content
      */
-    @Nullable public SignatureSigningConfiguration getSigningConfiguration() {
-        return signingConfiguration;
-    }
-
-    /**
-     * Sets the signing configuration.
-     * 
-     * @param configuration the new signing configuration
-     */
-    public void setSigningConfiguration(@Nullable final SignatureSigningConfiguration configuration) {
-        signingConfiguration = configuration;
-    }
+    public void setDigestAlgorithm(final @Nonnull String newAlgorithm);
 
 }

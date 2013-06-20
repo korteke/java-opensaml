@@ -31,7 +31,6 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.SAMLOutboundDestinationHandler;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
-import org.opensaml.saml.common.messaging.context.SamlSigningContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
@@ -40,7 +39,8 @@ import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.mock.MockSignatureSigningConfiguration;
+import org.opensaml.xmlsec.SignatureSigningParameters;
+import org.opensaml.xmlsec.messaging.SecurityParametersContext;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -189,9 +189,9 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
         
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
-        MockSignatureSigningConfiguration mockSigningConfig = new MockSignatureSigningConfiguration();
-        mockSigningConfig.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
-        messageContext.getSubcontext(SamlSigningContext.class, true).setSigningConfiguration(mockSigningConfig);
+        SignatureSigningParameters signingParameters = new SignatureSigningParameters();
+        signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         
