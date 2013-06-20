@@ -26,11 +26,10 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlSigningContext;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.SignatureSigningConfiguration;
+import org.opensaml.xmlsec.SignatureSigningParameters;
+import org.opensaml.xmlsec.messaging.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
@@ -49,8 +48,8 @@ public final class SamlMessageSecuritySupport {
     
     /**
      * Signs the SAML message represented in the message context if it a {@link SignableSAMLObject}
-     * and the message context contains signing credentials as determined 
-     * by {@link #getContextSigningCredential(MessageContext)}.
+     * and the message context contains signing parameters as determined 
+     * by {@link #getContextSigningParameters(MessageContext)}.
      * 
      * @param messageContext current message context
      * 
@@ -63,21 +62,19 @@ public final class SamlMessageSecuritySupport {
     public static void signMessage(MessageContext<SAMLObject> messageContext) 
             throws SecurityException, MarshallingException, SignatureException {
         SAMLObject outboundSAML = messageContext.getMessage();
-        Credential signingCredential = getContextSigningCredential(messageContext);
+        SignatureSigningParameters parameters = getContextSigningParameters(messageContext);
 
-        if (outboundSAML instanceof SignableSAMLObject && signingCredential != null) {
+        if (outboundSAML instanceof SignableSAMLObject && parameters != null) {
             SignableSAMLObject signableMessage = (SignableSAMLObject) outboundSAML;
 
             XMLObjectBuilder<Signature> signatureBuilder = 
                     XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Signature.DEFAULT_ELEMENT_NAME);
             Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
             
-            signature.setSigningCredential(signingCredential);
-            //TODO security config, keyinfo gen from context
-            SignatureSupport.prepareSignatureParams(signature, signingCredential, null, null);
-            
             signableMessage.setSignature(signature);
 
+            SignatureSupport.prepareSignatureParams(signature, parameters);
+            
             Marshaller marshaller = 
                     XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signableMessage);
             marshaller.marshall(signableMessage);
@@ -87,19 +84,17 @@ public final class SamlMessageSecuritySupport {
     }
 
     /**
-     * Get the signing credential from the message context.
+     * Get the signing parameters from the message context.
      * 
      * @param messageContext the message context
      * 
-     * @return the signing credential to use, may be null
+     * @return the signing parameters to use, may be null
      */
-    @Nullable public static Credential getContextSigningCredential(MessageContext<SAMLObject> messageContext) {
-        SamlSigningContext context = messageContext.getSubcontext(SamlSigningContext.class);
+    @Nullable public static SignatureSigningParameters getContextSigningParameters(
+            MessageContext<SAMLObject> messageContext) {
+        SecurityParametersContext context = messageContext.getSubcontext(SecurityParametersContext.class);
         if (context != null) {
-            SignatureSigningConfiguration configuration = context.getSigningConfiguration();
-            if (configuration != null) {
-                return configuration.getSigningCredential();
-            }
+            return context.getSignatureSigningParameters();
         }
         return null;
     }

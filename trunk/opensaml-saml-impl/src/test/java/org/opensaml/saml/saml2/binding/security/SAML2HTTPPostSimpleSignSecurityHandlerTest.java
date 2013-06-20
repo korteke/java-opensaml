@@ -41,7 +41,6 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
-import org.opensaml.saml.common.messaging.context.SamlSigningContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.binding.encoding.HTTPPostSimpleSignEncoder;
 import org.opensaml.saml.saml2.core.AuthnRequest;
@@ -53,8 +52,9 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.mock.MockSignatureSigningConfiguration;
+import org.opensaml.xmlsec.messaging.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -326,9 +326,9 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         messageContext.getSubcontext(SamlPeerEntityContext.class, true)
             .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
         
-        MockSignatureSigningConfiguration mockSigningConfig = new MockSignatureSigningConfiguration();
-        mockSigningConfig.setSigningCredential(signingX509Cred);
-        messageContext.getSubcontext(SamlSigningContext.class, true).setSigningConfiguration(mockSigningConfig);
+        SignatureSigningParameters signingParameters = new SignatureSigningParameters();
+        signingParameters.setSigningCredential(signingX509Cred);
+        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         

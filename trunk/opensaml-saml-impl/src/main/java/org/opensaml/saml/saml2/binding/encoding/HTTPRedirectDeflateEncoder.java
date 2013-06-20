@@ -47,6 +47,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
+import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -187,48 +188,49 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             queryParams.add(new Pair<String, String>("RelayState", relayState));
         }
 
-        Credential signingCredential = SamlMessageSecuritySupport.getContextSigningCredential(messageContext);
-        if (signingCredential != null) {
-            // TODO pull SecurityConfiguration from SAMLMessageContext? needs to be added
-            String sigAlgURI = getSignatureAlgorithmURI(signingCredential, null);
+        SignatureSigningParameters signingParameters = 
+                SamlMessageSecuritySupport.getContextSigningParameters(messageContext);
+        if (signingParameters != null && signingParameters.getSigningCredential() != null) {
+            String sigAlgURI =  getSignatureAlgorithmURI(signingParameters);
             Pair<String, String> sigAlg = new Pair<String, String>("SigAlg", sigAlgURI);
             queryParams.add(sigAlg);
             String sigMaterial = urlBuilder.buildQueryString();
 
-            queryParams.add(new Pair<String, String>("Signature", generateSignature(signingCredential, sigAlgURI,
-                    sigMaterial)));
+            queryParams.add(new Pair<String, String>("Signature", generateSignature(
+                    signingParameters.getSigningCredential(), sigAlgURI, sigMaterial)));
+        } else {
+            log.debug("No signing credential was supplied, skipping HTTP-Redirect DEFLATE signing");
         }
         
         return urlBuilder.buildURL();
     }
 
     /**
-     * Gets the signature algorithm URI to use with the given signing credential.
+     * Gets the signature algorithm URI to use.
      * 
-     * @param credential the credential that will be used to sign the message
-     * @param config the SecurityConfiguration to use (may be null)
+     * @param signingParameters the signing parameters to use
      * 
-     * @return signature algorithm to use with the given signing credential
+     * @return signature algorithm to use with the associated signing credential
      * 
-     * @throws MessageEncodingException thrown if the algorithm URI could not be derived from the supplied credential
+     * @throws MessageEncodingException thrown if the algorithm URI is not supplied explicitly and 
+     *          could not be derived from the supplied credential
      */
-    protected String getSignatureAlgorithmURI(Credential credential, SecurityConfiguration config)
+    protected String getSignatureAlgorithmURI(SignatureSigningParameters signingParameters)
             throws MessageEncodingException {
-
-        SecurityConfiguration secConfig;
-        if (config != null) {
-            secConfig = config;
-        } else {
-            secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
+        
+        if (signingParameters.getSignatureAlgorithmURI() != null) {
+            return signingParameters.getSignatureAlgorithmURI();
+        }
+        
+        SecurityConfiguration globalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
+        if (globalSecurityConfig != null) {
+            String signAlgo = globalSecurityConfig.getSignatureAlgorithmURI(signingParameters.getSigningCredential());
+            if (signAlgo != null) {
+                return signAlgo;
+            }
         }
 
-        String signAlgo = secConfig.getSignatureAlgorithmURI(credential);
-
-        if (signAlgo == null) {
-            throw new MessageEncodingException("The signing credential's algorithm URI could not be derived");
-        }
-
-        return signAlgo;
+        throw new MessageEncodingException("The signing algorithm URI could not be determined");
     }
 
     /**
