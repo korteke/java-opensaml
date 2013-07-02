@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -107,15 +108,19 @@ public final class XMLObjectSupport {
      * 
      * @param <T> the type of object being cloned
      */
-    public static <T extends XMLObject> T cloneXMLObject(T originalXMLObject, boolean rootInNewDocument)
-            throws MarshallingException, UnmarshallingException {
+    @Nullable public static <T extends XMLObject> T cloneXMLObject(@Nullable T originalXMLObject,
+            boolean rootInNewDocument) throws MarshallingException, UnmarshallingException {
         
         if (originalXMLObject == null) {
             return null;
         }
         
-        Marshaller marshaller = getMarshaller(originalXMLObject);
-        Element origElement = marshaller.marshall(originalXMLObject);
+        final Marshaller marshaller = getMarshaller(originalXMLObject);
+        if (marshaller == null) {
+            throw new MarshallingException("Unable to obtain Marshaller for XMLObject: "
+                    + originalXMLObject.getElementQName());
+        }
+        final Element origElement = marshaller.marshall(originalXMLObject);
         
         Element clonedElement = null;
         
@@ -132,10 +137,13 @@ public final class XMLObjectSupport {
             clonedElement = (Element) origElement.cloneNode(true);
         }
         
-        Unmarshaller unmarshaller = getUnmarshaller(clonedElement);
-        T clonedXMLObject = (T) unmarshaller.unmarshall(clonedElement);
+        final Unmarshaller unmarshaller = getUnmarshaller(clonedElement);
+        if (unmarshaller == null) {
+            throw new UnmarshallingException("Unable to obtain Unmarshaller for element: "
+                    + QNameSupport.getNodeQName(clonedElement));
+        }
         
-        return clonedXMLObject;
+        return (T) unmarshaller.unmarshall(clonedElement);
     }
     
     /**
