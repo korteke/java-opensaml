@@ -20,7 +20,8 @@ package org.opensaml.saml.common.binding.artifact;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import java.util.HashMap;
+
+import java.io.IOException;
 
 import org.custommonkey.xmlunit.Diff;
 import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
@@ -29,27 +30,24 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMap;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
+import org.opensaml.storage.StorageService;
+import org.opensaml.storage.impl.MemoryStorageService;
 import org.w3c.dom.Document;
 
 /**
- *
+ * Test the basic SAML artifact map implementation.
  */
 public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
+    private StorageService storageService;
     private BasicSAMLArtifactMap artifactMap;
 
-    private HashMap<String, SAMLArtifactMapEntry> storageService;
+    private String artifact = "the-artifact";
+    private String issuerId = "urn:test:issuer";
+    private String rpId = "urn:test:rp";
+    private long lifetime = 60 * 5 * 1000L;
 
     private SAMLObject samlObject;
-
-    private String artifact = "the-artifact";
-
-    private String issuerId = "urn:test:issuer";
-
-    private String rpId = "urn:test:rp";
-
-    private long lifetime = 60 * 60 * 1000;
-
     private Document origDocument;
 
     /** {@inheritDoc} */
@@ -57,17 +55,22 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
         origDocument = samlObject.getDOM().getOwnerDocument();
-        // Drop the DOM for a more realistic test, usuallly the artifact SAMLObject will be built, not unmarshalled
+        // Drop the DOM for a more realistic test, usually the artifact SAMLObject will be built, not unmarshalled
         samlObject.releaseChildrenDOM(true);
         samlObject.releaseDOM();
 
-        storageService = new HashMap<String, SAMLArtifactMapEntry>();
+        storageService = new MemoryStorageService();
+        storageService.initialize();
 
-        artifactMap = new BasicSAMLArtifactMap(storageService, lifetime);
+        artifactMap = new BasicSAMLArtifactMap();
+        artifactMap.setStorageService(storageService);
+        artifactMap.setArtifactLifetime(lifetime);
+        artifactMap.initialize();
+        artifactMap.validate();
     }
 
     @Test
-    public void testBasicPutGet() throws MarshallingException {
+    public void testBasicPutGet() throws IOException, MarshallingException {
         Assert.assertFalse(artifactMap.contains(artifact));
 
         artifactMap.put(artifact, rpId, issuerId, samlObject);
@@ -89,7 +92,7 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    public void testRemove() throws MarshallingException {
+    public void testRemove() throws IOException {
         Assert.assertFalse(artifactMap.contains(artifact));
 
         artifactMap.put(artifact, rpId, issuerId, samlObject);
@@ -105,15 +108,18 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    public void testEntryExpiration() throws MarshallingException, InterruptedException {
+    public void testEntryExpiration() throws Exception {
         // lifetime of 1 second should do it
-        artifactMap = new BasicSAMLArtifactMap(storageService, 1000);
+        artifactMap = new BasicSAMLArtifactMap();
+        artifactMap.setStorageService(storageService);
+        artifactMap.setArtifactLifetime(1000);
+        artifactMap.initialize();
+        artifactMap.validate();
 
         Assert.assertFalse(artifactMap.contains(artifact));
 
         artifactMap.put(artifact, rpId, issuerId, samlObject);
 
-        // Hopefully this doesn't get deferred for more than 1000 milliseconds after the put()...
         Assert.assertTrue(artifactMap.contains(artifact));
 
         // Sleep for 3 seconds, entry should expire
