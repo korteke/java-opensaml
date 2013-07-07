@@ -53,7 +53,6 @@ public class BasicSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase 
         factory = new BasicSAMLArtifactMapEntryFactory();
         
         samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml1/core/SignedAssertion.xml");
-        samlObject.getDOM().getOwnerDocument().appendChild(samlObject.getDOM());
     }
 
     @Test
@@ -88,6 +87,7 @@ public class BasicSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase 
         Assert.assertEquals(basicEntry.getRelyingPartyId(), newEntry.getRelyingPartyId());
 
         Document origDocument = samlObject.getDOM().getOwnerDocument();
+        origDocument.appendChild(samlObject.getDOM());
         Document newDocument = newEntry.getSamlMessage().getDOM().getOwnerDocument();
         XMLAssertTestNG.assertXMLIdentical(new Diff(origDocument, newDocument), true);
     }
