@@ -17,35 +17,43 @@
 
 package org.opensaml.saml.common.binding.artifact;
 
-import org.opensaml.core.xml.io.MarshallingException;
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.DestructableComponent;
+import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
+import net.shibboleth.utilities.java.support.component.ValidatableComponent;
+
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.storage.ExpiringObject;
+import org.opensaml.storage.StorageSerializer;
 
 /**
  * Maps an artifact to a SAML message and back again.
  * 
- * <p>Artifacts must be thread safe.</p>
- * 
- * <p>
- * An implementation of this interface MUST ensure that the persisted SAML message is no longer tied to any 
- * parent {@link org.opensaml.core.xml.XMLObject} that may have contained it.  This ensures that it can be safely added 
- * to another object once retrieved from the map.  This might for example be achieved by: 
+ * <p>An implementation of this interface MUST ensure that the persisted SAML message is no longer tied to any 
+ * parent {@link org.opensaml.core.xml.XMLObject} that may have contained it. This ensures that it can be
+ * safely added to another object once retrieved from the map. This might for example be achieved by:
  * 1) cloning the SAMLObject prior to storage, or 2) by serializing it to a string and re-parsing 
- * and unmarhsalling it once retrieved from the underlying data store.
+ * and unmarshalling it once retrieved from the underlying data store.
  * This requirement may be handled by the SAMLArtifactMap directly, or by the use of of a specific 
- * implementation of {@link SAMLArtifactMapEntryFactory}.
- * </p>
+ * implementation of {@link SAMLArtifactMapEntryFactory}.</p>
  */
-public interface SAMLArtifactMap {
+public interface SAMLArtifactMap extends InitializableComponent, DestructableComponent,
+    IdentifiableComponent, ValidatableComponent {
 
     /**
      * Checks if a given artifact has a map entry.
      * 
      * @param artifact the artifact to check
      * 
-     * @return true of this map has an entry for the given artifact, false it not
+     * @return true iff this map has an entry for the given artifact
+     * @throws IOException if an error occurs retrieving the information
      */
-    public boolean contains(String artifact);
+    public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException;
 
     /**
      * Creates a mapping between a given artifact and the SAML message to which it maps.
@@ -55,65 +63,69 @@ public interface SAMLArtifactMap {
      * @param issuerId ID of the issuer of the artifact
      * @param samlMessage the SAML message
      * 
-     * @throws MarshallingException thrown if the given SAML message can not be marshalled
+     * @throws IOException  if an error occurs storing the information
      */
-    public void put(String artifact, String relyingPartyId, String issuerId, SAMLObject samlMessage)
-            throws MarshallingException;
+    public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
+            @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage)
+            throws IOException;
 
     /**
      * Gets the artifact entry for the given artifact.
      * 
      * @param artifact the artifact to retrieve the entry for
      * 
-     * @return the entry or null if the artifact has already expired or did not exist
+     * @return the entry, or null if the artifact has already expired or did not exist
+     * @throws IOException if an error occurs retrieving the information
      */
-    public SAMLArtifactMapEntry get(String artifact);
+    @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException;
 
     /**
      * Removes the artifact from this map.
      * 
      * @param artifact artifact to be removed
+     * @throws IOException if an error occurs retrieving the information
      */
-    public void remove(String artifact);
+    public void remove(@Nonnull @NotEmpty final String artifact) throws IOException;
     
     /**
-     * Represents a mapping between an artifact a SAML message with some associated metadata. 
+     * Represents a mapping between an artifact and a SAML message with some associated information. 
      */
-    public interface SAMLArtifactMapEntry extends ExpiringObject {
+    public interface SAMLArtifactMapEntry {
 
         /**
          * Gets the artifact that maps to the SAML message.
          * 
          * @return artifact that maps to the SAML message
          */
-        public String getArtifact();
+        @Nonnull @NotEmpty public String getArtifact();
 
         /**
          * Gets the ID of the issuer of the artifact.
          * 
          * @return ID of the issuer of the artifact
          */
-        public String getIssuerId();
+        @Nonnull @NotEmpty public String getIssuerId();
 
         /**
          * Gets the ID of the relying party the artifact was sent to.
          * 
          * @return ID of the relying party the artifact was sent to
          */
-        public String getRelyingPartyId();
+        @Nonnull @NotEmpty public String getRelyingPartyId();
 
         /**
          * Gets SAML message the artifact maps to.
          * 
          * @return SAML message the artifact maps to
          */
-        public SAMLObject getSamlMessage();
+        @Nonnull public SAMLObject getSamlMessage();
     }
     
     /**
-     * A factory for producing SAMLArtifactMapEntry instances based on standard inputs.
+     * A factory for producing SAMLArtifactMapEntry instances based on standard inputs,
+     * and reading/writing them from/to storage.
      */
-    public interface SAMLArtifactMapEntryFactory {
+    public interface SAMLArtifactMapEntryFactory extends StorageSerializer<SAMLArtifactMapEntry> {
         
         /**
          * Factory method which produces a {@link SAMLArtifactMapEntry}.
@@ -122,12 +134,13 @@ public interface SAMLArtifactMap {
          * @param issuerId ID of the issuer of the artifact
          * @param relyingPartyId ID of the party the artifact was sent to
          * @param samlMessage the SAML message
-         * @param lifetime the lifetime of the artifact entry, in milliseconds
          * 
          * @return the new map entry instance
          */
-        public SAMLArtifactMapEntry newEntry(String artifact, String issuerId,  String relyingPartyId, 
-                SAMLObject samlMessage, long lifetime);
+        @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
+                @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId, 
+                @Nonnull SAMLObject samlMessage);
         
     }
+    
 }
