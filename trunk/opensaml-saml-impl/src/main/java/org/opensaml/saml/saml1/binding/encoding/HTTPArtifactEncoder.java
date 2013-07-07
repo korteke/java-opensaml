@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.UrlBuilder;
 
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
@@ -168,9 +167,9 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
             try {
                 artifactMap.put(artifact.base64Encode(), getInboundMessageIssuer(messageContext), 
                         getOutboundMessageIssuer(messageContext), assertion);
-            } catch (MarshallingException e) {
-                log.error("Unable to marshall assertion to be represented as an artifact", e);
-                throw new MessageEncodingException("Unable to marshall assertion to be represented as an artifact", e);
+            } catch (IOException e) {
+                log.error("Unable to store assertion mapping for artifact", e);
+                throw new MessageEncodingException("Unable to store assertion mapping for artifact", e);
             }
             artifactString = artifact.base64Encode();
             queryParams.add(new Pair<String, String>("SAMLart", artifactString));

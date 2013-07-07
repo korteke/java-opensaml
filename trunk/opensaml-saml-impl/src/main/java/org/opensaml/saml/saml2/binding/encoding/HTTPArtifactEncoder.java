@@ -32,7 +32,6 @@ import net.shibboleth.utilities.java.support.net.UrlBuilder;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
@@ -333,9 +332,9 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         try {
             artifactMap.put(encodedArtifact, getInboundMessageIssuer(messageContext),
                     getOutboundMessageIssuer(messageContext), messageContext.getMessage());
-        } catch (MarshallingException e) {
-            log.error("Unable to marshall assertion to be represented as an artifact", e);
-            throw new MessageEncodingException("Unable to marshall assertion to be represented as an artifact", e);
+        } catch (IOException e) {
+            log.error("Unable to store message mapping for artifact", e);
+            throw new MessageEncodingException("Unable to store message mapping for artifact", e);
         }
 
         return artifact;
