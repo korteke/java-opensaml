@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -231,7 +232,7 @@ public final class XMLObjectSupport {
      * @return the marshalled Element
      * @throws MarshallingException if there is a problem marshalling the XMLObject
      */
-    public static Element marshall(XMLObject xmlObject) throws MarshallingException {
+    @Nonnull public static Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
         Logger log = getLogger();
         log.debug("Marshalling XMLObject");
         
