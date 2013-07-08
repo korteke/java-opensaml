@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentValidationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -47,6 +48,9 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
 
     /** Artifact mapping storage. */
     @NonnullAfterInit private StorageService artifactStore;
+    
+    /** Maximum size of artifacts we can handle. */
+    private int artifactStoreKeySize;
 
     /** Lifetime of an artifact in milliseconds. */
     private long artifactLifetime;
@@ -69,6 +73,13 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     /** {@inheritDoc} */
     public void validate() throws ComponentValidationException {
         artifactStore.validate();
+    }
+    
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        // We can't shorten the artifacts as lookup keys at the moment because
+        // the key is used to recreate the original artifact value.
+        artifactStoreKeySize = getStorageService().getCapabilities().getKeySize();
     }
     
     /**
@@ -133,12 +144,19 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     
     /** {@inheritDoc} */
     public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException {
+        if (artifact.length() > artifactStoreKeySize) {
+            throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
+        }
         return getStorageService().read(STORAGE_CONTEXT, artifact) != null;
     }
 
     /** {@inheritDoc} */
     @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Attempting to retrieve entry for artifact: {}", artifact);
+        
+        if (artifact.length() > artifactStoreKeySize) {
+            throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
+        }
         
         StorageRecord record = getStorageService().read(STORAGE_CONTEXT, artifact);
         
@@ -154,6 +172,10 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     /** {@inheritDoc} */
     public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage) throws IOException {
+
+        if (artifact.length() > artifactStoreKeySize) {
+            throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
+        }
 
         SAMLArtifactMapEntry artifactEntry =
                 getEntryFactory().newEntry(artifact, issuerId, relyingPartyId, samlMessage);
@@ -174,6 +196,10 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     public void remove(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Removing artifact entry: {}", artifact);
         
+        if (artifact.length() > artifactStoreKeySize) {
+            throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
+        }
+
         getStorageService().delete(STORAGE_CONTEXT, artifact);
     }
 
