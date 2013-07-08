@@ -119,7 +119,7 @@ public class ReplayCache extends AbstractDestructableIdentifiableInitializableCo
             log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
             return false;
         } else if (s.length() > caps.getKeySize()) {
-            key = DigestUtils.sha1(s).toString();
+            key = DigestUtils.sha1Hex(s);
         } else {
             key = s;
         }
