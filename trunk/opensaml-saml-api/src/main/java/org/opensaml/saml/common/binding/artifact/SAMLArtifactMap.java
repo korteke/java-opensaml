@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.storage.StorageSerializer;
 
 /**
  * Maps an artifact to a SAML message and back again.
@@ -125,7 +124,7 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * A factory for producing SAMLArtifactMapEntry instances based on standard inputs,
      * and reading/writing them from/to storage.
      */
-    public interface SAMLArtifactMapEntryFactory extends StorageSerializer<SAMLArtifactMapEntry> {
+    public interface SAMLArtifactMapEntryFactory {
         
         /**
          * Factory method which produces a {@link SAMLArtifactMapEntry}.

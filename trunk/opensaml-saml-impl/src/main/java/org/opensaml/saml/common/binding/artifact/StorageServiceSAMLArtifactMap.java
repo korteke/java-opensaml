@@ -30,19 +30,20 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.storage.StorageRecord;
+import org.opensaml.storage.StorageSerializer;
 import org.opensaml.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Basic artifact map implementation. */
-public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitializableComponent
+public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifiableInitializableComponent
     implements SAMLArtifactMap {
 
     /** Storage context label. */
-    @Nonnull @NotEmpty public static final String STORAGE_CONTEXT = BasicSAMLArtifactMap.class.getName();
+    @Nonnull @NotEmpty public static final String STORAGE_CONTEXT = StorageServiceSAMLArtifactMap.class.getName();
         
     /** Class Logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicSAMLArtifactMap.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(StorageServiceSAMLArtifactMap.class);
 
     /** Artifact mapping storage. */
     @NonnullAfterInit private StorageService artifactStore;
@@ -54,9 +55,9 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     @Nonnull private SAMLArtifactMapEntryFactory entryFactory;
 
     /** Constructor. */
-    public BasicSAMLArtifactMap() {
+    public StorageServiceSAMLArtifactMap() {
         setId(getClass().getName());
-        entryFactory = new BasicSAMLArtifactMapEntryFactory();
+        entryFactory = new StorageServiceSAMLArtifactMapEntryFactory();
         artifactLifetime = 60000L;
     }
 
@@ -118,10 +119,16 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     /**
      * Set the map entry factory.
      * 
+     * <p>In addition to implementing the {@link SAMLArtifactMapEntryFactory} interface, the
+     * injected object must support the {@link StorageSerializer<SAMLArtifactMapEntry>} interface
+     * to enable entries to be stored via the injected {@link StorageService} instance.</p> 
+     * 
      * @param factory map entry factory
      */
     public void setEntryFactory(@Nonnull final SAMLArtifactMapEntryFactory factory) {
-        entryFactory = Constraint.isNotNull(factory, "SAMLArtifactMapEntryFactory cannot be null");
+        Constraint.isTrue(factory != null && factory instanceof StorageSerializer<?>,
+                "SAMLArtifactMapEntryFactory cannot be null and must support the StorageSerializer interface");
+        entryFactory = factory;
     }
     
     /** {@inheritDoc} */
@@ -141,7 +148,7 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
         }
 
         log.debug("Found valid entry for artifact: {}", artifact);
-        return (SAMLArtifactMapEntry) record.getValue(getEntryFactory(), STORAGE_CONTEXT, artifact);
+        return (SAMLArtifactMapEntry) record.getValue((StorageSerializer) getEntryFactory(), STORAGE_CONTEXT, artifact);
     }
 
     /** {@inheritDoc} */
@@ -156,8 +163,8 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
                     new Object[] {artifact, relyingPartyId, getArtifactLifetime() / 1000});
         }
 
-        boolean success = getStorageService().create(STORAGE_CONTEXT, artifact, artifactEntry, getEntryFactory(),
-                System.currentTimeMillis() + getArtifactLifetime());
+        boolean success = getStorageService().create(STORAGE_CONTEXT, artifact, artifactEntry,
+                (StorageSerializer) getEntryFactory(), System.currentTimeMillis() + getArtifactLifetime());
         if (!success) {
             throw new IOException("A duplicate artifact was generated");
         }
