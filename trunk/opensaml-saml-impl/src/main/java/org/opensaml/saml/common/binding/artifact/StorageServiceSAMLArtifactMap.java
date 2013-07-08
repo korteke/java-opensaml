@@ -77,6 +77,8 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
         // We can't shorten the artifacts as lookup keys at the moment because
         // the key is used to recreate the original artifact value.
         artifactStoreKeySize = getStorageService().getCapabilities().getKeySize();
