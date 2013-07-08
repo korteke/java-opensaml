@@ -38,7 +38,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import org.opensaml.storage.AbstractStorageService;
 import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.StorageRecord;
-import org.opensaml.storage.StorageSerializer;
 import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
