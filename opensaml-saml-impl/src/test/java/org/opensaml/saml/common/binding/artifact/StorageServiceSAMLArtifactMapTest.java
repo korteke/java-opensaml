@@ -28,19 +28,19 @@ import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMap;
+import org.opensaml.saml.common.binding.artifact.StorageServiceSAMLArtifactMap;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.impl.MemoryStorageService;
 import org.w3c.dom.Document;
 
 /**
- * Test the basic SAML artifact map implementation.
+ * Test the storage-backed SAML artifact map implementation.
  */
-public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
+public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
     private StorageService storageService;
-    private BasicSAMLArtifactMap artifactMap;
+    private StorageServiceSAMLArtifactMap artifactMap;
 
     private String artifact = "the-artifact";
     private String issuerId = "urn:test:issuer";
@@ -62,7 +62,7 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         storageService = new MemoryStorageService();
         storageService.initialize();
 
-        artifactMap = new BasicSAMLArtifactMap();
+        artifactMap = new StorageServiceSAMLArtifactMap();
         artifactMap.setStorageService(storageService);
         artifactMap.setArtifactLifetime(lifetime);
         artifactMap.initialize();
@@ -110,7 +110,7 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     @Test
     public void testEntryExpiration() throws Exception {
         // lifetime of 1 second should do it
-        artifactMap = new BasicSAMLArtifactMap();
+        artifactMap = new StorageServiceSAMLArtifactMap();
         artifactMap.setStorageService(storageService);
         artifactMap.setArtifactLifetime(1000);
         artifactMap.initialize();
