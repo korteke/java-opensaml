@@ -66,6 +66,8 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
 
     /** Constructor. */
     public BasicSAMLArtifactMap() {
+        setId(getClass().getName());
+        artifactLifetime = 60000L;
         cleanupInterval = 300;
         entryFactory = new ExpiringSAMLArtifactMapEntryFactory();
     }
