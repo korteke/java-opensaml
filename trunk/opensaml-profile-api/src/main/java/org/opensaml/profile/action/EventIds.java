@@ -17,7 +17,7 @@
 
 package org.opensaml.profile.action;
 
-/** Constants to use for {@link org.springframework.webflow.execution.Event} IDs. */
+/** Constants to use for {@link ProfileAction} {@link org.opensaml.profile.context.EventContext}s. */
 public final class EventIds {
 
     /**
