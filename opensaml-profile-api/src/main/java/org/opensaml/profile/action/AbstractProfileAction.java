@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.log4j.Logger;
 import org.opensaml.profile.ProfileException;
+import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
@@ -58,6 +59,9 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     public void execute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
+        
+        // Clear any existing EventContext that might be hanging around.
+        profileRequestContext.removeSubcontext(EventContext.class);
         
         // The try/catch logic is designed to suppress a checked exception raised by
         // the doInvoke step by any unchecked errors in the doPostInvoke method.
