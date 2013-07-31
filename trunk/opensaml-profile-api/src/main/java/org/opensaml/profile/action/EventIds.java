@@ -21,6 +21,11 @@ package org.opensaml.profile.action;
 public final class EventIds {
 
     /**
+     * ID of event returned if an I/O-related error occurs.
+     */
+    public static final String IO_ERROR = "InputOutputError";
+    
+    /**
      * ID of event returned if the {@link ProfileRequestContext} associated with the current request is missing or
      * corrupt in some way.
      */
