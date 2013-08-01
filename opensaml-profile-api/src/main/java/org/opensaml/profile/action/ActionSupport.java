@@ -19,6 +19,7 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -49,11 +50,11 @@ public final class ActionSupport {
      * 
      */
     public static void buildEvent(@Nonnull final ProfileRequestContext profileRequestContext,
-            @Nonnull final String eventId) {
+            @Nonnull @NotEmpty final String eventId) {
         
         Constraint.isNotNull(profileRequestContext, "Profile request context cannot be null");
         final String trimmedEventId =
-                Constraint.isNotNull(StringSupport.trimOrNull(eventId), "ID of event cannot be null");
+                Constraint.isNotNull(StringSupport.trimOrNull(eventId), "ID of event cannot be null or empty");
         
         profileRequestContext.getSubcontext(EventContext.class, true).setEvent(trimmedEventId);
     }
