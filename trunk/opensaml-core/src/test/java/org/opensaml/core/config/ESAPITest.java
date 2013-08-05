@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.config;
+package org.opensaml.core.config;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.config.ESAPISecurityConfig;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.SecurityConfiguration;
