@@ -1,3 +1,2 @@
 org.opensaml.saml.config.XMLObjectProviderInitializer
 org.opensaml.saml.config.SAMLConfigurationInitializer
-org.opensaml.saml.config.ESAPIInitializer

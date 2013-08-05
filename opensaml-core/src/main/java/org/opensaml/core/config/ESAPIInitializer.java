@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.config;
+package org.opensaml.core.config;
 
-import org.opensaml.core.config.InitializationException;
-import org.opensaml.core.config.Initializer;
 import org.owasp.esapi.ESAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
