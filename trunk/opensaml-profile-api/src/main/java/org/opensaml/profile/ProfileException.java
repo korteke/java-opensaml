@@ -17,6 +17,8 @@
 
 package org.opensaml.profile;
 
+import javax.annotation.Nullable;
+
 /** Exception thrown if there is a problem with processing a profile action. */
 public class ProfileException extends Exception {
 
@@ -33,7 +35,7 @@ public class ProfileException extends Exception {
      * 
      * @param message exception message
      */
-    public ProfileException(String message) {
+    public ProfileException(@Nullable final String message) {
         super(message);
     }
 
@@ -42,7 +44,7 @@ public class ProfileException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public ProfileException(Exception wrappedException) {
+    public ProfileException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
 
@@ -52,7 +54,7 @@ public class ProfileException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public ProfileException(String message, Exception wrappedException) {
+    public ProfileException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
