@@ -465,7 +465,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             Document mdDocument = parser.parse(metadataInput);
 
             log.trace("Unmarshalling and caching metdata DOM");
-            Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(mdDocument.getDocumentElement());
+            Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(mdDocument.getDocumentElement());
             if (unmarshaller == null) {
                 String msg ="No unmarshaller registered for document element " + QNameSupport
                         .getNodeQName(mdDocument.getDocumentElement());
@@ -642,7 +642,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
             return false;
         }
 
-        if (!requireValidMetadata()) {
+        if (!isRequireValidMetadata()) {
             return true;
         }
 

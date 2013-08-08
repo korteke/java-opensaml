@@ -44,7 +44,7 @@ public interface MetadataProvider {
      * 
      * @return whether the metadata returned by queries must be valid
      */
-    public boolean requireValidMetadata();
+    public boolean isRequireValidMetadata();
 
     /**
      * Sets whether the metadata returned by queries must be valid.

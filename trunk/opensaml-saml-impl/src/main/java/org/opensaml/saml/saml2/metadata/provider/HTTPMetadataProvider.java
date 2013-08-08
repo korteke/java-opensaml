@@ -201,10 +201,10 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      * 
      * @return whether cached metadata should be discarded if it expires and can not be refreshed.
      * 
-     * @deprecated use {@link #requireValidMetadata()} instead
+     * @deprecated use {@link #isRequireValidMetadata()} instead
      */
     public boolean maintainExpiredMetadata() {
-        return !requireValidMetadata();
+        return !isRequireValidMetadata();
     }
 
     /**
