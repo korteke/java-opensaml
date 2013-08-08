@@ -17,6 +17,8 @@
 
 package org.opensaml.profile.action;
 
+// TODO: move the IdP-specific stuff out of this class
+
 /** Constants to use for {@link ProfileAction} {@link org.opensaml.profile.context.EventContext}s. */
 public final class EventIds {
 

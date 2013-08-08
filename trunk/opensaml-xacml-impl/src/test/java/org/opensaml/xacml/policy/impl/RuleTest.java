@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link link org.opensaml.xacml.policy.RuleType}.
+ * {@link org.opensaml.xacml.policy.RuleType}.
  */
 public class RuleTest extends XMLObjectProviderBaseTestCase {
     

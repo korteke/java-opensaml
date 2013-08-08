@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link link org.opensaml.xacml.policy.ResourcesType}.
+ * {@link org.opensaml.xacml.policy.ResourcesType}.
  */
 public class ResourcesTest extends XMLObjectProviderBaseTestCase {
     

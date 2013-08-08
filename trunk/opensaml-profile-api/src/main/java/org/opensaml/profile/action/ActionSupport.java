@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 
-/** Helper class for {@link org.springframework.webflow.execution.Action} operations. */
+/** Helper class for {@link org.opensaml.profile.action.ProfileAction} operations. */
 public final class ActionSupport {
 
     /** Constructor. */

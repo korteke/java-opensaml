@@ -38,7 +38,6 @@ public class ObligationServiceTest extends XMLObjectBaseTestCase {
 
     int count;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         count = 0;
