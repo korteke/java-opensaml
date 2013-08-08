@@ -24,7 +24,7 @@ import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link link org.opensaml.xacml.policy.SubjectsType}.
+ * {@link org.opensaml.xacml.policy.SubjectsType}.
  */
 public class SubjectsTest extends XMLObjectProviderBaseTestCase {
     

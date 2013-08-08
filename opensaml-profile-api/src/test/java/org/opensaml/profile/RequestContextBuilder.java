@@ -238,10 +238,9 @@ public class RequestContextBuilder {
      * <ul>
      * <li>inbound message context created by {@link #buildInboundMessageContext()}</li>
      * <li>outbound message context created by {@link #buildOutboundMessageContext()}</li>
-     * <li>{@link RelyingPartyContext} created by {@link #buildRelyingPartyContext()}</li>
      * </ul>
      * 
-     * @return the constructed {@link ProfileRequestContext
+     * @return the constructed {@link ProfileRequestContext}
 
      */
     @Nonnull public ProfileRequestContext buildProfileRequestContext() {
@@ -334,7 +333,7 @@ public class RequestContextBuilder {
      * The default implementation builds a {@link MessageContext} that contains:
      * <ul>
      * <li>the message provided by {@link #setOutboundMessage(Object)}</li>
-     * <li>a {@link BasicMessageMetadataContext} created by {@link #buildOutboudMessageMetadataContext(MessageContext)}</li>
+     * <li>a {@link BasicMessageMetadataContext} created by {@link #buildOutboudMessageMetadataContext()}</li>
      * </ul>
      * 
      * @return the constructed {@link MessageContext}
@@ -342,7 +341,7 @@ public class RequestContextBuilder {
     @Nonnull protected MessageContext buildOutboundMessageContext() {
         final MessageContext context = new MessageContext();
         context.setMessage(outboundMessage);
-        buildInboudMessageMetadataContext(context);
+        buildOutboundMessageMetadataContext(context);
         return context;
 
     }

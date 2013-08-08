@@ -24,7 +24,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link link org.opensaml.xacml.ctx.AttributeType}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.xacml.ctx.AttributeType}.
  */
 public class AttributeTest extends XMLObjectProviderBaseTestCase {
 

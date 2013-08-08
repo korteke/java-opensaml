@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link link org.opensaml.xacml.policy.ObligationsType}.
+ * {@link org.opensaml.xacml.policy.ObligationsType}.
  */
 public class ObligationsTest extends XMLObjectProviderBaseTestCase {
     

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link link org.opensaml.xacml.policy.ActionMatchType}.
+ * {@link org.opensaml.xacml.policy.ActionMatchType}.
  */
 public class ActionMatchTest extends XMLObjectProviderBaseTestCase {
     

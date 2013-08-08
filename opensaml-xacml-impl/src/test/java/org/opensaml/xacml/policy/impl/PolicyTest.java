@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link link org.opensaml.xacml.policy.PolicyType}.
+ * {@link org.opensaml.xacml.policy.PolicyType}.
  */
 public class PolicyTest extends XMLObjectProviderBaseTestCase {
     
