@@ -26,7 +26,7 @@ import org.opensaml.core.xml.io.UnmarshallerFactory;
 public abstract class BaseMetadataProvider implements MetadataProvider {
 
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
-    protected UnmarshallerFactory unmarshallerFactory;
+    private UnmarshallerFactory unmarshallerFactory;
 
     /** Whether metadata is required to be valid. */
     private boolean requireValidMetadata;
@@ -39,9 +39,9 @@ public abstract class BaseMetadataProvider implements MetadataProvider {
         requireValidMetadata = false;
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
     }
-
+    
     /** {@inheritDoc} */
-    public boolean requireValidMetadata() {
+    public boolean isRequireValidMetadata() {
         return requireValidMetadata;
     }
 
@@ -64,4 +64,14 @@ public abstract class BaseMetadataProvider implements MetadataProvider {
     public synchronized void destroy(){
 
     }
+    
+    /**
+     * Get the XMLObject unmarshaller factory to use. 
+     * 
+     * @return the unmarshaller factory instance to use
+     */
+    protected UnmarshallerFactory getUnmarshallerFactory() {
+        return unmarshallerFactory;
+    }
+
 }

@@ -68,7 +68,7 @@ public class DOMMetadataProvider extends AbstractObservableMetadataProvider impl
     /** {@inheritDoc} */
     protected void doInitialization() throws MetadataProviderException {
         try {
-            Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(metadataElement);
+            Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(metadataElement);
             XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
             filterMetadata(metadataTemp);
             releaseMetadataDOM(metadataTemp);
