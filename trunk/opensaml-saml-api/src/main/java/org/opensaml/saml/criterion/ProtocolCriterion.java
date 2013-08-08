@@ -33,8 +33,8 @@ public final class ProtocolCriterion implements Criterion {
      * @param protocolUri the SAML protocol, never null or empty
      */
     public ProtocolCriterion(final String protocolUri) {
-        protocol =
-                Constraint.isNotNull(StringSupport.trimOrNull(protocolUri), "SAML protocol URI can not be null or empty");
+        protocol = Constraint.isNotNull(StringSupport.trimOrNull(protocolUri), 
+                "SAML protocol URI can not be null or empty");
     }
 
     /**
