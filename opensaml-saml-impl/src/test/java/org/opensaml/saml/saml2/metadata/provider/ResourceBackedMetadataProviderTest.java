@@ -17,22 +17,20 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.FilesystemResource;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.saml.saml2.metadata.provider.ResourceBackedMetadataProvider;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /** Unit test for {@link ResourceBackedMetadataProvider}. */
 public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
@@ -41,13 +39,12 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private String entityID;
 
-    private String supportedProtocol;
+    private CriteriaSet criteriaSet;
 
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";
-        supportedProtocol = "urn:oasis:names:tc:SAML:1.1:protocol";
 
         URL mdURL = ResourceBackedMetadataProviderTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
@@ -58,35 +55,18 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMaxRefreshDelay(500000);
         metadataProvider.initialize();
+        
+        criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
     /**
      * Tests the {@link ResourceBackedMetadataProvider#getEntityDescriptor(String)} method.
      */
     @Test
-    public void testGetEntityDescriptor() throws MetadataProviderException {
-        EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
+    public void testGetEntityDescriptor() throws ResolverException {
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
-
-    /**
-     * Tests the {@link ResourceBackedMetadataProvider#getRole(String, javax.xml.namespace.QName)} method.
-     */
-    @Test
-    public void testGetRole() throws MetadataProviderException {
-        List<RoleDescriptor> roles = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        Assert.assertNotNull(roles, "Roles for entity descriptor was null");
-        Assert.assertEquals(roles.size(), 1, "Unexpected number of roles");
-    }
-
-    /**
-     * Test the {@link ResourceBackedMetadataProvider#getRole(String, javax.xml.namespace.QName, String)} method.
-     */
-    @Test
-    public void testGetRoleWithSupportedProtocol() throws MetadataProviderException {
-        RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                supportedProtocol);
-        Assert.assertNotNull(role, "Roles for entity descriptor was null");
-    }
+    
 }

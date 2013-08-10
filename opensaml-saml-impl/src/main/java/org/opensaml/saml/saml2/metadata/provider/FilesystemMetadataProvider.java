@@ -22,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.slf4j.Logger;
@@ -55,9 +57,9 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
      * 
      * @param metadata the metadata file
      * 
-     * @throws MetadataProviderException  this exception is no longer thrown
+     * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataProvider(File metadata) throws MetadataProviderException {
+    public FilesystemMetadataProvider(File metadata) throws ResolverException {
         super();
         setMetadataFile(metadata);
     }
@@ -68,9 +70,9 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
      * @param metadata the metadata file
      * @param backgroundTaskTimer timer used to refresh metadata in the background
      * 
-     * @throws MetadataProviderException  this exception is no longer thrown
+     * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataProvider(Timer backgroundTaskTimer, File metadata) throws MetadataProviderException {
+    public FilesystemMetadataProvider(Timer backgroundTaskTimer, File metadata) throws ResolverException {
         super(backgroundTaskTimer);
         setMetadataFile(metadata);
     }
@@ -80,9 +82,9 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
      * 
      * @param file path to the metadata file
      * 
-     * @throws MetadataProviderException this exception is no longer thrown
+     * @throws ResolverException this exception is no longer thrown
      */
-    protected void setMetadataFile(File file) throws MetadataProviderException {
+    protected void setMetadataFile(File file) throws ResolverException {
         metadataFile = file;
     }
 
@@ -121,7 +123,7 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
     }
 
     /** {@inheritDoc} */
-    protected byte[] fetchMetadata() throws MetadataProviderException {
+    protected byte[] fetchMetadata() throws ResolverException {
         try {
             validateMetadataFile(metadataFile);
             DateTime metadataUpdateTime = new DateTime(metadataFile.lastModified(), ISOChronology.getInstanceUTC());
@@ -133,7 +135,7 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
         } catch (IOException e) {
             String errMsg = "Unable to read metadata file " + metadataFile.getAbsolutePath();
             log.error(errMsg, e);
-            throw new MetadataProviderException(errMsg, e);
+            throw new ResolverException(errMsg, e);
         }
     }
     
@@ -142,19 +144,19 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
      * that it is a file; and that it is readable.
      *
      * @param file the file to evaluate
-     * @throws MetadataProviderException if file does not pass basic properties required of a metadata file
+     * @throws ResolverException if file does not pass basic properties required of a metadata file
      */
-    protected void validateMetadataFile(File file) throws MetadataProviderException {
+    protected void validateMetadataFile(File file) throws ResolverException {
         if (!file.exists()) {
-            throw new MetadataProviderException("Metadata file '" + file.getAbsolutePath() + "' does not exist");
+            throw new ResolverException("Metadata file '" + file.getAbsolutePath() + "' does not exist");
         }
 
         if (!file.isFile()) {
-            throw new MetadataProviderException("Metadata file '" + file.getAbsolutePath() + "' is not a file");
+            throw new ResolverException("Metadata file '" + file.getAbsolutePath() + "' is not a file");
         }
 
         if (!file.canRead()) {
-            throw new MetadataProviderException("Metadata file '" + file.getAbsolutePath() + "' is not readable");
+            throw new ResolverException("Metadata file '" + file.getAbsolutePath() + "' is not readable");
         }
     }
 

@@ -25,6 +25,8 @@ import java.util.Timer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -77,16 +79,16 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      * @param metadataURL the URL to fetch the metadata
      * @param requestTimeout the time, in milliseconds, to wait for the metadata server to respond
      * 
-     * @throws MetadataProviderException thrown if the URL is not a valid URL or the metadata can not be retrieved from
+     * @throws ResolverException thrown if the URL is not a valid URL or the metadata can not be retrieved from
      *             the URL
      */
     @Deprecated
-    public HTTPMetadataProvider(String metadataURL, int requestTimeout) throws MetadataProviderException {
+    public HTTPMetadataProvider(String metadataURL, int requestTimeout) throws ResolverException {
         super();
         try {
             metadataURI = new URI(metadataURL);
         } catch (URISyntaxException e) {
-            throw new MetadataProviderException("Illegal URL syntax", e);
+            throw new ResolverException("Illegal URL syntax", e);
         }
 
         HttpClientParams clientParams = new HttpClientParams();
@@ -104,21 +106,21 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      * @param backgroundTaskTimer timer used to schedule background metadata refresh tasks
      * @param metadataURL URL to the remove remote metadata
      * 
-     * @throws MetadataProviderException thrown if the HTTP client is null or the metadata URL provided is invalid
+     * @throws ResolverException thrown if the HTTP client is null or the metadata URL provided is invalid
      */
     public HTTPMetadataProvider(Timer backgroundTaskTimer, HttpClient client, String metadataURL)
-            throws MetadataProviderException {
+            throws ResolverException {
         super(backgroundTaskTimer);
 
         if (client == null) {
-            throw new MetadataProviderException("HTTP client may not be null");
+            throw new ResolverException("HTTP client may not be null");
         }
         httpClient = client;
 
         try {
             metadataURI = new URI(metadataURL);
         } catch (URISyntaxException e) {
-            throw new MetadataProviderException("Illegal URL syntax", e);
+            throw new ResolverException("Illegal URL syntax", e);
         }
 
         authScope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
@@ -240,9 +242,9 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      * @return the metadata from remote server, or null if the metadata document has not changed since the last
      *         retrieval
      * 
-     * @throws MetadataProviderException thrown if there is a problem retrieving the metadata from the remote server
+     * @throws ResolverException thrown if there is a problem retrieving the metadata from the remote server
      */
-    protected byte[] fetchMetadata() throws MetadataProviderException {
+    protected byte[] fetchMetadata() throws ResolverException {
         GetMethod getMethod = buildGetMethod();
 
         try {
@@ -259,7 +261,7 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
                 String errMsg = "Non-ok status code " + getMethod.getStatusCode()
                         + " returned from remote metadata source " + metadataURI;
                 log.error(errMsg);
-                throw new MetadataProviderException(errMsg);
+                throw new ResolverException(errMsg);
             }
 
             processConditionalRetrievalHeaders(getMethod);
@@ -271,7 +273,7 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
         } catch (IOException e) {
             String errMsg = "Error retrieving metadata from " + metadataURI;
             log.error(errMsg, e);
-            throw new MetadataProviderException(errMsg, e);
+            throw new ResolverException(errMsg, e);
         } finally {
             getMethod.releaseConnection();
         }
@@ -328,9 +330,9 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      * 
      * @return the raw metadata bytes
      * 
-     * @throws MetadataProviderException thrown if there is a problem getting the raw metadata bytes from the response
+     * @throws ResolverException thrown if there is a problem getting the raw metadata bytes from the response
      */
-    protected byte[] getMetadataBytesFromResponse(GetMethod getMethod) throws MetadataProviderException {
+    protected byte[] getMetadataBytesFromResponse(GetMethod getMethod) throws ResolverException {
         log.debug("Attempting to extract metadata from response to request for metadata from '{}'", getMetadataURI());
         try {
             InputStream ins = getMethod.getResponseBodyAsStream();
@@ -352,7 +354,7 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
             return inputstreamToByteArray(ins);
         } catch (IOException e) {
             log.error("Unable to read response", e);
-            throw new MetadataProviderException("Unable to read response", e);
+            throw new ResolverException("Unable to read response", e);
         }
     }
 }

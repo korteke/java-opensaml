@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.metadata.provider;
 
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.resource.ResourceException;
 
@@ -50,21 +51,21 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
      * @param maxMetadataCacheDuration maximum amount of time, in milliseconds, that metadata may be cached before being
      *            re-read
      * 
-     * @throws MetadataProviderException thrown if there is a problem retrieving information about the resource 
+     * @throws ResolverException thrown if there is a problem retrieving information about the resource 
      * 
      * @deprecated
      */
     public ResourceBackedMetadataProvider(Resource resource, Timer timer, long maxMetadataCacheDuration)
-            throws MetadataProviderException {
+            throws ResolverException {
         super(timer);
 
         try {
             if (!resource.exists()) {
-                throw new MetadataProviderException("Resource " + resource.getLocation() + " does not exist.");
+                throw new ResolverException("Resource " + resource.getLocation() + " does not exist.");
             }
             metadataResource = resource;
         } catch (ResourceException e) {
-            throw new MetadataProviderException("Unable to read resource", e);
+            throw new ResolverException("Unable to read resource", e);
         }
     }
 
@@ -74,18 +75,18 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
      * @param resource resource from which to read the metadata file.
      * @param timer task timer used to schedule metadata refresh tasks
      * 
-     * @throws MetadataProviderException thrown if there is a problem retrieving information about the resource
+     * @throws ResolverException thrown if there is a problem retrieving information about the resource
      */
-    public ResourceBackedMetadataProvider(Timer timer, Resource resource) throws MetadataProviderException {
+    public ResourceBackedMetadataProvider(Timer timer, Resource resource) throws ResolverException {
         super(timer);
 
         try {
             if (!resource.exists()) {
-                throw new MetadataProviderException("Resource " + resource.getLocation() + " does not exist.");
+                throw new ResolverException("Resource " + resource.getLocation() + " does not exist.");
             }
             metadataResource = resource;
         } catch (ResourceException e) {
-            throw new MetadataProviderException("Unable to read resource", e);
+            throw new ResolverException("Unable to read resource", e);
         }
     }
     
@@ -125,7 +126,7 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
     }
 
     /** {@inheritDoc} */
-    protected byte[] fetchMetadata() throws MetadataProviderException {
+    protected byte[] fetchMetadata() throws ResolverException {
         try {
             DateTime metadataUpdateTime = new DateTime(metadataResource.getLastModifiedTime());
             log.debug("resource {} was last modified {}", metadataResource.getLocation(), metadataUpdateTime);
@@ -137,7 +138,7 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
         } catch (ResourceException e) {
             String errorMsg = "Unable to read metadata file";
             log.error(errorMsg, e);
-            throw new MetadataProviderException(errorMsg, e);
+            throw new ResolverException(errorMsg, e);
         }
     }
 }

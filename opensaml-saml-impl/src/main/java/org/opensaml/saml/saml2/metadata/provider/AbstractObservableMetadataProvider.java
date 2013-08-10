@@ -25,8 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * An observable base implementation of metadata providers. An observer that clears the descriptor index kept by
  * {@link AbstractMetadataProvider} is registered during construction time.
  */
-public abstract class AbstractObservableMetadataProvider extends AbstractMetadataProvider implements
-        ObservableMetadataProvider {
+public abstract class AbstractObservableMetadataProvider implements ObservableMetadataProvider {
 
     /** List of registered observers. */
     private List<Observer> observers;
@@ -47,7 +46,7 @@ public abstract class AbstractObservableMetadataProvider extends AbstractMetadat
     public synchronized void destroy() {
         observers = Collections.emptyList();
 
-        super.destroy();
+        //super.destroy();
     }    
 
     /**

@@ -18,6 +18,7 @@
 package org.opensaml.saml.security;
 
 import org.opensaml.core.xml.util.AbstractWrappedSingletonFactory;
+import org.opensaml.saml.metadata.MetadataResolver;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 
 /**
@@ -30,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
  * </p>
  */
 public class MetadataCredentialResolverFactory 
-    extends AbstractWrappedSingletonFactory<MetadataProvider, MetadataCredentialResolver> {
+    extends AbstractWrappedSingletonFactory<MetadataResolver, MetadataCredentialResolver> {
     
     /** The global instance of the factory itself. */
     private static MetadataCredentialResolverFactory factory;
@@ -59,8 +60,8 @@ public class MetadataCredentialResolverFactory
     }
 
     /** {@inheritDoc} */
-    protected MetadataCredentialResolver createNewInstance(MetadataProvider metadataProvider) {
-        return new MetadataCredentialResolver(metadataProvider);
+    protected MetadataCredentialResolver createNewInstance(MetadataResolver metadataResolver) {
+        return new MetadataCredentialResolver(metadataResolver);
     }
     
 }

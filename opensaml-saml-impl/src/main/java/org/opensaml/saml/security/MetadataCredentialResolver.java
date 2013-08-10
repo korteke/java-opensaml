@@ -17,16 +17,10 @@
 
 package org.opensaml.saml.security;
 
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
@@ -35,11 +29,15 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.criterion.EntityIdCriterion;
+import org.opensaml.saml.criterion.EntityRoleCriterion;
+import org.opensaml.saml.criterion.ProtocolCriterion;
+import org.opensaml.saml.metadata.MetadataResolver;
+import org.opensaml.saml.metadata.RoleDescriptorResolver;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.saml.saml2.metadata.provider.ObservableMetadataProvider;
+import org.opensaml.saml.saml2.metadata.provider.BasicRoleDescriptorResolver;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.MutableCredential;
 import org.opensaml.security.credential.UsageType;
@@ -55,7 +53,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 /**
- * A credential resolver capable of resolving credentials from SAML 2 metadata;
+ * A credential resolver capable of resolving credentials from SAML 2 metadata.
  * 
  * The instance of {@link CriteriaSet} passed to {@link #resolve(CriteriaSet)} and {@link #resolveSingle(CriteriaSet)}
  * must minimally contain 2 criteria: {@link EntityIDCriterion} and {@link MetadataCriterion}. The values for
@@ -65,61 +63,55 @@ import com.google.common.base.Strings;
  * absent from the criteria set, the effective value {@link UsageType#UNSPECIFIED} will be used for credential
  * resolution.
  * 
- * This credential resolver will cache the resolved the credentials in a memory-sensitive cache. If the metadata
- * provider is an {@link ObservableMetadataProvider} this resolver will also clear its cache when the underlying
- * metadata changes.
  */
 public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(MetadataCredentialResolver.class);
 
-    /** Metadata provider from which to fetch the credentials. */
-    private MetadataProvider metadata;
-
-    /** Cache of resolved credentials. [MetadataCacheKey, Credentials] */
-    private Map<MetadataCacheKey, SoftReference<Collection<Credential>>> cache;
+    /** Metadata EntityDescriptor resolver which is the source of credentials. */
+    private MetadataResolver entityDescriptorResolver;
+    
+    /** Metadata RoleDescriptor resolver which is the source of credentials. */
+    private RoleDescriptorResolver roleDescriptorResolver;
 
     /** Credential resolver used to resolve credentials from role descriptor KeyInfo elements. */
     private KeyInfoCredentialResolver keyInfoCredentialResolver;
-    
-    /** Lock used to synchronize access to the credential cache. */
-    private ReadWriteLock rwlock;
 
     /**
      * Constructor.
      * 
-     * @param metadataProvider provider of the metadata
+     * @param resolver resolver of metadata EntityDescriptors
      */
-    public MetadataCredentialResolver(@Nonnull final MetadataProvider metadataProvider) {
+    public MetadataCredentialResolver(@Nonnull final MetadataResolver resolver) {
         super();
-        metadata = Constraint.isNotNull(metadataProvider, "Metadata provider cannot be null");
-
-        cache = new HashMap<MetadataCacheKey, SoftReference<Collection<Credential>>>();
+        entityDescriptorResolver = Constraint.isNotNull(resolver, "Metadata resolver cannot be null");
+        roleDescriptorResolver = new BasicRoleDescriptorResolver(entityDescriptorResolver);
 
         keyInfoCredentialResolver = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration()
                 .getDefaultKeyInfoCredentialResolver();
-        
-        rwlock = new ReentrantReadWriteLock();
-
-        if (metadata instanceof ObservableMetadataProvider) {
-            ObservableMetadataProvider observable = (ObservableMetadataProvider) metadataProvider;
-            observable.getObservers().add(new MetadataProviderObserver());
-        }
-
     }
 
     /**
-     * Get the metadata provider instance used by this resolver.
+     * Get the metadata EntityDescriptor resolver instance used by this resolver.
      *
-     * @return the resolver's metadata provider instance
+     * @return the resolver's EntityDescriptor metadata resolver instance
      */
-    public MetadataProvider getMetadataProvider() {
-        return metadata;
+    public MetadataResolver getMetadataResolver() {
+        return entityDescriptorResolver;
     }
     
     /**
-     * Get the KeyInfo credential resolver used by this metadata resolver to handle KeyInfo elements.
+     * Get the metadata RoleDescriptor resolver instance used by this resolver.
+     *
+     * @return the resolver's RoleDescriptor metadata resolver instance
+     */
+    public RoleDescriptorResolver getRoleDescriptorResolver() {
+        return roleDescriptorResolver;
+    }
+    
+    /**
+     * Get the KeyInfo credential resolver used by this entityDescriptorResolver resolver to handle KeyInfo elements.
      * 
      * @return KeyInfo credential resolver
      */
@@ -128,21 +120,12 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /**
-     * Set the KeyInfo credential resolver used by this metadata resolver to handle KeyInfo elements.
+     * Set the KeyInfo credential resolver used by this entityDescriptorResolver resolver to handle KeyInfo elements.
      * 
      * @param keyInfoResolver the new KeyInfoCredentialResolver to use
      */
     public void setKeyInfoCredentialResolver(KeyInfoCredentialResolver keyInfoResolver) {
         keyInfoCredentialResolver = keyInfoResolver;
-    }
-    
-    /**
-     * Get the lock instance used to synchronize access to the credential cache.
-     * 
-     * @return a read-write lock instance
-     */
-    protected ReadWriteLock getReadWriteLock() {
-        return rwlock;
     }
 
     /** {@inheritDoc} */
@@ -161,22 +144,8 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         } else {
             usage = UsageType.UNSPECIFIED;
         }
-        
-        // See Jira issue SIDP-229.
-        log.debug("Forcing on-demand metadata provider refresh if necessary");
-        try {
-            metadata.getMetadata();
-        } catch (MetadataProviderException e) {
-            // don't care about errors at this level
-        }
 
-        MetadataCacheKey cacheKey = new MetadataCacheKey(entityID, role, protocol, usage);
-        Collection<Credential> credentials = retrieveFromCache(cacheKey);
-
-        if (credentials == null) {
-            credentials = retrieveFromMetadata(entityID, role, protocol, usage);
-            cacheCredentials(cacheKey, credentials);
-        }
+        Collection<Credential> credentials = retrieveFromMetadata(entityID, role, protocol, usage);
 
         return credentials;
     }
@@ -193,47 +162,18 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             throw new IllegalArgumentException("Entity criteria must be supplied");
         }
         if (mdCriteria == null) {
-            throw new IllegalArgumentException("SAML metadata criteria must be supplied");
+            throw new IllegalArgumentException("SAML entityDescriptorResolver criteria must be supplied");
         }
         if (Strings.isNullOrEmpty(entityCriteria.getEntityID())) {
             throw new IllegalArgumentException("Credential owner entity ID criteria value must be supplied");
         }
         if (mdCriteria.getRole() == null) {
-            throw new IllegalArgumentException("Credential metadata role criteria value must be supplied");
+            throw new IllegalArgumentException("Credential entityDescriptorResolver role criteria value must be supplied");
         }
     }
 
     /**
-     * Retrieves pre-resolved credentials from the cache.
-     * 
-     * @param cacheKey the key to the metadata cache
-     * 
-     * @return the collection of cached credentials or null
-     */
-    protected Collection<Credential> retrieveFromCache(MetadataCacheKey cacheKey) {
-        log.debug("Attempting to retrieve credentials from cache using index: {}", cacheKey);
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        log.trace("Read lock over cache acquired");
-        try {
-            if (cache.containsKey(cacheKey)) {
-                SoftReference<Collection<Credential>> reference = cache.get(cacheKey);
-                if (reference.get() != null) {
-                    log.debug("Retrieved credentials from cache using index: {}", cacheKey);
-                    return reference.get();
-                }
-            }
-        } finally {
-            readLock.unlock();
-            log.trace("Read lock over cache released");
-        }
-
-        log.debug("Unable to retrieve credentials from cache using index: {}", cacheKey);
-        return null;
-    }
-
-    /**
-     * Retrieves credentials from the provided metadata.
+     * Retrieves credentials from the provided entityDescriptorResolver.
      * 
      * @param entityID entityID of the credential owner
      * @param role role in which the entity is operating
@@ -248,19 +188,17 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     protected Collection<Credential> retrieveFromMetadata(String entityID, QName role, String protocol, UsageType usage)
             throws ResolverException {
 
-        log.debug("Attempting to retrieve credentials from metadata for entity: {}", entityID);
+        log.debug("Attempting to retrieve credentials from entityDescriptorResolver for entity: {}", entityID);
         Collection<Credential> credentials = new HashSet<Credential>(3);
 
-        List<RoleDescriptor> roleDescriptors = getRoleDescriptors(entityID, role, protocol);
-        if(roleDescriptors == null || roleDescriptors.isEmpty()){
-            return credentials;
-        }
+        Iterable<RoleDescriptor> roleDescriptors = getRoleDescriptors(entityID, role, protocol);
+        
+        // TODO call retrieve- and storeCachedCredentials on the KeyInfo objects here appropriately,
+        // to check for and retrieve existing cached creds,
+        // or store the ones resolved from processing the metadata document.
             
         for (RoleDescriptor roleDescriptor : roleDescriptors) {
             List<KeyDescriptor> keyDescriptors = roleDescriptor.getKeyDescriptors();
-            if(keyDescriptors == null || keyDescriptors.isEmpty()){
-                return credentials;
-            }            
             for (KeyDescriptor keyDescriptor : keyDescriptors) {
                 UsageType mdUsage = keyDescriptor.getUse();
                 if (mdUsage == null) {
@@ -294,9 +232,9 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /**
-     * Match usage enum type values from metadata KeyDescriptor and from credential criteria.
+     * Match usage enum type values from entityDescriptorResolver KeyDescriptor and from credential criteria.
      * 
-     * @param metadataUsage the value from the 'use' attribute of a metadata KeyDescriptor element
+     * @param metadataUsage the value from the 'use' attribute of a entityDescriptorResolver KeyDescriptor element
      * @param criteriaUsage the value from credential criteria
      * @return true if the two usage specifiers match for purposes of resolving credentials, false otherwise
      */
@@ -308,26 +246,32 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /**
-     * Get the list of metadata role descriptors which match the given entityID, role and protocol.
+     * Get the list of entityDescriptorResolver role descriptors which match the given entityID, role and protocol.
      * 
      * @param entityID entity ID of the credential owner
      * @param role role in which the entity is operating
      * @param protocol protocol over which the entity is operating (may be null)
      * @return a list of role descriptors matching the given parameters, or null
-     * @throws ResolverException thrown if there is an error retrieving role descriptors from the metadata provider
+     * @throws ResolverException thrown if there is an error retrieving role descriptors 
+     *          from the entityDescriptorResolver provider
      */
-    protected List<RoleDescriptor> getRoleDescriptors(String entityID, QName role, String protocol)
+    protected Iterable<RoleDescriptor> getRoleDescriptors(String entityID, QName role, String protocol)
             throws ResolverException {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Retrieving metadata for entity '{}' in role '{}' for protocol '{}'", 
+                log.debug("Retrieving entityDescriptorResolver for entity '{}' in role '{}' for protocol '{}'", 
                         new Object[] {entityID, role, protocol});
             }
 
             if (Strings.isNullOrEmpty(protocol)) {
-                return metadata.getRole(entityID, role);
+                return getRoleDescriptorResolver().resolve(new CriteriaSet(
+                        new EntityIdCriterion(entityID),
+                        new EntityRoleCriterion(role)));
             } else {
-                RoleDescriptor roleDescriptor = metadata.getRole(entityID, role, protocol);
+                RoleDescriptor roleDescriptor = getRoleDescriptorResolver().resolveSingle(new CriteriaSet(
+                        new EntityIdCriterion(entityID),
+                        new EntityRoleCriterion(role),
+                        new ProtocolCriterion(protocol)));
                 if (roleDescriptor == null) {
                     return null;
                 }
@@ -335,132 +279,32 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                 roles.add(roleDescriptor);
                 return roles;
             }
-        } catch (MetadataProviderException e) {
-            log.error("Unable to read metadata from provider", e);
-            throw new ResolverException("Unable to read metadata provider", e);
+        } catch (ResolverException e) {
+            log.error("Unable to resolve information from metadata", e);
+            throw new ResolverException("Unable to resolve unformation from metadata", e);
         }
+    }
+    
+    /**
+     * Retrieves pre-resolved credentials from the cache.
+     * 
+     * @param xmlObject the XML object from which to retrieve the cached credentials
+     * 
+     * @return the collection of cached credentials or null
+     */
+    protected Collection<Credential> retrieveCachedCredentials(XMLObject xmlObject) {
+        // TODO
+        return null;
     }
 
     /**
      * Adds resolved credentials to the cache.
      * 
-     * @param cacheKey the key for caching the credentials
+     * @param xmlObject the XML object on which to cache the credentials
      * @param credentials collection of credentials to cache
      */
-    protected void cacheCredentials(MetadataCacheKey cacheKey, Collection<Credential> credentials) {
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        log.trace("Write lock over cache acquired");
-        try {
-            cache.put(cacheKey, new SoftReference<Collection<Credential>>(credentials));
-            log.debug("Added new credential collection to cache with key: {}", cacheKey);
-        } finally {
-            writeLock.unlock();
-            log.trace("Write lock over cache released"); 
-        }
+    protected void storeCachedCredentials(XMLObject xmlObject, Collection<Credential> credentials) {
+        // TODO 
     }
 
-    /**
-     * A class which serves as the key into the cache of credentials previously resolved.
-     */
-    protected class MetadataCacheKey {
-
-        /** Entity ID of credential owner. */
-        private String id;
-
-        /** Role in which the entity is operating. */
-        private QName role;
-
-        /** Protocol over which the entity is operating (may be null). */
-        private String protocol;
-
-        /** Intended usage of the resolved credentials. */
-        private UsageType usage;
-
-        /**
-         * Constructor.
-         * 
-         * @param entityID entity ID of the credential owner
-         * @param entityRole role in which the entity is operating
-         * @param entityProtocol protocol over which the entity is operating (may be null)
-         * @param entityUsage usage of the resolved credentials
-         */
-        protected MetadataCacheKey(String entityID, QName entityRole, String entityProtocol, UsageType entityUsage) {
-            if (entityID == null) {
-                throw new IllegalArgumentException("Entity ID may not be null");
-            }
-            if (entityRole == null) {
-                throw new IllegalArgumentException("Entity role may not be null");
-            }
-            if (entityUsage == null) {
-                throw new IllegalArgumentException("Credential usage may not be null");
-            }
-            id = entityID;
-            role = entityRole;
-            protocol = entityProtocol;
-            usage = entityUsage;
-        }
-
-        /** {@inheritDoc} */
-        public boolean equals(Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            if (!(obj instanceof MetadataCacheKey)) {
-                return false;
-            }
-            MetadataCacheKey other = (MetadataCacheKey) obj;
-            if (!this.id.equals(other.id) || !this.role.equals(other.role) || this.usage != other.usage) {
-                return false;
-            }
-            if (this.protocol == null) {
-                if (other.protocol != null) {
-                    return false;
-                }
-            } else {
-                if (!this.protocol.equals(other.protocol)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /** {@inheritDoc} */
-        public int hashCode() {
-            int result = 17;
-            result = 37 * result + id.hashCode();
-            result = 37 * result + role.hashCode();
-            if (protocol != null) {
-                result = 37 * result + protocol.hashCode();
-            }
-            result = 37 * result + usage.hashCode();
-            return result;
-        }
-
-        /** {@inheritDoc} */
-        public String toString() {
-            return String.format("[%s,%s,%s,%s]", id, role, protocol, usage);
-        }
-
-    }
-
-    /**
-     * An observer that clears the credential cache if the underlying metadata changes.
-     */
-    protected class MetadataProviderObserver implements ObservableMetadataProvider.Observer {
-
-        /** {@inheritDoc} */
-        public void onEvent(MetadataProvider provider) {
-            Lock writeLock = getReadWriteLock().writeLock();
-            writeLock.lock();
-            log.trace("Write lock over cache acquired");
-            try {
-                cache.clear();
-                log.debug("Credential cache cleared");
-            } finally {
-                writeLock.unlock();
-                log.trace("Write lock over cache released"); 
-            }
-        }
-    }
 }

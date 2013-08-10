@@ -17,21 +17,19 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.HTTPMetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
@@ -43,13 +41,12 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private String entityID;
 
-    private String supportedProtocol;
+    private CriteriaSet criteriaSet;
 
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";
-        supportedProtocol = "urn:oasis:names:tc:SAML:1.1:protocol";
 
         URL mdURL = FilesystemMetadataProviderTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
@@ -58,45 +55,28 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
         metadataProvider = new FilesystemMetadataProvider(mdFile);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
+        
+        criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
     /**
      * Tests the {@link HTTPMetadataProvider#getEntityDescriptor(String)} method.
+     * @throws ResolverException 
      */
     @Test
-    public void testGetEntityDescriptor() throws MetadataProviderException {
-        EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
+    public void testGetEntityDescriptor() throws ResolverException {
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
-    }
-
-    /**
-     * Tests the {@link HTTPMetadataProvider#getRole(String, javax.xml.namespace.QName)} method.
-     */
-    @Test
-    public void testGetRole() throws MetadataProviderException {
-        List<RoleDescriptor> roles = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        Assert.assertNotNull(roles, "Roles for entity descriptor was null");
-        Assert.assertEquals(roles.size(), 1, "Unexpected number of roles");
-    }
-
-    /**
-     * Test the {@link HTTPMetadataProvider#getRole(String, javax.xml.namespace.QName, String)} method.
-     */
-    @Test
-    public void testGetRoleWithSupportedProtocol() throws MetadataProviderException {
-        RoleDescriptor role = metadataProvider.getRole(entityID, IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                supportedProtocol);
-        Assert.assertNotNull(role, "Roles for entity descriptor was null");
     }
     
     /**
      * Tests failure mode of an invalid metadata file that does not exist.
      * 
-     * @throws MetadataProviderException 
+     * @throws ResolverException
      */
-    @Test(expectedExceptions = {MetadataProviderException.class})
-    public void testNonexistentMetadataFile() throws MetadataProviderException {
+    @Test(expectedExceptions = {ResolverException.class})
+    public void testNonexistentMetadataFile() throws ResolverException {
         metadataProvider = new FilesystemMetadataProvider(new File("I-Dont-Exist.xml"));
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
@@ -106,10 +86,10 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
      * Tests failure mode of an invalid metadata file that is actually a directory.
      * 
      * @throws IOException 
-     * @throws MetadataProviderException 
+     * @throws ResolverException
      */
-    @Test(expectedExceptions = {MetadataProviderException.class})
-    public void testInvalidMetadataFile() throws IOException, MetadataProviderException {
+    @Test(expectedExceptions = {ResolverException.class})
+    public void testInvalidMetadataFile() throws IOException, ResolverException {
         File targetFile = new File(System.getProperty("java.io.tmpdir"), "filesystem-md-provider-test");
         if (targetFile.exists()) {
             Assert.assertTrue(targetFile.delete());
@@ -131,10 +111,10 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
      * Tests failure mode of an invalid metadata file that is unreadable.
      * 
      * @throws IOException 
-     * @throws MetadataProviderException 
+     * @throws ResolverException
      */
-    @Test(expectedExceptions = {MetadataProviderException.class})
-    public void testUnreadableMetadataFile() throws IOException, MetadataProviderException {
+    @Test(expectedExceptions = {ResolverException.class})
+    public void testUnreadableMetadataFile() throws IOException, ResolverException {
         File targetFile = File.createTempFile("filesystem-md-provider-test", "xml");
         Assert.assertTrue(targetFile.exists());
         Assert.assertTrue(targetFile.isFile());
@@ -156,10 +136,10 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
      * Tests failure mode of a metadata file which disappears after initial creation of the provider.
      * 
      * @throws IOException 
-     * @throws MetadataProviderException 
+     * @throws ResolverException
      */
-    @Test(expectedExceptions = {MetadataProviderException.class})
-    public void testDisappearingMetadataFile() throws IOException, MetadataProviderException {
+    @Test(expectedExceptions = {ResolverException.class})
+    public void testDisappearingMetadataFile() throws IOException, ResolverException {
         File targetFile = new File(System.getProperty("java.io.tmpdir"), "filesystem-md-provider-test.xml");
         if (targetFile.exists()) {
             Assert.assertTrue(targetFile.delete());
@@ -172,7 +152,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
             metadataProvider = new FilesystemMetadataProvider(targetFile);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Filesystem metadata provider init failed with file: " + targetFile.getAbsolutePath());
         }
         
@@ -198,16 +178,15 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
             metadataProvider.setFailFastInitialization(false);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Filesystem metadata provider init failed with non-existent file and fail fast = false");
         }
         
         // Test that things don't blow up when initialized, no fail fast, but have no data.
         try {
-            Assert.assertNull(metadataProvider.getMetadata());
-            EntityDescriptor entity = metadataProvider.getEntityDescriptor(entityID);
+            EntityDescriptor entity = metadataProvider.resolveSingle(criteriaSet);
             Assert.assertNull(entity, "Retrieved entity descriptor was not null"); 
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Metadata provider behaved non-gracefully when initialized with fail fast = false");
         }
         
@@ -225,7 +204,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
             Assert.assertNotNull(metadataProvider.getMetadata());
             EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
             Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Filesystem metadata provider refresh failed recovery from initial init failure");
         }
     }

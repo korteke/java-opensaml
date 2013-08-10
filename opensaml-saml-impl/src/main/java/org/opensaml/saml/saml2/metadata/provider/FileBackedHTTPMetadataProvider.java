@@ -22,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
@@ -53,12 +55,12 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
      * @param requestTimeout the time, in milliseconds, to wait for the metadata server to respond
      * @param backupFilePath the file that will keep a backup copy of the metadata,
      * 
-     * @throws MetadataProviderException thrown if the URL is not a valid URL, the metadata can not be retrieved from
+     * @throws ResolverException thrown if the URL is not a valid URL, the metadata can not be retrieved from
      *             the URL
      */
     @Deprecated
     public FileBackedHTTPMetadataProvider(String metadataURL, int requestTimeout, String backupFilePath)
-            throws MetadataProviderException {
+            throws ResolverException {
         super(metadataURL, requestTimeout);
         setBackupFile(backupFilePath);
     }
@@ -71,11 +73,11 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
      * @param metadataURL the URL to fetch the metadata
      * @param backupFilePath the file that will keep a backup copy of the metadata,
      * 
-     * @throws MetadataProviderException thrown if the URL is not a valid URL, the metadata can not be retrieved from
+     * @throws ResolverException thrown if the URL is not a valid URL, the metadata can not be retrieved from
      *             the URL
      */
     public FileBackedHTTPMetadataProvider(Timer backgroundTaskTimer, HttpClient client, String metadataURL,
-            String backupFilePath) throws MetadataProviderException {
+            String backupFilePath) throws ResolverException {
         super(backgroundTaskTimer, client, metadataURL);
         setBackupFile(backupFilePath);
     }
@@ -88,10 +90,10 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
     }
 
     /** {@inheritDoc} */
-    protected void doInitialization() throws MetadataProviderException {
+    protected void doInitialization() throws ResolverException {
         try {
             validateBackupFile(metadataBackupFile);
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             if (isFailFastInitialization()) {
                 log.error("Metadata backup file path was invalid, initialization is fatal");
                 throw e;
@@ -109,9 +111,9 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
      * 
      * @param backupFilePath path to the backup file
      * 
-     * @throws MetadataProviderException thrown if the backup file is not read/writable or creatable
+     * @throws ResolverException thrown if the backup file is not read/writable or creatable
      */
-    protected void setBackupFile(String backupFilePath) throws MetadataProviderException {
+    protected void setBackupFile(String backupFilePath) throws ResolverException {
         File backingFile = new File(backupFilePath);
         metadataBackupFile = backingFile;
     }
@@ -121,39 +123,39 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
      * exists and/or can be created; that it is not a directory; and that it is readable and writable.
      *
      * @param backupFile the file to evaluate
-     * @throws MetadataProviderException if file does not pass basic properties required of a metadata backup file
+     * @throws ResolverException if file does not pass basic properties required of a metadata backup file
      */
-    protected void validateBackupFile(File backupFile) throws MetadataProviderException {
+    protected void validateBackupFile(File backupFile) throws ResolverException {
         if (!backupFile.exists()) {
             try {
                 backupFile.createNewFile();
             } catch (IOException e) {
                 log.error("Unable to create backing file " + backupFile, e);
-                throw new MetadataProviderException("Unable to create backing file " + backupFile.getAbsolutePath(), e);
+                throw new ResolverException("Unable to create backing file " + backupFile.getAbsolutePath(), e);
             }
         }
 
         if (backupFile.isDirectory()) {
-            throw new MetadataProviderException("Filepath " + backupFile.getAbsolutePath()
+            throw new ResolverException("Filepath " + backupFile.getAbsolutePath()
                     + " is a directory and may not be used as a backing metadata file");
         }
 
         if (!backupFile.canRead()) {
-            throw new MetadataProviderException("Filepath " + backupFile.getAbsolutePath()
+            throw new ResolverException("Filepath " + backupFile.getAbsolutePath()
                     + " exists but can not be read by this user");
         }
 
         if (!backupFile.canWrite()) {
-            throw new MetadataProviderException("Filepath " + backupFile.getAbsolutePath()
+            throw new ResolverException("Filepath " + backupFile.getAbsolutePath()
                     + " exists but can not be written to by this user");
         }
     }
 
     /** {@inheritDoc} */
-    protected byte[] fetchMetadata() throws MetadataProviderException {
+    protected byte[] fetchMetadata() throws ResolverException {
         try {
             return super.fetchMetadata();
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             if (metadataBackupFile.exists()) {
                 try {
                     return Files.toByteArray(metadataBackupFile);
@@ -161,11 +163,11 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
                     String errMsg = "Unable to retrieve metadata from backup file "
                             + metadataBackupFile.getAbsolutePath();
                     log.error(errMsg, ioe);
-                    throw new MetadataProviderException(errMsg, ioe);
+                    throw new ResolverException(errMsg, ioe);
                 }
             } else {
                 log.error("Unable to read metadata from remote server and backup does not exist");
-                throw new MetadataProviderException(
+                throw new ResolverException(
                         "Unable to read metadata from remote server and backup does not exist");
             }
         }
@@ -173,14 +175,14 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
 
     /** {@inheritDoc} */
     protected void postProcessMetadata(byte[] metadataBytes, Document metadataDom, XMLObject metadata)
-            throws MetadataProviderException {
+            throws ResolverException {
         try {
             validateBackupFile(metadataBackupFile);
             FileOutputStream out = new FileOutputStream(metadataBackupFile);
             out.write(metadataBytes);
             out.flush();
             out.close();
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             log.error("Unable to write metadata to backup file: " + metadataBackupFile.getAbsoluteFile(), e);
         } catch (IOException e) {
             log.error("Unable to write metadata to backup file: " + metadataBackupFile.getAbsoluteFile(), e);
