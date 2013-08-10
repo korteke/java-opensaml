@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.support;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
@@ -25,10 +28,14 @@ import java.net.URL;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.criterion.EntityIdCriterion;
+import org.opensaml.saml.criterion.EntityRoleCriterion;
+import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.provider.BasicRoleDescriptorResolver;
 import org.opensaml.saml.saml2.metadata.provider.FilesystemMetadataProvider;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml.saml2.metadata.support.AttributeConsumingServiceSelector;
@@ -41,6 +48,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     private String mdFileName;
     
     private FilesystemMetadataProvider mdProvider;
+    
+    private BasicRoleDescriptorResolver roleResolver;
     
     private AttributeConsumingServiceSelector acsSelector;
 
@@ -56,6 +65,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
         mdProvider.setParserPool(parserPool);
         mdProvider.initialize();
         
+        roleResolver = new BasicRoleDescriptorResolver(mdProvider);
+        
         acsSelector = new AttributeConsumingServiceSelector();
     }
     
@@ -63,12 +74,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test valid index.
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testWithValidIndex() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testWithValidIndex() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:A"),
+                new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
@@ -82,13 +95,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test explicit isDefault="true".
-     * @throws MetadataProviderException 
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testExplicitDefault() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testExplicitDefault() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:A"),
+                new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
@@ -100,12 +114,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test default as first missing default.
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testFirstMissingDefault() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:B", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testFirstMissingDefault() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:B"),
+                new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
@@ -117,12 +133,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test default as first isDefault="false".
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testFirstFalseDefault() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:C", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testFirstFalseDefault() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:C"),
+                new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
@@ -134,12 +152,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test AttributeQueryDescriptorType.
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testAttributeQueryType() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", AttributeQueryDescriptorType.TYPE_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testAttributeQueryType() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:A"),
+                new EntityRoleCriterion(AttributeQueryDescriptorType.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
@@ -153,12 +173,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test invalid index.
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testInvalidIndex() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testInvalidIndex() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:A"),
+                new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         
@@ -170,12 +192,14 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test invalid index with onBadIndexUseDefault of true.
-     * @throws MetadataProviderException
+     * @throws ResolverException
      */
     @Test
-    public void testInvalidIndexWithUseDefault() throws MetadataProviderException {
-        RoleDescriptor role =  mdProvider.getRole("urn:test:entity:A", SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                SAMLConstants.SAML20P_NS);
+    public void testInvalidIndexWithUseDefault() throws ResolverException {
+        RoleDescriptor role =  roleResolver.resolveSingle(new CriteriaSet(
+                new EntityIdCriterion("urn:test:entity:A"),
+                new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
+                new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         Assert.assertNotNull(role);
         acsSelector.setRoleDescriptor(role);
         

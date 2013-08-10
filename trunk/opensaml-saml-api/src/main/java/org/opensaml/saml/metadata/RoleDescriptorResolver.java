@@ -22,25 +22,25 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 
 /**
- * A resolver that is capable of resolving {@link EntityDescriptor} instances
+ * A resolver that is capable of resolving {@link RoleDescriptor} instances
  * which meet certain supplied criteria.
  * 
- * At a minimum, a {@link MetadataResolver} implementation MUST support the following criteria:
+ * At a minimum, a {@link RoleDescriptorResolver} implementation MUST support the following criteria:
  * <ul>
  * <li>{@link org.opensaml.saml.criterion.EntityIdCriterion}</li>
+ * <li>{@link org.opensaml.saml.criterion.EntityRoleCriterion}</li>
  * </ul>
  * 
  * Implementations SHOULD also support the following criteria when possible:
  * <ul>
- * <li>{@link org.opensaml.saml.criterion.EntityRoleCriterion}</li>
  * <li>{@link org.opensaml.saml.criterion.ProtocolCriterion}</li>
  * <li>{@link org.opensaml.saml.criterion.BindingCriterion}</li>
  * </ul>
  */
-public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiableComponent,
+public interface RoleDescriptorResolver extends Resolver<RoleDescriptor, CriteriaSet>, IdentifiableComponent,
         ValidatableComponent {
 
 }

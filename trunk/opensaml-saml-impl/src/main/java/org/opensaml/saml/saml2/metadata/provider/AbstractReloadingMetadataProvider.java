@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ISOChronology;
@@ -48,7 +50,7 @@ import org.w3c.dom.Document;
  * 1.0 and a min refresh delay that is not overly large, this refresh will likely occur a few times before the cache
  * expires.
  */
-public abstract class AbstractReloadingMetadataProvider extends AbstractObservableMetadataProvider {
+public abstract class AbstractReloadingMetadataProvider extends AbstractMetadataProvider {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractReloadingMetadataProvider.class);
@@ -227,16 +229,16 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
     }
 
     /** {@inheritDoc} */
-    protected XMLObject doGetMetadata() throws MetadataProviderException {
+    protected XMLObject doGetMetadata() throws ResolverException {
         return cachedMetadata;
     }
 
     /** {@inheritDoc} */
-    protected void doInitialization() throws MetadataProviderException {
+    protected void doInitialization() throws ResolverException {
         refresh();
         
         if (minRefreshDelay > maxRefreshDelay) {
-            throw new MetadataProviderException("Minimum refresh delay " + minRefreshDelay
+            throw new ResolverException("Minimum refresh delay " + minRefreshDelay
                     + " is greater than maximum refresh delay " + maxRefreshDelay);
         }
     }
@@ -244,9 +246,9 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
     /**
      * Refreshes the metadata from its source.
      * 
-     * @throws MetadataProviderException thrown is there is a problem retrieving and processing the metadata
+     * @throws ResolverException thrown is there is a problem retrieving and processing the metadata
      */
-    public void refresh() throws MetadataProviderException {
+    public void refresh() throws ResolverException {
         DateTime now = new DateTime(ISOChronology.getInstanceUTC());
         String mdId = getMetadataIdentifier();
 
@@ -263,7 +265,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
         } catch (Exception e) {
             log.debug("Error occurred while attempting to refresh metadata from '" + mdId + "'", e);
             nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(minRefreshDelay);
-            throw new MetadataProviderException(e);
+            throw new ResolverException(e);
         } finally {
             refresMetadataTask = new RefreshMetadataTask();
             long nextRefreshDelay = nextRefresh.getMillis() - System.currentTimeMillis();
@@ -286,9 +288,9 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * 
      * @return the fetched metadata, or null if the metadata is known not to have changed since the last retrieval
      * 
-     * @throws MetadataProviderException thrown if there is a problem fetching the metadata
+     * @throws ResolverException thrown if there is a problem fetching the metadata
      */
-    protected abstract byte[] fetchMetadata() throws MetadataProviderException;
+    protected abstract byte[] fetchMetadata() throws ResolverException;
 
     /**
      * Unmarshalls the given metadata bytes.
@@ -297,15 +299,15 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * 
      * @return the metadata
      * 
-     * @throws MetadataProviderException thrown if the metadata can not be unmarshalled
+     * @throws ResolverException thrown if the metadata can not be unmarshalled
      */
-    protected XMLObject unmarshallMetadata(byte[] metadataBytes) throws MetadataProviderException {
+    protected XMLObject unmarshallMetadata(byte[] metadataBytes) throws ResolverException {
         try {
             return unmarshallMetadata(new ByteArrayInputStream(metadataBytes));
         } catch (UnmarshallingException e) {
             String errorMsg = "Unable to unmarshall metadata";
             log.error(errorMsg, e);
-            throw new MetadataProviderException(errorMsg, e);
+            throw new ResolverException(errorMsg, e);
         }
     }
 
@@ -315,10 +317,10 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * @param metadataIdentifier identifier of the metadata source
      * @param refreshStart when the current refresh cycle started
      * 
-     * @throws MetadataProviderException throw is there is a problem process the cached metadata
+     * @throws ResolverException throw is there is a problem process the cached metadata
      */
     protected void processCachedMetadata(String metadataIdentifier, DateTime refreshStart)
-            throws MetadataProviderException {
+            throws ResolverException {
         log.debug("Computing new expiration time for cached metadata from '{}", metadataIdentifier);
         DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(cachedMetadata,
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
@@ -336,10 +338,10 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * @param refreshStart when the current refresh cycle started
      * @param metadataBytes raw bytes of the new metadata document
      * 
-     * @throws MetadataProviderException thrown if there is a problem unmarshalling or filtering the new metadata
+     * @throws ResolverException thrown if there is a problem unmarshalling or filtering the new metadata
      */
     protected void processNewMetadata(String metadataIdentifier, DateTime refreshStart, byte[] metadataBytes)
-            throws MetadataProviderException {
+            throws ResolverException {
         log.debug("Unmarshalling metadata from '{}'", metadataIdentifier);
         XMLObject metadata = unmarshallMetadata(metadataBytes);
 
@@ -378,10 +380,10 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * @param metadataBytes raw bytes of the new metadata document
      * @param metadata new metadata document unmarshalled
      * 
-     * @throws MetadataProviderException thrown if there s a problem processing the metadata
+     * @throws ResolverException thrown if there s a problem processing the metadata
      */
     protected void processNonExpiredMetadata(String metadataIdentifier, DateTime refreshStart, byte[] metadataBytes,
-            XMLObject metadata) throws MetadataProviderException {
+            XMLObject metadata) throws ResolverException {
         Document metadataDom = metadata.getDOM().getOwnerDocument();
 
         log.debug("Filtering metadata from '{}'", metadataIdentifier);
@@ -390,7 +392,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
         } catch (FilterException e) {
             String errMsg = "Error filtering metadata from " + metadataIdentifier;
             log.error(errMsg, e);
-            throw new MetadataProviderException(errMsg, e);
+            throw new ResolverException(errMsg, e);
         }
 
         log.debug("Releasing cached DOM for metadata from '{}'", metadataIdentifier);
@@ -418,7 +420,8 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
         }
         nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(nextRefreshDelay);
 
-        emitChangeEvent();
+        //TODO
+        //emitChangeEvent();
         log.info("New metadata succesfully loaded for '{}'", getMetadataIdentifier());
     }
 
@@ -433,10 +436,10 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * @param metadataDom metadata after it has been parsed in to a DOM document
      * @param metadata metadata after it has been run through all registered filters and its DOM released
      * 
-     * @throws MetadataProviderException thrown if there is a problem with the provided data
+     * @throws ResolverException thrown if there is a problem with the provided data
      */
     protected void postProcessMetadata(byte[] metadataBytes, Document metadataDom, XMLObject metadata)
-            throws MetadataProviderException {
+            throws ResolverException {
 
     }
 
@@ -473,9 +476,9 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
      * 
      * @return resultant byte array
      * 
-     * @throws MetadataProviderException thrown if there is a problem reading the resultant byte array
+     * @throws ResolverException thrown if there is a problem reading the resultant byte array
      */
-    protected byte[] inputstreamToByteArray(InputStream ins) throws MetadataProviderException {
+    protected byte[] inputstreamToByteArray(InputStream ins) throws ResolverException {
         try {
             // 1 MB read buffer
             byte[] buffer = new byte[1024 * 1024];
@@ -489,7 +492,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
             ins.close();
             return output.toByteArray();
         } catch (IOException e) {
-            throw new MetadataProviderException(e);
+            throw new ResolverException(e);
         }
     }
 
@@ -505,7 +508,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractObservab
                 }
                 
                 refresh();
-            } catch (MetadataProviderException e) {
+            } catch (ResolverException e) {
                 // nothing to do, error message already logged by refreshMetadata()
                 return;
             }

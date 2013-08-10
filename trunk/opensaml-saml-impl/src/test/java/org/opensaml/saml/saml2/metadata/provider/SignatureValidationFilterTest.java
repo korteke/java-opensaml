@@ -17,23 +17,16 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.DOMMetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.FilterException;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
-import org.opensaml.saml.saml2.metadata.provider.SignatureValidationFilter;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.x509.X509Credential;
@@ -41,6 +34,9 @@ import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -194,12 +190,12 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
             mdProvider.setMetadataFilter(filter);
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Could not set metadata filter on provider");
         }
         try {
             mdProvider.initialize();
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Failed when initializing metadata provider");
         }
     }
@@ -221,13 +217,13 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
             mdProvider.setMetadataFilter(filter);
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             Assert.fail("Could not set metadata filter on provider");
         }
         try {
             mdProvider.initialize();
             Assert.fail("Metadata signature was invalid, provider initialization should have failed");
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             // do nothing, failure expected
         }
     }

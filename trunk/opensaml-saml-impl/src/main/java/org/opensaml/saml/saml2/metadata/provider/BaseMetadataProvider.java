@@ -17,13 +17,29 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import java.util.Iterator;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.component.ComponentValidationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
+import org.opensaml.saml.metadata.MetadataResolver;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
  * Base class for metadata providers.
  */
-public abstract class BaseMetadataProvider implements MetadataProvider {
+public abstract class BaseMetadataProvider implements MetadataResolver {
+    
+    /** Component id. */
+    private String id;
 
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
     private UnmarshallerFactory unmarshallerFactory;
@@ -33,11 +49,12 @@ public abstract class BaseMetadataProvider implements MetadataProvider {
 
     /** Filter applied to all metadata. */
     private MetadataFilter mdFilter;
-
+    
     /** Constructor. */
     public BaseMetadataProvider() {
-        requireValidMetadata = false;
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
+        setRequireValidMetadata(false);
+        setId(UUID.randomUUID().toString());
     }
     
     /** {@inheritDoc} */
@@ -51,15 +68,46 @@ public abstract class BaseMetadataProvider implements MetadataProvider {
     }
 
     /** {@inheritDoc} */
-    public MetadataFilter getMetadataFilter() {
+    @Nullable  public MetadataFilter getMetadataFilter() {
         return mdFilter;
     }
 
     /** {@inheritDoc} */
-    public void setMetadataFilter(MetadataFilter newFilter) throws MetadataProviderException {
+    public void setMetadataFilter(@Nullable MetadataFilter newFilter) throws ResolverException {
         mdFilter = newFilter;
     }
     
+    /** {@inheritDoc} */
+    @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+        Iterable<EntityDescriptor> iterable = resolve(criteria);
+        if (iterable != null) {
+            Iterator<EntityDescriptor> iterator = iterable.iterator();
+            if (iterator != null && iterator.hasNext()) {
+                return iterator.next();
+            }
+        }
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    public void validate() throws ComponentValidationException {
+        // TODO Auto-generated method stub
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public String getId() {
+        return id;
+    }
+    
+    /**
+     * Set the component Id value.
+     * 
+     * @param newId the new Id value.
+     */
+    public void setId(@Nonnull String newId) {
+        id = Constraint.isNotNull(newId, "Id may not be null");
+    }
+
     /** Destroys the metadata provider and frees any resources current held by it. Default method is a no-op. */
     public synchronized void destroy(){
 

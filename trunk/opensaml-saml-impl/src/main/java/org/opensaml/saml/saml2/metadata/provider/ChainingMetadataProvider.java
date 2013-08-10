@@ -21,14 +21,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.Namespace;
@@ -36,13 +38,11 @@ import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
+import org.opensaml.saml.criterion.EntityIdCriterion;
+import org.opensaml.saml.metadata.MetadataResolver;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataFilter;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +59,15 @@ import org.w3c.dom.Element;
  * developers should be careful not to register a the same observer with both container providers and this provider.
  * Doing so will result in an observer being notified twice for each change.
  */
-public class ChainingMetadataProvider extends BaseMetadataProvider implements ObservableMetadataProvider {
+public class ChainingMetadataProvider extends BaseMetadataProvider {
+    
+    // TODO this needs a lot more work, not working yet.
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ChainingMetadataProvider.class);
 
-    /** List of registered observers. */
-    private List<Observer> observers;
-
     /** Registered providers. */
-    private List<MetadataProvider> providers;
+    private List<MetadataResolver> providers;
 
     /** Lock used to block reads during write and vice versa. */
     private ReadWriteLock providerLock;
@@ -76,7 +75,6 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
     /** Constructor. */
     public ChainingMetadataProvider() {
         super();
-        observers = new CopyOnWriteArrayList<Observer>();
         providers = Collections.EMPTY_LIST;
         providerLock = new ReentrantReadWriteLock(true);
     }
@@ -86,7 +84,7 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
      * 
      * @return list of currently registered providers
      */
-    public List<MetadataProvider> getProviders() {
+    public List<MetadataResolver> getProviders() {
         return providers;
     }
 
@@ -95,9 +93,9 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
      * 
      * @param newProviders the metadata providers to replace the current providers with
      * 
-     * @throws MetadataProviderException thrown if there is a problem adding the metadata provider
+     * @throws ResolverException thrown if there is a problem adding the metadata provider
      */
-    public void setProviders(List<MetadataProvider> newProviders) throws MetadataProviderException {
+    public void setProviders(List<MetadataResolver> newProviders) throws ResolverException {
         Lock writeLock = providerLock.writeLock();
         writeLock.lock();
 
@@ -107,8 +105,8 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
                 return;
             }
 
-            ArrayList<MetadataProvider> checkedProviders = new ArrayList<MetadataProvider>();
-            for (MetadataProvider provider : newProviders) {
+            ArrayList<MetadataResolver> checkedProviders = new ArrayList<MetadataResolver>();
+            for (MetadataResolver provider : newProviders) {
                 doAddMetadataProvider(provider, checkedProviders);
             }
             providers = Collections.unmodifiableList(checkedProviders);
@@ -122,14 +120,14 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
      * 
      * @param newProvider the provider to be added
      * 
-     * @throws MetadataProviderException thrown if there is a problem adding the metadata provider
+     * @throws ResolverException thrown if there is a problem adding the metadata provider
      */
-    public void addMetadataProvider(MetadataProvider newProvider) throws MetadataProviderException {
+    public void addMetadataProvider(MetadataResolver newProvider) throws ResolverException {
         Lock writeLock = providerLock.writeLock();
         writeLock.lock();
 
         try {
-            ArrayList<MetadataProvider> checkedProviders = new ArrayList<MetadataProvider>(providers);
+            ArrayList<MetadataResolver> checkedProviders = new ArrayList<MetadataResolver>(providers);
             doAddMetadataProvider(newProvider, checkedProviders);
             providers = Collections.unmodifiableList(checkedProviders);
         } finally {
@@ -140,19 +138,15 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
     /**
      * Adds a metadata provider to the given collection. The new provider is checked to see if it is null, if not the
      * providers {@link MetadataProvider#isRequireValidMetadata()} property is set to the value of this metadata
-     * provider's property. If the given metadata provider is an instance of {@link ObservableMetadataProvider} then a
-     * ContainedProviderObserver is added to it as well.
+     * provider's property.
      * 
      * @param provider provider to be added to the collection
      * @param providerList collection to which the provider is added
      */
-    protected void doAddMetadataProvider(MetadataProvider provider, List<MetadataProvider> providerList) {
+    protected void doAddMetadataProvider(MetadataResolver provider, List<MetadataResolver> providerList) {
         if (provider != null) {
-            provider.setRequireValidMetadata(isRequireValidMetadata());
-
-            if (provider instanceof ObservableMetadataProvider) {
-                ((ObservableMetadataProvider) provider).getObservers().add(new ContainedProviderObserver());
-            }
+            //TODO 
+            //provider.setRequireValidMetadata(isRequireValidMetadata());
 
             providerList.add(provider);
         }
@@ -163,20 +157,12 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
      * 
      * @param provider provider to be removed
      */
-    public void removeMetadataProvider(MetadataProvider provider) {
+    public void removeMetadataProvider(MetadataResolver provider) {
         Lock writeLock = providerLock.writeLock();
         writeLock.lock();
 
-        ObservableMetadataProvider observableProvider;
         try {
-            if (providers.remove(provider) && provider instanceof ObservableMetadataProvider) {
-                observableProvider = (ObservableMetadataProvider) provider;
-                for (Observer observer : observableProvider.getObservers()) {
-                    if (observer instanceof ContainedProviderObserver) {
-                        observableProvider.getObservers().remove(observer);
-                    }
-                }
-            }
+            providers.remove(provider);
         } finally {
             writeLock.unlock();
         }
@@ -189,8 +175,9 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
         Lock writeLock = providerLock.writeLock();
         writeLock.lock();
         try {
-            for (MetadataProvider provider : providers) {
-                provider.setRequireValidMetadata(requireValidMetadata);
+            for (MetadataResolver provider : providers) {
+                //TODO 
+                //provider.setRequireValidMetadata(requireValidMetadata);
             }
         } finally {
             writeLock.unlock();
@@ -204,7 +191,7 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
     }
 
     /** {@inheritDoc} */
-    public void setMetadataFilter(MetadataFilter newFilter) throws MetadataProviderException {
+    public void setMetadataFilter(MetadataFilter newFilter) throws ResolverException {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
     }
 
@@ -214,51 +201,31 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
      * {@inheritDoc}
      */
     public XMLObject getMetadata() throws MetadataProviderException {
+        //TODO need to re-evaluate how this whole thing works
         return new ChainingEntitiesDescriptor();
     }
 
     /** {@inheritDoc} */
-    public EntitiesDescriptor getEntitiesDescriptor(String name) throws MetadataProviderException {
-        Lock readLock = providerLock.readLock();
-        readLock.lock();
-
-        EntitiesDescriptor descriptor = null;
-        try {
-            for (MetadataProvider provider : providers) {
-                log.debug("Checking child metadata provider for entities descriptor with name: {}", name);
-                try {
-                    descriptor = provider.getEntitiesDescriptor(name);
-                    if (descriptor != null) {
-                        break;
-                    }
-                } catch (MetadataProviderException e) {
-                    log.warn("Error retrieving metadata from provider of type {}, proceeding to next provider",
-                            provider.getClass().getName(), e);
-                    continue;
-                }
-            }
-        } finally {
-            readLock.unlock();
-        }
-
-        return descriptor;
+    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /** {@inheritDoc} */
-    public EntityDescriptor getEntityDescriptor(String entityID) throws MetadataProviderException {
+    protected EntityDescriptor getEntityDescriptor(String entityID) throws ResolverException {
         Lock readLock = providerLock.readLock();
         readLock.lock();
 
         EntityDescriptor descriptor = null;
         try {
-            for (MetadataProvider provider : providers) {
+            for (MetadataResolver provider : providers) {
                 log.debug("Checking child metadata provider for entity descriptor with entity ID: {}", entityID);
                 try {
-                    descriptor = provider.getEntityDescriptor(entityID);
+                    descriptor = provider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
                     if (descriptor != null) {
                         break;
                     }
-                } catch (MetadataProviderException e) {
+                } catch (ResolverException e) {
                     log.warn("Error retrieving metadata from provider of type {}, proceeding to next provider",
                             provider.getClass().getName(), e);
                     continue;
@@ -269,110 +236,23 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
         }
 
         return descriptor;
-    }
-
-    /** {@inheritDoc} */
-    public List<RoleDescriptor> getRole(String entityID, QName roleName) throws MetadataProviderException {
-        Lock readLock = providerLock.readLock();
-        readLock.lock();
-
-        List<RoleDescriptor> roleDescriptors = null;
-        try {
-            for (MetadataProvider provider : providers) {
-                log.debug("Checking child metadata provider for entity descriptor with entity ID: {}", entityID);
-                try {
-                    roleDescriptors = provider.getRole(entityID, roleName);
-                    if (roleDescriptors != null && !roleDescriptors.isEmpty()) {
-                        break;
-                    }
-                } catch (MetadataProviderException e) {
-                    log.warn("Error retrieving metadata from provider of type {}, proceeding to next provider",
-                            provider.getClass().getName(), e);
-                    continue;
-                }
-            }
-        } finally {
-            readLock.unlock();
-        }
-
-        return roleDescriptors;
-    }
-
-    /** {@inheritDoc} */
-    public RoleDescriptor getRole(String entityID, QName roleName, String supportedProtocol)
-            throws MetadataProviderException {
-        Lock readLock = providerLock.readLock();
-        readLock.lock();
-
-        RoleDescriptor roleDescriptor = null;
-        try {
-            for (MetadataProvider provider : providers) {
-                log.debug("Checking child metadata provider for entity descriptor with entity ID: {}", entityID);
-                try {
-                    roleDescriptor = provider.getRole(entityID, roleName, supportedProtocol);
-                    if (roleDescriptor != null) {
-                        break;
-                    }
-                } catch (MetadataProviderException e) {
-                    log.warn("Error retrieving metadata from provider of type {}, proceeding to next provider",
-                            provider.getClass().getName(), e);
-                    continue;
-                }
-            }
-        } finally {
-            readLock.unlock();
-        }
-
-        return roleDescriptor;
-    }
-
-    /** {@inheritDoc} */
-    public List<Observer> getObservers() {
-        return observers;
     }
 
     /** {@inheritDoc} */
     public synchronized void destroy() {
         super.destroy();
         
-        for(MetadataProvider provider : providers){
+        for(MetadataResolver provider : providers){
             if(provider instanceof BaseMetadataProvider){
                 ((BaseMetadataProvider)provider).destroy();
             }
         }
         
         providers = Collections.emptyList();
-        observers = Collections.emptyList();
     }
+
+    //TODO need to account for this?
     
-    /**
-     * Convenience method for calling {@link ObservableMetadataProvider.Observer#onEvent(MetadataProvider)} on
-     * every registered Observer passing in this provider.
-     */
-    protected void emitChangeEvent() {
-        if (observers == null || observers.size() == 0) {
-            return;
-        }
-
-        List<Observer> tempObserverList = new ArrayList<Observer>(observers);
-        for (Observer observer : tempObserverList) {
-            if (observer != null) {
-                observer.onEvent(this);
-            }
-        }
-    }
-
-    /**
-     * Observer that clears the descriptor index of this provider.
-     */
-    private class ContainedProviderObserver implements Observer {
-
-        /** {@inheritDoc} */
-        public void onEvent(MetadataProvider provider) {
-            emitChangeEvent();
-        }
-    }
-
     /** Class that wraps the currently list of providers and exposes it as an EntitiesDescriptors. */
     private class ChainingEntitiesDescriptor implements EntitiesDescriptor {
 
@@ -385,15 +265,19 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
 
             Lock readLock = providerLock.readLock();
             readLock.lock();
+            //TODO
+            /*
             try {
-                for (MetadataProvider provider : providers) {
-                    childDescriptors.add(provider.getMetadata());
+                for (MetadataResolver provider : providers) {
+                    //TODO 
+                    //childDescriptors.add(provider.getMetadata());
                 }
-            } catch (MetadataProviderException e) {
+            } catch (MetadataResolver e) {
                 log.error("Unable to get metadata from child metadata provider", e);
             } finally {
                 readLock.unlock();
             }
+            */
         }
 
         /** {@inheritDoc} */
@@ -508,6 +392,8 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
         /** {@inheritDoc} */
         public List<XMLObject> getOrderedChildren() {
             ArrayList<XMLObject> descriptors = new ArrayList<XMLObject>();
+            // TODO
+            /*
             try {
                 for (MetadataProvider provider : providers) {
                     descriptors.add(provider.getMetadata());
@@ -515,6 +401,7 @@ public class ChainingMetadataProvider extends BaseMetadataProvider implements Ob
             } catch (MetadataProviderException e) {
                 log.error("Unable to generate list of child descriptors", e);
             }
+            */
 
             return descriptors;
         }

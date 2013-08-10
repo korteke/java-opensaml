@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.provider;
 
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -31,7 +33,7 @@ import org.w3c.dom.Element;
  * It is the responsibility of the caller to re-initialize, via {@link #initialize()}, if any properties of this
  * provider are changed.
  */
-public class DOMMetadataProvider extends AbstractObservableMetadataProvider implements MetadataProvider {
+public class DOMMetadataProvider extends AbstractMetadataProvider {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(DOMMetadataProvider.class);
@@ -61,27 +63,26 @@ public class DOMMetadataProvider extends AbstractObservableMetadataProvider impl
     }    
     
     /** {@inheritDoc} */
-    protected XMLObject doGetMetadata() throws MetadataProviderException {
+    protected XMLObject doGetMetadata() throws ResolverException {
         return metadata;
     }
     
     /** {@inheritDoc} */
-    protected void doInitialization() throws MetadataProviderException {
+    protected void doInitialization() throws ResolverException {
         try {
             Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(metadataElement);
             XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
             filterMetadata(metadataTemp);
             releaseMetadataDOM(metadataTemp);
             metadata = metadataTemp;
-            emitChangeEvent();
         } catch (UnmarshallingException e) {
             String errorMsg = "Unable to unmarshall metadata element";
             log.error(errorMsg, e);
-            throw new MetadataProviderException(errorMsg, e);
+            throw new ResolverException(errorMsg, e);
         } catch (FilterException e) {
             String errorMsg = "Unable to filter metadata";
             log.error(errorMsg, e);
-            throw new MetadataProviderException(errorMsg, e);
+            throw new ResolverException(errorMsg, e);
         }
     }
 }

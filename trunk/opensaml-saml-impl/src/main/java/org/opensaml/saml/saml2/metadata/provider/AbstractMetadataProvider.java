@@ -19,27 +19,26 @@ package org.opensaml.saml.saml2.metadata.provider;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.xml.namespace.QName;
+import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.saml2.common.SAML2Helper;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.FilterException;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -49,6 +48,8 @@ import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
 public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
+    
+    // TODO need to clear index at appropriate time, in light of removable of Observable support.
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractMetadataProvider.class);
@@ -77,9 +78,30 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
     }
 
     /** {@inheritDoc} */
-    public XMLObject getMetadata() throws MetadataProviderException {
+    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        //TODO add filtering for entity role, protocol? maybe
+        //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
+        //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
+        EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
+        if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
+            //TODO throw or just log?
+            throw new ResolverException("Entity Id was not supplied in criteria set");
+        }
+        
+        LazyList<EntityDescriptor> list = new LazyList<>();
+        
+        EntityDescriptor entityDescriptor = getEntityDescriptor(entityIdCriterion.getEntityId());
+        if (entityDescriptor != null) {
+            list.add(entityDescriptor);
+        }
+        
+        return list;
+    }
+
+    /** {@inheritDoc} */
+    protected XMLObject getMetadata() throws ResolverException {
         if (!isInitialized()) {
-            throw new MetadataProviderException("Metadata provider has not been initialized");
+            throw new ResolverException("Metadata provider has not been initialized");
         }
 
         XMLObject metadata = doGetMetadata();
@@ -102,64 +124,14 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
      * 
      * @return the metadata currently held by this provider or null if no metadata is available
      * 
-     * @throws MetadataProviderException thrown if there is a problem retrieving the metadata
+     * @throws ResolverException thrown if there is a problem retrieving the metadata
      */
-    protected abstract XMLObject doGetMetadata() throws MetadataProviderException;
+    protected abstract XMLObject doGetMetadata() throws ResolverException;
 
     /** {@inheritDoc} */
-    public EntitiesDescriptor getEntitiesDescriptor(String name) throws MetadataProviderException {
+    protected EntityDescriptor getEntityDescriptor(String entityID) throws ResolverException {
         if (!isInitialized()) {
-            throw new MetadataProviderException("Metadata provider has not been initialized");
-        }
-
-        if (Strings.isNullOrEmpty(name)) {
-            log.debug("EntitiesDescriptor name was null or empty, skipping search for it");
-            return null;
-        }
-
-        EntitiesDescriptor descriptor = doGetEntitiesDescriptor(name);
-        if (descriptor == null) {
-            log.debug("Metadata document does not contain an EntitiesDescriptor with the name {}", name);
-            return null;
-        } else if (!isValid(descriptor)) {
-            log.debug("Metadata document contained an EntitiesDescriptor with the name {}, but it was no longer valid",
-                    name);
-            return null;
-        }
-
-        return descriptor;
-    }
-
-    /**
-     * Gets the named EntitiesDescriptor from the metadata. This method should not check if the provider is initialized,
-     * if arguments are null, if metadata is valid, etc. All of this is done by the invoker of this method.
-     * 
-     * @param name the name of the EntitiesDescriptor, never null
-     * 
-     * @return the named EntitiesDescriptor or null if no such EntitiesDescriptor exists
-     * 
-     * @throws MetadataProviderException thrown if there is a problem searching for the EntitiesDescriptor
-     */
-    protected EntitiesDescriptor doGetEntitiesDescriptor(String name) throws MetadataProviderException {
-        XMLObject metadata = doGetMetadata();
-        if (metadata == null) {
-            log.debug("Metadata provider does not currently contain any metadata, unable to look for an EntitiesDescriptor with the name {}",
-                            name);
-            return null;
-        }
-
-        EntitiesDescriptor descriptor = null;
-        if (metadata instanceof EntitiesDescriptor) {
-            descriptor = getEntitiesDescriptorByName(name, (EntitiesDescriptor) metadata);
-        }
-
-        return descriptor;
-    }
-
-    /** {@inheritDoc} */
-    public EntityDescriptor getEntityDescriptor(String entityID) throws MetadataProviderException {
-        if (!isInitialized()) {
-            throw new MetadataProviderException("Metadata provider has not been initialized");
+            throw new ResolverException("Metadata provider has not been initialized");
         }
 
         if (Strings.isNullOrEmpty(entityID)) {
@@ -189,9 +161,9 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
      * 
      * @return the identified EntityDescriptor or null if no such EntityDescriptor exists
      * 
-     * @throws MetadataProviderException thrown if there is a problem searching for the EntityDescriptor
+     * @throws ResolverException thrown if there is a problem searching for the EntityDescriptor
      */
-    protected EntityDescriptor doGetEntityDescriptor(String entityID) throws MetadataProviderException {
+    protected EntityDescriptor doGetEntityDescriptor(String entityID) throws ResolverException {
         XMLObject metadata = doGetMetadata();
         if (metadata == null) {
             log.debug("Metadata document was empty, unable to look for an EntityDescriptor with the ID {}", entityID);
@@ -201,140 +173,6 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
         return getEntityDescriptorById(entityID, metadata);
     }
 
-    /** {@inheritDoc} */
-    public List<RoleDescriptor> getRole(String entityID, QName roleName) throws MetadataProviderException {
-        if (!isInitialized()) {
-            throw new MetadataProviderException("Metadata provider has not been initialized");
-        }
-
-        if (Strings.isNullOrEmpty(entityID)) {
-            log.debug("EntityDescriptor entityID was null or empty, skipping search for roles");
-            return null;
-        }
-
-        if (roleName == null) {
-            log.debug("Role descriptor name was null, skipping search for roles");
-            return null;
-        }
-
-        List<RoleDescriptor> roleDescriptors = doGetRole(entityID, roleName);
-        if (roleDescriptors == null || roleDescriptors.isEmpty()) {
-            log.debug("Entity descriptor {} did not contain any {} roles", entityID, roleName);
-            return null;
-        }
-
-        Iterator<RoleDescriptor> roleDescItr = roleDescriptors.iterator();
-        while (roleDescItr.hasNext()) {
-            if (!isValid(roleDescItr.next())) {
-                log.debug("Metadata document contained a role of type {} for entity {}, but it was invalid", roleName,
-                        entityID);
-                roleDescItr.remove();
-            }
-        }
-
-        if (roleDescriptors.isEmpty()) {
-            log.debug("Entity descriptor {} did not contain any valid {} roles", entityID, roleName);
-        }
-        return roleDescriptors;
-    }
-
-    /**
-     * Gets the identified roles from an EntityDescriptor. This method should not check if the provider is initialized,
-     * if arguments are null, if the roles are valid, etc. All of this is done by the invoker of this method.
-     * 
-     * @param entityID ID of the entity from which to retrieve the roles, never null
-     * @param roleName name of the roles to search for, never null
-     * 
-     * @return the modifiable list of identified roles or an empty list if no roles exists
-     * 
-     * @throws MetadataProviderException thrown if there is a problem searching for the roles
-     */
-    protected List<RoleDescriptor> doGetRole(String entityID, QName roleName) throws MetadataProviderException {
-        EntityDescriptor entity = doGetEntityDescriptor(entityID);
-        if (entity == null) {
-            log.debug("Metadata document did not contain a descriptor for entity {}", entityID);
-            return Collections.emptyList();
-        }
-
-        List<RoleDescriptor> descriptors = entity.getRoleDescriptors(roleName);
-        if (descriptors != null && !descriptors.isEmpty()) {
-            return new ArrayList<RoleDescriptor>(descriptors);
-        }
-
-        return Collections.emptyList();
-    }
-
-    /** {@inheritDoc} */
-    public RoleDescriptor getRole(String entityID, QName roleName, String supportedProtocol)
-            throws MetadataProviderException {
-        if (!isInitialized()) {
-            throw new MetadataProviderException("Metadata provider has not been initialized");
-        }
-
-        if (Strings.isNullOrEmpty(entityID)) {
-            log.debug("EntityDescriptor entityID was null or empty, skipping search for role");
-            return null;
-        }
-
-        if (roleName == null) {
-            log.debug("Role descriptor name was null, skipping search for role");
-            return null;
-        }
-
-        if (Strings.isNullOrEmpty(supportedProtocol)) {
-            log.debug("Supported protocol was null, skipping search for role.");
-            return null;
-        }
-
-        RoleDescriptor role = doGetRole(entityID, roleName, supportedProtocol);
-        if (role == null) {
-            log.debug("Metadata document does not contain a role of type {} supporting protocol {} for entity {}",
-                    new Object[] { roleName, supportedProtocol, entityID });
-            return null;
-        }
-
-        if (!isValid(role)) {
-            log
-                    .debug(
-                            "Metadata document contained a role of type {} supporting protocol {} for entity {}, but it was not longer valid",
-                            new Object[] { roleName, supportedProtocol, entityID });
-            return null;
-        }
-
-        return role;
-    }
-
-    /**
-     * Gets the role which supports the given protocol.
-     * 
-     * @param entityID ID of the entity from which to retrieve roles, never null
-     * @param roleName name of the role to search for, never null
-     * @param supportedProtocol protocol to search for, never null
-     * 
-     * @return the role supporting the protocol or null if no such role exists
-     * 
-     * @throws MetadataProviderException thrown if there is a problem search for the roles
-     */
-    protected RoleDescriptor doGetRole(String entityID, QName roleName, String supportedProtocol)
-            throws MetadataProviderException {
-        List<RoleDescriptor> roles = doGetRole(entityID, roleName);
-        if (roles == null || roles.isEmpty()) {
-            log.debug("Metadata document did not contain any role descriptors of type {} for entity {}", roleName,
-                    entityID);
-            return null;
-        }
-
-        Iterator<RoleDescriptor> rolesItr = roles.iterator();
-        RoleDescriptor role = null;
-        while (rolesItr.hasNext()) {
-            role = rolesItr.next();
-            if (role != null && role.isSupportedProtocol(supportedProtocol)) {
-                return role;
-            }
-        }
-
-        return null;
-    }
 
     /**
      * Gets whether this provider is initialized.
@@ -400,10 +238,10 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
      * Initializes this metadata provider. If called after the metadata provider has already been initialized this
      * method simply returns.
      * 
-     * @throws MetadataProviderException thrown if there is a problem initializing the problem and fail fast
+     * @throws ResolverException thrown if there is a problem initializing the problem and fail fast
      *             Initialization is enabled
      */
-    public synchronized void initialize() throws MetadataProviderException {
+    public synchronized void initialize() throws ResolverException {
         if (initialized) {
             return;
         }
@@ -411,7 +249,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
         try {
             doInitialization();
             initialized = true;
-        } catch (MetadataProviderException e) {
+        } catch (ResolverException e) {
             if (failFastInitialization) {
                 log.error("Metadata provider failed to properly initialize, fail-fast=true, halting", e);
                 throw e;
@@ -436,9 +274,9 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
      * Subclasses should override this method to perform any initialization logic necessary. Default implementation is a
      * no-op.
      * 
-     * @throws MetadataProviderException thrown if there is a problem initializing the provider
+     * @throws ResolverException thrown if there is a problem initializing the provider
      */
-    protected void doInitialization() throws MetadataProviderException {
+    protected void doInitialization() throws ResolverException {
 
     }
 
@@ -547,8 +385,8 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
                     descriptor = null;
                 }
             } else {
-                log
-                        .trace("Metadata was an EntitiesDescriptor, checking if any of its descendant EntityDescriptor elements is the one we're looking for.");
+                log.trace("Metadata was an EntitiesDescriptor, checking if any of its descendant EntityDescriptor elements" 
+                        + " is the one we're looking for.");
                 if (metadata instanceof EntitiesDescriptor) {
                     descriptor = getEntityDescriptorById(entityID, (EntitiesDescriptor) metadata);
                 }
@@ -598,36 +436,6 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
         }
 
         return null;
-    }
-
-    /**
-     * Gets the entities descriptor with the given name.
-     * 
-     * @param name name of the entities descriptor
-     * @param rootDescriptor the root descriptor to search in
-     * 
-     * @return the EntitiesDescriptor with the given name
-     */
-    protected EntitiesDescriptor getEntitiesDescriptorByName(String name, EntitiesDescriptor rootDescriptor) {
-        EntitiesDescriptor descriptor = null;
-
-        if (Objects.equal(name, rootDescriptor.getName()) && isValid(rootDescriptor)) {
-            descriptor = rootDescriptor;
-        } else {
-            List<EntitiesDescriptor> childDescriptors = rootDescriptor.getEntitiesDescriptors();
-            if (childDescriptors == null || childDescriptors.isEmpty()) {
-                return null;
-            }
-
-            for (EntitiesDescriptor childDescriptor : childDescriptors) {
-                childDescriptor = getEntitiesDescriptorByName(name, childDescriptor);
-                if (childDescriptor != null) {
-                    descriptor = childDescriptor;
-                }
-            }
-        }
-
-        return descriptor;
     }
 
     /**
