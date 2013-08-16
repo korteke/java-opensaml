@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
@@ -68,6 +69,9 @@ public abstract class AbstractXMLObject implements XMLObject {
     
     /** The namespace manager for this XML object. */
     private NamespaceManager nsManager;
+    
+    /** The multimap holding class-indexed instances of additional info associated with this XML object. */
+    private ClassToInstanceMultiMap<Object> objectMetadata;
 
     /**
      * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
@@ -90,6 +94,7 @@ public abstract class AbstractXMLObject implements XMLObject {
         if(namespaceURI != null){
             setElementNamespacePrefix(namespacePrefix);
         }
+        objectMetadata = new ClassToInstanceMultiMap<>(true);
     }
 
     /** {@inheritDoc} */
@@ -524,6 +529,11 @@ public abstract class AbstractXMLObject implements XMLObject {
     public void setNil(XSBooleanValue newNil) {
         nil = prepareForAssignment(nil, newNil);
         manageQualifiedAttributeNamespace(XmlConstants.XSI_NIL_ATTRIB_NAME, nil != null);
+    }
+
+    /** {@inheritDoc} */
+    @Nonnull public ClassToInstanceMultiMap<Object> getObjectMetadata() {
+        return objectMetadata;
     }
 
 }
