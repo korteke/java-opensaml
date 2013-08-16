@@ -28,8 +28,8 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.metadata.resolver.filter.impl.RequiredValidUntilFilter;
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataProvider;
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataProviderTest;
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolverTest;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -43,7 +43,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        URL mdURL = FilesystemMetadataProviderTest.class
+        URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/simple-metadata.xml");
         metadataFile = new File(mdURL.toURI());
     }
@@ -52,7 +52,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     public void testRequiredValidUntil() throws Exception {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter();
 
-        FilesystemMetadataProvider metadataProvider = new FilesystemMetadataProvider(metadataFile);
+        FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(metadataFile);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(filter);
         try {
@@ -66,7 +66,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     public void testRequiredValidUntilWithMaxValidity() throws Exception {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter(1);
 
-        FilesystemMetadataProvider metadataProvider = new FilesystemMetadataProvider(metadataFile);
+        FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(metadataFile);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(filter);
 

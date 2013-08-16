@@ -34,10 +34,10 @@ import org.w3c.dom.Element;
  * It is the responsibility of the caller to re-initialize, via {@link #initialize()}, if any properties of this
  * provider are changed.
  */
-public class DOMMetadataProvider extends AbstractMetadataProvider {
+public class DOMMetadataResolver extends AbstractMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(DOMMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(DOMMetadataResolver.class);
 
     /** Root metadata element exposed by this provider. */
     private Element metadataElement;
@@ -50,7 +50,7 @@ public class DOMMetadataProvider extends AbstractMetadataProvider {
      * 
      * @param mdElement the metadata element
      */
-    public DOMMetadataProvider(Element mdElement) {
+    public DOMMetadataResolver(Element mdElement) {
         super();
         metadataElement = mdElement;
     }

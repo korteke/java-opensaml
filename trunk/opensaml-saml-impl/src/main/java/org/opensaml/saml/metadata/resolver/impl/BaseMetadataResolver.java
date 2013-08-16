@@ -37,7 +37,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 /**
  * Base class for metadata providers.
  */
-public abstract class BaseMetadataProvider implements MetadataResolver {
+public abstract class BaseMetadataResolver implements MetadataResolver {
     
     /** Component id. */
     private String id;
@@ -52,7 +52,7 @@ public abstract class BaseMetadataProvider implements MetadataResolver {
     private MetadataFilter mdFilter;
     
     /** Constructor. */
-    public BaseMetadataProvider() {
+    public BaseMetadataResolver() {
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         setRequireValidMetadata(false);
         setId(UUID.randomUUID().toString());

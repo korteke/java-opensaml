@@ -53,10 +53,10 @@ import org.slf4j.LoggerFactory;
  * It is the responsibility of the caller to re-initialize, via {@link #initialize()}, if any properties of this
  * provider are changed.
  */
-public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
+public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(HTTPMetadataResolver.class);
 
     /** HTTP Client used to pull the metadata. */
     private HttpClient httpClient;
@@ -83,7 +83,7 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      *             the URL
      */
     @Deprecated
-    public HTTPMetadataProvider(String metadataURL, int requestTimeout) throws ResolverException {
+    public HTTPMetadataResolver(String metadataURL, int requestTimeout) throws ResolverException {
         super();
         try {
             metadataURI = new URI(metadataURL);
@@ -108,7 +108,7 @@ public class HTTPMetadataProvider extends AbstractReloadingMetadataProvider {
      * 
      * @throws ResolverException thrown if the HTTP client is null or the metadata URL provided is invalid
      */
-    public HTTPMetadataProvider(Timer backgroundTaskTimer, HttpClient client, String metadataURL)
+    public HTTPMetadataResolver(Timer backgroundTaskTimer, HttpClient client, String metadataURL)
             throws ResolverException {
         super(backgroundTaskTimer);
 

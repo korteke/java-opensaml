@@ -26,8 +26,8 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataProvider;
-import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
+import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -35,9 +35,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Files;
 
-public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
+public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
 
-    private FilesystemMetadataProvider metadataProvider;
+    private FilesystemMetadataResolver metadataProvider;
     
     private File mdFile;
 
@@ -50,11 +50,11 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";
 
-        URL mdURL = FilesystemMetadataProviderTest.class
+        URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         mdFile = new File(mdURL.toURI());
 
-        metadataProvider = new FilesystemMetadataProvider(mdFile);
+        metadataProvider = new FilesystemMetadataResolver(mdFile);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
         
@@ -62,7 +62,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Tests the {@link HTTPMetadataProvider#getEntityDescriptor(String)} method.
+     * Tests the {@link HTTPMetadataResolver#getEntityDescriptor(String)} method.
      * @throws ResolverException 
      */
     @Test
@@ -79,7 +79,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions = {ResolverException.class})
     public void testNonexistentMetadataFile() throws ResolverException {
-        metadataProvider = new FilesystemMetadataProvider(new File("I-Dont-Exist.xml"));
+        metadataProvider = new FilesystemMetadataResolver(new File("I-Dont-Exist.xml"));
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
     }
@@ -101,7 +101,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(targetFile.isDirectory());
         
         try {
-            metadataProvider = new FilesystemMetadataProvider(targetFile);
+            metadataProvider = new FilesystemMetadataResolver(targetFile);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
         } finally {
@@ -126,7 +126,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
         Assert.assertFalse(targetFile.canRead());
         
         try {
-            metadataProvider = new FilesystemMetadataProvider(targetFile);
+            metadataProvider = new FilesystemMetadataResolver(targetFile);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
         } finally {
@@ -151,7 +151,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(targetFile.canRead());
         
         try {
-            metadataProvider = new FilesystemMetadataProvider(targetFile);
+            metadataProvider = new FilesystemMetadataResolver(targetFile);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
         } catch (ResolverException e) {
@@ -176,7 +176,7 @@ public class FilesystemMetadataProviderTest extends XMLObjectBaseTestCase {
         }
         
         try {
-            metadataProvider = new FilesystemMetadataProvider(targetFile);
+            metadataProvider = new FilesystemMetadataResolver(targetFile);
             metadataProvider.setFailFastInitialization(false);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();

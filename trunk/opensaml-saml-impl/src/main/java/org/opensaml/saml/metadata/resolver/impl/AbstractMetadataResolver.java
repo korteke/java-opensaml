@@ -48,12 +48,12 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
+public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     
     // TODO need to clear index at appropriate time, in light of removable of Observable support.
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
 
     /** Whether the metadata provider has been initialized. */
     private boolean initialized;
@@ -71,7 +71,7 @@ public abstract class AbstractMetadataProvider extends BaseMetadataProvider {
     private ParserPool parser;
 
     /** Constructor. */
-    public AbstractMetadataProvider() {
+    public AbstractMetadataResolver() {
         super();
         indexedDescriptors = new ConcurrentHashMap<String, EntityDescriptor>();
         failFastInitialization = true;

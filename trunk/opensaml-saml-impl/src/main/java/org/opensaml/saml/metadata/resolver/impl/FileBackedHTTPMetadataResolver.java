@@ -40,10 +40,10 @@ import com.google.common.io.Files;
  * It is the responsibility of the caller to re-initialize, via {@link #initialize()}, if any properties of this
  * provider are changed.
  */
-public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
+public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(FileBackedHTTPMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(FileBackedHTTPMetadataResolver.class);
 
     /** File containing the backup of the metadata. */
     private File metadataBackupFile;
@@ -59,7 +59,7 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
      *             the URL
      */
     @Deprecated
-    public FileBackedHTTPMetadataProvider(String metadataURL, int requestTimeout, String backupFilePath)
+    public FileBackedHTTPMetadataResolver(String metadataURL, int requestTimeout, String backupFilePath)
             throws ResolverException {
         super(metadataURL, requestTimeout);
         setBackupFile(backupFilePath);
@@ -76,7 +76,7 @@ public class FileBackedHTTPMetadataProvider extends HTTPMetadataProvider {
      * @throws ResolverException thrown if the URL is not a valid URL, the metadata can not be retrieved from
      *             the URL
      */
-    public FileBackedHTTPMetadataProvider(Timer backgroundTaskTimer, HttpClient client, String metadataURL,
+    public FileBackedHTTPMetadataResolver(Timer backgroundTaskTimer, HttpClient client, String metadataURL,
             String backupFilePath) throws ResolverException {
         super(backgroundTaskTimer, client, metadataURL);
         setBackupFile(backupFilePath);

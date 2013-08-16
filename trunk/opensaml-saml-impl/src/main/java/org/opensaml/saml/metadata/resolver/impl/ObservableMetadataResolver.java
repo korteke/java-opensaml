@@ -26,7 +26,7 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
  * of an internal cache of metadata allowing other subsystems to perform some action based on that.
  * 
  */
-public interface ObservableMetadataProvider extends MetadataProvider {
+public interface ObservableMetadataResolver extends MetadataProvider {
 
     /**
      * Gets the list of observers for the provider. New observers may be added to the list or old ones removed.

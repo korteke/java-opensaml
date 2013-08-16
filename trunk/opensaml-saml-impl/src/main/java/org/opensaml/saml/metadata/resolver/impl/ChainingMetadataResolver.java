@@ -63,12 +63,12 @@ import org.w3c.dom.Element;
  * developers should be careful not to register a the same observer with both container providers and this provider.
  * Doing so will result in an observer being notified twice for each change.
  */
-public class ChainingMetadataProvider extends BaseMetadataProvider {
+public class ChainingMetadataResolver extends BaseMetadataResolver {
     
     // TODO this needs a lot more work, not working yet.
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ChainingMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(ChainingMetadataResolver.class);
 
     /** Registered providers. */
     private List<MetadataResolver> providers;
@@ -77,7 +77,7 @@ public class ChainingMetadataProvider extends BaseMetadataProvider {
     private ReadWriteLock providerLock;
 
     /** Constructor. */
-    public ChainingMetadataProvider() {
+    public ChainingMetadataResolver() {
         super();
         providers = Collections.EMPTY_LIST;
         providerLock = new ReentrantReadWriteLock(true);
@@ -190,7 +190,7 @@ public class ChainingMetadataProvider extends BaseMetadataProvider {
 
     /** {@inheritDoc} */
     public MetadataFilter getMetadataFilter() {
-        log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataProvider");
+        log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataResolver");
         return null;
     }
 
@@ -247,8 +247,8 @@ public class ChainingMetadataProvider extends BaseMetadataProvider {
         super.destroy();
         
         for(MetadataResolver provider : providers){
-            if(provider instanceof BaseMetadataProvider){
-                ((BaseMetadataProvider)provider).destroy();
+            if(provider instanceof BaseMetadataResolver){
+                ((BaseMetadataResolver)provider).destroy();
             }
         }
         

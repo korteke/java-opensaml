@@ -21,7 +21,7 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.filter.impl.SchemaValidationFilter;
-import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
 
 /**
  * Unit tests for {@link SchemaValidationFilter}.
@@ -39,7 +39,7 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
 
     @Test
     public void test() throws Exception {
-        HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
+        HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(inCommonMDURL, 1000 * 5);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new SchemaValidationFilter(null));
         metadataProvider.initialize();

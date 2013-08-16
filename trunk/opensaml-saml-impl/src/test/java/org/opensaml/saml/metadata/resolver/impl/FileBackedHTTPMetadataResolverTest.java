@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
-import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.testng.Assert;
@@ -33,9 +33,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * Test case for {@link FileBackedHTTPMetadataProvider}.
+ * Test case for {@link FileBackedHTTPMetadataResolver}.
  */
-public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
+public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private String mdUrl;
 
@@ -43,7 +43,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
 
     private String backupFilePath;
     
-    private FileBackedHTTPMetadataProvider metadataProvider;
+    private FileBackedHTTPMetadataResolver metadataProvider;
     
     private String entityID;
     
@@ -73,7 +73,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
-        metadataProvider = new FileBackedHTTPMetadataProvider(mdUrl, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
         
@@ -87,7 +87,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testFailFastBadURL() throws ResolverException {
-        metadataProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(badMDURL, 1000 * 5, backupFilePath);
         
         metadataProvider.setFailFastInitialization(true);
         metadataProvider.setParserPool(parserPool);
@@ -105,7 +105,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNoFailFastBadURL() throws ResolverException {
-        metadataProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(badMDURL, 1000 * 5, backupFilePath);
         
         metadataProvider.setFailFastInitialization(false);
         metadataProvider.setParserPool(parserPool);
@@ -124,7 +124,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     public void testFailFastBadBackupFile() {
         try {
             // Use a known existing directory as backup file path, which is an invalid argument.
-            metadataProvider = new FileBackedHTTPMetadataProvider(mdUrl, 1000 * 5, System.getProperty("java.io.tmpdir"));
+            metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, System.getProperty("java.io.tmpdir"));
         } catch (ResolverException e) {
             Assert.fail("Provider failed bad backup file in constructor");
             
@@ -148,7 +148,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     public void testNoFailFastBadBackupFile() throws ResolverException {
         try {
             // Use a known existing directory as backup file path, which is an invalid argument.
-            metadataProvider = new FileBackedHTTPMetadataProvider(mdUrl, 1000 * 5, System.getProperty("java.io.tmpdir"));
+            metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, System.getProperty("java.io.tmpdir"));
         } catch (ResolverException e) {
             Assert.fail("Provider failed bad backup file in constructor");
             
@@ -173,7 +173,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     @Test
     public void testBackupFileOnRestart() throws ResolverException {
         // Do a setup here to get a good backup file
-        metadataProvider = new FileBackedHTTPMetadataProvider(mdUrl, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
         
@@ -185,7 +185,7 @@ public class FileBackedHTTPMetadataProviderTest extends XMLObjectBaseTestCase {
         
         // Now do a new provider to simulate a restart (have to set fail-fast=false).
         // Verify that can use the data from backing file.
-        FileBackedHTTPMetadataProvider badProvider = new FileBackedHTTPMetadataProvider(badMDURL, 1000 * 5,
+        FileBackedHTTPMetadataResolver badProvider = new FileBackedHTTPMetadataResolver(badMDURL, 1000 * 5,
                 backupFilePath);
         badProvider.setParserPool(parserPool);
         badProvider.setFailFastInitialization(false);
