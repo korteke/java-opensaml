@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestHelper;
-import org.opensaml.saml.metadata.resolver.impl.DOMMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
@@ -143,7 +143,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private String mdFileName = "/data/org/opensaml/saml/security/test1-metadata.xml";
     
-    private DOMMetadataProvider mdProvider;
+    private DOMMetadataResolver mdProvider;
     
     private MetadataCredentialResolver mdResolver;
     
@@ -166,7 +166,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Document mdDoc = parserPool.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
         
-        mdProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
+        mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.initialize();
         
         //For testing, use default KeyInfo resolver from global security config, per metadata resolver constructor

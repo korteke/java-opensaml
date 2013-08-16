@@ -22,21 +22,21 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
-import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * Unit tests for {@link HTTPMetadataProvider}.
+ * Unit tests for {@link HTTPMetadataResolver}.
  */
-public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
+public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private String inCommonMDURL;
     private String badMDURL;
     private String entityID;
-    private HTTPMetadataProvider metadataProvider;
+    private HTTPMetadataResolver metadataProvider;
     private CriteriaSet criteriaSet;
     
     /**{@inheritDoc} */
@@ -45,7 +45,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
         inCommonMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
         badMDURL = "http://www.google.com/";
         entityID = "urn:mace:incommon:washington.edu";
-        metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
+        metadataProvider = new HTTPMetadataResolver(inCommonMDURL, 1000 * 5);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
         
@@ -53,7 +53,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Tests the {@link HTTPMetadataProvider#getEntityDescriptor(String)} method.
+     * Tests the {@link HTTPMetadataResolver#getEntityDescriptor(String)} method.
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
@@ -66,7 +66,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
      * Test fail-fast = true with known bad metadata URL.
      */
     public void testFailFastBadURL() throws ResolverException {
-        metadataProvider = new HTTPMetadataProvider(badMDURL, 1000 * 5);
+        metadataProvider = new HTTPMetadataResolver(badMDURL, 1000 * 5);
         
         metadataProvider.setFailFastInitialization(true);
         metadataProvider.setParserPool(parserPool);
@@ -83,7 +83,7 @@ public class HTTPMetadataProviderTest extends XMLObjectBaseTestCase {
      * Test fail-fast = false with known bad metadata URL.
      */
     public void testNoFailFastBadURL() throws ResolverException {
-        metadataProvider = new HTTPMetadataProvider(badMDURL, 1000 * 5);
+        metadataProvider = new HTTPMetadataResolver(badMDURL, 1000 * 5);
         
         metadataProvider.setFailFastInitialization(false);
         metadataProvider.setParserPool(parserPool);

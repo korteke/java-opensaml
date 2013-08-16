@@ -33,7 +33,7 @@ import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.support.AttributeConsumingServiceSelector;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -47,7 +47,7 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     private String mdFileName;
     
-    private FilesystemMetadataProvider mdProvider;
+    private FilesystemMetadataResolver mdProvider;
     
     private BasicRoleDescriptorResolver roleResolver;
     
@@ -61,7 +61,7 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
         URL mdURL = AttributeConsumingServiceSelectorTest.class.getResource(mdFileName);
         File mdFile = new File(mdURL.toURI());
         
-        mdProvider = new FilesystemMetadataProvider(mdFile);
+        mdProvider = new FilesystemMetadataResolver(mdFile);
         mdProvider.setParserPool(parserPool);
         mdProvider.initialize();
         

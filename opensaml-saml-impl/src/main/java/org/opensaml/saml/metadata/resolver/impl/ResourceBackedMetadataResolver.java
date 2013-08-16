@@ -32,10 +32,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @since 2.2
  */
-public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataProvider {
+public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ResourceBackedMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(ResourceBackedMetadataResolver.class);
 
     /** Resource from which metadata is read. */
     private Resource metadataResource;
@@ -55,7 +55,7 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
      * 
      * @deprecated
      */
-    public ResourceBackedMetadataProvider(Resource resource, Timer timer, long maxMetadataCacheDuration)
+    public ResourceBackedMetadataResolver(Resource resource, Timer timer, long maxMetadataCacheDuration)
             throws ResolverException {
         super(timer);
 
@@ -77,7 +77,7 @@ public class ResourceBackedMetadataProvider extends AbstractReloadingMetadataPro
      * 
      * @throws ResolverException thrown if there is a problem retrieving information about the resource
      */
-    public ResourceBackedMetadataProvider(Timer timer, Resource resource) throws ResolverException {
+    public ResourceBackedMetadataResolver(Timer timer, Resource resource) throws ResolverException {
         super(timer);
 
         try {

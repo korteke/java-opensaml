@@ -26,16 +26,16 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.metadata.resolver.filter.impl.SchemaValidationFilter;
-import org.opensaml.saml.metadata.resolver.impl.ChainingMetadataProvider;
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.ChainingMetadataResolver;
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
+public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
 
-    private ChainingMetadataProvider metadataProvider;
+    private ChainingMetadataResolver metadataProvider;
 
     private String entityID;
 
@@ -47,20 +47,20 @@ public class ChainingMetadataProviderTest extends XMLObjectBaseTestCase {
         entityID = "urn:mace:incommon:washington.edu";
         entityID2 = "urn:mace:switch.ch:SWITCHaai:ethz.ch";
 
-        metadataProvider = new ChainingMetadataProvider();
+        metadataProvider = new ChainingMetadataResolver();
 
-        URL mdURL = FilesystemMetadataProviderTest.class
+        URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         File mdFile = new File(mdURL.toURI());
-        FilesystemMetadataProvider fileProvider = new FilesystemMetadataProvider(mdFile);
+        FilesystemMetadataResolver fileProvider = new FilesystemMetadataResolver(mdFile);
         fileProvider.setParserPool(parserPool);
         fileProvider.initialize();
         metadataProvider.addMetadataProvider(fileProvider);
 
-        URL mdURL2 = FilesystemMetadataProviderTest.class
+        URL mdURL2 = FilesystemMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
         File mdFile2 = new File(mdURL2.toURI());
-        FilesystemMetadataProvider fileProvider2 = new FilesystemMetadataProvider(mdFile2);
+        FilesystemMetadataResolver fileProvider2 = new FilesystemMetadataResolver(mdFile2);
         fileProvider2.setParserPool(parserPool);
         fileProvider2.initialize();
         metadataProvider.addMetadataProvider(fileProvider2);

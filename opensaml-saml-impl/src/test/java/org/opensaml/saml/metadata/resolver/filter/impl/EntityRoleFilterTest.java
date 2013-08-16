@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.filter.impl.EntityRoleFilter;
-import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
@@ -49,7 +49,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         ArrayList<QName> retainedRoles = new ArrayList<QName>();
         retainedRoles.add(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
-        HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
+        HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(inCommonMDURL, 1000 * 5);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.initialize();
@@ -61,7 +61,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         retainedRoles.add(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         retainedRoles.add(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME);
 
-        HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
+        HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(inCommonMDURL, 1000 * 5);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.initialize();
@@ -71,7 +71,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     public void testWhiteListNoRole() throws Exception {
         ArrayList<QName> retainedRoles = new ArrayList<QName>();
 
-        HTTPMetadataProvider metadataProvider = new HTTPMetadataProvider(inCommonMDURL, 1000 * 5);
+        HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(inCommonMDURL, 1000 * 5);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.initialize();

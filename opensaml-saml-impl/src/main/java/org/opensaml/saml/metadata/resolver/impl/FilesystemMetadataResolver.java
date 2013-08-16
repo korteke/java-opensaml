@@ -44,10 +44,10 @@ import org.slf4j.LoggerFactory;
  * expires.
  * 
  */
-public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvider {
+public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(FilesystemMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(FilesystemMetadataResolver.class);
 
     /** The metadata file. */
     private File metadataFile;
@@ -59,7 +59,7 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
      * 
      * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataProvider(File metadata) throws ResolverException {
+    public FilesystemMetadataResolver(File metadata) throws ResolverException {
         super();
         setMetadataFile(metadata);
     }
@@ -72,7 +72,7 @@ public class FilesystemMetadataProvider extends AbstractReloadingMetadataProvide
      * 
      * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataProvider(Timer backgroundTaskTimer, File metadata) throws ResolverException {
+    public FilesystemMetadataResolver(Timer backgroundTaskTimer, File metadata) throws ResolverException {
         super(backgroundTaskTimer);
         setMetadataFile(metadata);
     }

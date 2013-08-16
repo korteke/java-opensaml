@@ -51,10 +51,10 @@ import org.w3c.dom.Document;
  * 1.0 and a min refresh delay that is not overly large, this refresh will likely occur a few times before the cache
  * expires.
  */
-public abstract class AbstractReloadingMetadataProvider extends AbstractMetadataProvider {
+public abstract class AbstractReloadingMetadataResolver extends AbstractMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractReloadingMetadataProvider.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractReloadingMetadataResolver.class);
 
     /** Timer used to schedule background metadata update tasks. */
     private Timer taskTimer;
@@ -93,7 +93,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractMetadata
     private XMLObject cachedMetadata;
 
     /** Constructor. */
-    protected AbstractReloadingMetadataProvider() {
+    protected AbstractReloadingMetadataResolver() {
         taskTimer = new Timer(true);
         createdOwnTaskTimer = true;
     }
@@ -103,7 +103,7 @@ public abstract class AbstractReloadingMetadataProvider extends AbstractMetadata
      * 
      * @param backgroundTaskTimer time used to schedule background refresh tasks
      */
-    protected AbstractReloadingMetadataProvider(Timer backgroundTaskTimer) {
+    protected AbstractReloadingMetadataResolver(Timer backgroundTaskTimer) {
         if (backgroundTaskTimer == null) {
             throw new IllegalArgumentException("Task timer may not be null");
         }

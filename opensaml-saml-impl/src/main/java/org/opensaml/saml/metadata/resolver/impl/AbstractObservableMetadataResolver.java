@@ -25,15 +25,15 @@ import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 
 /**
  * An observable base implementation of metadata providers. An observer that clears the descriptor index kept by
- * {@link AbstractMetadataProvider} is registered during construction time.
+ * {@link AbstractMetadataResolver} is registered during construction time.
  */
-public abstract class AbstractObservableMetadataProvider implements ObservableMetadataProvider {
+public abstract class AbstractObservableMetadataResolver implements ObservableMetadataResolver {
 
     /** List of registered observers. */
     private List<Observer> observers;
 
     /** Constructor. */
-    public AbstractObservableMetadataProvider() {
+    public AbstractObservableMetadataResolver() {
         super();
         observers = new CopyOnWriteArrayList<Observer>();
         observers.add(new DescriptorIndexClearingObserver());
@@ -52,7 +52,7 @@ public abstract class AbstractObservableMetadataProvider implements ObservableMe
     }    
 
     /**
-     * Helper method for calling {@link ObservableMetadataProvider.Observer#onEvent(MetadataProvider)}
+     * Helper method for calling {@link ObservableMetadataResolver.Observer#onEvent(MetadataProvider)}
      * on every registered Observer passing in this provider.
      */
     protected void emitChangeEvent() {
@@ -72,7 +72,7 @@ public abstract class AbstractObservableMetadataProvider implements ObservableMe
 
         /** {@inheritDoc} */
         public void onEvent(MetadataProvider provider) {
-            ((AbstractMetadataProvider) provider).clearDescriptorIndex();
+            ((AbstractMetadataResolver) provider).clearDescriptorIndex();
         }
     }
 }

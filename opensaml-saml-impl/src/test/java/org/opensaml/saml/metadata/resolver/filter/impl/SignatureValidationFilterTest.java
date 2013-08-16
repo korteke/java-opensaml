@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.impl.SignatureValidationFilter;
-import org.opensaml.saml.metadata.resolver.impl.DOMMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
@@ -186,7 +186,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         
-        DOMMetadataProvider mdProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
+        DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
         mdProvider.setRequireValidMetadata(false);
         
@@ -213,7 +213,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         
-        DOMMetadataProvider mdProvider = new DOMMetadataProvider(mdDoc.getDocumentElement());
+        DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
         mdProvider.setRequireValidMetadata(false);
         

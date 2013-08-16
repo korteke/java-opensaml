@@ -27,16 +27,16 @@ import net.shibboleth.utilities.java.support.resource.FilesystemResource;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
-import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataProvider;
+import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/** Unit test for {@link ResourceBackedMetadataProvider}. */
-public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
+/** Unit test for {@link ResourceBackedMetadataResolver}. */
+public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
 
-    private ResourceBackedMetadataProvider metadataProvider;
+    private ResourceBackedMetadataResolver metadataProvider;
 
     private String entityID;
 
@@ -47,12 +47,12 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";
 
-        URL mdURL = ResourceBackedMetadataProviderTest.class
+        URL mdURL = ResourceBackedMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         FilesystemResource mdResource = new FilesystemResource(new File(mdURL.toURI()).getAbsolutePath());
         mdResource.initialize();
 
-        metadataProvider = new ResourceBackedMetadataProvider(new Timer(), mdResource);
+        metadataProvider = new ResourceBackedMetadataResolver(new Timer(), mdResource);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMaxRefreshDelay(500000);
         metadataProvider.initialize();
@@ -61,7 +61,7 @@ public class ResourceBackedMetadataProviderTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Tests the {@link ResourceBackedMetadataProvider#getEntityDescriptor(String)} method.
+     * Tests the {@link ResourceBackedMetadataResolver#getEntityDescriptor(String)} method.
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
