@@ -24,6 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
+
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
 import org.w3c.dom.Element;
@@ -280,5 +282,20 @@ public interface XMLObject {
      * @param newNil whether the object's content model is expressed as null
      */
     public void setNil(@Nullable final XSBooleanValue newNil);
+    
+    
+    /**
+     * Get the mutable multimap which holds additional information (represented by plain Java object instances)
+     * associated with this XMLObject.
+     * 
+     * <p>
+     * Objects added to this multimap will be indexed and retrievable by their concrete {@link Class}
+     * as well as by the {@link Class} types representing all superclasses (excluding <code>java.lang.Object</code>) 
+     * and all implemented interfaces.
+     * </p>
+     * 
+     * @return the class-to-instance multimap
+     */
+    @Nonnull public ClassToInstanceMultiMap<Object> getObjectMetadata();
 
 }

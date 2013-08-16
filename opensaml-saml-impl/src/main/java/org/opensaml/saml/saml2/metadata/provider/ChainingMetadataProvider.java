@@ -28,6 +28,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -519,6 +520,12 @@ public class ChainingMetadataProvider extends BaseMetadataProvider {
         /** {@inheritDoc} */
         public void setNil(XSBooleanValue arg0) {
             // do nothing
+        }
+
+        /** {@inheritDoc} */
+        @Nonnull public ClassToInstanceMultiMap<Object> getObjectMetadata() {
+            // TODO Auto-generated method stub
+            return null;
         }
 
     }
