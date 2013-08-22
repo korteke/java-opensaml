@@ -33,7 +33,6 @@ public class ThreadLocalConfigurationPropertiesSourceTest {
     /** The source test to test. */
     private ConfigurationPropertiesSource source;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Properties props = new Properties();
@@ -44,7 +43,6 @@ public class ThreadLocalConfigurationPropertiesSourceTest {
         ThreadLocalConfigurationPropertiesHolder.setProperties(props);
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() throws Exception {
         ThreadLocalConfigurationPropertiesHolder.clear();

@@ -52,13 +52,11 @@ public class FilesystemConfigurationPropertiesSourceTest {
         System.out.println(targetFile.getAbsolutePath()); 
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Files.copy(masterFile, targetFile);
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() throws Exception {
         if (targetFile.exists()) {

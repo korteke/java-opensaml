@@ -42,7 +42,6 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
     private QName expectedXMLObjectQName;
     private Integer expectedValue;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception{
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsInteger.xml";

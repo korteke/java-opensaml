@@ -29,7 +29,6 @@ import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolde
  */
 public abstract class InitializerBaseTestCase {
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Properties props = new Properties();
@@ -39,7 +38,6 @@ public abstract class InitializerBaseTestCase {
         ThreadLocalConfigurationPropertiesHolder.setProperties(props);
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() throws Exception {
         ThreadLocalConfigurationPropertiesHolder.clear();

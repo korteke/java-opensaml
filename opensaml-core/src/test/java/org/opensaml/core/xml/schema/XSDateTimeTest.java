@@ -43,7 +43,6 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     private QName expectedXMLObjectQName;
     private DateTime expectedValue;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception{
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");

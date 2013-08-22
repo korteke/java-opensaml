@@ -20,7 +20,7 @@ package org.opensaml.core.xml.schema.impl;
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSBoolean;
 
-/** Builder of {@link org.opensaml.xml.schema.impl.XSBooleanImpl} objects. */
+/** Builder of {@link XSBooleanImpl} objects. */
 public class XSBooleanBuilder extends AbstractXMLObjectBuilder<XSBoolean> {
 
     /** {@inheritDoc} */

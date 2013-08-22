@@ -42,7 +42,6 @@ public class XSStringTest extends XMLObjectBaseTestCase {
     private QName expectedXMLObjectQName;
     private String expectedValue;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception{
         testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsString.xml";

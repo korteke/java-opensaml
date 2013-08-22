@@ -24,7 +24,7 @@ import org.opensaml.core.xml.schema.XSBoolean;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.w3c.dom.Attr;
 
-/** Thread-safe unmarshaller for {@link org.opensaml.xml.schema.XSBoolean} objects. */
+/** Thread-safe unmarshaller for {@link XSBoolean} objects. */
 public class XSBooleanUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */

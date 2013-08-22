@@ -65,7 +65,6 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     public NamespaceManagerTest() {
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         xsAnyBuilder = builderFactory.getBuilder(XSAny.TYPE_NAME);
