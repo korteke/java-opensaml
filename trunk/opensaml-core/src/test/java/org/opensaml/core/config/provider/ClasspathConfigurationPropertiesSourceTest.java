@@ -37,12 +37,10 @@ public class ClasspathConfigurationPropertiesSourceTest {
     public ClasspathConfigurationPropertiesSourceTest() {
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() throws Exception {
     }

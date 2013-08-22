@@ -158,7 +158,6 @@ public class ConfigurationTest {
         simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Properties props = new Properties();
@@ -168,7 +167,6 @@ public class ConfigurationTest {
         ConfigurationService.register(XMLObjectProviderRegistry.class, new XMLObjectProviderRegistry());
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() throws Exception {
         ConfigurationService.deregister(XMLObjectProviderRegistry.class);

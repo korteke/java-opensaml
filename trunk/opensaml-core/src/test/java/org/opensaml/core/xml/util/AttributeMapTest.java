@@ -61,7 +61,6 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
     public AttributeMapTest() {
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         xsAnyBuilder = builderFactory.getBuilder(XSAny.TYPE_NAME);

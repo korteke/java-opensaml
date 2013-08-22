@@ -72,7 +72,6 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     /** QName for SimpleXMLObject */
     protected static QName simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
 
-    /** {@inheritDoc} */
     @BeforeClass
 	protected void initXMLObjectSupport() throws Exception {
         XMLUnit.setIgnoreWhitespace(true);
@@ -129,7 +128,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     /**
      * Builds the requested XMLObject.
      * 
-     * @param objectQName name of the XMLObject
+     * @param name name of the XMLObject
      * 
      * @return the build XMLObject
      */

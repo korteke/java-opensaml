@@ -25,7 +25,7 @@ import org.opensaml.core.xml.schema.XSBoolean;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
 
-/** Concrete implementation of {@link org.opensaml.xml.schema.XSBoolean}. */
+/** Concrete implementation of {@link XSBoolean}. */
 public class XSBooleanImpl extends AbstractXMLObject implements XSBoolean {
 
     /** Value of this string element. */

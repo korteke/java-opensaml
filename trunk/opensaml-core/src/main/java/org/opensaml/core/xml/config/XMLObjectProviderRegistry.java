@@ -41,12 +41,13 @@ import org.w3c.dom.Element;
  * including builders, marshallers and unmarshallers.
  * 
  * <p>
- * The registry instance to use would typically be retrieved from the {@link ConfigurationService}.
+ * The registry instance to use would typically be retrieved from the
+ * {@link org.opensaml.core.config.ConfigurationService}.
  * </p>
  * 
  */
 public class XMLObjectProviderRegistry {
-
+    
     /** Default object provider. */
     private static QName defaultProvider = new QName(XMLConfigurator.XMLTOOLING_CONFIG_NS,
             XMLConfigurator.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);

@@ -31,7 +31,6 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
  */
 public class InitializationServiceTest {
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Properties props = new Properties();
@@ -41,7 +40,6 @@ public class InitializationServiceTest {
         ThreadLocalConfigurationPropertiesHolder.setProperties(props);
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() throws Exception {
         ThreadLocalConfigurationPropertiesHolder.clear();

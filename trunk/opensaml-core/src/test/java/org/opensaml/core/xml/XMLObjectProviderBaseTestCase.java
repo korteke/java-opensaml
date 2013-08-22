@@ -53,7 +53,6 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     /** The expected result of a marshalled single element with child elements */
     protected Document expectedChildElementsDOM;
 
-    /** {@inheritDoc} */
     @BeforeClass
 	protected void initXMLObjectProviderTestingSupprt() throws Exception {
         if (singleElementFile != null) {
