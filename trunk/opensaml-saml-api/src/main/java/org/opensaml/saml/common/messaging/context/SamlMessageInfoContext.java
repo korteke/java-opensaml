@@ -26,7 +26,7 @@ import org.opensaml.saml.common.SAMLObject;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-/** A {@link Context} intended to be used as a subcontext of a {@link MessageContext}  that carries 
+/** A context intended to be used as a subcontext of a {@link MessageContext}  that carries 
  * some basic information about the SAML message.
  * 
  * <p>

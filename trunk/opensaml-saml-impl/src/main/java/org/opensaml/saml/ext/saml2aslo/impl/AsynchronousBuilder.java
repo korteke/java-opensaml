@@ -27,7 +27,7 @@ import org.opensaml.saml.ext.saml2aslo.Asynchronous;
 
 
 /**
- * A Builder for {@link org.opensaml.samlext.saml2aslo.impl.AsynchronousImpl} objects.
+ * A Builder for {@link AsynchronousImpl} objects.
  */
 public class AsynchronousBuilder extends AbstractSAMLObjectBuilder<Asynchronous> {
 

@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
-/** A set of {com.google.common.base.Function}s used to navigate and lookup data from a tree of {@link BaseContext}s. */
+/**
+ * A set of {@link com.google.common.base.Function}s used to navigate and lookup data
+ * from a tree of {@link org.opensaml.messaging.context.BaseContext}s.
+ */
 
 package org.opensaml.messaging.context.navigate;

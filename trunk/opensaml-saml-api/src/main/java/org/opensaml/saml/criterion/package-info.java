@@ -15,6 +15,6 @@
  * limitations under the License.
  */
 
-/** {@link org.opensaml.util.criteria.Criterion} based on SAML message/protocol information. */
+/** {@link net.shibboleth.utilities.java.support.resolver.Criterion} based on SAML message/protocol information. */
 
 package org.opensaml.saml.criterion;
