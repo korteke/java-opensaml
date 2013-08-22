@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 /**
- * Abstract implementation of {@link HttpServletResponseMessageDecoder}.
+ * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */

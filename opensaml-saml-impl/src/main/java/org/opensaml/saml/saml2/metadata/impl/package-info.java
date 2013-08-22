@@ -17,7 +17,7 @@
 
 /**
  * 
- * Concrete implementations of the {@link org.opensaml.saml.saml2.metadata} APIs.
+ * Concrete implementations of the metadata APIs.
  * 
  * Information on using this library can be found in the 
  * <a href="https://wiki.shibboleth.net/confluence/display/SHIB/OSTwoUserManual">User's Manual</a>

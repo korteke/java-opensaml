@@ -28,8 +28,8 @@ public final class EventIds {
     public static final String IO_ERROR = "InputOutputError";
     
     /**
-     * ID of event returned if the {@link ProfileRequestContext} associated with the current request is missing or
-     * corrupt in some way.
+     * ID of event returned if the {@link org.opensaml.profile.context.ProfileRequestContext} associated with the
+     * current request is missing or corrupt in some way.
      */
     public static final String INVALID_PROFILE_CTX = "InvalidProfileContext";
 

@@ -28,7 +28,7 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.ext.saml2aslo.Asynchronous;
 
 /**
- * Concrete implementation of {@link org.opensaml.samlext.saml2aslo.Asynchronous}.
+ * Concrete implementation of {@link Asynchronous}.
  */
 public class AsynchronousImpl extends AbstractSAMLObject implements Asynchronous {
 

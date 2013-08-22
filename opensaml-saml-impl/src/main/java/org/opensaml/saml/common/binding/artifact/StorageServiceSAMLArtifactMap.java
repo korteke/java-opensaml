@@ -133,7 +133,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
      * Set the map entry factory.
      * 
      * <p>In addition to implementing the {@link SAMLArtifactMapEntryFactory} interface, the
-     * injected object must support the {@link StorageSerializer<SAMLArtifactMapEntry>} interface
+     * injected object must support the {@link StorageSerializer} interface
      * to enable entries to be stored via the injected {@link StorageService} instance.</p> 
      * 
      * @param factory map entry factory

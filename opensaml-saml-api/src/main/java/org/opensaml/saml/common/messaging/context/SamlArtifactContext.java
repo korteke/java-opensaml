@@ -86,7 +86,7 @@ public class SamlArtifactContext extends BaseContext {
     /**
      * Set the source attribute resolution service endpoint URL.
      * 
-     * @param sourceAttributeResolutionServiceEndpointUrl the new URL
+     * @param url the new URL
      */
     public void setSourceAttributeResolutionServiceEndpointUrl(@Nullable final String url) {
         sourceAttributeResolutionServiceEndpointUrl = url;

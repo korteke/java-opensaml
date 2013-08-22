@@ -19,7 +19,7 @@ package org.opensaml.messaging.context;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-/** A {@link Context} intended to be used as a subcontext of a {@link MessageContext}  that carries 
+/** A context intended to be used as a subcontext of a {@link MessageContext}  that carries 
  * some basic metadata about the message. */
 public class BasicMessageMetadataContext extends BaseContext {
 
