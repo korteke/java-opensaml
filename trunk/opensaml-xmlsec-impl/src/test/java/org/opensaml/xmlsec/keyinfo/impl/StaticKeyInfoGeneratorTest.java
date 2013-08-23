@@ -59,7 +59,6 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         expectedKeyAlgorithm = "RSA";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         origKeyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);

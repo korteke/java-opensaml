@@ -40,7 +40,6 @@ public class X509IssuerNameTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedStringContent = "someX509IssuerName";

@@ -22,7 +22,8 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 /**
- * A resolver which uses {@link Criterion} to resolve and return instances of {@link Credential}.
+ * A resolver which uses {@link net.shibboleth.utilities.java.support.resolver.Criterion}
+ * to resolve and return instances of {@link Credential}.
  */
 public interface CredentialResolver extends Resolver<Credential, CriteriaSet>{
     

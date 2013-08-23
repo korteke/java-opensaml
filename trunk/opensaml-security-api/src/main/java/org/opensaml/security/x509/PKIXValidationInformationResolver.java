@@ -26,10 +26,10 @@ import net.shibboleth.utilities.java.support.resolver.Resolver;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
- * A resolver which uses {@link Criterion} to resolve {@link PKIXValidationInformation}, which will typically
- * be used by PKIX-based trust engines.
+ * A resolver which uses {@link net.shibboleth.utilities.java.support.resolver.Criterion} to resolve
+ * {@link PKIXValidationInformation}, which will typically be used by PKIX-based trust engines.
  * 
- * Implementations may also optionally implement {@link #resolveTrustedNames(CriteriaSet)}, which will 
+ * Implementations must also implement {@link #resolveTrustedNames(CriteriaSet)}, which will 
  * return a set of trusted names associated with the entity implied by the criteria.  These trusted names
  * may be used to validate (in an application-specific manner) that an entity is trusted to wield a particular
  * certificate.

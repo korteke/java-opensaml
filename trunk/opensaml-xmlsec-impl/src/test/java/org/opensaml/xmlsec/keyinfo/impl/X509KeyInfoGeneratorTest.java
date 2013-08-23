@@ -147,7 +147,6 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
             + "/XlfFLgY5EBTanyOk5yycU/l+6P1RBhJZDPicp3iWVsjYHYWS+ovdyWuL7RrLRMb"
             + "zecnCa5eIhSevoMYUkg4h9ckAZUQeHsK08gB/dFh";
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         factory = new X509KeyInfoGeneratorFactory();

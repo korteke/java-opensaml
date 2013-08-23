@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyPair;
@@ -99,7 +98,6 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         kekURIAES = EncryptionConstants.ALGO_ID_KEYWRAP_AES128;
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         encrypter = new Encrypter();

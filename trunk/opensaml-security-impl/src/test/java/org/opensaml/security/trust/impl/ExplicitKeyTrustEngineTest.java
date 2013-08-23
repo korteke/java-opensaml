@@ -128,7 +128,6 @@ public class ExplicitKeyTrustEngineTest {
     
     private CriteriaSet criteriaSet;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityPubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);

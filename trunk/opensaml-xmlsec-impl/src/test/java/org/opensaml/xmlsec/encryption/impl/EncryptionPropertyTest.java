@@ -53,7 +53,6 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionPropertyChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedTarget = "urn:string:foo";

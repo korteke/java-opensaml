@@ -42,7 +42,6 @@ public class EvaluableKeyLengthCredentialCriterionTest {
         keyLength = 128;
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         credential = new BasicCredential(KeySupport.generateKey(keyAlgo, keyLength, null));

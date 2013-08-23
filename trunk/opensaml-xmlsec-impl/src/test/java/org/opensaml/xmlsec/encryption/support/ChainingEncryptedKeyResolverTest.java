@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,6 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     private ChainingEncryptedKeyResolver resolver;
     
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         resolver = new ChainingEncryptedKeyResolver();

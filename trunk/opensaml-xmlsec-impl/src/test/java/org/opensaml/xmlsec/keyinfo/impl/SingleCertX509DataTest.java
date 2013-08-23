@@ -83,7 +83,6 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
         "rtpJVZqXa9Z1LPYjMZcfyC/jSgGMSSpl/7wCiU8ElDQvWOVsU8EtSM7UjgSWu+g=";
 
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();

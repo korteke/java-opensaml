@@ -42,7 +42,6 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBigIntegerContent = new BigInteger("123456789");

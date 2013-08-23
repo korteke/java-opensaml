@@ -67,7 +67,6 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
     /** Signature algorithm URI. */
     private String algoURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);

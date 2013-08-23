@@ -94,7 +94,6 @@ public class LDAPStorageServiceTest {
                 "ldap://localhost:10389")));
     }
 
-    /** {@inheritDoc} */
     @Nonnull protected StorageService getStorageService() {
         LDAPStorageService ss = new LDAPStorageService(
                 getPooledConnectionFactory(),

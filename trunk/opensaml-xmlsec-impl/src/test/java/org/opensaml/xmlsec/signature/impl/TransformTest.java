@@ -44,7 +44,6 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/TransformChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAlgorithm = "urn:string:foo";

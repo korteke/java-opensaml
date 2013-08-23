@@ -43,7 +43,6 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionPropertiesChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedID = "someID";

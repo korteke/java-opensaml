@@ -49,7 +49,6 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/KeyInfoChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedID = "abc123";

@@ -40,7 +40,6 @@ public class SeedTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedCryptoBinaryContent = "someCryptoBinaryValue";

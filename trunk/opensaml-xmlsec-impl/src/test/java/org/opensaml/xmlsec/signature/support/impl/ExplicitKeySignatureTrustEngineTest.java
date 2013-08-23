@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.signature.support.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -153,7 +152,6 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         signingEntityID = "signing-entity-ID";

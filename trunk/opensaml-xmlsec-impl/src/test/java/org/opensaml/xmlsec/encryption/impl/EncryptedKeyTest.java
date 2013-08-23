@@ -55,7 +55,6 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedKeyChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedId = "abc123";

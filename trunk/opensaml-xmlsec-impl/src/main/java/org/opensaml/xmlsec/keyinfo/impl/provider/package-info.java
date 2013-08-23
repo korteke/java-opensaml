@@ -16,10 +16,10 @@
  */
 
 /**
- * Specific implementations of {@link org.opensaml.security.keyinfo.KeyInfoProvider}.
+ * Specific implementations of {@link org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider}.
  * 
  * <p>KeyInfo providers, when used in conjunction with a
- * {@link org.opensaml.security.keyinfo.KeyInfoCredentialResolver}, extract typed credential
+ * {@link org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver}, extract typed credential
  * information from a KeyInfo object.</p>
  */
 package org.opensaml.xmlsec.keyinfo.impl.provider;

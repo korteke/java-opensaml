@@ -17,6 +17,7 @@
 
 package org.opensaml.security.credential.impl;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,14 +32,14 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 
 /**
- * An abstract implementation of {@link CredentialResolver} which filters the returned Credentials
- * based on the instances of {@link EvaluableCredentialCriterion} which are present in the set of
- * criteria, or which are obtained via lookup in the {@link EvaluableCredentialCriteriaRegistry}.
+ * An abstract implementation of {@link org.opensaml.security.credential.CredentialResolver} that
+ * filters the returned Credentials based on the instances of {@link EvaluableCredentialCriterion}
+ * which are present in the set of criteria, or which are obtained via lookup in the
+ * {@link EvaluableCredentialCriteriaRegistry}.
  */
 public abstract class AbstractCriteriaFilteringCredentialResolver extends AbstractCredentialResolver {
     
@@ -73,7 +74,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * Get whether all {@link EvaluableCredentialCriterion} must be met to return
      * a credential, or only one or more evaluable criteria.
      * 
-     * See also {@link CriteriaFilteringIterator}.
+     * See also {@link net.shibboleth.utilities.java.support.resolver.CriteriaFilteringIterator}.
      * 
      * @return Returns the meetAllCriteria flag.
      */
@@ -85,11 +86,11 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * Set whether all {@link EvaluableCredentialCriterion} must be met to return
      * a credential, or only one or more evaluable criteria.
      * 
-     * See also {@link CriteriaFilteringIterator}.
+     * See also {@link net.shibboleth.utilities.java.support.resolver.CriteriaFilteringIterator}.
      * 
      * @param flag the new meetAllCriteria flag value.
      */
-    public void setMeetAllCriteria(boolean flag) {
+    public void setMeetAllCriteria(final boolean flag) {
         meetAllCriteria = flag;
     }
 
@@ -98,7 +99,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * an {@link EvaluableCredentialCriterion} is unable to evaluate
      * a Credential.
      * 
-     * See also {@link CriteriaFilteringIterator}.
+     * See also {@link net.shibboleth.utilities.java.support.resolver.CriteriaFilteringIterator}.
      * 
      * @return Returns the unevaluableSatisfies flag.
      */
@@ -111,11 +112,11 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * an {@link EvaluableCredentialCriterion} is unable to evaluate
      * a Credential.
      * 
-     * See also {@link CriteriaFilteringIterator}.
+     * See also {@link net.shibboleth.utilities.java.support.resolver.CriteriaFilteringIterator}.
      * 
      * @param flag the new unevaluableSatisfies flag value.
      */
-    public void setUnevaluableSatisfies(boolean flag) {
+    public void setUnevaluableSatisfies(final boolean flag) {
         unevaluableSatisfies = flag;
     }
 
@@ -127,7 +128,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * @return an Iterable for the resolved set of credentials
      * @throws ResolverException thrown if there is an error resolving credentials from the credential source
      */
-    @Nonnull protected abstract Iterable<Credential> resolveFromSource(@Nullable CriteriaSet criteriaSet)
+    @Nonnull protected abstract Iterable<Credential> resolveFromSource(@Nullable final CriteriaSet criteriaSet)
         throws ResolverException;
 
     /**
@@ -138,7 +139,11 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * @throws ResolverException thrown if there is an error obtaining an instance of EvaluableCredentialCriterion
      *                           from the EvaluableCredentialCriteriaRegistry
      */
-    private Set<EvaluableCriterion<Credential>> getEvaluableCriteria(CriteriaSet criteriaSet) throws ResolverException {
+    private Set<EvaluableCriterion<Credential>> getEvaluableCriteria(@Nullable final CriteriaSet criteriaSet)
+            throws ResolverException {
+        if (criteriaSet == null) {
+            return Collections.emptySet();
+        }
         Set<EvaluableCriterion<Credential>> evaluable = new HashSet<EvaluableCriterion<Credential>>(criteriaSet.size());
         for (Criterion criteria : criteriaSet) {
             if (criteria instanceof EvaluableCredentialCriterion) {

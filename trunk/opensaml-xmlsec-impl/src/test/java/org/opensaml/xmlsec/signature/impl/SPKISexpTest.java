@@ -40,7 +40,6 @@ public class SPKISexpTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedStringContent = "someSPKISexp";

@@ -63,7 +63,6 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
     
     private String subjectCN;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         subjectCN = "foo.example.org";

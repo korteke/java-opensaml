@@ -40,7 +40,6 @@ public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedStringContent = "someKeyName";

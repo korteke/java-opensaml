@@ -42,7 +42,6 @@ public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/DataReferenceChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedURI = "urn:string:foo";

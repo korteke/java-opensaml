@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.signature.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.util.List;
 
@@ -89,7 +88,6 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     /** Signature algorithm URI. */
     private String algoURI = SignatureConstants.ALGO_ID_MAC_HMAC_SHA1;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         hmacOutputLength = new Integer(160);

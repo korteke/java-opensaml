@@ -94,7 +94,6 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     private byte[] rawSignature;
     private Credential rawCandidateCred;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         subjectCN = "foo.example.org";

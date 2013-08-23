@@ -40,7 +40,6 @@ public class KeySizeTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedIntegerContent = 256;

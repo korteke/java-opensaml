@@ -212,7 +212,6 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         super();
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         xmlCert1 = (X509Certificate) buildXMLObject(X509Certificate.DEFAULT_ELEMENT_NAME);

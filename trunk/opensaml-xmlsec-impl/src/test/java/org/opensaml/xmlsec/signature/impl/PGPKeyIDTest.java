@@ -40,7 +40,6 @@ public class PGPKeyIDTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedStringContent = "somePGPKeyID";

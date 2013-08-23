@@ -16,13 +16,12 @@
  */
 
 /**
- * <p>Implementations of {@link org.opensaml.security.EvaluableCriteria} where the parameterized 
- * evaluation target type is {@link org.opensaml.security.credential.Credential}. This is also represented
- * by the marker interface {@link org.opensaml.security.credential.criteria.EvaluableCredentialCriterion}.</p> 
+ * <p>Implementations of {@link net.shibboleth.utilities.java.support.resolver.EvaluableCriterion} where the
+ * parameterized evaluation target type is {@link org.opensaml.security.credential.Credential}. This is also represented
+ * by the marker interface EvaluableCredentialCriterion.</p> 
  * 
- * <p>Also contains {@link org.opensaml.security.credential.criteria.EvaluableCredentialCriteriaRegistry},
- * which is capable of looking up and returning a particular implementation of EvaluableCredentialCriteria
- * which should be used to evaluate a given (non-evaluable) {@link org.opensaml.security.Criteria} against
- * a Credential.</p>
+ * <p>Also contains EvaluableCredentialCriteriaRegistry, which is capable of looking up and returning a
+ * particular implementation of EvaluableCredentialCriterion which should be used to evaluate a given (non-evaluable)
+ * {@link net.shibboleth.utilities.java.support.resolver.Criterion} against a Credential.</p>
  */
 package org.opensaml.security.credential.criteria.impl;

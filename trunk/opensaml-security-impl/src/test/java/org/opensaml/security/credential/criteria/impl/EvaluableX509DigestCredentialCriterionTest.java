@@ -77,7 +77,6 @@ public class EvaluableX509DigestCredentialCriterionTest {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityCert = X509Support.decodeCertificate(entityCertBase64);

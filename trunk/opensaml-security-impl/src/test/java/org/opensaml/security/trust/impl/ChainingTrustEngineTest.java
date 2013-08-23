@@ -39,7 +39,6 @@ public class ChainingTrustEngineTest {
     
     private FooToken token;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         
