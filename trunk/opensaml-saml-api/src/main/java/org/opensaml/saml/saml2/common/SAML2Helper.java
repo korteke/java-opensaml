@@ -19,10 +19,19 @@ package org.opensaml.saml.saml2.common;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 
-public class SAML2Helper {
+/**
+ * Utility class for common SAML 2 operations.
+ */
+public final class SAML2Helper {
+    
+    /** Private constructor to disallow instantiation. */
+    private SAML2Helper() { }
 
     /**
      * Checks to see if the given XMLObject is still valid. An XMLObject is valid if, and only if, itself and every
@@ -32,7 +41,7 @@ public class SAML2Helper {
      * 
      * @return true of the tree is valid, false if not
      */
-    public static boolean isValid(XMLObject xmlObject) {
+    public static boolean isValid(final XMLObject xmlObject) {
         if (xmlObject instanceof TimeBoundSAMLObject) {
             TimeBoundSAMLObject timeBoundObject = (TimeBoundSAMLObject) xmlObject;
             if (!timeBoundObject.isValid()) {
@@ -56,11 +65,11 @@ public class SAML2Helper {
      * <li>the shortest duration on a {@link CacheableSAMLObject} added to the current time</li>
      * </ul>
      * 
-     * @param xmlObject the XML object tree to get the earliest expiration time from
+     * @param xmlObject the XML object tree from which to get the earliest expiration time
      * 
      * @return the earliest expiration time
      */
-    public static DateTime getEarliestExpiration(XMLObject xmlObject) {
+    @Nullable public static DateTime getEarliestExpiration(@Nonnull final XMLObject xmlObject) {
         DateTime now = new DateTime();
         return getEarliestExpiration(xmlObject, null, now);
     }
@@ -68,44 +77,27 @@ public class SAML2Helper {
     /**
      * Gets the earliest expiration instant within a metadata tree.
      * 
-     * @param xmlObject the metadata
-     * @param earliestExpiration the earliest expiration instant
+     * @param xmlObject the target XMLObject to evaluate
+     * @param candidateTime the candidate earliest expiration instant
      * @param now when this method was called
      * 
-     * @return the earliest expiration instant within a metadata tree
+     * @return the earliest expiration instant within a metadata tree. May be null if the input candiateTime 
+     *          was null, otherwise will always be non-null.
      */
-    public static DateTime getEarliestExpiration(XMLObject xmlObject, DateTime earliestExpiration, DateTime now) {
-
-        // expiration time for a specific element
-        DateTime elementExpirationTime;
+    @Nullable public static DateTime getEarliestExpiration(@Nonnull final XMLObject xmlObject, 
+            @Nullable DateTime candidateTime, @Nonnull DateTime now) {
+        
+        DateTime earliestExpiration = candidateTime;
 
         // Test duration based times
         if (xmlObject instanceof CacheableSAMLObject) {
-            CacheableSAMLObject cacheInfo = (CacheableSAMLObject) xmlObject;
-
-            if (cacheInfo.getCacheDuration() != null && cacheInfo.getCacheDuration().longValue() > 0) {
-                elementExpirationTime = now.plus(cacheInfo.getCacheDuration().longValue());
-                if (earliestExpiration == null) {
-                    earliestExpiration = elementExpirationTime;
-                } else {
-                    if (elementExpirationTime != null && elementExpirationTime.isBefore(earliestExpiration)) {
-                        earliestExpiration = elementExpirationTime;
-                    }
-                }
-            }
+            earliestExpiration = getEarliestExpirationFromCacheable((CacheableSAMLObject)xmlObject, earliestExpiration, 
+                    now);
         }
 
         // Test instant based times
         if (xmlObject instanceof TimeBoundSAMLObject) {
-            TimeBoundSAMLObject timeBoundObject = (TimeBoundSAMLObject) xmlObject;
-            elementExpirationTime = timeBoundObject.getValidUntil();
-            if (earliestExpiration == null) {
-                earliestExpiration = elementExpirationTime;
-            } else {
-                if (elementExpirationTime != null && elementExpirationTime.isBefore(earliestExpiration)) {
-                    earliestExpiration = elementExpirationTime;
-                }
-            }
+            earliestExpiration = getEarliestExpirationFromTimeBound((TimeBoundSAMLObject)xmlObject, earliestExpiration);
         }
 
         // Inspect children
@@ -120,4 +112,62 @@ public class SAML2Helper {
 
         return earliestExpiration;
     }
+    
+    /**
+     * Gets the earliest effective expiration instant of the specified cacheable SAML object and the specified 
+     * candidate time.
+     * 
+     * @param cacheableObject the target XMLObject to evaluate
+     * @param candidateTime the candidate earliest expiration instant
+     * @param now when this method was called
+     * 
+     * @return the earliest effective expiration instant of the 2 targets. May be null if the input candiateTime 
+     *          was null, otherwise will always be non-null.
+     */
+    @Nullable public static DateTime getEarliestExpirationFromCacheable(@Nonnull CacheableSAMLObject cacheableObject, 
+            @Nullable DateTime candidateTime, @Nonnull DateTime now) {
+        
+        DateTime earliestExpiration = candidateTime;
+
+        if (cacheableObject.getCacheDuration() != null && cacheableObject.getCacheDuration().longValue() > 0) {
+            DateTime elementExpirationTime = now.plus(cacheableObject.getCacheDuration().longValue());
+            if (earliestExpiration == null) {
+                earliestExpiration = elementExpirationTime;
+            } else {
+                if (elementExpirationTime != null && elementExpirationTime.isBefore(earliestExpiration)) {
+                    earliestExpiration = elementExpirationTime;
+                }
+            }
+        }
+        
+        return earliestExpiration;
+    }
+    
+    /**
+     * Gets the earliest effective expiration instant of the specified time-bound SAML object and the specified 
+     * candidate time.
+     * 
+     * @param timeBoundObject the target XMLObject to evaluate
+     * @param candidateTime the earliest expiration instant
+     * 
+     * @return the earliest effective expiration instant of the 2 targets. May be null if the input candiateTime 
+     *          was null, otherwise will always be non-null.
+     */
+    @Nullable public static DateTime getEarliestExpirationFromTimeBound(@Nonnull TimeBoundSAMLObject timeBoundObject, 
+            @Nullable DateTime candidateTime) {
+        
+        DateTime earliestExpiration = candidateTime;
+        
+        DateTime elementExpirationTime = timeBoundObject.getValidUntil();
+        if (earliestExpiration == null) {
+            earliestExpiration = elementExpirationTime;
+        } else {
+            if (elementExpirationTime != null && elementExpirationTime.isBefore(earliestExpiration)) {
+                earliestExpiration = elementExpirationTime;
+            }
+        }
+        
+        return earliestExpiration;
+    }
+    
 }
