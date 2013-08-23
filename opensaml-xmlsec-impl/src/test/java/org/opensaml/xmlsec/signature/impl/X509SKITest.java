@@ -40,7 +40,6 @@ public class X509SKITest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedStringContent = "someX509SKI";

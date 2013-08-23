@@ -40,7 +40,6 @@ public class EvaluableKeyAlgorithmCredentialCriterionTest {
         keyAlgo = "RSA";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         credential = new BasicCredential(KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic());

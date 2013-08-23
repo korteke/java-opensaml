@@ -276,7 +276,7 @@ public class HttpSOAPClient implements SOAPClient {
      * @param httpMethod the HTTP method used to send the request and receive the response
      * @param context current operation context
      * 
-     * @throws SOAPClientException thrown if the response can not be read from the {@link PostMethod}
+     * @throws SOAPClientException thrown if the response can not be read from the {@link HttpPost}
      * @throws SOAPFaultException an exception containing the SOAP fault
      */
     protected void processFaultResponse(HttpPost httpMethod, InOutOperationContext context)

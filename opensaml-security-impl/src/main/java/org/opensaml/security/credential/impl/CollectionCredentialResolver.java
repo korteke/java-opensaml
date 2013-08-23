@@ -27,16 +27,16 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
 
 /**
- * An implementation of {@link CredentialResolver} which uses a {@link Collection} as the
- * underlying credential source.
+ * An implementation of {@link org.opensaml.security.credential.CredentialResolver} that
+ * uses a {@link Collection} as the underlying credential source.
  * 
  * <p>
  * The credentials returned are filtered based on any
- * {@link EvaluableCredentialCriterion} which may have been present in the specified criteria set, or
- * which are resolved by lookup in the {@link EvaluableCredentialCriteriaRegistry}.
+ * {@link org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion} that may
+ * have been present in the specified criteria set, or that are resolved by lookup in the
+ * {@link org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry}.
  * </p>
  */
 public class CollectionCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {

@@ -266,7 +266,6 @@ public class X509SupportTest {
     /** A PEM encoded CRL. */
     private String crlDER = "/data/crl.der";
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityPrivateKey = KeySupport.buildJavaRSAPrivateKey(entityPrivKeyBase64);

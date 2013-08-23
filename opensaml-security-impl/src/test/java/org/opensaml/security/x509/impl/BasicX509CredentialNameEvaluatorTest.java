@@ -71,7 +71,6 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
     private String subjectDN;
     private String altNameDNS, altNameURL;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityCert3AltNamesDNS_URL_IP = X509Support.decodeCertificate(entityCert3AltNamesDNS_URL_IPBase64);

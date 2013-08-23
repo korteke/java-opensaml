@@ -23,7 +23,7 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.soap.wssecurity}.
+ * An abstract marshaller implementation for XMLObjects from WS-Policy.
  */
 public abstract class AbstractWSPolicyObjectMarshaller extends AbstractXMLObjectMarshaller {
 

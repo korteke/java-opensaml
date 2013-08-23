@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
- * {@link KeyInfoReference} children of the {@link org.opensaml.xml.signature.KeyInfo} of the {@link EncryptedData}
+ * {@link KeyInfoReference} children of the {@link org.opensaml.xmlsec.signature.KeyInfo} of the {@link EncryptedData}
  * context.
  * 
  * The <code>URI</code> attribute value must be a same-document fragment identifier (via ID attribute).

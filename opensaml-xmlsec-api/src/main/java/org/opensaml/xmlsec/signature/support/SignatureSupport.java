@@ -84,8 +84,7 @@ public final class SignatureSupport {
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
      * supplied, the global security configuration
-     * (from {@link SecurityConfigurationSupport#getGlobalXMLSecurityConfiguration()})
-     * will be used.
+     * (from {@link SecurityConfigurationSupport#getGlobalXMLSecurityConfiguration()}) will be used.
      * </p>
      * 
      * <p>
@@ -93,10 +92,10 @@ public final class SignatureSupport {
      * </p>
      * 
      * <p>
-     * The KeyInfo to be generated is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
-     * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
-     * name. If the latter is omitted, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
-     * of the security configuration's named generator manager will be used.
+     * The KeyInfo to be generated is based on the {@link org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager}
+     * defined in the security configuration, and is determined by the type of the signing credential and an optional
+     * KeyInfo generator manager name. If the latter is omitted, the default manager of the security configuration's
+     * named generator manager will be used.
      * </p>
      * 
      * @param signature the Signature to be updated

@@ -52,16 +52,15 @@ public final class EncryptionSupport {
      * <ul>
      * <li>the encryption credential (optional)</li>
      * <li>encryption algorithm URI</li>
-     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a {@link KeyInfo} element
-     * from the encryption credential</li>
+     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a
+     * {@link org.opensaml.xmlsec.signature.KeyInfo} element from the encryption credential</li>
      * </ul>
      * </p>
      * 
      * <p>
      * All values are determined by the specified {@link SecurityConfiguration}. If a security configuration is not
      * supplied, the global security configuration 
-     * (from {@link SecurityConfigurationSupport#getGlobalXMLSecurityConfiguration()})
-     * will be used.
+     * (from {@link SecurityConfigurationSupport#getGlobalXMLSecurityConfiguration()}) will be used.
      * </p>
      * 
      * <p>
@@ -70,10 +69,10 @@ public final class EncryptionSupport {
      * </p>
      * 
      * <p>
-     * The KeyInfoGenerator to be used is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
-     * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
-     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
-     * of the security configuration's named generator manager will be used.
+     * The KeyInfoGenerator to be used is based on the {@link org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager}
+     * defined in the security configuration, and is determined by the type of the signing credential and an optional
+     * KeyInfo generator manager name. If the latter is ommited, the default manager of the security configuration's
+     * named generator manager will be used.
      * </p>
      * 
      * @param encryptionCredential the credential with which the data will be encrypted (may be null)
@@ -115,16 +114,15 @@ public final class EncryptionSupport {
     }
 
     /**
-     * Build an instance of {@link KeyEncryptionParameters} suitable for passing to an
-     * {@link org.opensaml.xmlsec.encryption.support.Encrypter}.
+     * Build an instance of {@link KeyEncryptionParameters} suitable for passing to an {@link Encrypter}.
      * 
      * <p>
      * The following parameter values will be added:
      * <ul>
      * <li>the key encryption credential</li>
      * <li>key transport encryption algorithm URI</li>
-     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a {@link KeyInfo} element
-     * from the key encryption credential</li>
+     * <li>an appropriate {@link KeyInfoGenerator} instance which will be used to generate a
+     * {@link org.opensaml.xmlsec.signature.KeyInfo} element from the key encryption credential</li>
      * <li>intended recipient of the resultant encrypted key (optional)</li>
      * </ul>
      * </p>
@@ -142,10 +140,10 @@ public final class EncryptionSupport {
      * </p>
      * 
      * <p>
-     * The KeyInfoGenerator to be used is based on the {@link NamedKeyInfoGeneratorManager} defined in the security
-     * configuration, and is determined by the type of the signing credential and an optional KeyInfo generator manager
-     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()})
-     * of the security configuration's named generator manager will be used.
+     * The KeyInfoGenerator to be used is based on the {@link org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager}
+     * defined in the security configuration, and is determined by the type of the signing credential and an optional
+     * KeyInfo generator manager name. If the latter is ommited, the default manager of the security configuration's
+     * named generator manager will be used.
      * </p>
      * 
      * @param encryptionCredential the credential with which the key will be encrypted

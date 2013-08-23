@@ -40,7 +40,6 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     private SimpleRetrievalMethodEncryptedKeyResolver resolver;
     
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         resolver = new SimpleRetrievalMethodEncryptedKeyResolver();

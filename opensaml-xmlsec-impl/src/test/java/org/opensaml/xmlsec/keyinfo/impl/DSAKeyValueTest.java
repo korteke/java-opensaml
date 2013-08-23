@@ -71,7 +71,6 @@ public class DSAKeyValueTest extends XMLObjectBaseTestCase {
         "1Mj2Ql5xmTMaePMEmvOr6fDAP0OH8cvADEZjx0s/5vvoBFPGGmPrHJluEVS0Fu8I" +
         "9sROg9YjyuhRV0b8xHo=";
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();

@@ -39,7 +39,6 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/DigestMethodChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAlgorithm = "urn:string:foo";

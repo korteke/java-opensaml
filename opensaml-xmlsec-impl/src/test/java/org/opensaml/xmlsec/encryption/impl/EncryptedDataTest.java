@@ -52,7 +52,6 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedId = "abc123";

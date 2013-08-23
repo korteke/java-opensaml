@@ -37,7 +37,6 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** The resolver instance to be tested. */
     private InlineEncryptedKeyResolver resolver;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         resolver = new InlineEncryptedKeyResolver();

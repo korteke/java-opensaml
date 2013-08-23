@@ -85,7 +85,6 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         targetFile = "/data/org/opensaml/xmlsec/encryption/support/SimpleDecryptionTest.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);

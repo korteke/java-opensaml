@@ -39,7 +39,6 @@ public class X509CertificateTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509Certificate.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
 	protected void setUp() throws Exception {
         expectedStringContent = "someX509Certificate";

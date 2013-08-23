@@ -62,7 +62,6 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     private static Set testPolicy1 = Collections.singleton("1.3.6.1.4.1.32473.2011.6.20");
     private static Set testPolicy2 = Collections.singleton("1.3.6.1.4.1.32473.2011.6.21");
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         pkixEvaluator = new CertPathPKIXTrustEvaluator();

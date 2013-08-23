@@ -23,7 +23,7 @@ import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.xmlsec.signature.Signature;
 
 /**
- * A credential context for credentials resolved from a {@link KeyInfo} that was found in 
+ * A credential context for credentials resolved from a {@link org.opensaml.xmlsec.signature.KeyInfo} that was found in 
  * in XML Signature {@link Signature} element.
  */
 public class XMLSignatureCredentialContext implements CredentialContext {

@@ -22,8 +22,8 @@ import java.util.Set;
 import org.opensaml.security.x509.PKIXValidationOptions;
 
 /**
- * Specialization of {@link PKIXValidationOptions} which specifies options specific to a {@link PKIXTrustEvaluator}
- * based on the Java CertPath API.
+ * Specialization of {@link PKIXValidationOptions} which specifies options specific to a
+ * {@link org.opensaml.security.x509.PKIXTrustEvaluator} based on the Java CertPath API.
  */
 public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
     

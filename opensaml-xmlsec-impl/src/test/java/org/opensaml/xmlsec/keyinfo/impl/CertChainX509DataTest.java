@@ -114,7 +114,6 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
         "yCL/KhjlrDkjJ3hIxBF5mP/Y27cFpRnC2gECkieURvh52OyuqkzpbOrTN5rD9fNi" +
         "nA==";
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();

@@ -25,27 +25,17 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * An abstract marshaller implementation for XMLObjects from {@link org.opensaml.xmlsec.encryption}.
+ * An abstract marshaller implementation for XMLObjects from XML Encryption.
  */
 public abstract class AbstractXMLEncryptionMarshaller extends AbstractXMLObjectMarshaller {
 
-    /**
-     * No-op method. Extending implementations should override this method if they have attributes to marshall into the
-     * Element.
-     * 
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
     }
 
-    /**
-     * No-op method. Extending implementations should override this method if they have text content to marshall into
-     * the Element.
-     * 
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 

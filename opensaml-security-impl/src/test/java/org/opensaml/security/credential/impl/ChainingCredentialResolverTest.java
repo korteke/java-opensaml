@@ -48,7 +48,6 @@ public class ChainingCredentialResolverTest {
     public ChainingCredentialResolverTest() {
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         cred1 = new BasicCredential(KeySupport.generateKey("AES", 128, null));

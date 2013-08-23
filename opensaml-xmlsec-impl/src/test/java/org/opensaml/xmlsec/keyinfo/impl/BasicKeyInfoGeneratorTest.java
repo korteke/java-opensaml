@@ -31,7 +31,6 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
@@ -58,7 +57,6 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         "LbM4GCqCETiQol8I62mvP0qBXCC6JVkKbbVRwSFGJcg5ZvJiBZXmX+EXhaX5vp1G" +
         "MQIDAQAB";
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         factory = new BasicKeyInfoGeneratorFactory();

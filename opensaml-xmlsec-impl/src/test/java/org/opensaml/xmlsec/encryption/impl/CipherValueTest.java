@@ -40,7 +40,6 @@ public class CipherValueTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBase64Content = "someBase64==";

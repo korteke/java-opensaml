@@ -47,7 +47,6 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -879,8 +878,7 @@ public class KeyInfoSupport {
      * <p>
      * The generator is determined by the specified {@link SecurityConfiguration}. If a security configuration is not
      * supplied, the global security configuration 
-     * ({@link XMLObjectProviderRegistrySupport#getGlobalSecurityConfiguration()})
-     * will be used.
+     * ({@link SecurityConfigurationSupport#getGlobalXMLSecurityConfiguration()}) will be used.
      * </p>
      * 
      * @param credential the credential for which a generator is desired

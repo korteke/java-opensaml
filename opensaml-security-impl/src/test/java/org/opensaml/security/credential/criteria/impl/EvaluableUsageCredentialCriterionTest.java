@@ -41,7 +41,6 @@ public class EvaluableUsageCredentialCriterionTest {
         usage = UsageType.SIGNING;
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         credential = new BasicCredential(KeySupport.generateKey("AES", 128, null));

@@ -45,7 +45,6 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptionMethodChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAlgorithm = "urn:string:foo";

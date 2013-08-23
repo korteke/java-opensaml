@@ -58,7 +58,6 @@ public class DEREncodedKeyValueTest extends XMLObjectBaseTestCase {
     "alu6nvs2++5Nnb4C1SE640esfYhfeMd5JYfsTNMaQ8sZLpsWdglAGpa/Q87K19LI" +
     "wwIDAQAB";
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();

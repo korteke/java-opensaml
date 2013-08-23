@@ -40,7 +40,6 @@ public class ExponentTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedCryptoBinaryContent = "someCryptoBinaryValue";

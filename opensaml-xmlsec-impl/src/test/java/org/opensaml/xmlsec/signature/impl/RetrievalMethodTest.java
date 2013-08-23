@@ -43,7 +43,6 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/signature/impl/RetrievalMethodOptionalAttributes.xml"; 
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedURI = "urn:string:foo";

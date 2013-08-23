@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
 /**
- * An abstract unmarshaller implementation for XMLObjects from {@link org.opensaml.xmlsec.signature}.
+ * An abstract unmarshaller implementation for XMLObjects from XML Signature.
  */
 public abstract class AbstractXMLSignatureUnmarshaller extends AbstractXMLObjectUnmarshaller {
 

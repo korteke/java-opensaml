@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.encryption.support;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,7 +69,6 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     /** The ID value used as the signature Reference URI attribute value, set on root SimpleXMLObject. */
     private String idValue;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);

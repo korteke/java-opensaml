@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.keyinfo.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -55,7 +54,6 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     
     private String certDER = "/data/certificate.der";
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         manager = new KeyInfoGeneratorManager();

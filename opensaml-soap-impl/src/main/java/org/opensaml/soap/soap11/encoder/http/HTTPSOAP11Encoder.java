@@ -20,8 +20,10 @@ package org.opensaml.soap.soap11.encoder.http;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletResponse;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
@@ -64,6 +66,9 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
         XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.getBuilder(Envelope.DEFAULT_ELEMENT_NAME);
         bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.getBuilder(Body.DEFAULT_ELEMENT_NAME);
+        
+        Constraint.isNotNull(envBuilder, "Envelope Builder cannot be null");
+        Constraint.isNotNull(bodyBuilder, "Body Builder cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -119,8 +124,7 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
      * 
      * @param payload body of the SOAP message
      */
-    @SuppressWarnings("unchecked")
-    protected void buildAndStoreSOAPMessage(XMLObject payload) {
+    protected void buildAndStoreSOAPMessage(@Nonnull final XMLObject payload) {
         Envelope envelope = getSOAPEnvelope();
         if (envelope == null) {
             envelope = envBuilder.buildObject();
@@ -156,7 +160,7 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
      * 
      * <p>
      * Subclasses should NOT set the SOAPAction HTTP header in this method. Instead, they should override 
-     * the method {@link #getSOAPAction(MessageContext)}.
+     * the method {@link #getSOAPAction()}.
      * </p>
      * 
      * @throws MessageEncodingException thrown if there is a problem preprocessing the transport

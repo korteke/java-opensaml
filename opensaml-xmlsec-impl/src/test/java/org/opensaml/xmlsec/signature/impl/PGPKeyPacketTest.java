@@ -40,7 +40,6 @@ public class PGPKeyPacketTest extends XMLObjectProviderBaseTestCase {
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedStringContent = "somePGPKeyPacket";
