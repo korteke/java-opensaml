@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
+import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
@@ -71,7 +72,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     private NamespaceManager nsManager;
     
     /** The multimap holding class-indexed instances of additional info associated with this XML object. */
-    private ClassToInstanceMultiMap<Object> objectMetadata;
+    private LockableClassToInstanceMultiMap<Object> objectMetadata;
 
     /**
      * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
@@ -94,7 +95,7 @@ public abstract class AbstractXMLObject implements XMLObject {
         if(namespaceURI != null){
             setElementNamespacePrefix(namespacePrefix);
         }
-        objectMetadata = new ClassToInstanceMultiMap<>(true);
+        objectMetadata = new LockableClassToInstanceMultiMap<>(true);
     }
 
     /** {@inheritDoc} */
@@ -532,7 +533,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    @Nonnull public ClassToInstanceMultiMap<Object> getObjectMetadata() {
+    @Nonnull public LockableClassToInstanceMultiMap<Object> getObjectMetadata() {
         return objectMetadata;
     }
 

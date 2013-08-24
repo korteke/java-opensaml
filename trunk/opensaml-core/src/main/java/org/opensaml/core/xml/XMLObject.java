@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
+import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
@@ -296,6 +296,6 @@ public interface XMLObject {
      * 
      * @return the class-to-instance multimap
      */
-    @Nonnull public ClassToInstanceMultiMap<Object> getObjectMetadata();
+    @Nonnull public LockableClassToInstanceMultiMap<Object> getObjectMetadata();
 
 }
