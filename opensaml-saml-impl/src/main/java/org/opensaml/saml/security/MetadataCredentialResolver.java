@@ -21,15 +21,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
@@ -162,13 +163,13 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             throw new IllegalArgumentException("Entity criteria must be supplied");
         }
         if (mdCriteria == null) {
-            throw new IllegalArgumentException("SAML entityDescriptorResolver criteria must be supplied");
+            throw new IllegalArgumentException("SAML entity metadata criteria must be supplied");
         }
         if (Strings.isNullOrEmpty(entityCriteria.getEntityID())) {
             throw new IllegalArgumentException("Credential owner entity ID criteria value must be supplied");
         }
         if (mdCriteria.getRole() == null) {
-            throw new IllegalArgumentException("Credential entityDescriptorResolver role criteria value must be supplied");
+            throw new IllegalArgumentException("Credential entity role criteria value must be supplied");
         }
     }
 
@@ -189,13 +190,9 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             throws ResolverException {
 
         log.debug("Attempting to retrieve credentials from entityDescriptorResolver for entity: {}", entityID);
-        Collection<Credential> credentials = new HashSet<Credential>(3);
+        HashSet<Credential> credentials = new HashSet<Credential>(3);
 
         Iterable<RoleDescriptor> roleDescriptors = getRoleDescriptors(entityID, role, protocol);
-        
-        // TODO call retrieve- and storeCachedCredentials on the KeyInfo objects here appropriately,
-        // to check for and retrieve existing cached creds,
-        // or store the ones resolved from processing the metadata document.
             
         for (RoleDescriptor roleDescriptor : roleDescriptors) {
             List<KeyDescriptor> keyDescriptors = roleDescriptor.getKeyDescriptors();
@@ -206,22 +203,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                 }
                 if (matchUsage(mdUsage, usage)) {
                     if (keyDescriptor.getKeyInfo() != null) {
-                        CriteriaSet critSet = new CriteriaSet();
-                        critSet.add(new KeyInfoCriterion(keyDescriptor.getKeyInfo()));
-
-                        Iterable<Credential> creds = getKeyInfoCredentialResolver().resolve(critSet);
-                        if(credentials == null){
-                            continue;
-                        }
-                        for (Credential cred : creds) {
-                            if (cred instanceof MutableCredential) {
-                                MutableCredential mutableCred = (MutableCredential) cred;
-                                mutableCred.setEntityId(entityID);
-                                mutableCred.setUsageType(mdUsage);
-                            }
-                            cred.getCredentialContextSet().add(new SAMLMDCredentialContext(keyDescriptor));
-                            credentials.add(cred);
-                        }
+                        extractCredentials(credentials, keyDescriptor, entityID, mdUsage);
                     }
                 }
             }
@@ -229,6 +211,79 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         }
 
         return credentials;
+    }
+
+    /**
+     * Extract the credentials from the specified KeyDescriptor. First the credentials are looking up in 
+     * object metadata cache. If they are not found there, then they will be resolved from the KeyDescriptor's
+     * KeyInfo and then cached in the KeyDescriptor's object metadata before returning.
+     * 
+     * @param accumulator the set of credentials being accumulated for return to the caller
+     * @param keyDescriptor the KeyDescriptor being processed
+     * @param entityID the entity ID of the KeyDescriptor being processed
+     * @param mdUsage the effective credential usage type in effect for the resolved credentials
+     * 
+     * @throws ResolverException if there is a problem resolving credentials from the KeyDescriptor's KeyInfo element
+     */
+    protected void extractCredentials(@Nonnull final HashSet<Credential> accumulator, 
+            @Nonnull final KeyDescriptor keyDescriptor, @Nonnull final String entityID, 
+            @Nonnull final UsageType mdUsage) throws ResolverException {
+        
+        LockableClassToInstanceMultiMap<Object> keyDescriptorObjectMetadata = keyDescriptor.getObjectMetadata();
+        ReadWriteLock rwlock = keyDescriptorObjectMetadata.getReadWriteLock();
+        
+        try {
+            rwlock.readLock().lock();
+            List<Credential> cachedCreds = keyDescriptorObjectMetadata.get(Credential.class);
+            if (!cachedCreds.isEmpty()) {
+                log.debug("Resolved cached credentials from KeyDescriptor object metadata");
+                accumulator.addAll(cachedCreds);
+                return;
+            } else {
+                log.debug("Found no cached credentials in KeyDescriptor object metadata, resolving from KeyInfo");
+            }
+        } finally {
+            // Note: with the standard Java ReentrantReadWriteLock impl, you can not upgrade a read lock
+            // to a write lock!  So have to release here and then acquire the write lock below.
+            rwlock.readLock().unlock();
+        }
+        
+        try {
+            rwlock.writeLock().lock();
+            
+            // Need to check again in case another waiting writer beat us in acquiring the write lock
+            List<Credential> cachedCreds = keyDescriptorObjectMetadata.get(Credential.class);
+            if (!cachedCreds.isEmpty()) {
+                log.debug("Credentials were resolved and cached by another thread "
+                        + "while this thread was waiting on the write lock");
+                accumulator.addAll(cachedCreds);
+                return;
+            }
+            
+            List<Credential> newCreds = new ArrayList<>();
+            
+            CriteriaSet critSet = new CriteriaSet();
+            critSet.add(new KeyInfoCriterion(keyDescriptor.getKeyInfo()));
+            
+            Iterable<Credential> resolvedCreds = getKeyInfoCredentialResolver().resolve(critSet);
+            for (Credential cred : resolvedCreds) {
+                if (cred instanceof MutableCredential) {
+                    MutableCredential mutableCred = (MutableCredential) cred;
+                    mutableCred.setEntityId(entityID);
+                    mutableCred.setUsageType(mdUsage);
+                }
+                cred.getCredentialContextSet().add(new SAMLMDCredentialContext(keyDescriptor));
+                newCreds.add(cred);
+            }
+            
+            keyDescriptorObjectMetadata.putAll(newCreds);
+            
+            accumulator.addAll(newCreds);
+            
+        } finally {
+            rwlock.writeLock().unlock();
+        }
+        
     }
 
     /**
@@ -283,28 +338,6 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             log.error("Unable to resolve information from metadata", e);
             throw new ResolverException("Unable to resolve unformation from metadata", e);
         }
-    }
-    
-    /**
-     * Retrieves pre-resolved credentials from the cache.
-     * 
-     * @param xmlObject the XML object from which to retrieve the cached credentials
-     * 
-     * @return the collection of cached credentials or null
-     */
-    protected Collection<Credential> retrieveCachedCredentials(XMLObject xmlObject) {
-        // TODO
-        return null;
-    }
-
-    /**
-     * Adds resolved credentials to the cache.
-     * 
-     * @param xmlObject the XML object on which to cache the credentials
-     * @param credentials collection of credentials to cache
-     */
-    protected void storeCachedCredentials(XMLObject xmlObject, Collection<Credential> credentials) {
-        // TODO 
     }
 
 }

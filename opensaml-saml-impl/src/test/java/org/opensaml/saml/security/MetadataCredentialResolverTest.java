@@ -20,6 +20,7 @@ package org.opensaml.saml.security;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -533,6 +534,34 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
                 default:
             }
         }
+    }
+    
+    /**
+     * Test caching behavior across 2 resolutions.
+     * 
+     * @throws SecurityException 
+     * @throws ResolverException 
+     */
+    @Test
+    public void testCaching() throws SecurityException, ResolverException {
+        HashSet<Credential> resolved1 = new HashSet<Credential>();
+        for (Credential credential : mdResolver.resolve(criteriaSet)) {
+           resolved1.add(credential);
+        }
+        
+        HashSet<Credential> resolved2 = new HashSet<Credential>();
+        for (Credential credential : mdResolver.resolve(criteriaSet)) {
+           resolved2.add(credential);
+        }
+        
+        Assert.assertEquals(resolved1.size(), 3, "Incorrect number of credentials resolved");
+        Assert.assertEquals(resolved2.size(), 3, "Incorrect number of credentials resolved");
+        
+        // On credentials we don't override equals(), so the only way the sets will be identical
+        // is if all the members are the same instances.  This will not be true if caching
+        // didn't happen and new Credential instances were created on the second run.
+        Assert.assertTrue(resolved1.equals(resolved2), 
+                "Resolved credential sets were non-equal, caching must have failed");
     }
     
     /**
