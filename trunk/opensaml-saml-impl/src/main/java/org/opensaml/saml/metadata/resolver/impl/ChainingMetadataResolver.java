@@ -28,8 +28,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -526,7 +526,7 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
         }
 
         /** {@inheritDoc} */
-        @Nonnull public ClassToInstanceMultiMap<Object> getObjectMetadata() {
+        @Nonnull public LockableClassToInstanceMultiMap<Object> getObjectMetadata() {
             // TODO Auto-generated method stub
             return null;
         }
