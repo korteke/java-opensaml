@@ -53,7 +53,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Tests the {@link HTTPMetadataResolver#getEntityDescriptor(String)} method.
+     * Tests the {@link HTTPMetadataResolver#lookupEntityID(String)} method.
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {

@@ -19,14 +19,18 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -44,14 +48,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
 public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     
-    // TODO need to clear index at appropriate time, in light of removable of Observable support.
-
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
 
@@ -63,9 +64,9 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * assumption being that in most cases a provider will recover at some point in the future. Default: true.
      */
     private boolean failFastInitialization;
-
-    /** Cache of entity IDs to their descriptors. */
-    private Map<String, EntityDescriptor> indexedDescriptors;
+    
+    /** Backing store for runtime EntityDescriptor data. */
+    private EntityBackingStore entityBackingStore;
 
     /** Pool of parsers used to process XML. */
     private ParserPool parser;
@@ -73,7 +74,6 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     /** Constructor. */
     public AbstractMetadataResolver() {
         super();
-        indexedDescriptors = new ConcurrentHashMap<String, EntityDescriptor>();
         failFastInitialization = true;
         initialized = false;
     }
@@ -83,98 +83,16 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
         //TODO add filtering for entity role, protocol? maybe
         //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
         //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
+        
         EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
         if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
             //TODO throw or just log?
             throw new ResolverException("Entity Id was not supplied in criteria set");
         }
         
-        LazyList<EntityDescriptor> list = new LazyList<>();
-        
-        EntityDescriptor entityDescriptor = getEntityDescriptor(entityIdCriterion.getEntityId());
-        if (entityDescriptor != null) {
-            list.add(entityDescriptor);
-        }
-        
-        return list;
+        return lookupEntityID(entityIdCriterion.getEntityId());
     }
-
-    /** {@inheritDoc} */
-    protected XMLObject getMetadata() throws ResolverException {
-        if (!isInitialized()) {
-            throw new ResolverException("Metadata provider has not been initialized");
-        }
-
-        XMLObject metadata = doGetMetadata();
-
-        if (metadata == null) {
-            log.debug("Metadata provider does not currently contain any metadata");
-        }
-
-        if (!isValid(metadata)) {
-            log.debug("Metadata document exists, but it is no longer valid");
-            return null;
-        }
-
-        return metadata;
-    }
-
-    /**
-     * Gets the metadata currently held by the provider. This method should not check if the provider is initialized, if
-     * the metadata is valid, etc. All of this is done by the invoker of this method.
-     * 
-     * @return the metadata currently held by this provider or null if no metadata is available
-     * 
-     * @throws ResolverException thrown if there is a problem retrieving the metadata
-     */
-    protected abstract XMLObject doGetMetadata() throws ResolverException;
-
-    /** {@inheritDoc} */
-    protected EntityDescriptor getEntityDescriptor(String entityID) throws ResolverException {
-        if (!isInitialized()) {
-            throw new ResolverException("Metadata provider has not been initialized");
-        }
-
-        if (Strings.isNullOrEmpty(entityID)) {
-            log.debug("EntityDescriptor entityID was null or empty, skipping search for it");
-            return null;
-        }
-
-        EntityDescriptor descriptor = doGetEntityDescriptor(entityID);
-        if (descriptor == null) {
-            log.debug("Metadata document does not contain an EntityDescriptor with the ID {}", entityID);
-            return null;
-        } else if (!isValid(descriptor)) {
-            log.debug("Metadata document contained an EntityDescriptor with the ID {}, but it was no longer valid",
-                    entityID);
-            return null;
-        }
-
-        return descriptor;
-    }
-
-    /**
-     * Gets the identified EntityDescriptor from the metadata. This method should not check if the provider is
-     * initialized, if arguments are null, if the metadata is valid, etc. All of this is done by the invoker of this
-     * method.
-     * 
-     * @param entityID ID of the EntityDescriptor, never null
-     * 
-     * @return the identified EntityDescriptor or null if no such EntityDescriptor exists
-     * 
-     * @throws ResolverException thrown if there is a problem searching for the EntityDescriptor
-     */
-    protected EntityDescriptor doGetEntityDescriptor(String entityID) throws ResolverException {
-        XMLObject metadata = doGetMetadata();
-        if (metadata == null) {
-            log.debug("Metadata document was empty, unable to look for an EntityDescriptor with the ID {}", entityID);
-            return null;
-        }
-
-        return getEntityDescriptorById(entityID, metadata);
-    }
-
-
+    
     /**
      * Gets whether this provider is initialized.
      * 
@@ -222,7 +140,7 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @return pool of parsers to use to parse XML
      */
-    public ParserPool getParserPool() {
+    @Nonnull public ParserPool getParserPool() {
         return parser;
     }
 
@@ -231,8 +149,8 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @param pool pool of parsers to use to parse XML
      */
-    public void setParserPool(ParserPool pool) {
-        parser = pool;
+    public void setParserPool(@Nonnull final ParserPool pool) {
+        parser = Constraint.isNotNull(pool, "ParserPool may not be null");
     }
 
     /**
@@ -265,7 +183,7 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     /** {@inheritDoc} */
     public synchronized void destroy() {
         initialized = false;
-        indexedDescriptors = Collections.emptyMap();
+        entityBackingStore = null;
         parser = null;
 
         super.destroy();        
@@ -282,13 +200,6 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     }
 
     /**
-     * Clears the entity ID to entity descriptor index.
-     */
-    protected void clearDescriptorIndex() {
-        indexedDescriptors.clear();
-    }
-
-    /**
      * Unmarshalls the metadata from the given stream. The stream is closed by this method and the returned metadata
      * released its DOM representation.
      * 
@@ -298,7 +209,9 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @throws UnmarshallingException thrown if the metadata can no be unmarshalled
      */
-    protected XMLObject unmarshallMetadata(InputStream metadataInput) throws UnmarshallingException {
+    @Nonnull protected XMLObject unmarshallMetadata(@Nonnull final InputStream metadataInput) 
+            throws UnmarshallingException {
+        
         try {
             log.trace("Parsing retrieved metadata into a DOM object");
             Document mdDocument = parser.parse(metadataInput);
@@ -331,7 +244,7 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @throws FilterException thrown if there is an error filtering the metadata
      */
-    protected void filterMetadata(XMLObject metadata) throws FilterException {
+    protected void filterMetadata(@Nullable final XMLObject metadata) throws FilterException {
         if (getMetadataFilter() != null) {
             log.debug("Applying metadata filter");
             getMetadataFilter().doFilter(metadata);
@@ -343,100 +256,11 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @param metadata the metadata object
      */
-    protected void releaseMetadataDOM(XMLObject metadata) {
+    protected void releaseMetadataDOM(@Nullable final XMLObject metadata) {
         if (metadata != null) {
             metadata.releaseDOM();
             metadata.releaseChildrenDOM(true);
         }
-    }
-
-    /**
-     * Gets the EntityDescriptor with the given ID from the cached metadata.
-     * 
-     * @param entityID the ID of the entity to get the descriptor for
-     * @param metadata metadata associated with the entity
-     * 
-     * @return the EntityDescriptor
-     */
-    protected EntityDescriptor getEntityDescriptorById(String entityID, XMLObject metadata) {
-        EntityDescriptor descriptor = null;
-
-        log.debug("Searching for entity descriptor with an entity ID of {}", entityID);
-        if (entityID != null && indexedDescriptors.containsKey(entityID)) {
-            descriptor = indexedDescriptors.get(entityID);
-            if (isValid(descriptor)) {
-                log.trace("Entity descriptor for the ID {} was found in index cache, returning", entityID);
-                return descriptor;
-            } else {
-                indexedDescriptors.remove(descriptor);
-            }
-        }
-
-        if (metadata != null) {
-            if (metadata instanceof EntityDescriptor) {
-                log.trace("Metadata root is an entity descriptor, checking if it's the one we're looking for.");
-                descriptor = (EntityDescriptor) metadata;
-                if (!Objects.equal(descriptor.getEntityID(), entityID)) {
-                    // skip this one, it isn't what we're looking for
-                    descriptor = null;
-                }
-                if (!isValid(descriptor)) {
-                    log.trace("Found entity descriptor for entity with ID {} but it is no longer valid, skipping it.",
-                            entityID);
-                    descriptor = null;
-                }
-            } else {
-                log.trace("Metadata was an EntitiesDescriptor, checking if any of its descendant EntityDescriptor elements" 
-                        + " is the one we're looking for.");
-                if (metadata instanceof EntitiesDescriptor) {
-                    descriptor = getEntityDescriptorById(entityID, (EntitiesDescriptor) metadata);
-                }
-            }
-        }
-
-        if (descriptor != null) {
-            log.trace("Located entity descriptor, creating an index to it for faster lookups");
-            indexedDescriptors.put(entityID, descriptor);
-        }
-
-        return descriptor;
-    }
-
-    /**
-     * Gets the entity descriptor with the given ID that is a descendant of the given entities descriptor.
-     * 
-     * @param entityID the ID of the entity whose descriptor is to be fetched
-     * @param descriptor the entities descriptor
-     * 
-     * @return the entity descriptor
-     */
-    protected EntityDescriptor getEntityDescriptorById(String entityID, EntitiesDescriptor descriptor) {
-        log.trace("Checking to see if EntitiesDescriptor {} contains the requested descriptor", descriptor.getName());
-        List<EntityDescriptor> entityDescriptors = descriptor.getEntityDescriptors();
-        if (entityDescriptors != null && !entityDescriptors.isEmpty()) {
-            for (EntityDescriptor entityDescriptor : entityDescriptors) {
-                log.trace("Checking entity descriptor with entity ID {}", entityDescriptor.getEntityID());
-                if (Objects.equal(entityDescriptor.getEntityID(), entityID) && isValid(entityDescriptor)) {
-                    return entityDescriptor;
-                }
-            }
-        }
-
-        log.trace("Checking to see if any of the child entities descriptors contains the entity descriptor requested");
-        EntityDescriptor entityDescriptor;
-        List<EntitiesDescriptor> entitiesDescriptors = descriptor.getEntitiesDescriptors();
-        if (entitiesDescriptors != null && !entitiesDescriptors.isEmpty()) {
-            for (EntitiesDescriptor entitiesDescriptor : descriptor.getEntitiesDescriptors()) {
-                entityDescriptor = getEntityDescriptorById(entityID, entitiesDescriptor);
-                if (entityDescriptor != null) {
-                    // We don't need to check for validity because getEntityDescriptorById only returns a valid
-                    // descriptor
-                    return entityDescriptor;
-                }
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -446,7 +270,7 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @return true if valid metadata is not required or the given descriptor is valid, false otherwise
      */
-    protected boolean isValid(XMLObject descriptor) {
+    protected boolean isValid(@Nullable final XMLObject descriptor) {
         if (descriptor == null) {
             return false;
         }
@@ -457,4 +281,175 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
 
         return SAML2Helper.isValid(descriptor);
     }
+
+    /** {@inheritDoc} */
+    @Nonnull protected List<EntityDescriptor> lookupEntityID(@Nonnull final String entityID) throws ResolverException {
+        if (!isInitialized()) {
+            throw new ResolverException("Metadata provider has not been initialized");
+        }
+
+        if (Strings.isNullOrEmpty(entityID)) {
+            log.debug("EntityDescriptor entityID was null or empty, skipping search for it");
+            return null;
+        }
+
+        List<EntityDescriptor> descriptors = lookupIndexedEntityID(entityID);
+        if (descriptors.isEmpty()) {
+            log.debug("Metadata document does not contain any EntityDescriptors with the ID {}", entityID);
+            return descriptors;
+        }
+        
+        Iterator<EntityDescriptor> entitiesIter = descriptors.iterator();
+        while (entitiesIter.hasNext()) {
+            EntityDescriptor descriptor = entitiesIter.next();
+            if (!isValid(descriptor)) {
+                log.debug("Metadata document contained an EntityDescriptor with the ID {}, but it was no longer valid",
+                        entityID);
+                entitiesIter.remove();
+            }
+        }
+
+        return descriptors;
+    }
+    
+    /**
+     * Lookup the specified entityID from the index. The returned list will be a copy of what is
+     * stored in the backing index, and is safe to be manipulated by callers.
+     * 
+     * @param entityID the entityID to lookup
+     * 
+     * @return list copy of indexed entityID's, may be empty, will never be null
+     */
+    @Nonnull protected List<EntityDescriptor> lookupIndexedEntityID(@Nonnull final String entityID) {
+        List<EntityDescriptor> descriptors = getBackingStore().getIndexedDescriptors().get(entityID);
+        if (descriptors != null) {
+            return new ArrayList<EntityDescriptor>(descriptors);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+    
+    /**
+     * Create a new backing store instance for EntityDescriptor data.  Subclasses may override to return
+     * a more specialized subclass type. Note this method does not make the returned backing store
+     * the effective one in use.  The caller is responsible for calling 
+     * {@link #setBackingStore(EntityBackingStore)} to make it the effective instance in use.
+     * 
+     * @return the new backing store instance
+     */
+    @Nonnull protected EntityBackingStore createNewBackingStore() {
+        return new EntityBackingStore();
+    }
+    
+    /**
+     * Get the EntityDescriptor backing store currently in use by the metadata resolver.
+     * 
+     * @return the current effective entity backing store
+     */
+    @Nonnull protected EntityBackingStore getBackingStore() {
+       return entityBackingStore;
+    }
+    
+    /**
+     * Set the EntityDescriptor backing store currently in use by the metadata resolver.
+     * 
+     * @param newBackingStore the new entity backing store
+     */
+    protected void setBackingStore(@Nonnull EntityBackingStore newBackingStore) {
+       entityBackingStore = Constraint.isNotNull(newBackingStore, "EntityBackingStore may not be null");
+    }
+
+    /**
+     * Pre-process the specified entity descriptor, updating the specified entity backing
+     * store instance as necessary.
+     * 
+     * @param entityDescriptor the target entity descriptor to process
+     * @param backingStore the backing store instance to update
+     */
+    protected void preProcessEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor, 
+            @Nonnull final EntityBackingStore backingStore) {
+        
+        backingStore.getOrderedDescriptors().add(entityDescriptor);
+        indexEntityDescriptor(entityDescriptor, backingStore);
+    }
+    
+    /**
+     * Index the specified entity descriptor, updating the specified entity backing
+     * store instance as necessary.
+     * 
+     * @param entityDescriptor the target entity descriptor to process
+     * @param backingStore the backing store instance to update
+     */
+    protected void indexEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor, 
+            @Nonnull final EntityBackingStore backingStore) {
+        
+        String entityID = StringSupport.trimOrNull(entityDescriptor.getEntityID());
+        if (entityID != null) {
+            List<EntityDescriptor> entities = backingStore.getIndexedDescriptors().get(entityID);
+            if (entities == null) {
+                entities = new ArrayList<EntityDescriptor>();
+                backingStore.getIndexedDescriptors().put(entityID, entities);
+            } else if (!entities.isEmpty()) {
+                log.warn("Detected duplicate EntityDescriptor for entityID: {}", entityID);
+            }
+            entities.add(entityDescriptor);
+        }
+    }
+
+    /**
+     * Pre-process the specified entities descriptor, updating the specified entity backing
+     * store instance as necessary.
+     * 
+     * @param entitiesDescriptor the target entities descriptor to process
+     * @param backingStore the backing store instance to update
+     */
+    protected void preProcessEntitiesDescriptor(@Nonnull final EntitiesDescriptor entitiesDescriptor, 
+            EntityBackingStore backingStore) {
+        
+        for (XMLObject child : entitiesDescriptor.getOrderedChildren()) {
+            if (child instanceof EntityDescriptor) {
+                preProcessEntityDescriptor((EntityDescriptor) child, backingStore);
+            } else if (child instanceof EntitiesDescriptor) {
+                preProcessEntitiesDescriptor((EntitiesDescriptor) child, backingStore);
+            }
+        }
+    }
+    
+    /**
+     * The collection of data which provides the backing store for the processed metadata.
+     */
+    protected class EntityBackingStore {
+        
+        /** Index of entity IDs to their descriptors. */
+        private Map<String, List<EntityDescriptor>> indexedDescriptors;
+        
+        /** Ordered list of entity descriptors. */
+        private List<EntityDescriptor> orderedDescriptors;
+        
+        /** Constructor. */
+        protected EntityBackingStore() {
+            indexedDescriptors = new ConcurrentHashMap<>();
+            orderedDescriptors = new ArrayList<>();
+        }
+
+        /**
+         * Get the entity descriptor index.
+         * 
+         * @return the entity descriptor index
+         */
+        @Nonnull public Map<String, List<EntityDescriptor>> getIndexedDescriptors() {
+            return indexedDescriptors;
+        }
+        
+        /**
+         * Get the ordered entity descriptor list.
+         * 
+         * @return the entity descriptor list
+         */
+        @Nonnull public List<EntityDescriptor> getOrderedDescriptors() {
+            return orderedDescriptors;
+        }
+        
+    }
+
 }

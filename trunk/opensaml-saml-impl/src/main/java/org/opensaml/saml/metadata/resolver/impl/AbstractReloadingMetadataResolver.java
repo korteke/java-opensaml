@@ -51,7 +51,7 @@ import org.w3c.dom.Document;
  * 1.0 and a min refresh delay that is not overly large, this refresh will likely occur a few times before the cache
  * expires.
  */
-public abstract class AbstractReloadingMetadataResolver extends AbstractMetadataResolver {
+public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMetadataResolver {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractReloadingMetadataResolver.class);
@@ -89,11 +89,11 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractMetadata
     /** Next time a refresh cycle will occur. */
     private DateTime nextRefresh;
 
-    /** Last successfully read in metadata. */
-    private XMLObject cachedMetadata;
-
     /** Constructor. */
     protected AbstractReloadingMetadataResolver() {
+        super();
+        
+        setCacheSourceMetadata(true);
         taskTimer = new Timer(true);
         createdOwnTaskTimer = true;
     }
@@ -104,10 +104,23 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractMetadata
      * @param backgroundTaskTimer time used to schedule background refresh tasks
      */
     protected AbstractReloadingMetadataResolver(Timer backgroundTaskTimer) {
+        super();
+        
+        setCacheSourceMetadata(true);
+        
         if (backgroundTaskTimer == null) {
             throw new IllegalArgumentException("Task timer may not be null");
         }
         taskTimer = backgroundTaskTimer;
+    }
+    
+    /** {@inheritDoc} */
+    public void setCacheSourceMetadata(boolean flag) {
+        if (!flag) {
+            log.warn("Caching of source metadata may not be disabled for reloading metadata resolvers");
+        } else {
+            super.setCacheSourceMetadata(flag);
+        }
     }
 
     /**
@@ -224,14 +237,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractMetadata
         lastRefresh = null;
         lastUpdate = null;
         nextRefresh = null;
-        cachedMetadata = null;
         
         super.destroy();
-    }
-
-    /** {@inheritDoc} */
-    protected XMLObject doGetMetadata() throws ResolverException {
-        return cachedMetadata;
     }
 
     /** {@inheritDoc} */
@@ -323,7 +330,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractMetadata
     protected void processCachedMetadata(String metadataIdentifier, DateTime refreshStart)
             throws ResolverException {
         log.debug("Computing new expiration time for cached metadata from '{}", metadataIdentifier);
-        DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(cachedMetadata,
+        DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(getBackingStore().getCachedMetadata(),
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
 
         expirationTime = metadataExpirationTime;
@@ -388,8 +395,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractMetadata
         Document metadataDom = metadata.getDOM().getOwnerDocument();
 
         log.debug("Filtering metadata from '{}'", metadataIdentifier);
+        BatchEntityBackingStore newBackingStore = null;
         try {
-            filterMetadata(metadata);
+            newBackingStore = preProcessNewMetadata(metadata);
         } catch (FilterException e) {
             String errMsg = "Error filtering metadata from " + metadataIdentifier;
             log.error(errMsg, e);
@@ -408,7 +416,10 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractMetadata
         log.debug("Expiration of metadata from '{}' will occur at {}", metadataIdentifier, metadataExpirationTime
                 .toString());
 
-        cachedMetadata = metadata;
+        // This is where the new processed data becomes effective. Exceptions thrown prior to this point
+        // therefore result in the old data being kept effective.
+        setBackingStore(newBackingStore);
+        
         lastUpdate = refreshStart;
         
         long nextRefreshDelay;

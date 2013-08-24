@@ -34,16 +34,13 @@ import org.w3c.dom.Element;
  * It is the responsibility of the caller to re-initialize, via {@link #initialize()}, if any properties of this
  * provider are changed.
  */
-public class DOMMetadataResolver extends AbstractMetadataResolver {
+public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(DOMMetadataResolver.class);
 
     /** Root metadata element exposed by this provider. */
     private Element metadataElement;
-
-    /** Unmarshalled metadata. */
-    private XMLObject metadata;
 
     /**
      * Constructor.
@@ -57,25 +54,19 @@ public class DOMMetadataResolver extends AbstractMetadataResolver {
 
     /** {@inheritDoc} */
     public synchronized void destroy() {
-        metadata = null;
         metadataElement = null;
    
         super.destroy();
     }    
     
     /** {@inheritDoc} */
-    protected XMLObject doGetMetadata() throws ResolverException {
-        return metadata;
-    }
-    
-    /** {@inheritDoc} */
     protected void doInitialization() throws ResolverException {
         try {
             Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(metadataElement);
             XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
-            filterMetadata(metadataTemp);
+            BatchEntityBackingStore newBackingStore = preProcessNewMetadata(metadataTemp);
             releaseMetadataDOM(metadataTemp);
-            metadata = metadataTemp;
+            setBackingStore(newBackingStore);
         } catch (UnmarshallingException e) {
             String errorMsg = "Unable to unmarshall metadata element";
             log.error(errorMsg, e);
