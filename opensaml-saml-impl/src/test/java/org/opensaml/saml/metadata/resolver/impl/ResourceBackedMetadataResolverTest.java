@@ -61,7 +61,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Tests the {@link ResourceBackedMetadataResolver#getEntityDescriptor(String)} method.
+     * Tests the {@link ResourceBackedMetadataResolver#lookupEntityID(String)} method.
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {

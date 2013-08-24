@@ -72,7 +72,8 @@ public abstract class AbstractObservableMetadataResolver implements ObservableMe
 
         /** {@inheritDoc} */
         public void onEvent(MetadataProvider provider) {
-            ((AbstractMetadataResolver) provider).clearDescriptorIndex();
+            //TODO
+            //((AbstractMetadataResolver) provider).clearDescriptorIndex();
         }
     }
 }

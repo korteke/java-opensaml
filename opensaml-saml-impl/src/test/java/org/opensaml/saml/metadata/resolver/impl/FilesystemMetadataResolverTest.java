@@ -62,7 +62,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     }
 
     /**
-     * Tests the {@link HTTPMetadataResolver#getEntityDescriptor(String)} method.
+     * Tests the {@link HTTPMetadataResolver#lookupEntityID(String)} method.
      * @throws ResolverException 
      */
     @Test
@@ -203,8 +203,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         
         try {
             metadataProvider.refresh();
-            Assert.assertNotNull(metadataProvider.getMetadata());
-            EntityDescriptor descriptor = metadataProvider.getEntityDescriptor(entityID);
+            EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
             Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         } catch (ResolverException e) {
             Assert.fail("Filesystem metadata provider refresh failed recovery from initial init failure");
