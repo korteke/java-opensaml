@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
@@ -53,14 +53,14 @@ public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
     }
 
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         metadataElement = null;
    
-        super.destroy();
+        super.doDestroy();
     }    
     
     /** {@inheritDoc} */
-    protected void doInitialization() throws ResolverException {
+    protected void initMetadataResolver() throws ComponentInitializationException {
         try {
             Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(metadataElement);
             XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
@@ -70,11 +70,11 @@ public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
         } catch (UnmarshallingException e) {
             String errorMsg = "Unable to unmarshall metadata element";
             log.error(errorMsg, e);
-            throw new ResolverException(errorMsg, e);
+            throw new ComponentInitializationException(errorMsg, e);
         } catch (FilterException e) {
             String errorMsg = "Unable to filter metadata";
             log.error(errorMsg, e);
-            throw new ResolverException(errorMsg, e);
+            throw new ComponentInitializationException(errorMsg, e);
         }
     }
 }

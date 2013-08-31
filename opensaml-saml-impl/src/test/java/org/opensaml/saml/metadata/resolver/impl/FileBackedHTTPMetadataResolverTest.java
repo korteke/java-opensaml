@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.File;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -71,9 +72,11 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests the basic success case.
+     * @throws ComponentInitializationException 
+     * @throws ResolverException 
      */
     @Test
-    public void testGetEntityDescriptor() throws ResolverException {
+    public void testGetEntityDescriptor() throws ComponentInitializationException, ResolverException {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
@@ -96,7 +99,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("metadata provider claims to have parsed known invalid data");
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             //expected, do nothing
         }
     }
@@ -113,7 +116,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         try {
             metadataProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             Assert.fail("Provider failed init with fail-fast=false");
         }
     }
@@ -136,7 +139,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("Provider passed init with bad backup file, fail-fast=true");
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             // expected do nothing
         }
     }
@@ -159,7 +162,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         try {
             metadataProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             Assert.fail("Provider failed init with bad backup file, fail-fast=false");
         }
         
@@ -168,11 +171,12 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests use of backup file on simulated restart.
+     * @throws ComponentInitializationException 
      * 
      * @throws MetadataProviderException
      */
     @Test
-    public void testBackupFileOnRestart() throws ResolverException {
+    public void testBackupFileOnRestart() throws ResolverException, ComponentInitializationException {
         // Do a setup here to get a good backup file
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, backupFilePath);
         metadataProvider.setParserPool(parserPool);

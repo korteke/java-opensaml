@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.joda.time.DateTime;
@@ -114,6 +116,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     
     /** {@inheritDoc} */
     public void setCacheSourceMetadata(boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         if (!flag) {
             log.warn("Caching of source metadata may not be disabled for reloading metadata resolvers");
         } else {
@@ -174,6 +179,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param delay maximum amount of time, in milliseconds, between refresh intervals
      */
     public void setMaxRefreshDelay(long delay) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         if (delay < 0) {
             throw new IllegalArgumentException("Maximum refresh delay must be greater than 0");
         }
@@ -195,6 +203,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param factor delay factor used to compute the next refresh time
      */
     public void setRefreshDelayFactor(float factor) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         if (factor <= 0 || factor >= 1) {
             throw new IllegalArgumentException("Refresh delay factor must be a number between 0.0 and 1.0, exclusive");
         }
@@ -217,6 +228,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param delay minimum amount of time, in milliseconds, between refreshes
      */
     public void setMinRefreshDelay(int delay) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         if (delay < 0) {
             throw new IllegalArgumentException("Minimum refresh delay must be greater than 0");
         }
@@ -224,7 +238,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     }
 
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         refresMetadataTask.cancel();
         
         if (createdOwnTaskTimer) {
@@ -236,15 +250,19 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         lastUpdate = null;
         nextRefresh = null;
         
-        super.destroy();
+        super.doDestroy();
     }
 
     /** {@inheritDoc} */
-    protected void doInitialization() throws ResolverException {
-        refresh();
+    protected void initMetadataResolver() throws ComponentInitializationException {
+        try {
+            refresh();
+        } catch (ResolverException e) {
+            throw new ComponentInitializationException("Error refreshing metadata during init", e);
+        }
         
         if (minRefreshDelay > maxRefreshDelay) {
-            throw new ResolverException("Minimum refresh delay " + minRefreshDelay
+            throw new ComponentInitializationException("Minimum refresh delay " + minRefreshDelay
                     + " is greater than maximum refresh delay " + maxRefreshDelay);
         }
     }

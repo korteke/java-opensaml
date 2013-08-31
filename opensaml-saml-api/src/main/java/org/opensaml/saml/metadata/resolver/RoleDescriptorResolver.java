@@ -17,8 +17,9 @@
 
 package org.opensaml.saml.metadata.resolver;
 
+import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
-import net.shibboleth.utilities.java.support.component.ValidatableComponent;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
@@ -41,6 +42,6 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  * </ul>
  */
 public interface RoleDescriptorResolver extends Resolver<RoleDescriptor, CriteriaSet>, IdentifiableComponent,
-        ValidatableComponent {
+        InitializableComponent, DestructableComponent {
 
 }

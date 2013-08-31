@@ -195,7 +195,7 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
     }
 
     /** {@inheritDoc} */
-    public void setMetadataFilter(MetadataFilter newFilter) throws ResolverException {
+    public void setMetadataFilter(MetadataFilter newFilter) {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
     }
 
@@ -243,13 +243,11 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
     }
 
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         super.destroy();
         
         for(MetadataResolver provider : providers){
-            if(provider instanceof BaseMetadataResolver){
-                ((BaseMetadataResolver)provider).destroy();
-            }
+            provider.destroy();
         }
         
         providers = Collections.emptyList();

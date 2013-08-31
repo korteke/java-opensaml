@@ -49,7 +49,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
 
         metadataProvider = new ChainingMetadataResolver();
 
-        URL mdURL = FilesystemMetadataResolverTest.class
+        URL mdURL = ChainingMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         File mdFile = new File(mdURL.toURI());
         FilesystemMetadataResolver fileProvider = new FilesystemMetadataResolver(mdFile);
@@ -57,7 +57,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         fileProvider.initialize();
         metadataProvider.addMetadataProvider(fileProvider);
 
-        URL mdURL2 = FilesystemMetadataResolverTest.class
+        URL mdURL2 = ChainingMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
         File mdFile2 = new File(mdURL2.toURI());
         FilesystemMetadataResolver fileProvider2 = new FilesystemMetadataResolver(mdFile2);
@@ -83,8 +83,6 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testFilterDisallowed() {
         try {
             metadataProvider.setMetadataFilter(new SchemaValidationFilter(new String[] {}));
-            Assert.fail("Should fail with an UnsupportedOperationException");
-        } catch (ResolverException e) {
             Assert.fail("Should fail with an UnsupportedOperationException");
         } catch (UnsupportedOperationException e) {
             // expected, do nothing

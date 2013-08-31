@@ -27,7 +27,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -51,7 +52,8 @@ import com.google.common.base.Strings;
  * support basic EntityDescriptor resolution, and then performs further role-related filtering over the
  * returned EntityDescriptor.
  */
-public class BasicRoleDescriptorResolver implements RoleDescriptorResolver {
+public class BasicRoleDescriptorResolver extends AbstractDestructableIdentifiableInitializableComponent 
+        implements RoleDescriptorResolver {
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(BasicRoleDescriptorResolver.class);
@@ -82,30 +84,16 @@ public class BasicRoleDescriptorResolver implements RoleDescriptorResolver {
 
     /** {@inheritDoc} */
     public void setRequireValidMetadata(boolean require) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         requireValidMetadata = require;
     }
     
     /** {@inheritDoc} */
-    @Nullable public String getId() {
-        return id;
-    }
-    
-    /**
-     * Set the component Id value.
-     * 
-     * @param newId the new Id value.
-     */
-    public void setId(@Nonnull String newId) {
-        id = Constraint.isNotNull(newId, "Id may not be null");
-    }
-
-    /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-        // TODO Auto-generated method stub
-    }
-    
-    /** {@inheritDoc} */
     @Nullable public RoleDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
         Iterable<RoleDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             Iterator<RoleDescriptor> iterator = iterable.iterator();
@@ -118,6 +106,8 @@ public class BasicRoleDescriptorResolver implements RoleDescriptorResolver {
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<RoleDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
         EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
         EntityRoleCriterion entityRoleCriterion = criteria.get(EntityRoleCriterion.class);
         ProtocolCriterion protocolCriterion = criteria.get(ProtocolCriterion.class);

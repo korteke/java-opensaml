@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.apache.http.Header;
@@ -126,6 +127,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @param authScope the HTTP client auth scope with which to scope the credentials, may be null
      */
     public void setBasicCredentials(String username, String password, AuthScope authScope) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         // TODO This approach from client v3 is problematic in client v4,
         // due to casting below. Also issue with AuthScope collisions if client is used
         // by multiple components.
@@ -150,13 +154,13 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     }
 
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         httpClient = null;
         metadataURI = null;
         cachedMetadataETag = null;
         cachedMetadataLastModified = null;
         
-        super.destroy();
+        super.doDestroy();
     }
 
     /** {@inheritDoc} */

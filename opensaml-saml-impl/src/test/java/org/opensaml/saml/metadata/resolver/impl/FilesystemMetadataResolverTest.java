@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -76,9 +77,10 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
      * Tests failure mode of an invalid metadata file that does not exist.
      * 
      * @throws ResolverException
+     * @throws ComponentInitializationException 
      */
-    @Test(expectedExceptions = {ResolverException.class})
-    public void testNonexistentMetadataFile() throws ResolverException {
+    @Test(expectedExceptions = {ComponentInitializationException.class})
+    public void testNonexistentMetadataFile() throws ResolverException, ComponentInitializationException {
         metadataProvider = new FilesystemMetadataResolver(new File("I-Dont-Exist.xml"));
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
@@ -89,9 +91,10 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws IOException 
      * @throws ResolverException
+     * @throws ComponentInitializationException 
      */
-    @Test(expectedExceptions = {ResolverException.class})
-    public void testInvalidMetadataFile() throws IOException, ResolverException {
+    @Test(expectedExceptions = {ComponentInitializationException.class})
+    public void testInvalidMetadataFile() throws IOException, ResolverException, ComponentInitializationException {
         File targetFile = new File(System.getProperty("java.io.tmpdir"), "filesystem-md-provider-test");
         if (targetFile.exists()) {
             Assert.assertTrue(targetFile.delete());
@@ -114,9 +117,10 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
      * 
      * @throws IOException 
      * @throws ResolverException
+     * @throws ComponentInitializationException 
      */
-    @Test(expectedExceptions = {ResolverException.class})
-    public void testUnreadableMetadataFile() throws IOException, ResolverException {
+    @Test(expectedExceptions = {ComponentInitializationException.class})
+    public void testUnreadableMetadataFile() throws IOException, ResolverException, ComponentInitializationException {
         File targetFile = File.createTempFile("filesystem-md-provider-test", "xml");
         Assert.assertTrue(targetFile.exists());
         Assert.assertTrue(targetFile.isFile());
@@ -154,7 +158,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider = new FilesystemMetadataResolver(targetFile);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             Assert.fail("Filesystem metadata provider init failed with file: " + targetFile.getAbsolutePath());
         }
         
@@ -180,7 +184,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setFailFastInitialization(false);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException | ResolverException e) {
             Assert.fail("Filesystem metadata provider init failed with non-existent file and fail fast = false");
         }
         

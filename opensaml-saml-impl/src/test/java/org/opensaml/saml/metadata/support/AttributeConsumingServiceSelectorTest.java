@@ -66,6 +66,7 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
         mdProvider.initialize();
         
         roleResolver = new BasicRoleDescriptorResolver(mdProvider);
+        roleResolver.initialize();
         
         acsSelector = new AttributeConsumingServiceSelector();
     }

@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
@@ -191,14 +192,11 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         mdProvider.setRequireValidMetadata(false);
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
-        try {
-            mdProvider.setMetadataFilter(filter);
-        } catch (ResolverException e) {
-            Assert.fail("Could not set metadata filter on provider");
-        }
+        mdProvider.setMetadataFilter(filter);
+        
         try {
             mdProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             Assert.fail("Failed when initializing metadata provider");
         }
     }
@@ -218,15 +216,12 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         mdProvider.setRequireValidMetadata(false);
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
-        try {
-            mdProvider.setMetadataFilter(filter);
-        } catch (ResolverException e) {
-            Assert.fail("Could not set metadata filter on provider");
-        }
+        mdProvider.setMetadataFilter(filter);
+        
         try {
             mdProvider.initialize();
             Assert.fail("Metadata signature was invalid, provider initialization should have failed");
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             // do nothing, failure expected
         }
     }
