@@ -25,7 +25,6 @@ import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**
  * A resolver that is capable of resolving {@link EntityDescriptor} instances
@@ -73,8 +72,6 @@ public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet
      * Sets the metadata filter applied to the metadata.
      * 
      * @param newFilter the metadata filter applied to the metadata
-     * 
-     * @throws MetadataProviderException thrown if the provider can not apply the filter to the metadata
      */
     public void setMetadataFilter(MetadataFilter newFilter);
 
