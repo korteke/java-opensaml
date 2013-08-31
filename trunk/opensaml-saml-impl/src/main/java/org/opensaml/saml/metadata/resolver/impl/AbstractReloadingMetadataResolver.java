@@ -91,11 +91,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
 
     /** Constructor. */
     protected AbstractReloadingMetadataResolver() {
-        super();
-        
-        setCacheSourceMetadata(true);
-        taskTimer = new Timer(true);
-        createdOwnTaskTimer = true;
+        this(null);
     }
 
     /**
@@ -109,9 +105,11 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         setCacheSourceMetadata(true);
         
         if (backgroundTaskTimer == null) {
-            throw new IllegalArgumentException("Task timer may not be null");
+            taskTimer = new Timer(true);
+            createdOwnTaskTimer = true;
+        } else {
+            taskTimer = backgroundTaskTimer;
         }
-        taskTimer = backgroundTaskTimer;
     }
     
     /** {@inheritDoc} */

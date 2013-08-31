@@ -22,9 +22,10 @@ import java.io.File;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.apache.http.client.params.AllClientPNames;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
-import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.testng.Assert;
@@ -36,22 +37,22 @@ import org.testng.annotations.Test;
  * Test case for {@link FileBackedHTTPMetadataResolver}.
  */
 public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
+    
+    private DefaultHttpClient httpClient;
 
     private String mdUrl;
-
     private String badMDURL;
-
     private String backupFilePath;
-    
     private FileBackedHTTPMetadataResolver metadataProvider;
-    
     private String entityID;
-    
     private CriteriaSet criteriaSet;
 
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
+        httpClient = new DefaultHttpClient();
+        httpClient.getParams().setIntParameter(AllClientPNames.CONNECTION_TIMEOUT, 1000 * 5);
+        
         mdUrl="http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml?content-type=text%2Fplain&view=co";
         entityID = "urn:mace:ac.uk:sdss.ac.uk:provider:service:target.iay.org.uk";
         badMDURL = "http://www.google.com/";
@@ -73,7 +74,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
-        metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
         
@@ -87,7 +88,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testFailFastBadURL() throws ResolverException {
-        metadataProvider = new FileBackedHTTPMetadataResolver(badMDURL, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, badMDURL, backupFilePath);
         
         metadataProvider.setFailFastInitialization(true);
         metadataProvider.setParserPool(parserPool);
@@ -105,7 +106,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNoFailFastBadURL() throws ResolverException {
-        metadataProvider = new FileBackedHTTPMetadataResolver(badMDURL, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, badMDURL, backupFilePath);
         
         metadataProvider.setFailFastInitialization(false);
         metadataProvider.setParserPool(parserPool);
@@ -124,7 +125,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testFailFastBadBackupFile() {
         try {
             // Use a known existing directory as backup file path, which is an invalid argument.
-            metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, System.getProperty("java.io.tmpdir"));
+            metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, System.getProperty("java.io.tmpdir"));
         } catch (ResolverException e) {
             Assert.fail("Provider failed bad backup file in constructor");
             
@@ -148,7 +149,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testNoFailFastBadBackupFile() throws ResolverException {
         try {
             // Use a known existing directory as backup file path, which is an invalid argument.
-            metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, System.getProperty("java.io.tmpdir"));
+            metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, System.getProperty("java.io.tmpdir"));
         } catch (ResolverException e) {
             Assert.fail("Provider failed bad backup file in constructor");
             
@@ -173,7 +174,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testBackupFileOnRestart() throws ResolverException {
         // Do a setup here to get a good backup file
-        metadataProvider = new FileBackedHTTPMetadataResolver(mdUrl, 1000 * 5, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.initialize();
         
@@ -185,8 +186,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         // Now do a new provider to simulate a restart (have to set fail-fast=false).
         // Verify that can use the data from backing file.
-        FileBackedHTTPMetadataResolver badProvider = new FileBackedHTTPMetadataResolver(badMDURL, 1000 * 5,
-                backupFilePath);
+        FileBackedHTTPMetadataResolver badProvider = new FileBackedHTTPMetadataResolver(httpClient, badMDURL, backupFilePath);
         badProvider.setParserPool(parserPool);
         badProvider.setFailFastInitialization(false);
         badProvider.initialize();
