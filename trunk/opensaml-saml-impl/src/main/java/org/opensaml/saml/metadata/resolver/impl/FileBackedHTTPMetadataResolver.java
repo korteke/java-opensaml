@@ -22,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.apache.http.client.HttpClient;
@@ -81,26 +83,26 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     }
     
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         metadataBackupFile = null;
 
-        super.destroy();
+        super.doDestroy();
     }
 
     /** {@inheritDoc} */
-    protected void doInitialization() throws ResolverException {
+    protected void initMetadataResolver() throws ComponentInitializationException {
         try {
             validateBackupFile(metadataBackupFile);
         } catch (ResolverException e) {
             if (isFailFastInitialization()) {
                 log.error("Metadata backup file path was invalid, initialization is fatal");
-                throw e;
+                throw new ComponentInitializationException("Metadata backup file path was invalid", e);
             } else {
                 log.error("Metadata backup file path was invalid, continuing without known good backup file");
             }
         }
         
-        super.doInitialization();
+        super.initMetadataResolver();
     }
 
     /**
@@ -112,6 +114,9 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @throws ResolverException thrown if the backup file is not read/writable or creatable
      */
     protected void setBackupFile(String backupFilePath) throws ResolverException {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         File backingFile = new File(backupFilePath);
         metadataBackupFile = backingFile;
     }

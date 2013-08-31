@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -82,7 +83,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("metadata provider claims to have parsed known invalid data");
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             //expected, do nothing
         }
     }
@@ -99,7 +100,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         try {
             metadataProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             Assert.fail("Provider failed init with fail-fast=false");
         }
     }

@@ -29,6 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -56,9 +58,6 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
 
-    /** Whether the metadata provider has been initialized. */
-    private boolean initialized;
-
     /**
      * Whether problems during initialization should cause the provider to fail or go on without metadata. The
      * assumption being that in most cases a provider will recover at some point in the future. Default: true.
@@ -75,11 +74,12 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     public AbstractMetadataResolver() {
         super();
         failFastInitialization = true;
-        initialized = false;
     }
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
         //TODO add filtering for entity role, protocol? maybe
         //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
         //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
@@ -91,24 +91,6 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
         }
         
         return lookupEntityID(entityIdCriterion.getEntityId());
-    }
-    
-    /**
-     * Gets whether this provider is initialized.
-     * 
-     * @return whether this provider is initialized
-     */
-    public boolean isInitialized() {
-        return initialized;
-    }
-
-    /**
-     * Sets whether this provider is initialized.
-     * 
-     * @param isInitialized whether this provider is initialized
-     */
-    protected void setInitialized(boolean isInitialized) {
-        initialized = isInitialized;
     }
 
     /**
@@ -128,10 +110,8 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * @param failFast whether problems during initialization should cause the provider to fail
      */
     public void setFailFastInitialization(boolean failFast) {
-        if (isInitialized()) {
-            return;
-        }
-
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         failFastInitialization = failFast;
     }
 
@@ -150,52 +130,41 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * @param pool pool of parsers to use to parse XML
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         parser = Constraint.isNotNull(pool, "ParserPool may not be null");
     }
 
-    /**
-     * Initializes this metadata provider. If called after the metadata provider has already been initialized this
-     * method simply returns.
-     * 
-     * @throws ResolverException thrown if there is a problem initializing the problem and fail fast
-     *             Initialization is enabled
-     */
-    public synchronized void initialize() throws ResolverException {
-        if (initialized) {
-            return;
-        }
-
+    /** {@inheritDoc} */
+    protected final void doInitialize() throws ComponentInitializationException {
         try {
-            doInitialization();
-            initialized = true;
-        } catch (ResolverException e) {
+            initMetadataResolver();
+        } catch (ComponentInitializationException e) {
             if (failFastInitialization) {
                 log.error("Metadata provider failed to properly initialize, fail-fast=true, halting", e);
                 throw e;
             } else {
                 log.error("Metadata provider failed to properly initialize, fail-fast=false, " 
                         + "continuing on in a degraded state", e);
-                initialized = true;
             }
         }
     }
 
     /** {@inheritDoc} */
-    public synchronized void destroy() {
-        initialized = false;
+    protected void doDestroy() {
         entityBackingStore = null;
         parser = null;
 
-        super.destroy();        
+        super.doDestroy();        
     }
     
     /**
      * Subclasses should override this method to perform any initialization logic necessary. Default implementation is a
      * no-op.
      * 
-     * @throws ResolverException thrown if there is a problem initializing the provider
+     * @throws ComponentInitializationException thrown if there is a problem initializing the provider
      */
-    protected void doInitialization() throws ResolverException {
+    protected void initMetadataResolver() throws ComponentInitializationException {
 
     }
 

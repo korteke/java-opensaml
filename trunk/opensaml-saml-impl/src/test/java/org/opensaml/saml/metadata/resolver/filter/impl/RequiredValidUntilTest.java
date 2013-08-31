@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 import java.io.File;
 import java.net.URL;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.joda.time.DateTime;
@@ -57,7 +58,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
         metadataProvider.setMetadataFilter(filter);
         try {
             metadataProvider.initialize();
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             Assert.fail("Filter disallowed metadata that contained a proper validUntil attribute");
         }
     }
@@ -73,7 +74,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("Filter accepted metadata with longer than allowed validity period.");
-        } catch (ResolverException e) {
+        } catch (ComponentInitializationException e) {
             // we expect this
             return;
         }

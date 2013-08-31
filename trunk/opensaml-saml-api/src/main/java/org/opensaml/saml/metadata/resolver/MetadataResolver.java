@@ -17,12 +17,15 @@
 
 package org.opensaml.saml.metadata.resolver;
 
+import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
-import net.shibboleth.utilities.java.support.component.ValidatableComponent;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**
  * A resolver that is capable of resolving {@link EntityDescriptor} instances
@@ -41,6 +44,38 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
  * </ul>
  */
 public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiableComponent,
-        ValidatableComponent {
+        InitializableComponent, DestructableComponent {
+    
+    /**
+     * Gets whether the metadata returned by queries must be valid. At a minimum, metadata is valid only if the date
+     * expressed in the element, and all its ancestral element's, validUntil attribute has not passed. Specific
+     * implementations may add additional constraints.
+     * 
+     * @return whether the metadata returned by queries must be valid
+     */
+    public boolean isRequireValidMetadata();
+
+    /**
+     * Sets whether the metadata returned by queries must be valid.
+     * 
+     * @param requireValidMetadata whether the metadata returned by queries must be valid
+     */
+    public void setRequireValidMetadata(boolean requireValidMetadata);
+
+    /**
+     * Gets the metadata filter applied to the metadata.
+     * 
+     * @return the metadata filter applied to the metadata
+     */
+    public MetadataFilter getMetadataFilter();
+
+    /**
+     * Sets the metadata filter applied to the metadata.
+     * 
+     * @param newFilter the metadata filter applied to the metadata
+     * 
+     * @throws MetadataProviderException thrown if the provider can not apply the filter to the metadata
+     */
+    public void setMetadataFilter(MetadataFilter newFilter);
 
 }

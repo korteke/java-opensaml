@@ -20,11 +20,10 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.util.Iterator;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -37,10 +36,8 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 /**
  * Base class for metadata providers.
  */
-public abstract class BaseMetadataResolver implements MetadataResolver {
-    
-    /** Component id. */
-    private String id;
+public abstract class BaseMetadataResolver extends AbstractDestructableIdentifiableInitializableComponent 
+        implements MetadataResolver {
 
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
     private UnmarshallerFactory unmarshallerFactory;
@@ -53,6 +50,7 @@ public abstract class BaseMetadataResolver implements MetadataResolver {
     
     /** Constructor. */
     public BaseMetadataResolver() {
+        super();
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         setRequireValidMetadata(false);
         setId(UUID.randomUUID().toString());
@@ -65,6 +63,8 @@ public abstract class BaseMetadataResolver implements MetadataResolver {
 
     /** {@inheritDoc} */
     public void setRequireValidMetadata(boolean require) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         requireValidMetadata = require;
     }
 
@@ -74,12 +74,16 @@ public abstract class BaseMetadataResolver implements MetadataResolver {
     }
 
     /** {@inheritDoc} */
-    public void setMetadataFilter(@Nullable MetadataFilter newFilter) throws ResolverException {
+    public void setMetadataFilter(@Nullable MetadataFilter newFilter) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         mdFilter = newFilter;
     }
     
     /** {@inheritDoc} */
     @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
         Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             Iterator<EntityDescriptor> iterator = iterable.iterator();
@@ -91,29 +95,13 @@ public abstract class BaseMetadataResolver implements MetadataResolver {
     }
 
     /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-        // TODO Auto-generated method stub
+    protected void doDestroy() {
+        unmarshallerFactory = null;
+        mdFilter = null;
+        
+        super.doDestroy();
     }
 
-    /** {@inheritDoc} */
-    @Nullable public String getId() {
-        return id;
-    }
-    
-    /**
-     * Set the component Id value.
-     * 
-     * @param newId the new Id value.
-     */
-    public void setId(@Nonnull String newId) {
-        id = Constraint.isNotNull(newId, "Id may not be null");
-    }
-
-    /** Destroys the metadata provider and frees any resources current held by it. Default method is a no-op. */
-    public synchronized void destroy(){
-
-    }
-    
     /**
      * Get the XMLObject unmarshaller factory to use. 
      * 

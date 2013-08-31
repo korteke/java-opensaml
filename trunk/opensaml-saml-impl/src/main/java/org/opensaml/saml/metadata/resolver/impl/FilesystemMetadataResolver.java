@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Timer;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.joda.time.DateTime;
@@ -85,36 +86,17 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * @throws ResolverException this exception is no longer thrown
      */
     protected void setMetadataFile(File file) throws ResolverException {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         metadataFile = file;
     }
 
-    /**
-     * Gets whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @return whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @deprecated use {@link #isRequireValidMetadata()} instead
-     */
-    public boolean maintainExpiredMetadata() {
-        return !isRequireValidMetadata();
-    }
-
-    /**
-     * Sets whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @param maintain whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @deprecated use {@link #setRequireValidMetadata(boolean)} instead
-     */
-    public void setMaintainExpiredMetadata(boolean maintain) {
-        setRequireValidMetadata(!maintain);
-    }
-
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         metadataFile = null;
           
-        super.destroy();
+        super.doDestroy();
     }
     
     /** {@inheritDoc} */

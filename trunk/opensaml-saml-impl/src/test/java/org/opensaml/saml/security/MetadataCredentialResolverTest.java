@@ -177,6 +177,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         ConfigurationService.register(SecurityConfiguration.class, newSecConfig);
         
         mdResolver = new MetadataCredentialResolver(mdProvider);
+        mdResolver.initialize();
         
         entityCriteria = new EntityIDCriterion(idpEntityID);
         // by default set protocol to null

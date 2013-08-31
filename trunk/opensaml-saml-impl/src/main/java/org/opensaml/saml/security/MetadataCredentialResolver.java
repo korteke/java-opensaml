@@ -27,6 +27,9 @@ import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -65,7 +68,8 @@ import com.google.common.base.Strings;
  * resolution.
  * 
  */
-public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
+public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredentialResolver 
+        implements InitializableComponent {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(MetadataCredentialResolver.class);
@@ -78,6 +82,9 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
     /** Credential resolver used to resolve credentials from role descriptor KeyInfo elements. */
     private KeyInfoCredentialResolver keyInfoCredentialResolver;
+    
+    /** Initialization flag. */
+    private boolean isInitialized;
 
     /**
      * Constructor.
@@ -87,10 +94,25 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     public MetadataCredentialResolver(@Nonnull final MetadataResolver resolver) {
         super();
         entityDescriptorResolver = Constraint.isNotNull(resolver, "Metadata resolver cannot be null");
-        roleDescriptorResolver = new BasicRoleDescriptorResolver(entityDescriptorResolver);
+        
+    }
 
-        keyInfoCredentialResolver = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration()
-                .getDefaultKeyInfoCredentialResolver();
+    /** {@inheritDoc} */
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    /** {@inheritDoc} */
+    public void initialize() throws ComponentInitializationException {
+        roleDescriptorResolver = new BasicRoleDescriptorResolver(entityDescriptorResolver);
+        roleDescriptorResolver.initialize();
+        
+        if (keyInfoCredentialResolver == null) {
+            keyInfoCredentialResolver = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration()
+                    .getDefaultKeyInfoCredentialResolver();
+        }
+        
+        isInitialized = true;
     }
 
     /**
@@ -126,11 +148,14 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param keyInfoResolver the new KeyInfoCredentialResolver to use
      */
     public void setKeyInfoCredentialResolver(KeyInfoCredentialResolver keyInfoResolver) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
         keyInfoCredentialResolver = keyInfoResolver;
     }
 
     /** {@inheritDoc} */
     protected Iterable<Credential> resolveFromSource(CriteriaSet criteriaSet) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
         checkCriteriaRequirements(criteriaSet);
 

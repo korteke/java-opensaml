@@ -89,35 +89,13 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
             throw new ResolverException("Unable to read resource", e);
         }
     }
-    
-    /**
-     * Gets whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @return whether cached metadata should be discarded if it expires and can not be refreshed. 
-     * 
-     * @deprecated use {@link #isRequireValidMetadata()} instead
-     */
-    public boolean maintainExpiredMetadata(){
-        return !isRequireValidMetadata();
-    }
-    
-    /**
-     * Sets whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @param maintain whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     *  @deprecated use {@link #setRequireValidMetadata(boolean)} instead
-     */
-    public void setMaintainExpiredMetadata(boolean maintain){
-        setRequireValidMetadata(!maintain);
-    }
 
     /** {@inheritDoc} */
-    public synchronized void destroy() {
+    protected void doDestroy() {
         metadataResource = null;
         lastResourceUpdate = null;
         
-        super.destroy();
+        super.doDestroy();
     }
     
     /** {@inheritDoc} */

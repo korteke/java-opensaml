@@ -22,7 +22,7 @@ import java.util.Collections;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -34,7 +34,7 @@ import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
-import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
@@ -49,11 +49,10 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
     private BasicRoleDescriptorResolver roleResolver;
     
     @BeforeMethod
-    public void setUp() {
+    public void setUp() throws ComponentInitializationException {
         final EntityDescriptor entityDescriptor = buildTestDescriptor();
         
         MetadataResolver metadataResolver = new MetadataResolver() {
-            public void validate() throws ComponentValidationException {}
             
             @Nullable public String getId() { return "foo"; }
             
@@ -66,9 +65,34 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
             public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
                 return Collections.singletonList(entityDescriptor);
             }
+
+            public boolean isInitialized() {
+                return true;
+            }
+
+            public void initialize() throws ComponentInitializationException { }
+
+            public boolean isDestroyed() {
+                return false;
+            }
+
+            public void destroy() { }
+
+            public boolean isRequireValidMetadata() {
+                return false;
+            }
+
+            public void setRequireValidMetadata(boolean requireValidMetadata) { }
+
+            public MetadataFilter getMetadataFilter() {
+                return null;
+            }
+
+            public void setMetadataFilter(MetadataFilter newFilter) { }
         };
         
         roleResolver = new BasicRoleDescriptorResolver(metadataResolver);
+        roleResolver.initialize();
     }
     
     @Test

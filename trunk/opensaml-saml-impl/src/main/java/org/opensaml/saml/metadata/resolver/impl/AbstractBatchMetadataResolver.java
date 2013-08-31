@@ -20,6 +20,8 @@ package org.opensaml.saml.metadata.resolver.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -60,7 +62,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param flag true if source should be cached, false otherwise
      */
     public void setCacheSourceMetadata(boolean flag) {
-       cacheSourceMetadata = flag; 
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        cacheSourceMetadata = flag; 
     }
     
     /** {@inheritDoc} */
