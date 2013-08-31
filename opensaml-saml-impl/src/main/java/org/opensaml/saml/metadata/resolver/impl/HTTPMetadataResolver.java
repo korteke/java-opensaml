@@ -27,15 +27,15 @@ import java.util.zip.InflaterInputStream;
 
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpClientParams;
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,41 +69,24 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** The Last-Modified information provided when the currently cached metadata was fetched. */
     private String cachedMetadataLastModified;
-
-    /** URL scope that requires authentication. */
-    private AuthScope authScope;
-
+    
     /**
      * Constructor.
      * 
-     * @param metadataURL the URL to fetch the metadata
-     * @param requestTimeout the time, in milliseconds, to wait for the metadata server to respond
+     * @param client HTTP client used to pull in remote metadata
+     * @param metadataURL URL to the remove remote metadata
      * 
-     * @throws ResolverException thrown if the URL is not a valid URL or the metadata can not be retrieved from
-     *             the URL
+     * @throws ResolverException thrown if the HTTP client is null or the metadata URL provided is invalid
      */
-    @Deprecated
-    public HTTPMetadataResolver(String metadataURL, int requestTimeout) throws ResolverException {
-        super();
-        try {
-            metadataURI = new URI(metadataURL);
-        } catch (URISyntaxException e) {
-            throw new ResolverException("Illegal URL syntax", e);
-        }
-
-        HttpClientParams clientParams = new HttpClientParams();
-        clientParams.setSoTimeout(requestTimeout);
-        httpClient = new HttpClient(clientParams);
-        httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(requestTimeout);
-        authScope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
-
+    public HTTPMetadataResolver(HttpClient client, String metadataURL) throws ResolverException {
+        this(null, client, metadataURL);
     }
 
     /**
      * Constructor.
      * 
-     * @param client HTTP client used to pull in remote metadata
      * @param backgroundTaskTimer timer used to schedule background metadata refresh tasks
+     * @param client HTTP client used to pull in remote metadata
      * @param metadataURL URL to the remove remote metadata
      * 
      * @throws ResolverException thrown if the HTTP client is null or the metadata URL provided is invalid
@@ -122,8 +105,6 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         } catch (URISyntaxException e) {
             throw new ResolverException("Illegal URL syntax", e);
         }
-
-        authScope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
     }
 
     /**
@@ -137,87 +118,35 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /**
      * Sets the username and password used to access the metadata URL. To disable BASIC authentication set the username
-     * and password to null;
+     * and password to null. If the <code>authScope</code> is null, one will be generated based off of 
+     * the metadata URI's hostname and port.
      * 
      * @param username the username
      * @param password the password
+     * @param authScope the HTTP client auth scope with which to scope the credentials, may be null
      */
-    public void setBasicCredentials(String username, String password) {
-        if (username == null && password == null) {
-            httpClient.getState().setCredentials(null, null);
-        } else {
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
-            httpClient.getState().setCredentials(authScope, credentials);
+    public void setBasicCredentials(String username, String password, AuthScope authScope) {
+        // TODO This approach from client v3 is problematic in client v4,
+        // due to casting below. Also issue with AuthScope collisions if client is used
+        // by multiple components.
+        // May need to rethink how authN support is handled.
+        // Maybe just require setting creds on the HttpClient that is passed in.
+        UsernamePasswordCredentials creds = null;
+        if (username != null && password != null) {
+            creds = new UsernamePasswordCredentials(username, password);
         }
-    }
-
-    /**
-     * Gets the length of time in milliseconds to wait for the server to respond.
-     * 
-     * @return length of time in milliseconds to wait for the server to respond
-     */
-    public int getRequestTimeout() {
-        return httpClient.getParams().getSoTimeout();
-    }
-
-    /**
-     * Sets the socket factory used to create sockets to the HTTP server.
-     * 
-     * @see <a href="http://jakarta.apache.org/commons/httpclient/sslguide.html">HTTPClient SSL guide</a>
-     * 
-     * @param newSocketFactory the socket factory used to produce sockets used to connect to the server
-     * 
-     * @deprecated set this information on HTTP client used by provider
-     */
-    public void setSocketFactory(ProtocolSocketFactory newSocketFactory) {
-        log.debug("Using the custom socket factory {} to connect to the HTTP server", newSocketFactory.getClass()
-                .getName());
-        Protocol protocol = new Protocol(metadataURI.getScheme(), newSocketFactory, metadataURI.getPort());
-        httpClient.getHostConfiguration().setHost(metadataURI.getHost(), metadataURI.getPort(), protocol);
-    }
-
-    /**
-     * Gets the maximum amount of time, in seconds, metadata will be cached for.
-     * 
-     * @return maximum amount of time, in seconds, metadata will be cached for
-     * 
-     * @deprecated use {@link #getMaxRefreshDelay()} instead
-     */
-    public int getMaxCacheDuration() {
-        return (int) getMaxRefreshDelay();
-    }
-
-    /**
-     * Sets the maximum amount of time, in seconds, metadata will be cached for.
-     * 
-     * @param newDuration maximum amount of time, in seconds, metadata will be cached for
-     * 
-     * @deprecated use {@link #setMaxRefreshDelay(long)} instead
-     */
-    public void setMaxCacheDuration(int newDuration) {
-        setMaxRefreshDelay(newDuration * 1000);
-    }
-
-    /**
-     * Gets whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @return whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @deprecated use {@link #isRequireValidMetadata()} instead
-     */
-    public boolean maintainExpiredMetadata() {
-        return !isRequireValidMetadata();
-    }
-
-    /**
-     * Sets whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @param maintain whether cached metadata should be discarded if it expires and can not be refreshed.
-     * 
-     * @deprecated use {@link #setRequireValidMetadata(boolean)} instead
-     */
-    public void setMaintainExpiredMetadata(boolean maintain) {
-        setRequireValidMetadata(!maintain);
+        
+        AuthScope scope = authScope;
+        if (scope == null) {
+            scope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
+        }
+        
+        if (httpClient instanceof AbstractHttpClient) {
+            ((AbstractHttpClient) httpClient).getCredentialsProvider().setCredentials(scope, creds);
+        } else {
+            log.warn("Client is not an instance of AbstractHttpClient, can not set HTTP basic auth credentials");
+        }
+        
     }
 
     /** {@inheritDoc} */
@@ -226,7 +155,6 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         metadataURI = null;
         cachedMetadataETag = null;
         cachedMetadataLastModified = null;
-        authScope = null;
         
         super.destroy();
     }
@@ -245,28 +173,28 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @throws ResolverException thrown if there is a problem retrieving the metadata from the remote server
      */
     protected byte[] fetchMetadata() throws ResolverException {
-        GetMethod getMethod = buildGetMethod();
+        HttpGet httpGet = buildHttpGet();
 
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
-            httpClient.executeMethod(getMethod);
-            int httpStatus = getMethod.getStatusCode();
+            HttpResponse response = httpClient.execute(httpGet);
+            int httpStatusCode = response.getStatusLine().getStatusCode();
 
-            if (httpStatus == HttpStatus.SC_NOT_MODIFIED) {
+            if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
                 log.debug("Metadata document from '{}' has not changed since last retrieval", getMetadataURI());
                 return null;
             }
 
-            if (getMethod.getStatusCode() != HttpStatus.SC_OK) {
-                String errMsg = "Non-ok status code " + getMethod.getStatusCode()
+            if (httpStatusCode != HttpStatus.SC_OK) {
+                String errMsg = "Non-ok status code " + httpStatusCode
                         + " returned from remote metadata source " + metadataURI;
                 log.error(errMsg);
                 throw new ResolverException(errMsg);
             }
 
-            processConditionalRetrievalHeaders(getMethod);
+            processConditionalRetrievalHeaders(response);
 
-            byte[] rawMetadata = getMetadataBytesFromResponse(getMethod);
+            byte[] rawMetadata = getMetadataBytesFromResponse(response);
             log.debug("Successfully fetched {} bytes of metadata from {}", rawMetadata.length, getMetadataURI());
 
             return rawMetadata;
@@ -275,32 +203,31 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             log.error(errMsg, e);
             throw new ResolverException(errMsg, e);
         } finally {
-            getMethod.releaseConnection();
+            httpGet.reset();
         }
     }
 
     /**
-     * Builds the HTTP GET method used to fetch the metadata. The returned method advertises support for GZIP and
-     * deflate compression, enables conditional GETs if the cached metadata came with either an ETag or Last-Modified
+     * Builds the {@link HttpGet} instance used to fetch the metadata. 
+     * The returned method advertises support for GZIP and deflate compression, 
+     * enables conditional GETs if the cached metadata came with either an ETag or Last-Modified
      * information, and sets up basic authentication if such is configured.
      * 
-     * @return the constructed GET method
+     * @return the constructed HttpGet instance
      */
-    protected GetMethod buildGetMethod() {
-        GetMethod getMethod = new GetMethod(getMetadataURI());
+    protected HttpGet buildHttpGet() {
+        HttpGet getMethod = new HttpGet(getMetadataURI());
         
-        getMethod.addRequestHeader("Connection", "close");
-        getMethod.setRequestHeader("Accept-Encoding", "gzip,deflate");
+        // TODO Connection header is already unconditionally added by our HttpClientBuilder config, keep here?
+        getMethod.addHeader("Connection", "close");
+        // TODO Accept-Encoding could be handled by a request interceptor or decorator client impl. 
+        // Maybe remove depending on what do below re: response handling.
+        getMethod.setHeader("Accept-Encoding", "gzip,deflate");
         if (cachedMetadataETag != null) {
-            getMethod.setRequestHeader("If-None-Match", cachedMetadataETag);
+            getMethod.setHeader("If-None-Match", cachedMetadataETag);
         }
         if (cachedMetadataLastModified != null) {
-            getMethod.setRequestHeader("If-Modified-Since", cachedMetadataLastModified);
-        }
-
-        if (httpClient.getState().getCredentials(authScope) != null) {
-            log.debug("Using BASIC authentication when retrieving metadata from '{}", metadataURI);
-            getMethod.setDoAuthentication(true);
+            getMethod.setHeader("If-Modified-Since", cachedMetadataLastModified);
         }
 
         return getMethod;
@@ -309,15 +236,15 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     /**
      * Records the ETag and Last-Modified headers, from the response, if they are present.
      * 
-     * @param getMethod GetMethod containing a valid HTTP response
+     * @param response GetMethod containing a valid HTTP response
      */
-    protected void processConditionalRetrievalHeaders(GetMethod getMethod) {
-        Header httpHeader = getMethod.getResponseHeader("ETag");
+    protected void processConditionalRetrievalHeaders(HttpResponse response) {
+        Header httpHeader = response.getFirstHeader("ETag");
         if (httpHeader != null) {
             cachedMetadataETag = httpHeader.getValue();
         }
 
-        httpHeader = getMethod.getResponseHeader("Last-Modified");
+        httpHeader = response.getFirstHeader("Last-Modified");
         if (httpHeader != null) {
             cachedMetadataLastModified = httpHeader.getValue();
         }
@@ -326,18 +253,23 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     /**
      * Extracts the raw metadata bytes from the response taking in to account possible deflate and GZip compression.
      * 
-     * @param getMethod GetMethod containing a valid HTTP response
+     * @param response GetMethod containing a valid HTTP response
      * 
      * @return the raw metadata bytes
      * 
      * @throws ResolverException thrown if there is a problem getting the raw metadata bytes from the response
      */
-    protected byte[] getMetadataBytesFromResponse(GetMethod getMethod) throws ResolverException {
+    protected byte[] getMetadataBytesFromResponse(HttpResponse response) throws ResolverException {
         log.debug("Attempting to extract metadata from response to request for metadata from '{}'", getMetadataURI());
         try {
-            InputStream ins = getMethod.getResponseBodyAsStream();
+            InputStream ins = response.getEntity().getContent();
+            
+            // TODO HttpClient v4 supports auto-decompressing via an interceptor and/or decorator client impl.
+            // Figure out how to detect automatic support, if possible, and support along with explicit
+            // decompression below (or not). Maybe just make it wholly the responsibility of the HttpClient
+            // instance which is passed in.
 
-            Header httpHeader = getMethod.getResponseHeader("Content-Encoding");
+            Header httpHeader = response.getFirstHeader("Content-Encoding");
             if (httpHeader != null) {
                 String contentEncoding = httpHeader.getValue();
                 if ("deflate".equalsIgnoreCase(contentEncoding)) {
@@ -355,6 +287,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         } catch (IOException e) {
             log.error("Unable to read response", e);
             throw new ResolverException("Unable to read response", e);
+        } finally {
+            // Make sure entity has been completely consumed.
+            EntityUtils.consumeQuietly(response.getEntity());
         }
     }
 }

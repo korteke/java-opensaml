@@ -24,7 +24,7 @@ import java.util.Timer;
 
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.apache.commons.httpclient.HttpClient;
+import org.apache.http.client.HttpClient;
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,22 +47,20 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
 
     /** File containing the backup of the metadata. */
     private File metadataBackupFile;
-
+    
     /**
      * Constructor.
      * 
+     * @param client HTTP client used to fetch remove metadata
      * @param metadataURL the URL to fetch the metadata
-     * @param requestTimeout the time, in milliseconds, to wait for the metadata server to respond
      * @param backupFilePath the file that will keep a backup copy of the metadata,
      * 
      * @throws ResolverException thrown if the URL is not a valid URL, the metadata can not be retrieved from
      *             the URL
      */
-    @Deprecated
-    public FileBackedHTTPMetadataResolver(String metadataURL, int requestTimeout, String backupFilePath)
+    public FileBackedHTTPMetadataResolver(HttpClient client, String metadataURL, String backupFilePath) 
             throws ResolverException {
-        super(metadataURL, requestTimeout);
-        setBackupFile(backupFilePath);
+        this(null, client, metadataURL, backupFilePath);
     }
 
     /**
