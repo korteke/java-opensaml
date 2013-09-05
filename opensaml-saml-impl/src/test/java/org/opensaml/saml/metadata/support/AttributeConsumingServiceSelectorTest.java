@@ -38,7 +38,6 @@ import org.opensaml.saml.metadata.support.AttributeConsumingServiceSelector;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 
 /**
  * Tests of AttributeConsumingServiceSelector.
@@ -215,10 +214,9 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test missing RoleDescriptor input.
-     * @throws MetadataProviderException
      */
     @Test
-    public void testNoRoleDescriptor() throws MetadataProviderException {
+    public void testNoRoleDescriptor() {
         AttributeConsumingService acs = acsSelector.selectService();
         Assert.assertNull(acs, "Service should have been null due to lack of role descriptor");
     }

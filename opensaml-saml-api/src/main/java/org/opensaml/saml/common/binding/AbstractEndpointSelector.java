@@ -23,10 +23,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 
 /**
  * Endpoint selectors choose the endpoint that should be used to contact a peer.
@@ -42,8 +42,8 @@ public abstract class AbstractEndpointSelector {
     /** SAML response within the message flow. */
     private SAMLObject samlResponse;
 
-    /** Provider of metadata for the relying party. */
-    private MetadataProvider metadataProvider;
+    /** Resolver of metadata for the relying party. */
+    private MetadataResolver metadataResolver;
 
     /** Metadata of party to select endpoing for. */
     private EntityDescriptor entityMetadata;
@@ -78,21 +78,21 @@ public abstract class AbstractEndpointSelector {
     }
 
     /**
-     * Gets the metadata provider used to look up entity information.
+     * Gets the metadata resolver used to look up entity information.
      * 
-     * @return metadata provider used to look up entity information
+     * @return metadata resolver used to look up entity information
      */
-    public MetadataProvider getMetadataProvider() {
-        return metadataProvider;
+    public MetadataResolver getMetadataResolver() {
+        return metadataResolver;
     }
 
     /**
-     * Sets the metadata provider used to look up entity information.
+     * Sets the metadata resolver used to look up entity information.
      * 
-     * @param provider metadata provider used to look up entity information
+     * @param resolver metadata resolver used to look up entity information
      */
-    public void setMetadataProvider(MetadataProvider provider) {
-        metadataProvider = provider;
+    public void setMetadataResolver(MetadataResolver resolver) {
+        metadataResolver = resolver;
     }
 
     /**

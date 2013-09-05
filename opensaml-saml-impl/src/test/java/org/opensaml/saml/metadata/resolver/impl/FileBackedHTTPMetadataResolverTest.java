@@ -28,7 +28,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProviderException;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -146,7 +145,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      *  Test case of fail-fast = false and bad backup file
-     * @throws MetadataProviderException 
+     *  
+     * @throws ResolverException
      */
     @Test
     public void testNoFailFastBadBackupFile() throws ResolverException {
@@ -173,7 +173,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * Tests use of backup file on simulated restart.
      * @throws ComponentInitializationException 
      * 
-     * @throws MetadataProviderException
+     * @throws ResolverException, ComponentInitializationException
      */
     @Test
     public void testBackupFileOnRestart() throws ResolverException, ComponentInitializationException {

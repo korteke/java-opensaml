@@ -19,12 +19,14 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
+import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.impl.SchemaValidationFilter;
 import org.opensaml.saml.metadata.resolver.impl.ChainingMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
@@ -48,6 +50,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         entityID2 = "urn:mace:switch.ch:SWITCHaai:ethz.ch";
 
         metadataProvider = new ChainingMetadataResolver();
+        ArrayList<MetadataResolver> resolvers = new ArrayList<>();
 
         URL mdURL = ChainingMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
@@ -55,7 +58,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         FilesystemMetadataResolver fileProvider = new FilesystemMetadataResolver(mdFile);
         fileProvider.setParserPool(parserPool);
         fileProvider.initialize();
-        metadataProvider.addMetadataProvider(fileProvider);
+        resolvers.add(fileProvider);
 
         URL mdURL2 = ChainingMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
@@ -63,11 +66,14 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         FilesystemMetadataResolver fileProvider2 = new FilesystemMetadataResolver(mdFile2);
         fileProvider2.setParserPool(parserPool);
         fileProvider2.initialize();
-        metadataProvider.addMetadataProvider(fileProvider2);
+        resolvers.add(fileProvider2);
+        
+        metadataProvider.setResolvers(resolvers);
+        
+        metadataProvider.initialize();
     }
 
-    //TODO turn on when resolver is refactored
-    @Test(enabled=false)
+    @Test()
     public void testGetEntityDescriptor() throws ResolverException {
         EntityDescriptor descriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
@@ -78,8 +84,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(descriptor2.getEntityID(), entityID2, "Entity's ID does not match requested ID");
     }
 
-    //TODO turn on when resolver is refactored
-    @Test(enabled=false)
+    @Test()
     public void testFilterDisallowed() {
         try {
             metadataProvider.setMetadataFilter(new SchemaValidationFilter(new String[] {}));

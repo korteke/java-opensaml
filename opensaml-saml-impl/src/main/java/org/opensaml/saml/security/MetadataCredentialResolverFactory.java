@@ -19,11 +19,10 @@ package org.opensaml.saml.security;
 
 import org.opensaml.core.xml.util.AbstractWrappedSingletonFactory;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
 
 /**
  * Singleton factory for producing instances of {@link MetadataCredentialResolver}
- * based on a given instance of {@link MetadataProvider}.  
+ * based on a given instance of {@link MetadataResolver}.  
  * 
  * <p>
  * Only once instance of a metadata credential resolver will exist for 
