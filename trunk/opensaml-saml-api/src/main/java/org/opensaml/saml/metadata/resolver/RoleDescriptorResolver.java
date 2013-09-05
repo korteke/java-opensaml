@@ -43,5 +43,21 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  */
 public interface RoleDescriptorResolver extends Resolver<RoleDescriptor, CriteriaSet>, IdentifiableComponent,
         InitializableComponent, DestructableComponent {
+    
+    /**
+     * Gets whether the metadata returned by queries must be valid. At a minimum, metadata is valid only if the date
+     * expressed in the element, and all its ancestral element's, validUntil attribute has not passed. Specific
+     * implementations may add additional constraints.
+     * 
+     * @return whether the metadata returned by queries must be valid
+     */
+    public boolean isRequireValidMetadata();
+
+    /**
+     * Sets whether the metadata returned by queries must be valid.
+     * 
+     * @param requireValidMetadata whether the metadata returned by queries must be valid
+     */
+    public void setRequireValidMetadata(boolean requireValidMetadata);
 
 }

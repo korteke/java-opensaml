@@ -52,7 +52,6 @@ public abstract class BaseMetadataResolver extends AbstractDestructableIdentifia
     public BaseMetadataResolver() {
         super();
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
-        setRequireValidMetadata(false);
         setId(UUID.randomUUID().toString());
     }
     

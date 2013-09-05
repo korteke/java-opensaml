@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml.metadata.resolver.MetadataResolver;
 
 /**
  * An observable base implementation of metadata providers. An observer that clears the descriptor index kept by
@@ -48,11 +48,12 @@ public abstract class AbstractObservableMetadataResolver implements ObservableMe
     public synchronized void destroy() {
         observers = Collections.emptyList();
 
+        //TODO
         //super.destroy();
     }    
 
     /**
-     * Helper method for calling {@link ObservableMetadataResolver.Observer#onEvent(MetadataProvider)}
+     * Helper method for calling {@link ObservableMetadataResolver.Observer#onEvent(MetadataResolver)}
      * on every registered Observer passing in this provider.
      */
     protected void emitChangeEvent() {
@@ -69,10 +70,11 @@ public abstract class AbstractObservableMetadataResolver implements ObservableMe
      * Observer that clears the descriptor index of this provider.
      */
     private class DescriptorIndexClearingObserver implements Observer {
+        
+        //TODO we can probably get rid of this impl, it probably isn't needed in the new resolver design
 
         /** {@inheritDoc} */
-        public void onEvent(MetadataProvider provider) {
-            //TODO
+        public void onEvent(MetadataResolver resolver) {
             //((AbstractMetadataResolver) provider).clearDescriptorIndex();
         }
     }

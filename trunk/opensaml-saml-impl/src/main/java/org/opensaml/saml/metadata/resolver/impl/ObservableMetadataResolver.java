@@ -19,36 +19,36 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.List;
 
-import org.opensaml.saml.saml2.metadata.provider.MetadataProvider;
+import org.opensaml.saml.metadata.resolver.MetadataResolver;
 
 /**
- * A metadata provider that provides event notification to observers. This may be used, for example, to signal an update
+ * A metadata resolver that provides event notification to observers. This may be used, for example, to signal an update
  * of an internal cache of metadata allowing other subsystems to perform some action based on that.
  * 
  */
-public interface ObservableMetadataResolver extends MetadataProvider {
+public interface ObservableMetadataResolver extends MetadataResolver {
 
     /**
-     * Gets the list of observers for the provider. New observers may be added to the list or old ones removed.
+     * Gets the list of observers for the resolver. New observers may be added to the list or old ones removed.
      * 
      * @return the list of observers
      */
     public List<Observer> getObservers();
 
     /**
-     * An observer of metadata provider changes.
+     * An observer of metadata resolver changes.
      * 
-     * <strong>NOTE:</strong> The metadata provider that has changed is passed in to the
-     * {@link #onEvent(MetadataProvider)} method. Observers should <strong>NOT</strong> keep a reference to this
-     * provider as this may prevent proper garbage collection.
+     * <strong>NOTE:</strong> The metadata resolver that has changed is passed in to the
+     * {@link #onEvent(MetadataResolver)} method. Observers should <strong>NOT</strong> keep a reference to this
+     * resolver as this may prevent proper garbage collection.
      */
     public interface Observer {
 
         /**
-         * Called when a provider signals an event has occured.
+         * Called when a resolver signals an event has occurred.
          * 
-         * @param provider the provider being observed
+         * @param resolver the provider being observed
          */
-        public void onEvent(MetadataProvider provider);
+        public void onEvent(MetadataResolver resolver);
     }
 }

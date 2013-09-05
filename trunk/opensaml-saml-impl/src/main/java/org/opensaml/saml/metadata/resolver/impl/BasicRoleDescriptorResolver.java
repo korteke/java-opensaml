@@ -64,9 +64,6 @@ public class BasicRoleDescriptorResolver extends AbstractDestructableIdentifiabl
     /** Resolver of EntityDescriptors. */
     private MetadataResolver entityDescriptorResolver;
     
-    /** Component Id. */
-    private String id;
-    
     /**
      * Constructor.
      *
