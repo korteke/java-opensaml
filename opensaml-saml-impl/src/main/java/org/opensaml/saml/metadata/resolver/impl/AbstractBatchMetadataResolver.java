@@ -17,12 +17,16 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.util.Collections;
+import java.util.Iterator;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.metadata.IterableMetadataSource;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -33,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * Abstract subclass for metadata resolvers that process and resolve metadata at a given point 
  * in time from a single metadata source document.
  */
-public abstract class AbstractBatchMetadataResolver extends AbstractMetadataResolver {
+public abstract class AbstractBatchMetadataResolver extends AbstractMetadataResolver implements IterableMetadataSource {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractBatchMetadataResolver.class);
@@ -45,6 +49,12 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     public AbstractBatchMetadataResolver() {
         super();
         setCacheSourceMetadata(true);
+    }
+    
+    /** {@inheritDoc} */
+    public Iterator<EntityDescriptor> iterator() {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        return Collections.unmodifiableList(getBackingStore().getOrderedDescriptors()).iterator();
     }
 
     /**
