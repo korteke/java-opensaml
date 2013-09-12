@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -69,6 +70,9 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
      * @throws ResolverException thrown if there is a problem adding the metadata provider
      */
     public void setResolvers(List<MetadataResolver> newResolvers) throws ResolverException {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         if (newResolvers == null || newResolvers.isEmpty()) {
             resolvers = Collections.emptyList();
             return;
@@ -101,6 +105,8 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
     
     /** {@inheritDoc} */
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
         for (MetadataResolver resolver : resolvers) {
             try {
                 Iterable<EntityDescriptor> descriptors = resolver.resolve(criteria);
