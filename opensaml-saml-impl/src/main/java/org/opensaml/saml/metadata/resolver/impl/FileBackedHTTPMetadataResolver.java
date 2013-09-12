@@ -177,8 +177,8 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     }
 
     /** {@inheritDoc} */
-    protected void postProcessMetadata(byte[] metadataBytes, Document metadataDom, XMLObject metadata)
-            throws ResolverException {
+    protected void postProcessMetadata(byte[] metadataBytes, Document metadataDom, XMLObject originalMetadata, 
+            XMLObject filteredMetadata) throws ResolverException {
         try {
             validateBackupFile(metadataBackupFile);
             FileOutputStream out = new FileOutputStream(metadataBackupFile);
@@ -190,7 +190,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
         } catch (IOException e) {
             log.error("Unable to write metadata to backup file: " + metadataBackupFile.getAbsoluteFile(), e);
         } finally {
-            super.postProcessMetadata(metadataBytes, metadataDom, metadata);
+            super.postProcessMetadata(metadataBytes, metadataDom, originalMetadata, filteredMetadata);
         }
     }
 }

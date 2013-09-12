@@ -346,7 +346,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     protected void processCachedMetadata(String metadataIdentifier, DateTime refreshStart)
             throws ResolverException {
         log.debug("Computing new expiration time for cached metadata from '{}", metadataIdentifier);
-        DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(getBackingStore().getCachedMetadata(),
+        DateTime metadataExpirationTime = 
+                SAML2Helper.getEarliestExpiration(getBackingStore().getCachedOriginalMetadata(),
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
 
         expirationTime = metadataExpirationTime;
@@ -410,7 +411,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             XMLObject metadata) throws ResolverException {
         Document metadataDom = metadata.getDOM().getOwnerDocument();
 
-        log.debug("Filtering metadata from '{}'", metadataIdentifier);
+        log.debug("Preprocessing metadata from '{}'", metadataIdentifier);
         BatchEntityBackingStore newBackingStore = null;
         try {
             newBackingStore = preProcessNewMetadata(metadata);
@@ -421,13 +422,15 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         }
 
         log.debug("Releasing cached DOM for metadata from '{}'", metadataIdentifier);
-        releaseMetadataDOM(metadata);
+        releaseMetadataDOM(newBackingStore.getCachedOriginalMetadata());
+        releaseMetadataDOM(newBackingStore.getCachedFilteredMetadata());
 
         log.debug("Post-processing metadata from '{}'", metadataIdentifier);
-        postProcessMetadata(metadataBytes, metadataDom, metadata);
+        postProcessMetadata(metadataBytes, metadataDom, newBackingStore.getCachedOriginalMetadata(), 
+                newBackingStore.getCachedFilteredMetadata());
 
         log.debug("Computing expiration time for metadata from '{}'", metadataIdentifier);
-        DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(metadata,
+        DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(newBackingStore.getCachedOriginalMetadata(),
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
         log.debug("Expiration of metadata from '{}' will occur at {}", metadataIdentifier, metadataExpirationTime
                 .toString());
@@ -460,14 +463,15 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * The default implementation of this method is a no-op
      * 
-     * @param metadataBytes raw metadata bytes retrieved via {@link #fetchMetadata}
-     * @param metadataDom metadata after it has been parsed in to a DOM document
-     * @param metadata metadata after it has been run through all registered filters and its DOM released
+     * @param metadataBytes original raw metadata bytes retrieved via {@link #fetchMetadata}
+     * @param metadataDom original metadata after it has been parsed in to a DOM document
+     * @param originalMetadata original metadata prior to being filtered, with its DOM released
+     * @param filteredMetadata metadata after it has been run through all registered filters and its DOM released
      * 
      * @throws ResolverException thrown if there is a problem with the provided data
      */
-    protected void postProcessMetadata(byte[] metadataBytes, Document metadataDom, XMLObject metadata)
-            throws ResolverException {
+    protected void postProcessMetadata(byte[] metadataBytes, Document metadataDom, XMLObject originalMetadata,
+            XMLObject filteredMetadata) throws ResolverException {
 
     }
 

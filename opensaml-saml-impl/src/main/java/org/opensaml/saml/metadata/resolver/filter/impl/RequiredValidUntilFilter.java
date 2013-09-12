@@ -58,8 +58,8 @@ public class RequiredValidUntilFilter implements MetadataFilter {
     }
 
     /**
-     * Gets the maximum internal, in milliseconds, between now and the <code>validUntil</code> date. A value of less than 1
-     * indicates that there is no restriction.
+     * Gets the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
+     * A value of less than 1 indicates that there is no restriction.
      * 
      * @return maximum internal, in milliseconds, between now and the <code>validUntil</code> date
      */
@@ -68,7 +68,11 @@ public class RequiredValidUntilFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public void doFilter(XMLObject metadata) throws FilterException {
+    public XMLObject filter(XMLObject metadata) throws FilterException {
+        if (metadata == null) {
+            return null;
+        }
+        
         DateTime validUntil = getValidUntil(metadata);
 
         if (validUntil == null) {
@@ -83,6 +87,8 @@ public class RequiredValidUntilFilter implements MetadataFilter {
                         + "ms, is larger than is allowed, " + maxValidityInterval + "ms.");
             }
         }
+        
+        return metadata;
     }
 
     /**

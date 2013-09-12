@@ -130,7 +130,15 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public void doFilter(XMLObject metadata) throws FilterException {
+    public XMLObject filter(XMLObject metadata) throws FilterException {
+        if (metadata == null) {
+            return null;
+        }
+        
+        if (!(metadata instanceof SignableXMLObject)) {
+            log.warn("Input was not a SignableXMLObject, skipping filtering: {}", metadata.getClass().getName());
+            return metadata;
+        }
         SignableXMLObject signableMetadata = (SignableXMLObject) metadata;
 
         if (!signableMetadata.isSigned()){
@@ -146,6 +154,8 @@ public class SignatureValidationFilter implements MetadataFilter {
         } else {
             log.error("Internal error, metadata object was of an unsupported type: {}", metadata.getClass().getName());
         }
+        
+        return metadata;
     }
     
     /**

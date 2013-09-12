@@ -88,9 +88,9 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
         descriptor.setValidUntil(new DateTime(ISOChronology.getInstanceUTC()).minus(10000));
 
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter(-1);
-        filter.doFilter(descriptor);
+        filter.filter(descriptor);
         
         filter = new RequiredValidUntilFilter();
-        filter.doFilter(descriptor);
+        filter.filter(descriptor);
     }
 }
