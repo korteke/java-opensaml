@@ -108,7 +108,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
         try {
-            filter.doFilter(xmlObject);
+            filter.filter(xmlObject);
         } catch (FilterException e) {
             Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
@@ -121,7 +121,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
         try {
-            filter.doFilter(xmlObject);
+            filter.filter(xmlObject);
             Assert.fail("Filter passed validation, should have failed");
         } catch (FilterException e) {
             // do nothing, should fail
@@ -146,7 +146,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
-            filter.doFilter(ed);
+            filter.filter(ed);
         } catch (FilterException e) {
             Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
@@ -170,7 +170,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
         try {
-            filter.doFilter(xmlObject);
+            filter.filter(xmlObject);
             Assert.fail("Filter passed validation, should have failed");
         } catch (FilterException e) {
             // do nothing, should fail

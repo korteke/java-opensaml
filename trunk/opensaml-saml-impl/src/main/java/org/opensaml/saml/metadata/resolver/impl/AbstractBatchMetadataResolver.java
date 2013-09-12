@@ -78,18 +78,32 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
 
     /**
-     * Convenience method for getting the current effective cached metadata.
+     * Convenience method for getting the current effective cached original metadata.
      * 
      * <p>
-     * Will only return non null if 
+     * Note: may or may not be the same as that obtained from {@link #getCachedFilteredMetadata()},
+     * depending on what metadata filtering produced from the original metadata document.
      * </p>
      * 
      * @return the current effective cached metadata document
      */
-    @Nullable protected XMLObject getCachedMetadata() {
-       return getBackingStore().getCachedMetadata(); 
+    @Nullable protected XMLObject getCachedOriginalMetadata() {
+       return getBackingStore().getCachedOriginalMetadata(); 
     }
     
+    /**
+     * Convenience method for getting the current effective cached filtered metadata.
+     * 
+     * <p>
+     * Note: may or may not be the same as that obtained from {@link #getCachedOriginalMetadata()},
+     * depending on what metadata filtering produced from the original metadata document.
+     * </p>
+     * 
+     * @return the current effective cached metadata document
+     */
+    @Nullable protected XMLObject getCachedFilteredMetadata() {
+       return getBackingStore().getCachedFilteredMetadata(); 
+    }
     /**
      * Process the specified new metadata document, including metadata filtering 
      * and return its data in a new entity backing store instance.
@@ -105,16 +119,22 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         
         BatchEntityBackingStore newBackingStore = createNewBackingStore();
         
+        XMLObject filteredMetadata = filterMetadata(root);
+        
         if (isCacheSourceMetadata()) {
-            newBackingStore.setCachedMetadata(root);
+            newBackingStore.setCachedOriginalMetadata(root);
+            newBackingStore.setCachedFilteredMetadata(filteredMetadata);
         } 
         
-        filterMetadata(root);
+        if (filteredMetadata == null) {
+            log.info("Metadata filtering process produced a null document, resulting in an empty data set");
+            return newBackingStore;
+        }
         
-        if (root instanceof EntityDescriptor) {
-            preProcessEntityDescriptor((EntityDescriptor)root, newBackingStore);
-        } else if (root instanceof EntitiesDescriptor) {
-            preProcessEntitiesDescriptor((EntitiesDescriptor)root, newBackingStore);
+        if (filteredMetadata instanceof EntityDescriptor) {
+            preProcessEntityDescriptor((EntityDescriptor)filteredMetadata, newBackingStore);
+        } else if (filteredMetadata instanceof EntitiesDescriptor) {
+            preProcessEntitiesDescriptor((EntitiesDescriptor)filteredMetadata, newBackingStore);
         } else {
             log.warn("Document root was neither an EntityDescriptor nor an EntitiesDescriptor: {}", 
                     root.getClass().getName());
@@ -129,8 +149,11 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      */
     protected class BatchEntityBackingStore extends EntityBackingStore {
         
-        /** The cached metadata document. */
-        private XMLObject cachedMetadata;
+        /** The cached original source metadata document. */
+        private XMLObject cachedOriginalMetadata;
+        
+        /** The cached original source metadata document. */
+        private XMLObject cachedFilteredMetadata;
         
         /** Constructor. */
         protected BatchEntityBackingStore() {
@@ -138,21 +161,39 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         }
 
         /**
-         * Get the cached metadata.
+         * Get the cached original source metadata.
          * 
          * @return the cached metadata
          */
-        public XMLObject getCachedMetadata() {
-            return cachedMetadata;
+        public XMLObject getCachedOriginalMetadata() {
+            return cachedOriginalMetadata;
         }
 
         /**
-         * Set the cached metadata.
+         * Set the cached original source metadata.
          * 
          * @param metadata The new cached metadata
          */
-        public void setCachedMetadata(XMLObject metadata) {
-            cachedMetadata = metadata;
+        public void setCachedOriginalMetadata(XMLObject metadata) {
+            cachedOriginalMetadata = metadata;
+        }
+        
+        /**
+         * Get the cached filtered source metadata.
+         * 
+         * @return the cached metadata
+         */
+        public XMLObject getCachedFilteredMetadata() {
+            return cachedFilteredMetadata;
+        }
+
+        /**
+         * Set the cached filtered source metadata.
+         * 
+         * @param metadata The new cached metadata
+         */
+        public void setCachedFilteredMetadata(XMLObject metadata) {
+            cachedFilteredMetadata = metadata;
         }
         
     }

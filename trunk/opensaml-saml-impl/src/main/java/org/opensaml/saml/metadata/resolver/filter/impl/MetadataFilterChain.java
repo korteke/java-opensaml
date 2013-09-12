@@ -47,15 +47,27 @@ public class MetadataFilterChain implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public final void doFilter(XMLObject xmlObject) throws FilterException {
+    public final XMLObject filter(XMLObject xmlObject) throws FilterException {
+        if (xmlObject == null) {
+            return null;
+        }
+        
         synchronized (filters) {
             if (filters == null || filters.isEmpty()) {
                 log.debug("No filters configured, nothing to do");
+                return xmlObject;
             }
+            
+            XMLObject current = xmlObject;
             for (MetadataFilter filter : filters) {
+                if (current == null) {
+                    return null;
+                }
                 log.debug("Applying filter {}", filter.getClass().getName());
-                filter.doFilter(xmlObject);
+                current = filter.filter(current);
             }
+            
+            return current;
         }
     }
 

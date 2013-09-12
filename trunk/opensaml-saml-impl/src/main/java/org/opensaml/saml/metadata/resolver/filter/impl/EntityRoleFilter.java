@@ -131,9 +131,9 @@ public class EntityRoleFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public void doFilter(XMLObject metadata) throws FilterException {
+    public XMLObject filter(XMLObject metadata) throws FilterException {
         if (metadata == null) {
-            return;
+            return null;
         }
 
         if (metadata instanceof EntitiesDescriptor) {
@@ -141,6 +141,8 @@ public class EntityRoleFilter implements MetadataFilter {
         } else {
             filterEntityDescriptor((EntityDescriptor) metadata);
         }
+        
+        return metadata;
     }
 
     /**

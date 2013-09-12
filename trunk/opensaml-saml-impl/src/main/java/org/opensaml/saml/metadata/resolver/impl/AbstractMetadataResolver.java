@@ -213,10 +213,12 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
      * 
      * @throws FilterException thrown if there is an error filtering the metadata
      */
-    protected void filterMetadata(@Nullable final XMLObject metadata) throws FilterException {
+    protected XMLObject filterMetadata(@Nullable final XMLObject metadata) throws FilterException {
         if (getMetadataFilter() != null) {
             log.debug("Applying metadata filter");
-            getMetadataFilter().doFilter(metadata);
+            return getMetadataFilter().filter(metadata);
+        } else {
+            return metadata;
         }
     }
 

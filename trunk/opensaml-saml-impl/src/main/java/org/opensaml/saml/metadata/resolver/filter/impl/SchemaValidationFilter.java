@@ -55,7 +55,11 @@ public class SchemaValidationFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public void doFilter(XMLObject metadata) throws FilterException {
+    public XMLObject filter(XMLObject metadata) throws FilterException {
+        if (metadata == null) {
+            return null;
+        }
+        
         Validator schemaValidator = null;
         try {
             schemaValidator = SAMLSchemaBuilder.getSAML11Schema().newValidator();
@@ -70,5 +74,8 @@ public class SchemaValidationFilter implements MetadataFilter {
             log.error("Incoming metadata was not schema valid.", e);
             throw new FilterException("Incoming metadata was not schema valid.", e);
         }
+        
+        return metadata;
     }
+    
 }
