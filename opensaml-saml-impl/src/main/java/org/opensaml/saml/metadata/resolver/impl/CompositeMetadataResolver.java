@@ -38,8 +38,6 @@ import com.google.common.collect.Iterables;
 /**
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
  * {@link MetadataResolver}s.
- * 
- * @param <MetadataType> type of metadata returned by the resolver
  */
 public class CompositeMetadataResolver extends BaseMetadataResolver {
     
@@ -49,11 +47,7 @@ public class CompositeMetadataResolver extends BaseMetadataResolver {
     /** Resolvers composed by this resolver. */
     private List<MetadataResolver> resolvers;
 
-    /**
-     * Constructor.
-     * 
-     * @param composedResolvers resolvers composed by this resolver, may be null or contain null elements
-     */
+    /** Constructor. */
     public CompositeMetadataResolver() {
         super();
         resolvers = Collections.EMPTY_LIST;
