@@ -22,7 +22,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.EntitiesDescriptorGroupName;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.impl.NodeProcessingMetadataFilter.MetadataNodeProcessor;
+import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;

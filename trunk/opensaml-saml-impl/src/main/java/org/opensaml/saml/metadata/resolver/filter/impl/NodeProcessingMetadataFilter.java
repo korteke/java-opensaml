@@ -30,6 +30,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
+import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 
 /**
  * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor}
@@ -114,22 +115,6 @@ public class NodeProcessingMetadataFilter extends AbstractDestructableInitializa
                 }
             }
         }
-    }
-    
-    /**
-     * A processor of element nodes within a metadata tree.  A particular implementation may process or
-     * handle more than one type of node.
-     */
-    public interface MetadataNodeProcessor {
-        
-        /**
-         * Process a metadata document node.
-         * 
-         * @param metadataNode the metadata node to process
-         * @throws FilterException if a fatal error is encountered while processing the node
-         */
-        public void process(XMLObject metadataNode) throws FilterException;
-        
     }
 
 }
