@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitiesDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" Name="GroupTop" validUntil="2100-01-01T00:00:00Z">
+
+    <EntityDescriptor entityID="https://idp-top.example.org">
+        <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
+            <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idp.example.org/idp/Shibboleth/SSO"/>
+        </IDPSSODescriptor>
+    </EntityDescriptor>
+
+    <EntitiesDescriptor Name="GroupSub1" validUntil="2100-01-01T00:00:00Z">
+        <EntityDescriptor entityID="https://idp-sub1.example.org">
+            <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
+                <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idp.example.org/idp/Shibboleth/SSO"/>
+            </IDPSSODescriptor>
+        </EntityDescriptor>
+    </EntitiesDescriptor>
+    
+    <EntitiesDescriptor Name="GroupSub2" validUntil="2100-01-01T00:00:00Z">
+        <EntityDescriptor entityID="https://idp-sub2.example.org">
+            <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
+                <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idp.example.org/idp/Shibboleth/SSO"/>
+            </IDPSSODescriptor>
+        </EntityDescriptor>
+        
+        <EntitiesDescriptor Name="GroupSub2A" validUntil="2100-01-01T00:00:00Z">
+            <EntityDescriptor entityID="https://idp-sub2a.example.org">
+                <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
+                    <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idp.example.org/idp/Shibboleth/SSO"/>
+                </IDPSSODescriptor>
+            </EntityDescriptor>
+        </EntitiesDescriptor>
+        
+    </EntitiesDescriptor>
+    
+</EntitiesDescriptor>
