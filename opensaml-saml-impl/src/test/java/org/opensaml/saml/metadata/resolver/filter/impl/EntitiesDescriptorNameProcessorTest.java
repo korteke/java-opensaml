@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.metadata.EntitiesDescriptorGroupName;
-import org.opensaml.saml.metadata.resolver.filter.impl.NodeProcessingMetadataFilter.MetadataNodeProcessor;
+import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolverTest;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
