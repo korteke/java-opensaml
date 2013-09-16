@@ -212,10 +212,12 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
+    // Checkstyle: ParameterNumber OFF
     @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException;
+    // Checkstyle: ParameterNumber ON
 
     /**
      * Updates an existing record in the store, using an annotated object as the source.

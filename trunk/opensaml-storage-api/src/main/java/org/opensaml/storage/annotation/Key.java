@@ -22,10 +22,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.opensaml.storage.StorageService;
-
 /**
- * Identifies the field of a class that serves as the key of a {@link StorageService} record.
+ * Identifies the field of a class that serves as the key of a
+ * {@link org.opensaml.storage.StorageService} record.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,8 +32,6 @@ public @interface Key {
     
     /**
      * Get the value of this annotation.
-     * 
-     * @return annotation value
      */
     public String value();
 }

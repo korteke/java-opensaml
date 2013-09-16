@@ -161,7 +161,8 @@ public class MemoryStorageService extends AbstractStorageService {
 
     
     /** {@inheritDoc} */
-    public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key) throws IOException {
+    public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
+            throws IOException {
 
         final Lock writeLock = lock.writeLock();
         

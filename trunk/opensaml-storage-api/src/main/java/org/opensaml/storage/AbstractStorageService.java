@@ -185,12 +185,14 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     }
 
     /** {@inheritDoc} */
+    // Checkstyle: ParameterNumber OFF
     @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
         return updateWithVersion(version, context, key, serializer.serialize(value), expiration);
     }
+    // Checkstyle: ParameterNumber ON
 
     /** {@inheritDoc} */
     @Nullable public Integer update(@Nonnull final Object value) throws IOException {
