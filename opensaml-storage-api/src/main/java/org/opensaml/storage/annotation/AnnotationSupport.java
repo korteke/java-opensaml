@@ -199,6 +199,7 @@ public final class AnnotationSupport {
      * </p>
      *
      * @param target object on which to set expiration
+     * @param expiration value to set
      *
      * @throws IllegalArgumentException if the target object doesn't declare a {@link Expiration} annotation
      * @throws RuntimeException if the field cannot be set on the target object or if it is an unsupported data type
