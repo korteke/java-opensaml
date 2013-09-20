@@ -37,9 +37,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.saml.criterion.EntityIdCriterion;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
-import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
-import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.credential.Credential;
@@ -73,9 +71,6 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(MetadataCredentialResolver.class);
-
-    /** Metadata EntityDescriptor resolver which is the source of credentials. */
-    private MetadataResolver entityDescriptorResolver;
     
     /** Metadata RoleDescriptor resolver which is the source of credentials. */
     private RoleDescriptorResolver roleDescriptorResolver;
@@ -89,11 +84,11 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     /**
      * Constructor.
      * 
-     * @param resolver resolver of metadata EntityDescriptors
+     * @param resolver resolver of metadata RoleDescriptors
      */
-    public MetadataCredentialResolver(@Nonnull final MetadataResolver resolver) {
+    public MetadataCredentialResolver(@Nonnull final RoleDescriptorResolver resolver) {
         super();
-        entityDescriptorResolver = Constraint.isNotNull(resolver, "Metadata resolver cannot be null");
+        roleDescriptorResolver = Constraint.isNotNull(resolver, "RoleDescriptor resolver cannot be null");
         
     }
 
@@ -104,24 +99,12 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
     /** {@inheritDoc} */
     public void initialize() throws ComponentInitializationException {
-        roleDescriptorResolver = new BasicRoleDescriptorResolver(entityDescriptorResolver);
-        roleDescriptorResolver.initialize();
-        
         if (keyInfoCredentialResolver == null) {
             keyInfoCredentialResolver = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration()
                     .getDefaultKeyInfoCredentialResolver();
         }
         
         isInitialized = true;
-    }
-
-    /**
-     * Get the metadata EntityDescriptor resolver instance used by this resolver.
-     *
-     * @return the resolver's EntityDescriptor metadata resolver instance
-     */
-    public MetadataResolver getMetadataResolver() {
-        return entityDescriptorResolver;
     }
     
     /**

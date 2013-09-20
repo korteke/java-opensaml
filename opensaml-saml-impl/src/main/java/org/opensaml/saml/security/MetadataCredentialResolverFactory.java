@@ -18,11 +18,11 @@
 package org.opensaml.saml.security;
 
 import org.opensaml.core.xml.util.AbstractWrappedSingletonFactory;
-import org.opensaml.saml.metadata.resolver.MetadataResolver;
+import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
 
 /**
  * Singleton factory for producing instances of {@link MetadataCredentialResolver}
- * based on a given instance of {@link MetadataResolver}.  
+ * based on a given instance of {@link RoleDescriptorResolver}.  
  * 
  * <p>
  * Only once instance of a metadata credential resolver will exist for 
@@ -30,7 +30,7 @@ import org.opensaml.saml.metadata.resolver.MetadataResolver;
  * </p>
  */
 public class MetadataCredentialResolverFactory 
-    extends AbstractWrappedSingletonFactory<MetadataResolver, MetadataCredentialResolver> {
+    extends AbstractWrappedSingletonFactory<RoleDescriptorResolver, MetadataCredentialResolver> {
     
     /** The global instance of the factory itself. */
     private static MetadataCredentialResolverFactory factory;
@@ -59,8 +59,8 @@ public class MetadataCredentialResolverFactory
     }
 
     /** {@inheritDoc} */
-    protected MetadataCredentialResolver createNewInstance(MetadataResolver metadataResolver) {
-        return new MetadataCredentialResolver(metadataResolver);
+    protected MetadataCredentialResolver createNewInstance(RoleDescriptorResolver roleResolver) {
+        return new MetadataCredentialResolver(roleResolver);
     }
     
 }
