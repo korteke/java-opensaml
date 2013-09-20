@@ -17,9 +17,6 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.security.PrivateKey;
 import java.security.cert.X509CRL;
@@ -32,6 +29,7 @@ import java.util.Set;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -40,7 +38,6 @@ import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.PKIXValidationInformation;
@@ -59,7 +56,9 @@ import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.Signer;
-import org.opensaml.xmlsec.signature.support.impl.PKIXSignatureTrustEngine;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -98,7 +97,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         subjectCN = "foo.example.org";
         
-        criteriaSet = new CriteriaSet( new EntityIDCriterion("dummy-entity-id") );
+        criteriaSet = new CriteriaSet( new EntityIdCriterion("dummy-entity-id") );
         
         // Used to test the tampered data case
         tamperDocumentPostSigning = false;

@@ -35,11 +35,11 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * <p>If no key usage type is presented at construction time this resolver will return the key, if available, regardless
  * of the usage type provided to its resolve method.</p>
  * 
- * <p>Resolution will fail if an {@link EntityIDCriterion} is not part of the input criteria set.</p>
+ * <p>Resolution will fail if an {@link EntityIdCriterion} is not part of the input criteria set.</p>
  */
 public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
 
@@ -113,7 +113,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
 
         checkCriteriaRequirements(criteriaSet);
 
-        String entityID = criteriaSet.get(EntityIDCriterion.class).getEntityID();
+        String entityID = criteriaSet.get(EntityIdCriterion.class).getEntityId();
         UsageCriterion usageCriteria = criteriaSet.get(UsageCriterion.class);
         UsageType usage;
         if (usageCriteria != null) {
@@ -159,7 +159,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param criteriaSet the credential criteria set to evaluate
      */
     protected void checkCriteriaRequirements(@Nullable final CriteriaSet criteriaSet) {
-        if (criteriaSet == null || criteriaSet.get(EntityIDCriterion.class) == null) {
+        if (criteriaSet == null || criteriaSet.get(EntityIdCriterion.class) == null) {
             log.error("EntityIDCriterion was not specified in the criteria set, resolution cannot be attempted");
             throw new IllegalArgumentException("No EntityIDCriterion was available in criteria set");
         }

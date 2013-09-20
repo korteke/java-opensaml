@@ -17,16 +17,14 @@
 
 package org.opensaml.security.trust.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-import org.testng.Assert;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.trust.TrustEngine;
-import org.opensaml.security.trust.impl.ChainingTrustEngine;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test the chaining trust engine.
@@ -47,7 +45,7 @@ public class ChainingTrustEngineTest {
         engine = new ChainingTrustEngine<FooToken>();
         
         criteriaSet = new CriteriaSet();
-        criteriaSet.add( new EntityIDCriterion("dummyEntityID") );
+        criteriaSet.add( new EntityIdCriterion("dummyEntityID") );
     }
     
     @Test

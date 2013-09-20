@@ -25,7 +25,8 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
-import org.opensaml.saml.security.MetadataCriterion;
+import org.opensaml.saml.criterion.EntityRoleCriterion;
+import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,17 +46,15 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
         
         CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
         
-        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
-        Constraint.isNotNull(peerContext, "SamlPeerEntityContext was null");
-        Constraint.isNotNull(peerContext.getRole(), "SAML peer role was null");
+        SamlPeerEntityContext peerEntityContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
+        Constraint.isNotNull(peerEntityContext, "SamlPeerEntityContext was null");
+        Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
+        criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
         
         SamlProtocolContext protocolContext = getSamlProtocolContext(messageContext);
         Constraint.isNotNull(protocolContext, "SamlProtocolContext was null");
         Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
-        
-        MetadataCriterion mdCriteria = new MetadataCriterion(peerContext.getRole(), protocolContext.getProtocol());
-        
-        criteriaSet.add(mdCriteria);
+        criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
 
         return criteriaSet;
     }

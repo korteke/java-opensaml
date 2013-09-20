@@ -27,6 +27,7 @@ import net.shibboleth.utilities.java.support.security.RandomIdentifierGeneration
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.joda.time.DateTime;
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -43,7 +44,6 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
@@ -144,7 +144,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
         KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
         ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        CriteriaSet criteriaSet = new CriteriaSet( new EntityIDCriterion("urn:example.org:issuer") );
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion("urn:example.org:issuer") );
         Assert.assertTrue(trustEngine.validate(signedAssertion.getSignature(), criteriaSet),
                 "Assertion signature was not valid");
     }

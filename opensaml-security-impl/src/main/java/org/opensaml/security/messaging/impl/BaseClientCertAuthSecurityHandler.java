@@ -30,11 +30,11 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.x509.X509Credential;
@@ -262,7 +262,7 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType> extends Bas
 
         CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
-            criteriaSet.add(new EntityIDCriterion(entityID));
+            criteriaSet.add(new EntityIdCriterion(entityID));
         }
 
         criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
