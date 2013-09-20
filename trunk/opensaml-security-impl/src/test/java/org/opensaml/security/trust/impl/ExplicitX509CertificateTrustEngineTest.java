@@ -17,9 +17,6 @@
 
 package org.opensaml.security.trust.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -27,17 +24,19 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test the explicit key trust engine.
@@ -153,7 +152,7 @@ public class ExplicitX509CertificateTrustEngineTest {
         
         // not used, but have to pass in a non-null, non-empty criteria set
         criteriaSet = new CriteriaSet();
-        criteriaSet.add( new EntityIDCriterion("dummyEntityID") );
+        criteriaSet.add( new EntityIdCriterion("dummyEntityID") );
     }
 
     @Test

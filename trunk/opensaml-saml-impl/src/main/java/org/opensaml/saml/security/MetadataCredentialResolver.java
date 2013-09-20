@@ -18,6 +18,7 @@
 package org.opensaml.saml.security;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -31,10 +32,11 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.saml.criterion.EntityIdCriterion;
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
@@ -44,7 +46,6 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.MutableCredential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.credential.impl.AbstractCriteriaFilteringCredentialResolver;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -52,18 +53,16 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
-
 /**
  * A credential resolver capable of resolving credentials from SAML 2 metadata.
  * 
+ * <p>
  * The instance of {@link CriteriaSet} passed to {@link #resolve(CriteriaSet)} and {@link #resolveSingle(CriteriaSet)}
- * must minimally contain 2 criteria: {@link EntityIDCriterion} and {@link MetadataCriterion}. The values for
- * {@link EntityIDCriterion#getEntityID()} and {@link MetadataCriterion#getRole()} are mandatory. If the protocol value
- * obtained via {@link MetadataCriterion#getProtocol()} is not supplied, credentials will be resolved from all matching
- * roles, regardless of protocol support. Specification of a {@link UsageCriterion} is optional. If usage criteria is
- * absent from the criteria set, the effective value {@link UsageType#UNSPECIFIED} will be used for credential
- * resolution.
+ * must minimally contain 2 criteria: {@link EntityIdCriterion} and {@link EntityRoleCriterion}.
+ * {@link ProtocolCriterion} is optional; if absent, credentials will be resolved from all matching roles, 
+ * regardless of protocol support. {@link UsageCriterion} is optional; if absent, the effective value 
+ * {@link UsageType#UNSPECIFIED} will be used for credential resolution.
+ * </p>
  * 
  */
 public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredentialResolver 
@@ -142,10 +141,17 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
         checkCriteriaRequirements(criteriaSet);
 
-        String entityID = criteriaSet.get(EntityIDCriterion.class).getEntityID();
-        MetadataCriterion mdCriteria = criteriaSet.get(MetadataCriterion.class);
-        QName role = mdCriteria.getRole();
-        String protocol = mdCriteria.getProtocol();
+        String entityID = criteriaSet.get(EntityIdCriterion.class).getEntityId();
+        
+        EntityRoleCriterion roleCriteria = criteriaSet.get(EntityRoleCriterion.class);
+        QName role = roleCriteria.getRole();
+        
+        String protocol = null;
+        ProtocolCriterion protocolCriteria = criteriaSet.get(ProtocolCriterion.class);
+        if (protocolCriteria != null) {
+            protocol = protocolCriteria.getProtocol();
+        }
+        
         UsageCriterion usageCriteria = criteriaSet.get(UsageCriterion.class);
         UsageType usage = null;
         if (usageCriteria != null) {
@@ -154,7 +160,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             usage = UsageType.UNSPECIFIED;
         }
 
-        Collection<Credential> credentials = retrieveFromMetadata(entityID, role, protocol, usage);
+        Collection<Credential> credentials = retrieveFromMetadata(criteriaSet, entityID, role, protocol, usage);
 
         return credentials;
     }
@@ -165,25 +171,21 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param criteriaSet the credential set to evaluate
      */
     protected void checkCriteriaRequirements(CriteriaSet criteriaSet) {
-        EntityIDCriterion entityCriteria = criteriaSet.get(EntityIDCriterion.class);
-        MetadataCriterion mdCriteria = criteriaSet.get(MetadataCriterion.class);
-        if (entityCriteria == null) {
-            throw new IllegalArgumentException("Entity criteria must be supplied");
-        }
-        if (mdCriteria == null) {
-            throw new IllegalArgumentException("SAML entity metadata criteria must be supplied");
-        }
-        if (Strings.isNullOrEmpty(entityCriteria.getEntityID())) {
-            throw new IllegalArgumentException("Credential owner entity ID criteria value must be supplied");
-        }
-        if (mdCriteria.getRole() == null) {
-            throw new IllegalArgumentException("Credential entity role criteria value must be supplied");
-        }
+        EntityIdCriterion entityCriteria = Constraint.isNotNull(criteriaSet.get(EntityIdCriterion.class), 
+                "EntityIdCriterion must be supplied");
+        Constraint.isNotNull(StringSupport.trimOrNull(entityCriteria.getEntityId()), 
+                "Credential owner entity ID criteria value must be supplied");
+        
+        EntityRoleCriterion roleCriteria = Constraint.isNotNull(criteriaSet.get(EntityRoleCriterion.class), 
+                "EntityRoleCriterion must be supplied");
+        Constraint.isNotNull(roleCriteria.getRole(), 
+                "Credential entity role criteria value must be supplied");
     }
 
     /**
      * Retrieves credentials from the provided entityDescriptorResolver.
      * 
+     * @param criteriaSet the criteria set being processed
      * @param entityID entityID of the credential owner
      * @param role role in which the entity is operating
      * @param protocol protocol over which the entity is operating (may be null)
@@ -194,13 +196,13 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @throws ResolverException thrown if the key, certificate, or CRL information is represented in an unsupported
      *             format
      */
-    protected Collection<Credential> retrieveFromMetadata(String entityID, QName role, String protocol, UsageType usage)
-            throws ResolverException {
+    protected Collection<Credential> retrieveFromMetadata(CriteriaSet criteriaSet, String entityID, QName role, 
+            String protocol, UsageType usage) throws ResolverException {
 
         log.debug("Attempting to retrieve credentials from entityDescriptorResolver for entity: {}", entityID);
         HashSet<Credential> credentials = new HashSet<Credential>(3);
 
-        Iterable<RoleDescriptor> roleDescriptors = getRoleDescriptors(entityID, role, protocol);
+        Iterable<RoleDescriptor> roleDescriptors = getRoleDescriptors(criteriaSet, entityID, role, protocol);
             
         for (RoleDescriptor roleDescriptor : roleDescriptors) {
             List<KeyDescriptor> keyDescriptors = roleDescriptor.getKeyDescriptors();
@@ -311,6 +313,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     /**
      * Get the list of entityDescriptorResolver role descriptors which match the given entityID, role and protocol.
      * 
+     * @param criteriaSet criteria set being processed
      * @param entityID entity ID of the credential owner
      * @param role role in which the entity is operating
      * @param protocol protocol over which the entity is operating (may be null)
@@ -318,30 +321,16 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @throws ResolverException thrown if there is an error retrieving role descriptors 
      *          from the entityDescriptorResolver provider
      */
-    protected Iterable<RoleDescriptor> getRoleDescriptors(String entityID, QName role, String protocol)
-            throws ResolverException {
+    protected Iterable<RoleDescriptor> getRoleDescriptors(CriteriaSet criteriaSet, String entityID, QName role, 
+            String protocol) throws ResolverException {
         try {
             if (log.isDebugEnabled()) {
-                log.debug("Retrieving entityDescriptorResolver for entity '{}' in role '{}' for protocol '{}'", 
+                log.debug("Retrieving role descriptor metadata for entity '{}' in role '{}' for protocol '{}'", 
                         new Object[] {entityID, role, protocol});
             }
+            
+            return getRoleDescriptorResolver().resolve(criteriaSet);
 
-            if (Strings.isNullOrEmpty(protocol)) {
-                return getRoleDescriptorResolver().resolve(new CriteriaSet(
-                        new EntityIdCriterion(entityID),
-                        new EntityRoleCriterion(role)));
-            } else {
-                RoleDescriptor roleDescriptor = getRoleDescriptorResolver().resolveSingle(new CriteriaSet(
-                        new EntityIdCriterion(entityID),
-                        new EntityRoleCriterion(role),
-                        new ProtocolCriterion(protocol)));
-                if (roleDescriptor == null) {
-                    return null;
-                }
-                List<RoleDescriptor> roles = new ArrayList<RoleDescriptor>();
-                roles.add(roleDescriptor);
-                return roles;
-            }
         } catch (ResolverException e) {
             log.error("Unable to resolve information from metadata", e);
             throw new ResolverException("Unable to resolve unformation from metadata", e);

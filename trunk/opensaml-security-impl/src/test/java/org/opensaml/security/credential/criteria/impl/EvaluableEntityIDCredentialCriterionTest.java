@@ -17,8 +17,8 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -31,7 +31,7 @@ public class EvaluableEntityIDCredentialCriterionTest {
     
     private BasicCredential credential;
     private String entityID;
-    private EntityIDCriterion criteria;
+    private EntityIdCriterion criteria;
     
     public EvaluableEntityIDCredentialCriterionTest() {
         entityID = "someEntityID";
@@ -42,7 +42,7 @@ public class EvaluableEntityIDCredentialCriterionTest {
         credential = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         credential.setEntityId(entityID);
         
-        criteria = new EntityIDCriterion(entityID);
+        criteria = new EntityIdCriterion(entityID);
     }
     
     @Test
@@ -53,7 +53,7 @@ public class EvaluableEntityIDCredentialCriterionTest {
 
     @Test
     public void testNotSatisfy() {
-        criteria.setEntityID("OTHER");
+        criteria = new EntityIdCriterion("OTHER");
         EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
     }

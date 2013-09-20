@@ -17,9 +17,6 @@
 
 package org.opensaml.security.x509.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -31,16 +28,16 @@ import java.util.Set;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
-import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
-import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests the {@link PKIXX509CredentialTrustEngine} implementation.
@@ -67,7 +64,7 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         subjectCN = "foo.example.org";
         
-        criteriaSet = new CriteriaSet( new EntityIDCriterion("dummy-entity-id") );
+        criteriaSet = new CriteriaSet( new EntityIdCriterion("dummy-entity-id") );
     }
     
     @Test

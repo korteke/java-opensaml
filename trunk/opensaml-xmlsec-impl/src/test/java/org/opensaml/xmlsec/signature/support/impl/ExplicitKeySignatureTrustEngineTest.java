@@ -17,9 +17,6 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -27,13 +24,13 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
@@ -49,7 +46,9 @@ import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.Signer;
-import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test explicit key signature trust engine.
@@ -177,7 +176,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         criteriaSet = new CriteriaSet();
-        criteriaSet.add( new EntityIDCriterion(signingEntityID) );
+        criteriaSet.add( new EntityIdCriterion(signingEntityID) );
         
         rawData = "Hello, here is some secret data that is to be signed";
         rawAlgorithmURI = SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1;

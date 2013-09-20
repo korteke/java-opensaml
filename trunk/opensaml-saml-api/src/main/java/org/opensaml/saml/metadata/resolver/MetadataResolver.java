@@ -32,7 +32,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
  * 
  * At a minimum, a {@link MetadataResolver} implementation MUST support the following criteria:
  * <ul>
- * <li>{@link org.opensaml.saml.criterion.EntityIdCriterion}</li>
+ * <li>{@link org.opensaml.core.criterion.EntityIdCriterion}</li>
  * </ul>
  * 
  * Implementations SHOULD also support the following criteria when possible:

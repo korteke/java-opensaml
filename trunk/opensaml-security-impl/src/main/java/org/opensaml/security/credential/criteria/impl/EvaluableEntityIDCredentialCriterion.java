@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,8 +46,8 @@ public class EvaluableEntityIDCredentialCriterion implements EvaluableCredential
      * 
      * @param criteria the criteria which is the basis for evaluation
      */
-    public EvaluableEntityIDCredentialCriterion(@Nonnull final EntityIDCriterion criteria) {
-        entityID = Constraint.isNotNull(criteria, "Criterion instance may not be null").getEntityID();
+    public EvaluableEntityIDCredentialCriterion(@Nonnull final EntityIdCriterion criteria) {
+        entityID = Constraint.isNotNull(criteria, "Criterion instance may not be null").getEntityId();
     }
 
     /**

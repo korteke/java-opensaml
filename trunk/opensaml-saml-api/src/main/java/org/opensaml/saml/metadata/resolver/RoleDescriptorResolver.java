@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  * 
  * At a minimum, a {@link RoleDescriptorResolver} implementation MUST support the following criteria:
  * <ul>
- * <li>{@link org.opensaml.saml.criterion.EntityIdCriterion}</li>
+ * <li>{@link org.opensaml.core.criterion.EntityIdCriterion}</li>
  * <li>{@link org.opensaml.saml.criterion.EntityRoleCriterion}</li>
  * </ul>
  * 

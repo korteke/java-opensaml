@@ -20,14 +20,15 @@ package org.opensaml.saml.common.binding.security;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
-import org.opensaml.saml.security.MetadataCriterion;
+import org.opensaml.saml.criterion.EntityRoleCriterion;
+import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.credential.UsageType;
-import org.opensaml.security.criteria.EntityIDCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.impl.BaseTrustEngineSecurityHandler;
 import org.opensaml.xmlsec.signature.Signature;
@@ -50,20 +51,18 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngin
         
         CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
-            criteriaSet.add(new EntityIDCriterion(entityID) );
+            criteriaSet.add(new EntityIdCriterion(entityID) );
         }
         
-        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
-        Constraint.isNotNull(peerContext, "SamlPeerEntityContext was null");
-        Constraint.isNotNull(peerContext.getRole(), "SAML peer role was null");
+        SamlPeerEntityContext peerEntityContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
+        Constraint.isNotNull(peerEntityContext, "SamlPeerEntityContext was null");
+        Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
+        criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
         
         SamlProtocolContext protocolContext = getSamlProtocolContext(messageContext);
         Constraint.isNotNull(protocolContext, "SamlProtocolContext was null");
         Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
-        
-        MetadataCriterion mdCriteria = new MetadataCriterion(peerContext.getRole(), protocolContext.getProtocol());
-        
-        criteriaSet.add(mdCriteria);
+        criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
         
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         

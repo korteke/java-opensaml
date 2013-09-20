@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.criterion;
+package org.opensaml.core.criterion;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
