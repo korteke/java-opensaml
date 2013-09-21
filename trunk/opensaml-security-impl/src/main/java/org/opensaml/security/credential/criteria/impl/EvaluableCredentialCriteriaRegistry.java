@@ -82,27 +82,13 @@ public final class EvaluableCredentialCriteriaRegistry {
                     .getClass().getName());
 
             try {
-                Constructor<? extends EvaluableCredentialCriterion> constructor = clazz
-                        .getConstructor(new Class[] { criteria.getClass() });
+                Constructor<? extends EvaluableCredentialCriterion> constructor = 
+                        clazz.getConstructor(new Class[] { criteria.getClass() });
 
                 return constructor.newInstance(new Object[] { criteria });
 
-            } catch (java.lang.SecurityException e) {
-                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
-            } catch (NoSuchMethodException e) {
-                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
-            } catch (IllegalArgumentException e) {
-                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
-            } catch (InstantiationException e) {
-                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
-            } catch (IllegalAccessException e) {
-                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
-                throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
-            } catch (InvocationTargetException e) {
+            } catch (java.lang.SecurityException | InstantiationException | IllegalAccessException 
+                    | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
                 log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
                 throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             }
@@ -197,8 +183,7 @@ public final class EvaluableCredentialCriteriaRegistry {
         log.debug("Loading default evaluable credential criteria mappings");
         InputStream inStream = EvaluableCredentialCriteriaRegistry.class.getResourceAsStream(DEFAULT_MAPPINGS_FILE);
         if (inStream == null) {
-            log.error(String.format("Could not open resource stream from default mappings file '%s'",
-                    DEFAULT_MAPPINGS_FILE));
+            log.error("Could not open resource stream from default mappings file '{}'", DEFAULT_MAPPINGS_FILE);
             return;
         }
 
@@ -224,8 +209,8 @@ public final class EvaluableCredentialCriteriaRegistry {
         Logger log = getLogger();
         for (Object key : mappings.keySet()) {
             if (!(key instanceof String)) {
-                log.error(String.format("Properties key was not an instance of String, was '%s', skipping...", key
-                        .getClass().getName()));
+                log.error("Properties key was not an instance of String, was '{}', skipping...", 
+                        key.getClass().getName());
                 continue;
             }
             String criteriaName = (String) key;
@@ -236,19 +221,16 @@ public final class EvaluableCredentialCriteriaRegistry {
             try {
                 criteriaClass = classLoader.loadClass(criteriaName);
             } catch (ClassNotFoundException e) {
-                log.error(
-                        String.format("Could not find criteria class name '%s', skipping registration", criteriaName),
-                        e);
-                return;
+                log.error("Could not find criteria class '{}', skipping registration", criteriaName);
+                continue;
             }
 
             Class evaluableClass = null;
             try {
                 evaluableClass = classLoader.loadClass(evaluatorName);
             } catch (ClassNotFoundException e) {
-                log.error(String
-                        .format("Could not find evaluator class name '%s', skipping registration", criteriaName), e);
-                return;
+                log.error("Could not find evaluator class '{}', skipping registration", criteriaName);
+                continue;
             }
 
             register(criteriaClass, evaluableClass);
