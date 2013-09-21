@@ -74,5 +74,35 @@ public class EvaluablePublicKeyCredentialCriterion implements EvaluableCredentia
         
         return publicKey.equals(key);
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluablePublicKeyCredentialCriterion [publicKey=");
+        builder.append(publicKey);
+        builder.append("]");
+        return builder.toString();
+    }
 
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return publicKey.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluablePublicKeyCredentialCriterion) {
+            return publicKey.equals(((EvaluablePublicKeyCredentialCriterion) obj).publicKey);
+        }
+
+        return false;
+    }
 }

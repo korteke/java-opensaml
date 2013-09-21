@@ -73,5 +73,36 @@ public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialC
         }
         return target.getKeyNames().contains(keyName);
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableKeyNameCredentialCriterion [keyName=");
+        builder.append(keyName);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return keyName.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableKeyNameCredentialCriterion) {
+            return keyName.equals(((EvaluableKeyNameCredentialCriterion) obj).keyName);
+        }
+
+        return false;
+    }
 
 }

@@ -102,5 +102,36 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
             return null;
         }
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableKeyAlgorithmCredentialCriterion [keyAlgorithm=");
+        builder.append(keyAlgorithm);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return keyAlgorithm.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableKeyAlgorithmCredentialCriterion) {
+            return keyAlgorithm.equals(((EvaluableKeyAlgorithmCredentialCriterion) obj).keyAlgorithm);
+        }
+
+        return false;
+    }
 
 }

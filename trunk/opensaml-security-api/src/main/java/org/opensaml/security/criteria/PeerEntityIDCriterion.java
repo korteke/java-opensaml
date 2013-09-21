@@ -68,5 +68,36 @@ public final class PeerEntityIDCriterion implements Criterion {
         
         peerID = trimmed;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PeerEntityIDCriterion [peerID=");
+        builder.append(peerID);
+        builder.append("]");
+        return builder.toString();
+    }
 
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return peerID.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof PeerEntityIDCriterion) {
+            return peerID.equals(((PeerEntityIDCriterion) obj).peerID);
+        }
+
+        return false;
+    }
+    
 }

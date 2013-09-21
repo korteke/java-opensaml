@@ -86,5 +86,36 @@ public class EvaluableUsageCredentialCriterion implements EvaluableCredentialCri
         }
         return credentialUsage == criteriaUsage;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableUsageCredentialCriterion [usage=");
+        builder.append(usage);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return usage.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableUsageCredentialCriterion) {
+            return usage.equals(((EvaluableUsageCredentialCriterion) obj).usage);
+        }
+
+        return false;
+    }
 
 }

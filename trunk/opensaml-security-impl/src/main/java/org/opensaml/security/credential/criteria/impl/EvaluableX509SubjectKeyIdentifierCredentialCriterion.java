@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
+import org.apache.commons.codec.binary.Hex;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
@@ -86,6 +87,37 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements Eva
         }
         
         return Arrays.equals(ski, credSKI);
+    }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableX509SubjectKeyIdentifierCredentialCriterion [ski=");
+        builder.append(Hex.encodeHexString(ski));
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return ski.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableX509SubjectKeyIdentifierCredentialCriterion) {
+            return ski.equals(((EvaluableX509SubjectKeyIdentifierCredentialCriterion) obj).ski);
+        }
+
+        return false;
     }
 
 }

@@ -99,5 +99,36 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
             return null;
         }
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableKeyLengthCredentialCriterion [keyLength=");
+        builder.append(keyLength);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return keyLength.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableKeyLengthCredentialCriterion) {
+            return keyLength.equals(((EvaluableKeyLengthCredentialCriterion) obj).keyLength);
+        }
+
+        return false;
+    }
 
 }

@@ -73,5 +73,36 @@ public class EvaluableEntityIDCredentialCriterion implements EvaluableCredential
         }
         return entityID.equals(target.getEntityId());
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableEntityIDCredentialCriterion [entityID=");
+        builder.append(entityID);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return entityID.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableEntityIDCredentialCriterion) {
+            return entityID.equals(((EvaluableEntityIDCredentialCriterion) obj).entityID);
+        }
+
+        return false;
+    }
 
 }

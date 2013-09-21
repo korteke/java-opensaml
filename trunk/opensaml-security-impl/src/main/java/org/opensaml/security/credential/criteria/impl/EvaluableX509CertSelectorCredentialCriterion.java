@@ -70,5 +70,36 @@ public class EvaluableX509CertSelectorCredentialCriterion implements EvaluableCr
 
         return certSelector.match(entityCert);
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableX509CertSelectorCredentialCriterion [certSelector=");
+        builder.append("<contents not displayable>");
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return certSelector.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableX509CertSelectorCredentialCriterion) {
+            return certSelector.equals(((EvaluableX509CertSelectorCredentialCriterion) obj).certSelector);
+        }
+
+        return false;
+    }
 
 }

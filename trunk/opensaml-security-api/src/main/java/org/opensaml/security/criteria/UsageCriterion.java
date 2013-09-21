@@ -64,5 +64,36 @@ public final class UsageCriterion implements Criterion {
             credUsage = UsageType.UNSPECIFIED;
         }
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("UsageCriterion [credUsage=");
+        builder.append(credUsage);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return credUsage.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof UsageCriterion) {
+            return credUsage.equals(((UsageCriterion) obj).credUsage);
+        }
+
+        return false;
+    }
 
 }

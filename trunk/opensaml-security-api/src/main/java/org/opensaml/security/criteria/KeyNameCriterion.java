@@ -61,5 +61,36 @@ public final class KeyNameCriterion implements Criterion {
 
         keyName = trimmed;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("KeyNameCriterion [keyName=");
+        builder.append(keyName);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return keyName.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof KeyNameCriterion) {
+            return keyName.equals(((KeyNameCriterion) obj).keyName);
+        }
+
+        return false;
+    }
 
 }
