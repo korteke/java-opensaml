@@ -79,5 +79,36 @@ public class EvaluableX509SubjectNameCredentialCriterion implements EvaluableCre
 
         return entityCert.getSubjectX500Principal().equals(subjectName);
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableX509SubjectNameCredentialCriterion [subjectName=");
+        builder.append(subjectName.getName());
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return subjectName.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableX509SubjectNameCredentialCriterion) {
+            return subjectName.equals(((EvaluableX509SubjectNameCredentialCriterion) obj).subjectName);
+        }
+
+        return false;
+    }
 
 }

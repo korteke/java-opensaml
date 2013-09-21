@@ -59,5 +59,36 @@ public final class X509SubjectNameCriterion implements Criterion {
         Constraint.isNotNull(subject, "Subject principal criteria value cannot be null");
         this.subjectName = subject;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("X509SubjectNameCriterion [subjectName=");
+        builder.append(subjectName.getName());
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return subjectName.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof X509SubjectNameCriterion) {
+            return subjectName.equals(((X509SubjectNameCriterion) obj).subjectName);
+        }
+
+        return false;
+    }
 
 }

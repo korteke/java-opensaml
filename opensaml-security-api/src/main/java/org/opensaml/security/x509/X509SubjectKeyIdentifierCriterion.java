@@ -21,6 +21,8 @@ import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
+import org.apache.commons.codec.binary.Hex;
+
 /**
  * An implementation of {@link Criterion} which specifies criteria based on
  * X.509 certificate subject key identifier.
@@ -58,6 +60,37 @@ public final class X509SubjectKeyIdentifierCriterion implements Criterion {
             throw new IllegalArgumentException("Subject key identifier criteria value cannot be null or empty");
         }
         subjectKeyIdentifier = ski;
+    }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("X509SubjectKeyIdentifierCriterion [subjectKeyIdentifier=");
+        builder.append(Hex.encodeHexString(subjectKeyIdentifier));
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return subjectKeyIdentifier.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof X509SubjectKeyIdentifierCriterion) {
+            return subjectKeyIdentifier.equals(((X509SubjectKeyIdentifierCriterion) obj).subjectKeyIdentifier);
+        }
+
+        return false;
     }
 
 }

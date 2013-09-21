@@ -17,11 +17,15 @@
 
 package org.opensaml.security.x509;
 
+import java.util.Arrays;
+
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
+
+import org.apache.commons.codec.binary.Hex;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria based on
@@ -86,6 +90,43 @@ public final class X509DigestCriterion implements Criterion {
             throw new IllegalArgumentException("Certificate digest criteria value cannot be null or empty");
         }
         x509digest = digest;
+    }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("X509DigestCriterion [algorithm=");
+        builder.append(algorithm);
+        builder.append(", digest=");
+        builder.append(Hex.encodeHexString(x509digest));
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        int result = 17;  
+        result = 37*result + algorithm.hashCode();
+        result = 37*result + x509digest.hashCode();
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof X509DigestCriterion) {
+            X509DigestCriterion other = (X509DigestCriterion) obj;
+            return algorithm.equals(other.algorithm) && Arrays.equals(x509digest, other.x509digest);
+        }
+
+        return false;
     }
 
 }

@@ -58,5 +58,36 @@ public final class KeyLengthCriterion implements Criterion {
 
         keyLength = length;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("KeyLengthCriterion [keyLength=");
+        builder.append(keyLength);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return keyLength.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof KeyLengthCriterion) {
+            return keyLength.equals(((KeyLengthCriterion) obj).keyLength);
+        }
+
+        return false;
+    }
 
 }

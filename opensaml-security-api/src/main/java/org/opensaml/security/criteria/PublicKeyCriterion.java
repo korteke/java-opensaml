@@ -60,5 +60,36 @@ public final class PublicKeyCriterion implements Criterion {
 
         publicKey = key;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PublicKeyCriterion [publicKey=");
+        builder.append(publicKey);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return publicKey.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof PublicKeyCriterion) {
+            return publicKey.equals(((PublicKeyCriterion) obj).publicKey);
+        }
+
+        return false;
+    }
 
 }

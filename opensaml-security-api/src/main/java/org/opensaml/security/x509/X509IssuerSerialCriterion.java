@@ -84,5 +84,42 @@ public final class X509IssuerSerialCriterion implements Criterion {
         Constraint.isNotNull(serial, "Serial number criteria value cannot be null");
         this.serialNumber = serial;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("BindingCriterion [issuerName=");
+        builder.append(issuerName.getName());
+        builder.append(", serialNumber=");
+        builder.append(serialNumber);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        int result = 17;
+        result = result*37 + issuerName.hashCode();
+        result = result*37 + serialNumber.hashCode();
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof X509IssuerSerialCriterion) {
+            X509IssuerSerialCriterion other = (X509IssuerSerialCriterion) obj;
+            return issuerName.equals(other.issuerName) && serialNumber.equals(other.serialNumber);
+        }
+
+        return false;
+    }
 
 }

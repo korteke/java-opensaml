@@ -61,5 +61,36 @@ public final class KeyAlgorithmCriterion implements Criterion {
 
         keyAlgorithm = trimmed;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("KeyAlgorithmCriterion [keyAlgorithm=");
+        builder.append(keyAlgorithm);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return keyAlgorithm.hashCode();
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof KeyAlgorithmCriterion) {
+            return keyAlgorithm.equals(((KeyAlgorithmCriterion) obj).keyAlgorithm);
+        }
+
+        return false;
+    }
 
 }

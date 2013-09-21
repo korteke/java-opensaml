@@ -18,22 +18,24 @@
 package org.opensaml.security.credential.criteria.impl;
 
 import java.security.MessageDigest;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bouncycastle.util.Arrays;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
+import org.apache.commons.codec.binary.Hex;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509DigestCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 
 /**
@@ -93,7 +95,7 @@ public final class EvaluableX509DigestCredentialCriterion implements EvaluableCr
         try {
             MessageDigest hasher = MessageDigest.getInstance(algorithm);
             byte[] hashed = hasher.digest(entityCert.getEncoded());
-            return Arrays.areEqual(hashed, x509digest);
+            return Arrays.equals(hashed, x509digest);
         } catch (CertificateEncodingException e) {
             log.error("Unable to encode certificate for digest operation", e);
         } catch (NoSuchAlgorithmException e) {
@@ -101,6 +103,43 @@ public final class EvaluableX509DigestCredentialCriterion implements EvaluableCr
         }
         
         return null;
+    }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("EvaluableX509DigestCredentialCriterion [algorithm=");
+        builder.append(algorithm);
+        builder.append(", x509digest=");
+        builder.append(Hex.encodeHexString(x509digest));
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        int result = 17;
+        result = result*37 + algorithm.hashCode();
+        result = result*37 + x509digest.hashCode();
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof EvaluableX509DigestCredentialCriterion) {
+            EvaluableX509DigestCredentialCriterion other = (EvaluableX509DigestCredentialCriterion) obj;
+            return algorithm.equals(other.algorithm) && Arrays.equals(x509digest, other.x509digest);
+        }
+
+        return false;
     }
     
 }

@@ -61,5 +61,40 @@ public final class KeyInfoCriterion implements Criterion {
         // other accompanying criteria, etc should be used to resolve credentials.
         keyInfo = newKeyInfo;
     }
+    
+    /** {@inheritDoc} */
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("KeyInfoCriterion [keyInfo=");
+        builder.append("<contents not displayable>");
+        builder.append("]");
+        return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    public int hashCode() {
+        if (keyInfo != null) {
+            return keyInfo.hashCode();
+        } else {
+            return super.hashCode();
+        }
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj instanceof KeyInfoCriterion) {
+            return keyInfo.equals(((KeyInfoCriterion) obj).keyInfo);
+        }
+
+        return false;
+    }
 
 }
