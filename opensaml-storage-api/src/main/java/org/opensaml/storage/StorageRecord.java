@@ -76,14 +76,14 @@ public class StorageRecord<Type> {
      * Get the record value, using a custom deserialization process.
      * 
      * @param serializer a custom (de)serialization process to apply
-     * @param context context of record, if available
-     * @param key key of record, if available
+     * @param context context of record
+     * @param key key of record
      * @return  the record value
      * @throws IOException if deserialization fails
      */
-    @Nonnull public Type getValue(@Nonnull final StorageSerializer<Type> serializer, @Nullable final String context,
-            @Nullable final String key) throws IOException {
-        return serializer.deserialize(value, context, key, expiration);
+    @Nonnull public Type getValue(@Nonnull final StorageSerializer<Type> serializer,
+            @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key) throws IOException {
+        return serializer.deserialize(version, context, key, value, expiration);
     }
     
     /**
