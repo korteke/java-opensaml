@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -124,8 +125,10 @@ public class StorageServiceSAMLArtifactMapEntryFactory
     }
 
     /** {@inheritDoc} */
-    @Nonnull public SAMLArtifactMapEntry deserialize(String value, String context, String key, Long expiration)
-            throws IOException {
+    // Checkstyle: CyclomaticComplexity OFF
+    @Nonnull public SAMLArtifactMapEntry deserialize(final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable final Long expiration)
+                    throws IOException {
         log.debug("Deserializing artifact mapping data from stored string");
 
         if (log.isTraceEnabled()) {
@@ -167,5 +170,6 @@ public class StorageServiceSAMLArtifactMapEntryFactory
             throw new IOException("Error unmarshalling DOM into SAMLObject", e);
         }
     }
+    // Checkstyle: CyclomaticComplexity ON
 
 }

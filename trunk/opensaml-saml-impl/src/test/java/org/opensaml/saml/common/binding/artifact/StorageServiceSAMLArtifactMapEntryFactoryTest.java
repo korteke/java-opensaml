@@ -80,7 +80,7 @@ public class StorageServiceSAMLArtifactMapEntryFactoryTest extends XMLObjectBase
         
         String s = factory.serialize(basicEntry);
         BasicSAMLArtifactMapEntry newEntry = (BasicSAMLArtifactMapEntry) factory.deserialize(
-                s, StorageServiceSAMLArtifactMap.STORAGE_CONTEXT, basicEntry.getArtifact(), null);
+                1, StorageServiceSAMLArtifactMap.STORAGE_CONTEXT, basicEntry.getArtifact(), s, null);
         
         Assert.assertEquals(basicEntry.getArtifact(), newEntry.getArtifact());
         Assert.assertEquals(basicEntry.getIssuerId(), newEntry.getIssuerId());

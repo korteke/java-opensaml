@@ -46,13 +46,15 @@ public interface StorageSerializer<Type> {
     /**
      * Returns an object recovered from a string produced through the {@link #serialize} method.
      * 
+     * @param version record version
+     * @param context context of record
+     * @param key key of record
      * @param value data to deserialize
-     * @param context context of record, if available
-     * @param key key of record, if available
-     * @param expiration expiration of record, if available/set
+     * @param expiration expiration of record, if any
      * @return a deserialized object
      * @throws IOException if an error occurs during deserialization
      */
-    @Nonnull public Type deserialize(@Nonnull @NotEmpty final String value, @Nullable final String context,
-            @Nullable final String key, @Nullable Long expiration) throws IOException;
+    @Nonnull public Type deserialize(final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable Long expiration)
+                    throws IOException;
 }
