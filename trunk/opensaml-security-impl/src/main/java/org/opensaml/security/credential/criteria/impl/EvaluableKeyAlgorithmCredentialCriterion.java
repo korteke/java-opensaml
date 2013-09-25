@@ -22,6 +22,7 @@ import java.security.Key;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -33,7 +34,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Instance of evaluable credential criteria for evaluating the credential key algorithm.
  */
-public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableKeyAlgorithmCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableKeyAlgorithmCredentialCriterion.class);
@@ -63,22 +65,22 @@ public class EvaluableKeyAlgorithmCredentialCriterion implements EvaluableCreden
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         }
         
         Key key = getKey(target);
         if (key == null) {
             log.info("Could not evaluate criteria, credential contained no key");
-            return null;
+            return isUnevaluableSatisfies();
         }
         
         String algorithm = StringSupport.trimOrNull(key.getAlgorithm());
         if (algorithm == null) {
             log.info("Could not evaluate criteria, key does not specify an algorithm via getAlgorithm()");
-            return null;
+            return isUnevaluableSatisfies();
         }
 
         return keyAlgorithm.equals(algorithm);

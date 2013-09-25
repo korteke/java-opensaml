@@ -164,6 +164,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
      * @throws CertificateException 
      * @throws KeyException */
     public SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest() throws CertificateException, KeyException {
+        issuer = "SomeCoolIssuer";
         signingCert = X509Support.decodeCertificate(signingCertBase64);
         signingPrivateKey = KeySupport.buildJavaRSAPrivateKey(signingPrivateKeyBase64);
         
@@ -181,7 +182,6 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     @BeforeMethod
     protected void setUp() throws Exception {
         // Trust engine setup
-        issuer = "SomeCoolIssuer";
         
         trustedCredentials = new ArrayList<Credential>();
         trustedCredentials.add(otherCred1);

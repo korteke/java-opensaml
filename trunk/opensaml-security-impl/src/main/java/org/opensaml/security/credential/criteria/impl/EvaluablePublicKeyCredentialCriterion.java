@@ -22,6 +22,7 @@ import java.security.PublicKey;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
@@ -33,7 +34,8 @@ import org.slf4j.LoggerFactory;
  * Instance of evaluable credential criteria for evaluating whether a credential contains a particular
  * public key.
  */
-public class EvaluablePublicKeyCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluablePublicKeyCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
     
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluablePublicKeyCredentialCriterion.class);
@@ -60,16 +62,16 @@ public class EvaluablePublicKeyCredentialCriterion implements EvaluableCredentia
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         }
         
         PublicKey key = target.getPublicKey();
         if (key == null) {
             log.info("Credential contained no public key, does not satisfy public key criteria");
-            return Boolean.FALSE;
+            return false;
         }
         
         return publicKey.equals(key);

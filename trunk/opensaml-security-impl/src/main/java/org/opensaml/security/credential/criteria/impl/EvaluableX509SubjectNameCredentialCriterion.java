@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
@@ -35,7 +36,8 @@ import org.slf4j.LoggerFactory;
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
  * subject name.
  */
-public class EvaluableX509SubjectNameCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableX509SubjectNameCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectNameCredentialCriterion.class);
@@ -62,22 +64,22 @@ public class EvaluableX509SubjectNameCredentialCriterion implements EvaluableCre
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy subject name criteria");
-            return Boolean.FALSE;
+            return false;
         }
 
         X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
-            return Boolean.FALSE;
+            return false;
         }
 
-        return entityCert.getSubjectX500Principal().equals(subjectName);
+        return subjectName.equals(entityCert.getSubjectX500Principal());
     }
     
     /** {@inheritDoc} */

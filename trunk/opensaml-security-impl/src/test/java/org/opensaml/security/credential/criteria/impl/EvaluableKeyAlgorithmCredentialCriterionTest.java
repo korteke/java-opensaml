@@ -49,20 +49,20 @@ public class EvaluableKeyAlgorithmCredentialCriterionTest {
     @Test
     public void testSatisfy() {
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setKeyAlgorithm("SomeOtherKeyAlgo");
         EvaluableKeyAlgorithmCredentialCriterion evalCrit = new EvaluableKeyAlgorithmCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 }

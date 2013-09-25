@@ -22,6 +22,7 @@ import java.security.Key;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
@@ -33,7 +34,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Instance of evaluable credential criteria for evaluating the credential key length.
  */
-public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableKeyLengthCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableKeyLengthCredentialCriterion.class);
@@ -60,22 +62,22 @@ public class EvaluableKeyLengthCredentialCriterion implements EvaluableCredentia
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         }
         
         Key key = getKey(target);
         if (key == null) {
             log.info("Could not evaluate criteria, credential contained no key");
-            return null;
+            return isUnevaluableSatisfies();
         }
         
         Integer length = KeySupport.getKeyLength(key);
         if (length == null) {
             log.info("Could not evaluate criteria, cannot determine length of key");
-            return null;
+            return isUnevaluableSatisfies();
         }
 
         return keyLength.equals(length);

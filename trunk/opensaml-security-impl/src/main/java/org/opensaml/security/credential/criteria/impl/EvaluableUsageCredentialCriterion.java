@@ -20,6 +20,7 @@ package org.opensaml.security.credential.criteria.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
@@ -31,7 +32,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential contains a particular usage specifier.
  */
-public class EvaluableUsageCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableUsageCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableUsageCredentialCriterion.class);
@@ -58,16 +60,16 @@ public class EvaluableUsageCredentialCriterion implements EvaluableCredentialCri
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         }
         
         UsageType credUsage = target.getUsageType();
         if (credUsage == null) {
             log.info("Could not evaluate criteria, credential contained no usage specifier");
-            return null;
+            return isUnevaluableSatisfies();
         }
 
         return matchUsage(credUsage, usage);
