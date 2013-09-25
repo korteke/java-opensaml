@@ -87,27 +87,27 @@ public class EvaluableX509SubjectNameCredentialCriterionTest {
     @Test
     public void testSatisfy() {
         EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setSubjectName( new X500Principal("cn=SomeOtherName, o=SomeOtherOrg"));
         EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
         BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 }

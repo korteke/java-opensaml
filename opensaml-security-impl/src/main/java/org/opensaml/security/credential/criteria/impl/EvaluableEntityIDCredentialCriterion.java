@@ -20,6 +20,7 @@ package org.opensaml.security.credential.criteria.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -33,7 +34,8 @@ import com.google.common.base.Strings;
 /**
  * Instance of evaluable credential criteria for evaluating a credential's entityID.
  */
-public class EvaluableEntityIDCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableEntityIDCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableEntityIDCredentialCriterion.class);
@@ -63,13 +65,13 @@ public class EvaluableEntityIDCredentialCriterion implements EvaluableCredential
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         } else if (Strings.isNullOrEmpty(target.getEntityId())) {
             log.info("Could not evaluate criteria, credential contained no entityID");
-            return null;
+            return isUnevaluableSatisfies();
         }
         return entityID.equals(target.getEntityId());
     }

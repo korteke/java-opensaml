@@ -27,6 +27,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -42,7 +43,8 @@ import org.slf4j.LoggerFactory;
  * An implementation of {@link net.shibboleth.utilities.java.support.resolver.Criterion} which specifies
  * criteria based on the digest of an X.509 certificate.
  */
-public final class EvaluableX509DigestCredentialCriterion implements EvaluableCredentialCriterion {
+public final class EvaluableX509DigestCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableX509DigestCredentialCriterion.class);
@@ -77,19 +79,19 @@ public final class EvaluableX509DigestCredentialCriterion implements EvaluableCr
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy X.509 digest criteria");
-            return Boolean.FALSE;
+            return false;
         }
 
         X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
-            return Boolean.FALSE;
+            return false;
         }
         
         try {
@@ -102,7 +104,7 @@ public final class EvaluableX509DigestCredentialCriterion implements EvaluableCr
             log.error("Unable to obtain a digest implementation for algorithm {" + algorithm + "}" , e);
         }
         
-        return null;
+        return isUnevaluableSatisfies();
     }
     
     /** {@inheritDoc} */

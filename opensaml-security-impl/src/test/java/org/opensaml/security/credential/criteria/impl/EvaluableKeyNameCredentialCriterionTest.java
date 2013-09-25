@@ -53,27 +53,27 @@ public class EvaluableKeyNameCredentialCriterionTest {
     @Test
     public void testSatisfy() {
         EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setKeyName(keyName + "OTHER");
         EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         credential.getKeyNames().clear();
         EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
-        Assert.assertNull(evalCrit.evaluate(credential), "Credential should have been unevaluable against the criteria");
+        Assert.assertEquals(evalCrit.apply(credential), evalCrit.isUnevaluableSatisfies(), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 }

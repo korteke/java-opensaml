@@ -56,27 +56,27 @@ public class EvaluablePublicKeyCredentialCriterionTest {
     @Test
     public void testSatisfy() {
         EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfyDifferentKey() throws NoSuchAlgorithmException, NoSuchProviderException {
         criteria.setPublicKey(KeySupport.generateKeyPair(keyAlgo, 1024, null).getPublic());
         EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         //Only unevaluable case is null credential
         EvaluablePublicKeyCredentialCriterion evalCrit = new EvaluablePublicKeyCredentialCriterion(criteria);
-        Assert.assertNull(evalCrit.evaluate(null), "Credential should have been unevaluable against the criteria");
+        Assert.assertEquals(evalCrit.apply(null), evalCrit.isUnevaluableSatisfies(), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 }

@@ -23,6 +23,7 @@ import java.security.cert.X509Certificate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.credential.Credential;
@@ -35,7 +36,8 @@ import org.slf4j.LoggerFactory;
  * specified by an instance of {@link X509CertSelector}.
  * 
  */
-public class EvaluableX509CertSelectorCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableX509CertSelectorCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableX509CertSelectorCredentialCriterion.class);
@@ -53,19 +55,19 @@ public class EvaluableX509CertSelectorCredentialCriterion implements EvaluableCr
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, cannot evaluate X509CertSelector criteria");
-            return Boolean.FALSE;
+            return false;
         }
 
         X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, cannot evaluate X509CertSelector criteria");
-            return Boolean.FALSE;
+            return false;
         }
 
         return certSelector.match(entityCert);

@@ -20,6 +20,7 @@ package org.opensaml.security.credential.criteria.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -32,7 +33,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Instance of evaluable credential criteria for evaluating credential key names.
  */
-public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableKeyNameCredentialCriterion extends AbstractTriStatePredicate<Credential> 
+        implements EvaluableCredentialCriterion {
     
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableKeyNameCredentialCriterion.class);
@@ -62,14 +64,14 @@ public class EvaluableKeyNameCredentialCriterion implements EvaluableCredentialC
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         }
         if (target.getKeyNames().isEmpty()) {
             log.info("Could not evaluate criteria, credential contained no key names");
-            return null;
+            return isUnevaluableSatisfies();
         }
         return target.getKeyNames().contains(keyName);
     }

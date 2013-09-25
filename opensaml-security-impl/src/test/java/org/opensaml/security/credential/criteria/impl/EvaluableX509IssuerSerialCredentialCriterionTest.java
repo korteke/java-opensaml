@@ -89,27 +89,27 @@ public class EvaluableX509IssuerSerialCredentialCriterionTest {
     @Test
     public void testSatisfy() {
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setSerialNumber(new BigInteger("100"));
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
         BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         EvaluableX509IssuerSerialCredentialCriterion evalCrit = new EvaluableX509IssuerSerialCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 }

@@ -88,32 +88,32 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     @Test
     public void testSatisfyByCert() {
         certSelector.setCertificate(entityCert);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
     public void testSatisfyByKey() {
         certSelector.setSubjectPublicKey(entityCert.getPublicKey());
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
     
     @Test
     public void testSatisfyBySubjectName() {
         certSelector.setSubject(subjectName);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() throws NoSuchAlgorithmException, NoSuchProviderException {
         certSelector.setSubjectPublicKey( KeySupport.generateKeyPair("RSA", 1024, null).getPublic() );
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
         certSelector.setCertificate(entityCert);
         BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
-        Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
 }

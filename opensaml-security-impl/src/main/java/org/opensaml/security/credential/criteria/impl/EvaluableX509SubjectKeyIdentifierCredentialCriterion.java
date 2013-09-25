@@ -23,6 +23,7 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.commons.codec.binary.Hex;
@@ -37,7 +38,8 @@ import org.slf4j.LoggerFactory;
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
  * subject key identifier.
  */
-public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements EvaluableCredentialCriterion {
+public class EvaluableX509SubjectKeyIdentifierCredentialCriterion extends AbstractTriStatePredicate<Credential>
+        implements EvaluableCredentialCriterion {
     
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
@@ -65,25 +67,25 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion implements Eva
     }
 
     /** {@inheritDoc} */
-    @Nullable public Boolean evaluate(@Nullable final Credential target) {
+    @Nullable public boolean apply(@Nullable final Credential target) {
         if (target == null) {
             log.error("Credential target was null");
-            return null;
+            return isNullInputSatisfies();
         } else if (!(target instanceof X509Credential)) {
             log.info("Credential is not an X509Credential, does not satisfy subject key identifier criteria");
-            return Boolean.FALSE;
+            return false;
         }
         
         X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
         if (entityCert == null) {
             log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
-            return Boolean.FALSE;
+            return false;
         }
         
         byte[] credSKI = X509Support.getSubjectKeyIdentifier(entityCert);
         if (credSKI == null || credSKI.length == 0) {
             log.info("Could not evaluate criteria, certificate contained no subject key identifier extension");
-            return null;
+            return isUnevaluableSatisfies();
         }
         
         return Arrays.equals(ski, credSKI);

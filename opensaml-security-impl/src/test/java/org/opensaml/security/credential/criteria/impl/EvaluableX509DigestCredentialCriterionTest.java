@@ -90,34 +90,34 @@ public class EvaluableX509DigestCredentialCriterionTest {
     @Test
     public void testSatisfy() {
         EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setAlgorithm("SHA-1");
         EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(credential), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
         BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
-        Assert.assertFalse(evalCrit.evaluate(basicCred), "Credential should NOT have matched the evaluable criteria");
+        Assert.assertFalse(evalCrit.apply(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         criteria.setAlgorithm("SHA0");
         EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
-        Assert.assertNull(evalCrit.evaluate(credential), "Credential should have been unevaluable against the criteria");
+        Assert.assertEquals(evalCrit.apply(credential), evalCrit.isUnevaluableSatisfies(), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
         EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
         Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
-        Assert.assertTrue(evalCrit.evaluate(credential), "Credential should have matched the evaluable criteria");
+        Assert.assertTrue(evalCrit.apply(credential), "Credential should have matched the evaluable criteria");
     }
 }
