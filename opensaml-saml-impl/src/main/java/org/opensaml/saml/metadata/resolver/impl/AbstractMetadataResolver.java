@@ -24,11 +24,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -40,9 +42,13 @@ import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
+import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.common.SAML2Helper;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -53,10 +59,20 @@ import org.w3c.dom.Document;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
+public abstract class AbstractMetadataResolver extends AbstractDestructableIdentifiableInitializableComponent 
+        implements MetadataResolver {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
+    
+    /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
+    private UnmarshallerFactory unmarshallerFactory;
+
+    /** Whether metadata is required to be valid. */
+    private boolean requireValidMetadata;
+
+    /** Filter applied to all metadata. */
+    private MetadataFilter mdFilter;
 
     /**
      * Whether problems during initialization should cause the provider to fail or go on without metadata. The
@@ -74,23 +90,32 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
     public AbstractMetadataResolver() {
         super();
         failFastInitialization = true;
+        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
+        setId(UUID.randomUUID().toString());
+    }
+    
+    /** {@inheritDoc} */
+    public boolean isRequireValidMetadata() {
+        return requireValidMetadata;
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
-        //TODO add filtering for entity role, protocol? maybe
-        //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
-        //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
-        
-        EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
-        if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
-            //TODO throw or just log?
-            throw new ResolverException("Entity Id was not supplied in criteria set");
-        }
-        
-        return lookupEntityID(entityIdCriterion.getEntityId());
+    public void setRequireValidMetadata(boolean require) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        requireValidMetadata = require;
+    }
+
+    /** {@inheritDoc} */
+    @Nullable  public MetadataFilter getMetadataFilter() {
+        return mdFilter;
+    }
+
+    /** {@inheritDoc} */
+    public void setMetadataFilter(@Nullable MetadataFilter newFilter) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        mdFilter = newFilter;
     }
 
     /**
@@ -134,6 +159,46 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         parser = Constraint.isNotNull(pool, "ParserPool may not be null");
     }
+    
+    /** {@inheritDoc} */
+    @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        Iterable<EntityDescriptor> iterable = resolve(criteria);
+        if (iterable != null) {
+            Iterator<EntityDescriptor> iterator = iterable.iterator();
+            if (iterator != null && iterator.hasNext()) {
+                return iterator.next();
+            }
+        }
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        //TODO add filtering for entity role, protocol? maybe
+        //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
+        //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
+        
+        EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
+        if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
+            //TODO throw or just log?
+            throw new ResolverException("Entity Id was not supplied in criteria set");
+        }
+        
+        return lookupEntityID(entityIdCriterion.getEntityId());
+    }
+    
+    /**
+     * Get the XMLObject unmarshaller factory to use. 
+     * 
+     * @return the unmarshaller factory instance to use
+     */
+    protected UnmarshallerFactory getUnmarshallerFactory() {
+        return unmarshallerFactory;
+    }
 
     /** {@inheritDoc} */
     protected final void doInitialize() throws ComponentInitializationException {
@@ -152,6 +217,8 @@ public abstract class AbstractMetadataResolver extends BaseMetadataResolver {
 
     /** {@inheritDoc} */
     protected void doDestroy() {
+        unmarshallerFactory = null;
+        mdFilter = null;
         entityBackingStore = null;
         parser = null;
 

@@ -18,10 +18,14 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -39,7 +43,8 @@ import org.slf4j.LoggerFactory;
  * while iterating over the registered resolvers in resolver list order.
  * 
  */
-public class ChainingMetadataResolver extends BaseMetadataResolver {
+public class ChainingMetadataResolver extends AbstractDestructableIdentifiableInitializableComponent 
+        implements MetadataResolver{
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ChainingMetadataResolver.class);
@@ -104,6 +109,20 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
     }
     
     /** {@inheritDoc} */
+    @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        Iterable<EntityDescriptor> iterable = resolve(criteria);
+        if (iterable != null) {
+            Iterator<EntityDescriptor> iterator = iterable.iterator();
+            if (iterator != null && iterator.hasNext()) {
+                return iterator.next();
+            }
+        }
+        return null;
+    }
+    
+    /** {@inheritDoc} */
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
@@ -121,6 +140,14 @@ public class ChainingMetadataResolver extends BaseMetadataResolver {
         }
         
         return Collections.emptyList();
+    }
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        if (resolvers == null) {
+            log.warn("ChainingMetadataResolver was not configured with any member MetadataResolvers");
+            resolvers = Collections.emptyList();
+        }
     }
 
     /** {@inheritDoc} */
