@@ -173,23 +173,6 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
         }
         return null;
     }
-
-    /** {@inheritDoc} */
-    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
-        //TODO add filtering for entity role, protocol? maybe
-        //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
-        //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
-        
-        EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
-        if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
-            //TODO throw or just log?
-            throw new ResolverException("Entity Id was not supplied in criteria set");
-        }
-        
-        return lookupEntityID(entityIdCriterion.getEntityId());
-    }
     
     /**
      * Get the XMLObject unmarshaller factory to use. 
