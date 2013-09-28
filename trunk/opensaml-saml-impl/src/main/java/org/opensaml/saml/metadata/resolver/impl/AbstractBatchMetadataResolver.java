@@ -24,7 +24,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.IterableMetadataSource;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
@@ -32,6 +35,8 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Abstract subclass for metadata resolvers that process and resolve metadata at a given point 
@@ -75,6 +80,23 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         cacheSourceMetadata = flag; 
+    }
+    
+    /** {@inheritDoc} */
+    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        //TODO add filtering for entity role, protocol? maybe
+        //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
+        //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
+        
+        EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
+        if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
+            //TODO throw or just log?
+            throw new ResolverException("Entity Id was not supplied in criteria set");
+        }
+        
+        return lookupEntityID(entityIdCriterion.getEntityId());
     }
     
     /** {@inheritDoc} */
