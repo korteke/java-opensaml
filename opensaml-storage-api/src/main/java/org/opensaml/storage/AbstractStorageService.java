@@ -29,6 +29,7 @@ import org.opensaml.storage.annotation.AnnotationSupport;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.ComponentValidationException;
 
 /**
@@ -78,9 +79,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      * @param interval number of seconds between one cleanup and another
      */
     public synchronized void setCleanupInterval(final long interval) {
-        if (isInitialized()) {
-            return;
-        }
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         cleanupInterval = interval;
     }
@@ -102,9 +101,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      * @param timer timer used to schedule configuration reload tasks
      */
     public synchronized void setCleanupTaskTimer(@Nullable final Timer timer) {
-        if (isInitialized()) {
-            return;
-        }
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         cleanupTaskTimer = timer;
     }
