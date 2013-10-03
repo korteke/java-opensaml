@@ -36,7 +36,6 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.storage.AbstractStorageService;
-import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
@@ -51,9 +50,6 @@ import com.google.common.collect.Iterables;
  */
 public class MemoryStorageService extends AbstractStorageService {
 
-    /** Static instance of capabilities interface. */
-    private static final StorageCapabilities STORAGE_CAPS = new Capabilities();
-    
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(MemoryStorageService.class);
 
@@ -62,6 +58,13 @@ public class MemoryStorageService extends AbstractStorageService {
     
     /** A shared lock to synchronize access. */
     private ReadWriteLock lock;
+
+    /** Constructor. */
+    public MemoryStorageService() {
+        setContextSize(Integer.MAX_VALUE);
+        setKeySize(Integer.MAX_VALUE);
+        setValueSize(Integer.MAX_VALUE);
+    }
     
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
@@ -77,11 +80,6 @@ public class MemoryStorageService extends AbstractStorageService {
         lock = null;
     }
 
-    /** {@inheritDoc} */
-    @Nonnull public StorageCapabilities getCapabilities() {
-        return STORAGE_CAPS;
-    }
-    
     /** {@inheritDoc} */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
@@ -412,26 +410,4 @@ public class MemoryStorageService extends AbstractStorageService {
         };
     }
     
-    /**
-     * Expresses capabilities of implementation.
-     */
-    protected static class Capabilities implements StorageCapabilities {
-
-        /** {@inheritDoc} */
-        public int getContextSize() {
-            return Integer.MAX_VALUE;
-        }
-
-        /** {@inheritDoc} */
-        public int getKeySize() {
-            return Integer.MAX_VALUE;
-        }
-
-        /** {@inheritDoc} */
-        public long getValueSize() {
-            return Long.MAX_VALUE;
-        }
-        
-    }
-
 }

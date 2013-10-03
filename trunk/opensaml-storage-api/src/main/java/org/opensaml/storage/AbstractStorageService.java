@@ -27,10 +27,12 @@ import javax.annotation.Nullable;
 import org.opensaml.storage.annotation.AnnotationSupport;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.ComponentValidationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Abstract base class for {@link StorageService} implementations.
@@ -39,7 +41,7 @@ import net.shibboleth.utilities.java.support.component.ComponentValidationExcept
  * calling of custom object serializers.</p>
  */
 public abstract class AbstractStorageService extends AbstractDestructableIdentifiableInitializableComponent
-    implements StorageService {
+    implements StorageService, StorageCapabilities {
 
     /**
      * Number of seconds between cleanup checks. Default value: (0)
@@ -51,7 +53,16 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
     /** Task that cleans up expired records. */
     private TimerTask cleanupTask;
-        
+
+    /** Configurable context size limit. */
+    @Positive private int contextSize;
+
+    /** Configurable key size limit. */
+    @Positive private int keySize;
+
+    /** Configurable value size limit. */
+    @Positive private int valueSize;
+    
     /**
      * Constructor.
      *
@@ -117,6 +128,39 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
         return null;
     }
 
+    /**
+     * Set the context size limit.
+     * 
+     * @param size limit on context size in characters
+     */
+    public void setContextSize(@Positive final int size) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        contextSize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
+    }
+
+    /**
+     * Set the key size limit.
+     * 
+     * @param size size limit on key size in characters
+     */
+    public void setKeySize(@Positive final int size) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        keySize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
+    }
+
+    /**
+     * Set the value size limit.
+     * 
+     * @param size size limit on value size in characters
+     */
+    public void setValueSize(@Positive final int size) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        valueSize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
+    }
+    
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
@@ -150,6 +194,26 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
     }
 
+    /** {@inheritDoc} */
+    @Nonnull public StorageCapabilities getCapabilities() {
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    public int getContextSize() {
+        return contextSize;
+    }
+
+    /** {@inheritDoc} */
+    public int getKeySize() {
+        return keySize;
+    }
+
+    /** {@inheritDoc} */
+    public long getValueSize() {
+        return valueSize;
+    }
+    
     /** {@inheritDoc} */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Object value, @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
