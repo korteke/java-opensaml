@@ -44,7 +44,6 @@ import org.ldaptive.ext.MergeOperation;
 import org.ldaptive.ext.MergeRequest;
 import org.ldaptive.pool.PooledConnectionFactory;
 import org.opensaml.storage.AbstractStorageService;
-import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
@@ -55,9 +54,6 @@ import org.slf4j.LoggerFactory;
  * this time.
  */
 public class LDAPStorageService extends AbstractStorageService {
-
-    /** Static instance of capabilities interface. */
-    private static final StorageCapabilities STORAGE_CAPS = new Capabilities();
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(LDAPStorageService.class);
@@ -77,6 +73,10 @@ public class LDAPStorageService extends AbstractStorageService {
     public LDAPStorageService(final PooledConnectionFactory factory, final LdapAttribute... attrs) {
         connectionFactory = factory;
         defaultAttributes = attrs;
+
+        setContextSize(Integer.MAX_VALUE);
+        setKeySize(Integer.MAX_VALUE);
+        setValueSize(Integer.MAX_VALUE);
     }
 
     /** {@inheritDoc} */
@@ -92,11 +92,6 @@ public class LDAPStorageService extends AbstractStorageService {
             connectionFactory.getConnectionPool().close();
             connectionFactory = null;
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override @Nonnull public StorageCapabilities getCapabilities() {
-        return STORAGE_CAPS;
     }
 
     /** {@inheritDoc} */
@@ -293,25 +288,4 @@ public class LDAPStorageService extends AbstractStorageService {
         }
     }
 
-    /**
-     * Expresses capabilities of implementation.
-     */
-    protected static class Capabilities implements StorageCapabilities {
-
-        /** {@inheritDoc} */
-        public int getContextSize() {
-            return Integer.MAX_VALUE;
-        }
-
-        /** {@inheritDoc} */
-        public int getKeySize() {
-            return Integer.MAX_VALUE;
-        }
-
-        /** {@inheritDoc} */
-        public long getValueSize() {
-            return Integer.MAX_VALUE;
-        }
-
-    }
 }
