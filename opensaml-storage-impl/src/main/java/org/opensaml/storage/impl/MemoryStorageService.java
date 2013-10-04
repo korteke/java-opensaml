@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
@@ -157,32 +158,19 @@ public class MemoryStorageService extends AbstractStorageService {
         }
     }
 
+    /** {@inheritDoc} */
+    public boolean deleteWithVersion(int version, String context, String key) throws IOException,
+            VersionMismatchException {
+        return deleteImpl(version, context, key);
+    }
     
     /** {@inheritDoc} */
     public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
             throws IOException {
-
-        final Lock writeLock = lock.writeLock();
-        
         try {
-            writeLock.lock();
-
-            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
-            if (dataMap == null) {
-                log.debug("Deleting record '{}' in context '{}'....not found", key, context);
-                return false;
-            }
-            
-            if (dataMap.containsKey(key)) {
-                dataMap.remove(key);
-                log.debug("Deleted record '{}' in context '{}'", key, context);
-                return true;
-            } else {
-                log.debug("Deleting record '{}' in context '{}'....not found", key, context);
-                return false;
-            }
-        } finally {
-            writeLock.unlock();
+            return deleteImpl(null, context, key);
+        } catch (VersionMismatchException e) {
+            throw new IOException("Unexpected exception thrown by delete.", e);
         }
     }
 
@@ -345,6 +333,47 @@ public class MemoryStorageService extends AbstractStorageService {
 
             return record.getVersion();
             
+        } finally {
+            writeLock.unlock();
+        }
+    }
+    
+    /**
+     * Internal method to implement delete functions.
+     * 
+     * @param version       only update if the current version matches this value
+     * @param context       a storage context label
+     * @param key           a key unique to context
+     * 
+     * @return true iff the record existed and was deleted
+     * @throws IOException  if errors occur in the update process
+     * @throws VersionMismatchException if the record has already been updated to a newer version
+     */
+    public boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
+
+        final Lock writeLock = lock.writeLock();
+        
+        try {
+            writeLock.lock();
+
+            Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
+            if (dataMap == null) {
+                log.debug("Deleting record '{}' in context '{}'....not found", key, context);
+                return false;
+            }
+
+            MutableStorageRecord record = dataMap.get(key);
+            if (record == null) {
+                log.debug("Deleting record '{}' in context '{}'....not found", key, context);
+                return false;
+            } else if (version != null && record.getVersion() != version) {
+                throw new VersionMismatchException();
+            } else {
+                dataMap.remove(key);
+                log.debug("Deleted record '{}' in context '{}'", key, context);
+                return true;
+            }
         } finally {
             writeLock.unlock();
         }
