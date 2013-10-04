@@ -216,8 +216,8 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     
     /** {@inheritDoc} */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
-                    throws IOException {
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
+            @Nullable @Positive final Long expiration) throws IOException {
         return create(context, key, serializer.serialize(value), expiration);
     }
     
@@ -240,16 +240,16 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     
     /** {@inheritDoc} */
     @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
-                    throws IOException {
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
+            @Nullable @Positive final Long expiration) throws IOException {
         return update(context, key, serializer.serialize(value), expiration);
     }
 
     /** {@inheritDoc} */
     // Checkstyle: ParameterNumber OFF
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
+            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration)
                     throws IOException, VersionMismatchException {
         return updateWithVersion(version, context, key, serializer.serialize(value), expiration);
     }
@@ -263,7 +263,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull final Object value)
+    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
         return updateWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
@@ -278,6 +278,12 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     /** {@inheritDoc} */
     public boolean delete(@Nonnull final Object value) throws IOException {
         return delete(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+    }
+
+    /** {@inheritDoc} */
+    public boolean deleteWithVersion(@Positive final int version, @Nonnull final Object value)
+            throws IOException, VersionMismatchException {
+        return deleteWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
     }
     
 }

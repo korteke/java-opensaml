@@ -22,8 +22,11 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.ldaptive.AttributeModification;
 import org.ldaptive.AttributeModificationType;
@@ -70,8 +73,8 @@ public class LDAPStorageService extends AbstractStorageService {
      * @param factory to retrieve LDAP connections from
      * @param attrs to include in all LDAP entries
      */
-    public LDAPStorageService(final PooledConnectionFactory factory, final LdapAttribute... attrs) {
-        connectionFactory = factory;
+    public LDAPStorageService(@Nonnull final PooledConnectionFactory factory, final LdapAttribute... attrs) {
+        connectionFactory = Constraint.isNotNull(factory, "ConnectionFactory cannot be null");
         defaultAttributes = attrs;
 
         setContextSize(Integer.MAX_VALUE);
@@ -95,8 +98,8 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override public boolean create(@Nonnull String context, @Nonnull String key, @Nonnull String value,
-            @Nullable Long expiration) throws IOException {
+    @Override public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nullable @Positive Long expiration) throws IOException {
         if (expiration != null) {
             throw new UnsupportedOperationException("Expiration not supported");
         }
@@ -112,7 +115,8 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public StorageRecord read(@Nonnull String context, @Nonnull String key) throws IOException {
+    @Override @Nullable public StorageRecord read(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException {
         SearchResult result = null;
         try {
             result = search(context, key).getResult();
@@ -136,14 +140,15 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull String context, @Nonnull String key,
-            int version) throws IOException {
+    @Override @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Positive final int version) throws IOException {
         throw new UnsupportedOperationException("Versioning not supported");
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer update(@Nonnull String context, @Nonnull String key, @Nonnull String value,
-            @Nullable Long expiration) throws IOException {
+    @Override @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
+            @Nullable @Positive final Long expiration) throws IOException {
         if (expiration != null) {
             throw new UnsupportedOperationException("Expiration not supported");
         }
@@ -159,19 +164,22 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateWithVersion(int version, @Nonnull String context, @Nonnull String key,
-            @Nonnull String value, Long expiration) throws IOException, VersionMismatchException {
+    @Override @Nullable public Integer updateWithVersion(@Positive final int version,
+            @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration)
+                    throws IOException, VersionMismatchException {
         throw new UnsupportedOperationException("Versioning not supported");
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateExpiration(@Nonnull String context, @Nonnull String key, Long expiration)
-            throws IOException {
+    @Override @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         throw new UnsupportedOperationException("Expiration not supported");
     }
 
     /** {@inheritDoc} */
-    @Override public boolean delete(@Nonnull String context, @Nonnull String key) throws IOException {
+    @Override public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
+            throws IOException {
         try {
             deleteAttribute(context, key);
             return true;
@@ -182,17 +190,24 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override public void reap(@Nonnull String context) throws IOException {
+    @Override public boolean deleteWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
+        throw new UnsupportedOperationException("Versioning not supported");
+    }
+    
+    /** {@inheritDoc} */
+    @Override public void reap(@Nonnull @NotEmpty final String context) throws IOException {
         // no-op, expiration not supported
     }
 
     /** {@inheritDoc} */
-    @Override public void updateContextExpiration(@Nonnull String context, Long expiration) throws IOException {
+    @Override public void updateContextExpiration(@Nonnull @NotEmpty final String context,
+            @Nullable @Positive final Long expiration) throws IOException {
         throw new UnsupportedOperationException("Expiration not supported");
     }
 
     /** {@inheritDoc} */
-    @Override public void deleteContext(@Nonnull String context) throws IOException {
+    @Override public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
         try {
             delete(context);
         } catch (LdapException e) {

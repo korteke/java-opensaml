@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
@@ -69,7 +70,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if fatal errors occur in the insertion process
      */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable Long expiration) throws IOException;
+            @Nonnull @NotEmpty final String value, @Nullable @Positive Long expiration) throws IOException;
 
     /**
      * Creates a new record in the store with an expiration, using a custom serialization
@@ -85,8 +86,8 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if fatal errors occur in the insertion process
      */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
-                    throws IOException;
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
+            @Nullable @Positive final Long expiration) throws IOException;
     
     /**
      * Creates a new record in the store using an annotated object as the source.
@@ -146,7 +147,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the read process 
      */
     @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, final int version) throws IOException;
+            @Nonnull @NotEmpty final String key, @Positive final int version) throws IOException;
     
     
     /**
@@ -162,7 +163,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      */
     @Nullable public Integer update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
-            @Nullable final Long expiration) throws IOException;
+            @Nullable @Positive final Long expiration) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches.
@@ -177,9 +178,9 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateWithVersion(final int version,
+    @Nullable public Integer updateWithVersion(@Positive final int version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException,
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException,
             VersionMismatchException;
 
     /**
@@ -196,7 +197,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      */
     @Nullable public Integer update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, @Nullable final Long expiration) throws IOException;
+            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches, using a custom serialization strategy.
@@ -213,9 +214,9 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
     // Checkstyle: ParameterNumber OFF
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, @Nullable final Long expiration)
+            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration)
                     throws IOException, VersionMismatchException;
     // Checkstyle: ParameterNumber ON
 
@@ -247,7 +248,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull final Object value)
+    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull final Object value)
             throws IOException, VersionMismatchException;
     
     /**
@@ -261,7 +262,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process 
      */
     @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nullable final Long expiration) throws IOException;
+            @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException;
 
     /**
      * Updates expiration of an existing record in the store, using an annotated object as the source.
@@ -291,6 +292,20 @@ public interface StorageService extends InitializableComponent, DestructableComp
             throws IOException;    
 
     /**
+     * Deletes an existing record from the store if it currently has a specified version.
+     * 
+     * @param version       record version to delete
+     * @param context       a storage context label
+     * @param key           a key unique to context
+     * 
+     * @return true iff the record existed and was deleted
+     * @throws IOException  if errors occur in the deletion process
+     * @throws VersionMismatchException if the record has already been updated to a newer version
+     */
+    public boolean deleteWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException;
+    
+    /**
      * Deletes an existing record from the store, using an annotated object as the source.
      * 
      * <p>The individual parameters for the deletion are extracted from the object using the
@@ -302,7 +317,25 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true iff the record existed and was deleted
      * @throws IOException  if errors occur in the deletion process 
      */
-    public boolean delete(@Nonnull final Object value) throws IOException;    
+    public boolean delete(@Nonnull final Object value) throws IOException;
+
+    /**
+     * Deletes an existing record from the store, using an annotated object as the source, if it
+     * currently has a specified version.
+     * 
+     * <p>The individual parameters for the deletion are extracted from the object using the
+     * annotations in the org.opensaml.storage.annotation package. If any are missing, or
+     * a field inaccessible, a runtime exception of some kind will occur.</p>
+     * 
+     * @param version       record version to delete
+     * @param value         object to delete
+     * 
+     * @return true iff the record existed and was deleted
+     * @throws IOException  if errors occur in the deletion process
+     * @throws VersionMismatchException if the record has already been updated to a newer version
+     */
+    public boolean deleteWithVersion(@Positive final int version, @Nonnull final Object value)
+            throws IOException, VersionMismatchException;
     
     /**
      * Manually trigger a cleanup of expired records. The method <strong>MAY</strong> return without guaranteeing
