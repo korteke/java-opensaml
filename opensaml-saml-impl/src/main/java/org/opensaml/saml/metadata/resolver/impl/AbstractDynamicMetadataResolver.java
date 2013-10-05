@@ -17,22 +17,36 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -44,7 +58,11 @@ import com.google.common.base.Strings;
 /**
  * Abstract subclass for metadata resolvers that resolve metadata dynamically, as needed and on demand.
  */
-public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
+public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
+    
+    /** Default list of supported content MIME types. */
+    public static final String[] DEFAULT_CONTENT_TYPES = 
+            new String[] {"application/samlmetadata+xml", "application/xml", "text/xml"};
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractDynamicMetadataResolver.class);
@@ -57,6 +75,13 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
     
     /** Whether we created our own task timer during object construction. */
     private boolean createdOwnTaskTimer;
+    
+    /** List of supported MIME types for use in Accept request header and validation of 
+     * response Content-Type header.*/
+    private List<String> supportedContentTypes;
+    
+    /** Generated Accept request header value. */
+    private String supportedContentTypesValue;
     
     /**
      * Constructor.
@@ -86,6 +111,27 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
         }
     }
     
+    /**
+     * Get the list of supported MIME types for use in Accept request header and validation of 
+     * response Content-Type header
+     * 
+     * @return the supported content types
+     */
+    public List<String> getSupportedContentTypes() {
+        return supportedContentTypes;
+    }
+
+    /**
+     * Set the list of supported MIME types for use in Accept request header and validation of 
+     * response Content-Type header
+     * 
+     * @param types the new supported content types to set
+     */
+    public void setSupportedContentTypes(List<String> types) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        supportedContentTypes = types;
+    }
+
     /** {@inheritDoc} */
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
@@ -96,29 +142,186 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
             throw new ResolverException("Entity Id was not supplied in criteria set");
         }
         
-        // TODO lock for reading, or otherwise deal with concurrency
-        List<EntityDescriptor> descriptors = lookupEntityID(entityIdCriterion.getEntityId());
-        
-        if (!descriptors.isEmpty()) {
-            return descriptors;
-        } else {
-            return fetchByCriteria(criteria);
+        String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
+        Lock readLock = getBackingStore().getManagementData(entityID).getReadWriteLock().readLock();
+        try {
+            readLock.lock();
+            
+            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
+            if (!descriptors.isEmpty()) {
+                return descriptors;
+            }
+        } finally {
+            readLock.unlock();
         }
+        
+        return fetchByCriteria(criteria);
         
     }
     
     /**
      * @param criteria
      * @return
+     * @throws ResolverException 
      */
-    protected Iterable<EntityDescriptor> fetchByCriteria(CriteriaSet criteria) {
-        // TODO Auto-generated method stub
+    protected Iterable<EntityDescriptor> fetchByCriteria(CriteriaSet criteria) throws ResolverException {
+        String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
+        Lock writeLock = getBackingStore().getManagementData(entityID).getReadWriteLock().writeLock(); 
         
-        // TODO lock for writing, or otherwise deal with concurrency
+        try {
+            writeLock.lock();
+            
+            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
+            if (!descriptors.isEmpty()) {
+                log.debug("Metadata was resolved and stored by another thread " 
+                        + "while this thread was waiting on the write lock");
+                return descriptors;
+            }
+            
+            HttpUriRequest request = buildHttpRequest(criteria);
         
-        return null;
+            HttpResponse response = httpClient.execute(request);
+            
+            processResponse(response, request.getURI());
+            
+            return lookupEntityID(entityID);
+            
+        } catch (IOException e) {
+            throw new ResolverException("Error executing HTTP request", e);
+        } finally {
+            writeLock.unlock();
+        }
+        
+    }
+    
+    
+
+    /** {@inheritDoc} */
+    @Nonnull protected List<EntityDescriptor> lookupEntityID(@Nonnull String entityID) throws ResolverException {
+        getBackingStore().getManagementData(entityID).recordEntityAccess();
+        return super.lookupEntityID(entityID);
     }
 
+    /**
+     * @param url
+     * @return
+     */
+    protected HttpUriRequest buildHttpRequest(CriteriaSet criteria) {
+        String url = buildRequestURL(criteria);
+        log.debug("Built request URL of: {}", url);
+            
+        HttpGet getMethod = new HttpGet(url);
+        
+        if (!Strings.isNullOrEmpty(supportedContentTypesValue)) {
+            getMethod.addHeader("Accept", supportedContentTypesValue);
+        }
+        
+        // TODO other headers ?
+        
+        return getMethod;
+    }
+
+    /**
+     * @param criteria
+     * @return
+     */
+    protected abstract String buildRequestURL(CriteriaSet criteria);
+    
+    /**
+     * @param response
+     * @param requestURI
+     * @throws ResolverException
+     */
+    protected void processResponse(HttpResponse response, URI requestURI) throws ResolverException {
+        int httpStatusCode = response.getStatusLine().getStatusCode();
+        
+        // TODO should we be seeing/doing this? Probably not if we don't do conditional GET.
+        // But we will if we do pre-emptive refreshing of metadata in background thread.
+        if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
+            log.debug("Metadata document from '{}' has not changed since last retrieval", requestURI);
+            return;
+        }
+
+        if (httpStatusCode != HttpStatus.SC_OK) {
+            String errMsg = "Non-ok status code " + httpStatusCode + " returned from remote metadata source: " 
+                    + requestURI;
+            log.error(errMsg);
+            throw new ResolverException(errMsg);
+        }
+        
+        try {
+            validateResponse(response, requestURI);
+        } catch (ResolverException e) {
+            log.error("Problem validating dynamic metadata HTTP response", e);
+            // TODO make sure response is completely consumed/closed
+            // TODO for now don't treat this as fatal, just return. Maybe re-evaludate.
+            return;
+        }
+        
+        try {
+            InputStream ins = response.getEntity().getContent();
+            XMLObject root = unmarshallMetadata(ins);
+            // TODO make sure response is completely consumed/closed
+            processNewMetadata(root);
+        } catch (IllegalStateException | IOException | UnmarshallingException | FilterException e) {
+            throw new ResolverException("Error processing HTTP response", e);
+        }
+        
+    }
+    
+    /**
+     * @param response
+     * @param requestURI
+     * @throws ResolverException
+     */
+    public void validateResponse(HttpResponse response, URI requestURI) throws ResolverException {
+        if (!getSupportedContentTypes().isEmpty()) {
+            Header contentType = response.getFirstHeader("Content-Type");
+            if (contentType != null && contentType.getValue() != null) {
+                if (!getSupportedContentTypes().contains(contentType.getValue())) {
+                    throw new ResolverException("HTTP response specified an unsupported Content-Type: " 
+                            + contentType.getValue());
+                }
+            }
+        }
+        
+        // TODO other validation
+        
+    }
+
+    /**
+     * Process the specified new metadata document, including metadata filtering.
+     * 
+     * @param root the root of the new metadata document being processed
+     * 
+     * @throws FilterException if there is a problem filtering the metadata
+     */
+    @Nonnull protected void processNewMetadata(@Nonnull final XMLObject root) throws FilterException {
+        
+        XMLObject filteredMetadata = filterMetadata(root);
+        
+        if (filteredMetadata == null) {
+            log.info("Metadata filtering process produced a null document, resulting in an empty data set");
+            return;
+        }
+        
+        // TODO if is EntitiesDescriptor with multiple entityID's, then our per-entityID lock is not right
+        // - support EntitiesDescriptors case? It complicates things a lot.
+        
+        // TODO handling case where exists already one (or more) entries for a given entityID when this is called
+        // - either have to overwrite, or somehow pick one or the otheri, or (?) merge.
+        
+        if (filteredMetadata instanceof EntityDescriptor) {
+            preProcessEntityDescriptor((EntityDescriptor)filteredMetadata, getBackingStore());
+        } else if (filteredMetadata instanceof EntitiesDescriptor) {
+            preProcessEntitiesDescriptor((EntitiesDescriptor)filteredMetadata, getBackingStore());
+        } else {
+            log.warn("Document root was neither an EntityDescriptor nor an EntitiesDescriptor: {}", 
+                    root.getClass().getName());
+        }
+    
+    }
+    
     /** {@inheritDoc} */
     @Nonnull protected DynamicEntityBackingStore createNewBackingStore() {
         return new DynamicEntityBackingStore();
@@ -133,11 +336,22 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
     protected void initMetadataResolver() throws ComponentInitializationException {
         super.initMetadataResolver();
         setBackingStore(createNewBackingStore());
+        
+        if (getSupportedContentTypes() == null) {
+            setSupportedContentTypes(Arrays.asList(DEFAULT_CONTENT_TYPES));
+        }
+        
+        if (! getSupportedContentTypes().isEmpty()) {
+            supportedContentTypesValue = StringSupport.listToStringValue(getSupportedContentTypes(), ", ");
+        } 
     }
     
-    /** {@inheritDoc} */
+   /** {@inheritDoc} */
     protected void doDestroy() {
         httpClient = null;
+        
+        supportedContentTypes = null;
+        supportedContentTypesValue = null;
         
         //TODO cancel all timer tasks
         
@@ -147,53 +361,47 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
         
         super.doDestroy();
     }
-
-    /**
-     * Process the specified new metadata document, including metadata filtering.
-     * 
-     * @param root the root of the new metadata document being processed
-     * 
-     * @throws FilterException if there is a problem filtering the metadata
-     */
-    @Nonnull protected void processNewMetadata(@Nonnull final XMLObject root) throws FilterException {
-        
-        // TODO NOT DONE! this is just some working idea
-        
-        XMLObject filteredMetadata = filterMetadata(root);
-        
-        if (filteredMetadata == null) {
-            log.info("Metadata filtering process produced a null document, resulting in an empty data set");
-            return;
-        }
-        
-        // TODO concurrency
-        
-        if (filteredMetadata instanceof EntityDescriptor) {
-            preProcessEntityDescriptor((EntityDescriptor)filteredMetadata, getBackingStore());
-        } else if (filteredMetadata instanceof EntitiesDescriptor) {
-            preProcessEntitiesDescriptor((EntitiesDescriptor)filteredMetadata, getBackingStore());
-        } else {
-            log.warn("Document root was neither an EntityDescriptor nor an EntitiesDescriptor: {}", 
-                    root.getClass().getName());
-        }
-    
-    }
     
     /**
      * Specialized entity backing store implementation for dynamic metadata resolvers.
      */
     protected class DynamicEntityBackingStore extends EntityBackingStore {
         
-        private Map<String, EntityManagementData> mgmtData;
+        private Map<String, EntityManagementData> mgmtDataMap;
         
         /** Constructor. */
         protected DynamicEntityBackingStore() {
             super();
-            mgmtData = new ConcurrentHashMap<>();
+            mgmtDataMap = new ConcurrentHashMap<>();
         }
         
-        public Map<String, EntityManagementData> getManagementData() {
-            return mgmtData;
+        public EntityManagementData getManagementData(String entityID) {
+            Constraint.isNotNull(entityID, "EntityID may not be null");
+            EntityManagementData entityData = mgmtDataMap.get(entityID);
+            if (entityData != null) {
+                return entityData;
+            }
+            
+            // TODO use intern-ed String here for monitor target?
+            synchronized (this) {
+                // Check again in case another thread beat us into the monitor
+                entityData = mgmtDataMap.get(entityID);
+                if (entityData != null) {
+                    return entityData;
+                } else {
+                    entityData = new EntityManagementData();
+                    mgmtDataMap.put(entityID, entityData);
+                    return entityData;
+                }
+            }
+        }
+        
+        public void removeManagementData(String entityID) {
+            Constraint.isNotNull(entityID, "EntityID may not be null");
+            // TODO use intern-ed String here for monitor target?
+            synchronized (this) {
+                mgmtDataMap.remove(entityID);
+            }
         }
         
     }
@@ -202,8 +410,11 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
         
         private long lastAccessedTime;
         
+        private ReadWriteLock readWriteLock;
+        
         protected EntityManagementData() {
             lastAccessedTime = System.currentTimeMillis();
+            readWriteLock = new ReentrantReadWriteLock(true);
         }
         
         public long getLastAccessedTime() {
@@ -211,7 +422,14 @@ public class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
         }
         
         public void recordEntityAccess() {
-            lastAccessedTime = System.currentTimeMillis();
+            long current = System.currentTimeMillis();
+            if (current > lastAccessedTime) {
+                lastAccessedTime = System.currentTimeMillis();
+            }
+        }
+
+        public ReadWriteLock getReadWriteLock() {
+            return readWriteLock;
         }
         
     }
