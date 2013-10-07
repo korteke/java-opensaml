@@ -243,9 +243,9 @@ public final class XMLObjectSupport {
 
         Marshaller marshaller = getMarshaller(xmlObject);
         if (marshaller == null) {
-            log.error("Unable to marshall XMLOBject, no marshaller registered for object: "
+            log.error("Unable to marshall XMLObject, no marshaller registered for object: "
                     + xmlObject.getElementQName());
-            throw new MarshallingException("Unable to marshall XMLOBject, no marshaller registered for object: " 
+            throw new MarshallingException("Unable to marshall XMLObject, no marshaller registered for object: " 
                     + xmlObject.getElementQName());
         }
         
