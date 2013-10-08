@@ -21,29 +21,38 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
- * Extension of {@link StorageService} that maintains its data with client-side storage.
+ * Specialization of {@link StorageService} that maintains its data on a per-request basis.
+ * 
+ * <p>Clients of this service are required to load/save the data across requests in order to
+ * preserve it.</p>
+ * 
+ * <p>Implementations of this interface are not required to guarantee coherency across requests
+ * operating on the same initial data but must guarantee updates leave data in a consistent
+ * state.</p> 
  */
 @ThreadSafe
-public interface ClientStorageService extends StorageService {
+public interface RequestScopedStorageService extends StorageService {
 
     /**
-     * Reconstitute stored data from client request.
+     * Reconstitute stored data from source.
      * 
-     * @param request   client request
-     * @throws IOException  if an error occurs reconstituing the data
+     * @param source the data to load
+     * 
+     * @throws IOException  if an error occurs reconstituting the data
      */
-    public void load(@Nonnull final ServletRequest request) throws IOException;
+    public void load(@Nonnull @NotEmpty final String source) throws IOException;
     
     /**
-     * Preserve stored data in client.
+     * Writes stored data to a string.
      * 
-     * @param response  response to client
+     * @return  the serialized data
+     * 
      * @throws IOException  if an error occurs preserving the data
      */
-    public void save(@Nonnull final ServletResponse response) throws IOException;
+    @Nonnull @NotEmpty public String save() throws IOException;
     
 }
