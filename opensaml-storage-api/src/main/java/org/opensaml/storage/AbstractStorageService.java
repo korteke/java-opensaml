@@ -26,6 +26,8 @@ import javax.annotation.Nullable;
 
 import org.opensaml.storage.annotation.AnnotationSupport;
 
+import net.shibboleth.utilities.java.support.annotation.Duration;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
@@ -46,7 +48,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     /**
      * Number of seconds between cleanup checks. Default value: (0)
      */
-    private long cleanupInterval;
+    @Duration @NonNegative private long cleanupInterval;
 
     /** Timer used to schedule cleanup tasks. */
     private Timer cleanupTaskTimer;
@@ -72,27 +74,28 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     }
 
     /**
-     * Gets the number of seconds between one cleanup and another. A value of 0 or less indicates that no
+     * Gets the number of seconds between one cleanup and another. A value of 0 indicates that no
      * cleanup will be performed.
      * 
      * @return number of seconds between one cleanup and another
      */
-    public long getCleanupInterval() {
+    @NonNegative public long getCleanupInterval() {
         return cleanupInterval;
     }
 
     /**
-     * Sets the number of seconds between one cleanup and another. A value of 0 or less indicates that no
+     * Sets the number of seconds between one cleanup and another. A value of 0 indicates that no
      * cleanup will be performed.
      * 
      * This setting cannot be changed after the service has been initialized.
      * 
      * @param interval number of seconds between one cleanup and another
      */
-    public synchronized void setCleanupInterval(final long interval) {
+    public synchronized void setCleanupInterval(@Duration @NonNegative final long interval) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        cleanupInterval = interval;
+        cleanupInterval = Constraint.isGreaterThanOrEqual(0, interval,
+                "Cleanup interval must be greater than or equal to zero");
     }
 
     /**
