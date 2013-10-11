@@ -22,8 +22,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Timer;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -222,9 +220,6 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         
         // TODO Connection header is already unconditionally added by our HttpClientBuilder config, keep here?
         getMethod.addHeader("Connection", "close");
-        // TODO Accept-Encoding could be handled by a request interceptor or decorator client impl. 
-        // Maybe remove depending on what do below re: response handling.
-        getMethod.setHeader("Accept-Encoding", "gzip,deflate");
         if (cachedMetadataETag != null) {
             getMethod.setHeader("If-None-Match", cachedMetadataETag);
         }
@@ -281,26 +276,6 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         log.debug("Attempting to extract metadata from response to request for metadata from '{}'", getMetadataURI());
         try {
             InputStream ins = response.getEntity().getContent();
-            
-            // TODO HttpClient v4 supports auto-decompressing via an interceptor and/or decorator client impl.
-            // Figure out how to detect automatic support, if possible, and support along with explicit
-            // decompression below (or not). Maybe just make it wholly the responsibility of the HttpClient
-            // instance which is passed in.
-
-            Header httpHeader = response.getFirstHeader("Content-Encoding");
-            if (httpHeader != null) {
-                String contentEncoding = httpHeader.getValue();
-                if ("deflate".equalsIgnoreCase(contentEncoding)) {
-                    log.debug("Metadata document from '{}' was deflate compressed, decompressing it", metadataURI);
-                    ins = new InflaterInputStream(ins);
-                }
-
-                if ("gzip".equalsIgnoreCase(contentEncoding)) {
-                    log.debug("Metadata document from '{}' was GZip compressed, decompressing it", metadataURI);
-                    ins = new GZIPInputStream(ins);
-                }
-            }
-
             return inputstreamToByteArray(ins);
         } catch (IOException e) {
             log.error("Unable to read response", e);
