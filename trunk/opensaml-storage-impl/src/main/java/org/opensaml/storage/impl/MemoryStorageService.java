@@ -254,15 +254,18 @@ public class MemoryStorageService extends AbstractStorageService {
             
             Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
             if (dataMap == null) {
+                log.debug("Read failed, context '{}' not found", context);
                 return new Pair();
             }
 
             StorageRecord record = dataMap.get(key);
             if (record == null) {
+                log.debug("Read failed, key '{}' not found in context '{}'", key, context);
                 return new Pair();
             } else {
                 Long exp = record.getExpiration();
                 if (exp != null && System.currentTimeMillis() >= exp) {
+                    log.debug("Read failed, key '{}' expired in context '{}'", key, context);
                     return new Pair();
                 }
             }
@@ -303,15 +306,18 @@ public class MemoryStorageService extends AbstractStorageService {
 
             Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
             if (dataMap == null) {
+                log.debug("Update failed, context '{}' not found", context);
                 return null;
             }
             
             MutableStorageRecord record = dataMap.get(key);
             if (record == null) {
+                log.debug("Update failed, key '{}' not found in context '{}'", key, context);
                 return null;
             } else {
                 Long exp = record.getExpiration();
                 if (exp != null && System.currentTimeMillis() >= exp) {
+                    log.debug("Update failed, key '{}' expired in context '{}'", key, context);
                     return null;
                 }
             }
@@ -359,13 +365,13 @@ public class MemoryStorageService extends AbstractStorageService {
 
             Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
             if (dataMap == null) {
-                log.debug("Deleting record '{}' in context '{}'....not found", key, context);
+                log.debug("Deleting record '{}' in context '{}'....context not found", key, context);
                 return false;
             }
 
             MutableStorageRecord record = dataMap.get(key);
             if (record == null) {
-                log.debug("Deleting record '{}' in context '{}'....not found", key, context);
+                log.debug("Deleting record '{}' in context '{}'....key not found", key, context);
                 return false;
             } else if (version != null && record.getVersion() != version) {
                 throw new VersionMismatchException();
