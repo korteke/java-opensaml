@@ -35,7 +35,8 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,12 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** The Last-Modified information provided when the currently cached metadata was fetched. */
     private String cachedMetadataLastModified;
+    
+    /** Username and password credential used for HTTP BASIC authentication. */
+    private UsernamePasswordCredentials usernamePasswordCredentials;
+    
+    /** HttpClient AuthScope instance to use. */
+    private AuthScope authScope;
     
     /**
      * Constructor.
@@ -124,31 +131,19 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @param username the username
      * @param password the password
-     * @param authScope the HTTP client auth scope with which to scope the credentials, may be null
+     * @param scope the HTTP client auth scope with which to scope the credentials, may be null
      */
-    public void setBasicCredentials(String username, String password, AuthScope authScope) {
+    public void setBasicCredentials(String username, String password, AuthScope scope) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
-        // TODO This approach from client v3 is problematic in client v4,
-        // due to casting below. Also issue with AuthScope collisions if client is used
-        // by multiple components.
-        // May need to rethink how authN support is handled.
-        // Maybe just require setting creds on the HttpClient that is passed in.
-        UsernamePasswordCredentials creds = null;
         if (username != null && password != null) {
-            creds = new UsernamePasswordCredentials(username, password);
-        }
-        
-        AuthScope scope = authScope;
-        if (scope == null) {
-            scope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
-        }
-        
-        if (httpClient instanceof AbstractHttpClient) {
-            ((AbstractHttpClient) httpClient).getCredentialsProvider().setCredentials(scope, creds);
-        } else {
-            log.warn("Client is not an instance of AbstractHttpClient, can not set HTTP basic auth credentials");
+            usernamePasswordCredentials = new UsernamePasswordCredentials(username, password);
+            if (scope == null) {
+                authScope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
+            } else {
+                authScope = scope;
+            }
         }
         
     }
@@ -156,6 +151,8 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     /** {@inheritDoc} */
     protected void doDestroy() {
         httpClient = null;
+        usernamePasswordCredentials = null;
+        authScope = null;
         metadataURI = null;
         cachedMetadataETag = null;
         cachedMetadataLastModified = null;
@@ -178,10 +175,11 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      */
     protected byte[] fetchMetadata() throws ResolverException {
         HttpGet httpGet = buildHttpGet();
+        HttpClientContext context = buildHttpClientContext();
 
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
-            HttpResponse response = httpClient.execute(httpGet);
+            HttpResponse response = httpClient.execute(httpGet, context);
             int httpStatusCode = response.getStatusLine().getStatusCode();
 
             if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
@@ -235,6 +233,22 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         }
 
         return getMethod;
+    }
+    
+    /**
+     * Build the {@link HttpClientContext} instance which will be used to invoke the 
+     * {@link HttpClient} request.
+     * 
+     * @return a new instance of {@link HttpClientContext}
+     */
+    protected HttpClientContext buildHttpClientContext() {
+        HttpClientContext context = HttpClientContext.create();
+        if (usernamePasswordCredentials != null) {
+            BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(authScope, usernamePasswordCredentials);
+            context.setCredentialsProvider(credentialsProvider);
+        }
+        return context;
     }
 
     /**
