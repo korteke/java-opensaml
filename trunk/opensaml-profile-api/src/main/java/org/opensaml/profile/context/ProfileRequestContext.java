@@ -20,8 +20,6 @@ package org.opensaml.profile.context;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -52,12 +50,6 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
      * user.
      */
     private boolean passiveProfile;
-
-    /** Current HTTP request. */
-    private transient HttpServletRequest httpRequest;
-
-    /** Current HTTP response. */
-    private transient HttpServletResponse httpResponse;
 
     /** Constructor. */
     public ProfileRequestContext() {
@@ -106,39 +98,4 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
         passiveProfile = isPassive;
     }
 
-    /**
-     * Gets the current HTTP request if available.
-     * 
-     * @return current HTTP request
-     */
-    @Nullable public HttpServletRequest getHttpRequest() {
-        return httpRequest;
-    }
-
-    /**
-     * Sets the current HTTP request.
-     * 
-     * @param request current HTTP request
-     */
-    public void setHttpRequest(@Nullable final HttpServletRequest request) {
-        httpRequest = request;
-    }
-
-    /**
-     * Gets the current HTTP response.
-     * 
-     * @return current HTTP response
-     */
-    @Nullable public HttpServletResponse getHttpResponse() {
-        return httpResponse;
-    }
-
-    /**
-     * Sets the current HTTP response.
-     * 
-     * @param response current HTTP response
-     */
-    public void setHttpResponse(@Nullable final HttpServletResponse response) {
-        httpResponse = response;
-    }
 }

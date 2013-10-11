@@ -19,17 +19,11 @@ package org.opensaml.profile;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockServletContext;
 
 import com.google.common.base.Objects;
 
@@ -41,15 +35,6 @@ public class RequestContextBuilder {
 
     /** Value used to represent a string value that has not be set. */
     private final String NO_VAL = "novalue";
-
-    /** The {@link ServletContext} used when building the request context. */
-    private ServletContext servletContext;
-
-    /** The {@link HttpServletRequest} used when building the request context. */
-    private HttpServletRequest httpRequest;
-
-    /** The {@link HttpServletResponse} used when building the request context. */
-    private HttpServletResponse httpResponse;
 
     /** The ID of the inbound message. */
     private String inboundMessageId = NO_VAL;
@@ -86,9 +71,6 @@ public class RequestContextBuilder {
      * @param prototype prototype whose properties are copied onto this builder
      */
     public RequestContextBuilder(RequestContextBuilder prototype) {
-        servletContext = prototype.servletContext;
-        httpRequest = prototype.httpRequest;
-        httpResponse = prototype.httpResponse;
         inboundMessageId = prototype.inboundMessageId;
         inboundMessageIssueInstant = prototype.inboundMessageIssueInstant;
         inboundMessageIssuer = prototype.inboundMessageIssuer;
@@ -97,42 +79,6 @@ public class RequestContextBuilder {
         outboundMessageIssueInstant = prototype.outboundMessageIssueInstant;
         outboundMessageIssuer = prototype.outboundMessageIssuer;
         outboundMessage = prototype.outboundMessage;
-    }
-
-    /**
-     * Sets the {@link ServletContext} used when building the request context.
-     * 
-     * @param context the {@link ServletContext} used when building the request context
-     * 
-     * @return this builder
-     */
-    @Nonnull public RequestContextBuilder setServletContext(@Nullable final ServletContext context) {
-        servletContext = context;
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpServletRequest} used when building the request context.
-     * 
-     * @param request the {@link HttpServletRequest} used when building the request context
-     * 
-     * @return this builder
-     */
-    @Nonnull public RequestContextBuilder setHttpRequest(@Nullable final HttpServletRequest request) {
-        httpRequest = request;
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpServletResponse} used when building the request context.
-     * 
-     * @param response the {@link HttpServletResponse} used when building the request context
-     * 
-     * @return this builder
-     */
-    @Nonnull public RequestContextBuilder setHttpResponse(@Nullable final HttpServletResponse response) {
-        httpResponse = response;
-        return this;
     }
 
     /**
@@ -247,20 +193,6 @@ public class RequestContextBuilder {
         final ProfileRequestContext profileContext = new ProfileRequestContext();
         profileContext.setInboundMessageContext(buildInboundMessageContext());
         profileContext.setOutboundMessageContext(buildOutboundMessageContext());
-        
-        if (servletContext == null) {
-            servletContext = new MockServletContext();
-        }
-
-        if (httpRequest == null) {
-            httpRequest = new MockHttpServletRequest(servletContext);
-        }
-        profileContext.setHttpRequest(httpRequest);
-
-        if (httpResponse == null) {
-            httpResponse = new MockHttpServletResponse();
-        }
-        profileContext.setHttpResponse(httpResponse);
         
         return profileContext;
     }

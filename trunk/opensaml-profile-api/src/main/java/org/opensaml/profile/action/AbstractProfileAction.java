@@ -18,6 +18,9 @@
 package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.opensaml.profile.ProfileException;
@@ -25,6 +28,7 @@ import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 
 //TODO perf metrics
@@ -39,6 +43,12 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     extends AbstractIdentifiableInitializableComponent
     implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
+    /** Current HTTP request, if available. */
+    @Nullable private HttpServletRequest httpServletRequest;
+
+    /** Current HTTP response, if available. */
+    @Nullable private HttpServletResponse httpServletResponse;
+    
     /**
      * Constructor.
      * 
@@ -55,6 +65,47 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
         super.setId(componentId);
     }
 
+
+    /**
+     * Get the current HTTP request if available.
+     * 
+     * @return current HTTP request
+     */
+    @Nullable public HttpServletRequest getHttpServletRequest() {
+        return httpServletRequest;
+    }
+
+    /**
+     * Set the current HTTP request.
+     * 
+     * @param request current HTTP request
+     */
+    public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        httpServletRequest = request;
+    }
+
+    /**
+     * Get the current HTTP response.
+     * 
+     * @return current HTTP response
+     */
+    @Nullable public HttpServletResponse getHttpServletResponse() {
+        return httpServletResponse;
+    }
+
+    /**
+     * Set the current HTTP response.
+     * 
+     * @param response current HTTP response
+     */
+    public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        httpServletResponse = response;
+    }
+    
     /** {@inheritDoc} */
     public void execute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
