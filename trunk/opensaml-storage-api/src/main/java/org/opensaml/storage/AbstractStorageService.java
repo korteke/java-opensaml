@@ -53,6 +53,9 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     /** Timer used to schedule cleanup tasks. */
     private Timer cleanupTaskTimer;
 
+    /** Timer used to schedule cleanup tasks if no external one set. */
+    private Timer internalTaskTimer;
+    
     /** Task that cleans up expired records. */
     private TimerTask cleanupTask;
 
@@ -170,9 +173,13 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
         if (cleanupInterval > 0) {
             cleanupTask = getCleanupTask();
-            if (cleanupTask == null || cleanupTaskTimer == null) {
+            if (cleanupTask == null) {
                 throw new ComponentInitializationException(
-                        "Cleanup task and timer cannot be null if cleanupInterval is set.");
+                        "Cleanup task cannot be null if cleanupInterval is set.");
+            } else if (cleanupTaskTimer == null) {
+                internalTaskTimer = new Timer();
+            } else {
+                internalTaskTimer = cleanupTaskTimer;
             }
             cleanupTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
         }
@@ -183,6 +190,10 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
         if (cleanupTask != null) {
             cleanupTask.cancel();
             cleanupTask = null;
+            if (cleanupTaskTimer == null) {
+                internalTaskTimer.cancel();
+            }
+            internalTaskTimer = null;
         }
         super.doDestroy();
     }
