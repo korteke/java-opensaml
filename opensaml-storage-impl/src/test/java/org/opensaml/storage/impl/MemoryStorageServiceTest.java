@@ -17,8 +17,6 @@
 
 package org.opensaml.storage.impl;
 
-import java.util.Timer;
-
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -26,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.StorageServiceTest;
 import org.opensaml.storage.impl.MemoryStorageService;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -38,25 +35,9 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
     @Nonnull protected StorageService getStorageService() {
         MemoryStorageService ss = new MemoryStorageService();
         ss.setCleanupInterval(1);
-        ss.setCleanupTaskTimer(new Timer());
         return ss;
     }
         
-    @Test
-    public void invalidConfig() {
-        MemoryStorageService ss = new MemoryStorageService();
-        ss.setCleanupInterval(1);
-        
-        try {
-            ss.initialize();
-            Assert.fail("Storage service should have failed to initialize");
-        } catch (ComponentInitializationException e) {
-            // expected
-        }
-        
-        ss.destroy();
-    }
-    
     @Test
     public void validConfig() throws ComponentInitializationException {
         MemoryStorageService ss = new MemoryStorageService();
