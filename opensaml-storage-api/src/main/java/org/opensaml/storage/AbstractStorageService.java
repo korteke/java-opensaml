@@ -181,7 +181,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
             } else {
                 internalTaskTimer = cleanupTaskTimer;
             }
-            cleanupTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
+            internalTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
         }
     }
     
