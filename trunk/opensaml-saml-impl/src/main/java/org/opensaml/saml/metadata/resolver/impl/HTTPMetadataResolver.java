@@ -142,6 +142,10 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             } else {
                 authScope = scope;
             }
+        } else {
+            log.debug("Either username or password were null, disabling basic auth");
+            usernamePasswordCredentials = null;
+            authScope = null;
         }
         
     }
@@ -218,8 +222,6 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     protected HttpGet buildHttpGet() {
         HttpGet getMethod = new HttpGet(getMetadataURI());
         
-        // TODO Connection header is already unconditionally added by our HttpClientBuilder config, keep here?
-        getMethod.addHeader("Connection", "close");
         if (cachedMetadataETag != null) {
             getMethod.setHeader("If-None-Match", cachedMetadataETag);
         }
