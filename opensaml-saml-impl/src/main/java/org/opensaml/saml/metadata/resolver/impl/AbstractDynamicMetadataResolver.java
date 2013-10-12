@@ -42,6 +42,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -113,7 +114,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     
     /**
      * Get the list of supported MIME types for use in Accept request header and validation of 
-     * response Content-Type header
+     * response Content-Type header.
      * 
      * @return the supported content types
      */
@@ -123,7 +124,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
 
     /**
      * Set the list of supported MIME types for use in Accept request header and validation of 
-     * response Content-Type header
+     * response Content-Type header.
      * 
      * @param types the new supported content types to set
      */
@@ -193,8 +194,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         }
         
     }
-    
-    
 
     /** {@inheritDoc} */
     @Nonnull protected List<EntityDescriptor> lookupEntityID(@Nonnull String entityID) throws ResolverException {
@@ -249,24 +248,51 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             throw new ResolverException(errMsg);
         }
         
+        
+        XMLObject root = null;
         try {
-            validateResponse(response, requestURI);
-        } catch (ResolverException e) {
-            log.error("Problem validating dynamic metadata HTTP response", e);
-            // TODO make sure response is completely consumed/closed
-            // TODO for now don't treat this as fatal, just return. Maybe re-evaludate.
+            try {
+                validateResponse(response, requestURI);
+            } catch (ResolverException e) {
+                // TODO for now don't treat this as fatal, just return. Maybe re-evaluate.
+                log.error("Problem validating dynamic metadata HTTP response", e);
+                return;
+            }
+            
+            try {
+                InputStream ins = response.getEntity().getContent();
+                root = unmarshallMetadata(ins);
+            } catch (IOException | UnmarshallingException e) {
+                // TODO for now don't treat this as fatal, just return. Maybe re-evaluate.
+                log.error("Error unmarshalling HTTP response stream", e);
+                return;
+            }
+        } finally {
+            closeResponse(response, requestURI);
+        }
+            
+        try {
+            processNewMetadata(root);
+        } catch (FilterException e) {
+            // TODO for now don't treat this as fatal, just return. Maybe re-evaluate.
+            log.error("Metadata filtering problem processing new metadata", e);
             return;
         }
         
-        try {
-            InputStream ins = response.getEntity().getContent();
-            XMLObject root = unmarshallMetadata(ins);
-            // TODO make sure response is completely consumed/closed
-            processNewMetadata(root);
-        } catch (IllegalStateException | IOException | UnmarshallingException | FilterException e) {
-            throw new ResolverException("Error processing HTTP response", e);
+    }
+
+    /**
+     * @param response
+     * @param requestURI
+     */
+    protected void closeResponse(HttpResponse response, URI requestURI) {
+        if (response instanceof CloseableHttpResponse) {
+            try {
+                ((CloseableHttpResponse)response).close();
+            } catch (IOException e) {
+                log.error("Error closing HTTP response from " + requestURI, e);
+            }
         }
-        
     }
     
     /**
@@ -276,7 +302,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      */
     public void validateResponse(HttpResponse response, URI requestURI) throws ResolverException {
         if (!getSupportedContentTypes().isEmpty()) {
-            Header contentType = response.getFirstHeader("Content-Type");
+            Header contentType = response.getEntity().getContentType();
             if (contentType != null && contentType.getValue() != null) {
                 if (!getSupportedContentTypes().contains(contentType.getValue())) {
                     throw new ResolverException("HTTP response specified an unsupported Content-Type: " 
