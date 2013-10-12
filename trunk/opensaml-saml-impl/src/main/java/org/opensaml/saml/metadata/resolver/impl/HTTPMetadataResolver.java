@@ -32,6 +32,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -178,10 +179,11 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     protected byte[] fetchMetadata() throws ResolverException {
         HttpGet httpGet = buildHttpGet();
         HttpClientContext context = buildHttpClientContext();
-
+        HttpResponse response = null;
+        
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
-            HttpResponse response = httpClient.execute(httpGet, context);
+            response = httpClient.execute(httpGet, context);
             int httpStatusCode = response.getStatusLine().getStatusCode();
 
             if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
@@ -207,7 +209,13 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             log.error(errMsg, e);
             throw new ResolverException(errMsg, e);
         } finally {
-            httpGet.reset();
+            try {
+                if (response != null && response instanceof CloseableHttpResponse) {
+                    ((CloseableHttpResponse)response).close();
+                }
+            } catch (IOException e) {
+                log.error("Error closing HTTP response from " + metadataURI, e);
+            }
         }
     }
 
