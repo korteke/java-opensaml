@@ -26,10 +26,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility helper class for SAML 2 metadata objects.
  */
-public final class SAML2MetadataHelper {
+public final class SAML2MetadataSupport {
     
     /** Constructor. */
-    private SAML2MetadataHelper() { }
+    private SAML2MetadataSupport() { }
 
     /**
      * Select the default {@link IndexedEndpoint} from a list of candidates.
@@ -88,6 +88,6 @@ public final class SAML2MetadataHelper {
      * @return a Logger instance
      */
     private static Logger getLogger() {
-        return LoggerFactory.getLogger(SAML2MetadataHelper.class);
+        return LoggerFactory.getLogger(SAML2MetadataSupport.class);
     }
 }

@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
-import org.opensaml.saml.metadata.support.SAML2MetadataHelper;
+import org.opensaml.saml.metadata.support.SAML2MetadataSupport;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.ManageNameIDService;
@@ -76,7 +76,7 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
     
     /** {@inheritDoc} */
     public ArtifactResolutionService getDefaultArtifactResolutionService(){
-        return SAML2MetadataHelper.getDefaultIndexedEndpoint(artifactResolutionServices);
+        return SAML2MetadataSupport.getDefaultIndexedEndpoint(artifactResolutionServices);
     }
     
     /** {@inheritDoc} */

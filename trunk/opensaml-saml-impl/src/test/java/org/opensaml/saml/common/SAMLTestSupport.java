@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec;
+package org.opensaml.saml.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +28,13 @@ import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 
 /**
- * Helper methods for security-related requirements.
+ * Helper methods for SAML testing.
  */
-public final class XMLSecurityTestingHelper {
+public final class SAMLTestSupport {
     
-    private XMLSecurityTestingHelper() { }
-
+    /** Constructor. */
+    private SAMLTestSupport() { }
+    
     /**
      * Get a basic KeyInfo credential resolver which can process standard inline
      * data - RSAKeyValue, DSAKeyValue, X509Data.

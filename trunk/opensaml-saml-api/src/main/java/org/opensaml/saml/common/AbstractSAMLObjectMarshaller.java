@@ -52,7 +52,7 @@ public abstract class AbstractSAMLObjectMarshaller extends AbstractXMLObjectMars
     /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Document document) throws MarshallingException {
         if (xmlObject instanceof SignableSAMLObject) {
-            SAMLObjectHelper.declareNonVisibleNamespaces((SignableSAMLObject) xmlObject);
+            SAMLObjectSupport.declareNonVisibleNamespaces((SignableSAMLObject) xmlObject);
         }
         return super.marshall(xmlObject, document);
     }
@@ -60,7 +60,7 @@ public abstract class AbstractSAMLObjectMarshaller extends AbstractXMLObjectMars
     /** {@inheritDoc} */
     public Element marshall(XMLObject xmlObject, Element parentElement) throws MarshallingException {
         if (xmlObject instanceof SignableSAMLObject) {
-            SAMLObjectHelper.declareNonVisibleNamespaces((SignableSAMLObject) xmlObject);
+            SAMLObjectSupport.declareNonVisibleNamespaces((SignableSAMLObject) xmlObject);
         }
         return super.marshall(xmlObject, parentElement);
     }

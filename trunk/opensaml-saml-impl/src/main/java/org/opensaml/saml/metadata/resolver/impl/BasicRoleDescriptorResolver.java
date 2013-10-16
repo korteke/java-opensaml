@@ -39,7 +39,7 @@ import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
-import org.opensaml.saml.saml2.common.SAML2Helper;
+import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
@@ -287,7 +287,7 @@ public class BasicRoleDescriptorResolver extends AbstractDestructableIdentifiabl
             return true;
         }
 
-        return SAML2Helper.isValid(descriptor);
+        return SAML2Support.isValid(descriptor);
     }
 
 

@@ -37,7 +37,7 @@ import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
-import org.opensaml.soap.util.SOAPHelper;
+import org.opensaml.soap.util.SOAPSupport;
 import org.opensaml.soap.wsaddressing.Action;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
@@ -165,7 +165,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         XMLObjectBuilder<XSAny> xsAnyBuilder = getBuilder(XSAny.TYPE_NAME);
         
         XSAny transactionHeader = xsAnyBuilder.buildObject("http://example.org/soap/ns/transaction", "Transaction", "t");
-        SOAPHelper.addSOAP11MustUnderstandAttribute(transactionHeader, true);
+        SOAPSupport.addSOAP11MustUnderstandAttribute(transactionHeader, true);
         transactionHeader.setTextContent("5");
         header.getUnknownXMLObjects().add(transactionHeader);
         

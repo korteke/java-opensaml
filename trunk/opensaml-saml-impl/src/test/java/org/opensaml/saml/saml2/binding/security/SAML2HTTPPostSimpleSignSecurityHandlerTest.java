@@ -36,7 +36,7 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.common.SAMLTestHelper;
+import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
 import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
@@ -203,7 +203,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
         credResolver = new CollectionCredentialResolver(trustedCredentials);
 
-        KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
