@@ -28,10 +28,10 @@ import org.opensaml.core.xml.XMLObject;
 /**
  * Utility class for common SAML 2 operations.
  */
-public final class SAML2Helper {
+public final class SAML2Support {
     
     /** Private constructor to disallow instantiation. */
-    private SAML2Helper() { }
+    private SAML2Support() { }
 
     /**
      * Checks to see if the given XMLObject is still valid. An XMLObject is valid if, and only if, itself and every

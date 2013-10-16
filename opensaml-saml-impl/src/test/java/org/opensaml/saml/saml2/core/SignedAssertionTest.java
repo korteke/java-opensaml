@@ -32,7 +32,7 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.saml.common.SAMLTestHelper;
+import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnStatement;
@@ -141,7 +141,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
             (Assertion) unmarshallerFactory.getUnmarshaller(assertion.getDOM()).unmarshall(assertion.getDOM());
         
         StaticCredentialResolver credResolver = new StaticCredentialResolver(goodCredential);
-        KeyInfoCredentialResolver kiResolver = SAMLTestHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
         ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion("urn:example.org:issuer") );

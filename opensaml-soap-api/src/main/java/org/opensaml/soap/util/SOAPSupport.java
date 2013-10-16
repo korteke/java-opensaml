@@ -58,12 +58,12 @@ import com.google.common.collect.Iterables;
 /**
  * Helper methods for working with SOAP.
  */
-public final class SOAPHelper {
+public final class SOAPSupport {
 
     /**
      * Private constructor.
      */
-    private SOAPHelper() {
+    private SOAPSupport() {
     }
 
     /**

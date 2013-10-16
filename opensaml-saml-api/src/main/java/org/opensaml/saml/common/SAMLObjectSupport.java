@@ -29,10 +29,10 @@ import org.slf4j.LoggerFactory;
 /**
  * A helper class for working with SAMLObjects.
  */
-public final class SAMLObjectHelper {
+public final class SAMLObjectSupport {
     
     /** Constructor. */
-    private SAMLObjectHelper() { }
+    private SAMLObjectSupport() { }
     
     /**
      * Examines the {@link SignableSAMLObject} for the need to declare non-visible namespaces 
@@ -80,7 +80,7 @@ public final class SAMLObjectHelper {
      * @return a Logger instance
      */
     private static Logger getLogger() {
-        return LoggerFactory.getLogger(SAMLObjectHelper.class);
+        return LoggerFactory.getLogger(SAMLObjectSupport.class);
     }
 
 }

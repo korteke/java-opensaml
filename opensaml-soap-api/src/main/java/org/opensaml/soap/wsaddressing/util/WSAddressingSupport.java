@@ -29,12 +29,12 @@ import com.google.common.base.Objects;
 /**
  * Helper methods for working with WS-Addressing.
  */
-public final class WSAddressingHelper {
+public final class WSAddressingSupport {
 
     /**
      * Private constructor.
      */
-    private WSAddressingHelper() {
+    private WSAddressingSupport() {
     }
 
     /**

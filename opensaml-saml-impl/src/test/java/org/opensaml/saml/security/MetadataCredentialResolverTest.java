@@ -31,7 +31,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.saml.common.SAMLTestHelper;
+import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
@@ -180,7 +180,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         //For testing, use default KeyInfo resolver from global security config, per metadata resolver constructor
         origGlobalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
         BasicSecurityConfiguration newSecConfig = new BasicSecurityConfiguration();
-        newSecConfig.setDefaultKeyInfoCredentialResolver( SAMLTestHelper.buildBasicInlineKeyInfoResolver() );
+        newSecConfig.setDefaultKeyInfoCredentialResolver( SAMLTestSupport.buildBasicInlineKeyInfoResolver() );
         ConfigurationService.register(SecurityConfiguration.class, newSecConfig);
         
         mdCredResolver = new MetadataCredentialResolver(roleResolver);

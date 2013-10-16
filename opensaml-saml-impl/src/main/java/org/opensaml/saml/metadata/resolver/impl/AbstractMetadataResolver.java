@@ -49,7 +49,7 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
-import org.opensaml.saml.saml2.common.SAML2Helper;
+import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
@@ -302,7 +302,7 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
             return true;
         }
 
-        return SAML2Helper.isValid(descriptor);
+        return SAML2Support.isValid(descriptor);
     }
 
     /** {@inheritDoc} */

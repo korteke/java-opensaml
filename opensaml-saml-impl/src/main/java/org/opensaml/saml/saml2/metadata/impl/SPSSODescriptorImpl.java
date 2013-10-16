@@ -31,7 +31,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.metadata.support.AttributeConsumingServiceSelector;
-import org.opensaml.saml.metadata.support.SAML2MetadataHelper;
+import org.opensaml.saml.metadata.support.SAML2MetadataSupport;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
@@ -128,7 +128,7 @@ public class SPSSODescriptorImpl extends SSODescriptorImpl implements SPSSODescr
     
     /** {@inheritDoc} */
     public AssertionConsumerService getDefaultAssertionConsumerService() {
-        return SAML2MetadataHelper.getDefaultIndexedEndpoint(assertionConsumerServices);
+        return SAML2MetadataSupport.getDefaultIndexedEndpoint(assertionConsumerServices);
     }
 
     /** {@inheritDoc} */

@@ -34,7 +34,7 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.xmlsec.XMLSecurityTestingHelper;
+import org.opensaml.xmlsec.XMLSecurityTestingSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
@@ -172,7 +172,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
         //Testing with inline cert
-        KeyInfoCredentialResolver kiResolver = XMLSecurityTestingHelper.buildBasicInlineKeyInfoResolver();
+        KeyInfoCredentialResolver kiResolver = XMLSecurityTestingSupport.buildBasicInlineKeyInfoResolver();
         engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         criteriaSet = new CriteriaSet();

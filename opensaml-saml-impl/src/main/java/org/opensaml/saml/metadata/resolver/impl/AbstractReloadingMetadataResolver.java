@@ -34,7 +34,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.saml2.common.SAML2Helper;
+import org.opensaml.saml.saml2.common.SAML2Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -347,7 +347,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             throws ResolverException {
         log.debug("Computing new expiration time for cached metadata from '{}", metadataIdentifier);
         DateTime metadataExpirationTime = 
-                SAML2Helper.getEarliestExpiration(getBackingStore().getCachedOriginalMetadata(),
+                SAML2Support.getEarliestExpiration(getBackingStore().getCachedOriginalMetadata(),
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
 
         expirationTime = metadataExpirationTime;
@@ -430,7 +430,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 newBackingStore.getCachedFilteredMetadata());
 
         log.debug("Computing expiration time for metadata from '{}'", metadataIdentifier);
-        DateTime metadataExpirationTime = SAML2Helper.getEarliestExpiration(newBackingStore.getCachedOriginalMetadata(),
+        DateTime metadataExpirationTime = SAML2Support.getEarliestExpiration(newBackingStore.getCachedOriginalMetadata(),
                 refreshStart.plus(getMaxRefreshDelay()), refreshStart);
         log.debug("Expiration of metadata from '{}' will occur at {}", metadataIdentifier, metadataExpirationTime
                 .toString());

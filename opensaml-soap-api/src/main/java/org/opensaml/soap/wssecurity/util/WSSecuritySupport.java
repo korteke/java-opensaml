@@ -33,12 +33,12 @@ import org.opensaml.soap.wssecurity.UsageBearing;
 /**
  * Helper methods for working with WS-Security.
  */
-public final class WSSecurityHelper {
+public final class WSSecuritySupport {
 
     /**
      * Private constructor.
      */
-    private WSSecurityHelper() {
+    private WSSecuritySupport() {
     }
     
     /**
