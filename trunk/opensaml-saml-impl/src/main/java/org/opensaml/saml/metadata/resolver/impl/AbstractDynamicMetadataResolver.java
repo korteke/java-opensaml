@@ -23,7 +23,9 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -45,6 +47,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.conn.Wire;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -83,6 +86,10 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     
     /** Generated Accept request header value. */
     private String supportedContentTypesValue;
+    
+    // TODO constructor defaults and getter/setter for this
+    // TODO right name?
+    private long maxLastAccessedInterval;
     
     /**
      * Constructor.
@@ -370,6 +377,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         if (! getSupportedContentTypes().isEmpty()) {
             supportedContentTypesValue = StringSupport.listToStringValue(getSupportedContentTypes(), ", ");
         } 
+        
+        // TODO create and init backing store cleanup sweeper
     }
     
    /** {@inheritDoc} */
@@ -430,6 +439,23 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             }
         }
         
+        public void cleanupOrphanedManagementData() {
+            // TODO think have a race condition here 
+            for (String entityID : mgmtDataMap.keySet()) {
+                Lock writeLock = mgmtDataMap.get(entityID).getReadWriteLock().writeLock();
+                try {
+                    writeLock.lock();
+                    
+                    if (!getIndexedDescriptors().containsKey(entityID)) {
+                        removeManagementData(entityID);
+                    }
+                    
+                } finally {
+                    writeLock.unlock();
+                }
+            }
+        }
+        
     }
     
     protected class EntityManagementData {
@@ -456,6 +482,44 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
 
         public ReadWriteLock getReadWriteLock() {
             return readWriteLock;
+        }
+        
+    }
+    
+    protected class BackingStoreCleanupSweeper extends TimerTask {
+
+        /** {@inheritDoc} */
+        public void run() {
+            if (!isInitialized()) {
+                // just in case the metadata provider was destroyed before this task runs
+                return;
+            }
+            
+            // Purge entries that haven't been accessed in the specified interval
+            long now = System.currentTimeMillis();
+            long latestValid = now - maxLastAccessedInterval;
+            
+            DynamicEntityBackingStore backingStore = getBackingStore();
+            Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
+            
+            for (String entityID : indexedDescriptors.keySet()) {
+                Lock writeLock = backingStore.getManagementData(entityID).getReadWriteLock().writeLock();
+                try {
+                    writeLock.lock();
+                    
+                    if (backingStore.getManagementData(entityID).getLastAccessedTime() < latestValid) {
+                        indexedDescriptors.remove(entityID);
+                        // TODO do this here, or in later cleanup code
+                        //backingStore.removeManagementData(entityID);
+                    }
+                    
+                } finally {
+                    writeLock.unlock();
+                }
+            }
+            
+            // Cleanup mgmt data entries that don't have any indexed descriptors associated with them
+            backingStore.cleanupOrphanedManagementData();
         }
         
     }
