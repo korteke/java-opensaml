@@ -71,11 +71,8 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     /** The Last-Modified information provided when the currently cached metadata was fetched. */
     private String cachedMetadataLastModified;
     
-    /** Username and password credential used for HTTP BASIC authentication. */
-    private UsernamePasswordCredentials usernamePasswordCredentials;
-    
-    /** HttpClient AuthScope instance to use. */
-    private AuthScope authScope;
+    /** HttpClient credentials provider. */
+    private BasicCredentialsProvider credentialsProvider;
     
     /**
      * Constructor.
@@ -137,16 +134,18 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
         if (username != null && password != null) {
-            usernamePasswordCredentials = new UsernamePasswordCredentials(username, password);
-            if (scope == null) {
+            UsernamePasswordCredentials usernamePasswordCredentials = 
+                    new UsernamePasswordCredentials(username, password);
+            AuthScope authScope = scope;
+            if (authScope == null) {
                 authScope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
-            } else {
-                authScope = scope;
             }
+            BasicCredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(authScope, usernamePasswordCredentials);
+            credentialsProvider = provider;
         } else {
             log.debug("Either username or password were null, disabling basic auth");
-            usernamePasswordCredentials = null;
-            authScope = null;
+            credentialsProvider = null;
         }
         
     }
@@ -154,8 +153,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     /** {@inheritDoc} */
     protected void doDestroy() {
         httpClient = null;
-        usernamePasswordCredentials = null;
-        authScope = null;
+        credentialsProvider = null;
         metadataURI = null;
         cachedMetadataETag = null;
         cachedMetadataLastModified = null;
@@ -248,9 +246,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      */
     protected HttpClientContext buildHttpClientContext() {
         HttpClientContext context = HttpClientContext.create();
-        if (usernamePasswordCredentials != null) {
-            BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            credentialsProvider.setCredentials(authScope, usernamePasswordCredentials);
+        if (credentialsProvider != null) {
             context.setCredentialsProvider(credentialsProvider);
         }
         return context;
