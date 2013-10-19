@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdrpi:PublicationPath xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi">
+	<mdrpi:Publication publisher="pub1" />
+	<mdrpi:Publication publisher="pub2" />
+</mdrpi:PublicationPath>

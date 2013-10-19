@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdrpi:PublicationInfo publisher="publisher"
+    xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi">
+		<mdrpi:UsagePolicy xml:lang="en" xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"> https://www.aai.dfn.de/en/join/</mdrpi:UsagePolicy>
+	<mdrpi:UsagePolicy xml:lang="fr" xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"> https://www.example.fr/fr/</mdrpi:UsagePolicy>
+
+    </mdrpi:PublicationInfo>

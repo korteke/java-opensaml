@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi" xmlns="http://www.opensaml.org/xmltooling-config"
+            xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd">
+
+  <!-- SAML 2.0 Protocol IdP Discovery Protocol Object providers -->
+  <ObjectProviders>
+
+    <!-- Publication provider -->
+    <ObjectProvider qualifiedName="mdrpi:Publication">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationUnmarshaller" />
+    </ObjectProvider>
+ 
+     <ObjectProvider qualifiedName="mdrpi:PublicationType">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationUnmarshaller" />
+    </ObjectProvider>
+
+   <!-- PublicationInfo provider -->
+    <ObjectProvider qualifiedName="mdrpi:PublicationInfo">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationInfoBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationInfoMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationInfoUnmarshaller" />
+    </ObjectProvider>
+
+    <ObjectProvider qualifiedName="mdrpi:PublicationInfoType">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationInfoBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationInfoMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationInfoUnmarshaller" />
+    </ObjectProvider>
+
+    <!-- PublicationPath provider -->
+    <ObjectProvider qualifiedName="mdrpi:PublicationPath">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationPathBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationPathMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationPathUnmarshaller" />
+    </ObjectProvider>
+
+    <ObjectProvider qualifiedName="mdrpi:PublicationPathType">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationPathBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationPathMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.PublicationPathUnmarshaller" />
+    </ObjectProvider>
+
+    <!-- UsagePolicy provider -->
+    <ObjectProvider qualifiedName="mdrpi:UsagePolicy">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.UsagePolicyBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.UsagePolicyMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.UsagePolicyUnmarshaller" />
+    </ObjectProvider>
+
+    <!-- RegistrationPolicy provider -->
+    <ObjectProvider qualifiedName="mdrpi:RegistrationPolicy">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationPolicyBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationPolicyMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationPolicyUnmarshaller" />
+    </ObjectProvider>
+
+    <!-- RegistrationInfo provider -->
+    <ObjectProvider qualifiedName="mdrpi:RegistrationInfo">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationInfoBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationInfoMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationInfoUnmarshaller" />
+    </ObjectProvider>
+
+    <ObjectProvider qualifiedName="mdrpi:RegistrationInfoType">
+      <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationInfoBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationInfoMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationInfoUnmarshaller" />
+    </ObjectProvider>
+
+  </ObjectProviders>
+</XMLTooling>
