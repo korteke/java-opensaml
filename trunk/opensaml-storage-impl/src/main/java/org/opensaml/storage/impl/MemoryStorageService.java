@@ -355,7 +355,7 @@ public class MemoryStorageService extends AbstractStorageService {
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    public boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
+    private boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
 
         final Lock writeLock = lock.writeLock();
