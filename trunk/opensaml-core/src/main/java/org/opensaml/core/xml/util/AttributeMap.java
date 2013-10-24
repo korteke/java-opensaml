@@ -87,7 +87,7 @@ public class AttributeMap implements Map<QName, String> {
     public String put(QName attributeName, String value) {
         Constraint.isNotNull(attributeName, "Attribute name cannot be null");
         String oldValue = get(attributeName);
-        if (value != oldValue) {
+        if (!Objects.equal(value, oldValue)) {
             releaseDOM();
             attributes.put(attributeName, value);
             if (isIDAttribute(attributeName) || XMLObjectProviderRegistrySupport.isIDAttribute(attributeName)) {
