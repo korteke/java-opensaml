@@ -19,10 +19,8 @@ package org.opensaml.storage;
 
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Specialization of {@link StorageService} that maintains its data on a per-request basis.
@@ -40,19 +38,25 @@ public interface RequestScopedStorageService extends StorageService {
     /**
      * Reconstitute stored data from source.
      * 
-     * @param source the data to load
+     * @param source the data to load, if any
      * 
      * @throws IOException  if an error occurs reconstituting the data
      */
-    public void load(@Nonnull @NotEmpty final String source) throws IOException;
+    public void load(@Nullable final String source) throws IOException;
     
     /**
      * Writes stored data to a string.
      * 
-     * @return  the serialized data
+     * @return  the serialized data, or null if no data exists
      * 
      * @throws IOException  if an error occurs preserving the data
      */
-    @Nonnull @NotEmpty public String save() throws IOException;
+    @Nullable public String save() throws IOException;
     
+    /**
+     * Gets the dirty indicator, if the underlying data has been modified since the last load.
+     * 
+     * @return  true iff the data has been modified since the last load
+     */
+    public boolean isDirty();
 }

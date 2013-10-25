@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.storage.impl;
+package org.opensaml.storage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,9 +33,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
 
-import org.opensaml.storage.AbstractStorageService;
-import org.opensaml.storage.StorageRecord;
-import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,17 +41,19 @@ import com.google.common.collect.Iterables;
 
 
 /**
- * Partial implementation of {@link StorageService} that stores data in-memory with no persistence.
- * Abstract methods supply the map of data to manipulate and the lock to use, which allows
- * optimizations in cases where locking isn't required. 
+ * Partial implementation of {@link StorageService} that stores data in-memory with no persistence
+ * using a simple map.
+ * 
+ * <p>Abstract methods supply the map of data to manipulate and the lock to use, which allows
+ * optimizations in cases where locking isn't required or data isn't shared.<p> 
  */
-public abstract class AbstractMemoryStorageService extends AbstractStorageService {
+public abstract class AbstractMapBackedStorageService extends AbstractStorageService {
 
     /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMemoryStorageService.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMapBackedStorageService.class);
 
     /** Constructor. */
-    public AbstractMemoryStorageService() {
+    public AbstractMapBackedStorageService() {
         setContextSize(Integer.MAX_VALUE);
         setKeySize(Integer.MAX_VALUE);
         setValueSize(Integer.MAX_VALUE);
@@ -244,7 +243,7 @@ public abstract class AbstractMemoryStorageService extends AbstractStorageServic
      * @return  a pair consisting of the version of the record read back, if any, and the record itself
      * @throws IOException  if errors occur in the read process 
      */
-    @Nonnull private Pair<Integer, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
+    @Nonnull protected Pair<Integer, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final Integer version) throws IOException {
 
         Lock readLock = getLock().readLock();
@@ -296,7 +295,7 @@ public abstract class AbstractMemoryStorageService extends AbstractStorageServic
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable private Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
+    @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
 
@@ -358,7 +357,7 @@ public abstract class AbstractMemoryStorageService extends AbstractStorageServic
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    private boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
+    protected boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
 
         final Lock writeLock = getLock().writeLock();

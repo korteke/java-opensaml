@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
  */
 public abstract class StorageServiceTest {
     
-    private SecureRandom random;
+    protected SecureRandom random;
     
     protected StorageService shared;
 
@@ -51,6 +51,11 @@ public abstract class StorageServiceTest {
      * @return  a new instance
      */
     @Nonnull protected abstract StorageService getStorageService();
+    
+    /** Called to init a thread in preparation to run a test. */
+    protected void threadInit() {
+        
+    }
 
     @BeforeClass
     protected void setUp() throws ComponentInitializationException {
@@ -63,9 +68,11 @@ public abstract class StorageServiceTest {
     protected void tearDown() {
         shared.destroy();
     }
-
+    
     @Test(threadPoolSize = 10, invocationCount = 10,  timeOut = 10000)
     public void strings() throws IOException {
+        threadInit();
+        
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
@@ -102,6 +109,8 @@ public abstract class StorageServiceTest {
 
     @Test
     public void expiration() throws IOException, InterruptedException {
+        threadInit();
+        
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
@@ -118,6 +127,8 @@ public abstract class StorageServiceTest {
     
     @Test
     public void updates() throws IOException, VersionMismatchException {
+        threadInit();
+        
         String key = "key";
         String context = Long.toString(random.nextLong());
         
@@ -139,6 +150,8 @@ public abstract class StorageServiceTest {
     
     @Test
     public void objects() throws IOException, InterruptedException {
+        threadInit();
+        
         AnnotatedObject o1 = new AnnotatedObject();
         AnnotatedObject o2 = new AnnotatedObject();
         

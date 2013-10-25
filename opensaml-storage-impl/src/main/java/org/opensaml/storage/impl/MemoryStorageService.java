@@ -33,6 +33,8 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
+import org.opensaml.storage.AbstractMapBackedStorageService;
+import org.opensaml.storage.MutableStorageRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +42,10 @@ import com.google.common.collect.Maps;
 
 
 /**
- * Implementation of {@link StorageService} that stores data in-memory in a shared data structure 
+ * Implementation of {@link AbstractMapBackedStorageService} that stores data in-memory in a shared data structure 
  * with no persistence.
  */
-public class MemoryStorageService extends AbstractMemoryStorageService {
+public class MemoryStorageService extends AbstractMapBackedStorageService {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(MemoryStorageService.class);

@@ -132,7 +132,7 @@ public class LDAPStorageService extends AbstractStorageService {
             if (entry != null) {
                 final LdapAttribute attr = entry.getAttribute(key);
                 if (attr != null) {
-                    record = new MutableStorageRecord(attr.getStringValue(), null);
+                    record = new StorageRecord(attr.getStringValue(), null);
                 }
             }
         }
