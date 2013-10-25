@@ -116,6 +116,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
         }
     }
     
+    /*
     @Test(threadPoolSize = 10, invocationCount = 10,  timeOut = 10000)
     public void loadSave() throws IOException {
         threadInit();
@@ -148,4 +149,5 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
             Assert.assertTrue(record.getExpiration() < System.currentTimeMillis() + 300000);
         }
     }
+    */
 }
