@@ -116,7 +116,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
         }
     }
     
-    @Test(threadPoolSize = 1, invocationCount = 1,  timeOut = 10000)
+    @Test(threadPoolSize = 10, invocationCount = 10,  timeOut = 10000)
     public void loadSave() throws IOException {
         threadInit();
         
