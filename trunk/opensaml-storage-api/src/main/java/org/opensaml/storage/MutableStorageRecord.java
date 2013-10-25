@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 
-package org.opensaml.storage.impl;
+package org.opensaml.storage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.opensaml.storage.StorageRecord;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
