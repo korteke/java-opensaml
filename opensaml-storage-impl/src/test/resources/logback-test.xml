@@ -15,5 +15,6 @@
     </root>
     
     <logger name="org.opensaml.storage.impl.JSONRequestScopedStorageService" level="TRACE"/>
+    <logger name="net.shibboleth.utilities.java.support.security.DataSealer" level="TRACE"/>
     
 </configuration>

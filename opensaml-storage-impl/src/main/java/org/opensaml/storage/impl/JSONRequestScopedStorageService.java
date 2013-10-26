@@ -167,7 +167,11 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
         }
         
         try {
-            final JsonReader reader = Json.createReader(new StringReader(dataSealer.unwrap(source)));
+            String decrypted = dataSealer.unwrap(source);
+            
+            log.trace("Data after decryption: {}", decrypted);
+            
+            final JsonReader reader = Json.createReader(new StringReader(decrypted));
             final JsonStructure st = reader.read();
             if (!(st instanceof JsonObject)) {
                 throw new IOException("Found invalid data structure while parsing context map");
@@ -209,7 +213,7 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
         
         Map<String, Map<String, MutableStorageRecord>> contextMap = getContextMap();
         if (contextMap.isEmpty()) {
-            log.trace("context map was empty, no data to save");
+            log.trace("Context map was empty, no data to save");
             return null;
         }
 
@@ -222,15 +226,18 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             final JsonGenerator gen = Json.createGenerator(sink);
             
             gen.writeStartObject();
+            
             for (Map.Entry<String,Map<String, MutableStorageRecord>> context : contextMap.entrySet()) {
+                
                 gen.writeStartObject(context.getKey());
+                
                 for (Map.Entry<String,MutableStorageRecord> entry : context.getValue().entrySet()) {
                     final MutableStorageRecord record = entry.getValue();
                     final Long recexp = record.getExpiration();
                     if (recexp == null || recexp > now) {
                         empty = false;
-                        gen.writeStartObject(entry.getKey());
-                        gen.write("v", record.getValue());
+                        gen.writeStartObject(entry.getKey())
+                            .write("v", record.getValue());
                         if (recexp != null) {
                             gen.write("x", record.getExpiration());
                             exp = Math.max(exp, recexp);
@@ -238,21 +245,24 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
                         gen.writeEnd();
                     }
                 }
+                
                 gen.writeEnd();
             }
-            gen.writeEnd();
-            gen.close();
+            
+            gen.writeEnd().close();
 
             if (empty) {
-                log.trace("context map was empty, no data to save");
+                log.trace("Context map was empty, no data to save");
                 return null;
             }
             
-            log.trace("size of data before encrypting is {}", sink.toString().length());
+            String toEncrypt = sink.toString();
+            log.trace("Size of data before encryption is {}", toEncrypt.length());
+            log.trace("Data before encryption is {}", toEncrypt);
             
             try {
-                String wrapped = dataSealer.wrap(sink.toString(), exp > 0 ? exp : now + 24 * 60 * 60 * 1000);
-                log.trace("size of data after encrypting is {}", wrapped.length());
+                String wrapped = dataSealer.wrap(toEncrypt, exp > 0 ? exp : now + 24 * 60 * 60 * 1000);
+                log.trace("Size of data after encryption is {}", wrapped.length());
                 return wrapped;
             } catch (DataSealerException e) {
                 throw new IOException(e);
