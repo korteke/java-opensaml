@@ -20,6 +20,7 @@ package org.opensaml.storage.impl;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +37,9 @@ import javax.json.JsonReader;
 import javax.json.JsonStructure;
 import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;
-import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
@@ -46,6 +49,9 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.CookieManager;
+import net.shibboleth.utilities.java.support.net.UriSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerException;
 
@@ -56,6 +62,9 @@ import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
 
@@ -73,6 +82,9 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     /** Name of request attribute used as a dirty bit. */
     @Nonnull private static final String DIRTY_BIT_ATTRIBUTE =
             "org.opensaml.storage.impl.JSONRequestScopedStorageService.dirty";
+
+    /** Default cookie name for storage tracking. */
+    @Nonnull @NotEmpty private static final String DEFAULT_COOKIE_NAME = "shib_idp_json_ss";
     
     /** A dummy lock implementation. */
     @Nonnull private static final ReadWriteLock DUMMY_LOCK;
@@ -81,11 +93,27 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     @Nonnull private final Logger log = LoggerFactory.getLogger(JSONRequestScopedStorageService.class);
 
     /** Servlet request. */
-    @NonnullAfterInit private ServletRequest servletRequest;
+    @NonnullAfterInit private HttpServletRequest httpServletRequest;
+
+    /** Servlet response. */
+    @NonnullAfterInit private HttpServletResponse httpServletResponse;
+    
+    /** Manages creation of cookies. */
+    @NonnullAfterInit private CookieManager cookieManager;
+    
+    /** Name of cookie used to track storage. */
+    @Nonnull @NotEmpty private String cookieName;
     
     /** DataSealer instance to secure data. */
     @NonnullAfterInit private DataSealer dataSealer;
-    
+
+    /** Constructor. */
+    public JSONRequestScopedStorageService() {
+        super();
+        
+        cookieName = DEFAULT_COOKIE_NAME;
+    }
+
     /** {@inheritDoc} */
     public synchronized void setCleanupInterval(long interval) {
         // Don't allow a cleanup task.
@@ -97,10 +125,43 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
      * 
      * @param request servlet request in which to manage data
      */
-    public void setServletRequest(@Nonnull final ServletRequest request) {
+    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        servletRequest = Constraint.isNotNull(request, "ServletRequest cannot be null");
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+    }
+
+    /**
+     * Set the servlet response in which to manage per-request data.
+     * 
+     * @param response servlet response in which to manage data
+     */
+    public void setHttpServletResponse(@Nonnull final HttpServletResponse response) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        httpServletResponse = Constraint.isNotNull(response, "HttpServletResponse cannot be null");
+    }
+    
+    /**
+     * Set the {@link CookieManager} to use.
+     * 
+     * @param manager the CookieManager to use.
+     */
+    public void setCookieManager(@Nonnull final CookieManager manager) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        cookieManager = Constraint.isNotNull(manager, "CookieManager cannot be null");
+    }
+
+    /**
+     * Set the cookie name to use for storage tracking.
+     * 
+     * @param name cookie name to use
+     */
+    public void setCookieName(@Nonnull @NotEmpty final String name) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        cookieName = Constraint.isNotNull(StringSupport.trimOrNull(name), "Cookie name cannot be null or empty");
     }
     
     /**
@@ -118,8 +179,10 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (servletRequest == null || dataSealer == null) {
-            throw new ComponentInitializationException("ServletRequest or DataSealer is not set");
+        if (httpServletRequest == null || httpServletResponse == null) {
+            throw new ComponentInitializationException("HttpServletRequest and HttpServletResponse must be set");
+        } else if (dataSealer == null || cookieManager == null) {
+            throw new ComponentInitializationException("DataSealer and CookieManager must be set");
         }
     }
 
@@ -158,16 +221,30 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     }
 
     /** {@inheritDoc} */
-    public void load(@Nullable final String source) throws IOException {
+    public void load() throws IOException {
+        log.debug("Loading storage state from cookie in current request");
+        
         getContextMap().clear();
         setDirty(false);
         
-        if (source == null || source.isEmpty()) {
+        // Search for our cookie.
+        Cookie[] cookies = httpServletRequest.getCookies();
+        if (cookies == null) {
+            return;
+        }
+
+        Optional<Cookie> cookie = Iterables.tryFind(Arrays.asList(cookies), new Predicate<Cookie>() {
+            public boolean apply(@Nullable final Cookie c) {
+                return c != null && c.getName().equals(cookieName);
+            }
+        });
+        
+        if (!cookie.isPresent() || cookie.get().getValue() == null || cookie.get().getValue().isEmpty()) {
             return;
         }
         
         try {
-            String decrypted = dataSealer.unwrap(source);
+            String decrypted = dataSealer.unwrap(UriSupport.urlDecode(cookie.get().getValue()));
             
             log.trace("Data after decryption: {}", decrypted);
             
@@ -209,12 +286,20 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     }
 
     /** {@inheritDoc} */
-    @Nullable public String save() throws IOException {
+    @Nullable public void save() throws IOException {
+        if (!isDirty()) {
+            log.debug("Storage state has not been modified during request, save operation skipped");
+            return;
+        }
+
+        log.debug("Saving updated storage data to cookie");
         
         Map<String, Map<String, MutableStorageRecord>> contextMap = getContextMap();
         if (contextMap.isEmpty()) {
-            log.trace("Context map was empty, no data to save");
-            return null;
+            log.trace("Context map was empty, unsetting storage cookie");
+            cookieManager.unsetCookie(cookieName);
+            setDirty(false);
+            return;
         }
 
         long exp = 0;
@@ -252,8 +337,10 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             gen.writeEnd().close();
 
             if (empty) {
-                log.trace("Context map was empty, no data to save");
-                return null;
+                log.trace("Context map was empty, unsetting storage cookie");
+                cookieManager.unsetCookie(cookieName);
+                setDirty(false);
+                return;
             }
             
             String toEncrypt = sink.toString();
@@ -263,7 +350,8 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             try {
                 String wrapped = dataSealer.wrap(toEncrypt, exp > 0 ? exp : now + 24 * 60 * 60 * 1000);
                 log.trace("Size of data after encryption is {}", wrapped.length());
-                return wrapped;
+                cookieManager.addCookie(cookieName, UriSupport.urlEncode(wrapped));
+                setDirty(false);
             } catch (DataSealerException e) {
                 throw new IOException(e);
             }
@@ -273,16 +361,6 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
         }
     }
     
-    /** {@inheritDoc} */
-    public boolean isDirty() {
-        Object dirty = servletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE);
-        if (dirty != null && dirty instanceof Boolean) {
-            return (Boolean) dirty;
-        } else {
-            return false;
-        }
-    }
-
     /** {@inheritDoc} */
     @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
@@ -312,13 +390,13 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
 
     /** {@inheritDoc} */
     @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord>> getContextMap() {
-        Object contextMap = servletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
+        Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
         if (contextMap != null) {
             return (Map<String, Map<String, MutableStorageRecord>>) contextMap;
         }
         
         Map<String, Map<String, MutableStorageRecord>> newMap = Maps.newHashMap();
-        servletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE, newMap);
+        httpServletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE, newMap);
         return newMap;
     }
     
@@ -334,12 +412,22 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
      */
     private void setDirty(final boolean flag) {
         if (flag) {
-            servletRequest.setAttribute(DIRTY_BIT_ATTRIBUTE, Boolean.TRUE);
+            httpServletRequest.setAttribute(DIRTY_BIT_ATTRIBUTE, Boolean.TRUE);
         } else {
-            servletRequest.removeAttribute(DIRTY_BIT_ATTRIBUTE);
+            httpServletRequest.removeAttribute(DIRTY_BIT_ATTRIBUTE);
         }
     }
     
+    /** {@inheritDoc} */
+    private boolean isDirty() {
+        Object dirty = httpServletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE);
+        if (dirty != null && dirty instanceof Boolean) {
+            return (Boolean) dirty;
+        } else {
+            return false;
+        }
+    }
+
     /** Dummy shared lock that no-ops. */
     private static class DummyReadWriteLock implements ReadWriteLock {
 

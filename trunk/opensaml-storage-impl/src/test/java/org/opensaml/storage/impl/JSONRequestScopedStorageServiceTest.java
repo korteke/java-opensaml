@@ -26,17 +26,20 @@ import java.io.OutputStream;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
+import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerTest;
 
-import org.junit.Assert;
+import org.opensaml.storage.RequestScopedStorageService;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.StorageServiceTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -88,14 +91,23 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
         sealer.setKeystorePassword("password");
         sealer.setKeystorePath(keyStorePath);
 
+        CookieManager cookieManager = new CookieManager();
+        cookieManager.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
+        cookieManager.setHttpServletResponse(new ThreadLocalHttpServletResponseProxy());
+
         try {
             sealer.initialize();
+            cookieManager.initialize();
         } catch (ComponentInitializationException e) {
             Assert.fail(e.getMessage());
         }
 
         ss.setDataSealer(sealer);
-        ss.setServletRequest(new ThreadLocalHttpServletRequestProxy());
+        ss.setCookieManager(cookieManager);
+        ss.setCookieName("test");
+        
+        ss.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
+        ss.setHttpServletResponse(new ThreadLocalHttpServletResponseProxy());
         return ss;
     }
 
@@ -120,10 +132,12 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
     public void loadSave() throws IOException {
         threadInit();
         
-        JSONRequestScopedStorageService ss = (JSONRequestScopedStorageService) shared;
+        MockHttpServletRequest mockRequest = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
+        MockHttpServletResponse mockResponse = (MockHttpServletResponse) HttpServletRequestResponseContext.getResponse();
         
-        ss.load(null);
-        Assert.assertFalse(ss.isDirty());
+        RequestScopedStorageService ss = (RequestScopedStorageService) shared;
+        
+        ss.load();
         
         String context = Long.toString(random.nextLong());
         
@@ -131,16 +145,16 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
             ss.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 300000);
         }
         
-        Assert.assertTrue(ss.isDirty());
-        String pickled = ((JSONRequestScopedStorageService) shared).save();
-        ss.load(null);
+        ss.save();
+        Assert.assertNotNull(mockResponse.getCookie("test"));
+        ss.load();
         
         for (int i = 1; i <= 10; i++) {
             Assert.assertNull(ss.read(context, Integer.toString(i)));
         }
         
-        ss.load(pickled);
-        Assert.assertFalse(ss.isDirty());
+        mockRequest.setCookies(mockResponse.getCookie("test"));
+        ss.load();
         for (int i = 1; i <= 10; i++) {
             StorageRecord record = ss.read(context, Integer.toString(i));
             Assert.assertNotNull(record);
