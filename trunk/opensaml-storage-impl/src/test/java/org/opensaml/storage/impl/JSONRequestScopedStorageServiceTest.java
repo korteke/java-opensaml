@@ -147,7 +147,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
         
         ss.save();
         Assert.assertNotNull(mockResponse.getCookie("test"));
-        ss.load();
+        mockRequest.setAttribute(JSONRequestScopedStorageService.CONTEXT_MAP_ATTRIBUTE, null);
         
         for (int i = 1; i <= 10; i++) {
             Assert.assertNull(ss.read(context, Integer.toString(i)));

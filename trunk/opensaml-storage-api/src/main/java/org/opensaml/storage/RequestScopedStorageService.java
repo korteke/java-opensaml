@@ -38,6 +38,8 @@ public interface RequestScopedStorageService extends StorageService {
     /**
      * Reconstitute stored data.
      * 
+     * <p>This method must be idempotent with respect to existing state when called more than once.</p> 
+     * 
      * @throws IOException  if an error occurs reconstituting the data
      */
     public void load() throws IOException;

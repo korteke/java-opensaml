@@ -18,6 +18,7 @@
 package org.opensaml.storage.impl;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -41,11 +42,13 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
@@ -82,11 +85,11 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     implements RequestScopedStorageService, Filter {
 
     /** Name of request attribute for context map. */
-    @Nonnull private static final String CONTEXT_MAP_ATTRIBUTE = 
+    @Nonnull protected static final String CONTEXT_MAP_ATTRIBUTE = 
             "org.opensaml.storage.impl.JSONRequestScopedStorageService.contextMap";
 
     /** Name of request attribute used as a dirty bit. */
-    @Nonnull private static final String DIRTY_BIT_ATTRIBUTE =
+    @Nonnull protected static final String DIRTY_BIT_ATTRIBUTE =
             "org.opensaml.storage.impl.JSONRequestScopedStorageService.dirty";
 
     /** Default cookie name for storage tracking. */
@@ -228,9 +231,18 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
 
     /** {@inheritDoc} */
     public void load() throws IOException {
+        
+        Map<String,Map<String,MutableStorageRecord>> contextMap = getContextMap();
+        
+        // Check for recursion. If load() is called directly, the above getter will
+        // call us, which means we need to short-circuit the "outer" load call by
+        // detecting that data has been loaded already.
+        if (!contextMap.isEmpty()) {
+            return;
+        }
+        
         log.trace("Loading storage state from cookie in current request");
         
-        getContextMap().clear();
         setDirty(false);
         
         // Search for our cookie.
@@ -263,7 +275,7 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             
             for (Map.Entry<String,JsonValue> context : obj.entrySet()) {
                 if (context.getValue().getValueType() != JsonValue.ValueType.OBJECT) {
-                    getContextMap().clear();
+                    contextMap.clear();
                     throw new IOException("Found invalid data structure while parsing context map");
                 }
                 
@@ -281,7 +293,7 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             }
             setDirty(false);
         } catch (NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
-            getContextMap().clear();
+            contextMap.clear();
             setDirty(false);
             log.error("Exception while parsing context map", e);
             throw new IOException("Found invalid data structure while parsing context map", e);
@@ -375,10 +387,12 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     /** {@inheritDoc} */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
+        if (!(response instanceof HttpServletResponse)) {
+            throw new ServletException("Response was not an HttpServletResponse");
+        }
         
-        load();
-        chain.doFilter(request, response);
-        save();
+        // Intercept output operations and inject a save() operation at all applicable points.
+        chain.doFilter(request, new OutputInterceptingHttpServletResponseProxy((HttpServletResponse) response));
     }
     
     /** {@inheritDoc} */
@@ -410,13 +424,24 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
 
     /** {@inheritDoc} */
     @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord>> getContextMap() {
+        
         Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
         if (contextMap != null) {
             return (Map<String, Map<String, MutableStorageRecord>>) contextMap;
         }
-        
+
         Map<String, Map<String, MutableStorageRecord>> newMap = Maps.newHashMap();
         httpServletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE, newMap);
+        
+        // The first time through, do a load from the cookie.
+        // Any subsequent calls to get the context map will return the previously set map.
+        try {
+            load();
+        } catch (IOException e) {
+            setDirty(true);
+            log.error("Error loading data from cookie, starting fresh", e);
+        }
+        
         return newMap;
     }
     
@@ -437,8 +462,12 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             httpServletRequest.removeAttribute(DIRTY_BIT_ATTRIBUTE);
         }
     }
-    
-    /** {@inheritDoc} */
+
+    /**
+     * Get the dirty bit for the current request.
+     * 
+     * @return  status of dirty bit
+     */
     private boolean isDirty() {
         Object dirty = httpServletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE);
         if (dirty != null && dirty instanceof Boolean) {
@@ -448,6 +477,53 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
         }
     }
 
+    /**
+     * An implementation of {@link HttpServletResponse} which detects a response going out
+     * from a servlet and executes a save operation.
+     */
+    private class OutputInterceptingHttpServletResponseProxy extends HttpServletResponseWrapper {
+
+        /**
+         * Constructor.
+         *
+         * @param response the response to delegate to
+         */
+        public OutputInterceptingHttpServletResponseProxy(@Nonnull final HttpServletResponse response) {
+            super(response);
+        }
+    
+        /** {@inheritDoc} */
+        public ServletOutputStream getOutputStream() throws IOException {
+            save();
+            return super.getOutputStream();
+        }
+
+        /** {@inheritDoc} */
+        public PrintWriter getWriter() throws IOException {
+            save();
+            return super.getWriter();
+        }
+
+        /** {@inheritDoc} */
+        public void sendError(int sc, String msg) throws IOException {
+            save();
+            super.sendError(sc, msg);
+        }
+
+        /** {@inheritDoc} */
+        public void sendError(int sc) throws IOException {
+            save();
+            super.sendError(sc);
+        }
+
+        /** {@inheritDoc} */
+        public void sendRedirect(String location) throws IOException {
+            save();
+            super.sendRedirect(location);
+        }
+
+}
+    
     /** Dummy shared lock that no-ops. */
     private static class DummyReadWriteLock implements ReadWriteLock {
 
