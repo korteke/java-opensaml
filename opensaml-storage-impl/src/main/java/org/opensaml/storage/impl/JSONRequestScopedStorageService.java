@@ -37,6 +37,12 @@ import javax.json.JsonReader;
 import javax.json.JsonStructure;
 import javax.json.JsonValue;
 import javax.json.stream.JsonGenerator;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +79,7 @@ import com.google.common.collect.Maps;
  * and reads and writes the data with a secured string form using JSON as the underlying format.
  */
 public class JSONRequestScopedStorageService extends AbstractMapBackedStorageService
-    implements RequestScopedStorageService {
+    implements RequestScopedStorageService, Filter {
 
     /** Name of request attribute for context map. */
     @Nonnull private static final String CONTEXT_MAP_ATTRIBUTE = 
@@ -222,7 +228,7 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
 
     /** {@inheritDoc} */
     public void load() throws IOException {
-        log.debug("Loading storage state from cookie in current request");
+        log.trace("Loading storage state from cookie in current request");
         
         getContextMap().clear();
         setDirty(false);
@@ -288,11 +294,11 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     /** {@inheritDoc} */
     @Nullable public void save() throws IOException {
         if (!isDirty()) {
-            log.debug("Storage state has not been modified during request, save operation skipped");
+            log.trace("Storage state has not been modified during request, save operation skipped");
             return;
         }
 
-        log.debug("Saving updated storage data to cookie");
+        log.trace("Saving updated storage data to cookie");
         
         Map<String, Map<String, MutableStorageRecord>> contextMap = getContextMap();
         if (contextMap.isEmpty()) {
@@ -359,6 +365,20 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
             log.error("JsonException while serializing context map", e);
             throw new IOException(e);
         }
+    }
+
+    /** {@inheritDoc} */
+    public void init(FilterConfig filterConfig) throws ServletException {
+        
+    }
+
+    /** {@inheritDoc} */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
+        
+        load();
+        chain.doFilter(request, response);
+        save();
     }
     
     /** {@inheritDoc} */
