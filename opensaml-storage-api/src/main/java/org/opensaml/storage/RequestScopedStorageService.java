@@ -36,27 +36,16 @@ import javax.annotation.concurrent.ThreadSafe;
 public interface RequestScopedStorageService extends StorageService {
 
     /**
-     * Reconstitute stored data from source.
-     * 
-     * @param source the data to load, if any
+     * Reconstitute stored data.
      * 
      * @throws IOException  if an error occurs reconstituting the data
      */
-    public void load(@Nullable final String source) throws IOException;
+    public void load() throws IOException;
     
     /**
-     * Writes stored data to a string.
-     * 
-     * @return  the serialized data, or null if no data exists
+     * Write/preserve stored data for subsequent requests.
      * 
      * @throws IOException  if an error occurs preserving the data
      */
-    @Nullable public String save() throws IOException;
-    
-    /**
-     * Gets the dirty indicator, if the underlying data has been modified since the last load.
-     * 
-     * @return  true iff the data has been modified since the last load
-     */
-    public boolean isDirty();
+    @Nullable public void save() throws IOException;
 }
