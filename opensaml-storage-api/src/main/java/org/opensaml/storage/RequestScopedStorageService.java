@@ -17,16 +17,13 @@
 
 package org.opensaml.storage;
 
-import java.io.IOException;
-
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * Specialization of {@link StorageService} that maintains its data on a per-request basis.
  * 
- * <p>Clients of this service are required to load/save the data across requests in order to
- * preserve it.</p>
+ * <p>Implementations of this interface will typically be injected with objects or proxies
+ * that supply access to the underlying request/response environment, such as servlets.</p>
  * 
  * <p>Implementations of this interface are not required to guarantee coherency across requests
  * operating on the same initial data but must guarantee updates leave data in a consistent
@@ -35,19 +32,4 @@ import javax.annotation.concurrent.ThreadSafe;
 @ThreadSafe
 public interface RequestScopedStorageService extends StorageService {
 
-    /**
-     * Reconstitute stored data.
-     * 
-     * <p>This method must be idempotent with respect to existing state when called more than once.</p> 
-     * 
-     * @throws IOException  if an error occurs reconstituting the data
-     */
-    public void load() throws IOException;
-    
-    /**
-     * Write/preserve stored data for subsequent requests.
-     * 
-     * @throws IOException  if an error occurs preserving the data
-     */
-    @Nullable public void save() throws IOException;
 }
