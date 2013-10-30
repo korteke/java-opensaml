@@ -44,9 +44,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * Test of {@link JSONRequestScopedStorageService} implementation.
+ * Test of {@link ServletRequestScopedStorageService} implementation.
  */
-public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
+public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
 
     String keyStorePath;
 
@@ -81,7 +81,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
     
     /** {@inheritDoc} */
     @Nonnull protected StorageService getStorageService() {
-        JSONRequestScopedStorageService ss = new JSONRequestScopedStorageService();
+        ServletRequestScopedStorageService ss = new ServletRequestScopedStorageService();
         ss.setCleanupInterval(0);
 
         DataSealer sealer = new DataSealer();
@@ -118,7 +118,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
     }
     
     @Test public void invalidConfig() {
-        JSONRequestScopedStorageService ss = new JSONRequestScopedStorageService();
+        ServletRequestScopedStorageService ss = new ServletRequestScopedStorageService();
         
         try {
             ss.initialize();
@@ -135,7 +135,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
         MockHttpServletRequest mockRequest = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
         MockHttpServletResponse mockResponse = (MockHttpServletResponse) HttpServletRequestResponseContext.getResponse();
         
-        RequestScopedStorageService ss = (RequestScopedStorageService) shared;
+        ServletRequestScopedStorageService ss = (ServletRequestScopedStorageService) shared;
         
         ss.load();
         
@@ -147,7 +147,7 @@ public class JSONRequestScopedStorageServiceTest extends StorageServiceTest {
         
         ss.save();
         Assert.assertNotNull(mockResponse.getCookie("test"));
-        mockRequest.setAttribute(JSONRequestScopedStorageService.CONTEXT_MAP_ATTRIBUTE, null);
+        mockRequest.setAttribute(ServletRequestScopedStorageService.CONTEXT_MAP_ATTRIBUTE, null);
         
         for (int i = 1; i <= 10; i++) {
             Assert.assertNull(ss.read(context, Integer.toString(i)));

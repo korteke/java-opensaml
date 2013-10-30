@@ -81,25 +81,25 @@ import com.google.common.collect.Maps;
  * Implementation of {@link RequestScopedStorageService} that stores data in-memory in a servlet request attribute,
  * and reads and writes the data with a secured string form using JSON as the underlying format.
  */
-public class JSONRequestScopedStorageService extends AbstractMapBackedStorageService
+public class ServletRequestScopedStorageService extends AbstractMapBackedStorageService
     implements RequestScopedStorageService, Filter {
 
     /** Name of request attribute for context map. */
     @Nonnull protected static final String CONTEXT_MAP_ATTRIBUTE = 
-            "org.opensaml.storage.impl.JSONRequestScopedStorageService.contextMap";
+            "org.opensaml.storage.impl.ServletRequestScopedStorageService.contextMap";
 
     /** Name of request attribute used as a dirty bit. */
     @Nonnull protected static final String DIRTY_BIT_ATTRIBUTE =
-            "org.opensaml.storage.impl.JSONRequestScopedStorageService.dirty";
+            "org.opensaml.storage.impl.ServletRequestScopedStorageService.dirty";
 
     /** Default cookie name for storage tracking. */
-    @Nonnull @NotEmpty private static final String DEFAULT_COOKIE_NAME = "shib_idp_json_ss";
+    @Nonnull @NotEmpty private static final String DEFAULT_COOKIE_NAME = "shib_idp_req_ss";
     
     /** A dummy lock implementation. */
     @Nonnull private static final ReadWriteLock DUMMY_LOCK;
     
     /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(JSONRequestScopedStorageService.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ServletRequestScopedStorageService.class);
 
     /** Servlet request. */
     @NonnullAfterInit private HttpServletRequest httpServletRequest;
@@ -117,7 +117,7 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     @NonnullAfterInit private DataSealer dataSealer;
 
     /** Constructor. */
-    public JSONRequestScopedStorageService() {
+    public ServletRequestScopedStorageService() {
         super();
         
         cookieName = DEFAULT_COOKIE_NAME;
@@ -230,7 +230,27 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
     }
 
     /** {@inheritDoc} */
-    public void load() throws IOException {
+    public void init(FilterConfig filterConfig) throws ServletException {
+        
+    }
+
+    /** {@inheritDoc} */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
+        if (!(response instanceof HttpServletResponse)) {
+            throw new ServletException("Response was not an HttpServletResponse");
+        }
+        
+        // Intercept output operations and inject a save() operation at all applicable points.
+        chain.doFilter(request, new OutputInterceptingHttpServletResponseProxy((HttpServletResponse) response));
+    }
+
+    /**
+     * Reconstitute stored data.
+     * 
+     * @throws IOException  if an error occurs reconstituting the data
+     */
+    protected void load() throws IOException {
         
         Map<String,Map<String,MutableStorageRecord>> contextMap = getContextMap();
         
@@ -303,8 +323,12 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
         }
     }
 
-    /** {@inheritDoc} */
-    @Nullable public void save() throws IOException {
+    /**
+     * Write/preserve stored data for subsequent requests.
+     * 
+     * @throws IOException  if an error occurs preserving the data
+     */
+    @Nullable protected void save() throws IOException {
         if (!isDirty()) {
             log.trace("Storage state has not been modified during request, save operation skipped");
             return;
@@ -379,22 +403,6 @@ public class JSONRequestScopedStorageService extends AbstractMapBackedStorageSer
         }
     }
 
-    /** {@inheritDoc} */
-    public void init(FilterConfig filterConfig) throws ServletException {
-        
-    }
-
-    /** {@inheritDoc} */
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-            ServletException {
-        if (!(response instanceof HttpServletResponse)) {
-            throw new ServletException("Response was not an HttpServletResponse");
-        }
-        
-        // Intercept output operations and inject a save() operation at all applicable points.
-        chain.doFilter(request, new OutputInterceptingHttpServletResponseProxy((HttpServletResponse) response));
-    }
-    
     /** {@inheritDoc} */
     @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
