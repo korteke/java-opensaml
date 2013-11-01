@@ -33,6 +33,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.common.SAML2Support;
 import org.slf4j.Logger;
@@ -53,7 +54,8 @@ import org.w3c.dom.Document;
  * 1.0 and a min refresh delay that is not overly large, this refresh will likely occur a few times before the cache
  * expires.
  */
-public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMetadataResolver {
+public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMetadataResolver 
+        implements RefreshableMetadataResolver {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractReloadingMetadataResolver.class);
@@ -272,7 +274,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * @throws ResolverException thrown is there is a problem retrieving and processing the metadata
      */
-    public void refresh() throws ResolverException {
+    public synchronized void refresh() throws ResolverException {
         DateTime now = new DateTime(ISOChronology.getInstanceUTC());
         String mdId = getMetadataIdentifier();
 
