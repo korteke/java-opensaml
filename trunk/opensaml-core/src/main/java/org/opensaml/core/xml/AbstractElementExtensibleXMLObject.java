@@ -34,7 +34,7 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
         ElementExtensibleXMLObject {
 
     /** xs:any {@link XMLObject} child elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> anyXMLObjects;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> anyXMLObjects;
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
     public AbstractElementExtensibleXMLObject(@Nullable final String namespaceURI,
             @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        anyXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        anyXMLObjects = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -55,12 +55,12 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return anyXMLObjects;
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) anyXMLObjects.subList(typeOrName);
     }
 }

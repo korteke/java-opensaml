@@ -33,7 +33,7 @@ public class MapBasedConfiguration implements Configuration {
     
     /** Constructor. */
     public MapBasedConfiguration() {
-        storage = new ConcurrentHashMap<String, Map<String, Object>>();
+        storage = new ConcurrentHashMap<>();
     }
     
     /**
@@ -95,7 +95,7 @@ public class MapBasedConfiguration implements Configuration {
     private synchronized Map<String, Object> getPartition(String partitionName) {
         Map<String, Object> partition = storage.get(partitionName);
         if (partition == null) {
-            partition = new ConcurrentHashMap<String, Object>();
+            partition = new ConcurrentHashMap<>();
             storage.put(partitionName, partition);
         }
         return partition;

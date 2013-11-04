@@ -57,7 +57,7 @@ public class NamespaceManager {
         new Namespace(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX);
     
     /** The owning XMLObject. */
-    private final XMLObject owner;
+    @Nonnull private final XMLObject owner;
     
     /** XMLObject name namespace. */
     private Namespace elementName;
@@ -66,13 +66,13 @@ public class NamespaceManager {
     private Namespace elementType;
     
     /** Explicitly declared namespaces. */
-    private Set<Namespace> decls;
+    @Nonnull private final Set<Namespace> decls;
     
     /** Registered namespaces of attribute names. */
-    private Set<Namespace> attrNames;
+    @Nonnull private final Set<Namespace> attrNames;
     
     /** Registered namespaces of attribute values. */
-    private Map<String, Namespace> attrValues;
+    @Nonnull private final Map<String, Namespace> attrValues;
     
     /** Registered namespaces of content values. */
     private Namespace contentValue;
@@ -83,11 +83,11 @@ public class NamespaceManager {
      * @param owningObject the XMLObject whose namespace info is to be managed
      */
     public NamespaceManager(@Nonnull final XMLObject owningObject) {
-        owner = owningObject;
+        owner = Constraint.isNotNull(owningObject, "Owner XMLObject cannot be null");
         
-        decls = new LazySet<Namespace>();
-        attrNames = new LazySet<Namespace>();
-        attrValues = new LazyMap<String, Namespace>();
+        decls = new LazySet<>();
+        attrNames = new LazySet<>();
+        attrValues = new LazyMap<>();
     }
     
     /**
@@ -225,7 +225,7 @@ public class NamespaceManager {
      * @return the set of non-visibly used namespace prefixes
      */
     @Nonnull public Set<String> getNonVisibleNamespacePrefixes() {
-        LazySet<String> prefixes = new LazySet<String>();
+        LazySet<String> prefixes = new LazySet<>();
         addPrefixes(prefixes, getNonVisibleNamespaces());
         return prefixes;
     }
@@ -242,15 +242,15 @@ public class NamespaceManager {
      * @return the set of non-visibly used namespaces 
      */
     @Nonnull public Set<Namespace> getNonVisibleNamespaces() {
-        LazySet<Namespace> nonVisibleCandidates = new LazySet<Namespace>();
+        LazySet<Namespace> nonVisibleCandidates = new LazySet<>();
 
         // Collect each child's non-visible namespaces
         List<XMLObject> children = getOwner().getOrderedChildren();
         if (children != null) {
-            for(XMLObject child : getOwner().getOrderedChildren()) {
+            for(XMLObject child : children) {
                 if (child != null) {
                     Set<Namespace> childNonVisibleNamespaces = child.getNamespaceManager().getNonVisibleNamespaces();
-                    if (childNonVisibleNamespaces != null && ! childNonVisibleNamespaces.isEmpty()) {
+                    if (!childNonVisibleNamespaces.isEmpty()) {
                         nonVisibleCandidates.addAll(childNonVisibleNamespaces);
                     }
                 }
@@ -279,15 +279,15 @@ public class NamespaceManager {
      * @return set of all namespaces in scope for the owning object
      */
     @Nonnull public Set<Namespace> getAllNamespacesInSubtreeScope() {
-        LazySet<Namespace> namespaces = new LazySet<Namespace>();
+        LazySet<Namespace> namespaces = new LazySet<>();
 
         // Collect namespaces for the subtree rooted at each child
         List<XMLObject> children = getOwner().getOrderedChildren();
         if (children != null) {
-            for(XMLObject child : getOwner().getOrderedChildren()) {
+            for(XMLObject child : children) {
                 if (child != null) {
                     Set<Namespace> childNamespaces = child.getNamespaceManager().getAllNamespacesInSubtreeScope();
-                    if (childNamespaces != null && ! childNamespaces.isEmpty()) {
+                    if (!childNamespaces.isEmpty()) {
                         namespaces.addAll(childNamespaces);
                     }
                 }
@@ -404,7 +404,7 @@ public class NamespaceManager {
      * @return the a new set of merged Namespaces
      */
     @Nonnull private Set<Namespace> mergeNamespaceCollections(Collection<Namespace> ... namespaces) {
-        LazySet<Namespace> newNamespaces = new LazySet<Namespace>();
+        LazySet<Namespace> newNamespaces = new LazySet<>();
         
         for (Collection<Namespace> nsCollection : namespaces) {
             for (Namespace ns : nsCollection) {
@@ -424,7 +424,7 @@ public class NamespaceManager {
      * @return the set of visibly-used namespaces
      */
     @Nonnull private Set<Namespace> getVisibleNamespaces() {
-        LazySet<Namespace> namespaces = new LazySet<Namespace>();
+        LazySet<Namespace> namespaces = new LazySet<>();
 
         // Add namespace from element name.
         if (getElementNameNamespace() != null) {
@@ -453,7 +453,7 @@ public class NamespaceManager {
      * @return the set of non-visibly-used namespaces
      */
     @Nonnull private Set<Namespace> getNonVisibleNamespaceCandidates() {
-        LazySet<Namespace> namespaces = new LazySet<Namespace>();
+        LazySet<Namespace> namespaces = new LazySet<>();
 
         // Add xsi:type value's prefix, if element carries an xsi:type
         if (getElementTypeNamespace() != null) {
@@ -498,7 +498,7 @@ public class NamespaceManager {
      * @param name the QName to check
      * @return true if the QName contains non-empty namespace info and should be managed, false otherwise
      */
-    private boolean checkQName(@Nonnull final QName name) {
+    private boolean checkQName(@Nullable final QName name) {
         if (name != null) {
             return !Strings.isNullOrEmpty(name.getNamespaceURI());
         } else {

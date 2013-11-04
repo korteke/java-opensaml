@@ -41,6 +41,7 @@ public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractEl
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
         AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;

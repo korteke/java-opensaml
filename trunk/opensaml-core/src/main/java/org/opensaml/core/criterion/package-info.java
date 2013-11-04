@@ -15,25 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml.schema.impl;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
-import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.core.xml.schema.XSString;
-
-/**
- * Builder of {@link org.opensaml.core.xml.schema.impl.XSStringImpl} objects.
- */
-public class XSStringBuilder extends AbstractXMLObjectBuilder<XSString> {
-
-    /** {@inheritDoc} */
-    @Override
-    @Nonnull public XSString buildObject(@Nullable final String namespaceURI, @Nonnull @NotEmpty final String localName,
-            @Nullable final String namespacePrefix) {
-        return new XSStringImpl(namespaceURI, localName, namespacePrefix);
-    }
-}
+/** Core {@link net.shibboleth.utilities.java.support.resolver.Criterion} subclasses. */
+package org.opensaml.core.criterion;

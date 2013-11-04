@@ -67,6 +67,7 @@ public class Namespace {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         if (nsStr == null) {
             constructStringRepresentation();
@@ -76,6 +77,7 @@ public class Namespace {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         int hash = 1;
         hash = hash * 31 + toString().hashCode();
@@ -94,6 +96,7 @@ public class Namespace {
      * 
      * @return {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {    
         if(obj == this){
             return true;

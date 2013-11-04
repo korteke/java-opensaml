@@ -44,8 +44,8 @@ public class ESAPIInitializer implements Initializer {
             // consistency, so other callers can see what has been set.
             ESAPI.initialize(opensamlConfigImpl);
         } else {
-            log.debug("ESAPI SecurityConfiguration impl was already set non-null and non-empty via system property, leaving existing value in place: {}",
-                    currentValue);
+            log.debug("ESAPI SecurityConfiguration impl was already set non-null and non-empty via system property, "
+                    + "leaving existing value in place: {}", currentValue);
         }
     }
 

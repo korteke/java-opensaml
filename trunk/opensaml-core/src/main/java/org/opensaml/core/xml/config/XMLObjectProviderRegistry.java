@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -56,7 +58,7 @@ public class XMLObjectProviderRegistry {
     private Logger log = LoggerFactory.getLogger(XMLObjectProviderRegistry.class);
 
     /** Object provider configuration elements indexed by QName. */
-    private Map<QName, Element> configuredObjectProviders;
+    @Nonnull private final Map<QName, Element> configuredObjectProviders;
 
     /** Configured XMLObject builder factory. */
     private XMLObjectBuilderFactory builderFactory;
@@ -68,18 +70,18 @@ public class XMLObjectProviderRegistry {
     private UnmarshallerFactory unmarshallerFactory;
 
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
-    private Set<QName> idAttributeNames;
+    @Nonnull private final Set<QName> idAttributeNames;
 
     /** Configured parser pool. */
     private ParserPool parserPool;
 
     /** Constructor. */
     public XMLObjectProviderRegistry() {
-        configuredObjectProviders = new ConcurrentHashMap<QName, Element>(0);
+        configuredObjectProviders = new ConcurrentHashMap<>(0);
         builderFactory = new XMLObjectBuilderFactory();
         marshallerFactory = new MarshallerFactory();
         unmarshallerFactory = new UnmarshallerFactory();
-        idAttributeNames = new CopyOnWriteArraySet<QName>();
+        idAttributeNames = new CopyOnWriteArraySet<>();
         
         registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
     }
@@ -98,7 +100,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @param newParserPool the new ParserPool instance to configure
      */
-    public void setParserPool(ParserPool newParserPool) {
+    public void setParserPool(@Nullable final ParserPool newParserPool) {
         parserPool = newParserPool;
     }
     
@@ -121,8 +123,8 @@ public class XMLObjectProviderRegistry {
      * @param marshaller the marshaller for the provider
      * @param unmarshaller the unmarshaller for the provider
      */
-    public void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
-            Unmarshaller unmarshaller) {
+    public void registerObjectProvider(@Nonnull final QName providerName, @Nonnull final XMLObjectBuilder<?> builder,
+            @Nonnull final Marshaller marshaller, @Nonnull final Unmarshaller unmarshaller) {
         log.debug("Registering new builder, marshaller, and unmarshaller for {}", providerName);
         builderFactory.registerBuilder(providerName, builder);
         marshallerFactory.registerMarshaller(providerName, marshaller);
@@ -134,7 +136,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
-    public void deregisterObjectProvider(QName key) {
+    public void deregisterObjectProvider(@Nonnull final QName key) {
         log.debug("Unregistering builder, marshaller, and unmarshaller for {}", key);
         configuredObjectProviders.remove(key);
         builderFactory.deregisterBuilder(key);

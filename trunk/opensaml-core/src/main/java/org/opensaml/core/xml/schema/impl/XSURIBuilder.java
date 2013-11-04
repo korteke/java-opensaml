@@ -17,6 +17,11 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSURI;
 
@@ -26,7 +31,9 @@ import org.opensaml.core.xml.schema.XSURI;
 public class XSURIBuilder extends AbstractXMLObjectBuilder<XSURI> {
 
     /** {@inheritDoc} */
-    public XSURI buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    @Override
+    @Nonnull public XSURI buildObject(@Nullable final String namespaceURI, @Nonnull @NotEmpty final String localName,
+            @Nullable final String namespacePrefix) {
         return new XSURIImpl(namespaceURI, localName, namespacePrefix);
     }
 }

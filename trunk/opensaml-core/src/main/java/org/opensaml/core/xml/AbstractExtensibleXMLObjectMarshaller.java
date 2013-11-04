@@ -46,6 +46,7 @@ public abstract class AbstractExtensibleXMLObjectMarshaller extends AbstractElem
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;

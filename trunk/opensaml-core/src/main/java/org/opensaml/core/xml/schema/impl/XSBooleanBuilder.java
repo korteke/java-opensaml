@@ -17,6 +17,11 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSBoolean;
 
@@ -24,7 +29,9 @@ import org.opensaml.core.xml.schema.XSBoolean;
 public class XSBooleanBuilder extends AbstractXMLObjectBuilder<XSBoolean> {
 
     /** {@inheritDoc} */
-    public XSBoolean buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    @Override
+    @Nonnull public XSBoolean buildObject(@Nullable final String namespaceURI,
+            @Nonnull @NotEmpty final String localName, @Nullable final String namespacePrefix) {
         return new XSBooleanImpl(namespaceURI, localName, namespacePrefix);
     }
 }

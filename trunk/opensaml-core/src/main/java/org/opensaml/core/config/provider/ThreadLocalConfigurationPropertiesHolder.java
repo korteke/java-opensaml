@@ -19,13 +19,15 @@ package org.opensaml.core.config.provider;
 
 import java.util.Properties;
 
+import javax.annotation.Nonnull;
+
 /**
  * A container class for holding a {link {@link ThreadLocal} copy of a {@link Properties} instance.
  */
 public final class ThreadLocalConfigurationPropertiesHolder {
     
     /** ThreadLocal storage for the properties set. */
-    private static ThreadLocal<Properties> properties = new ThreadLocal<Properties>();
+    @Nonnull private static ThreadLocal<Properties> properties = new ThreadLocal<>();
     
     /** Constructor. */
     private ThreadLocalConfigurationPropertiesHolder() {}

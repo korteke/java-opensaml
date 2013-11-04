@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.ClassToInstanceMultiMap;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -45,13 +45,13 @@ import com.google.common.base.Objects;
 public abstract class AbstractXMLObject implements XMLObject {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractXMLObject.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractXMLObject.class);
 
     /** Parent of this element. */
     private XMLObject parent;
 
     /** The name of this element with namespace and prefix information. */
-    private QName elementQname;
+    @Nonnull private QName elementQname;
 
     /** Schema locations for this XML object. */
     private String schemaLocation;
@@ -72,7 +72,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     private NamespaceManager nsManager;
     
     /** The multimap holding class-indexed instances of additional info associated with this XML object. */
-    private LockableClassToInstanceMultiMap<Object> objectMetadata;
+    @Nonnull private final LockableClassToInstanceMultiMap<Object> objectMetadata;
 
     /**
      * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
@@ -87,7 +87,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractXMLObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+    protected AbstractXMLObject(@Nullable final String namespaceURI, @Nonnull @NotEmpty final String elementLocalName,
             @Nullable final String namespacePrefix) {
         nsManager = new NamespaceManager(this);
         idIndex = new IDIndex(this);
@@ -428,12 +428,12 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    @Nullable public XMLObject resolveID(@Nonnull final String id) {
+    @Nullable public XMLObject resolveID(@Nonnull @NotEmpty final String id) {
         return idIndex.lookup(id);
     }
 
     /** {@inheritDoc} */
-    @Nullable public XMLObject resolveIDFromRoot(@Nonnull final String id) {
+    @Nullable public XMLObject resolveIDFromRoot(@Nonnull @NotEmpty final String id) {
         XMLObject root = this;
         while (root.hasParent()) {
             root = root.getParent();
@@ -527,7 +527,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public void setNil(XSBooleanValue newNil) {
+    public void setNil(@Nullable XSBooleanValue newNil) {
         nil = prepareForAssignment(nil, newNil);
         manageQualifiedAttributeNamespace(XmlConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }

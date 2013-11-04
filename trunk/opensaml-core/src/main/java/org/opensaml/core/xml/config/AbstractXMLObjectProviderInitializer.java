@@ -46,7 +46,11 @@ public abstract class AbstractXMLObjectProviderInitializer implements Initialize
                 }
                 log.debug("Loading XMLObject provider configuration from resource '{}'", resource);
                 InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
-                configurator.load(is);
+                if (is != null) {
+                    configurator.load(is);
+                } else {
+                    throw new XMLConfigurationException("Resource not found");
+                }
             }
         } catch (XMLConfigurationException e) {
             log.error("Problem loading configuration resource", e);
