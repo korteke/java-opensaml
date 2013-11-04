@@ -67,7 +67,7 @@ public final class SamlMessageSecuritySupport {
         if (outboundSAML instanceof SignableSAMLObject && parameters != null) {
             SignableSAMLObject signableMessage = (SignableSAMLObject) outboundSAML;
 
-            XMLObjectBuilder<Signature> signatureBuilder = 
+            XMLObjectBuilder<Signature> signatureBuilder = (XMLObjectBuilder<Signature>)
                     XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Signature.DEFAULT_ELEMENT_NAME);
             Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
             
