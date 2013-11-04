@@ -20,6 +20,8 @@ package org.opensaml.core.config;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +79,7 @@ public class InitializationService {
      * 
      * @return an SLF4J logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(InitializationService.class);
     }
 

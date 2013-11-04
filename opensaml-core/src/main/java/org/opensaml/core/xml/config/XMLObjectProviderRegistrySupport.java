@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.config;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -42,7 +44,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @return the currently ParserPool
      */
-    public static ParserPool getParserPool() {
+    @Nullable public static ParserPool getParserPool() {
         return ConfigurationService.get(XMLObjectProviderRegistry.class).getParserPool();
     }
 
@@ -51,7 +53,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @param newParserPool the new ParserPool instance to configure
      */
-    public static void setParserPool(ParserPool newParserPool) {
+    public static void setParserPool(@Nullable final ParserPool newParserPool) {
         ConfigurationService.get(XMLObjectProviderRegistry.class).setParserPool(newParserPool);
     }
     
@@ -74,8 +76,9 @@ public class XMLObjectProviderRegistrySupport {
      * @param marshaller the marshaller for the provider
      * @param unmarshaller the unmarshaller for the provider
      */
-    public static void registerObjectProvider(QName providerName, XMLObjectBuilder builder, Marshaller marshaller,
-            Unmarshaller unmarshaller) {
+    public static void registerObjectProvider(@Nonnull final QName providerName,
+            @Nonnull final XMLObjectBuilder<?> builder, @Nonnull final Marshaller marshaller,
+            @Nonnull final Unmarshaller unmarshaller) {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
         
         registry.getBuilderFactory().registerBuilder(providerName, builder);
@@ -88,7 +91,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
-    public static void deregisterObjectProvider(QName key) {
+    public static void deregisterObjectProvider(@Nonnull final QName key) {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
         registry.getBuilderFactory().deregisterBuilder(key);
         registry.getMarshallerFactory().deregisterMarshaller(key);

@@ -39,6 +39,7 @@ public abstract class AbstractElementExtensibleXMLObjectMarshaller extends Abstr
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
     }
@@ -48,6 +49,7 @@ public abstract class AbstractElementExtensibleXMLObjectMarshaller extends Abstr
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
     }

@@ -39,6 +39,7 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         ElementExtensibleXMLObject any = (ElementExtensibleXMLObject) parentXMLObject;
@@ -50,6 +51,7 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
     }
@@ -59,6 +61,7 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
     }
 }

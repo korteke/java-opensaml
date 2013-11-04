@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
@@ -31,7 +33,9 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
@@ -57,19 +61,19 @@ import org.xml.sax.SAXException;
 public class XMLConfigurator {
 
     /** Configuration namespace. */
-    public static final String XMLTOOLING_CONFIG_NS = "http://www.opensaml.org/xmltooling-config";
+    @Nonnull @NotEmpty public static final String XMLTOOLING_CONFIG_NS = "http://www.opensaml.org/xmltooling-config";
 
     /** Configuration namespace prefix. */
-    public static final String XMLTOOLING_CONFIG_PREFIX = "xt";
+    @Nonnull @NotEmpty public static final String XMLTOOLING_CONFIG_PREFIX = "xt";
 
     /** Name of the object provider used for objects that don't have a registered object provider. */
-    public static final String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
+    @Nonnull @NotEmpty public static final String XMLTOOLING_DEFAULT_OBJECT_PROVIDER = "DEFAULT";
 
     /** Location, on the classpath, of the XMLTooling configuration schema. */
-    public static final String XMLTOOLING_SCHEMA_LOCATION = "/schema/xmltooling-config.xsd";
+    @Nonnull @NotEmpty public static final String XMLTOOLING_SCHEMA_LOCATION = "/schema/xmltooling-config.xsd";
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
 
     /** Pool of parsers used to read and validate configurations. */
     private BasicParserPool parserPool;
@@ -78,7 +82,7 @@ public class XMLConfigurator {
     private Schema configurationSchema;
 
     /** The provider registry instance to use. */
-    private XMLObjectProviderRegistry registry;
+    @Nonnull private final XMLObjectProviderRegistry registry;
 
     /**
      * Constructor.
@@ -103,12 +107,13 @@ public class XMLConfigurator {
         }
 
         synchronized (ConfigurationService.class) {
-            registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-            if (registry == null) {
+            XMLObjectProviderRegistry reg = ConfigurationService.get(XMLObjectProviderRegistry.class);
+            if (reg == null) {
                 log.debug("XMLObjectProviderRegistry did not exist in ConfigurationService, will be created");
-                registry = new XMLObjectProviderRegistry();
-                ConfigurationService.register(XMLObjectProviderRegistry.class, registry);
+                reg = new XMLObjectProviderRegistry();
+                ConfigurationService.register(XMLObjectProviderRegistry.class, reg);
             }
+            registry = reg;
         }
     }
 
@@ -120,9 +125,10 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if the configuration file(s) cannot be read or invalid
      */
-    public void load(File configurationFile) throws XMLConfigurationException {
+    public void load(@Nullable final File configurationFile) throws XMLConfigurationException {
         if (configurationFile == null || !configurationFile.canRead()) {
             log.error("Unable to read configuration file {}", configurationFile);
+            return;
         }
 
         try {
@@ -149,7 +155,7 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if the given configuration is invalid or cannot be read
      */
-    public void load(InputStream configurationStream) throws XMLConfigurationException {
+    public void load(@Nonnull final InputStream configurationStream) throws XMLConfigurationException {
         try {
             Document configuration = parserPool.parse(configurationStream);
             load(configuration);
@@ -166,16 +172,19 @@ public class XMLConfigurator {
      * @param configuration the configurationd document
      * @throws XMLConfigurationException thrown if the configuration file(s) cannot be read or invalid
      */
-    public void load(Document configuration) throws XMLConfigurationException {
+    public void load(@Nonnull final Document configuration) throws XMLConfigurationException {
+        final Element root = Constraint.isNotNull(configuration.getDocumentElement(),
+                "Document element cannot be null");
+        
         log.debug("Loading configuration from XML Document");
-        log.trace("{}", SerializeSupport.nodeToString(configuration.getDocumentElement()));
+        log.trace("{}", SerializeSupport.nodeToString(root));
 
         // Schema validation
         log.debug("Schema validating configuration Document");
         validateConfiguration(configuration);
         log.debug("Configuration document validated");
 
-        load(configuration.getDocumentElement());
+        load(root);
     }
 
     /**
@@ -185,7 +194,7 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if there is a problem processing the configuration
      */
-    protected void load(Element configurationRoot) throws XMLConfigurationException {
+    protected void load(@Nonnull final Element configurationRoot) throws XMLConfigurationException {
         // Initialize object providers
         NodeList objectProviders = configurationRoot.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProviders");
         if (objectProviders.getLength() > 0) {
@@ -211,39 +220,31 @@ public class XMLConfigurator {
      * @throws XMLConfigurationException thrown if the configuration elements are invalid
      */
     protected void initializeObjectProviders(Element objectProviders) throws XMLConfigurationException {
-        // Process ObjectProvider child elements
-        Element objectProvider;
-        Attr qNameAttrib;
-        QName objectProviderName;
-        Element configuration;
-        XMLObjectBuilder builder;
-        Marshaller marshaller;
-        Unmarshaller unmarshaller;
 
         NodeList providerList = objectProviders.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProvider");
         for (int i = 0; i < providerList.getLength(); i++) {
-            objectProvider = (Element) providerList.item(i);
+            Element objectProvider = (Element) providerList.item(i);
 
             // Get the element name of type this object provider is for
-            qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
-            objectProviderName = AttributeSupport.getAttributeValueAsQName(qNameAttrib);
+            Attr qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
+            QName objectProviderName = AttributeSupport.getAttributeValueAsQName(qNameAttrib);
 
             log.debug("Initializing object provider {}", objectProviderName);
 
             try {
-                configuration =
+                Element configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
-                builder = (XMLObjectBuilder) createClassInstance(configuration);
+                XMLObjectBuilder<?> builder = (XMLObjectBuilder<?>) createClassInstance(configuration);
 
                 configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "MarshallingClass").item(
                                 0);
-                marshaller = (Marshaller) createClassInstance(configuration);
+                Marshaller marshaller = (Marshaller) createClassInstance(configuration);
 
                 configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "UnmarshallingClass")
                                 .item(0);
-                unmarshaller = (Unmarshaller) createClassInstance(configuration);
+                Unmarshaller unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
                 getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
 
@@ -268,7 +269,8 @@ public class XMLConfigurator {
         Element idAttributeElement;
         QName attributeQName;
 
-        NodeList idAttributeList = idAttributesElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "IDAttribute");
+        final NodeList idAttributeList =
+                idAttributesElement.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "IDAttribute");
 
         for (int i = 0; i < idAttributeList.getLength(); i++) {
             idAttributeElement = (Element) idAttributeList.item(i);
@@ -306,9 +308,9 @@ public class XMLConfigurator {
             // if (classLoader == null) {
             //    classLoader = ClassLoader.getSystemClassLoader();
             // }
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            Class clazz = classLoader.loadClass(className);
-            Constructor constructor = clazz.getConstructor();
+            final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            final Class<?> clazz = classLoader.loadClass(className);
+            final Constructor<?> constructor = clazz.getConstructor();
             return constructor.newInstance();
         } catch (Exception e) {
             log.error("Can not create instance of " + className, e);

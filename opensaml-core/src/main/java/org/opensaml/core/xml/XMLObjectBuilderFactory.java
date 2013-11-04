@@ -41,14 +41,14 @@ import org.w3c.dom.Element;
 public class XMLObjectBuilderFactory {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(XMLObjectBuilderFactory.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(XMLObjectBuilderFactory.class);
 
     /** Registered builders. */
-    private final Map<QName, XMLObjectBuilder> builders;
+    @Nonnull private final Map<QName, XMLObjectBuilder<?>> builders;
 
     /** Constructor. */
     public XMLObjectBuilderFactory() {
-        builders = new ConcurrentHashMap<QName, XMLObjectBuilder>();
+        builders = new ConcurrentHashMap<>();
     }
 
     /**
@@ -58,7 +58,7 @@ public class XMLObjectBuilderFactory {
      * 
      * @return the builder, or null
      */
-    @Nullable public XMLObjectBuilder getBuilder(@Nullable final QName key) {
+    @Nullable public XMLObjectBuilder<?> getBuilder(@Nullable final QName key) {
         if(key == null){
             return null;
         }
@@ -73,9 +73,9 @@ public class XMLObjectBuilderFactory {
      * 
      * @return the builder for the XMLObject the given element can be unmarshalled into, or null
      */
-    @Nullable public XMLObjectBuilder getBuilder(@Nullable final Element domElement) {
+    @Nullable public XMLObjectBuilder<?> getBuilder(@Nullable final Element domElement) {
 
-        XMLObjectBuilder builder = getBuilder(DomTypeSupport.getXSIType(domElement));
+        XMLObjectBuilder<?> builder = getBuilder(DomTypeSupport.getXSIType(domElement));
 
         if (builder == null) {
             builder = getBuilder(QNameSupport.getNodeQName(domElement));
@@ -89,7 +89,7 @@ public class XMLObjectBuilderFactory {
      * 
      * @return list of all the builders currently registered
      */
-    @Nonnull public Map<QName, XMLObjectBuilder> getBuilders() {
+    @Nonnull public Map<QName, XMLObjectBuilder<?>> getBuilders() {
         return Collections.unmodifiableMap(builders);
     }
 
@@ -99,7 +99,7 @@ public class XMLObjectBuilderFactory {
      * @param builderKey the key used to retrieve this builder later
      * @param builder the builder
      */
-    public void registerBuilder(@Nonnull final QName builderKey, @Nonnull final XMLObjectBuilder builder) {
+    public void registerBuilder(@Nonnull final QName builderKey, @Nonnull final XMLObjectBuilder<?> builder) {
         Constraint.isNotNull(builderKey, "Builder key cannot be null");
         Constraint.isNotNull(builder, "Builder cannot be null");
         log.debug("Registering builder {} under key {}",  builder.getClass().getName(), builderKey);
@@ -114,12 +114,10 @@ public class XMLObjectBuilderFactory {
      * 
      * @return the builder that was registered for the given QName
      */
-    @Nullable public XMLObjectBuilder deregisterBuilder(@Nonnull final QName builderKey) {
-        log.debug("Deregistering builder for object type {}", builderKey);
-        if (builderKey != null) {
-            return builders.remove(builderKey);
-        }
+    @Nullable public XMLObjectBuilder<?> deregisterBuilder(@Nonnull final QName builderKey) {
+        Constraint.isNotNull(builderKey, "Builder key QName cannot be null");
         
-        return null;
+        log.debug("Deregistering builder for object type {}", builderKey);
+        return builders.remove(builderKey);
     }
 }

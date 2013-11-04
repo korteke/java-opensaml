@@ -21,6 +21,12 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.ServiceLoader;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.core.config.provider.MapBasedConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +58,10 @@ import org.slf4j.LoggerFactory;
 public class ConfigurationService {
     
     /** The default storage partition name, if none is specified using configuration properties. */
-    public static final String DEFAULT_PARTITION_NAME = "default";
+    @Nonnull public static final String DEFAULT_PARTITION_NAME = "default";
     
     /** The configuration property name for the storage partition name to use. */
-    public static final String PROPERTY_PARTITION_NAME = "opensaml.config.partitionName";
+    @Nonnull public static final String PROPERTY_PARTITION_NAME = "opensaml.config.partitionName";
     
     /** The service loader used to locate registered implementations of ConfigurationPropertiesSource. */
     private static ServiceLoader<ConfigurationPropertiesSource> configPropertiesLoader = 
@@ -76,7 +82,7 @@ public class ConfigurationService {
      * 
      * @return the instance of the registered configuration object, or null
      */
-    public static <T extends Object> T get(Class<T> configClass) {
+    public static <T extends Object> T get(@Nonnull final Class<T> configClass) {
         String partitionName = getPartitionName();
         return getConfiguration().get(configClass, partitionName);
     }
@@ -90,7 +96,8 @@ public class ConfigurationService {
      * @param configClass the type of configuration being registered
      * @param configInstance the configuration object instance being registered
      */
-    public static <T extends Object, I extends T> void register(Class<T> configClass, I configInstance) {
+    public static <T extends Object, I extends T> void register(@Nonnull final Class<T> configClass,
+            @Nonnull final I configInstance) {
         String partitionName = getPartitionName();
         getConfiguration().register(configClass, configInstance, partitionName);
     }
@@ -104,7 +111,7 @@ public class ConfigurationService {
      * 
      * @return the configuration object instance which was deregistered, or null
      */
-    public static <T extends Object> T deregister(Class<T> configClass) {
+    public static <T extends Object> T deregister(@Nonnull final Class<T> configClass) {
         String partitionName = getPartitionName();
         return getConfiguration().deregister(configClass, partitionName);
     }
@@ -127,7 +134,7 @@ public class ConfigurationService {
      * 
      * @return the set of configuration meta-properties
      */
-    public static Properties getConfigurationProperties() {
+    @Nullable public static Properties getConfigurationProperties() {
         //TODO make these immutable?
         Logger log = getLogger();
         log.trace("Resolving configuration propreties source");
@@ -158,8 +165,8 @@ public class ConfigurationService {
      * 
      * @param newConfiguration the Configuration instance to use
      */
-    public static void setConfiguration(Configuration newConfiguration) {
-        configuration = newConfiguration;
+    public static void setConfiguration(@Nonnull final Configuration newConfiguration) {
+        configuration = Constraint.isNotNull(newConfiguration, "Configuration cannot be null");
     }
     
     /**
@@ -172,7 +179,7 @@ public class ConfigurationService {
      * 
      * @return the partition name
      */
-    protected static String getPartitionName() {
+    @Nonnull @NotEmpty protected static String getPartitionName() {
         Logger log = getLogger();
         Properties configProperties = getConfigurationProperties();
         String partitionName = null;
@@ -196,7 +203,7 @@ public class ConfigurationService {
      * 
      * @return the Configuration implementation instance 
      */
-    protected static Configuration getConfiguration() {
+    @Nonnull protected static Configuration getConfiguration() {
         if (configuration == null) {
             synchronized (ConfigurationService.class) {
                 ServiceLoader<Configuration> loader = ServiceLoader.load(Configuration.class);
@@ -217,7 +224,7 @@ public class ConfigurationService {
      * 
      * @return an SLF4J logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(ConfigurationService.class);
     }
     

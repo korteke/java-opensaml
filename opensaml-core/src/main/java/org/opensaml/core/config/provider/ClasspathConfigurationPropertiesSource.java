@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +34,10 @@ import org.slf4j.LoggerFactory;
 public class ClasspathConfigurationPropertiesSource implements ConfigurationPropertiesSource {
     
     /** Configuration properties resource name. */
-    private static final String RESOURCE_NAME = "opensaml-config.properties";
+    @Nonnull private static final String RESOURCE_NAME = "opensaml-config.properties";
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ClasspathConfigurationPropertiesSource.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ClasspathConfigurationPropertiesSource.class);
 
     /** Cache of properties. */
     private Properties cachedProperties;
@@ -44,12 +46,11 @@ public class ClasspathConfigurationPropertiesSource implements ConfigurationProp
     public Properties getProperties() {
         synchronized (this) {
             if (cachedProperties == null) {
-                InputStream is = null;
-                try {
+                try (InputStream is =
+                        Thread.currentThread().getContextClassLoader().getResourceAsStream(RESOURCE_NAME)) {
                     // NOTE: in this invocation style via class loader, resource should NOT have a leading slash
                     // because all names are absolute. This is unlike Class.getResourceAsStream 
                     // where a leading slash is required for absolute names.
-                    is = Thread.currentThread().getContextClassLoader().getResourceAsStream(RESOURCE_NAME);
                     if (is != null) {
                         Properties props = new Properties();
                         props.load(is);
@@ -58,14 +59,6 @@ public class ClasspathConfigurationPropertiesSource implements ConfigurationProp
                 } catch (IOException e) {
                     log.warn("Problem attempting to load configuration properties '" 
                             + RESOURCE_NAME + "' from classpath", e);
-                } finally {
-                    if (is != null) {
-                        try {
-                            is.close();
-                        } catch (IOException e) {
-                            log.warn("I/O error attempting to close classpath resource '" + RESOURCE_NAME + "'", e);
-                        }
-                    }
                 }
             }
             return cachedProperties;

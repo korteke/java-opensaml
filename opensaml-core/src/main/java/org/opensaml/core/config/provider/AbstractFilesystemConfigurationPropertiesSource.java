@@ -55,33 +55,21 @@ public abstract class AbstractFilesystemConfigurationPropertiesSource implements
         }
         synchronized (this) {
             if (cachedProperties == null) {
-                InputStream is = null;
-                try {
-                    // NOTE: in this invocation style via class loader, resource should NOT have a leading slash
-                    // because all names are absolute. This is unlike Class.getResourceAsStream 
-                    // where a leading slash is required for absolute names.
-                    File file = new File(fileName);
-                    if (file.exists()) {
-                        is = new FileInputStream(fileName);
-                        if (is != null) {
-                            Properties props = new Properties();
-                            props.load(is);
-                            cachedProperties = props;
-                        }
-                    }
-                } catch (FileNotFoundException e) {
-                    log.warn("File not found attempting to load configuration properties '" 
-                            + fileName + "' from filesystem");
-                } catch (IOException e) {
-                    log.warn("I/O problem attempting to load configuration properties '" 
-                            + fileName + "' from filesystem", e);
-                } finally{
-                    if (is != null) {
-                        try {
-                            is.close();
-                        } catch (IOException e) {
-                            log.warn("I/O problem attempting to close property file '" + fileName + "'", e);
-                        }
+                // NOTE: in this invocation style via class loader, resource should NOT have a leading slash
+                // because all names are absolute. This is unlike Class.getResourceAsStream 
+                // where a leading slash is required for absolute names.
+                File file = new File(fileName);
+                if (file.exists()) {
+                    try (InputStream is = new FileInputStream(fileName)) {
+                        Properties props = new Properties();
+                        props.load(is);
+                        cachedProperties = props;
+                    } catch (FileNotFoundException e) {
+                        log.warn("File not found attempting to load configuration properties '" 
+                                + fileName + "' from filesystem");
+                    } catch (IOException e) {
+                        log.warn("I/O problem attempting to load configuration properties '" 
+                                + fileName + "' from filesystem", e);
                     }
                 }
             }

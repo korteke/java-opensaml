@@ -406,7 +406,7 @@ public final class XMLObjectSupport {
      * @return an XMLObject, or null if no provider registered
      */
     public static XMLObject buildXMLObject(QName elementName) {
-        XMLObjectBuilder<XMLObject> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
+        XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
         if (builder != null) {
             return builder.buildObject(elementName);
         } else {
@@ -422,7 +422,7 @@ public final class XMLObjectSupport {
      * @return an XMLObject, or null if no provider registered
      */
     public static XMLObject buildXMLObject(QName elementName, QName typeName) {
-        XMLObjectBuilder<XMLObject> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
+        XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
         if (builder != null) {
             return builder.buildObject(elementName, typeName);
         } else {
@@ -436,7 +436,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject builder, or null if no provider registered
      */
-    public static XMLObjectBuilder<XMLObject> getBuilder(QName typeOrName) {
+    public static XMLObjectBuilder<?> getBuilder(QName typeOrName) {
         return getProviderRegistry().getBuilderFactory().getBuilder(typeOrName);
     }
     

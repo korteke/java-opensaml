@@ -17,6 +17,9 @@
 
 package org.opensaml.core.criterion;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
@@ -25,15 +28,15 @@ import net.shibboleth.utilities.java.support.resolver.Criterion;
 public final class EntityIdCriterion implements Criterion {
 
     /** The entity ID. */
-    private final String id;
+    @Nonnull @NotEmpty private final String id;
 
     /**
      * Constructor.
      * 
      * @param entityId the entity ID, can not be null or empty
      */
-    public EntityIdCriterion(final String entityId) {
-        id = Constraint.isNotNull(StringSupport.trimOrNull(entityId), "Entity ID can not be null or empty");
+    public EntityIdCriterion(@Nonnull @NotEmpty final String entityId) {
+        id = Constraint.isNotNull(StringSupport.trimOrNull(entityId), "Entity ID cannot be null or empty");
     }
 
     /**
@@ -41,11 +44,12 @@ public final class EntityIdCriterion implements Criterion {
      * 
      * @return the entity ID, never null or empty
      */
-    public String getEntityId() {
+    @Nonnull @NotEmpty public String getEntityId() {
         return id;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("EntityIdCriterion [id=");
@@ -55,11 +59,13 @@ public final class EntityIdCriterion implements Criterion {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return id.hashCode();
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

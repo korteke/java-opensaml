@@ -34,11 +34,13 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
         };
 
     /** {@inheritDoc} */
+    @Override
     protected String[] getConfigResources() {
         return configs;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void init() throws InitializationException {
         super.init();
         

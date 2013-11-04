@@ -46,7 +46,7 @@ public class ESAPISecurityConfig implements SecurityConfiguration {
      */
     @Nonnull public static SecurityConfiguration getInstance() {
         synchronized (ESAPISecurityConfig.class) {
-            if ( instance == null ) {
+            if (instance == null) {
                 instance = new ESAPISecurityConfig();
             }
         }
@@ -59,17 +59,17 @@ public class ESAPISecurityConfig implements SecurityConfiguration {
     }
 
     /** {@inheritDoc} */
-    public List getAdditionalAllowedCipherModes() {
+    public List<String> getAdditionalAllowedCipherModes() {
         return null;
     }
 
     /** {@inheritDoc} */
-    public List getAllowedExecutables() {
+    public List<String> getAllowedExecutables() {
         return null;
     }
 
     /** {@inheritDoc} */
-    public List getAllowedFileExtensions() {
+    public List<String> getAllowedFileExtensions() {
         return null;
     }
 
@@ -114,12 +114,12 @@ public class ESAPISecurityConfig implements SecurityConfiguration {
     }
 
     /** {@inheritDoc} */
-    public List getCombinedCipherModes() {
+    public List<String> getCombinedCipherModes() {
         return null;
     }
 
     /** {@inheritDoc} */
-    public List getDefaultCanonicalizationCodecs() {
+    public List<String> getDefaultCanonicalizationCodecs() {
         return null;
     }
 

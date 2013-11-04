@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.w3c.dom.Element;
@@ -36,21 +37,21 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
         XMLObjectBuilder<XMLObjectType> {
 
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(@Nonnull final QName objectName){
+    @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName){
         return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix());
     }
     
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType){
+    @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType){
         return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix(), schemaType);
     }
     
     /** {@inheritDoc} */
-    public abstract XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
-            @Nullable final String namespacePrefix);
+    @Nonnull public abstract XMLObjectType buildObject(@Nullable final String namespaceURI,
+            @Nonnull @NotEmpty final String localName, @Nullable final String namespacePrefix);
 
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+    @Nonnull public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
             @Nullable final String namespacePrefix, @Nullable final QName schemaType) {
         XMLObjectType xmlObject;
 
@@ -61,7 +62,7 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
     }
 
     /** {@inheritDoc} */
-    public XMLObjectType buildObject(@Nonnull final Element element) {
+    @Nonnull public XMLObjectType buildObject(@Nonnull final Element element) {
         XMLObjectType xmlObject;
 
         String localName = element.getLocalName();

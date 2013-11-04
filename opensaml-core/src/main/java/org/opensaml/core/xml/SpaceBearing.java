@@ -39,6 +39,7 @@ public interface SpaceBearing {
         // and we have the mess below.
         
         /** {@inheritDoc} */
+        @Override
         public String toString() {
             return super.toString().toLowerCase();
         }

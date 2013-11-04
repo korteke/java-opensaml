@@ -30,7 +30,7 @@ public abstract class AbstractExtensibleXMLObject extends AbstractElementExtensi
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** xs:anyAttribute for this element. */
-    private final AttributeMap anyAttributes;
+    @Nonnull private final AttributeMap anyAttributes;
 
     /**
      * Constructor.

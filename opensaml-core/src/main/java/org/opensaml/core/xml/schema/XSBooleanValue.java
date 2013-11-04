@@ -89,6 +89,7 @@ public class XSBooleanValue {
     }
     
     /** {@inheritDoc} */
+    @Override
     public int hashCode(){
         int hash;
         if(numeric){
@@ -113,6 +114,7 @@ public class XSBooleanValue {
     }
     
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if(obj == this){
             return true;
@@ -126,6 +128,7 @@ public class XSBooleanValue {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return toString(value, numeric);
     }

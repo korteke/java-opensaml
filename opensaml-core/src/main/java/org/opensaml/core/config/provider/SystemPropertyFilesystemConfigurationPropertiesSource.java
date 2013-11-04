@@ -17,6 +17,10 @@
 
 package org.opensaml.core.config.provider;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
  * Concrete implementation of filesystem configuration properties source which obtains
  * the filename value from a system property.
@@ -25,9 +29,10 @@ public class SystemPropertyFilesystemConfigurationPropertiesSource extends
         AbstractFilesystemConfigurationPropertiesSource {
     
     /** The system property name for the filename to use. */
-    public static final String PROPERTY_FILE_NAME = "opensaml.config.fileName";
+    @Nonnull @NotEmpty public static final String PROPERTY_FILE_NAME = "opensaml.config.fileName";
 
     /** {@inheritDoc} */
+    @Override
     protected String getFilename() {
         return System.getProperty(PROPERTY_FILE_NAME);
     }
