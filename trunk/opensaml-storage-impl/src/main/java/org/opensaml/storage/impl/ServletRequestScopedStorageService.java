@@ -314,10 +314,11 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             setDirty(false);
         } catch (NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
             contextMap.clear();
-            setDirty(false);
+            setDirty(true);
             log.error("Exception while parsing context map", e);
             throw new IOException("Found invalid data structure while parsing context map", e);
         } catch (DataSealerException e) {
+            setDirty(true);
             log.error("Exception unwrapping secured data", e);
             throw new IOException("Exception unwrapping secured data", e);
         }
