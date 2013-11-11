@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -31,5 +33,5 @@ public interface SAMLObjectBuilder<SAMLObjectType extends SAMLObject> extends XM
      * 
      * @return built SAMLObject
      */
-    public abstract SAMLObjectType buildObject();
+    @Nonnull public abstract SAMLObjectType buildObject();
 }

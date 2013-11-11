@@ -20,6 +20,11 @@ package org.opensaml.saml.common;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.Live;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -74,28 +79,28 @@ import com.google.common.base.Strings;
 public class SAMLObjectContentReference implements ConfigurableContentReference {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLObjectContentReference.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLObjectContentReference.class);
 
     /** SAMLObject this reference refers to. */
-    private SignableSAMLObject signableObject;
+    @Nonnull private final SignableSAMLObject signableObject;
     
     /** Algorithm used to digest the content. */
-    private String digestAlgorithm;
+    @Nonnull @NotEmpty private String digestAlgorithm;
 
     /** Transforms applied to the content. */
-    private List<String> transforms;
+    @Nonnull @NonnullElements private List<String> transforms;
 
     /**
      * Constructor.
      * 
      * @param newSignableObject the SAMLObject this reference refers to
      */
-    public SAMLObjectContentReference(SignableSAMLObject newSignableObject) {
+    public SAMLObjectContentReference(@Nonnull final SignableSAMLObject newSignableObject) {
         signableObject = newSignableObject;
         transforms = new LazyList<String>();
         
         // Set defaults
-        SecurityConfiguration globalSecConfig = ConfigurationService.get(SecurityConfiguration.class);
+        final SecurityConfiguration globalSecConfig = ConfigurationService.get(SecurityConfiguration.class);
         if (globalSecConfig != null ) {
             digestAlgorithm = globalSecConfig.getSignatureReferenceDigestMethod();
         }
@@ -112,23 +117,23 @@ public class SAMLObjectContentReference implements ConfigurableContentReference 
      * 
      * @return the transforms applied to the content prior to digest generation
      */
-    public List<String> getTransforms() {
+    @Nonnull @NonnullElements @Live public List<String> getTransforms() {
         return transforms;
     }
 
     /** {@inheritDoc}. */
-    public String getDigestAlgorithm() {
+    @Nonnull @NotEmpty public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
     /** {@inheritDoc}. */
-    public void setDigestAlgorithm(String newAlgorithm) {
+    public void setDigestAlgorithm(@Nonnull @NotEmpty final String newAlgorithm) {
         digestAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(newAlgorithm),
                 "Digest algorithm cannot be empty or null");
     }
 
     /** {@inheritDoc} */
-    public void createReference(XMLSignature signature) {
+    public void createReference(@Nonnull final XMLSignature signature) {
         try {
             Transforms dsigTransforms = new Transforms(signature.getDocument());
             for (int i=0; i<transforms.size(); i++) {
@@ -163,7 +168,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference 
      * @param signature the Apache XMLSignature object
      * @param transform the Apache Transform object representing an exclusive transform
      */
-    private void processExclusiveTransform(XMLSignature signature, Transform transform) {
+    private void processExclusiveTransform(@Nonnull final XMLSignature signature, @Nonnull final Transform transform) {
         // Namespaces that aren't visibly used, such as those used in QName attribute values, would
         // be stripped out by exclusive canonicalization. Need to make sure they aren't by explicitly
         // telling the transformer about them.
@@ -185,7 +190,8 @@ public class SAMLObjectContentReference implements ConfigurableContentReference 
      * @param namespacePrefixes the namespace prefix set to be populated
      * @param signatureContent the XMLObject whose namespace prefixes will be used to populate the set
      */
-    private void populateNamespacePrefixes(Set<String> namespacePrefixes, XMLObject signatureContent) {
+    private void populateNamespacePrefixes(@Nonnull @NonnullElements final Set<String> namespacePrefixes,
+            @Nonnull final XMLObject signatureContent) {
         for (String prefix: signatureContent.getNamespaceManager().getNonVisibleNamespacePrefixes()) {
             if (prefix != null) {
                 // For the default namespace prefix, exclusive c14n uses the special token "#default".

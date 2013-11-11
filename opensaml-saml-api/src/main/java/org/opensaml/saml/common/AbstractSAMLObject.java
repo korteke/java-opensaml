@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -33,7 +36,8 @@ public abstract class AbstractSAMLObject extends AbstractXMLObject {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractSAMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AbstractSAMLObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -64,7 +68,8 @@ public abstract class AbstractSAMLObject extends AbstractXMLObject {
      * 
      * @return The value to assign to the saved Object.
      */
-    protected DateTime prepareForAssignment(DateTime oldValue, DateTime newValue) {
+    @Nullable protected DateTime prepareForAssignment(@Nullable final DateTime oldValue,
+            @Nullable final DateTime newValue) {
         DateTime utcValue = null;
         if (newValue != null) {
             utcValue = newValue.withZone(DateTimeZone.UTC);

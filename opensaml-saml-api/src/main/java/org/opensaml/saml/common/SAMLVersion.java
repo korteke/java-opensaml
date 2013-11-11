@@ -17,28 +17,32 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
  * A type safe SAML version enumeration.
  */
 public final class SAMLVersion {
 
     /** SAML version 1.0. */
-    public static final SAMLVersion VERSION_10 = new SAMLVersion(1, 0);
+    @Nonnull public static final SAMLVersion VERSION_10 = new SAMLVersion(1, 0);
 
     /** SAML Version 1.1. */
-    public static final SAMLVersion VERSION_11 = new SAMLVersion(1, 1);
+    @Nonnull public static final SAMLVersion VERSION_11 = new SAMLVersion(1, 1);
 
     /** SAML Version 2.0. */
-    public static final SAMLVersion VERSION_20 = new SAMLVersion(2, 0);
+    @Nonnull public static final SAMLVersion VERSION_20 = new SAMLVersion(2, 0);
 
     /** Major version number. */
-    private int majorVersion;
+    private final int majorVersion;
 
     /** Minor version number. */
-    private int minorVersion;
+    private final int minorVersion;
 
     /** String representation of the version. */
-    private String versionString;
+    @Nonnull @NotEmpty private final String versionString;
 
     /**
      * Constructor.
@@ -46,7 +50,7 @@ public final class SAMLVersion {
      * @param major SAML major version number
      * @param minor SAML minor version number
      */
-    private SAMLVersion(int major, int minor) {
+    private SAMLVersion(final int major, final int minor) {
         majorVersion = major;
         minorVersion = minor;
 
@@ -61,7 +65,7 @@ public final class SAMLVersion {
      * 
      * @return the SAMLVersion
      */
-    public static final SAMLVersion valueOf(int majorVersion, int minorVersion) {
+    public static final SAMLVersion valueOf(final int majorVersion, final int minorVersion) {
         if (majorVersion == 1) {
             if (minorVersion == 0) {
                 return SAMLVersion.VERSION_10;
@@ -84,7 +88,7 @@ public final class SAMLVersion {
      * 
      * @return SAMLVersion for the given string
      */
-    public static final SAMLVersion valueOf(String version) {
+    public static final SAMLVersion valueOf(@Nonnull final String version) {
         String[] components = version.split("\\.");
         return valueOf(Integer.valueOf(components[0]), Integer.valueOf(components[1]));
     }
@@ -108,7 +112,7 @@ public final class SAMLVersion {
     }
 
     /** {@inheritDoc} */
-    public String toString() {
+    @Nonnull @NotEmpty public String toString() {
         return versionString;
     }
 }

@@ -15,21 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common;
-
-import javax.annotation.Nullable;
-
-import org.opensaml.xmlsec.signature.SignableXMLObject;
-
 /**
- * A signable SAMLObject.
+ * Base classes for working with SAML as Java objects.
  */
-public interface SignableSAMLObject extends SignableXMLObject, SAMLObject {
-
-    /**
-     * Gets the value of the ID attribute for this SAML object which will be used as its signature reference.
-     * 
-     * @return the value of this SAMLObject ID attribute
-     */
-    @Nullable public String getSignatureReferenceID();
-}
+package org.opensaml.saml.common;

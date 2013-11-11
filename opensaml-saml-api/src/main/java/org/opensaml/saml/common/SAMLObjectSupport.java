@@ -19,8 +19,9 @@ package org.opensaml.saml.common;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.Namespace;
-import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.xmlsec.signature.support.ContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public final class SAMLObjectSupport {
      * 
      * @param signableObject the signable SAML object to evaluate
      */
-    public static void declareNonVisibleNamespaces(SignableSAMLObject signableObject) {
+    public static void declareNonVisibleNamespaces(@Nonnull final SignableSAMLObject signableObject) {
         Logger log = getLogger();
         if (signableObject.getDOM() == null && signableObject.getSignature() != null) {
             log.debug("Examing signed object for content references with exclusive canonicalization transform");
@@ -79,7 +80,7 @@ public final class SAMLObjectSupport {
      * 
      * @return a Logger instance
      */
-    private static Logger getLogger() {
+    @Nonnull private static Logger getLogger() {
         return LoggerFactory.getLogger(SAMLObjectSupport.class);
     }
 

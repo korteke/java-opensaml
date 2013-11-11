@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nullable;
+
 /**
  * Base class for runtime exceptions.
  */
@@ -37,7 +39,7 @@ public class SAMLRuntimeException extends RuntimeException {
      * 
      * @param message exception message
      */
-    public SAMLRuntimeException(String message) {
+    public SAMLRuntimeException(@Nullable final String message) {
         super(message);
     }
     
@@ -46,7 +48,7 @@ public class SAMLRuntimeException extends RuntimeException {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SAMLRuntimeException(Exception wrappedException) {
+    public SAMLRuntimeException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
     
@@ -56,7 +58,7 @@ public class SAMLRuntimeException extends RuntimeException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SAMLRuntimeException(String message, Exception wrappedException) {
+    public SAMLRuntimeException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }
