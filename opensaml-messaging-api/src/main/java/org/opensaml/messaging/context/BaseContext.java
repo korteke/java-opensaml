@@ -196,7 +196,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
         // Note: This will throw if replace == false and existing != null.
         // In that case, no link management happens, which is what we want, to leave things in a consistent state.
         log.trace("Attempting to store a subcontext with type '{}' id '{}' with replace option '{}'", 
-                new String[]{subcontext.getClass().getName(), subcontext.getId(), new Boolean(replace).toString()});
+                new Object[]{subcontext.getClass().getName(), subcontext.getId(), new Boolean(replace).toString()});
         subcontexts.add(subcontext, replace);
         
         // Manage parent/child links
@@ -204,15 +204,16 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
         // If subcontext was formerly a child of another parent, remove that link
         BaseContext oldParent = subcontext.getParent();
         if (oldParent != null && oldParent != this) {
-            log.trace("New subcontext with type '{}' id '{}' is currently a subcontext of parent with type '{}' id '{}', removing it",
-                    new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+            log.trace("New subcontext with type '{}' id '{}' is currently a subcontext of "
+                    + "parent with type '{}' id '{}', removing it",
+                    new Object[]{subcontext.getClass().getName(), subcontext.getId(), 
                     oldParent.getClass().getName(), oldParent.getId(),});
             subcontext.getParent().removeSubcontext(subcontext);
         }
         
         // Set parent pointer of new subcontext to this instance
         log.trace("New subcontext with type '{}' id '{}' set to have parent with type '{}' id '{}'",
-                new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+                new Object[]{subcontext.getClass().getName(), subcontext.getId(), 
                 this.getClass().getName(), this.getId(),});
         subcontext.setParent(this);
         
@@ -220,7 +221,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
         // then clear out its parent pointer.
         if (existing != null) {
             log.trace("Old subcontext with type '{}' id '{}' will have parent cleared",
-                    new String[]{existing.getClass().getName(), existing.getId(),});
+                    new Object[]{existing.getClass().getName(), existing.getId(),});
             existing.setParent(null);
         }
         
@@ -235,7 +236,7 @@ public abstract class BaseContext implements IdentifiableComponent, Iterable<Bas
         Constraint.isNotNull(subcontext, "Subcontext cannot be null");
         
         log.trace("Removing subcontext with type '{}' id '{}' from parent with type '{}' id '{}'",
-                new String[]{subcontext.getClass().getName(), subcontext.getId(), 
+                new Object[]{subcontext.getClass().getName(), subcontext.getId(), 
                 this.getClass().getName(), this.getId(),});
         subcontext.setParent(null);
         subcontexts.remove(subcontext);
