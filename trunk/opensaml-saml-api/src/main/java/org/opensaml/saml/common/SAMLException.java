@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nullable;
+
 /**
  * Base exception for SAML related exception.
  */
@@ -37,7 +39,7 @@ public class SAMLException extends Exception {
      * 
      * @param message exception message
      */
-    public SAMLException(String message) {
+    public SAMLException(@Nullable final String message) {
         super(message);
     }
     
@@ -46,7 +48,7 @@ public class SAMLException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public SAMLException(Exception wrappedException) {
+    public SAMLException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
     
@@ -56,7 +58,7 @@ public class SAMLException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public SAMLException(String message, Exception wrappedException) {
+    public SAMLException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }

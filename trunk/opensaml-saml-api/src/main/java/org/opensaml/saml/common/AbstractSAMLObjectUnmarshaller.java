@@ -22,7 +22,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 
 /**
- * An thread safe abstract unmarshaller. This abstract marshaller only works with
+ * An thread safe abstract unmarshaller. This abstract unmarshaller only works with
  * {@link org.opensaml.saml.common.AbstractSAMLObject}.
  */
 @ThreadSafe

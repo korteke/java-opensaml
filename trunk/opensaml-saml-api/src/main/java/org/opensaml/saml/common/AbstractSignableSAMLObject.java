@@ -17,6 +17,11 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.opensaml.xmlsec.signature.AbstractSignableXMLObject;
@@ -34,7 +39,8 @@ public abstract class AbstractSignableSAMLObject extends AbstractSignableXMLObje
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractSignableSAMLObject(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AbstractSignableSAMLObject(@Nullable final String namespaceURI,
+            @Nonnull @NotEmpty final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -46,7 +52,12 @@ public abstract class AbstractSignableSAMLObject extends AbstractSignableXMLObje
         
         return super.equals(obj);
     }
-
+    
+    /** {@inheritDoc} */
+    public int hashCode() {
+        return super.hashCode();
+    }
+    
     /**
      * {@inheritDoc}
      * 
@@ -55,7 +66,7 @@ public abstract class AbstractSignableSAMLObject extends AbstractSignableXMLObje
      * for the default digest algorithm and transforms that will be used.  These default values may be 
      * changed prior to marshalling this object.
      */
-    public void setSignature(Signature newSignature) {
+    public void setSignature(@Nullable final Signature newSignature) {
         if(newSignature != null && newSignature.getContentReferences().isEmpty()) {
             newSignature.getContentReferences().add(new SAMLObjectContentReference(this));
         }
@@ -75,7 +86,8 @@ public abstract class AbstractSignableSAMLObject extends AbstractSignableXMLObje
      * 
      * @return The value to assign to the saved Object
      */
-    protected DateTime prepareForAssignment(DateTime oldValue, DateTime newValue) {
+    @Nullable protected DateTime prepareForAssignment(@Nullable final DateTime oldValue,
+            @Nullable final DateTime newValue) {
         DateTime utcValue = null;
         if (newValue != null) {
             utcValue = newValue.withZone(DateTimeZone.UTC);
