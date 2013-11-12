@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.security.RandomIdentifierGeneration
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.BaseID;
