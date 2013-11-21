@@ -36,6 +36,7 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.common.SAML2Support;
+import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -288,10 +289,15 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 log.debug("Processing new metadata from '{}'", mdId);
                 processNewMetadata(mdId, now, mdBytes);
             }
-        } catch (Exception e) {
-            log.debug("Error occurred while attempting to refresh metadata from '" + mdId + "'", e);
+        } catch (Throwable t) {
+            log.debug("Error occurred while attempting to refresh metadata from '" + mdId + "'", t);
             nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(minRefreshDelay);
-            throw new ResolverException(e);
+            if (t instanceof Exception) {
+                throw new ResolverException((Exception) t);
+            } else {
+                throw new ResolverException(String.format("Saw an error of type '%s' with message '%s'", 
+                        t.getClass().getName(), t.getMessage()));
+            }
         } finally {
             refresMetadataTask = new RefreshMetadataTask();
             long nextRefreshDelay = nextRefresh.getMillis() - System.currentTimeMillis();
