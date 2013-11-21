@@ -160,6 +160,8 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
             return super.fetchMetadata();
         } catch (ResolverException e) {
             if (metadataBackupFile.exists()) {
+                log.warn("Problem reading metadata from remote source, processing existing backup file: {}", 
+                        metadataBackupFile.getAbsolutePath());
                 try {
                     return Files.toByteArray(metadataBackupFile);
                 } catch (IOException ioe) {
