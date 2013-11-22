@@ -51,7 +51,7 @@ public class UnmarshallerFactory {
      * Constructor.
      */
     public UnmarshallerFactory() {
-        unmarshallers = new ConcurrentHashMap<QName, Unmarshaller>();
+        unmarshallers = new ConcurrentHashMap<>();
     }
 
     /**

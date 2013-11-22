@@ -49,7 +49,7 @@ public class MarshallerFactory {
      * Constructor.
      */
     public MarshallerFactory() {
-        marshallers = new ConcurrentHashMap<QName, Marshaller>();
+        marshallers = new ConcurrentHashMap<>();
     }
 
     /**

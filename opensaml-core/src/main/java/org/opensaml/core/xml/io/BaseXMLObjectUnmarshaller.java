@@ -32,18 +32,21 @@ import org.w3c.dom.Attr;
 public abstract class BaseXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
 
     }

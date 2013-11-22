@@ -38,7 +38,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import com.google.common.base.Objects;
@@ -135,9 +134,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         if (log.isTraceEnabled()) {
             log.trace("Building XMLObject for {}", QNameSupport.getNodeQName(domElement));
         }
-        XMLObjectBuilder xmlObjectBuilder;
 
-        xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
+        XMLObjectBuilder<?> xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(domElement);
         if (xmlObjectBuilder == null) {
             xmlObjectBuilder = xmlObjectBuilderFactory.getBuilder(
                     XMLObjectProviderRegistrySupport.getDefaultProviderQName());
@@ -230,7 +228,8 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         QName attribName = QNameSupport.getNodeQName(attribute);
         if (XmlConstants.XSI_TYPE_ATTRIB_NAME.equals(attribName)) {
             if (log.isTraceEnabled()) {
-                log.trace("Saw XMLObject {} with an xsi:type of: {}", xmlObject.getElementQName(), attribute.getValue());
+                log.trace("Saw XMLObject {} with an xsi:type of: {}", xmlObject.getElementQName(),
+                        attribute.getValue());
             }
         } else if (XmlConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME.equals(attribName)) {
             if (log.isTraceEnabled()) {

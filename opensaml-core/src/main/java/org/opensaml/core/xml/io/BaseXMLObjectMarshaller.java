@@ -32,12 +32,14 @@ import org.w3c.dom.Element;
 public abstract class BaseXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 

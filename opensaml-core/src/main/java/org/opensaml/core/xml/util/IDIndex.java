@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -38,11 +39,11 @@ import org.opensaml.core.xml.XMLObject;
 public class IDIndex {
     
     /** The XMLObject which owns this ID index. */
-    private final XMLObject owner;
+    @Nonnull private final XMLObject owner;
     
     /** Mapping of ID attributes to XMLObjects in the subtree rooted at this object's owner.
      * This allows constant-time dereferencing of ID-typed attributes within the subtree.  */
-    private Map<String, XMLObject> idMappings;
+    @Nonnull private Map<String, XMLObject> idMappings;
 
     /**
      * Constructor.
@@ -53,7 +54,7 @@ public class IDIndex {
         Constraint.isNotNull(newOwner, "ID-owning XMLObject may not be null");
         
         owner = newOwner;
-        idMappings = new LazyMap<String, XMLObject>();
+        idMappings = new LazyMap<>();
     }
     
 
@@ -63,7 +64,7 @@ public class IDIndex {
      * @param id the XMLObject child's ID attribute value
      * @param referent the XMLObject child
      */
-    public void registerIDMapping(@Nonnull final String id, @Nonnull final XMLObject referent) {
+    public void registerIDMapping(@Nonnull @NotEmpty final String id, @Nonnull final XMLObject referent) {
         if (id == null) {
             return;
         }
@@ -95,7 +96,7 @@ public class IDIndex {
      * 
      * @param id the ID attribute value of the XMLObject child to deregister
      */  
-    public void deregisterIDMapping(@Nonnull final String id) {
+    public void deregisterIDMapping(@Nonnull @NotEmpty final String id) {
         if (id == null) {
             return;
         }
@@ -130,7 +131,7 @@ public class IDIndex {
      * @param id the ID attribute value to lookup
      * @return the XMLObject identified by the ID attribute value
      */
-    @Nullable public XMLObject lookup(@Nonnull final String id) {
+    @Nullable public XMLObject lookup(@Nonnull @NotEmpty final String id) {
         return idMappings.get(id);
     }
     

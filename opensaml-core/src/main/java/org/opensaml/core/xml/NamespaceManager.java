@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -98,7 +99,7 @@ public class NamespaceManager {
      * @param name attribute name as a QName
      * @return a string attribute ID
      */
-    @Nonnull public static String generateAttributeID(@Nonnull final QName name) {
+    @Nonnull @NotEmpty public static String generateAttributeID(@Nonnull final QName name) {
        return name.toString(); 
     }
     

@@ -19,6 +19,7 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
@@ -38,7 +39,9 @@ import org.w3c.dom.Element;
 public class XSAnyMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XSAny xsAny = (XSAny) xmlObject;
 
         Attr attribute;
@@ -54,7 +57,9 @@ public class XSAnyMarshaller extends AbstractXMLObjectMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XSAny xsAny = (XSAny) xmlObject;
 
         if (xsAny.getTextContent() != null) {
