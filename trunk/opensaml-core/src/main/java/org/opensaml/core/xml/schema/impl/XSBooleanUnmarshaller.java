@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -28,18 +30,22 @@ import org.w3c.dom.Attr;
 public class XSBooleanUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         // no children
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         // no attributes
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+    @Override
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         XSBoolean xsiBoolean = (XSBoolean) xmlObject;
         xsiBoolean.setValue(XSBooleanValue.valueOf(elementContent));
     }

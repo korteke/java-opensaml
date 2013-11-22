@@ -19,6 +19,9 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBase64Binary;
@@ -29,7 +32,7 @@ import org.opensaml.core.xml.schema.XSBase64Binary;
 public class XSBase64BinaryImpl extends AbstractXMLObject implements XSBase64Binary {
 
     /** Value of this base64Binary element. */
-    private String value;
+    @Nullable private String value;
     
     /**
      * Constructor.
@@ -38,28 +41,29 @@ public class XSBase64BinaryImpl extends AbstractXMLObject implements XSBase64Bin
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XSBase64BinaryImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected XSBase64BinaryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /**
      * {@inheritDoc}
      */
-    public String getValue() {
+    @Nullable public String getValue() {
         return value;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setValue(String newValue) {
+    public void setValue(@Nullable String newValue) {
         value = prepareForAssignment(value, newValue);
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }

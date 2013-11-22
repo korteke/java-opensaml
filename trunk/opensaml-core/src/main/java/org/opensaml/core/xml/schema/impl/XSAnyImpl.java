@@ -20,6 +20,8 @@ package org.opensaml.core.xml.schema.impl;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -34,13 +36,13 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 public class XSAnyImpl extends AbstractXMLObject implements XSAny {
 
     /** Child XMLObjects. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    @Nonnull private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
 
     /** Attributes for this element. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private AttributeMap unknownAttributes;
 
     /** Text content of the element. */
-    private String textContent;
+    @Nullable private String textContent;
 
     /**
      * Constructor.
@@ -49,10 +51,11 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XSAnyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected XSAnyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
-        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -62,27 +65,27 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     }
 
     /** {@inheritDoc} */
-    public void setTextContent(String newContent) {
+    public void setTextContent(@Nullable final String newContent) {
         textContent = prepareForAssignment(textContent, newContent);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return Collections.unmodifiableList(unknownXMLObjects);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 }

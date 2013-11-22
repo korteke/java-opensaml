@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
@@ -33,19 +34,22 @@ import org.w3c.dom.Attr;
 public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
-            throws UnmarshallingException {
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         XSAny xsAny = (XSAny) parentXMLObject;
 
         xsAny.getUnknownXMLObjects().add(childXMLObject);
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         XSAny xsAny = (XSAny) xmlObject;
 
-        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
-                .getPrefix());
+        QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
+                attribute.getPrefix());
 
         if (attribute.isId()) {
             xsAny.getUnknownAttributes().registerID(attribQName);
@@ -55,7 +59,8 @@ public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+    @Override
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         XSAny xsAny = (XSAny) xmlObject;
 
         xsAny.setTextContent(elementContent);

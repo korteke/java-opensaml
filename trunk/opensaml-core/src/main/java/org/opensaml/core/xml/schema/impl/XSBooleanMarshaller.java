@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,14 +31,20 @@ import org.w3c.dom.Element;
 public class XSBooleanMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         // no attributes
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XSBoolean xsiBoolean = (XSBoolean) xmlObject;
 
-        ElementSupport.appendTextContent(domElement, xsiBoolean.getValue().getValue().toString());
+        if (xsiBoolean.getValue() != null && xsiBoolean.getValue().getValue() != null) {
+            ElementSupport.appendTextContent(domElement, xsiBoolean.getValue().getValue().toString());
+        }
     }
 }

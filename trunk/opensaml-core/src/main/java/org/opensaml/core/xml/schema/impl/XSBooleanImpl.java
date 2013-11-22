@@ -19,6 +19,9 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBoolean;
@@ -29,7 +32,7 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 public class XSBooleanImpl extends AbstractXMLObject implements XSBoolean {
 
     /** Value of this string element. */
-    private XSBooleanValue value;
+    @Nullable private XSBooleanValue value;
 
     /**
      * Constructor.
@@ -38,28 +41,29 @@ public class XSBooleanImpl extends AbstractXMLObject implements XSBoolean {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XSBooleanImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected XSBooleanImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /**
      * {@inheritDoc}
      */
-    public XSBooleanValue getValue() {
+    @Nullable public XSBooleanValue getValue() {
         return value;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setValue(XSBooleanValue newValue) {
+    public void setValue(@Nullable final XSBooleanValue newValue) {
         value = prepareForAssignment(value, newValue);
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
