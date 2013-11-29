@@ -49,23 +49,6 @@
         <svn.relative.location>java-opensaml</svn.relative.location>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>shib-release</id>
-            <url>https://build.shibboleth.net/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>shib-snapshot</id>
-            <url>https://build.shibboleth.net/nexus/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
     <!-- Dependencies which are required by every single project module should go here and will be inherited by all modules. -->
     <dependencies>
         <!-- Compile Dependencies -->
