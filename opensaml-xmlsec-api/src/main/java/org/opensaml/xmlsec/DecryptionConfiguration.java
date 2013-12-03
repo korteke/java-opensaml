@@ -17,9 +17,14 @@
 
 package org.opensaml.xmlsec;
 
-import java.util.List;
+import java.util.Collection;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -34,14 +39,14 @@ public interface DecryptionConfiguration {
      * 
      * @return the list of algorithms
      */
-    @Nullable public List<String> getWhitelistedAlgorithmURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getWhitelistedAlgorithmURIs();
     
     /**
      * Get the list of blacklisted algorithm URI's.
      * 
      * @return the list of algorithms
      */
-    @Nullable public List<String> getBlacklistedAlgorithmsURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getBlacklistedAlgorithmsURIs();
     
     /**
      * The KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
