@@ -17,8 +17,6 @@
 
 package org.opensaml.profile.action;
 
-// TODO: move the IdP-specific stuff out of this class
-
 /** Constants to use for {@link ProfileAction} {@link org.opensaml.profile.context.EventContext}s. */
 public final class EventIds {
 
@@ -46,29 +44,17 @@ public final class EventIds {
     public static final String INVALID_MSG_MD = "InvalidMessageMetadata";
 
     /**
-     * ID of the event returned if a {@link net.shibboleth.idp.relyingparty.RelyingPartyContext} is missing or corrupt
-     * in some way..
+     * ID of the event returned if a {@link org.opensaml.messaging.decoder.MessageDecoder} is unable to decode a
+     * message.
      */
-    public static final String INVALID_RELYING_PARTY_CTX = "InvalidRelyingPartyContext";
-
+    public static final String UNABLE_TO_DECODE = "UnableToDecode";
+    
     /**
-     * ID of the event returned if a {@link net.shibboleth.idp.relyingparty.RelyingPartyConfiguration} is missing or
-     * corrupt in some way..
+     * ID of the event returned if a {@link org.opensaml.messaging.encoder.MessageEncoder} is unable to encode a
+     * message.
      */
-    public static final String INVALID_RELYING_PARTY_CONFIG = "InvalidRelyingPartyConfiguration";
-
-    /**
-     * ID of the event returned if a {@link net.shibboleth.idp.profile.config.ProfileConfiguration} is missing or
-     * corrupt in some way.
-     */
-    public static final String INVALID_PROFILE_CONFIG = "InvalidProfileConfiguration";
-
-    /**
-     * ID of the event returned if a {@link net.shibboleth.idp.attribute.AttributeContext} is missing or corrupt in some
-     * way.
-     */
-    public static final String INVALID_ATTRIBUTE_CTX = "InvalidAttributeContext";
-
+    public static final String UNABLE_TO_ENCODE = "UnableToEncode";
+    
     /**
      * ID of an Event indicating that an action completed successfully and processing should move on to the next step.
      */
