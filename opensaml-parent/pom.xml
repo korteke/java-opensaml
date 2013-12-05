@@ -103,6 +103,7 @@
         <dependency>
             <groupId>net.shibboleth.utilities</groupId>
             <artifactId>java-support</artifactId>
+            <version>${shibboleth.java-support.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -122,6 +123,7 @@
         <dependency>
             <groupId>net.shibboleth.utilities</groupId>
             <artifactId>java-support</artifactId>
+            <version>${shibboleth.java-support.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
