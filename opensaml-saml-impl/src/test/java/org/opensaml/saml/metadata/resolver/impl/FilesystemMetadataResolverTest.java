@@ -126,8 +126,6 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(targetFile.isFile());
         Assert.assertTrue(targetFile.canRead());
         
-        targetFile.setReadable(false);
-        Assert.assertFalse(targetFile.canRead());
         
         try {
             metadataProvider = new FilesystemMetadataResolver(targetFile);

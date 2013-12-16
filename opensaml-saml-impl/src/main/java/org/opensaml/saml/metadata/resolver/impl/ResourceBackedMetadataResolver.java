@@ -17,18 +17,18 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.io.IOException;
 import java.util.Timer;
 
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.resource.Resource;
-import net.shibboleth.utilities.java.support.resource.ResourceException;
+import net.shibboleth.utilities.java.support.resource.ShibbolethResource;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A metadata provider that reads metadata from a {#link {@link Resource}.
+ * A metadata provider that reads metadata from a {#link {@link ShibbolethResource}.
  * 
  * @since 2.2
  */
@@ -38,10 +38,8 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
     private final Logger log = LoggerFactory.getLogger(ResourceBackedMetadataResolver.class);
 
     /** Resource from which metadata is read. */
-    private Resource metadataResource;
+    private ShibbolethResource metadataResource;
 
-    /** Time the metadata resource was last updated. */
-    private DateTime lastResourceUpdate;
 
     /**
      * Constructor.
@@ -55,16 +53,16 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
      * 
      * @deprecated
      */
-    public ResourceBackedMetadataResolver(Resource resource, Timer timer, long maxMetadataCacheDuration)
+    public ResourceBackedMetadataResolver(ShibbolethResource resource, Timer timer, long maxMetadataCacheDuration)
             throws ResolverException {
         super(timer);
 
         try {
             if (!resource.exists()) {
-                throw new ResolverException("Resource " + resource.getLocation() + " does not exist.");
+                throw new IOException("Resource " + resource.getDescription() + " does not exist.");
             }
             metadataResource = resource;
-        } catch (ResourceException e) {
+        } catch (IOException e) {
             throw new ResolverException("Unable to read resource", e);
         }
     }
@@ -75,45 +73,40 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
      * @param resource resource from which to read the metadata file.
      * @param timer task timer used to schedule metadata refresh tasks
      * 
-     * @throws ResolverException thrown if there is a problem retrieving information about the resource
+     * @throws IOException thrown if there is a problem retrieving information about the resource
      */
-    public ResourceBackedMetadataResolver(Timer timer, Resource resource) throws ResolverException {
+    public ResourceBackedMetadataResolver(Timer timer, ShibbolethResource resource) throws IOException {
         super(timer);
 
-        try {
-            if (!resource.exists()) {
-                throw new ResolverException("Resource " + resource.getLocation() + " does not exist.");
-            }
-            metadataResource = resource;
-        } catch (ResourceException e) {
-            throw new ResolverException("Unable to read resource", e);
+        if (!resource.exists()) {
+            throw new IOException("Resource " + resource.getDescription() + " does not exist.");
         }
-    }
+        metadataResource = resource;
+}
 
     /** {@inheritDoc} */
     protected void doDestroy() {
         metadataResource = null;
-        lastResourceUpdate = null;
         
         super.doDestroy();
     }
     
     /** {@inheritDoc} */
     protected String getMetadataIdentifier() {
-        return metadataResource.getLocation();
+        return metadataResource.getDescription();
     }
 
     /** {@inheritDoc} */
     protected byte[] fetchMetadata() throws ResolverException {
         try {
-            DateTime metadataUpdateTime = new DateTime(metadataResource.getLastModifiedTime());
-            log.debug("resource {} was last modified {}", metadataResource.getLocation(), metadataUpdateTime);
+            DateTime metadataUpdateTime = new DateTime(metadataResource.lastModified());
+            log.debug("resource {} was last modified {}", metadataResource.getDescription(), metadataUpdateTime);
             if (getLastRefresh() == null || metadataUpdateTime.isAfter(getLastRefresh())) {
                 return inputstreamToByteArray(metadataResource.getInputStream());
             }
 
             return null;
-        } catch (ResourceException e) {
+        } catch (IOException e) {
             String errorMsg = "Unable to read metadata file";
             log.error(errorMsg, e);
             throw new ResolverException(errorMsg, e);
