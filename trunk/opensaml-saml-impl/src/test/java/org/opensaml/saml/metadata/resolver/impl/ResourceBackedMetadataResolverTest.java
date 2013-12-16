@@ -21,14 +21,16 @@ import java.io.File;
 import java.net.URL;
 import java.util.Timer;
 
+import net.shibboleth.ext.spring.resource.ShibbolethResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.resource.FilesystemResource;
+import net.shibboleth.utilities.java.support.resource.ShibbolethResource;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.springframework.core.io.FileSystemResource;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -49,8 +51,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
 
         URL mdURL = ResourceBackedMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
-        FilesystemResource mdResource = new FilesystemResource(new File(mdURL.toURI()).getAbsolutePath());
-        mdResource.initialize();
+        ShibbolethResource mdResource = ShibbolethResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
 
         metadataProvider = new ResourceBackedMetadataResolver(new Timer(), mdResource);
         metadataProvider.setParserPool(parserPool);
