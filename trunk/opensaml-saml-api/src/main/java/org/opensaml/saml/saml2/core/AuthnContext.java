@@ -45,7 +45,8 @@ public interface AuthnContext extends SAMLObject {
     public static final String IP_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:InternetProtocol";
 
     /** URI for Internet Protocol Password authentication context. */
-    public static final String IP_PASSWORD_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:InternetProtocolPassword";
+    public static final String IP_PASSWORD_AUTHN_CTX =
+            "urn:oasis:names:tc:SAML:2.0:ac:classes:InternetProtocolPassword";
 
     /** URI for Kerberos authentication context. */
     public static final String KERBEROS_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:Kerberos";
@@ -54,7 +55,7 @@ public interface AuthnContext extends SAMLObject {
     public static final String MOFU_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:MobileOneFactorUnregistered";
 
     /** URI for Mobile Two Factor Unregistered authentication context. */
-    public static final String MTFU = "urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorUnregistered";
+    public static final String MTFU_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:MobileTwoFactorUnregistered";
 
     /** URI for Mobile One Factor Contract authentication context. */
     public static final String MOFC_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:MobileOneFactorContract";
@@ -99,10 +100,12 @@ public interface AuthnContext extends SAMLObject {
     public static final String NOMAD_TELEPHONY_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:NomadTelephony";
 
     /** URI for Personalized Telephony authentication context. */
-    public static final String PERSONAL_TELEPHONY_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:PersonalTelephony";
+    public static final String PERSONAL_TELEPHONY_AUTHN_CTX =
+            "urn:oasis:names:tc:SAML:2.0:ac:classes:PersonalTelephony";
 
     /** URI for Authenticated Telephony authentication context. */
-    public static final String AUTHENTICATED_TELEPHONY_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:AuthenticatedTelephony";
+    public static final String AUTHENTICATED_TELEPHONY_AUTHN_CTX =
+            "urn:oasis:names:tc:SAML:2.0:ac:classes:AuthenticatedTelephony";
 
     /** URI for Secure Remote Password authentication context. */
     public static final String SRP_AUTHN_CTX = "urn:oasis:names:tc:SAML:2.0:ac:classes:SecureRemotePassword";
