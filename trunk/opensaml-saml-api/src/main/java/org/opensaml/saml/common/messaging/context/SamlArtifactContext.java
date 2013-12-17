@@ -32,11 +32,11 @@ public class SamlArtifactContext extends BaseContext {
     /** The artifact source entityID. */
     private String sourceEntityId;
     
-    /** The artifact source attribute resolutions server endpoint URL. */
-    private String sourceAttributeResolutionServiceEndpointUrl;
+    /** The artifact resolution endpoint URL. */
+    private String sourceArtifactResolutionServiceEndpointUrl;
     
-    /** The artifact source attribute resolutions server endpoint index. */
-    private Integer sourceAttributeResolutionServiceEndpointIndex;
+    /** The artifact resolution endpoint index. */
+    private Integer sourceArtifactResolutionServiceEndpointIndex;
 
     /**
      * Gets the artifact type.
@@ -75,39 +75,39 @@ public class SamlArtifactContext extends BaseContext {
     }
 
     /**
-     * Get the source attribute resolution service endpoint URL.
+     * Get the artifact resolution service endpoint URL.
      * 
      * @return the URL
      */
-    @Nullable public String getSourceAttributeResolutionServiceEndpointUrl() {
-        return sourceAttributeResolutionServiceEndpointUrl;
+    @Nullable public String getSourceArtifactResolutionServiceEndpointURL() {
+        return sourceArtifactResolutionServiceEndpointUrl;
     }
 
     /**
-     * Set the source attribute resolution service endpoint URL.
+     * Set the artifact resolution service endpoint URL.
      * 
      * @param url the new URL
      */
-    public void setSourceAttributeResolutionServiceEndpointUrl(@Nullable final String url) {
-        sourceAttributeResolutionServiceEndpointUrl = url;
+    public void setSourceArtifactResolutionServiceEndpointURL(@Nullable final String url) {
+        sourceArtifactResolutionServiceEndpointUrl = url;
     }
 
     /**
-     * Get the source attribute resolution service endpoint index.
+     * Get the artifact resolution service endpoint index.
      * 
      * @return the index
      */
-    @Nullable public Integer getSourceAttributeResolutionServiceEndpointIndex() {
-        return sourceAttributeResolutionServiceEndpointIndex;
+    @Nullable public Integer getSourceArtifactResolutionServiceEndpointIndex() {
+        return sourceArtifactResolutionServiceEndpointIndex;
     }
 
     /**
-     * Set the source attribute resolution service endpoint index.
+     * Set the source artifact resolution service endpoint index.
      * 
      * @param index the new index
      */
-    public void setSourceAttributeResolutionServiceEndpointIndex(@Nullable final Integer index) {
-        sourceAttributeResolutionServiceEndpointIndex = index;
+    public void setSourceArtifactResolutionServiceEndpointIndex(@Nullable final Integer index) {
+        sourceArtifactResolutionServiceEndpointIndex = index;
     }
 
 }

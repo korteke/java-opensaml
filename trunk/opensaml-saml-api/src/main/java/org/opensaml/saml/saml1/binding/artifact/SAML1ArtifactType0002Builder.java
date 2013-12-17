@@ -78,12 +78,12 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
     protected String getArsEndpointUrl(MessageContext<SAMLObject> requestContext) {
         SamlArtifactContext artifactContext = getArtifactContext(requestContext);
 
-        if (artifactContext == null || artifactContext.getSourceAttributeResolutionServiceEndpointUrl() == null) {
+        if (artifactContext == null || artifactContext.getSourceArtifactResolutionServiceEndpointURL() == null) {
             log.error("No artifact resolution service endpoint URL is available");
             return null;
         }
 
-        return artifactContext.getSourceAttributeResolutionServiceEndpointUrl();
+        return artifactContext.getSourceArtifactResolutionServiceEndpointURL();
     }
 
 }
