@@ -90,12 +90,12 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
     protected Integer getArsEndpointIndex(MessageContext<SAMLObject> requestContext) {
         SamlArtifactContext artifactContext = getArtifactContext(requestContext);
 
-        if (artifactContext == null || artifactContext.getSourceAttributeResolutionServiceEndpointIndex() == null) {
+        if (artifactContext == null || artifactContext.getSourceArtifactResolutionServiceEndpointIndex() == null) {
             log.error("No artifact resolution service endpoint index is available");
             return null;
         }
 
-        return artifactContext.getSourceAttributeResolutionServiceEndpointIndex();
+        return artifactContext.getSourceArtifactResolutionServiceEndpointIndex();
     }
 
     /**
