@@ -24,6 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -53,7 +55,7 @@ import org.w3c.dom.Node;
  * <p>This implements serialization of an entry by wrapping the XML-based message
  * in a parent element that tracks the additional associated data.</p>
  */
-public class StorageServiceSAMLArtifactMapEntryFactory
+public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializableComponent
         implements SAMLArtifactMapEntryFactory, StorageSerializer<SAMLArtifactMapEntry> {
 
     /** Class logger. */
@@ -82,6 +84,8 @@ public class StorageServiceSAMLArtifactMapEntryFactory
      * @param pool parser pool used to parse serialized data
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
         parserPool = Constraint.isNotNull(pool, "ParserPool cannot be null");
     }
     
