@@ -21,9 +21,10 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 /**
  * Interface to a serialization/deserialization process used by a {@link StorageService} implementation
@@ -31,8 +32,8 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
  * 
  * @param <Type> the type of object handled
  */
-@ThreadSafe
-public interface StorageSerializer<Type> {
+@ThreadSafeAfterInit
+public interface StorageSerializer<Type> extends InitializableComponent {
 
     /**
      * Returns a string representing the input object.
