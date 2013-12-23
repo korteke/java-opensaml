@@ -77,7 +77,6 @@
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -133,11 +132,6 @@
             <artifactId>spring-extensions</artifactId>
             <scope>test</scope>
             <version>1.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-core</artifactId>
-            <scope>test</scope>
         </dependency>
         
     </dependencies>
