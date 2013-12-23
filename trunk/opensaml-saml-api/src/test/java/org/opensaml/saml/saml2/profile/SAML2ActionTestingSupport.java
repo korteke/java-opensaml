@@ -36,7 +36,7 @@ import org.opensaml.saml.saml2.core.Subject;
  * Helper methods for creating/testing SAML 2 objects within profile action tests. When methods herein refer to mock
  * objects they are always objects that have been created via Mockito unless otherwise noted.
  */
-public final class SAML2ActionTestingSupport {
+public class SAML2ActionTestingSupport {
 
     /** ID used for all generated {@link Response} objects. */
     public final static String REQUEST_ID = "request";
