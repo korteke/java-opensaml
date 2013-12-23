@@ -20,7 +20,7 @@ import org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller;
 
 
 /**
- * An unmarshaller for {@link uk.org.ukfederation.mdrpi.opensaml.UsagePolicy}.
+ * An unmarshaller for {@link org.opensaml.saml.ext.saml2mdrpi.UsagePolicy}.
  */
 public class UsagePolicyUnmarshaller extends LocalizedURIUnmarshaller {
 
