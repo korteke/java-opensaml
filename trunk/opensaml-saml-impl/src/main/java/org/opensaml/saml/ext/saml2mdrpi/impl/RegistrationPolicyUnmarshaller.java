@@ -20,7 +20,7 @@ package org.opensaml.saml.ext.saml2mdrpi.impl;
 import org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller;
 
 /**
- * An unmarshaller for {@link uk.org.ukfederation.mdrpi.opensaml.RegistrationPolicy}.
+ * An unmarshaller for {@link org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy}.
  */
 public class RegistrationPolicyUnmarshaller extends LocalizedURIUnmarshaller {
 

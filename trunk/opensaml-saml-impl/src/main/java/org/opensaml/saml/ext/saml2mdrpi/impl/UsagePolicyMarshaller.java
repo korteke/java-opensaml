@@ -21,7 +21,7 @@ import org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller;
 
 
 /**
- * An marshaller for {@link uk.org.ukfederation.mdrpi.opensaml.UsagePolicy}.
+ * An marshaller for {@link org.opensaml.saml.ext.saml2mdrpi.UsagePolicy}.
  */
 public class UsagePolicyMarshaller extends LocalizedURIMarshaller {
 
