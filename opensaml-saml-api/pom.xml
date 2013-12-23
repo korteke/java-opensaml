@@ -47,6 +47,13 @@
         <!-- Runtime Dependencies -->
 
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-profile-api</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         
     </dependencies>
     
