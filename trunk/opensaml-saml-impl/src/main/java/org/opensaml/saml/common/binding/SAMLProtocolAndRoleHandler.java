@@ -54,7 +54,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler<SAMLObjec
      * 
      * @param protocol the protocol constant to set
      */
-    public void setSAMLProtocol(@Nonnull @NotEmpty final String protocol) {
+    public void setProtocol(@Nonnull @NotEmpty final String protocol) {
         samlProtocol = Constraint.isNotNull(StringSupport.trimOrNull(protocol), "SAML protocol cannot be null");
     }
 
@@ -63,7 +63,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler<SAMLObjec
      * 
      * @param role the operational role to set
      */
-    public void setPeerSamlRole(@Nonnull final QName role) {
+    public void setRole(@Nonnull final QName role) {
         peerRole = Constraint.isNotNull(role, "SAML peer role cannot be null");
     }
 
