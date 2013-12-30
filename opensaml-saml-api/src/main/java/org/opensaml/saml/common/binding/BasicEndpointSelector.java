@@ -18,8 +18,14 @@
 package org.opensaml.saml.common.binding;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
@@ -44,12 +50,12 @@ import org.slf4j.LoggerFactory;
 public class BasicEndpointSelector extends AbstractEndpointSelector {
     
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(BasicEndpointSelector.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicEndpointSelector.class);
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
-    public Endpoint selectEndpoint() {
-        if(getEntityRoleMetadata() == null){
+    @Override
+    @Nullable public Endpoint selectEndpoint() {
+        if (getEntityRoleMetadata() == null) {
             return null;
         }
         
@@ -60,7 +66,7 @@ public class BasicEndpointSelector extends AbstractEndpointSelector {
 
         Endpoint selectedEndpoint;
         endpoints = filterEndpointsByProtocolBinding(endpoints);
-        if (endpoints == null || endpoints.size() == 0) {
+        if (endpoints.size() == 0) {
             return null;
         }
         if (endpoints.get(0) instanceof IndexedEndpoint) {
@@ -80,12 +86,12 @@ public class BasicEndpointSelector extends AbstractEndpointSelector {
      * 
      * @return filtered endpoints
      */
-    protected List<? extends Endpoint> filterEndpointsByProtocolBinding(List<? extends Endpoint> endpoints) {
-        List<Endpoint> filteredEndpoints = new ArrayList<Endpoint>(endpoints);
-        Iterator<Endpoint> endpointItr = filteredEndpoints.iterator();
-        Endpoint endpoint;
+    @Nonnull @NonnullElements protected List<? extends Endpoint> filterEndpointsByProtocolBinding(
+            @Nonnull @NonnullElements final Collection<? extends Endpoint> endpoints) {
+        final List<Endpoint> filteredEndpoints = new ArrayList<>(endpoints);
+        final Iterator<Endpoint> endpointItr = filteredEndpoints.iterator();
         while (endpointItr.hasNext()) {
-            endpoint = endpointItr.next();
+            final Endpoint endpoint = endpointItr.next();
             if (!getSupportedIssuerBindings().contains(endpoint.getBinding())) {
                 endpointItr.remove();
                 continue;
@@ -102,13 +108,13 @@ public class BasicEndpointSelector extends AbstractEndpointSelector {
      * 
      * @return appropriate endpoint from a list of indexed endpoints or null
      */
-    protected Endpoint selectIndexedEndpoint(List<IndexedEndpoint> endpoints) {
-        List<IndexedEndpoint> endpointsCopy = new ArrayList<IndexedEndpoint>(endpoints);
-        Iterator<IndexedEndpoint> endpointItr = endpointsCopy.iterator();
+    @Nullable protected Endpoint selectIndexedEndpoint(
+            @Nonnull @NonnullElements final Collection<IndexedEndpoint> endpoints) {
+        final List<IndexedEndpoint> endpointsCopy = new ArrayList<>(endpoints);
+        final Iterator<IndexedEndpoint> endpointItr = endpointsCopy.iterator();
         IndexedEndpoint firstNoDefaultEndpoint = null;
-        IndexedEndpoint currentEndpoint;
         while (endpointItr.hasNext()) {
-            currentEndpoint = endpointItr.next();
+            final IndexedEndpoint currentEndpoint = endpointItr.next();
 
             // endpoint is the default endpoint
             if (currentEndpoint.isDefault() != null) {
@@ -143,11 +149,11 @@ public class BasicEndpointSelector extends AbstractEndpointSelector {
      * 
      * @return appropriate endpoint from a list of non-indexed endpoints or null
      */
-    protected Endpoint selectNonIndexedEndpoint(List<Endpoint> endpoints) {
-        Iterator<Endpoint> endpointItr = endpoints.iterator();
-        Endpoint endpoint;
+    @Nullable protected Endpoint selectNonIndexedEndpoint(
+            @Nonnull @NonnullElements final Collection<Endpoint> endpoints) {
+        final Iterator<Endpoint> endpointItr = endpoints.iterator();
         while (endpointItr.hasNext()) {
-            endpoint = endpointItr.next();
+            final Endpoint endpoint = endpointItr.next();
 
             // Endpoint is first one of acceptable binding, return it.
             return endpoint;
@@ -156,4 +162,5 @@ public class BasicEndpointSelector extends AbstractEndpointSelector {
         // No endpoints had acceptable binding
         return null;
     }
+    
 }

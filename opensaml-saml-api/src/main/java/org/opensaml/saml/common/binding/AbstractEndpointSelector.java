@@ -20,7 +20,13 @@ package org.opensaml.saml.common.binding;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.Live;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
@@ -31,32 +37,33 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 /**
  * Endpoint selectors choose the endpoint that should be used to contact a peer.
  */
+@NotThreadSafe
 public abstract class AbstractEndpointSelector {
 
     /** Bindings supported by the issuer. */
-    private List<String> supportedIssuerBindings;
+    @Nonnull @NonnullElements private List<String> supportedIssuerBindings;
 
     /** SAML request within the message flow. */
-    private SAMLObject samlRequest;
+    @Nullable private SAMLObject samlRequest;
 
     /** SAML response within the message flow. */
-    private SAMLObject samlResponse;
+    @Nullable private SAMLObject samlResponse;
 
     /** Resolver of metadata for the relying party. */
-    private MetadataResolver metadataResolver;
+    @Nullable private MetadataResolver metadataResolver;
 
     /** Metadata of party to select endpoing for. */
-    private EntityDescriptor entityMetadata;
+    @Nullable private EntityDescriptor entityMetadata;
 
     /** Role metadata of party to select endpoing for. */
-    private RoleDescriptor entityRoleMetadata;
+    @Nullable private RoleDescriptor entityRoleMetadata;
 
     /** Type of endpoint needed. */
-    private QName endpointType;
+    @Nullable private QName endpointType;
 
     /** Constructor. */
     public AbstractEndpointSelector() {
-        supportedIssuerBindings = new ArrayList<String>(5);
+        supportedIssuerBindings = new ArrayList<>(5);
     }
 
     /**
@@ -64,7 +71,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return type of endpoint needed
      */
-    public QName getEndpointType() {
+    @Nullable public QName getEndpointType() {
         return endpointType;
     }
 
@@ -73,7 +80,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @param type type of endpoint needed
      */
-    public void setEndpointType(QName type) {
+    public void setEndpointType(@Nullable final QName type) {
         endpointType = type;
     }
 
@@ -82,7 +89,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return metadata resolver used to look up entity information
      */
-    public MetadataResolver getMetadataResolver() {
+    @Nullable public MetadataResolver getMetadataResolver() {
         return metadataResolver;
     }
 
@@ -91,7 +98,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @param resolver metadata resolver used to look up entity information
      */
-    public void setMetadataResolver(MetadataResolver resolver) {
+    public void setMetadataResolver(@Nullable final MetadataResolver resolver) {
         metadataResolver = resolver;
     }
 
@@ -100,7 +107,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return metadata of the entity
      */
-    public EntityDescriptor getEntityMetadata() {
+    @Nullable public EntityDescriptor getEntityMetadata() {
         return entityMetadata;
     }
 
@@ -109,7 +116,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @param entity metadata of the entity
      */
-    public void setEntityMetadata(EntityDescriptor entity) {
+    public void setEntityMetadata(@Nullable final EntityDescriptor entity) {
         entityMetadata = entity;
     }
 
@@ -118,7 +125,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return role of the entity
      */
-    public RoleDescriptor getEntityRoleMetadata() {
+    @Nullable public RoleDescriptor getEntityRoleMetadata() {
         return entityRoleMetadata;
     }
 
@@ -127,7 +134,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @param role role of the entity
      */
-    public void setEntityRoleMetadata(RoleDescriptor role) {
+    public void setEntityRoleMetadata(@Nullable final RoleDescriptor role) {
         entityRoleMetadata = role;
     }
 
@@ -136,7 +143,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return SAML request made
      */
-    public SAMLObject getSamlRequest() {
+    @Nullable public SAMLObject getSamlRequest() {
         return samlRequest;
     }
 
@@ -145,7 +152,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @param request SAML request made
      */
-    public void setSamlRequest(SAMLObject request) {
+    public void setSamlRequest(@Nullable final SAMLObject request) {
         samlRequest = request;
     }
 
@@ -154,7 +161,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return response to the SAML request
      */
-    public SAMLObject getSamlResponse() {
+    @Nullable public SAMLObject getSamlResponse() {
         return samlResponse;
     }
 
@@ -163,7 +170,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @param response response to the SAML request
      */
-    public void setSamlResponse(SAMLObject response) {
+    public void setSamlResponse(@Nullable final SAMLObject response) {
         samlResponse = response;
     }
 
@@ -172,7 +179,7 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return list of bindings supported by the message issuer
      */
-    public List<String> getSupportedIssuerBindings() {
+    @Nonnull @NonnullElements @Live public List<String> getSupportedIssuerBindings() {
         return supportedIssuerBindings;
     }
 
@@ -181,5 +188,6 @@ public abstract class AbstractEndpointSelector {
      * 
      * @return endpoint to which messages should be sent, or null if no suitable endpoint can be determined
      */
-    public abstract Endpoint selectEndpoint();
+    @Nullable public abstract Endpoint selectEndpoint();
+    
 }

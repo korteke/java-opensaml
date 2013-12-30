@@ -154,12 +154,12 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
         String messageDestination;
         try {
             messageDestination = StringSupport.trimOrNull(
-                    SAMLBindingSupport.getIntendedDestinationEndpointUri(messageContext));
+                    SAMLBindingSupport.getIntendedDestinationEndpointURI(messageContext));
         } catch (MessageException e) {
             throw new MessageHandlerException("Error obtaining message intended destination endpoint URI", e);
         }
         
-        boolean bindingRequires = SAMLBindingSupport.isIntendedDestinationEndpointUriRequired(messageContext);
+        boolean bindingRequires = SAMLBindingSupport.isIntendedDestinationEndpointURIRequired(messageContext);
         
         if (messageDestination == null) {
             if (bindingRequires) {
@@ -174,7 +174,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
         String receiverEndpoint;
         try {
             receiverEndpoint = StringSupport.trimOrNull(
-                    SAMLBindingSupport.getActualReceiverEndpointUri(messageContext, getHttpServletRequest()));
+                    SAMLBindingSupport.getActualReceiverEndpointURI(messageContext, getHttpServletRequest()));
         } catch (MessageException e) {
             throw new MessageHandlerException("Error obtaining message received endpoint URI", e);
         }

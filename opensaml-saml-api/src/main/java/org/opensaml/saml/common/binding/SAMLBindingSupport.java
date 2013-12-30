@@ -35,7 +35,6 @@ import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
-import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +45,12 @@ import com.google.common.base.Strings;
 public final class SAMLBindingSupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(SAMLBindingSupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SAMLBindingSupport.class);
 
     /** Constructor. */
-    private SAMLBindingSupport() { }
+    private SAMLBindingSupport() {
+        
+    }
     
     /**
      * Get the SAML protocol relay state from a message context.
@@ -57,8 +58,8 @@ public final class SAMLBindingSupport {
      * @param messageContext the message context on which to operate
      * @return the relay state or null
      */
-    @Nullable public static String getRelayState(@Nonnull final MessageContext<SAMLObject> messageContext) {
-        SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);
+    @Nullable @NotEmpty public static String getRelayState(@Nonnull final MessageContext<SAMLObject> messageContext) {
+        final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);
         if (bindingContext == null) { 
             return null;
         } else {
@@ -74,11 +75,7 @@ public final class SAMLBindingSupport {
      */
     public static void setRelayState(@Nonnull final MessageContext<SAMLObject> messageContext, 
             @Nullable String relayState) {
-        String trimmedState = StringSupport.trimOrNull(relayState);
-        if (trimmedState != null) {
-            SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
-            bindingContext.setRelayState(trimmedState);
-        }
+        messageContext.getSubcontext(SAMLBindingContext.class, true).setRelayState(relayState);
     }
     
     /**
@@ -91,7 +88,7 @@ public final class SAMLBindingSupport {
     public static boolean checkRelayState(@Nullable final String relayState) {
         if (!Strings.isNullOrEmpty(relayState)) {
             if (relayState.getBytes().length > 80) {
-                LOG.warn("Relay state exceeds 80 bytes, some application may not support this.");
+                LOG.warn("Relay state exceeds 80 bytes, some peers may not support this.");
             }
 
             return true;
@@ -101,7 +98,7 @@ public final class SAMLBindingSupport {
     }
     
     /**
-     * Gets the response URL from the relying party endpoint. If the SAML message is a 
+     * Get the response URL from the relying party endpoint. If the SAML message is a 
      * {@link StatusResponseType} and the relying party endpoint contains a response location 
      * then that location is returned otherwise the normal endpoint location is returned.
      * 
@@ -113,12 +110,12 @@ public final class SAMLBindingSupport {
      */
     @Nonnull public static URI getEndpointURL(@Nonnull final MessageContext<SAMLObject> messageContext) 
             throws BindingException {
-        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
+        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
         Constraint.isNotNull(peerContext, "Message context contained no PeerEntityContext");
-        SAMLEndpointContext endpointContext = peerContext.getSubcontext(SAMLEndpointContext.class, false);
+        final SAMLEndpointContext endpointContext = peerContext.getSubcontext(SAMLEndpointContext.class, false);
         Constraint.isNotNull(endpointContext, "PeerEntityContext contained no SAMLEndpointContext");
         
-        Endpoint endpoint = endpointContext.getEndpoint();
+        final Endpoint endpoint = endpointContext.getEndpoint();
         
         if (endpoint == null) {
             throw new BindingException("Endpoint for relying party was null.");
@@ -154,7 +151,7 @@ public final class SAMLBindingSupport {
      * @param outboundMessage outbound SAML message
      * @param endpointURL destination endpoint
      */
-    public static void setSaml1ResponseRecipient(@Nonnull final SAMLObject outboundMessage, 
+    public static void setSAML1ResponseRecipient(@Nonnull final SAMLObject outboundMessage, 
             @Nonnull @NotEmpty final String endpointURL) {
         if (outboundMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
             ((org.opensaml.saml.saml1.core.ResponseAbstractType) outboundMessage).setRecipient(endpointURL);
@@ -169,7 +166,7 @@ public final class SAMLBindingSupport {
      * @param outboundMessage outbound SAML message
      * @param endpointURL destination endpoint
      */
-    public static void setSaml2Destination(@Nonnull final SAMLObject outboundMessage, 
+    public static void setSAML2Destination(@Nonnull final SAMLObject outboundMessage, 
             @Nonnull @NotEmpty final String endpointURL) {
         if (outboundMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
             ((org.opensaml.saml.saml2.core.RequestAbstractType) outboundMessage).setDestination(endpointURL);
@@ -192,12 +189,12 @@ public final class SAMLBindingSupport {
      * @return true if the message is considered to be digitally signed, false otherwise
      */
     public static boolean isMessageSigned(@Nonnull final MessageContext<SAMLObject> messageContext) {
-        SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(),
+        final SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(),
                 "SAML message was not present in message context");
         if (samlMessage instanceof SignableSAMLObject && ((SignableSAMLObject)samlMessage).isSigned()) {
             return true;
         } else {
-            SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
+            final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
             if (bindingContext != null) {
                 return bindingContext.hasBindingSignature();
             } else {
@@ -213,9 +210,9 @@ public final class SAMLBindingSupport {
      * @param messageContext current SAML message context
      * @return true if the intended message destination endpoint is required, false if not
      */
-    public static boolean isIntendedDestinationEndpointUriRequired(
+    public static boolean isIntendedDestinationEndpointURIRequired(
             @Nonnull final MessageContext<SAMLObject> messageContext) {
-        SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
+        final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
         if (bindingContext == null) {
             return false;
         }
@@ -231,9 +228,9 @@ public final class SAMLBindingSupport {
      * @throws MessageException thrown if the message is not an instance of SAML message that
      *              could be processed by the decoder
      */
-    @Nullable public static String getIntendedDestinationEndpointUri(
+    @Nullable public static String getIntendedDestinationEndpointURI(
             @Nonnull final MessageContext<SAMLObject> messageContext)  throws MessageException {
-        SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(), 
+        final SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(), 
                 "SAML message was not present in message context");
         String messageDestination = null;
         //SAML 2 Request
@@ -272,10 +269,11 @@ public final class SAMLBindingSupport {
      * @throws MessageException thrown if the endpoint can not be looked up from the message
      *                              context and converted to a string representation
      */
-    public static String getActualReceiverEndpointUri(@Nonnull final MessageContext<SAMLObject> messageContext, 
-            @Nonnull final HttpServletRequest request) 
+    @Nonnull public static String getActualReceiverEndpointURI(
+            @Nonnull final MessageContext<SAMLObject> messageContext,  @Nonnull final HttpServletRequest request)
                     throws MessageException {
-        Constraint.isNotNull(request, "HttpServletRequest may not be null");
+        Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+        
         return request.getRequestURL().toString();
     }
 
