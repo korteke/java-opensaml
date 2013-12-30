@@ -15,25 +15,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.binding.encoding;
-
-import javax.annotation.Nonnull;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
-import org.opensaml.messaging.encoder.MessageEncoder;
-import org.opensaml.saml.common.SAMLObject;
-
 /**
- * SAML extension to the generic message encoder.
+ * Classes used to decode SAML messages. A decoder takes a wire protocol,
+ * extracts the SAML message from it, and then evaluates that message
+ * against a security policy.
  */
-public interface SAMLMessageEncoder extends MessageEncoder<SAMLObject> {
-
-    /**
-     * Gets the SAML binding URI supported by this encoder.
-     * 
-     * @return SAML binding URI supported by this encoder
-     */
-    @Nonnull @NotEmpty public String getBindingURI();
-    
-}
+package org.opensaml.saml.common.binding.decoding;

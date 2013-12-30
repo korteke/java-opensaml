@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.common.binding.decoding;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.opensaml.messaging.decoder.MessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 
@@ -30,5 +34,6 @@ public interface SAMLMessageDecoder extends MessageDecoder<SAMLObject> {
      * 
      * @return SAML binding URI supported by this decoder
      */
-    public String getBindingURI();
+    @Nonnull @NotEmpty public String getBindingURI();
+    
 }
