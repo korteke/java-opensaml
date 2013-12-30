@@ -48,7 +48,7 @@ public class SAML2ActionTestingSupport {
     public final static String ASSERTION_ID = "assertion";
 
     /**
-     * Builds an empty response. The ID of the message is {@link SamlActionTestingSupport#OUTBOUND_MSG_ID}, the issues
+     * Builds an empty response. The ID of the message is {@link SamlActionTestingSupport#OUTBOUND_MSG_ID}, the issue
      * instant is 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
      * 
      * @return the constructed response
@@ -67,7 +67,7 @@ public class SAML2ActionTestingSupport {
     }
 
     /**
-     * Builds an empty assertion. The ID of the message is {@link #ASSERTION_ID}, the issues instant is
+     * Builds an empty assertion. The ID of the message is {@link #ASSERTION_ID}, the issue instant is
      * 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
      * 
      * @return the constructed assertion
