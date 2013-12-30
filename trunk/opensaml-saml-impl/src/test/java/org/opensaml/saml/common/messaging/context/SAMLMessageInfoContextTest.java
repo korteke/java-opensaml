@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
  * Note: this test appears in the -impl module rather than the -api module because
  * we need to build actual SAMLObject instances. Can't have circular dependencies in Maven.
  */
-public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
+public class SAMLMessageInfoContextTest extends XMLObjectBaseTestCase {
     
     private String id;
     
