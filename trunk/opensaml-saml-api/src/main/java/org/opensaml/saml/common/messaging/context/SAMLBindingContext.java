@@ -17,34 +17,30 @@
 
 package org.opensaml.saml.common.messaging.context;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.BaseContext;
 
-import com.google.common.base.Strings;
-
 /**
  * Context for holding information related to the SAML binding in use.
  */
-public class SamlBindingContext extends BaseContext {
+public class SAMLBindingContext extends BaseContext {
     
     /** The relay state associated with the message. */
-    private String relayState;
+    @Nullable @NotEmpty private String relayState;
     
     /** The binding URI. */
-    private String bindingUri;
+    @Nullable @NotEmpty private String bindingUri;
     
     /** Flag indicating whether the message is signed at the binding level. */
     private boolean hasBindingSignature;
     
     /** Flag indicating whether the binding in use requires the presence within the message 
      * of information indicating the intended message destination endpoint URI. */
-    private boolean isIntendedDestinationEndpointUriRequired;
+    private boolean isIntendedDestinationEndpointURIRequired;
     
     /**
      * Gets the relay state.
@@ -69,7 +65,7 @@ public class SamlBindingContext extends BaseContext {
      * 
      * @return Returns the bindingUri.
      */
-    @Nonnull @NotEmpty public String getBindingUri() {
+    @Nullable @NotEmpty public String getBindingUri() {
         return bindingUri;
     }
 
@@ -78,9 +74,8 @@ public class SamlBindingContext extends BaseContext {
      * 
      * @param newBindingUri the new binding URI
      */
-    public void setBindingUri(@Nonnull @NotEmpty final String newBindingUri) {
-        Constraint.isFalse(Strings.isNullOrEmpty(newBindingUri), "Binding URI was null or empty");
-        bindingUri = newBindingUri;
+    public void setBindingUri(@Nullable final String newBindingUri) {
+        bindingUri = StringSupport.trimOrNull(newBindingUri);
     }
 
     /**
@@ -88,7 +83,7 @@ public class SamlBindingContext extends BaseContext {
      * 
      * @return true if message was signed at the binding level, otherwise false
      */
-    public boolean isHasBindingSignature() {
+    public boolean hasBindingSignature() {
         return hasBindingSignature;
     }
 
@@ -97,8 +92,8 @@ public class SamlBindingContext extends BaseContext {
      * 
      * @param flag true if message was signed at the binding level, otherwise false
      */
-    public void setHasBindingSignature(boolean flag) {
-        this.hasBindingSignature = flag;
+    public void setHasBindingSignature(final boolean flag) {
+        hasBindingSignature = flag;
     }
 
     /**
@@ -107,8 +102,8 @@ public class SamlBindingContext extends BaseContext {
      * 
      * @return true if required, false otherwise
      */
-    public boolean isIntendedDestinationEndpointUriRequired() {
-        return isIntendedDestinationEndpointUriRequired;
+    public boolean isIntendedDestinationEndpointURIRequired() {
+        return isIntendedDestinationEndpointURIRequired;
     }
 
     /**
@@ -117,9 +112,8 @@ public class SamlBindingContext extends BaseContext {
      * 
      * @param flag true if required, false otherwise
      */
-    public void setIntendedDestinationEndpointUriRequired(boolean flag) {
-        isIntendedDestinationEndpointUriRequired = flag;
+    public void setIntendedDestinationEndpointURIRequired(boolean flag) {
+        isIntendedDestinationEndpointURIRequired = flag;
     }
-
 
 }

@@ -27,8 +27,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLTestSupport;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
@@ -149,9 +149,9 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         
         messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(buildInboundSAMLMessage());
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        messageContext.getSubcontext(SamlProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
     }
     
     /**
@@ -164,10 +164,10 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO before this was evaling isInboundSAMLMessageAuthenticated
-        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
@@ -201,7 +201,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoContextIssuer() throws MessageHandlerException {
-        messageContext.removeSubcontext(SamlPeerEntityContext.class);
+        messageContext.removeSubcontext(SAMLPeerEntityContext.class);
         
         handler.invoke(messageContext);
     }

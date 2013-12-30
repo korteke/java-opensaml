@@ -22,8 +22,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
@@ -48,8 +48,8 @@ public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
         
         handler = new SAMLOutboundDestinationHandler();
         messageContext = new MessageContext<SAMLObject>();
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).
-            getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).
+            getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
     }
     
     @Test

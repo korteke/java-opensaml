@@ -25,10 +25,10 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 /**
  * Context that carries information about a SAML entity endpoint.
  */
-public class SamlEndpointContext extends BaseContext {
+public class SAMLEndpointContext extends BaseContext {
 
     /** The SAML entity endpoint. */
-    private Endpoint endpoint;
+    @Nullable private Endpoint endpoint;
 
     /**
      * Gets the endpoint of the SAML entity.

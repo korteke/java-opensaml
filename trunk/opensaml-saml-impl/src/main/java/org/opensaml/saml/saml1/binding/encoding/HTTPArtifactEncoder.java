@@ -35,7 +35,7 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
-import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
+import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.binding.artifact.AbstractSAML1Artifact;
@@ -220,7 +220,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      * @param artifactType the artifact type to store
      */
     private void storeSamlArtifactType(MessageContext<SAMLObject> messageContext, byte[] artifactType) {
-        messageContext.getSubcontext(SamlArtifactContext.class, true).setArtifactType(artifactType);
+        messageContext.getSubcontext(SAMLArtifactContext.class, true).setArtifactType(artifactType);
     }
 
     /**
@@ -231,6 +231,6 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      * @return the artifact type
      */
     private byte[] getSamlArtifactType(MessageContext<SAMLObject> messageContext) {
-        return messageContext.getSubcontext(SamlArtifactContext.class, true).getArtifactType();
+        return messageContext.getSubcontext(SAMLArtifactContext.class, true).getArtifactType();
     }
 }

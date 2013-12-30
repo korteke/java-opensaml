@@ -22,8 +22,8 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.messaging.context.SamlMetadataContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
@@ -48,16 +48,16 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
             return;
         }
         
-        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, true);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
         if (peerContext == null || Strings.isNullOrEmpty(peerContext.getEntityId())) {
             log.warn("SAML peer entityID was not available, unable to evaluate rule");
             return;
         }
         String messageIssuer = peerContext.getEntityId();
         
-        SamlMetadataContext metadataContext = peerContext.getSubcontext(SamlMetadataContext.class, false);
+        SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class, false);
         if (metadataContext == null || metadataContext.getRoleDescriptor() == null) {
-            log.warn("SamlPeerContext did not contain either a SamlMetadataContext or a RoleDescriptor, " 
+            log.warn("SamlPeerContext did not contain either a SAMLMetadataContext or a RoleDescriptor, " 
                     + "unable to evaluate rule");
             return;
         }

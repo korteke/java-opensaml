@@ -38,7 +38,7 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.messaging.SamlMessageSecuritySupport;
+import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
@@ -189,7 +189,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         }
 
         SignatureSigningParameters signingParameters = 
-                SamlMessageSecuritySupport.getContextSigningParameters(messageContext);
+                SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
         if (signingParameters != null && signingParameters.getSigningCredential() != null) {
             String sigAlgURI =  getSignatureAlgorithmURI(signingParameters);
             Pair<String, String> sigAlg = new Pair<String, String>("SigAlg", sigAlgURI);

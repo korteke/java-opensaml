@@ -27,8 +27,8 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.SAMLOutboundDestinationHandler;
-import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
@@ -77,8 +77,8 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
-            .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
+            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
         
         SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);

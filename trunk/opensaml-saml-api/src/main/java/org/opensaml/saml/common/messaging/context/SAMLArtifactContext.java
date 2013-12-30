@@ -19,24 +19,27 @@ package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.opensaml.messaging.context.BaseContext;
 
 /**
  * Context that carries information about SAML artifact usage.
  */
-public class SamlArtifactContext extends BaseContext {
+public class SAMLArtifactContext extends BaseContext {
 
     /** The artifact type. */
-    private byte[] artifactType;
+    @Nullable private byte[] artifactType;
     
     /** The artifact source entityID. */
-    private String sourceEntityId;
+    @Nullable @NotEmpty private String sourceEntityId;
     
     /** The artifact resolution endpoint URL. */
-    private String sourceArtifactResolutionServiceEndpointUrl;
+    @Nullable @NotEmpty private String sourceArtifactResolutionServiceEndpointUrl;
     
     /** The artifact resolution endpoint index. */
-    private Integer sourceArtifactResolutionServiceEndpointIndex;
+    @Nullable private Integer sourceArtifactResolutionServiceEndpointIndex;
 
     /**
      * Gets the artifact type.
@@ -61,7 +64,7 @@ public class SamlArtifactContext extends BaseContext {
      * 
      * @return the source entityID, may be null
      */
-    @Nullable public String getSourceEntityId() {
+    @Nullable @NotEmpty public String getSourceEntityId() {
         return sourceEntityId;
     }
 
@@ -71,7 +74,7 @@ public class SamlArtifactContext extends BaseContext {
      * @param entityId the new source entityID
      */
     public void setSourceEntityId(@Nullable final String entityId) {
-        sourceEntityId = entityId;
+        sourceEntityId = StringSupport.trimOrNull(entityId);
     }
 
     /**
@@ -79,7 +82,7 @@ public class SamlArtifactContext extends BaseContext {
      * 
      * @return the URL
      */
-    @Nullable public String getSourceArtifactResolutionServiceEndpointURL() {
+    @Nullable @NotEmpty public String getSourceArtifactResolutionServiceEndpointURL() {
         return sourceArtifactResolutionServiceEndpointUrl;
     }
 
@@ -89,7 +92,7 @@ public class SamlArtifactContext extends BaseContext {
      * @param url the new URL
      */
     public void setSourceArtifactResolutionServiceEndpointURL(@Nullable final String url) {
-        sourceArtifactResolutionServiceEndpointUrl = url;
+        sourceArtifactResolutionServiceEndpointUrl = StringSupport.trimOrNull(url);
     }
 
     /**

@@ -21,9 +21,9 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlBindingContext;
-import org.opensaml.saml.common.messaging.context.SamlMetadataContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
+import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.annotations.BeforeMethod;
@@ -53,9 +53,9 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
         spssoDescriptor.setAuthnRequestsSigned(false);
         
         messageContext = new MessageContext<SAMLObject>();
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
-            .getSubcontext(SamlMetadataContext.class, true).setRoleDescriptor(spssoDescriptor);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
+            .getSubcontext(SAMLMetadataContext.class, true).setRoleDescriptor(spssoDescriptor);
     }
     
     /**
@@ -127,7 +127,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
         
         spssoDescriptor.setAuthnRequestsSigned(true);
         
-        messageContext.getSubcontext(SamlBindingContext.class, true).setHasBindingSignature(true);
+        messageContext.getSubcontext(SAMLBindingContext.class, true).setHasBindingSignature(true);
         
         handler.invoke(messageContext);
     }

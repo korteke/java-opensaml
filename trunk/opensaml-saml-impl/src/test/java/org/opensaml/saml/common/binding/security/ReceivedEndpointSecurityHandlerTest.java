@@ -28,7 +28,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.messaging.context.SamlBindingContext;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -43,7 +43,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext<SAMLObject> messageContext;
     
-    private SamlBindingContext samlBindingContext;
+    private SAMLBindingContext samlBindingContext;
     
     private MockHttpServletRequest httpRequest;
     
@@ -58,10 +58,10 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         
         httpRequest = new MockHttpServletRequest();
         
-        samlBindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+        samlBindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
         samlBindingContext.setBindingUri(SAMLConstants.SAML2_REDIRECT_BINDING_URI);
         samlBindingContext.setHasBindingSignature(false);
-        samlBindingContext.setIntendedDestinationEndpointUriRequired(false);
+        samlBindingContext.setIntendedDestinationEndpointURIRequired(false);
         
         intendedDestinationUri = SAMLBindingSupport.getIntendedDestinationEndpointUri(messageContext);
         
@@ -103,7 +103,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         AuthnRequest authnRequest = (AuthnRequest) messageContext.getMessage();
         authnRequest.setDestination(null);
         
-        samlBindingContext.setIntendedDestinationEndpointUriRequired(false);
+        samlBindingContext.setIntendedDestinationEndpointURIRequired(false);
         
         String deliveredEndpointURL = intendedDestinationUri;
         
@@ -117,7 +117,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         AuthnRequest authnRequest = (AuthnRequest) messageContext.getMessage();
         authnRequest.setDestination(null);
         
-        samlBindingContext.setIntendedDestinationEndpointUriRequired(true);
+        samlBindingContext.setIntendedDestinationEndpointURIRequired(true);
         
         String deliveredEndpointURL = intendedDestinationUri;
         

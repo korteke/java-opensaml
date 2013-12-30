@@ -29,8 +29,8 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.SAMLOutboundDestinationHandler;
-import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
@@ -102,8 +102,8 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
-            .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
+            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
         
         SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);
@@ -145,8 +145,8 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
-            .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
+            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         
@@ -185,8 +185,8 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true)
-            .getSubcontext(SamlEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
+            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
         
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();

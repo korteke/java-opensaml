@@ -29,13 +29,13 @@ import org.opensaml.messaging.context.BaseContext;
  * Abstract base class for subcontexts that carry information about a SAML entity.  This context will often
  * contain subcontexts, whose data is construed to be scoped to that entity.
  */
-public abstract class AbstractSamlEntityContext extends BaseContext {
+public abstract class AbstractSAMLEntityContext extends BaseContext {
 
-    /** The entityId of the SAML entity. */
-    private String entityId;
+    /** The entityID of the SAML entity. */
+    @Nullable @NotEmpty private String entityId;
     
     /** The role under which the SAML entity is currently operating. */
-    private QName role;
+    @Nullable private QName role;
 
     /**
      * Gets the entityId of the SAML entity.

@@ -30,8 +30,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlMessageInfoContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.storage.ReplayCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,14 +106,14 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
 
     /** {@inheritDoc} */
     protected void doInvoke(@Nonnull MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, true);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
         
         String entityID = StringSupport.trimOrNull(peerContext.getEntityId());
         if (entityID == null) {
             entityID = "(unknown)";
         }
         
-        SamlMessageInfoContext msgInfoContext = messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
 
         String messageId = StringSupport.trimOrNull(msgInfoContext.getMessageId());
         if (messageId == null) {

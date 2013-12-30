@@ -44,13 +44,13 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  */
-public class SamlSubjectNameIdentifierContext extends BaseContext {
+public class SAMLSubjectNameIdentifierContext extends BaseContext {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SamlSubjectNameIdentifierContext.class);
+    @Nullable private Logger log = LoggerFactory.getLogger(SAMLSubjectNameIdentifierContext.class);
 
     /** The SAML name identifier represented by this context. */
-    private SAMLObject nameID;
+    @Nullable private SAMLObject nameID;
 
     /**
      * Gets the subject name identifier represented by the context, which is guaranteed to be either 
@@ -81,7 +81,7 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
      * @return the name identifier instance or null
      */
     @Nullable public NameIdentifier getSAML1SubjectNameIdentifier() {
-        SAMLObject samlObject = getSubjectNameIdentifier();
+        final SAMLObject samlObject = getSubjectNameIdentifier();
         if (samlObject instanceof NameIdentifier) {
             return (NameIdentifier) samlObject;
         } else {
@@ -99,7 +99,7 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
      * @return the name identifier instance or null
      */
     @Nullable public NameID getSAML2SubjectNameID() {
-        SAMLObject samlObject = getSubjectNameIdentifier();
+        final SAMLObject samlObject = getSubjectNameIdentifier();
         if (samlObject instanceof NameID) {
             return (NameID) samlObject;
         } else {
@@ -128,13 +128,13 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
      * @return the name identifier, or null if it can not be resolved
      */
     @Nullable protected SAMLObject resolveNameIdentifier() {
-        SAMLObject samlMessage = resolveSAMLMessage();
+        final SAMLObject samlMessage = resolveSAMLMessage();
         if (samlMessage == null) {
             log.debug("SAML message could not be dynamically resolved from parent context");
             return null;
         }
         if (samlMessage instanceof org.opensaml.saml.saml2.core.SubjectQuery) {
-            org.opensaml.saml.saml2.core.SubjectQuery query =  
+            final org.opensaml.saml.saml2.core.SubjectQuery query =  
                     (org.opensaml.saml.saml2.core.SubjectQuery) samlMessage;
             if (query.getSubject() != null) {
                 return query.getSubject().getNameID();
@@ -142,7 +142,7 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
                 return null;
             }
         } else if (samlMessage instanceof org.opensaml.saml.saml2.core.AuthnRequest) {
-            org.opensaml.saml.saml2.core.AuthnRequest request = 
+            final org.opensaml.saml.saml2.core.AuthnRequest request = 
                     (org.opensaml.saml.saml2.core.AuthnRequest) samlMessage;
             if (request.getSubject() != null) {
                 return request.getSubject().getNameID();
@@ -150,7 +150,7 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
                 return null;
             }
         } else if (samlMessage instanceof org.opensaml.saml.saml1.core.SubjectQuery) {
-            org.opensaml.saml.saml1.core.SubjectQuery query = 
+            final org.opensaml.saml.saml1.core.SubjectQuery query = 
                     (org.opensaml.saml.saml1.core.SubjectQuery) samlMessage;
             if (query.getSubject() != null) {
                 return query.getSubject().getNameIdentifier();
@@ -171,7 +171,7 @@ public class SamlSubjectNameIdentifierContext extends BaseContext {
      */
     @Nullable protected SAMLObject resolveSAMLMessage() {
         if (getParent() instanceof MessageContext) {
-            MessageContext parent = (MessageContext) getParent();
+            final MessageContext parent = (MessageContext) getParent();
             if (parent.getMessage() instanceof SAMLObject) {
                 return (SAMLObject) parent.getMessage();
             } 
