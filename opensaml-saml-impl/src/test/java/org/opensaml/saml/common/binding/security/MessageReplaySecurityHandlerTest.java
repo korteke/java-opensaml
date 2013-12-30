@@ -23,8 +23,8 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlMessageInfoContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.storage.ReplayCache;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.impl.MemoryStorageService;
@@ -54,8 +54,8 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
         
         messageID = "abc123";
 
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId("issuer");
-        messageContext.getSubcontext(SamlMessageInfoContext.class, true).setMessageId(messageID);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId("issuer");
+        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageId(messageID);
 
         storageService = new MemoryStorageService();
         storageService.initialize();
@@ -97,7 +97,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     public void testNoReplayDistinctIDs() throws MessageHandlerException {
         handler.invoke(messageContext);
 
-        messageContext.getSubcontext(SamlMessageInfoContext.class).setMessageId("someOther" + messageID);
+        messageContext.getSubcontext(SAMLMessageInfoContext.class).setMessageId("someOther" + messageID);
         handler.invoke(messageContext);
     }
 

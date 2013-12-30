@@ -22,7 +22,7 @@ import java.security.SecureRandom;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
+import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +64,8 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
      * @param requestContext the current message context
      * @return the SAML artifact context, or null
      */
-    protected SamlArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
-        return requestContext.getSubcontext(SamlArtifactContext.class, false);
+    protected SAMLArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
+        return requestContext.getSubcontext(SAMLArtifactContext.class, false);
     }
     
     /**
@@ -76,7 +76,7 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
      * @return the index of the attribute resolution service
      */
     protected String getArsEndpointUrl(MessageContext<SAMLObject> requestContext) {
-        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
+        SAMLArtifactContext artifactContext = getArtifactContext(requestContext);
 
         if (artifactContext == null || artifactContext.getSourceArtifactResolutionServiceEndpointURL() == null) {
             log.error("No artifact resolution service endpoint URL is available");

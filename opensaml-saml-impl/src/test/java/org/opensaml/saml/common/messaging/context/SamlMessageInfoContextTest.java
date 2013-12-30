@@ -30,7 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
- * Test the {@link SamlMessageInfoContext}.
+ * Test the {@link SAMLMessageInfoContext}.
  * 
  * Note: this test appears in the -impl module rather than the -api module because
  * we need to build actual SAMLObject instances. Can't have circular dependencies in Maven.
@@ -49,7 +49,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testNoParent() {
-        SamlMessageInfoContext infoContext = new SamlMessageInfoContext();
+        SAMLMessageInfoContext infoContext = new SAMLMessageInfoContext();
         Assert.assertNull(infoContext.getMessageId());
         Assert.assertNull(infoContext.getMessageIssueInstant());
     }
@@ -57,7 +57,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
     @Test
     public void testNonMessageContextParent() {
         TestContext testContext = new TestContext();
-        SamlMessageInfoContext infoContext =  testContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext infoContext =  testContext.getSubcontext(SAMLMessageInfoContext.class, true);
         Assert.assertNull(infoContext.getMessageId());
         Assert.assertNull(infoContext.getMessageIssueInstant());
         
@@ -67,7 +67,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
     public void testNonSAMLMessage() {
         MessageContext<Object> messageContext = new MessageContext<>();
         messageContext.setMessage(new Object());
-        SamlMessageInfoContext infoContext =  messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext infoContext =  messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         Assert.assertNull(infoContext.getMessageId());
         Assert.assertNull(infoContext.getMessageIssueInstant());
     }
@@ -79,7 +79,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
         message.setID(id);
         message.setIssueInstant(issueInstant);
         messageContext.setMessage(message);
-        SamlMessageInfoContext infoContext =  messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext infoContext =  messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         Assert.assertEquals(infoContext.getMessageId(), id);
         Assert.assertEquals(infoContext.getMessageIssueInstant(), issueInstant);
     }
@@ -91,7 +91,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
         message.setID(id);
         message.setIssueInstant(issueInstant);
         messageContext.setMessage(message);
-        SamlMessageInfoContext infoContext =  messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext infoContext =  messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         Assert.assertEquals(infoContext.getMessageId(), id);
         Assert.assertEquals(infoContext.getMessageIssueInstant(), issueInstant);
     }
@@ -103,7 +103,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
         message.setID(id);
         message.setIssueInstant(issueInstant);
         messageContext.setMessage(message);
-        SamlMessageInfoContext infoContext =  messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext infoContext =  messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         Assert.assertEquals(infoContext.getMessageId(), id);
         Assert.assertEquals(infoContext.getMessageIssueInstant(), issueInstant);
     }
@@ -115,7 +115,7 @@ public class SamlMessageInfoContextTest extends XMLObjectBaseTestCase {
         message.setID(id);
         message.setIssueInstant(issueInstant);
         messageContext.setMessage(message);
-        SamlMessageInfoContext infoContext =  messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext infoContext =  messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         Assert.assertEquals(infoContext.getMessageId(), id);
         Assert.assertEquals(infoContext.getMessageIssueInstant(), issueInstant);
     }

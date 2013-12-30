@@ -23,8 +23,8 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
@@ -46,13 +46,13 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
         
         CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
         
-        SamlPeerEntityContext peerEntityContext = messageContext.getSubcontext(SamlPeerEntityContext.class);
-        Constraint.isNotNull(peerEntityContext, "SamlPeerEntityContext was null");
+        SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+        Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
         Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
         criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
         
-        SamlProtocolContext protocolContext = getSamlProtocolContext(messageContext);
-        Constraint.isNotNull(protocolContext, "SamlProtocolContext was null");
+        SAMLProtocolContext protocolContext = getSamlProtocolContext(messageContext);
+        Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
         Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
         criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
 
@@ -65,26 +65,26 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
      * @param messageContext the current message context
      * @return the current SAML protocol context
      */
-    protected SamlProtocolContext getSamlProtocolContext(MessageContext<SAMLObject> messageContext) {
+    protected SAMLProtocolContext getSamlProtocolContext(MessageContext<SAMLObject> messageContext) {
         //TODO is this the final resting place?
-        return messageContext.getSubcontext(SamlProtocolContext.class, false);
+        return messageContext.getSubcontext(SAMLProtocolContext.class, false);
     }
 
     /** {@inheritDoc} */
     protected String getCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext) {
-        return messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId();
+        return messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId();
     }
 
     /** {@inheritDoc} */
     protected void setAuthenticatedCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext,
             String entityID) {
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(entityID);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(entityID);
     }
 
     /** {@inheritDoc} */
     protected void setAuthenticatedState(MessageContext<SAMLObject> messageContext, boolean authenticated) {
         //TODO this may change
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setAuthenticated(authenticated);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setAuthenticated(authenticated);
     }
     
 }

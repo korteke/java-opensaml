@@ -17,7 +17,10 @@
 
 package org.opensaml.saml.common.messaging;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -34,17 +37,14 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.opensaml.xmlsec.signature.support.Signer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** A support class for SAML security-related message handler operations. */
-public final class SamlMessageSecuritySupport {
-    
-    /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(SamlMessageSecuritySupport.class);
+public final class SAMLMessageSecuritySupport {
 
     /** Constructor. */
-    private SamlMessageSecuritySupport() { }
+    private SAMLMessageSecuritySupport() {
+        
+    }
     
     /**
      * Signs the SAML message represented in the message context if it a {@link SignableSAMLObject}
@@ -58,11 +58,10 @@ public final class SamlMessageSecuritySupport {
      * @throws SignatureException  if there is a problem with the signature operation
      * 
      */
-    @SuppressWarnings("unchecked")
     public static void signMessage(MessageContext<SAMLObject> messageContext) 
             throws SecurityException, MarshallingException, SignatureException {
-        SAMLObject outboundSAML = messageContext.getMessage();
-        SignatureSigningParameters parameters = getContextSigningParameters(messageContext);
+        final SAMLObject outboundSAML = messageContext.getMessage();
+        final SignatureSigningParameters parameters = getContextSigningParameters(messageContext);
 
         if (outboundSAML instanceof SignableSAMLObject && parameters != null) {
             SignableSAMLObject signableMessage = (SignableSAMLObject) outboundSAML;
@@ -92,7 +91,7 @@ public final class SamlMessageSecuritySupport {
      */
     @Nullable public static SignatureSigningParameters getContextSigningParameters(
             MessageContext<SAMLObject> messageContext) {
-        SecurityParametersContext context = messageContext.getSubcontext(SecurityParametersContext.class);
+        final SecurityParametersContext context = messageContext.getSubcontext(SecurityParametersContext.class);
         if (context != null) {
             return context.getSignatureSigningParameters();
         }
@@ -106,7 +105,7 @@ public final class SamlMessageSecuritySupport {
      * 
      * @return true if allowed, otherwise false
      */
-    public static boolean checkUrlScheme(String scheme) {
+    public static boolean checkUrlScheme(@Nonnull @NotEmpty String scheme) {
         return SAMLConfigurationSupport.getAllowedBindingUrlSchemes().contains(scheme);
     }
 

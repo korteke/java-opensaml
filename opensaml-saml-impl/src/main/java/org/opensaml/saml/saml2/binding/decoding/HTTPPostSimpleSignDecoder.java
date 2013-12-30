@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.binding.decoding;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.messaging.context.SamlBindingContext;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import com.google.common.base.Strings;
@@ -39,10 +39,10 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
      * @param messageContext the current message context
      */
     protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
-        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+        SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setHasBindingSignature(!Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
-        bindingContext.setIntendedDestinationEndpointUriRequired(SAMLBindingSupport.isMessageSigned(messageContext));
+        bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     
 }

@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
+import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,8 +76,8 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * @param requestContext the current message context
      * @return the SAML artifact context, or null
      */
-    protected SamlArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
-        return requestContext.getSubcontext(SamlArtifactContext.class, false);
+    protected SAMLArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
+        return requestContext.getSubcontext(SAMLArtifactContext.class, false);
     }
     
     /**
@@ -88,7 +88,7 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * @return the index of the attribute resolution service
      */
     protected Integer getArsEndpointIndex(MessageContext<SAMLObject> requestContext) {
-        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
+        SAMLArtifactContext artifactContext = getArtifactContext(requestContext);
 
         if (artifactContext == null || artifactContext.getSourceArtifactResolutionServiceEndpointIndex() == null) {
             log.error("No artifact resolution service endpoint index is available");
@@ -106,10 +106,10 @@ public class SAML2ArtifactType0004Builder implements SAML2ArtifactBuilder<SAML2A
      * @return the local entityId
      */
     protected String getSourceEntityId(MessageContext<SAMLObject> requestContext) {
-        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
-        Constraint.isNotNull(artifactContext, "Message context did not contain a SamlArtifactContext");
+        SAMLArtifactContext artifactContext = getArtifactContext(requestContext);
+        Constraint.isNotNull(artifactContext, "Message context did not contain a SAMLArtifactContext");
         Constraint.isNotNull(artifactContext.getSourceEntityId(), 
-                "SamlArtifactContext did not contain a source entityID");
+                "SAMLArtifactContext did not contain a source entityID");
         return artifactContext.getSourceEntityId();
     }
 

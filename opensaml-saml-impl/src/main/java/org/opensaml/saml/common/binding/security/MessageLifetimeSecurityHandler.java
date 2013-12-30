@@ -25,7 +25,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlMessageInfoContext;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -115,7 +115,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
 
     /** {@inheritDoc} */
     public void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        SamlMessageInfoContext msgInfoContext = messageContext.getSubcontext(SamlMessageInfoContext.class, true);
+        SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         
         if (msgInfoContext.getMessageIssueInstant() == null) {
             if(requiredRule){

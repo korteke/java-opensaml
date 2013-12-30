@@ -25,8 +25,8 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
-import org.opensaml.saml.common.messaging.context.SamlProtocolContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.Request;
@@ -159,9 +159,9 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(buildInboundSAMLMessage());
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SamlPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        messageContext.getSubcontext(SamlProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
     }
     
     /**
@@ -174,10 +174,10 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
@@ -206,19 +206,19 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         request.setQuery(query);
         messageContext.setMessage(request);
         
-        messageContext.getSubcontext(SamlPeerEntityContext.class).setEntityId(null);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class).setEntityId(null);
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), 
+        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), 
                 issuer, "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
     /**
-     * Test context issuer not set explicitly, resolved dynamically by SamlPeerEntityContext from SAML 2 message, 
+     * Test context issuer not set explicitly, resolved dynamically by SAMLPeerEntityContext from SAML 2 message, 
      * request with trusted credential.
      * @throws MessageHandlerException 
      */
@@ -229,17 +229,17 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         validX509Cred.setEntityId("SomeCoolIssuer");
         trustedCredentials.add(validX509Cred);
         
-        messageContext.getSubcontext(SamlPeerEntityContext.class).setEntityId(null);
+        messageContext.getSubcontext(SAMLPeerEntityContext.class).setEntityId(null);
         
         
         handler.invoke(messageContext);
         
         // Note that entityID for this test will be that contained in the SAML message,
         // since it's dynamically resolved by the context.
-        Assert.assertEquals(messageContext.getSubcontext(SamlPeerEntityContext.class, true).getEntityId(), 
+        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), 
                 "SomeCoolIssuer", "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SamlPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
 

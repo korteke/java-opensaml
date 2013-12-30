@@ -39,7 +39,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
-import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
+import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.binding.artifact.AbstractSAML2Artifact;
@@ -373,7 +373,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param artifactType the artifact type to store
      */
     private void storeSamlArtifactType(MessageContext<SAMLObject> messageContext, byte[] artifactType) {
-        messageContext.getSubcontext(SamlArtifactContext.class, true).setArtifactType(artifactType);
+        messageContext.getSubcontext(SAMLArtifactContext.class, true).setArtifactType(artifactType);
     }
 
     /**
@@ -384,7 +384,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @return the artifact type
      */
     private byte[] getSamlArtifactType(MessageContext<SAMLObject> messageContext) {
-        return messageContext.getSubcontext(SamlArtifactContext.class, true).getArtifactType();
+        return messageContext.getSubcontext(SAMLArtifactContext.class, true).getArtifactType();
     }
 
 }

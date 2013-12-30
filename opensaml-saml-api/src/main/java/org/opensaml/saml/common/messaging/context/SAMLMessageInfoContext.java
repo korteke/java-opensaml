@@ -24,9 +24,11 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-/** A context intended to be used as a subcontext of a {@link MessageContext}  that carries 
+/**
+ * A context intended to be used as a subcontext of a {@link MessageContext}  that carries 
  * some basic information about the SAML message.
  * 
  * <p>
@@ -38,20 +40,20 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
  * </p>
  *
  */
-public class SamlMessageInfoContext extends BaseContext {
+public class SAMLMessageInfoContext extends BaseContext {
 
     /** The ID of the message. */
-    private String messageId;
+    @Nullable @NotEmpty private String messageId;
 
     /** The issue instant of the message. */
-    private DateTime issueInstant;
+    @Nullable private DateTime issueInstant;
 
     /**
      * Gets the ID of the message.
      * 
      * @return ID of the message, may be null
      */
-    @Nullable public String getMessageId() {
+    @Nullable @NotEmpty public String getMessageId() {
         if (messageId == null) {
             messageId = resolveMessageId();
         }
@@ -95,7 +97,7 @@ public class SamlMessageInfoContext extends BaseContext {
      * @return the message ID, or null if it can not be resolved
      */
     @Nullable protected String resolveMessageId() {
-        SAMLObject samlMessage = resolveSAMLMessage();
+        final SAMLObject samlMessage = resolveSAMLMessage();
         if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
             org.opensaml.saml.saml2.core.RequestAbstractType request =  
                     (org.opensaml.saml.saml2.core.RequestAbstractType) samlMessage;
@@ -126,7 +128,7 @@ public class SamlMessageInfoContext extends BaseContext {
      * @return the message issue instant, or null if it can not be resolved
      */
     @Nullable protected DateTime resolveIssueInstant() {
-        SAMLObject samlMessage = resolveSAMLMessage();
+        final SAMLObject samlMessage = resolveSAMLMessage();
         //SAML 2 Request
         if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
             org.opensaml.saml.saml2.core.RequestAbstractType request =  
@@ -159,7 +161,7 @@ public class SamlMessageInfoContext extends BaseContext {
      */
     @Nullable protected SAMLObject resolveSAMLMessage() {
         if (getParent() instanceof MessageContext) {
-            MessageContext parent = (MessageContext) getParent();
+            final MessageContext parent = (MessageContext) getParent();
             if (parent.getMessage() instanceof SAMLObject) {
                 return (SAMLObject) parent.getMessage();
             } 

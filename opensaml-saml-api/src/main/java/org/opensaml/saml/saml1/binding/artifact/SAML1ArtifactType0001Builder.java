@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlArtifactContext;
+import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +66,8 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
      * @param requestContext the current message context
      * @return the SAML artifact context, or null
      */
-    protected SamlArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
-        return requestContext.getSubcontext(SamlArtifactContext.class, false);
+    protected SAMLArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
+        return requestContext.getSubcontext(SAMLArtifactContext.class, false);
     }
 
     /**
@@ -78,10 +78,10 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
      * @return the local entityId
      */
     protected String getSourceEntityId(MessageContext<SAMLObject> requestContext) {
-        SamlArtifactContext artifactContext = getArtifactContext(requestContext);
-        Constraint.isNotNull(artifactContext, "Message context did not contain a SamlArtifactContext");
+        SAMLArtifactContext artifactContext = getArtifactContext(requestContext);
+        Constraint.isNotNull(artifactContext, "Message context did not contain a SAMLArtifactContext");
         Constraint.isNotNull(artifactContext.getSourceEntityId(), 
-                "SamlArtifactContext did not contain a source entityID");
+                "SAMLArtifactContext did not contain a source entityID");
         return artifactContext.getSourceEntityId();
     }
     

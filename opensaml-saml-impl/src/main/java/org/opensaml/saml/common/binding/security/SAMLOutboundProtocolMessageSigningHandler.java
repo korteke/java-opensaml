@@ -22,7 +22,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.messaging.SamlMessageSecuritySupport;
+import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.messaging.SecurityParametersContext;
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A message handler implementation that signs an outbound SAML protocol message if the message context
  * contains an instance of {@link SignatureSigningParameters} as determined by
- * {@link SamlMessageSecuritySupport#getContextSigningParameters(MessageContext)}.
+ * {@link SAMLMessageSecuritySupport#getContextSigningParameters(MessageContext)}.
  */
 public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHandler<SAMLObject> {
     
@@ -43,10 +43,10 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
     /** {@inheritDoc} */
     protected void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         SignatureSigningParameters signingParameters = 
-                SamlMessageSecuritySupport.getContextSigningParameters(messageContext);
+                SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
         if (signingParameters != null) {
             try {
-                SamlMessageSecuritySupport.signMessage(messageContext);
+                SAMLMessageSecuritySupport.signMessage(messageContext);
             } catch (SecurityException | MarshallingException | SignatureException e) {
                 throw new MessageHandlerException("Error signing outbound protocol message", e);
             }

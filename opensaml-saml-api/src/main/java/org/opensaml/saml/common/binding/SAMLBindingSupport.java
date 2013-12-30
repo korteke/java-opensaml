@@ -32,9 +32,9 @@ import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.common.messaging.context.SamlBindingContext;
-import org.opensaml.saml.common.messaging.context.SamlEndpointContext;
-import org.opensaml.saml.common.messaging.context.SamlPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
+import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
@@ -58,7 +58,7 @@ public final class SAMLBindingSupport {
      * @return the relay state or null
      */
     @Nullable public static String getRelayState(@Nonnull final MessageContext<SAMLObject> messageContext) {
-        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class);
+        SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);
         if (bindingContext == null) { 
             return null;
         } else {
@@ -76,7 +76,7 @@ public final class SAMLBindingSupport {
             @Nullable String relayState) {
         String trimmedState = StringSupport.trimOrNull(relayState);
         if (trimmedState != null) {
-            SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+            SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
             bindingContext.setRelayState(trimmedState);
         }
     }
@@ -113,10 +113,10 @@ public final class SAMLBindingSupport {
      */
     @Nonnull public static URI getEndpointURL(@Nonnull final MessageContext<SAMLObject> messageContext) 
             throws BindingException {
-        SamlPeerEntityContext peerContext = messageContext.getSubcontext(SamlPeerEntityContext.class, false);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
         Constraint.isNotNull(peerContext, "Message context contained no PeerEntityContext");
-        SamlEndpointContext endpointContext = peerContext.getSubcontext(SamlEndpointContext.class, false);
-        Constraint.isNotNull(endpointContext, "PeerEntityContext contained no SamlEndpointContext");
+        SAMLEndpointContext endpointContext = peerContext.getSubcontext(SAMLEndpointContext.class, false);
+        Constraint.isNotNull(endpointContext, "PeerEntityContext contained no SAMLEndpointContext");
         
         Endpoint endpoint = endpointContext.getEndpoint();
         
@@ -184,7 +184,7 @@ public final class SAMLBindingSupport {
      * <p>
      * First the SAML protocol message is examined as to whether an XML signature is present.
      * If not, then the presence of a binding signature is evaluated by looking at 
-     * {@link SamlBindingContext#isHasBindingSignature()}.
+     * {@link SAMLBindingContext#hasBindingSignature()}.
      * </p>
      * 
      * 
@@ -197,9 +197,9 @@ public final class SAMLBindingSupport {
         if (samlMessage instanceof SignableSAMLObject && ((SignableSAMLObject)samlMessage).isSigned()) {
             return true;
         } else {
-            SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, false);
+            SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
             if (bindingContext != null) {
-                return bindingContext.isHasBindingSignature();
+                return bindingContext.hasBindingSignature();
             } else {
                 return false;
             }
@@ -215,11 +215,11 @@ public final class SAMLBindingSupport {
      */
     public static boolean isIntendedDestinationEndpointUriRequired(
             @Nonnull final MessageContext<SAMLObject> messageContext) {
-        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, false);
+        SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
         if (bindingContext == null) {
             return false;
         }
-        return bindingContext.isIntendedDestinationEndpointUriRequired();
+        return bindingContext.isIntendedDestinationEndpointURIRequired();
     }
     
     /**

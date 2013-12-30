@@ -22,6 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -47,23 +48,22 @@ import org.slf4j.LoggerFactory;
  * context instance is an immediate child of the message context, as returned by {@link #getParent()}.
  * </p>
  */
-public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityContext {
+public class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEntityContext {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SamlPeerEntityContext.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SAMLPeerEntityContext.class);
     
     /** Whether to use the resource of SAML 1 queries to resolve the entity ID. */
-    private boolean useSaml1QueryResourceAsEntityId;
-    
+    private boolean useSAML1QueryResourceAsEntityId;
     
     /** Constructor. */
-    public SamlPeerEntityContext() {
-        super();
-        useSaml1QueryResourceAsEntityId = true;
+    public SAMLPeerEntityContext() {
+        useSAML1QueryResourceAsEntityId = true;
     }
 
     /** {@inheritDoc} */
-    @Nullable public String getEntityId() {
+    @Override
+    @Nullable @NotEmpty public String getEntityId() {
         if (super.getEntityId() == null) {
             setEntityId(resolveEntityId());
         }
@@ -76,8 +76,8 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      * 
      * @return whether to use the Resource attribute of some SAML 1 queries to resolve the entity ID 
      */
-    public boolean getUseSaml1QueryResourceAsEntityId() {
-        return useSaml1QueryResourceAsEntityId;
+    public boolean getUseSAML1QueryResourceAsEntityId() {
+        return useSAML1QueryResourceAsEntityId;
     }
 
     /**
@@ -85,8 +85,8 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      * 
      * @param useResource whether to use the Resource attribute of some SAML 1 queries to resolve the entity ID
      */
-    public void setUseSaml1QueryResourceAsEntityId(boolean useResource) {
-        useSaml1QueryResourceAsEntityId = useResource;
+    public void setUseSAML1QueryResourceAsEntityId(boolean useResource) {
+        useSAML1QueryResourceAsEntityId = useResource;
     }
 
     /**
@@ -96,7 +96,7 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      * @return the entity ID, or null if it could not be resolved
      */
     @Nullable protected String resolveEntityId() {
-        SAMLObject samlMessage = resolveSAMLMessage();
+        final SAMLObject samlMessage = resolveSAMLMessage();
         //SAML 2 Request
         if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
             org.opensaml.saml.saml2.core.RequestAbstractType request =  
@@ -178,7 +178,7 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      */
     @Nullable protected String processSaml1Response(@Nonnull final org.opensaml.saml.saml1.core.Response response) {
         String issuer = null;
-        List<Assertion> assertions = response.getAssertions();
+        final List<Assertion> assertions = response.getAssertions();
         if (assertions != null && assertions.size() > 0) {
             log.info("Attempting to extract issuer from enclosed SAML 1.x Assertion(s)");
             for (Assertion assertion : assertions) {
@@ -241,9 +241,9 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      * @return the entity ID, or null if it could not be resolved
      */
     @Nullable protected String processSaml1AttributeQuery(@Nonnull final AttributeQuery query) {
-        if (getUseSaml1QueryResourceAsEntityId()) {
+        if (getUseSAML1QueryResourceAsEntityId()) {
             log.debug("Attempting to extract entity ID from SAML 1 AttributeQuery Resource attribute");
-            String resource = StringSupport.trimOrNull(query.getResource());
+            final String resource = StringSupport.trimOrNull(query.getResource());
 
             if (resource != null) {
                 log.debug("Extracted entity ID from SAML 1.x AttributeQuery: {}", resource);
@@ -261,9 +261,9 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      * @return the entity ID, or null if it could not be resolved
      */
     @Nullable protected String processSaml1AuthorizationDecisionQuery(@Nonnull final AuthorizationDecisionQuery query) {
-        if (getUseSaml1QueryResourceAsEntityId()) {
+        if (getUseSAML1QueryResourceAsEntityId()) {
             log.debug("Attempting to extract entity ID from SAML 1 AuthorizationDecisionQuery Resource attribute");
-            String resource = StringSupport.trimOrNull(query.getResource());
+            final String resource = StringSupport.trimOrNull(query.getResource());
 
             if (resource != null) {
                 log.debug("Extracted entity ID from SAML 1.x AuthorizationDecisionQuery: {}", resource);
@@ -306,7 +306,7 @@ public class SamlPeerEntityContext extends AbstractAuthenticatableSamlEntityCont
      */
     @Nullable protected SAMLObject resolveSAMLMessage() {
         if (getParent() instanceof MessageContext) {
-            MessageContext parent = (MessageContext) getParent();
+            final MessageContext parent = (MessageContext) getParent();
             if (parent.getMessage() instanceof SAMLObject) {
                 return (SAMLObject) parent.getMessage();
             } 

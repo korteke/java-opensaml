@@ -32,7 +32,7 @@ import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDe
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
-import org.opensaml.saml.common.messaging.context.SamlBindingContext;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,10 +117,10 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXmlMessage
      * @param messageContext the current message context
      */
     protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
-        SamlBindingContext bindingContext = messageContext.getSubcontext(SamlBindingContext.class, true);
+        SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setHasBindingSignature(!Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
-        bindingContext.setIntendedDestinationEndpointUriRequired(SAMLBindingSupport.isMessageSigned(messageContext));
+        bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
     }
     
 }
