@@ -57,13 +57,13 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
         
         SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class, false);
         if (metadataContext == null || metadataContext.getRoleDescriptor() == null) {
-            log.warn("SamlPeerContext did not contain either a SAMLMetadataContext or a RoleDescriptor, " 
+            log.warn("SAMLPeerContext did not contain either a SAMLMetadataContext or a RoleDescriptor, " 
                     + "unable to evaluate rule");
             return;
         }
         
         if (!(metadataContext.getRoleDescriptor() instanceof SPSSODescriptor)) {
-            log.warn("RoleDescriptor was not an SPSSODescriptor, it was a: {}. Unable to evaluate rule", 
+            log.warn("RoleDescriptor was not an SPSSODescriptor, it was a {}. Unable to evaluate rule", 
                     metadataContext.getRoleDescriptor().getClass().getName());
             return;
         }
