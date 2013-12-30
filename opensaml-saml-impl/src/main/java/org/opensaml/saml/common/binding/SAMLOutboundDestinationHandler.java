@@ -39,10 +39,11 @@ import org.slf4j.LoggerFactory;
 public class SAMLOutboundDestinationHandler extends AbstractMessageHandler<SAMLObject> {
     
     /** Logger. */
-    Logger log = LoggerFactory.getLogger(SAMLOutboundDestinationHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLOutboundDestinationHandler.class);
 
     /** {@inheritDoc} */
-    protected void doInvoke(@Nonnull MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    @Override
+    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(), 
                 "SAML message was not present in message context");
         
