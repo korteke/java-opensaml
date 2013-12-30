@@ -52,11 +52,11 @@ public class SAMLOutboundDestinationHandler extends AbstractMessageHandler<SAMLO
             
             if (samlMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
                 log.debug("Adding recipient to outbound SAML 1 protocol message: {}", endpointURL);
-                SAMLBindingSupport.setSaml1ResponseRecipient(samlMessage, endpointURL);
+                SAMLBindingSupport.setSAML1ResponseRecipient(samlMessage, endpointURL);
             } else if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType
                     || samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
                 log.debug("Adding destination to outbound SAML 2 protocol message: {}", endpointURL);
-                SAMLBindingSupport.setSaml2Destination(samlMessage, endpointURL);
+                SAMLBindingSupport.setSAML2Destination(samlMessage, endpointURL);
             }
             
         } catch (BindingException e) {

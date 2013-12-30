@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.SAMLException;
 
 /**
@@ -39,7 +41,7 @@ public class BindingException extends SAMLException{
      * 
      * @param message exception message
      */
-    public BindingException(String message) {
+    public BindingException(@Nullable final String message) {
         super(message);
     }
     
@@ -48,7 +50,7 @@ public class BindingException extends SAMLException{
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public BindingException(Exception wrappedException) {
+    public BindingException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
     
@@ -58,7 +60,8 @@ public class BindingException extends SAMLException{
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public BindingException(String message, Exception wrappedException) {
+    public BindingException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
-    }    
+    }
+    
 }
