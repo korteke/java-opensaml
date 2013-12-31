@@ -44,7 +44,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Handler for inbound SAML protocol messages that attempts to locate SAML metadata for
- * the message issuer, and attaches it with a {@link SAMLMetadataContext}.
+ * the message issuer, and attaches it with a {@link SAMLMetadataContext} as a child of the
+ * pre-existing {@link SAMLPeerEntityContext}.
  * 
  * <p>The handler will no-op in the absence of a populated {@link SAMLPeerEntityContext} for
  * the message with an entityID and role to look up. A protocol from a {@link SAMLProtocolContext}
@@ -113,7 +114,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler<SAMLObject
             metadataCtx.setEntityDescriptor((EntityDescriptor) roleMetadata.getParent());
             metadataCtx.setRoleDescriptor(roleMetadata);
 
-            messageContext.addSubcontext(metadataCtx);
+            peerCtx.addSubcontext(metadataCtx);
 
             log.debug("{} {} added to MessageContext", getLogPrefix(), SAMLMetadataContext.class.getName());
         } catch (ResolverException e) {
