@@ -40,7 +40,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
-import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
@@ -88,18 +87,19 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
 
     /** Constructor. */
     public AbstractMetadataResolver() {
-        super();
         failFastInitialization = true;
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         setId(UUID.randomUUID().toString());
     }
     
     /** {@inheritDoc} */
+    @Override
     public boolean isRequireValidMetadata() {
         return requireValidMetadata;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRequireValidMetadata(boolean require) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
@@ -161,6 +161,7 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
@@ -184,7 +185,10 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
     }
 
     /** {@inheritDoc} */
+    @Override
     protected final void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
         try {
             initMetadataResolver();
         } catch (ComponentInitializationException e) {
@@ -199,6 +203,7 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         unmarshallerFactory = null;
         mdFilter = null;
@@ -232,6 +237,9 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
             throws UnmarshallingException {
         
         try {
+            if (parser == null) {
+                throw new UnmarshallingException("ParserPool is null, can't parse input stream");
+            }
             log.trace("Parsing retrieved metadata into a DOM object");
             Document mdDocument = parser.parse(metadataInput);
 

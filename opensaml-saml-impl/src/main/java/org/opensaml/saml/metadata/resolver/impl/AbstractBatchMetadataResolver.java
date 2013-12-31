@@ -52,11 +52,11 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     
     /** Constructor. */
     public AbstractBatchMetadataResolver() {
-        super();
         setCacheSourceMetadata(true);
     }
     
     /** {@inheritDoc} */
+    @Override
     public Iterator<EntityDescriptor> iterator() {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         return Collections.unmodifiableList(getBackingStore().getOrderedDescriptors()).iterator();
@@ -83,6 +83,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
@@ -100,11 +101,13 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected BatchEntityBackingStore createNewBackingStore() {
         return new BatchEntityBackingStore();
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected BatchEntityBackingStore getBackingStore() {
         return (BatchEntityBackingStore) super.getBackingStore();
     }

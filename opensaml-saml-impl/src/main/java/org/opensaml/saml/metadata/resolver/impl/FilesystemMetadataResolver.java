@@ -22,7 +22,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Timer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.joda.time.DateTime;
@@ -51,7 +55,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
     private final Logger log = LoggerFactory.getLogger(FilesystemMetadataResolver.class);
 
     /** The metadata file. */
-    private File metadataFile;
+    @Nonnull private File metadataFile;
 
     /**
      * Constructor.
@@ -60,8 +64,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * 
      * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataResolver(File metadata) throws ResolverException {
-        super();
+    public FilesystemMetadataResolver(@Nonnull final File metadata) throws ResolverException {
         setMetadataFile(metadata);
     }
 
@@ -73,7 +76,8 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * 
      * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataResolver(Timer backgroundTaskTimer, File metadata) throws ResolverException {
+    public FilesystemMetadataResolver(@Nullable final Timer backgroundTaskTimer, @Nonnull final File metadata)
+            throws ResolverException {
         super(backgroundTaskTimer);
         setMetadataFile(metadata);
     }
@@ -85,14 +89,15 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * 
      * @throws ResolverException this exception is no longer thrown
      */
-    protected void setMetadataFile(File file) throws ResolverException {
+    protected void setMetadataFile(@Nonnull final File file) throws ResolverException {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
-        metadataFile = file;
+        metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         metadataFile = null;
           
@@ -100,11 +105,13 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
     }
     
     /** {@inheritDoc} */
+    @Override
     protected String getMetadataIdentifier() {
         return metadataFile.getAbsolutePath();
     }
 
     /** {@inheritDoc} */
+    @Override
     protected byte[] fetchMetadata() throws ResolverException {
         try {
             validateMetadataFile(metadataFile);
@@ -128,7 +135,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * @param file the file to evaluate
      * @throws ResolverException if file does not pass basic properties required of a metadata file
      */
-    protected void validateMetadataFile(File file) throws ResolverException {
+    protected void validateMetadataFile(@Nonnull final File file) throws ResolverException {
         if (!file.exists()) {
             throw new ResolverException("Metadata file '" + file.getAbsolutePath() + "' does not exist");
         }

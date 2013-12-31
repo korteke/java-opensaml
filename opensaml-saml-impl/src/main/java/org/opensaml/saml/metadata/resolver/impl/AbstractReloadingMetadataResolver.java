@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -103,9 +105,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * @param backgroundTaskTimer time used to schedule background refresh tasks
      */
-    protected AbstractReloadingMetadataResolver(Timer backgroundTaskTimer) {
-        super();
-        
+    protected AbstractReloadingMetadataResolver(@Nullable final Timer backgroundTaskTimer) {
         setCacheSourceMetadata(true);
         
         if (backgroundTaskTimer == null) {
@@ -117,7 +117,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     }
     
     /** {@inheritDoc} */
-    public void setCacheSourceMetadata(boolean flag) {
+    @Override
+    public void setCacheSourceMetadata(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
@@ -240,6 +241,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         refresMetadataTask.cancel();
         
@@ -256,6 +258,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
         try {
             refresh();
@@ -437,8 +440,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 newBackingStore.getCachedFilteredMetadata());
 
         log.debug("Computing expiration time for metadata from '{}'", metadataIdentifier);
-        DateTime metadataExpirationTime = SAML2Support.getEarliestExpiration(newBackingStore.getCachedOriginalMetadata(),
-                refreshStart.plus(getMaxRefreshDelay()), refreshStart);
+        DateTime metadataExpirationTime = SAML2Support.getEarliestExpiration(
+                newBackingStore.getCachedOriginalMetadata(), refreshStart.plus(getMaxRefreshDelay()), refreshStart);
         log.debug("Expiration of metadata from '{}' will occur at {}", metadataIdentifier, metadataExpirationTime
                 .toString());
 
