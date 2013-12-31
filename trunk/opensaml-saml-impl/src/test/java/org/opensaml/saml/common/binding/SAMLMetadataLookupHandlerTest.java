@@ -99,10 +99,10 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         handler.initialize();
         
         handler.invoke(messageContext);
-        Assert.assertNull(messageContext.getSubcontext(SAMLMetadataContext.class, false));
+        Assert.assertNull(messageContext.getSubcontext(SAMLPeerEntityContext.class, false));
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(
-                org.opensaml.saml.saml2.metadata.SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(org.opensaml.saml.saml2.metadata.SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         
         handler.invoke(messageContext);
         Assert.assertNull(messageContext.getSubcontext(SAMLMetadataContext.class, false));
@@ -113,14 +113,15 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         handler.setRoleDescriptorResolver(roleResolver);
         handler.initialize();
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         
         Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
         ((AttributeQuery) request.getQuery()).setResource("urn:notfound");
         messageContext.setMessage(request);
 
         handler.invoke(messageContext);
-        Assert.assertNull(messageContext.getSubcontext(SAMLMetadataContext.class, false));
+        Assert.assertNull(peerContext.getSubcontext(SAMLMetadataContext.class, false));
     }
  
     @Test
@@ -128,14 +129,15 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         handler.setRoleDescriptorResolver(roleResolver);
         handler.initialize();
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         
         Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
         ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
         messageContext.setMessage(request);
 
         handler.invoke(messageContext);
-        Assert.assertNull(messageContext.getSubcontext(SAMLMetadataContext.class, false));
+        Assert.assertNull(peerContext.getSubcontext(SAMLMetadataContext.class, false));
     }
 
     @Test
@@ -143,7 +145,8 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         handler.setRoleDescriptorResolver(roleResolver);
         handler.initialize();
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol("urn:foo");
         
         Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
@@ -151,7 +154,7 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         messageContext.setMessage(request);
 
         handler.invoke(messageContext);
-        Assert.assertNull(messageContext.getSubcontext(SAMLMetadataContext.class, false));
+        Assert.assertNull(peerContext.getSubcontext(SAMLMetadataContext.class, false));
     }
     
     @Test
@@ -159,7 +162,8 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         handler.setRoleDescriptorResolver(roleResolver);
         handler.initialize();
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
         
         Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
@@ -168,7 +172,7 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
 
         handler.invoke(messageContext);
         
-        SAMLMetadataContext mdCtx = messageContext.getSubcontext(SAMLMetadataContext.class, false);
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
         Assert.assertNotNull(mdCtx);
         Assert.assertNotNull(mdCtx.getRoleDescriptor());
         Assert.assertNotNull(mdCtx.getEntityDescriptor());
