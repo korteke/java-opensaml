@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.EventContext;
+import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
@@ -40,8 +41,8 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
  * @param <OutboundMessageType> type of out-bound message
  */
 public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType>
-    extends AbstractIdentifiableInitializableComponent
-    implements ProfileAction<InboundMessageType, OutboundMessageType> {
+        extends AbstractIdentifiableInitializableComponent
+        implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
     /** Current HTTP request, if available. */
     @Nullable private HttpServletRequest httpServletRequest;
@@ -55,12 +56,11 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      * Initializes the ID of this action to the class name.
      */
     public AbstractProfileAction() {
-        super();
-
         setId(getClass().getName());
     }
 
     /** {@inheritDoc} */
+    @Override
     public synchronized void setId(String componentId) {
         super.setId(componentId);
     }
@@ -107,12 +107,21 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     }
     
     /** {@inheritDoc} */
+    @Override
     public void execute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
         
-        // Clear any existing EventContext that might be hanging around.
-        profileRequestContext.removeSubcontext(EventContext.class);
+        // Clear any existing EventContext that might be hanging around, and if it exists,
+        // copy the Event to a PreviousEventContext.
+        EventContext previousEvent = profileRequestContext.getSubcontext(EventContext.class, false);
+        if (previousEvent != null) {
+            profileRequestContext.getSubcontext(PreviousEventContext.class, true).setEvent(previousEvent.getEvent());
+            profileRequestContext.removeSubcontext(EventContext.class);
+        } else {
+            // If there's no previous event, don't expose one.
+            profileRequestContext.removeSubcontext(PreviousEventContext.class);
+        }
         
         // The try/catch logic is designed to suppress a checked exception raised by
         // the doInvoke step by any unchecked errors in the doPostInvoke method.
