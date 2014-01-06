@@ -19,27 +19,29 @@ package org.opensaml.saml.common.binding.security;
 
 import java.net.URI;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
-import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class which verifies that the {@link Endpoint} to which a message will be delivered
- * contains a valid URL scheme.
+ * Class which verifies that the {@link org.opensaml.saml.saml2.metadata.Endpoint}
+ * to which a message will be delivered contains a valid URL scheme.
  */
 public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(EndpointUrlSchemeSecurityHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(EndpointUrlSchemeSecurityHandler.class);
 
     /** {@inheritDoc} */
-    protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
+    @Override
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         URI endpointUrl;
         try {
             endpointUrl = SAMLBindingSupport.getEndpointURL(messageContext);
@@ -47,7 +49,7 @@ public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
             throw new MessageHandlerException("Could not obtain message endpoint URL", e);
         }
         
-        log.debug("Checking outbound endpoint for allowed URL scheme: {}", endpointUrl);
+        log.debug("{} Checking outbound endpoint for allowed URL scheme: {}", getLogPrefix(), endpointUrl);
         
         if (!SAMLMessageSecuritySupport.checkUrlScheme(endpointUrl.getScheme())) {
             throw new MessageHandlerException("Relying party endpoint used the untrusted URL scheme "

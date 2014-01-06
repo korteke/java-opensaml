@@ -18,8 +18,10 @@
 package org.opensaml.saml.common.binding.security;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.Duration;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -42,21 +44,21 @@ import org.slf4j.LoggerFactory;
 public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObject> {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(MessageReplaySecurityHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(MessageReplaySecurityHandler.class);
 
     /** Message replay cache instance to use. */
-    private ReplayCache replayCache;
+    @NonnullAfterInit private ReplayCache replayCache;
 
     /** Whether this rule is required to be met. */
     private boolean requiredRule;
     
-    /** Time in seconds to expire cache entries. Default value: (180) */
-    private long expires;
+    /** Time in milliseconds to expire cache entries. Default value: (180) */
+    @Duration @NonNegative private long expires;
 
     /** Constructor. */
     public MessageReplaySecurityHandler() {
         requiredRule = true;
-        expires = 180;
+        expires = 180 * 1000;
     }
 
     /**
@@ -64,7 +66,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
      * 
      * @return Returns the replayCache.
      */
-    @Nullable public ReplayCache getReplayCache() {
+    @NonnullAfterInit public ReplayCache getReplayCache() {
         return replayCache;
     }
 
@@ -75,15 +77,16 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
      */
     public void setReplayCache(@Nonnull final ReplayCache cache) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        replayCache = Constraint.isNotNull(cache, "ReplayCache may not be null");
+        
+        replayCache = Constraint.isNotNull(cache, "ReplayCache cannot be null");
     }
 
     /**
-     * Gets the lifetime in seconds of replay entries.
+     * Gets the lifetime in milliseconds of replay entries.
      * 
-     * @return lifetime in seconds of entries
+     * @return lifetime in milliseconds of entries
      */
-    public long getExpires() {
+    @NonNegative public long getExpires() {
         return expires;
     }
 
@@ -92,37 +95,40 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
      * 
      * @param exp lifetime in seconds of entries
      */
-    public void setExpires(final long exp) {
+    public void setExpires(@Duration @NonNegative final long exp) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        expires = exp;
+        
+        expires = Constraint.isGreaterThanOrEqual(0, exp, "Expiration must be greater than or equal to 0");
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        Constraint.isNotNull(getReplayCache(), "ReplayCache instance was null");
+        Constraint.isNotNull(getReplayCache(), "ReplayCache instance cannot be null");
     }
 
     /** {@inheritDoc} */
-    protected void doInvoke(@Nonnull MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+    @Override
+    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
         
         String entityID = StringSupport.trimOrNull(peerContext.getEntityId());
         if (entityID == null) {
             entityID = "(unknown)";
         }
         
-        SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
+        final SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
 
-        String messageId = StringSupport.trimOrNull(msgInfoContext.getMessageId());
+        final String messageId = StringSupport.trimOrNull(msgInfoContext.getMessageId());
         if (messageId == null) {
             if (requiredRule) {
-                log.warn("Message contained no ID, replay check not possible");
+                log.warn("{} Message contained no ID, replay check not possible", getLogPrefix());
                 throw new MessageHandlerException("SAML message from issuer " + entityID
                         + " did not contain an ID");
             } else {
-                log.debug("Message contained no ID, rule is optional, skipping further processing");
+                log.debug("{} Message contained no ID, rule is optional, skipping further processing", getLogPrefix());
                 return;
             }
         }
@@ -132,11 +138,11 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
             issueInstant = new DateTime();
         }
         
-        log.debug("Evaluating message replay for message ID '{}', issue instant '{}', entityID '{}'", 
-                messageId, issueInstant, entityID);
+        log.debug("{} Evaluating message replay for message ID '{}', issue instant '{}', entityID '{}'", 
+                getLogPrefix(), messageId, issueInstant, entityID);
         
-        if (!getReplayCache().check(getClass().getName(), messageId, issueInstant.getMillis() + expires*1000)) {
-            log.warn("Replay detected of message '{}' from issuer '{}'", messageId, entityID);
+        if (!getReplayCache().check(getClass().getName(), messageId, issueInstant.getMillis() + expires)) {
+            log.warn("{} Replay detected of message '{}' from issuer '{}'", getLogPrefix(), messageId, entityID);
             throw new MessageHandlerException("Rejecting replayed message ID '" + messageId + "' from issuer "
                     + entityID);
         }

@@ -18,9 +18,9 @@
 package org.opensaml.saml.common.binding.security;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -46,19 +46,16 @@ import org.slf4j.LoggerFactory;
 public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAMLObject> {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ReceivedEndpointSecurityHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ReceivedEndpointSecurityHandler.class);
     
     /** The URI comparator to use in performing the validation. */
-    private UriComparator uriComparator;
+    @Nonnull private UriComparator uriComparator;
     
     /** The HttpServletRequest being processed. */
-    private HttpServletRequest httpServletRequest;
+    @NonnullAfterInit private HttpServletRequest httpServletRequest;
 
-    /**
-     * Constructor.
-     */
+    /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
-        super();
         uriComparator = new BasicUrlComparator();
     }
 
@@ -78,7 +75,8 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
      */
     public void setUriComparator(@Nonnull final UriComparator comparator) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        uriComparator = Constraint.isNotNull(comparator, "UriComparator may not be null");
+        
+        uriComparator = Constraint.isNotNull(comparator, "UriComparator cannot be null");
     }
     
     /**
@@ -86,7 +84,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
      * 
      * @return Returns the request.
      */
-    public HttpServletRequest getHttpServletRequest() {
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
         return httpServletRequest;
     }
 
@@ -95,21 +93,27 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
      * 
      * @param request The to set.
      */
-    public void setHttpServletRequest(HttpServletRequest request) {
+    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
+        
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        Constraint.isNotNull(uriComparator, "UriComparator must be supplied");
-        Constraint.isNotNull(httpServletRequest, "HttpServletRequest must be supplied");
+        if (uriComparator == null) {
+            throw new ComponentInitializationException("UriComparator cannot be null");
+        } else if (httpServletRequest == null) {
+            throw new ComponentInitializationException("HttpServletRequest cannot be null");
+        }
     }
 
     /** {@inheritDoc} */
-    protected void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    @Override
+    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         checkEndpointUri(messageContext, getUriComparator());
     }
     
@@ -147,9 +151,9 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
      *              the message Destination or receiver endpoint information
      */
     protected void checkEndpointUri(@Nonnull final MessageContext<SAMLObject> messageContext, 
-            @Nullable final UriComparator comparator) throws MessageHandlerException {
+            @Nonnull final UriComparator comparator) throws MessageHandlerException {
         Constraint.isNotNull(comparator, "UriComparator may not be null");
-        log.debug("Checking SAML message intended destination endpoint against receiver endpoint");
+        log.debug("{} Checking SAML message intended destination endpoint against receiver endpoint", getLogPrefix());
         
         String messageDestination;
         try {
@@ -159,14 +163,17 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
             throw new MessageHandlerException("Error obtaining message intended destination endpoint URI", e);
         }
         
-        boolean bindingRequires = SAMLBindingSupport.isIntendedDestinationEndpointURIRequired(messageContext);
+        final boolean bindingRequires = SAMLBindingSupport.isIntendedDestinationEndpointURIRequired(messageContext);
         
         if (messageDestination == null) {
             if (bindingRequires) {
-                log.error("SAML message intended destination endpoint URI required by binding was empty");
-                throw new MessageHandlerException("SAML message intended destination (required by binding) was not present");
+                log.error("{} SAML message intended destination endpoint URI required by binding was empty",
+                        getLogPrefix());
+                throw new MessageHandlerException(
+                        "SAML message intended destination (required by binding) was not present");
             } else {
-                log.debug("SAML message intended destination endpoint was empty, not required by binding, skipping");
+                log.debug("{} SAML message intended destination endpoint was empty, not required by binding, skipping",
+                        getLogPrefix());
                 return;
             }
         }
@@ -179,8 +186,8 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
             throw new MessageHandlerException("Error obtaining message received endpoint URI", e);
         }
         
-        log.debug("Intended message destination endpoint: {}", messageDestination);
-        log.debug("Actual message receiver endpoint: {}", receiverEndpoint);
+        log.debug("{} Intended message destination endpoint: {}", getLogPrefix(), messageDestination);
+        log.debug("{} Actual message receiver endpoint: {}", getLogPrefix(), receiverEndpoint);
         
         boolean matched;
         try {
@@ -189,12 +196,11 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
             throw new MessageHandlerException("Error comparing endpoint URI's", e);
         }
         if (!matched) {
-            log.error("SAML message intended destination endpoint '{}' did not match the recipient endpoint '{}'",
-                    messageDestination, receiverEndpoint);
+            log.error("{} SAML message intended destination endpoint '{}' did not match the recipient endpoint '{}'",
+                    getLogPrefix(), messageDestination, receiverEndpoint);
             throw new MessageHandlerException("SAML message failed received endpoint check");
         } else {
-            log.debug("SAML message intended destination endpoint matched recipient endpoint");
-            return;
+            log.debug("{} SAML message intended destination endpoint matched recipient endpoint", getLogPrefix());
         }
     }
 

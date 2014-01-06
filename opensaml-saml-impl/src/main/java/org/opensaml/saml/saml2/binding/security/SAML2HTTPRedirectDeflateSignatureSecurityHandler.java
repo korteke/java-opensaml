@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.binding.security;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.shibboleth.utilities.java.support.net.UriSupport;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -41,19 +39,19 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
     private final Logger log = LoggerFactory.getLogger(SAML2HTTPRedirectDeflateSignatureSecurityHandler.class);
 
     /** {@inheritDoc} */
-    protected boolean ruleHandles(HttpServletRequest request, MessageContext<SAMLObject> messgaeContext)
+    protected boolean ruleHandles(MessageContext<SAMLObject> messgaeContext)
             throws MessageHandlerException {
-        return "GET".equals(request.getMethod());
+        return "GET".equals(getHttpServletRequest().getMethod());
     }
 
     /** {@inheritDoc} */
-    protected byte[] getSignedContent(HttpServletRequest request) throws MessageHandlerException {
+    protected byte[] getSignedContent() throws MessageHandlerException {
         // We need the raw non-URL-decoded query string param values for HTTP-Redirect DEFLATE simple signature
         // validation.
         // We have to construct a string containing the signature input by accessing the
         // request directly. We can't use the decoded parameters because we need the raw
         // data and URL-encoding isn't canonical.
-        String queryString = request.getQueryString();
+        String queryString = getHttpServletRequest().getQueryString();
         log.debug("Constructing signed content string from URL query string {}", queryString);
 
         String constructed = buildSignedContentString(queryString);

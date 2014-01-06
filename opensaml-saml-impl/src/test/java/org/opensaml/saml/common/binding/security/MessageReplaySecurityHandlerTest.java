@@ -124,7 +124,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
         handler.setReplayCache(replayCache);
         
         // Set rule with 3 second expiration, with no clock skew
-        handler.setExpires(3);
+        handler.setExpires(3 * 1000);
         handler.initialize();
         
         handler.invoke(messageContext);

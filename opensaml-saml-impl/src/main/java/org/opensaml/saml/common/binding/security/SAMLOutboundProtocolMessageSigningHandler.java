@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -25,24 +27,24 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.SignatureSigningParameters;
-import org.opensaml.xmlsec.messaging.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * A message handler implementation that signs an outbound SAML protocol message if the message context
- * contains an instance of {@link SignatureSigningParameters} as determined by
+ * contains an instance of {@link org.opensaml.xmlsec.messaging.SignatureSigningParameters} as determined by
  * {@link SAMLMessageSecuritySupport#getContextSigningParameters(MessageContext)}.
  */
 public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHandler<SAMLObject> {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLOutboundProtocolMessageSigningHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLOutboundProtocolMessageSigningHandler.class);
 
     /** {@inheritDoc} */
-    protected void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        SignatureSigningParameters signingParameters = 
+    @Override
+    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+        final SignatureSigningParameters signingParameters = 
                 SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
         if (signingParameters != null) {
             try {
@@ -51,9 +53,9 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
                 throw new MessageHandlerException("Error signing outbound protocol message", e);
             }
         } else {
-            log.info("Message context did not contain signing parameters, outbound message will not be signed");
+            log.info("{} Message context did not contain signing parameters, outbound message will not be signed",
+                    getLogPrefix());
         }
-        
     }
 
 }

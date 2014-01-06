@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
@@ -29,8 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SAML security message handler which validates the signature (if present) on the {@link SAMLObject} which represents the
- * SAML protocol message being processed.
+ * SAML security message handler which validates the signature (if present) on the {@link SAMLObject} which represents
+ * the SAML protocol message being processed.
  * 
  * <p>
  * If the message is not an instance of {@link SignableSAMLObject}, then no processing is performed. If signature
@@ -48,11 +51,11 @@ import org.slf4j.LoggerFactory;
 public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLSignatureSecurityHandler {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLProtocolMessageXMLSignatureSecurityHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLProtocolMessageXMLSignatureSecurityHandler.class);
 
     //TODO decide whether this should be an interface with an impl
     /** Validator for XML Signature instances. */
-    private SAMLSignatureProfileValidator sigValidator;
+    @Nullable private SAMLSignatureProfileValidator sigValidator;
 
     /**
      * Constructor.
@@ -69,7 +72,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * 
      * @return Returns the sigValidator.
      */
-    public SAMLSignatureProfileValidator getSigValidator() {
+    @Nullable public SAMLSignatureProfileValidator getSigValidator() {
         return sigValidator;
     }
 
@@ -78,24 +81,26 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * 
      * @param validator The sigValidator to set.
      */
-    public void setSigValidator(SAMLSignatureProfileValidator validator) {
+    public void setSigValidator(@Nullable final SAMLSignatureProfileValidator validator) {
         sigValidator = validator;
     }
 
     /** {@inheritDoc} */
-    public void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    @Override
+    public void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
 
-        SAMLObject samlMsg = messageContext.getMessage();
+        final SAMLObject samlMsg = messageContext.getMessage();
         if (!(samlMsg instanceof SignableSAMLObject)) {
-            log.debug("Extracted SAML message was not a SignableSAMLObject, can not process signature");
+            log.debug("{} Extracted SAML message was not a SignableSAMLObject, cannot process signature",
+                    getLogPrefix());
             return;
         }
-        SignableSAMLObject signableObject = (SignableSAMLObject) samlMsg;
+        final SignableSAMLObject signableObject = (SignableSAMLObject) samlMsg;
         if (!signableObject.isSigned()) {
-            log.info("SAML protocol message was not signed, skipping XML signature processing");
+            log.info("{} SAML protocol message was not signed, skipping XML signature processing", getLogPrefix());
             return;
         }
-        Signature signature = signableObject.getSignature();
+        final Signature signature = signableObject.getSignature();
 
         performPreValidation(signature);
 
@@ -103,40 +108,44 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
     }
 
     /**
-     * Perform cryptographic validation and trust evaluation on the Signature token using the configured Signature trust
-     * engine.
+     * Perform cryptographic validation and trust evaluation on the Signature token using the configured Signature
+     * trust engine.
      * 
      * @param signature the signature which is being evaluated
      * @param signableObject the signable object which contained the signature
      * @param messageContext the SAML message context being processed
      * @throws MessageHandlerException thrown if the signature fails validation
      */
-    protected void doEvaluate(Signature signature, SignableSAMLObject signableObject, 
-            MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doEvaluate(@Nonnull final Signature signature, @Nonnull final SignableSAMLObject signableObject, 
+            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
 
         //TODO authentication flags - on peer or on message?
         
-        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
+        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
         if (peerContext != null && peerContext.getEntityId() != null) {
-            String contextEntityID = peerContext.getEntityId();
-            String msgType = signableObject.getElementQName().toString();
-            log.debug("Attempting to verify signature on signed SAML protocol message type: {}", msgType);
+            final String contextEntityID = peerContext.getEntityId();
+            final String msgType = signableObject.getElementQName().toString();
+            log.debug("{} Attempting to verify signature on signed SAML protocol message type: {}",
+                    getLogPrefix(), msgType);
             
             if (evaluate(signature, contextEntityID, messageContext)) {
-                log.info("Validation of protocol message signature succeeded, message type: {}", msgType);
+                log.info("{} Validation of protocol message signature succeeded, message type: {}",
+                        getLogPrefix(), msgType);
                 if (!peerContext.isAuthenticated()) {
-                    log.debug("Authentication via protocol message signature succeeded for context issuer entity ID {}",
-                            contextEntityID);
+                    log.debug("{} Authentication via protocol message signature succeeded for "
+                            + "context issuer entity ID {}", getLogPrefix(), contextEntityID);
                     peerContext.setAuthenticated(true);
                 }
             } else {
-                log.debug("Validation of protocol message signature failed for context issuer '" + contextEntityID
-                        + "', message type: " + msgType);
+                log.debug(
+                        "{} Validation of protocol message signature failed for context issuer '{}', message type: {}",
+                        getLogPrefix(), contextEntityID, msgType);
                 throw new MessageHandlerException("Validation of protocol message signature failed");
             }
         } else {
-            log.debug("Context issuer unavailable, can not attempt SAML protocol message signature validation");
-            throw new MessageHandlerException("Context issuer unavailable, can not validate signature");
+            log.debug("{} Context issuer unavailable, cannot attempt SAML protocol message signature validation",
+                    getLogPrefix());
+            throw new MessageHandlerException("Context issuer unavailable, cannot validate signature");
         }
     }
 
@@ -145,7 +154,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * 
      * @return the configured Signature validator, or null
      */
-    protected SAMLSignatureProfileValidator getSignaturePrevalidator() {
+    @Nullable protected SAMLSignatureProfileValidator getSignaturePrevalidator() {
         return getSigValidator();
     }
 
@@ -155,14 +164,15 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * @param signature the signature to evaluate
      * @throws MessageHandlerException thrown if the signature element fails pre-validation
      */
-    protected void performPreValidation(Signature signature) throws MessageHandlerException {
+    protected void performPreValidation(@Nonnull final Signature signature) throws MessageHandlerException {
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
             } catch (SignatureException e) {
-                log.debug("Protocol message signature failed signature pre-validation", e);
+                log.debug(getLogPrefix() + " Protocol message signature failed signature pre-validation", e);
                 throw new MessageHandlerException("Protocol message signature failed signature pre-validation", e);
             }
         }
     }
+    
 }

@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.common.binding.security;
 
-import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +78,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         "vow2xjxlzVcux2BZsUZYjBa07ZmNNBtF7WaQqH7l2OBCAdnBhvme5i/e0LK3Ivys" +
         "+hcVyvCXs5XtFTFWDAVYvzQ6";
     
-    private PrivateKey signingPrivateKey;
     private X509Certificate otherCert1;
     private String otherCert1Base64 = 
         "MIIECTCCAvGgAwIBAgIBMzANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
