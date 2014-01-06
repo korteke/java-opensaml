@@ -53,7 +53,6 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
 
     /** Constructor. */
     public ProfileRequestContext() {
-        super();
         profileId = ANONYMOUS_PROFILE_ID;
     }
 
