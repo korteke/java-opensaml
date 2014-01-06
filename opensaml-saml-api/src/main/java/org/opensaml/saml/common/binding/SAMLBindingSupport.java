@@ -111,17 +111,21 @@ public final class SAMLBindingSupport {
     @Nonnull public static URI getEndpointURL(@Nonnull final MessageContext<SAMLObject> messageContext) 
             throws BindingException {
         final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
-        Constraint.isNotNull(peerContext, "Message context contained no PeerEntityContext");
+        if (peerContext == null) {
+            throw new BindingException("Message context contained no PeerEntityContext");
+        }
+        
         final SAMLEndpointContext endpointContext = peerContext.getSubcontext(SAMLEndpointContext.class, false);
-        Constraint.isNotNull(endpointContext, "PeerEntityContext contained no SAMLEndpointContext");
+        if (endpointContext == null) {
+            throw new BindingException("PeerEntityContext contained no SAMLEndpointContext");
+        }
         
         final Endpoint endpoint = endpointContext.getEndpoint();
-        
         if (endpoint == null) {
             throw new BindingException("Endpoint for relying party was null.");
         }
 
-        SAMLObject message = messageContext.getMessage();
+        final SAMLObject message = messageContext.getMessage();
         if ((message instanceof org.opensaml.saml.saml2.core.StatusResponseType 
                 || message instanceof org.opensaml.saml.saml1.core.Response) 
                 && !Strings.isNullOrEmpty(endpoint.getResponseLocation())) {
