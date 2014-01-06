@@ -28,20 +28,23 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface StatusMessage extends SAMLObject {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "StatusMessage";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusMessage";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "ActionType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
-
-    /** Return the contents of this */
+    /**
+     * Get the message.
+     * 
+     * @return  the message
+     */
     String getMessage();
 
-    /** Set the contents of this */
+    /**
+     * Set the message.
+     * 
+     * @param message  the message
+     */
     void setMessage(String message);
 }
