@@ -17,7 +17,11 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -28,8 +32,6 @@ import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * SAML specialization of {@link BaseClientCertAuthSecurityHandler} which provides support for X509Credential 
@@ -37,24 +39,26 @@ import org.slf4j.LoggerFactory;
  */
 public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecurityHandler<SAMLObject> {
 
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAMLMDClientCertAuthSecurityHandler.class);
-
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<SAMLObject> messageContext) 
-        throws MessageHandlerException {
+    @Override
+    @Nonnull protected CriteriaSet buildCriteriaSet(@Nullable final String entityID,
+            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         
-        CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
+        final CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
         
-        SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-        Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
-        Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
-        criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
-        
-        SAMLProtocolContext protocolContext = getSamlProtocolContext(messageContext);
-        Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
-        Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
-        criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
+        try {
+            SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+            Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
+            Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
+            criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
+            
+            SAMLProtocolContext protocolContext = getSamlProtocolContext(messageContext);
+            Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
+            Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
+            criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
+        } catch (ConstraintViolationException e) {
+            throw new MessageHandlerException(e);
+        }
 
         return criteriaSet;
     }
@@ -65,24 +69,30 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
      * @param messageContext the current message context
      * @return the current SAML protocol context
      */
-    protected SAMLProtocolContext getSamlProtocolContext(MessageContext<SAMLObject> messageContext) {
+    @Nullable protected SAMLProtocolContext getSamlProtocolContext(
+            @Nonnull final MessageContext<SAMLObject> messageContext) {
         //TODO is this the final resting place?
         return messageContext.getSubcontext(SAMLProtocolContext.class, false);
     }
 
     /** {@inheritDoc} */
-    protected String getCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext) {
+    @Override
+    @Nullable protected String getCertificatePresenterEntityID(
+            @Nonnull final MessageContext<SAMLObject> messageContext) {
         return messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId();
     }
 
     /** {@inheritDoc} */
-    protected void setAuthenticatedCertificatePresenterEntityID(MessageContext<SAMLObject> messageContext,
-            String entityID) {
+    @Override
+    protected void setAuthenticatedCertificatePresenterEntityID(
+            @Nonnull final MessageContext<SAMLObject> messageContext, @Nullable final String entityID) {
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(entityID);
     }
 
     /** {@inheritDoc} */
-    protected void setAuthenticatedState(MessageContext<SAMLObject> messageContext, boolean authenticated) {
+    @Override
+    protected void setAuthenticatedState(@Nonnull final MessageContext<SAMLObject> messageContext,
+            final boolean authenticated) {
         //TODO this may change
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setAuthenticated(authenticated);
     }

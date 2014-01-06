@@ -17,8 +17,12 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.Duration;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.joda.time.DateTime;
 import org.opensaml.messaging.context.MessageContext;
@@ -35,63 +39,66 @@ import org.slf4j.LoggerFactory;
 public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLObject> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(MessageLifetimeSecurityHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(MessageLifetimeSecurityHandler.class);
 
     /**
-     * Clock skew - the number of seconds before a lower time bound, or after an upper time bound, to consider still
+     * Clock skew - milliseconds before a lower time bound, or after an upper time bound, to consider still
      * acceptable Default value: 3 minutes.
      */
-    private int clockSkew;
+    @Duration @NonNegative private long clockSkew;
 
-    /** Amount of time in seconds for which a message is valid after it is issued. Default value: 5 minutes */
-    private int messageLifetime;
+    /** Amount of time in milliseconds for which a message is valid after it is issued. Default value: 5 minutes */
+    @Duration @NonNegative private long messageLifetime;
     
     /** Whether this rule is required to be met. */
     private boolean requiredRule;
 
     /** Constructor. */
     public MessageLifetimeSecurityHandler() {
-        clockSkew = 60*3;
-        messageLifetime = 60*5;
+        clockSkew = 60 * 3 * 1000;
+        messageLifetime = 60 * 5 * 1000;
         requiredRule = true;
     }
     
     /**
      * Get the clock skew.
      * 
-     * @return Returns the clockSkew.
+     * @return the clock skew
      */
-    public int getClockSkew() {
+    @NonNegative public long getClockSkew() {
         return clockSkew;
     }
 
     /**
      * Set the clock skew.
      * 
-     * @param skew The clockSkew to set.
+     * @param skew clock skew to set
      */
-    public void setClockSkew(final int skew) {
+    public void setClockSkew(@Duration @NonNegative final long skew) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        clockSkew = skew;
+        
+        clockSkew = Constraint.isGreaterThanOrEqual(0, skew, "Clock skew must be greater than or equal to 0");
     }
 
     /**
-     * Gets the amount of time, in seconds, for which a message is valid.
+     * Gets the amount of time, in milliseconds, for which a message is valid.
      * 
-     * @return amount of time, in seconds, for which a message is valid
+     * @return amount of time, in milliseconds, for which a message is valid
      */
-    public int getMessageLifetime() {
+    @NonNegative public long getMessageLifetime() {
         return messageLifetime;
     }
 
     /**
-     * Sets the amount of time, in seconds, for which a message is valid.
+     * Sets the amount of time, in milliseconds, for which a message is valid.
      * 
-     * @param lifetime amount of time, in seconds, for which a message is valid
+     * @param lifetime amount of time, in milliseconds, for which a message is valid
      */
-    public synchronized void setMessageLifetime(final int lifetime) {
+    public synchronized void setMessageLifetime(@Duration @NonNegative final long lifetime) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        messageLifetime = lifetime;
+        
+        messageLifetime = Constraint.isGreaterThanOrEqual(0, lifetime,
+                "Message lifetime must be greater than or equal to 0");
     }
 
     /**
@@ -108,39 +115,43 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
      * 
      * @param required whether this rule is required to be met
      */
-    public void setRequiredRule(boolean required) {
+    public void setRequiredRule(final boolean required) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
         requiredRule = required;
     }
 
     /** {@inheritDoc} */
-    public void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
+    @Override
+    public void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+        final SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         
         if (msgInfoContext.getMessageIssueInstant() == null) {
-            if(requiredRule){
-                log.warn("Inbound SAML message issue instant not present in message context");
+            if (requiredRule) {
+                log.warn("{} Inbound SAML message issue instant not present in message context", getLogPrefix());
                 throw new MessageHandlerException("Inbound SAML message issue instant not present in message context");
-            }else{
+            } else {
                 return;
             }
         }
 
-        DateTime issueInstant = msgInfoContext.getMessageIssueInstant();
-        DateTime now = new DateTime();
-        DateTime latestValid = now.plusSeconds(getClockSkew());
-        DateTime expiration = issueInstant.plusSeconds(getClockSkew() + getMessageLifetime());
+        final DateTime issueInstant = msgInfoContext.getMessageIssueInstant();
+        final DateTime now = new DateTime();
+        final DateTime latestValid = now.plus(getClockSkew());
+        final DateTime expiration = issueInstant.plus(getClockSkew() + getMessageLifetime());
 
         // Check message wasn't issued in the future
         if (issueInstant.isAfter(latestValid)) {
-            log.warn("Message was not yet valid: message time was {}, latest valid is: {}", issueInstant, latestValid);
+            log.warn("{} Message was not yet valid: message time was {}, latest valid is: {}", getLogPrefix(),
+                    issueInstant, latestValid);
             throw new MessageHandlerException("Message was rejected because was issued in the future");
         }
 
         // Check message has not expired
         if (expiration.isBefore(now)) {
-            log.warn("Message was expired: message issue time was '" + issueInstant + "', message expired at: '"
-                    + expiration + "', current time: '" + now + "'");
+            log.warn(
+                    "{} Message was expired: message issue time was '{}', message expired at: '{}', current time: '{}'",
+                    getLogPrefix(), issueInstant, expiration, now);
             throw new MessageHandlerException("Message was rejected due to issue instant expiration");
         }
 

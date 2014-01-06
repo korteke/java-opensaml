@@ -17,7 +17,11 @@
 
 package org.opensaml.saml.common.binding.security;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -32,37 +36,38 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.impl.BaseTrustEngineSecurityHandler;
 import org.opensaml.xmlsec.signature.Signature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 /**
  * Base class for SAML security message handlers which evaluate a signature with a signature trust engine.
  */
-public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngineSecurityHandler<Signature, SAMLObject> {
+public abstract class BaseSAMLXMLSignatureSecurityHandler
+        extends BaseTrustEngineSecurityHandler<Signature, SAMLObject> {
     
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseSAMLXMLSignatureSecurityHandler.class);
-
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<SAMLObject> messageContext)
-        throws MessageHandlerException {
+    @Override
+    @Nonnull protected CriteriaSet buildCriteriaSet(@Nullable final String entityID,
+            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         
-        CriteriaSet criteriaSet = new CriteriaSet();
+        final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIdCriterion(entityID) );
         }
         
-        SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-        Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
-        Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
-        criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
-        
-        SAMLProtocolContext protocolContext = getSamlProtocolContext(messageContext);
-        Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
-        Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
-        criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
+        try {
+            SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+            Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
+            Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
+            criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
+
+            SAMLProtocolContext protocolContext = getSamlProtocolContext(messageContext);
+            Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
+            Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
+            criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
+        }  catch (ConstraintViolationException e) {
+            throw new MessageHandlerException(e);
+        }
         
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
@@ -75,7 +80,7 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngin
      * @param messageContext the current message context
      * @return the current SAML protocol context
      */
-    protected SAMLProtocolContext getSamlProtocolContext(MessageContext<SAMLObject> messageContext) {
+    protected SAMLProtocolContext getSamlProtocolContext(@Nonnull final MessageContext<SAMLObject> messageContext) {
         //TODO is this the final resting place?
         return messageContext.getSubcontext(SAMLProtocolContext.class, false);
     }

@@ -111,13 +111,15 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
     }
 
     /** {@inheritDoc} */
-    protected boolean ruleHandles(HttpServletRequest request, MessageContext<SAMLObject> messageContext) {
-        return "POST".equals(request.getMethod());
+    protected boolean ruleHandles(MessageContext<SAMLObject> messageContext) {
+        return "POST".equals(getHttpServletRequest().getMethod());
     }
 
     /** {@inheritDoc} */
-    protected byte[] getSignedContent(HttpServletRequest request) throws MessageHandlerException {
-        StringBuilder builder = new StringBuilder();
+    protected byte[] getSignedContent() throws MessageHandlerException {
+        final HttpServletRequest request = getHttpServletRequest();
+        
+        final StringBuilder builder = new StringBuilder();
         String samlMsg;
         try {
             if (request.getParameter("SAMLRequest") != null) {
@@ -156,10 +158,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
     }
 
     /** {@inheritDoc} */
-    protected List<Credential> getRequestCredentials(HttpServletRequest request, MessageContext<SAMLObject> samlContext)
+    protected List<Credential> getRequestCredentials(MessageContext<SAMLObject> samlContext)
             throws MessageHandlerException {
 
-        String kiBase64 = request.getParameter("KeyInfo");
+        String kiBase64 = getHttpServletRequest().getParameter("KeyInfo");
         if (Strings.isNullOrEmpty(kiBase64)) {
             log.debug("Form control data did not contain a KeyInfo");
             return null;
