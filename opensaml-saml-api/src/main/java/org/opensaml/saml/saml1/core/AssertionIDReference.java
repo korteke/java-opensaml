@@ -32,18 +32,23 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AssertionIDReference extends SAMLObject, Evidentiary {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDReference";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDReference";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
-    /** Get the reference */
+    /**
+     * Get the reference.
+     * 
+     * @return the reference
+     */
     public String getReference();
 
     /**
      * Set the reference.
      * 
-     * @param newReference what to add
+     * @param newReference the reference
      */
     public void setReference(String newReference);
 }
