@@ -26,21 +26,21 @@ import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLConsentContext;
-import org.opensaml.saml.saml2.core.StatusResponseType;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
 
 import com.google.common.base.Function;
 
 /**
- * MessageHandler to set the Consent attribute on a {@link StatusResponseType} message.
+ * MessageHandler to get the Consent attribute from a {@link RequestAbstractType} message.
  */
-public class AddConsentToResponseHandler extends AbstractMessageHandler<StatusResponseType> {
+public class ExtractConsentFromRequestHandler extends AbstractMessageHandler<RequestAbstractType> {
     
     /** Strategy for locating {@link SAMLConsentContext}. */
-    @Nonnull private Function<MessageContext<StatusResponseType>, SAMLConsentContext> consentContextStrategy;
+    @Nonnull private Function<MessageContext<RequestAbstractType>, SAMLConsentContext> consentContextStrategy;
 
     /** Constructor. */
-    public AddConsentToResponseHandler() {
-        consentContextStrategy = new ChildContextLookup<>(SAMLConsentContext.class);
+    public ExtractConsentFromRequestHandler() {
+        consentContextStrategy = new ChildContextLookup<>(SAMLConsentContext.class, true);
     }
     
     /**
@@ -49,26 +49,26 @@ public class AddConsentToResponseHandler extends AbstractMessageHandler<StatusRe
      * @param strategy  lookup strategy
      */
     public synchronized void setConsentContextLookupStrategy(
-            @Nonnull final Function<MessageContext<StatusResponseType>, SAMLConsentContext> strategy) {
+            @Nonnull final Function<MessageContext<RequestAbstractType>, SAMLConsentContext> strategy) {
         consentContextStrategy = Constraint.isNotNull(strategy, "SAMLConsentContext lookup strategy cannot be null");
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<StatusResponseType> messageContext)
+    protected void doInvoke(@Nonnull final MessageContext<RequestAbstractType> messageContext)
             throws MessageHandlerException {
 
-        final StatusResponseType response = messageContext.getMessage();
-        if (response == null) {
-            throw new MessageHandlerException("Response was not found");
+        final RequestAbstractType request = messageContext.getMessage();
+        if (request == null) {
+            throw new MessageHandlerException("Request was not found");
         }
         
         final SAMLConsentContext consentContext = consentContextStrategy.apply(messageContext);
-        if (consentContext == null || consentContext.getConsent() == null) {
-            throw new MessageHandlerException("Consent value not found");
+        if (consentContext == null) {
+            throw new MessageHandlerException("SAMLConsentContext to populate not found");
         }
         
-        response.setConsent(consentContext.getConsent());
+        consentContext.setConsent(request.getConsent());
     }
     
 }
