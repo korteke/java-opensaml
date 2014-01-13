@@ -60,7 +60,7 @@ public class EncodeMessage extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EncodeMessage.class);
 
-    /** The {@link MessageDecoder} instance used to decode the incoming message. */
+    /** The {@link MessageEncoder} instance used to encode the outgoing message. */
     @Nonnull private final MessageEncoder encoder;
     
     /**
