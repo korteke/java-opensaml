@@ -23,10 +23,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.messaging.handler.impl.SchemaValidateXmlMessage;
 
-import net.shibboleth.ext.spring.resource.ShibbolethResourceHelper;
-import net.shibboleth.utilities.java.support.resource.ShibbolethResource;
 import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
-import net.shibboleth.utilities.java.support.xml.SchemaBuilder.SchemaLanguage;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -34,6 +31,7 @@ import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -61,9 +59,10 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
      */
     @BeforeClass public void setUp() throws Exception {
 
-        ShibbolethResource schemaResource =  ShibbolethResourceHelper.of(new ClassPathResource(SCHEMA_FILE));
-
-        schema = SchemaBuilder.buildSchema(SchemaLanguage.XML, schemaResource);
+        Resource r = new ClassPathResource(SCHEMA_FILE);
+        final SchemaBuilder schemaBuilder = new SchemaBuilder();
+        schemaBuilder.addSchemas(r.getInputStream());
+        schema = schemaBuilder.buildSchema();
     }
 
     /** Test a null inbound message context. */
@@ -109,7 +108,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
 
         MessageContext messageContext = new MessageContext();
 
-        ShibbolethResource invalidXmlResource = ShibbolethResourceHelper.of(new ClassPathResource(INVALID_XML_FILE));
+        Resource invalidXmlResource = new ClassPathResource(INVALID_XML_FILE);
 
         XMLObject invalidXml =
                 XMLObjectSupport.unmarshallFromInputStream(parserPool, invalidXmlResource.getInputStream());
@@ -131,7 +130,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
 
         MessageContext messageContext = new MessageContext();
 
-        ShibbolethResource validXmlResource = ShibbolethResourceHelper.of(new ClassPathResource(VALID_XML_FILE));
+        Resource validXmlResource = new ClassPathResource(VALID_XML_FILE);
 
         XMLObject validXml = XMLObjectSupport.unmarshallFromInputStream(parserPool, validXmlResource.getInputStream());
 
