@@ -21,10 +21,10 @@ import java.io.File;
 import java.net.URL;
 import java.util.Timer;
 
-import net.shibboleth.ext.spring.resource.ShibbolethResourceHelper;
+import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.resource.ShibbolethResource;
+import net.shibboleth.utilities.java.support.resource.Resource;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -51,7 +51,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
 
         URL mdURL = ResourceBackedMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
-        ShibbolethResource mdResource = ShibbolethResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
+        Resource mdResource = ResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
 
         metadataProvider = new ResourceBackedMetadataResolver(new Timer(), mdResource);
         metadataProvider.setParserPool(parserPool);

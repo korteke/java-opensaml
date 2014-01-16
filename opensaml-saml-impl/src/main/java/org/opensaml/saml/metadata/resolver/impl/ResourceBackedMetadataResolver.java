@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.util.Timer;
 
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.resource.ShibbolethResource;
+import net.shibboleth.utilities.java.support.resource.Resource;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A metadata provider that reads metadata from a {#link {@link ShibbolethResource}.
+ * A metadata provider that reads metadata from a {#link {@link Resource}.
  * 
  * @since 2.2
  */
@@ -38,7 +38,7 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
     private final Logger log = LoggerFactory.getLogger(ResourceBackedMetadataResolver.class);
 
     /** Resource from which metadata is read. */
-    private ShibbolethResource metadataResource;
+    private Resource metadataResource;
 
 
     /**
@@ -53,7 +53,7 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
      * 
      * @deprecated
      */
-    public ResourceBackedMetadataResolver(ShibbolethResource resource, Timer timer, long maxMetadataCacheDuration)
+    public ResourceBackedMetadataResolver(Resource resource, Timer timer, long maxMetadataCacheDuration)
             throws ResolverException {
         super(timer);
 
@@ -75,7 +75,7 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
      * 
      * @throws IOException thrown if there is a problem retrieving information about the resource
      */
-    public ResourceBackedMetadataResolver(Timer timer, ShibbolethResource resource) throws IOException {
+    public ResourceBackedMetadataResolver(Timer timer, Resource resource) throws IOException {
         super(timer);
 
         if (!resource.exists()) {
