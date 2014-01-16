@@ -17,10 +17,18 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import java.io.InputStream;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Validator;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.ClasspathResolver;
+import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
@@ -36,33 +44,71 @@ import org.xml.sax.SAXException;
 public class SchemaValidationFilter implements MetadataFilter {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SchemaValidationFilter.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SchemaValidationFilter.class);
+
+    /** Self-managed SchemaBuilder to support old extension schema parameter. */
+    @Nullable private SchemaBuilder schemaBuilder;
+
+    /** SAML schema source. */
+    @Nonnull private SAMLSchemaBuilder samlSchemaBuilder;
+        
+    /**
+     * Constructor.
+     * 
+     * @param builder SAML schema source to use
+     */
+    public SchemaValidationFilter(@Nonnull final SAMLSchemaBuilder builder) {
+        this(builder, null);
+    }
 
     /**
      * Constructor.
      * 
-     * @param extensionSchemas classpath location of metadata extension schemas, may be null
+     * <p>Specifying extension schemas should be done by explicitly injecting a
+     * pre-configured {@link SchemaBuilder} using the non-deprecated constructor. Using this
+     * version results in an internally constructed {@link SchemaBuilder} using classpath-based
+     * schema resolution of any extensions or imports, with other settings left to their
+     * defaults.</p>
+     * 
+     * @deprecated
+     * 
+     * @param builder SAML schema source to use
+     * @param extensionSchemas classpath-based location of metadata extension schemas
      */
-    public SchemaValidationFilter(String[] extensionSchemas) {
+    public SchemaValidationFilter(@Nonnull final SAMLSchemaBuilder builder,
+            @Nullable @NonnullElements final String[] extensionSchemas) {
+        samlSchemaBuilder = Constraint.isNotNull(builder, "SAMLSchemaBuilder cannot be null");
+        
         if (extensionSchemas != null) {
+            log.info("Overriding SchemaBuilder used to construct schemas to accomodate extension schemas");
+            log.warn("Supplying extension schemas directly to metadata filter is deprecated");
+            
+            SchemaBuilder overriddenSchemaBuilder = new SchemaBuilder();
+            overriddenSchemaBuilder.setResourceResolver(new ClasspathResolver());
+            Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
             for (String extension : extensionSchemas) {
-                extension = StringSupport.trimOrNull(extension);
-                if (extension != null) {
-                    SAMLSchemaBuilder.addExtensionSchema(extension);
+                final String trimmed = StringSupport.trimOrNull(extension);
+                if (trimmed != null) {
+                    final InputStream stream = clazz.getResourceAsStream(trimmed);
+                    if (stream != null) {
+                        overriddenSchemaBuilder.addSchemas(stream);
+                    }
                 }
             }
+            samlSchemaBuilder.setSchemaBuilder(overriddenSchemaBuilder);
         }
     }
-
+        
     /** {@inheritDoc} */
-    public XMLObject filter(XMLObject metadata) throws FilterException {
+    @Override
+    @Nullable public XMLObject filter(@Nullable final XMLObject metadata) throws FilterException {
         if (metadata == null) {
             return null;
         }
         
         Validator schemaValidator = null;
         try {
-            schemaValidator = SAMLSchemaBuilder.getSAML11Schema().newValidator();
+            schemaValidator = samlSchemaBuilder.getSAMLSchema().newValidator();
         } catch (SAXException e) {
             log.error("Unable to build metadata validation schema", e);
             throw new FilterException("Unable to build metadata validation schema", e);
