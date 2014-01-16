@@ -17,11 +17,16 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import net.shibboleth.utilities.java.support.xml.ClasspathResolver;
+import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
+
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.apache.http.client.params.AllClientPNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
+import org.opensaml.saml.common.xml.SAMLSchemaBuilder.SAML1Version;
 import org.opensaml.saml.metadata.resolver.filter.impl.SchemaValidationFilter;
 import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
 
@@ -48,7 +53,7 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     public void test() throws Exception {
         HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setParserPool(parserPool);
-        metadataProvider.setMetadataFilter(new SchemaValidationFilter(null));
+        metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11)));
         metadataProvider.initialize();
     }
 }

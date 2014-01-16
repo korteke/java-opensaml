@@ -26,6 +26,8 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
+import org.opensaml.saml.common.xml.SAMLSchemaBuilder.SAML1Version;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.impl.SchemaValidationFilter;
 import org.opensaml.saml.metadata.resolver.impl.ChainingMetadataResolver;
@@ -87,7 +89,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test()
     public void testFilterDisallowed() {
         try {
-            metadataProvider.setMetadataFilter(new SchemaValidationFilter(new String[] {}));
+            metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11)));
             Assert.fail("Should fail with an UnsupportedOperationException");
         } catch (UnsupportedOperationException e) {
             // expected, do nothing

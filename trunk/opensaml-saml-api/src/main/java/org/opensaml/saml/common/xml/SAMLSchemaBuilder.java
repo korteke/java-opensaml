@@ -17,69 +17,60 @@
 
 package org.opensaml.saml.common.xml;
 
+import java.io.InputStream;
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import javax.xml.XMLConstants;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ClasspathResolver;
-import net.shibboleth.utilities.java.support.xml.LoggingErrorHandler;
+import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
 
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
- * A convenience builder for creating {@link Schema}s for validating SAML 1_0, 1_1, and 2_0.
+ * A convenience builder for creating {@link Schema}s for validating SAML 1.0, 1.1, and 2.0.
  * 
- * Additional schema may be registered by {@link #addExtensionSchema(String)} with the given argument a relative or
- * absolute path that will be resolved against the classpath. Note that relative paths are relative to
- * <strong>this</strong> class. Also, schema files must be provided in the order they are referenced, that is
- * if schema B depends on schema A then schema A must appear first in the list of registered extension schemas.
- * 
- * Schemas may use a schema location attribute. These schema locations will be resolved by the
- * {@link ClasspathResolver}. If schema locations are used they will be resolved and will meet the aforementioned
- * schema ordering requirement.
- * 
- * The schema objects produced here are thread safe and should be re-used, to that end the schema builder will cache
- * created schema using {@link SoftReference}s, allowing the VM to reclaim the memory used by schemas if necessary.
+ * <p>Additional schemas may be included in the resulting object by supplying their locations
+ * to a injected {@link SchemaBuilder} object.</p>
  */
-public final class SAMLSchemaBuilder {
-
-    /** SAML 1_0 Schema with SAML 2_0 schemas and extensions. */
-    private static SoftReference<Schema> saml10Schema;
-
-    /** SAML 1_0 Schema with SAML 2_0 schemas and extensions. */
-    private static SoftReference<Schema> saml11Schema;
+@ThreadSafe
+public class SAMLSchemaBuilder {
 
     /** Classpath relative location of basic XML schemas. */
-    private static String[] baseXMLSchemas = {
+    @Nonnull @NonnullElements @NotEmpty private static String[] baseXMLSchemas = {
         "/schema/xml.xsd",
         "/schema/XMLSchema.xsd",
         "/schema/xmldsig-core-schema.xsd",
         "/schema/xenc-schema.xsd",
         "/schema/xmldsig11-schema.xsd",
         "/schema/xenc11-schema.xsd",
-    };
+        };
 
     /** Classpath relative location of SOAP 1_1 schemas. */
-    private static String[] soapSchemas = { "/schema/soap-envelope.xsd", };
+    @Nonnull @NonnullElements @NotEmpty private static String[] soapSchemas = {
+        "/schema/soap-envelope.xsd",
+        };
 
     /** Classpath relative location of SAML 1_0 schemas. */
-    private static String[] saml10Schemas = { "/schema/cs-sstc-schema-assertion-01.xsd",
-            "/schema/cs-sstc-schema-protocol-01.xsd", };
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml10Schemas = {
+        "/schema/cs-sstc-schema-assertion-01.xsd",
+        "/schema/cs-sstc-schema-protocol-01.xsd",
+        };
 
     /** Classpath relative location of SAML 1_1 schemas. */
-    private static String[] saml11Schemas = { "/schema/cs-sstc-schema-assertion-1.1.xsd",
-            "/schema/cs-sstc-schema-protocol-1.1.xsd", };
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml11Schemas = {
+        "/schema/cs-sstc-schema-assertion-1.1.xsd",
+        "/schema/cs-sstc-schema-protocol-1.1.xsd",
+        };
 
     /** Classpath relative location of SAML 2_0 schemas. */
-    private static String[] saml20Schemas = { 
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = { 
         "/schema/saml-schema-assertion-2.0.xsd",
         "/schema/saml-schema-authn-context-2.0.xsd",
         "/schema/saml-schema-authn-context-auth-telephony-2.0.xsd",
@@ -113,10 +104,10 @@ public final class SAMLSchemaBuilder {
         "/schema/saml-schema-protocol-2.0.xsd",
         "/schema/saml-schema-x500-2.0.xsd",
         "/schema/saml-schema-xacml-2.0.xsd",
-    };
+        };
 
     /** Classpath relative location of SAML extension schemas. */
-    private static String[] baseExtSchemas = {
+    @Nonnull @NonnullElements @NotEmpty private static String[] baseExtSchemas = {
         "/schema/sstc-saml1x-metadata.xsd",
         "/schema/sstc-saml-idp-discovery.xsd",
         "/schema/sstc-saml-protocol-ext-thirdparty.xsd",
@@ -130,123 +121,111 @@ public final class SAMLSchemaBuilder {
         "/schema/ietf-kitten-sasl-saml-ec.xsd",
         };
 
-    /** Additional schema locations relative to classpath. */
-    private static List<String> extensionSchema = new ArrayList<String>();
+    /** Cached copy of the schema produced by the builder. */
+    @Nullable private SoftReference<Schema> cachedSchema;
 
-    /** Constructor. */
-    private SAMLSchemaBuilder() {
-
+    /** Reference to SAML 1.x schemas to apply. */
+    @Nonnull @NonnullElements @NotEmpty private String[] saml1xSchemas;
+    
+    /** The builder to use. */
+    @Nonnull private SchemaBuilder schemaBuilder;
+    
+    /** Identifies which SAML 1.x version is in use. */
+    public enum SAML1Version {
+        
+        /** SAML 1.0. */
+        SAML_10,
+        
+        /** SAML 1.1. */
+        SAML_11,
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * <p>A default {@link SchemaBuilder} is constructed, and injected with a
+     * {@link ClasspathResolver} for resolving supplementary schemas.
+     * 
+     * @param ver   the SAML 1.x version to use
+     */
+    public SAMLSchemaBuilder(@Nonnull final SAML1Version ver) {
+        if (ver == SAML1Version.SAML_11) {
+            saml1xSchemas = saml11Schemas;
+        } else {
+            saml1xSchemas = saml10Schemas;
+        }
+        schemaBuilder = new SchemaBuilder();
+        schemaBuilder.setResourceResolver(new ClasspathResolver());
+        configureBuilder();
+    }
+    
+    /**
+     * Set a custom {@link SchemaBuilder} to use.
+     * 
+     * @param builder   SchemaBuilder to use
+     */
+    public synchronized void setSchemaBuilder(@Nonnull final SchemaBuilder builder) {
+        schemaBuilder = Constraint.isNotNull(builder, "SchemaBuilder cannot be null");
+        configureBuilder();
+        cachedSchema = null;
     }
 
     /**
-     * Gets a schema that can validate SAML 1.0, 2.0, and all registered extensions.
+     * Get a schema that can validate SAML 1.x, 2.0, and all registered extensions.
      * 
-     * @return schema that can validate SAML 1.0, 2.0, and all registered extensions
+     * @return schema
      * 
-     * @throws SAXException thrown if a schema object can not be created
+     * @throws SAXException thrown if a schema object cannot be created
      */
-    public static synchronized Schema getSAML10Schema() throws SAXException {
-        if (saml10Schema == null || saml10Schema.get() == null) {
-            saml10Schema = new SoftReference<Schema>(buildSchema(saml10Schemas));
+    @Nonnull public synchronized Schema getSAMLSchema() throws SAXException {
+        if (cachedSchema == null || cachedSchema.get() == null) {
+            cachedSchema = new SoftReference<>(schemaBuilder.buildSchema());
         }
 
-        return saml10Schema.get();
+        return cachedSchema.get();
     }
 
     /**
-     * Gets a schema that can validate SAML 1.1, 2.0, and all registered extensions.
-     * 
-     * @return schema that can validate SAML 1.1, 2.0, and all registered extensions
-     * 
-     * @throws SAXException thrown if a schema object can not be created
+     * Configure the appropriate {@link SchemaBuilder} with the right set of schemas.
      */
-    public static synchronized Schema getSAML11Schema() throws SAXException {
-        if (saml11Schema == null || saml11Schema.get() == null) {
-            saml11Schema = new SoftReference<Schema>(buildSchema(saml11Schemas));
-        }
-
-        return saml11Schema.get();
-    }
-
-    /**
-     * Gets an unmodifiable list of currently registered schema extension.
-     * 
-     * @return unmodifiable list of currently registered schema extension
-     */
-    public static List<String> getExtensionSchema() {
-        return Collections.unmodifiableList(extensionSchema);
-    }
-
-    /**
-     * Registers a new schema extension. The schema location will be searched for on the classpath.
-     * 
-     * @param schema new schema extension
-     */
-    public static void addExtensionSchema(String schema) {
-        extensionSchema.add(schema);
-
-        saml10Schema = null;
-
-        saml11Schema = null;
-    }
-
-    /**
-     * Removes a currently registered schema.
-     * 
-     * @param schema currently registered schema
-     */
-    public static void removeSchema(String schema) {
-        extensionSchema.remove(schema);
-
-        synchronized (saml10Schema) {
-            saml10Schema = null;
-        }
-
-        synchronized (saml11Schema) {
-            saml11Schema = null;
-        }
-    }
-
-    /**
-     * Builds a schema object based on the given SAML 1_X schema set.
-     * 
-     * @param saml1Schema SAML 1_X schema set
-     * 
-     * @return constructed schema
-     * 
-     * @throws SAXException thrown if a schema object can not be created
-     */
-    private static Schema buildSchema(String[] saml1Schema) throws SAXException {
+    @Nonnull private void configureBuilder() {
+        
         Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
-        List<Source> schemaSources = new ArrayList<Source>();
-
-        for (String source : baseXMLSchemas) {
-            schemaSources.add(new StreamSource(clazz.getResourceAsStream(source)));
+        
+        for (final String source : baseXMLSchemas) {
+            final InputStream stream = clazz.getResourceAsStream(source);
+            if (stream != null) {
+                schemaBuilder.addSchemas(stream);
+            }
         }
 
-        for (String source : soapSchemas) {
-            schemaSources.add(new StreamSource(clazz.getResourceAsStream(source)));
+        for (final String source : soapSchemas) {
+            final InputStream stream = clazz.getResourceAsStream(source);
+            if (stream != null) {
+                schemaBuilder.addSchemas(stream);
+            }
         }
 
-        for (String source : saml1Schema) {
-            schemaSources.add(new StreamSource(clazz.getResourceAsStream(source)));
+        for (final String source : saml1xSchemas) {
+            final InputStream stream = clazz.getResourceAsStream(source);
+            if (stream != null) {
+                schemaBuilder.addSchemas(stream);
+            }
         }
 
-        for (String source : saml20Schemas) {
-            schemaSources.add(new StreamSource(clazz.getResourceAsStream(source)));
+        for (final String source : saml20Schemas) {
+            final InputStream stream = clazz.getResourceAsStream(source);
+            if (stream != null) {
+                schemaBuilder.addSchemas(stream);
+            }
         }
 
-        for (String source : baseExtSchemas) {
-            schemaSources.add(new StreamSource(clazz.getResourceAsStream(source)));
+        for (final String source : baseExtSchemas) {
+            final InputStream stream = clazz.getResourceAsStream(source);
+            if (stream != null) {
+                schemaBuilder.addSchemas(stream);
+            }
         }
-
-        for (String source : extensionSchema) {
-            schemaSources.add(new StreamSource(clazz.getResourceAsStream(source)));
-        }
-
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        schemaFactory.setResourceResolver(new ClasspathResolver());
-        schemaFactory.setErrorHandler(new LoggingErrorHandler(LoggerFactory.getLogger(clazz)));
-        return schemaFactory.newSchema(schemaSources.toArray(new StreamSource[0]));
     }
+    
 }
