@@ -195,35 +195,35 @@ public class SAMLSchemaBuilder {
         for (final String source : baseXMLSchemas) {
             final InputStream stream = clazz.getResourceAsStream(source);
             if (stream != null) {
-                schemaBuilder.addSchemas(stream);
+                schemaBuilder.addSchema(stream);
             }
         }
 
         for (final String source : soapSchemas) {
             final InputStream stream = clazz.getResourceAsStream(source);
             if (stream != null) {
-                schemaBuilder.addSchemas(stream);
+                schemaBuilder.addSchema(stream);
             }
         }
 
         for (final String source : saml1xSchemas) {
             final InputStream stream = clazz.getResourceAsStream(source);
             if (stream != null) {
-                schemaBuilder.addSchemas(stream);
+                schemaBuilder.addSchema(stream);
             }
         }
 
         for (final String source : saml20Schemas) {
             final InputStream stream = clazz.getResourceAsStream(source);
             if (stream != null) {
-                schemaBuilder.addSchemas(stream);
+                schemaBuilder.addSchema(stream);
             }
         }
 
         for (final String source : baseExtSchemas) {
             final InputStream stream = clazz.getResourceAsStream(source);
             if (stream != null) {
-                schemaBuilder.addSchemas(stream);
+                schemaBuilder.addSchema(stream);
             }
         }
     }

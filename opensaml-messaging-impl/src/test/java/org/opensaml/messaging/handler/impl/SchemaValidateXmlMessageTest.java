@@ -61,7 +61,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
 
         Resource r = new ClassPathResource(SCHEMA_FILE);
         final SchemaBuilder schemaBuilder = new SchemaBuilder();
-        schemaBuilder.addSchemas(r.getInputStream());
+        schemaBuilder.addSchema(r.getInputStream());
         schema = schemaBuilder.buildSchema();
     }
 

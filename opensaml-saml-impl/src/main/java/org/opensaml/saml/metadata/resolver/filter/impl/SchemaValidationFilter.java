@@ -91,7 +91,7 @@ public class SchemaValidationFilter implements MetadataFilter {
                 if (trimmed != null) {
                     final InputStream stream = clazz.getResourceAsStream(trimmed);
                     if (stream != null) {
-                        overriddenSchemaBuilder.addSchemas(stream);
+                        overriddenSchemaBuilder.addSchema(stream);
                     }
                 }
             }
