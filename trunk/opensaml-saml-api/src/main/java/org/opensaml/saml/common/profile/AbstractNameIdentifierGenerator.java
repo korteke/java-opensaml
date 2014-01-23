@@ -220,7 +220,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext)
+    @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext)
             throws ProfileException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
@@ -235,7 +235,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @return  the generated object
      * @throws ProfileException if an error occurs
      */
-    @Nonnull protected abstract NameIdType doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
+    @Nullable protected abstract NameIdType doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
             throws ProfileException;
 
     /**
@@ -247,9 +247,9 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @return  the generated identifier
      * @throws ProfileException if an error occurs
      */
-    @Nonnull @NotEmpty protected String getIdentifier(@Nonnull final ProfileRequestContext profileRequestContext)
+    @Nullable protected String getIdentifier(@Nonnull final ProfileRequestContext profileRequestContext)
             throws ProfileException {
-        throw new UnsupportedOperationException("Operation not supported");
+        return null;
     }
 
     /**

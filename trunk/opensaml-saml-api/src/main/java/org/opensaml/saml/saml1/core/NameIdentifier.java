@@ -36,7 +36,8 @@ public interface NameIdentifier extends SAMLObject {
     public static final String TYPE_LOCAL_NAME = "NameIdentifierType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the attribute which defines Name Qualifier. */
     public static final String NAMEQUALIFIER_ATTRIB_NAME = "NameQualifier";
@@ -54,8 +55,9 @@ public interface NameIdentifier extends SAMLObject {
     public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
-    public static final String WIN_DOMAIN_QUALIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
-
+    public static final String WIN_DOMAIN_QUALIFIED =
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
+    
     /**
      * Gets the name qualifier for this identifier.
      * 
@@ -97,4 +99,5 @@ public interface NameIdentifier extends SAMLObject {
      * @param nameIdentifier the identifier.
      */
     public void setNameIdentifier(String nameIdentifier);
+    
 }

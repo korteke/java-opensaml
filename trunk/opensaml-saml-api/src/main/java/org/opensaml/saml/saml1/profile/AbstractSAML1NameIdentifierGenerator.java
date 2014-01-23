@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml1.profile;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.ProfileException;
@@ -55,10 +56,14 @@ public abstract class AbstractSAML1NameIdentifierGenerator extends AbstractNameI
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull protected NameIdentifier doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
+    @Nullable protected NameIdentifier doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
             throws ProfileException {
         
         final String identifier = getIdentifier(profileRequestContext);
+        if (identifier == null) {
+            log.debug("No identifier to use");
+            return null;
+        }
         
         log.debug("Generating NameIdentifier {} with Format {}", identifier, getFormat());
         
