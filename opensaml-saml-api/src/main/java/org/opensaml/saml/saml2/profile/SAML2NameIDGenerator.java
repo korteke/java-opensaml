@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.profile;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -31,7 +32,7 @@ public interface SAML2NameIDGenerator extends NameIdentifierGenerator<NameID> {
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull NameID generate(@Nonnull final ProfileRequestContext profileRequestContext)
+    @Nullable NameID generate(@Nonnull final ProfileRequestContext profileRequestContext)
         throws ProfileException;
     
 }
