@@ -33,6 +33,8 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 /**
  * Abstract base class for simple implementations of {@link NameIdentifierGenerator}.
@@ -48,6 +50,9 @@ import com.google.common.base.Objects;
 public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObject>
         extends AbstractIdentifiableInitializableComponent implements NameIdentifierGenerator<NameIdType> {
 
+    /** A predicate indicating whether the component applies to a request. */
+    @Nonnull private Predicate<ProfileRequestContext> activationCondition;
+    
     /** Flag allowing qualifier(s) to be ommitted when they would match defaults or are not set. */
     private boolean omitQualifiers; 
     
@@ -66,6 +71,19 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     /** Constructor. */
     protected AbstractNameIdentifierGenerator() {
         super.setId(getClass().getName());
+        
+        activationCondition = Predicates.alwaysTrue();
+    }
+    
+    /**
+     * Set an activation condition that determines whether to run or not.
+     * 
+     * @param condition an activation condition
+     */
+    public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }
     
     /**
@@ -87,6 +105,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param flag flag to set
      */
     public void setOmitQualifiers(final boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
         omitQualifiers = flag;
     }
 
@@ -186,6 +206,12 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public boolean apply(@Nullable final ProfileRequestContext input) {
+        return activationCondition.apply(input);
+    }
+    
     /** {@inheritDoc} */
     @Override
     @Nonnull public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext)
