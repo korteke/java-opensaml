@@ -74,6 +74,12 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
         
         activationCondition = Predicates.alwaysTrue();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
+        super.setId(componentId);
+    }
     
     /**
      * Set an activation condition that determines whether to run or not.
