@@ -23,21 +23,26 @@ import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
 
+import com.google.common.base.Predicate;
+
 /**
  * Interface for a component that produces SAML {@link org.opensaml.saml.saml1.core.NameIdentifier}
  * and/or {@link org.opensaml.saml.saml2.NameID} objects for inclusion in assertion subjects.
  * 
  * <p>Such a component typically consumes attribute information produced about the subject and
  * transforms it (possibly via identity function) into use as a subject identifier. This operation
- * is essentially the inverse of a subject canonicalication flow that operates on SAML identifiers
+ * is essentially the inverse of a subject canonicalization flow that operates on SAML identifiers
  * and turns them back into principal names.</p>
  * 
- * <p>A component may be self-contained and need not depend on any attributes, depending on the
- * nature of the identifier.</p>
+ * <p>A component may be self-contained and need not depend on any other subject information,
+ * depending on the nature of the identifier.</p>
+ * 
+ * <p>All such components support a predicate interface to evaluate whether or not they apply
+ * to a request.</p>
  * 
  * @param <NameIdType>  type of object produced
  */
-public interface NameIdentifierGenerator<NameIdType extends SAMLObject> {
+public interface NameIdentifierGenerator<NameIdType extends SAMLObject> extends Predicate<ProfileRequestContext> {
 
     /**
      * Generate an identifier object.
