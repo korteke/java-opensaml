@@ -75,6 +75,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "http://www.oasis-open.org/committees/security");
-        Assert.assertEquals(response.getContentAsString().hashCode(), -2097500418);
+        // TODO: hash is different with endorsed Xerces
+        Assert.assertEquals(response.getContentAsString().hashCode(), 259113724);
     }
 }
