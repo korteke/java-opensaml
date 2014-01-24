@@ -117,7 +117,8 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
-        Assert.assertEquals(response.getContentAsString().hashCode(), 1080099645);
+        // TODO: this hashes differently for endorsed Xerces
+        Assert.assertEquals(response.getContentAsString().hashCode(), -902547065);
     }
 
     @Test
@@ -160,7 +161,8 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
-        Assert.assertEquals(response.getContentAsString().hashCode(), -1498470454);
+        // TODO: this hashes differently for endorsed Xerces
+        Assert.assertEquals(response.getContentAsString().hashCode(), 1167596240);
         
     }
 }
