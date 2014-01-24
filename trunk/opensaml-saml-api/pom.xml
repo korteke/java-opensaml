@@ -11,7 +11,7 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: SAML Provider API's</name>
+    <name>OpenSAML :: SAML Provider API</name>
     <artifactId>opensaml-saml-api</artifactId>
     <packaging>jar</packaging>
 

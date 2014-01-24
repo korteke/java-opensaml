@@ -11,7 +11,7 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: XACML Provider API's</name>
+    <name>OpenSAML :: XACML Provider API</name>
     <artifactId>opensaml-xacml-api</artifactId>
     <packaging>jar</packaging>
 

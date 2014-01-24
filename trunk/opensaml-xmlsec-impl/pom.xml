@@ -32,37 +32,6 @@
         <!-- Provided Dependencies -->
 
         <!-- Runtime Dependencies -->
-        <dependency>
-            <groupId>${xerces.groupId}</groupId>
-            <artifactId>xml-apis</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>${xerces.groupId}</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>${xerces.groupId}</groupId>
-            <artifactId>serializer</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>xml-resolver</groupId>
-            <artifactId>xml-resolver</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>${xalan.groupId}</groupId>
-            <artifactId>xalan</artifactId>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>${xalan.groupId}</groupId>
-                    <artifactId>serializer</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
