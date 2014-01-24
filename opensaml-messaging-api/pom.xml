@@ -11,7 +11,7 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: Messaging API's</name>
+    <name>OpenSAML :: Messaging API</name>
     <artifactId>opensaml-messaging-api</artifactId>
     <packaging>jar</packaging>
 

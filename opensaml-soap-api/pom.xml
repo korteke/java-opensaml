@@ -11,7 +11,7 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: SOAP Provider API's</name>
+    <name>OpenSAML :: SOAP Provider API</name>
     <artifactId>opensaml-soap-api</artifactId>
     <packaging>jar</packaging>
 
