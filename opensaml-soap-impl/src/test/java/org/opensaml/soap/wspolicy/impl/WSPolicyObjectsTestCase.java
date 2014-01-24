@@ -49,7 +49,6 @@ public class WSPolicyObjectsTestCase extends WSBaseTestCase {
      */
     private static final QName TEST_ELEMENT_QNAME = new QName("urn:test:ns", "WildcardTest", "wct");
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         // register provider for Test supporting config

@@ -65,7 +65,6 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
      */
     private static final QName TEST_CLAIMS_QNAME = new QName("urn:test:claims:ns", "TestClaim", "tc");
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         // register provider for TestClaims supporting config

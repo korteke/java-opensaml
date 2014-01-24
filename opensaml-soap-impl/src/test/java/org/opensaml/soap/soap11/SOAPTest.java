@@ -58,7 +58,6 @@ public class SOAPTest extends XMLObjectBaseTestCase {
     
     private String expectedFaultActor;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         soapMessage = "/data/org/opensaml/soap/soap11/SOAP.xml";
@@ -160,7 +159,6 @@ public class SOAPTest extends XMLObjectBaseTestCase {
     @Test
     public void testSOAPFaultConstructAndMarshall() throws MarshallingException, XMLParserException {
         Document soapDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapFaultMarshall));
-        Element envelopeElem = soapDoc.getDocumentElement();
         
         Envelope envelope = (Envelope) buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
         
@@ -185,7 +183,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         Detail detail = (Detail) buildXMLObject(Detail.DEFAULT_ELEMENT_NAME);
         fault.setDetail(detail);
         
-        Element marshalledEnvelope = marshallerFactory.getMarshaller(envelope).marshall(envelope);
+        marshallerFactory.getMarshaller(envelope).marshall(envelope);
         assertXMLEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
         
     }
