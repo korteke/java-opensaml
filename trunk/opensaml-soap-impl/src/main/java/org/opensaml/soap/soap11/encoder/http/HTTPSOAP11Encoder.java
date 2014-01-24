@@ -153,7 +153,7 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
      *   <li>Adds the HTTP header: "Pragma: no-cache"</li>
      *   <li>Sets the character encoding to: "UTF-8"</li>
      *   <li>Sets the content type to: "text/xml"</li>
-     *   <li>Sets the SOAPAction HTTP header the value returned by {@link #getSOAPAction(MessageContext)}, if
+     *   <li>Sets the SOAPAction HTTP header the value returned by {@link #getSOAPAction()}, if
      *   that returns non-null.</li>
      * </ol>
      * </p>
