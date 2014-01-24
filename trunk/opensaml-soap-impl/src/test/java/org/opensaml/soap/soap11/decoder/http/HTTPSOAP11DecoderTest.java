@@ -47,7 +47,6 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     
     private MockHttpServletRequest httpRequest;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         httpRequest = new MockHttpServletRequest();
@@ -112,8 +111,10 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     //
     
     /**
-     * @param string
-     * @return
+     * Get a resource relative to a class.
+     * 
+     * @param resourceName
+     * @return  resource content
      * @throws IOException 
      */
     private byte[] getServletRequestContent(String resourceName) throws IOException {
