@@ -26,8 +26,13 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.SSODescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -38,8 +43,16 @@ import com.google.common.collect.Lists;
  */
 public class MetadataNameIdentifierFormatStrategy implements Function<ProfileRequestContext, List<String>> {
 
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(MetadataNameIdentifierFormatStrategy.class);
+    
     /** Strategy function to lookup the {@link SSODescriptor} to read from. */
-    @Nullable private Function<ProfileRequestContext, SSODescriptor> ssoDescriptorLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext, SSODescriptor> ssoDescriptorLookupStrategy;
+    
+    /** Constructor. */
+    public MetadataNameIdentifierFormatStrategy() {
+        ssoDescriptorLookupStrategy = new MetadataLookupStrategy();
+    }
 
     /**
      * Set the lookup strategy to use to obtain an {@link SSODescriptor}.
@@ -54,19 +67,54 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
     /** {@inheritDoc} */
     @Override
     @Nullable public List<String> apply(@Nullable final ProfileRequestContext input) {
-        if (ssoDescriptorLookupStrategy != null) {
-            final SSODescriptor role = ssoDescriptorLookupStrategy.apply(input);
-            if (role != null) {
-                final List<String> strings = Lists.newArrayList();
-                for (final NameIDFormat nif : role.getNameIDFormats()) {
-                    if (nif.getFormat() != null) {
-                        strings.add(nif.getFormat());
+        final SSODescriptor role = ssoDescriptorLookupStrategy.apply(input);
+        if (role != null) {
+            final List<String> strings = Lists.newArrayList();
+            for (final NameIDFormat nif : role.getNameIDFormats()) {
+                if (nif.getFormat() != null) {
+                    if (NameID.UNSPECIFIED.equals(nif.getFormat())) {
+                        log.debug("Ignoring metadata that includes the 'unspecified' format");
+                        return Collections.emptyList();
                     }
+                    strings.add(nif.getFormat());
                 }
-                return strings;
             }
+            
+            log.debug("Metadata specifies the following formats: {}", strings);
+            return strings;
         }
+        
         return Collections.emptyList();
+    }
+
+    /**
+     * Default lookup strategy for metadata, relies on the inbound message context.
+     */
+    private class MetadataLookupStrategy implements Function<ProfileRequestContext, SSODescriptor> {
+
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public SSODescriptor apply(@Nullable final ProfileRequestContext input) {
+            if (input != null && input.getInboundMessageContext() != null) {
+                final SAMLPeerEntityContext peerCtx =
+                        input.getInboundMessageContext().getSubcontext(SAMLPeerEntityContext.class, false);
+                if (peerCtx != null) {
+                    SAMLMetadataContext mdCtx = peerCtx.getSubcontext(SAMLMetadataContext.class, false);
+                    if (mdCtx != null && mdCtx.getRoleDescriptor() != null
+                            && mdCtx.getRoleDescriptor() instanceof SSODescriptor) {
+                        return (SSODescriptor) mdCtx.getRoleDescriptor();
+                    } else {
+                        log.debug("No SAMLMetadataContext or SSODescriptor role available");
+                    }
+                } else {
+                    log.debug("No SAMLPeerEntityContext available");
+                }
+            } else {
+                log.debug("No inbound message context available");
+            }
+            
+            return null;
+        }
     }
 
 }
