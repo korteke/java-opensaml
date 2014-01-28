@@ -235,7 +235,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
             for (final SAML2NameIDGenerator generator : generators) {
                 if (generator != null && generator.apply(profileRequestContext)) {
                     try {
-                        final NameID nameId = generator.generate(profileRequestContext);
+                        final NameID nameId = generator.generate(profileRequestContext, null);
                         if (nameId != null) {
                             log.debug("{} Successfully generated NameID with Format {}", getLogPrefix(),
                                     format);

@@ -220,10 +220,13 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     
     /** {@inheritDoc} */
     @Override
-    @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext)
-            throws ProfileException {
+    @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull @NotEmpty final String theFormat) throws ProfileException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
+        if (!Objects.equal(format, theFormat)) {
+            throw new ProfileException("The format to generate does not match the value configured");
+        }
         return doGenerate(profileRequestContext);
     }
     
@@ -231,7 +234,6 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * Override this method to fully control the generation process.
      * 
      * @param profileRequestContext current profile request context
-     * 
      * @return  the generated object
      * @throws ProfileException if an error occurs
      */
@@ -239,7 +241,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
             throws ProfileException;
 
     /**
-     * Override this method to reuse this implementation of the {@link #doGenerate(ProfileRequestContext)} method,
+     * Override this method to reuse this implementation of {@link #doGenerate(ProfileRequestContext)},
      * and return the identifier to be included as the value of the eventual element.
      * 
      * @param profileRequestContext current profile request context
