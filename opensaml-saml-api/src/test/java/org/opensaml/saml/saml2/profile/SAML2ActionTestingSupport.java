@@ -25,6 +25,8 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -54,8 +56,8 @@ public class SAML2ActionTestingSupport {
      * @return the constructed response
      */
     @Nonnull public static Response buildResponse() {
-        final SAMLObjectBuilder<Response> responseBuilder =
-                (SAMLObjectBuilder<Response>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>getBuilderOrThrow(
                         Response.DEFAULT_ELEMENT_NAME);
 
         final Response response = responseBuilder.buildObject();
@@ -73,9 +75,9 @@ public class SAML2ActionTestingSupport {
      * @return the constructed assertion
      */
     @Nonnull public static Assertion buildAssertion() {
-        final SAMLObjectBuilder<Assertion> assertionBuilder =
-                (SAMLObjectBuilder<Assertion>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                        Assertion.TYPE_NAME);
+        final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
+                        Assertion.DEFAULT_ELEMENT_NAME);
 
         final Assertion assertion = assertionBuilder.buildObject();
         assertion.setID(ASSERTION_ID);
@@ -83,6 +85,37 @@ public class SAML2ActionTestingSupport {
         assertion.setVersion(SAMLVersion.VERSION_20);
 
         return assertion;
+    }
+
+    /**
+     * Builds an authentication statement. The authn instant is set to 1970-01-01T00:00:00Z.
+     * 
+     * @return the constructed statement
+     */
+    @Nonnull public static AuthnStatement buildAuthnStatement() {
+        final SAMLObjectBuilder<AuthnStatement> statementBuilder = (SAMLObjectBuilder<AuthnStatement>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnStatement>getBuilderOrThrow(
+                        AuthnStatement.DEFAULT_ELEMENT_NAME);
+
+        final AuthnStatement statement = statementBuilder.buildObject();
+        statement.setAuthnInstant(new DateTime(0));
+
+        return statement;
+    }
+
+    /**
+     * Builds an empty attribute statement.
+     * 
+     * @return the constructed statement
+     */
+    @Nonnull public static AttributeStatement buildAttributeStatement() {
+        final SAMLObjectBuilder<AttributeStatement> statementBuilder = (SAMLObjectBuilder<AttributeStatement>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeStatement>getBuilderOrThrow(
+                        AttributeStatement.DEFAULT_ELEMENT_NAME);
+
+        final AttributeStatement statement = statementBuilder.buildObject();
+
+        return statement;
     }
 
     /**
@@ -94,15 +127,15 @@ public class SAML2ActionTestingSupport {
      * @return the built subject
      */
     @Nonnull public static Subject buildSubject(final @Nullable String principalName) {
-        final SAMLObjectBuilder<Subject> subjectBuilder =
-                (SAMLObjectBuilder<Subject>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                        Subject.TYPE_NAME);
+        final SAMLObjectBuilder<Subject> subjectBuilder = (SAMLObjectBuilder<Subject>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
+                        Subject.DEFAULT_ELEMENT_NAME);
         final Subject subject = subjectBuilder.buildObject();
 
         if (principalName != null) {
-            final SAMLObjectBuilder<NameID> nameIdBuilder =
-                    (SAMLObjectBuilder<NameID>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                            NameID.TYPE_NAME);
+            final SAMLObjectBuilder<NameID> nameIdBuilder = (SAMLObjectBuilder<NameID>)
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
+                            NameID.DEFAULT_ELEMENT_NAME);
             final NameID nameId = nameIdBuilder.buildObject();
             nameId.setValue(principalName);
             subject.setNameID(nameId);
@@ -120,13 +153,13 @@ public class SAML2ActionTestingSupport {
      * @return the built query
      */
     @Nonnull public static AttributeQuery buildAttributeQueryRequest(final @Nullable Subject subject) {
-        final SAMLObjectBuilder<Issuer> issuerBuilder =
-                (SAMLObjectBuilder<Issuer>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
                         Issuer.DEFAULT_ELEMENT_NAME);
 
-        final SAMLObjectBuilder<AttributeQuery> queryBuilder =
-                (SAMLObjectBuilder<AttributeQuery>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                        AttributeQuery.TYPE_NAME);
+        final SAMLObjectBuilder<AttributeQuery> queryBuilder = (SAMLObjectBuilder<AttributeQuery>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeQuery>getBuilderOrThrow(
+                        AttributeQuery.DEFAULT_ELEMENT_NAME);
 
         final Issuer issuer = issuerBuilder.buildObject();
         issuer.setValue(ActionTestingSupport.INBOUND_MSG_ISSUER);
@@ -143,4 +176,5 @@ public class SAML2ActionTestingSupport {
 
         return query;
     }
+    
 }

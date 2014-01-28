@@ -43,6 +43,7 @@ import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrate
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Response;
+import org.opensaml.saml.saml1.core.Statement;
 import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectStatement;
 import org.opensaml.saml.saml1.profile.SAML1NameIdentifierGenerator;
@@ -195,18 +196,21 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         final NameIdentifier nameIdentifier = generateNameIdentifier(profileRequestContext);
         if (nameIdentifier == null) {
             log.debug("{} Unable to generate a NameIdentifier, leaving empty", getLogPrefix());
+            return;
         }
         
         int count = 0;
         
         for (final Assertion assertion : response.getAssertions()) {
-            for (final SubjectStatement statement : assertion.getSubjectStatements()) {
-                final Subject subject = getStatementSubject(statement);
-                final NameIdentifier existing = subject.getNameIdentifier();
-                if (existing == null || overwriteExisting) {
-                    subject.setNameIdentifier(count > 0 ? cloneNameIdentifier(nameIdentifier) : nameIdentifier);
+            for (final Statement statement : assertion.getStatements()) {
+                if (statement instanceof SubjectStatement) {
+                    final Subject subject = getStatementSubject((SubjectStatement) statement);
+                    final NameIdentifier existing = subject.getNameIdentifier();
+                    if (existing == null || overwriteExisting) {
+                        subject.setNameIdentifier(count > 0 ? cloneNameIdentifier(nameIdentifier) : nameIdentifier);
+                    }
+                    count ++;
                 }
-                count ++;
             }
         }
         
@@ -228,7 +232,11 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         // See if we can generate one.
         for (final String format : formats) {
             log.debug("{} Trying to generate NameIdentifier with Format {}", getLogPrefix(), format);
-            for (final SAML1NameIdentifierGenerator generator : nameIdGeneratorMap.get(format)) {
+            final List<SAML1NameIdentifierGenerator> generators = nameIdGeneratorMap.get(format);
+            if (generators == null) {
+                continue;
+            }
+            for (final SAML1NameIdentifierGenerator generator : generators) {
                 if (generator != null && generator.apply(profileRequestContext)) {
                     try {
                         final NameIdentifier nameIdentifier = generator.generate(profileRequestContext);
