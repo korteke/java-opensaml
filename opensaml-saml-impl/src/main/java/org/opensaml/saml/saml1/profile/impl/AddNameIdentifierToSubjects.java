@@ -240,7 +240,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
             for (final SAML1NameIdentifierGenerator generator : generators) {
                 if (generator != null && generator.apply(profileRequestContext)) {
                     try {
-                        final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, null);
+                        final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, format);
                         if (nameIdentifier != null) {
                             log.debug("{} Successfully generated NameIdentifier with Format {}", getLogPrefix(),
                                     format);
