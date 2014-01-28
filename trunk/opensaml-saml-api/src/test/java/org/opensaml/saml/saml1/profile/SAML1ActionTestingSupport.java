@@ -27,6 +27,8 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.AttributeStatement;
+import org.opensaml.saml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.Response;
@@ -54,8 +56,8 @@ public class SAML1ActionTestingSupport {
      * @return the constructed response
      */
     @Nonnull public static Response buildResponse() {
-        final SAMLObjectBuilder<Response> responseBuilder =
-                (SAMLObjectBuilder<Response>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>getBuilderOrThrow(
                         Response.DEFAULT_ELEMENT_NAME);
 
         final Response response = responseBuilder.buildObject();
@@ -73,9 +75,9 @@ public class SAML1ActionTestingSupport {
      * @return the constructed assertion
      */
     @Nonnull public static Assertion buildAssertion() {
-        final SAMLObjectBuilder<Assertion> assertionBuilder =
-                (SAMLObjectBuilder<Assertion>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                        Assertion.TYPE_NAME);
+        final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
+                        Assertion.DEFAULT_ELEMENT_NAME);
 
         final Assertion assertion = assertionBuilder.buildObject();
         assertion.setID(ASSERTION_ID);
@@ -86,6 +88,39 @@ public class SAML1ActionTestingSupport {
     }
 
     /**
+     * Builds an authentication statement. The authn instant is set to 1970-01-01T00:00:00Z and the
+     * method is set to password.
+     * 
+     * @return the constructed statement
+     */
+    @Nonnull public static AuthenticationStatement buildAuthenticationStatement() {
+        final SAMLObjectBuilder<AuthenticationStatement> statementBuilder = (SAMLObjectBuilder<AuthenticationStatement>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthenticationStatement>getBuilderOrThrow(
+                        AuthenticationStatement.DEFAULT_ELEMENT_NAME);
+
+        final AuthenticationStatement statement = statementBuilder.buildObject();
+        statement.setAuthenticationInstant(new DateTime(0));
+        statement.setAuthenticationMethod(AuthenticationStatement.PASSWORD_AUTHN_METHOD);
+
+        return statement;
+    }
+
+    /**
+     * Builds an empty attribute statement.
+     * 
+     * @return the constructed statement
+     */
+    @Nonnull public static AttributeStatement buildAttributeStatement() {
+        final SAMLObjectBuilder<AttributeStatement> statementBuilder = (SAMLObjectBuilder<AttributeStatement>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeStatement>getBuilderOrThrow(
+                        AttributeStatement.DEFAULT_ELEMENT_NAME);
+
+        final AttributeStatement statement = statementBuilder.buildObject();
+
+        return statement;
+    }
+    
+    /**
      * Builds a {@link Subject}. If a principal name is given a {@link NameIdentifier}, whose value is the given
      * principal name, will be created and added to the {@link Subject}.
      * 
@@ -94,15 +129,15 @@ public class SAML1ActionTestingSupport {
      * @return the built subject
      */
     @Nonnull public static Subject buildSubject(final @Nullable String principalName) {
-        final SAMLObjectBuilder<Subject> subjectBuilder =
-                (SAMLObjectBuilder<Subject>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                        Subject.TYPE_NAME);
+        final SAMLObjectBuilder<Subject> subjectBuilder = (SAMLObjectBuilder<Subject>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
+                        Subject.DEFAULT_ELEMENT_NAME);
         final Subject subject = subjectBuilder.buildObject();
 
         if (principalName != null) {
-            final SAMLObjectBuilder<NameIdentifier> nameIdBuilder =
-                    (SAMLObjectBuilder<NameIdentifier>) XMLObjectProviderRegistrySupport.getBuilderFactory()
-                            .getBuilder(NameIdentifier.TYPE_NAME);
+            final SAMLObjectBuilder<NameIdentifier> nameIdBuilder = (SAMLObjectBuilder<NameIdentifier>)
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIdentifier>getBuilderOrThrow(
+                            NameIdentifier.DEFAULT_ELEMENT_NAME);
             final NameIdentifier nameId = nameIdBuilder.buildObject();
             nameId.setNameIdentifier(principalName);
             subject.setNameIdentifier(nameId);
@@ -120,17 +155,17 @@ public class SAML1ActionTestingSupport {
      * @return the built query
      */
     @Nonnull public static Request buildAttributeQueryRequest(final @Nullable Subject subject) {
-        final SAMLObjectBuilder<AttributeQuery> queryBuilder =
-                (SAMLObjectBuilder<AttributeQuery>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
-                        AttributeQuery.TYPE_NAME);
+        final SAMLObjectBuilder<AttributeQuery> queryBuilder = (SAMLObjectBuilder<AttributeQuery>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeQuery>getBuilderOrThrow(
+                        AttributeQuery.DEFAULT_ELEMENT_NAME);
         final AttributeQuery query = queryBuilder.buildObject();
 
         if (subject != null) {
             query.setSubject(subject);
         }
 
-        SAMLObjectBuilder<Request> requestBuilder =
-                (SAMLObjectBuilder<Request>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+        SAMLObjectBuilder<Request> requestBuilder = (SAMLObjectBuilder<Request>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Request>getBuilderOrThrow(
                         Request.DEFAULT_ELEMENT_NAME);
         Request request = requestBuilder.buildObject();
         request.setID(REQUEST_ID);
@@ -140,4 +175,5 @@ public class SAML1ActionTestingSupport {
 
         return request;
     }
+    
 }

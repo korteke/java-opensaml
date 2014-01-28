@@ -40,6 +40,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
+import org.opensaml.saml.saml1.profile.SAML1NameIdentifierGenerator;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
@@ -194,6 +195,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
         final NameID nameId = generateNameID(profileRequestContext);
         if (nameId == null) {
             log.debug("{} Unable to generate a NameID, leaving empty", getLogPrefix());
+            return;
         }
         
         int count = 0;
@@ -224,7 +226,11 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
         // See if we can generate one.
         for (final String format : formats) {
             log.debug("{} Trying to generate NameID with Format {}", getLogPrefix(), format);
-            for (final SAML2NameIDGenerator generator : nameIdGeneratorMap.get(format)) {
+            final List<SAML2NameIDGenerator> generators = nameIdGeneratorMap.get(format);
+            if (generators == null) {
+                continue;
+            }
+            for (final SAML2NameIDGenerator generator : generators) {
                 if (generator != null && generator.apply(profileRequestContext)) {
                     try {
                         final NameID nameId = generator.generate(profileRequestContext);
