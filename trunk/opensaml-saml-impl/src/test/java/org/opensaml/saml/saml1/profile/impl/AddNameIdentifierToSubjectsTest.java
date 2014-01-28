@@ -109,7 +109,30 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertProceedEvent(prc);
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().get(0).getStatements().isEmpty());
     }
-    
+
+    @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
+        addStatements();
+        
+        action.setNameIdentifierGenerators(generatorMap);
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameIdentifier());
+        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "foo");
+        Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.X509_SUBJECT);
+
+        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        subject = assertion.getAttributeStatements().get(0).getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameIdentifier());
+        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "foo");
+        Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.X509_SUBJECT);
+    }
+
     @Test void testSingleGenerator() throws ComponentInitializationException, ProfileException {
         addStatements();
         

@@ -98,6 +98,30 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().isEmpty());
     }
 
+
+    @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
+        addAssertions();
+        
+        action.setNameIDGenerators(generatorMap);
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Subject subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertEquals(subject.getNameID().getValue(), "foo");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
+
+        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertEquals(subject.getNameID().getValue(), "foo");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
+    }
+    
     @Test void testSingleGenerator() throws ComponentInitializationException, ProfileException {
         addAssertions();
         
