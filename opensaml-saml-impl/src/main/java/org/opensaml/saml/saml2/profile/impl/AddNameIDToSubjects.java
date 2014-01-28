@@ -89,6 +89,9 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
     
     /** Map of formats to generators. */
     @Nonnull @NonnullElements private Map<String, List<SAML2NameIDGenerator>> nameIdGeneratorMap;
+    
+    /** Fallback generator, generally for legacy support. */
+    @Nullable private SAML2NameIDGenerator defaultNameIdGenerator;
 
     /** Formats to try. */
     @Nonnull @NonnullElements private List<String> formats;
@@ -157,7 +160,23 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
      */
     public synchronized void setNameIDGenerators(
             @Nonnull @NullableElements Map<String, List<SAML2NameIDGenerator>> generators) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
         nameIdGeneratorMap = Constraint.isNotNull(generators, "NameIDGenerator map cannot be null");
+    }
+    
+    /**
+     * Set the NameID generator to try if no generator(s) are mapped to a desired format.
+     * 
+     * <p>This is generally used for legacy support of the V2 attribute encoder approach,
+     * which is format neutral and can't be mapped explicitly.</p>
+     * 
+     * @param generator a fallback default generator, if any
+     */
+    public synchronized void setDefaultNameIDGenerator(@Nullable final SAML2NameIDGenerator generator) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        defaultNameIdGenerator = generator;
     }
     
     /** {@inheritDoc} */
@@ -228,9 +247,15 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
         // See if we can generate one.
         for (final String format : formats) {
             log.debug("{} Trying to generate NameID with Format {}", getLogPrefix(), format);
-            final List<SAML2NameIDGenerator> generators = nameIdGeneratorMap.get(format);
-            if (generators == null) {
-                continue;
+            List<SAML2NameIDGenerator> generators = nameIdGeneratorMap.get(format);
+            if (generators == null || generators.isEmpty()) {
+                if (defaultNameIdGenerator != null) {
+                    log.debug("{} No generators installed for Format {}, trying default/fallback method",
+                            getLogPrefix(), format);
+                    generators = Collections.singletonList(defaultNameIdGenerator);
+                } else {
+                    continue;
+                }
             }
             for (final SAML2NameIDGenerator generator : generators) {
                 if (generator != null && generator.apply(profileRequestContext)) {
