@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.collect.Lists;
 
 /**
  * Action that builds a {@link NameIdentifier} and adds it to the {@link Subject} of all the statements
@@ -179,11 +180,11 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         
         formats = formatLookupStrategy.apply(profileRequestContext);
         if (formats == null || formats.isEmpty()) {
-            log.debug("{} No candidate NameIdentifier formats were available, nothing to do", getLogPrefix());
-            return false;
+            log.debug("{} No candidate NameIdentifier formats, an arbitrary format will be chosen", getLogPrefix());
+            formats = Lists.newArrayList(nameIdGeneratorMap.keySet());
+        } else {
+            log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         }
-        
-        log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         
         return super.doPreExecute(profileRequestContext);
     }
