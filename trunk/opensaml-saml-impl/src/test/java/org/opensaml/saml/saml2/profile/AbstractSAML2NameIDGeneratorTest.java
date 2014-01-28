@@ -53,7 +53,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.setSPProvidedId("bar");
         mock.initialize();
         
-        final NameID nameId = mock.generate(new ProfileRequestContext());
+        final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getSPProvidedID(), "bar");
@@ -70,7 +70,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.setOmitQualifiers(true);
         mock.initialize();
         
-        final NameID nameId = mock.generate(new ProfileRequestContext());
+        final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
@@ -84,7 +84,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.setOmitQualifiers(true);
         mock.initialize();
         
-        final NameID nameId = mock.generate(new ProfileRequestContext());
+        final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
@@ -97,7 +97,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.setFormat(NameID.X509_SUBJECT);
         mock.initialize();
         
-        final NameID nameId = mock.generate(new ProfileRequestContext());
+        final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
