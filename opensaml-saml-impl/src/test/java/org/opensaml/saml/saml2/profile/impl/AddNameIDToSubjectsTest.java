@@ -27,13 +27,18 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.AbstractSAML2NameIDGenerator;
@@ -51,6 +56,8 @@ import com.google.common.collect.Maps;
 public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
+    
+    private SAMLObjectBuilder<NameIDPolicy> policyBuilder;
     
     private Map<String, List<SAML2NameIDGenerator>> generatorMap;
 
@@ -80,6 +87,10 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         generatorMap = Maps.newHashMap();
         generatorMap.put(NameID.X509_SUBJECT, Collections.<SAML2NameIDGenerator>singletonList(mock));
         generatorMap.put(NameID.EMAIL, Arrays.<SAML2NameIDGenerator>asList(mock2, mock3));
+
+        policyBuilder = (SAMLObjectBuilder<NameIDPolicy>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDPolicy>getBuilderOrThrow(
+                        NameIDPolicy.DEFAULT_ELEMENT_NAME);
     }
     
     @Test
@@ -98,7 +109,52 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().isEmpty());
     }
 
+    @Test void testRequiredFormat() throws ComponentInitializationException, ProfileException {
+        addAssertions();
+        final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
+        final NameIDPolicy policy = policyBuilder.buildObject();
+        policy.setFormat(NameID.EMAIL);
+        request.setNameIDPolicy(policy);
+        prc.getInboundMessageContext().setMessage(request);
+        
+        action.setNameIDGenerators(generatorMap);
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Subject subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertEquals(subject.getNameID().getValue(), "baz");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.EMAIL);
 
+        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertEquals(subject.getNameID().getValue(), "baz");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.EMAIL);
+    }
+
+    @Test void testRequiredFormatError() throws ComponentInitializationException, ProfileException {
+        addAssertions();
+        final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
+        final NameIDPolicy policy = policyBuilder.buildObject();
+        policy.setFormat(NameID.KERBEROS);
+        request.setNameIDPolicy(policy);
+        prc.getInboundMessageContext().setMessage(request);
+        
+        action.setNameIDGenerators(generatorMap);
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
+        
+        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Subject subject = assertion.getSubject();
+        Assert.assertNull(subject);
+    }
+    
     @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
         addAssertions();
         

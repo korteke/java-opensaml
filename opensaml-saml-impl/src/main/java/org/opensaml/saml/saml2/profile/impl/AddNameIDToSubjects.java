@@ -39,9 +39,12 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.SAML2NameIDGenerator;
@@ -80,7 +83,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
     
     /** Flag controlling whether to overwrite an existing NameID. */
     private boolean overwriteExisting;
-    
+
     /** Strategy used to locate the {@link Response} to operate on. */
     @Nonnull private Function<ProfileRequestContext<Object,Response>, Response> responseLookupStrategy;
 
@@ -95,6 +98,9 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
 
     /** Formats to try. */
     @Nonnull @NonnullElements private List<String> formats;
+    
+    /** Format required by requested {@link NameIDPolicy}. */
+    @Nullable private String requiredFormat;
     
     /** Response to modify. */
     @Nullable private Response response;
@@ -114,6 +120,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
                 Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         nameIdGeneratorMap = Collections.emptyMap();
+        formats = Collections.emptyList();
     }
     
     /**
@@ -195,15 +202,19 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
             return false;
         }
         
-        formats = formatLookupStrategy.apply(profileRequestContext);
-        if (formats == null || formats.isEmpty()) {
-            log.debug("{} No candidate NameIdentifier formats, an arbitrary format will be chosen", getLogPrefix());
-            formats = Lists.newArrayList(nameIdGeneratorMap.keySet());
+        requiredFormat = getRequiredFormat(profileRequestContext);
+        if (requiredFormat != null) {
+            formats = Collections.singletonList(requiredFormat);
+            log.debug("{} Request specified NameID format: {}", getLogPrefix(), requiredFormat);
         } else {
-            log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
+            formats = formatLookupStrategy.apply(profileRequestContext);
+            if (formats == null || formats.isEmpty()) {
+                log.debug("{} No candidate NameIdentifier formats, an arbitrary format will be chosen", getLogPrefix());
+                formats = Lists.newArrayList(nameIdGeneratorMap.keySet());
+            } else {
+                log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
+            }
         }
-        
-        log.debug("{} Candidate NameID formats: {}", getLogPrefix(), formats);
         
         return super.doPreExecute(profileRequestContext);
     }
@@ -215,7 +226,13 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
 
         final NameID nameId = generateNameID(profileRequestContext);
         if (nameId == null) {
-            log.debug("{} Unable to generate a NameID, leaving empty", getLogPrefix());
+            if (requiredFormat != null) {
+                log.warn("{} Request specified use of an unsupportable identifier format: {}", getLogPrefix(),
+                        requiredFormat);
+                ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.INVALID_NAMEID_POLICY);
+            } else {
+                log.debug("{} Unable to generate a NameID, leaving empty", getLogPrefix());
+            }
             return;
         }
         
@@ -233,6 +250,30 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
         if (count > 0) {
             log.debug("{} Added NameID to {} assertion subject(s)", getLogPrefix(), count);
         }
+    }
+
+    /**
+     * Extract a format required by the inbound request, if present.
+     * 
+     * @param profileRequestContext current profile request context
+     * 
+     * @return a format dictated by the request, or null 
+     */
+    @Nullable private String getRequiredFormat(
+            @Nonnull final ProfileRequestContext<Object, Response> profileRequestContext) {
+        String format = null;
+        
+        if (profileRequestContext.getInboundMessageContext() != null) {
+            final Object request = profileRequestContext.getInboundMessageContext().getMessage();
+            if (request != null && request instanceof AuthnRequest) {
+                final NameIDPolicy policy = ((AuthnRequest) request).getNameIDPolicy();
+                if (policy != null && policy.getFormat() != null) {
+                    format = policy.getFormat();
+                }
+            }
+        }
+        
+        return format;
     }
 
     /**

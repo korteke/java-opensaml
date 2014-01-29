@@ -26,6 +26,7 @@ import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AttributeQuery;
@@ -175,6 +176,32 @@ public class SAML2ActionTestingSupport {
         }
 
         return query;
+    }
+
+    /**
+     * Builds an {@link AuthnRequest}.
+     * 
+     * @return the built request
+     */
+    @Nonnull public static AuthnRequest buildAuthnRequest() {
+        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                        Issuer.DEFAULT_ELEMENT_NAME);
+
+        final SAMLObjectBuilder<AuthnRequest> requestBuilder = (SAMLObjectBuilder<AuthnRequest>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnRequest>getBuilderOrThrow(
+                        AuthnRequest.DEFAULT_ELEMENT_NAME);
+
+        final Issuer issuer = issuerBuilder.buildObject();
+        issuer.setValue(ActionTestingSupport.INBOUND_MSG_ISSUER);
+
+        final AuthnRequest request = requestBuilder.buildObject();
+        request.setID(REQUEST_ID);
+        request.setIssueInstant(new DateTime(0));
+        request.setIssuer(issuer);
+        request.setVersion(SAMLVersion.VERSION_20);
+
+        return request;
     }
     
 }
