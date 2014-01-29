@@ -75,10 +75,10 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddNameIdentifierToSubjects.class);
     
     /** Builder for Subject objects. */
-    @Nonnull private SAMLObjectBuilder<Subject> subjectBuilder;
+    @Nonnull private final SAMLObjectBuilder<Subject> subjectBuilder;
 
     /** Builder for NameIdentifier objects. */
-    @Nonnull private SAMLObjectBuilder<NameIdentifier> nameIdentifierBuilder;
+    @Nonnull private final SAMLObjectBuilder<NameIdentifier> nameIdentifierBuilder;
     
     /** Flag controlling whether to overwrite an existing NameIdentifier. */
     private boolean overwriteExisting;
@@ -116,6 +116,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
                 Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         nameIdGeneratorMap = Collections.emptyMap();
+        formats = Collections.emptyList();
     }
     
     /**
