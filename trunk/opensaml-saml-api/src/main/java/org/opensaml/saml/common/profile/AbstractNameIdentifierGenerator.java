@@ -48,7 +48,8 @@ import com.google.common.base.Predicates;
  * @param <NameIdType>  type of object produced
  */
 public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObject>
-        extends AbstractIdentifiableInitializableComponent implements NameIdentifierGenerator<NameIdType> {
+        extends AbstractIdentifiableInitializableComponent
+        implements FormatSpecificNameIdentifierGenerator<NameIdType> {
 
     /** A predicate indicating whether the component applies to a request. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;
@@ -116,11 +117,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
         omitQualifiers = flag;
     }
 
-    /**
-     * Get the Format attribute supported.
-     * 
-     * @return the format supported
-     */
+    /** {@inheritDoc} */
+    @Override
     @NonnullAfterInit @NotEmpty public String getFormat() {
         return format;
     }
