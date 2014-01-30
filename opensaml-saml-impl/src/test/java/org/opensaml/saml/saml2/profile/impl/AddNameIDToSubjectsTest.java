@@ -18,9 +18,7 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -50,7 +48,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
 
 /** Test for {@link AddNameIDToSubjects}. */
 public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
@@ -59,7 +56,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
     
     private SAMLObjectBuilder<NameIDPolicy> policyBuilder;
     
-    private Map<String, List<SAML2NameIDGenerator>> generatorMap;
+    private List<SAML2NameIDGenerator> generators;
 
     private ProfileRequestContext<Object,Response> prc;
     
@@ -84,9 +81,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         mock3.setFormat(NameID.EMAIL);
         mock3.initialize();
         
-        generatorMap = Maps.newHashMap();
-        generatorMap.put(NameID.X509_SUBJECT, Collections.<SAML2NameIDGenerator>singletonList(mock));
-        generatorMap.put(NameID.EMAIL, Arrays.<SAML2NameIDGenerator>asList(mock2, mock3));
+        generators = Arrays.<SAML2NameIDGenerator>asList(mock, mock2, mock3);
 
         policyBuilder = (SAMLObjectBuilder<NameIDPolicy>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDPolicy>getBuilderOrThrow(
@@ -117,7 +112,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
         
-        action.setNameIDGenerators(generatorMap);
+        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -145,7 +140,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
         
-        action.setNameIDGenerators(generatorMap);
+        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
@@ -158,7 +153,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
     @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
         addAssertions();
         
-        action.setNameIDGenerators(generatorMap);
+        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -182,7 +177,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         addAssertions();
         
         action.setFormatLookupStrategy(new X509FormatLookupStrategy());
-        action.setNameIDGenerators(generatorMap);
+        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -206,7 +201,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         addAssertions();
         
         action.setFormatLookupStrategy(new EmailFormatLookupStrategy());
-        action.setNameIDGenerators(generatorMap);
+        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);

@@ -19,7 +19,6 @@ package org.opensaml.saml.saml1.profile.impl;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +38,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.profile.FormatSpecificNameIdentifierGenerator;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
@@ -52,6 +52,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 
 /**
@@ -90,7 +94,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
     @Nonnull private Function<ProfileRequestContext, List<String>> formatLookupStrategy;
     
     /** Map of formats to generators. */
-    @Nonnull @NonnullElements private Map<String, List<SAML1NameIdentifierGenerator>> nameIdGeneratorMap;
+    @Nonnull @NonnullElements private ListMultimap<String, SAML1NameIdentifierGenerator> nameIdGeneratorMap;
 
     /** Fallback generator, generally for legacy support. */
     @Nullable private SAML1NameIdentifierGenerator defaultNameIdGenerator;
@@ -115,7 +119,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
-        nameIdGeneratorMap = Collections.emptyMap();
+        nameIdGeneratorMap = ArrayListMultimap.create();
         formats = Collections.emptyList();
     }
     
@@ -155,17 +159,27 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
     }
     
     /**
-     * Set the map of formats to name identifier generation plugins to use.
+     * Set the format-specific name identifier generators to use.
      * 
-     * <p>This map is not copied, but assigned directly to avoid extra copying, and is not written to.</p>
+     * <p>Only generators that support the {@link FormatSpecificNameIdentifierGenerator} interface are
+     * installed, and the generators are prioritized for a given format by the order they are supplied.</p> 
      * 
-     * @param generators map of formats to plugins to use
+     * @param generators generators to use
      */
     public synchronized void setNameIdentifierGenerators(
-            @Nonnull @NullableElements Map<String, List<SAML1NameIdentifierGenerator>> generators) {
+            @Nonnull @NullableElements List<SAML1NameIdentifierGenerator> generators) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        Constraint.isNotNull(generators, "NameIdentifierGenerator list cannot be null");
         
-        nameIdGeneratorMap = Constraint.isNotNull(generators, "NameIdentifierGenerator map cannot be null");
+        nameIdGeneratorMap.clear();
+        for (final SAML1NameIdentifierGenerator generator : Collections2.filter(generators, Predicates.notNull())) {
+            if (generator instanceof FormatSpecificNameIdentifierGenerator) {
+                nameIdGeneratorMap.put(((FormatSpecificNameIdentifierGenerator) generator).getFormat(), generator);
+            } else {
+                log.warn("{} Unable to install NameIdentifierGenerator of type {}, not format-specific",
+                        getLogPrefix(), generator.getClass().getName());
+            }
+        }
     }
 
     /**
@@ -254,7 +268,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         for (final String format : formats) {
             log.debug("{} Trying to generate NameIdentifier with Format {}", getLogPrefix(), format);
             List<SAML1NameIdentifierGenerator> generators = nameIdGeneratorMap.get(format);
-            if (generators == null || generators.isEmpty()) {
+            if (generators.isEmpty()) {
                 if (defaultNameIdGenerator != null) {
                     log.debug("{} No generators installed for Format {}, trying default/fallback method",
                             getLogPrefix(), format);
@@ -264,7 +278,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
                 }
             }
             for (final SAML1NameIdentifierGenerator generator : generators) {
-                if (generator != null && generator.apply(profileRequestContext)) {
+                if (generator.apply(profileRequestContext)) {
                     try {
                         final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, format);
                         if (nameIdentifier != null) {

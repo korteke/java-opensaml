@@ -18,9 +18,7 @@
 package org.opensaml.saml.saml1.profile.impl;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -45,14 +43,13 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
 
 /** Test for {@link AddNameIdentifierToSubjects}. */
 public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
     
-    private Map<String, List<SAML1NameIdentifierGenerator>> generatorMap;
+    private List<SAML1NameIdentifierGenerator> generators;
 
     private ProfileRequestContext<Object,Response> prc;
     
@@ -77,9 +74,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         mock3.setFormat(NameIdentifier.EMAIL);
         mock3.initialize();
         
-        generatorMap = Maps.newHashMap();
-        generatorMap.put(NameIdentifier.X509_SUBJECT, Collections.<SAML1NameIdentifierGenerator>singletonList(mock));
-        generatorMap.put(NameIdentifier.EMAIL, Arrays.<SAML1NameIdentifierGenerator>asList(mock2, mock3));
+        generators = Arrays.<SAML1NameIdentifierGenerator>asList(mock, mock2, mock3);
     }
     
     @Test
@@ -113,7 +108,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
     @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
         addStatements();
         
-        action.setNameIdentifierGenerators(generatorMap);
+        action.setNameIdentifierGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -137,7 +132,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         addStatements();
         
         action.setFormatLookupStrategy(new X509FormatLookupStrategy());
-        action.setNameIdentifierGenerators(generatorMap);
+        action.setNameIdentifierGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -161,7 +156,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         addStatements();
         
         action.setFormatLookupStrategy(new EmailFormatLookupStrategy());
-        action.setNameIdentifierGenerators(generatorMap);
+        action.setNameIdentifierGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
