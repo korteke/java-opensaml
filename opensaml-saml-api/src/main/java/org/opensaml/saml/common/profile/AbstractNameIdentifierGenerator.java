@@ -54,16 +54,16 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     /** A predicate indicating whether the component applies to a request. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;
     
-    /** Flag allowing qualifier(s) to be ommitted when they would match defaults or are not set. */
+    /** Flag allowing qualifier(s) to be omitted when they would match defaults or are not set. */
     private boolean omitQualifiers; 
     
     /** The identifier Format supported. */
     @NonnullAfterInit @NotEmpty private String format;
     
-    /** Explicit NqmeQualifier, if any. */
+    /** Explicit NameQualifier, if any. */
     @Nullable private String idpNameQualifier; 
 
-    /** Explicit SPNqmeQualifier, if any. */
+    /** Explicit SPNameQualifier, if any. */
     @Nullable private String spNameQualifier;
     
     /** SPProvidedID, if any. */
