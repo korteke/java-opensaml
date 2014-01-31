@@ -63,7 +63,7 @@ import com.google.common.collect.Lists;
  * strategy, by default the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
  * <p>No assertions or statements will be created by this action, but if no {@link Subject} exists in
- * the statements found, it will be cretaed.</p>
+ * the statements found, it will be created.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
