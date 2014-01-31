@@ -64,7 +64,7 @@ import com.google.common.collect.Lists;
  * strategy, by default the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
  * <p>No assertions or statements will be created by this action, but if no {@link Subject} exists in
- * the statements found, it will be cretaed.</p>
+ * the statements found, it will be created.</p>
  * 
  * <p>The source of the {@link NameIdentifier} is one of a set of candidate {@link SAML1NameIdentifierGenerator}
  * plugins injected into the action. The plugin(s) to attempt to use are derived from the Format value,
@@ -216,6 +216,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         if (formats == null || formats.isEmpty()) {
             log.debug("{} No candidate NameIdentifier formats, an arbitrary format will be chosen", getLogPrefix());
             formats = Lists.newArrayList(nameIdGeneratorMap.keySet());
+            log.debug("{} Candidate NameIdentifier formats x : {}", getLogPrefix(), formats);
         } else {
             log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         }
