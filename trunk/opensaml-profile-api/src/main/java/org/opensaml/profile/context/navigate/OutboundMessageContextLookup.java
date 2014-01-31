@@ -24,7 +24,7 @@ import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 /**
- * A {@link Function} that returns the inbound {@link MessageContext} for a {@link ProfileRequestContext}.
+ * A {@link Function} that returns the outbound {@link MessageContext} for a {@link ProfileRequestContext}.
  * 
  * @param <T> type of message
  */
