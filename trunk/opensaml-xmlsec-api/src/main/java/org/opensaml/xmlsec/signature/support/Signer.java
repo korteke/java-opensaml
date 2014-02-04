@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * A service class which is responsible for cryptographically computing and storing the 
  * actual digital signature content held within a {@link Signature} instance.
  * 
- * This must be done as a separate step because in order to support the following cases:
+ * This must be done as a separate step in order to support the following cases:
  * <ul>
  * <li>Multiple signable objects appear in the DOM tree, in which case the order that the objects should be signed in
  * is not known (e.g. object 1 could appear first in the tree, but contain a reference to signable object 2)</li>
@@ -64,7 +64,7 @@ public final class Signer {
     /**
      * Signs a single XMLObject.
      * 
-     * @param signature the signature to computer the signature on
+     * @param signature the signature to compute the signature on
      * @throws SignatureException thrown if there is an error computing the signature
      */
     public static void signObject(@Nonnull final Signature signature) throws SignatureException {
