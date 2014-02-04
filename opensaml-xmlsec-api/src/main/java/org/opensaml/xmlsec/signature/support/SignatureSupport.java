@@ -20,6 +20,12 @@ package org.opensaml.xmlsec.signature.support;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
+import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.Marshaller;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.SecurityConfiguration;
@@ -29,6 +35,7 @@ import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -290,6 +297,37 @@ public final class SignatureSupport {
                 log.info("No KeyInfo will be generated for Signature");
             }
         }
+    }
+
+    /**
+     * Signs a {@link SignableXMLObject}.
+     * 
+     * @param signable the signable XMLObject to sign
+     * @param parameters the signing parameters to use
+     * 
+     * @throws SecurityException if there is a problem preparing the signature
+     * @throws MarshallingException if there is a problem marshalling the XMLObject
+     * @throws SignatureException if there is a problem with the signature operation
+     */
+    public static void signObject(@Nonnull final SignableXMLObject signable,
+            @Nonnull final SignatureSigningParameters parameters) throws SecurityException, MarshallingException,
+            SignatureException {
+        Constraint.isNotNull(signable, "Signable XMLObject cannot be null");
+        Constraint.isNotNull(parameters, "Signature signing parameters cannot be null");
+
+        XMLObjectBuilder<Signature> signatureBuilder =
+                (XMLObjectBuilder<Signature>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+                        Signature.DEFAULT_ELEMENT_NAME);
+        Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
+
+        signable.setSignature(signature);
+
+        SignatureSupport.prepareSignatureParams(signature, parameters);
+
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signable);
+        marshaller.marshall(signable);
+
+        Signer.signObject(signature);
     }
 
 }
