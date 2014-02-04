@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -58,28 +59,47 @@ public final class SAMLMessageSecuritySupport {
      * @throws SignatureException  if there is a problem with the signature operation
      * 
      */
-    public static void signMessage(MessageContext<SAMLObject> messageContext) 
+    public static void signMessage(@Nonnull final MessageContext<SAMLObject> messageContext) 
             throws SecurityException, MarshallingException, SignatureException {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        
         final SAMLObject outboundSAML = messageContext.getMessage();
         final SignatureSigningParameters parameters = getContextSigningParameters(messageContext);
 
         if (outboundSAML instanceof SignableSAMLObject && parameters != null) {
-            SignableSAMLObject signableMessage = (SignableSAMLObject) outboundSAML;
-
-            XMLObjectBuilder<Signature> signatureBuilder = (XMLObjectBuilder<Signature>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Signature.DEFAULT_ELEMENT_NAME);
-            Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
-            
-            signableMessage.setSignature(signature);
-
-            SignatureSupport.prepareSignatureParams(signature, parameters);
-            
-            Marshaller marshaller = 
-                    XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signableMessage);
-            marshaller.marshall(signableMessage);
-
-            Signer.signObject(signature);
+            SAMLMessageSecuritySupport.signObject((SignableSAMLObject) outboundSAML, parameters);
         }
+    }
+
+    /**
+     * Signs a {@link SignableSAMLObject}.
+     * 
+     * @param signable the signable SAMLObject to sign
+     * @param parameters the signing parameters to use
+     * 
+     * @throws SecurityException if there is a problem preparing the signature
+     * @throws MarshallingException if there is a problem marshalling the SAMLObject
+     * @throws SignatureException if there is a problem with the signature operation
+     */
+    public static void signObject(@Nonnull final SignableSAMLObject signable,
+            @Nonnull final SignatureSigningParameters parameters) throws SecurityException, MarshallingException,
+            SignatureException {
+        Constraint.isNotNull(signable, "Signable SAMLObject cannot be null");
+        Constraint.isNotNull(parameters, "Signature signing parameters cannot be null");
+
+        XMLObjectBuilder<Signature> signatureBuilder =
+                (XMLObjectBuilder<Signature>) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+                        Signature.DEFAULT_ELEMENT_NAME);
+        Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
+
+        signable.setSignature(signature);
+
+        SignatureSupport.prepareSignatureParams(signature, parameters);
+
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signable);
+        marshaller.marshall(signable);
+
+        Signer.signObject(signature);
     }
 
     /**
@@ -90,7 +110,9 @@ public final class SAMLMessageSecuritySupport {
      * @return the signing parameters to use, may be null
      */
     @Nullable public static SignatureSigningParameters getContextSigningParameters(
-            MessageContext<SAMLObject> messageContext) {
+            @Nonnull final MessageContext<SAMLObject> messageContext) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+
         final SecurityParametersContext context = messageContext.getSubcontext(SecurityParametersContext.class);
         if (context != null) {
             return context.getSignatureSigningParameters();
