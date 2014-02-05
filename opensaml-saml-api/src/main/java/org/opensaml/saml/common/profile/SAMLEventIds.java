@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.common.profile;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
  * SAML-specific constants to use for {@link org.opensaml.profile.action.ProfileAction}
  * {@link org.opensaml.profile.context.EventContext}s.
@@ -24,10 +28,20 @@ package org.opensaml.saml.common.profile;
 public final class SAMLEventIds {
 
     /** ID of the event returned if the requested NameIDPolicy can't be satisfied. */
-    public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
+    @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
+    
+    /** ID of the event returned upon failure to decrypt an {@link EncryptedAssertion}. */
+    @Nonnull @NotEmpty public static final String DECRYPT_ASSERTION_FAILED = "DecryptAssertionFailed";
 
+    /** ID of the event returned upon failure to decrypt an {@link EncryptedID}. */
+    @Nonnull @NotEmpty public static final String DECRYPT_NAMEID_FAILED = "DecryptNameIDFailed";
+
+    /** ID of the event returned upon failure to decrypt an {@link EncryptedAttribute}. */
+    @Nonnull @NotEmpty public static final String DECRYPT_ATTRIBUTE_FAILED = "DecryptAttributeFailed";
+    
     /** Constructor. */
     private SAMLEventIds() {
+        
     }
     
 }
