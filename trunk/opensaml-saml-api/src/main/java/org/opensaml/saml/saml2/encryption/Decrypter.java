@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml2.encryption;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -27,6 +31,7 @@ import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
+import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -45,6 +50,15 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(Decrypter.class);
+    
+    /**
+     * Constructor.
+     *
+     * @param decryptionConfig  source of configuration material for decryption
+     */
+    public Decrypter(@Nonnull final DecryptionConfiguration decryptionConfig) {
+        super(Constraint.isNotNull(decryptionConfig, "DecryptionConfiguration cannot be null"));
+    }
     
     /**
      * Constructor.
