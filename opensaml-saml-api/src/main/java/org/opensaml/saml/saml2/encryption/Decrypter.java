@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.encryption;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -67,8 +68,9 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @param newKEKResolver resolver for key encryption keys.
      * @param newEncKeyResolver resolver for EncryptedKey elements
      */
-    public Decrypter(KeyInfoCredentialResolver newResolver, KeyInfoCredentialResolver newKEKResolver, 
-            EncryptedKeyResolver newEncKeyResolver) {
+    public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
+            @Nullable final KeyInfoCredentialResolver newKEKResolver, 
+            @Nullable final EncryptedKeyResolver newEncKeyResolver) {
         super(newResolver, newKEKResolver, newEncKeyResolver);
     }
     
@@ -79,7 +81,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @return an Assertion 
      * @throws DecryptionException thrown when decryption generates an error
      */
-    public Assertion decrypt(EncryptedAssertion encryptedAssertion) throws DecryptionException {
+    public Assertion decrypt(@Nonnull final EncryptedAssertion encryptedAssertion) throws DecryptionException {
         SAMLObject samlObject = decryptData(encryptedAssertion);
         if (! (samlObject instanceof Assertion)) {
             throw new DecryptionException("Decrypted SAMLObject was not an instance of Assertion");
@@ -94,7 +96,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @return an Attribute
      * @throws DecryptionException thrown when decryption generates an error
      */
-    public Attribute decrypt(EncryptedAttribute encryptedAttribute) throws DecryptionException {
+    public Attribute decrypt(@Nonnull final EncryptedAttribute encryptedAttribute) throws DecryptionException {
         SAMLObject samlObject = decryptData(encryptedAttribute);
         if (! (samlObject instanceof Attribute)) {
             throw new DecryptionException("Decrypted SAMLObject was not an instance of Attribute");
@@ -115,7 +117,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @return an XMLObject
      * @throws DecryptionException thrown when decryption generates an error
      */
-    public SAMLObject decrypt(EncryptedID encryptedID) throws DecryptionException {
+    public SAMLObject decrypt(@Nonnull final EncryptedID encryptedID) throws DecryptionException {
         return decryptData(encryptedID);
     }
 
@@ -127,7 +129,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @return a NewID
      * @throws DecryptionException thrown when decryption generates an error
      */
-    public NewID decrypt(NewEncryptedID newEncryptedID) throws DecryptionException {
+    public NewID decrypt(@Nonnull final NewEncryptedID newEncryptedID) throws DecryptionException {
         SAMLObject samlObject = decryptData(newEncryptedID);
         if (! (samlObject instanceof NewID)) {
             throw new DecryptionException("Decrypted SAMLObject was not an instance of NewID");
@@ -144,7 +146,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @return the decrypted SAMLObject
      * @throws DecryptionException thrown when decryption generates an error
      */
-    private SAMLObject decryptData(EncryptedElementType encElement) throws DecryptionException {
+    private SAMLObject decryptData(@Nonnull final EncryptedElementType encElement) throws DecryptionException {
         
         if (encElement.getEncryptedData() == null) {
             throw new DecryptionException("Element had no EncryptedData child");
