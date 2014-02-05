@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.encryption;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
@@ -70,8 +69,6 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      *
      */
     public SimpleDecryptionTest() {
-        super();
-        
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         
     }

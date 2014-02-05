@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.encryption;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +66,6 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      *
      */
     public SimpleEncryptionTest() {
-        super();
-        
         expectedKeyName = "SuperSecretKey";
         algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         

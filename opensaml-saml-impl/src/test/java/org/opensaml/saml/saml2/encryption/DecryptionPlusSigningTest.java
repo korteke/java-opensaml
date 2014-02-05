@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.encryption;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
@@ -78,8 +77,6 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
      *
      */
     public DecryptionPlusSigningTest() {
-        super();
-        
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         
     }
