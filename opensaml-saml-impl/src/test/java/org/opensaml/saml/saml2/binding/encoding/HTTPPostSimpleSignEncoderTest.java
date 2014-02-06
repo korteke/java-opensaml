@@ -40,7 +40,7 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
-import org.opensaml.xmlsec.messaging.SecurityParametersContext;
+import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
