@@ -29,7 +29,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.SignatureSigningParameters;
-import org.opensaml.xmlsec.messaging.SecurityParametersContext;
+import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;

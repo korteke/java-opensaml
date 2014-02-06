@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.messaging;
+package org.opensaml.xmlsec.context;
 
 import javax.annotation.Nullable;
 
@@ -32,16 +32,16 @@ import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
 public class SecurityParametersContext extends BaseContext {
     
     /** Signature signing parameters. */
-    private SignatureSigningParameters signatureSigningParameters;
+    @Nullable private SignatureSigningParameters signatureSigningParameters;
     
     /** Signature validation parameters. */
-    private SignatureValidationParameters signatureValidationParameters;
+    @Nullable private SignatureValidationParameters signatureValidationParameters;
     
     /** Encryption parameters. */
-    private EncryptionParameters encryptionParameters;
+    @Nullable private EncryptionParameters encryptionParameters;
     
     /** Decryption parameters. */
-    private DecryptionParameters decryptionParameters;
+    @Nullable private DecryptionParameters decryptionParameters;
 
     /**
      * Get the parameters to use for XML signature signing operations.
@@ -57,7 +57,7 @@ public class SecurityParametersContext extends BaseContext {
      * 
      * @param params the parameters
      */
-    public void setSignatureSigningParameters(final @Nullable SignatureSigningParameters params) {
+    public void setSignatureSigningParameters(@Nullable final SignatureSigningParameters params) {
         signatureSigningParameters = params;
     }
 
@@ -75,7 +75,7 @@ public class SecurityParametersContext extends BaseContext {
      * 
      * @param params The signatureValidationParameters to set.
      */
-    public void setSignatureValidationParameters(final @Nullable SignatureValidationParameters params) {
+    public void setSignatureValidationParameters(@Nullable final SignatureValidationParameters params) {
         signatureValidationParameters = params;
     }
 
@@ -93,7 +93,7 @@ public class SecurityParametersContext extends BaseContext {
      * 
      * @param params the parameters
      */
-    public void setEncryptionParameters(final @Nullable EncryptionParameters params) {
+    public void setEncryptionParameters(@Nullable final EncryptionParameters params) {
         encryptionParameters = params;
     }
 
@@ -111,7 +111,7 @@ public class SecurityParametersContext extends BaseContext {
      * 
      * @param params the parameters
      */
-    public void setDecryptionParameters(final @Nullable DecryptionParameters params) {
+    public void setDecryptionParameters(@Nullable final DecryptionParameters params) {
         decryptionParameters = params;
     }
 
