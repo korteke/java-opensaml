@@ -54,6 +54,11 @@ public final class EventIds {
      * message.
      */
     public static final String UNABLE_TO_ENCODE = "UnableToEncode";
+    
+    /**
+     * ID of the event returned if a {@link org.opensaml.xmlsec.signature.support.Signer} is unable to sign a signature.
+     */
+    public static final String UNABLE_TO_SIGN = "UnableToSign";
 
     /** ID of the event returned if a SAML message version is incorrect or unsupported. */
     public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
