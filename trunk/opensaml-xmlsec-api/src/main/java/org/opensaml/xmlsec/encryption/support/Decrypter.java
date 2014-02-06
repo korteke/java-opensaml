@@ -55,7 +55,6 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -215,17 +214,6 @@ public class Decrypter {
     /** Flag to determine whether by default the Element which backs the underlying decrypted SAMLObject will be the 
      * root of a new DOM document. */
     private boolean defaultRootInNewDocument;
-    
-    /**
-     * Constructor.
-     *
-     * @param decryptionConfig  source of configuration material for decryption
-     */
-    public Decrypter(@Nonnull final DecryptionConfiguration decryptionConfig) {
-        this(decryptionConfig.getDataKeyInfoCredentialResolver(), decryptionConfig.getKEKKeyInfoCredentialResolver(),
-                decryptionConfig.getEncryptedKeyResolver());
-        // TODO incorporate algorithm lists
-    }
     
     /**
      * Constructor.
