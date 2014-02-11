@@ -24,8 +24,7 @@
     </documentation>
   </annotation>
 
-  <import namespace="http://schemas.xmlsoap.org/soap/envelope/"
-    schemaLocation="classpath:/schema/soap-envelope.xsd"/>
+  <import namespace="http://schemas.xmlsoap.org/soap/envelope/"/>
 
   <element name="ChannelBindings" type="cb:ChannelBindingsType"/>
   <complexType name="ChannelBindingsType">
