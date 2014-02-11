@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" version="1.0" targetNamespace="http://www.w3.org/2001/04/xmlenc#" elementFormDefault="qualified">
 
-    <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="classpath:/schema/xmldsig-core-schema.xsd"/>
+    <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
 
     <complexType name="EncryptedType" abstract="true">
         <sequence>
