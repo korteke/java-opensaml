@@ -22,14 +22,14 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
-
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import org.slf4j.LoggerFactory;
 
 
 //TODO perf metrics
@@ -132,7 +132,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
                 try {
                     doPostExecute(profileRequestContext, e);
                 } catch (Throwable t) {
-                    Logger.getInstance(AbstractProfileAction.class).warn(getLogPrefix()
+                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(getLogPrefix()
                             + " Unchecked exception/error thrown by doPostInvoke, "
                             + "superseding a MessageHandlerException ", e);
                     t.addSuppressed(e);
@@ -143,7 +143,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
                 try {
                     doPostExecute(profileRequestContext);
                 } catch (Throwable t2) {
-                    Logger.getInstance(AbstractProfileAction.class).warn(getLogPrefix()
+                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(getLogPrefix()
                             + " Unchecked exception/error thrown by doPostInvoke, "
                             + "superseding an unchecked exception/error ", t);
                     t2.addSuppressed(t);
