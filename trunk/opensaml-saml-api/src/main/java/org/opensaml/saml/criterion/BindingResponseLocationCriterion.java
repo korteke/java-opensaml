@@ -17,25 +17,28 @@
 
 package org.opensaml.saml.criterion;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /** {@link Criterion} representing a SAML binding resonse location. */
-public final class BindingResponseLocation implements Criterion {
+public final class BindingResponseLocationCriterion implements Criterion {
 
     /** The binding response location URI. */
-    private final String location;
+    @Nonnull @NotEmpty private final String location;
 
     /**
      * Constructor.
      * 
      * @param responseLocationUri the binding response location URI, never null or empty
      */
-    public BindingResponseLocation(String responseLocationUri) {
+    public BindingResponseLocationCriterion(@Nonnull @NotEmpty final String responseLocationUri) {
         location =
                 Constraint.isNotNull(StringSupport.trimOrNull(responseLocationUri),
-                        "Response location can not be null or empty");
+                        "Response location cannot be null or empty");
     }
 
     /**
@@ -43,11 +46,12 @@ public final class BindingResponseLocation implements Criterion {
      * 
      * @return the binding response location URI, never null or empty
      */
-    public String getLocation() {
+    @Nonnull @NotEmpty public String getLocation() {
         return location;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("BindingResponseLocation [location=");
@@ -57,11 +61,13 @@ public final class BindingResponseLocation implements Criterion {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return location.hashCode();
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -71,8 +77,8 @@ public final class BindingResponseLocation implements Criterion {
             return false;
         }
 
-        if (obj instanceof BindingResponseLocation) {
-            return location.equals(((BindingResponseLocation) obj).location);
+        if (obj instanceof BindingResponseLocationCriterion) {
+            return location.equals(((BindingResponseLocationCriterion) obj).location);
         }
 
         return false;
