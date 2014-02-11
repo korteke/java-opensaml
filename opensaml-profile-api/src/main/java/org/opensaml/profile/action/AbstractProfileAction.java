@@ -49,19 +49,12 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
 
     /** Current HTTP response, if available. */
     @Nullable private HttpServletResponse httpServletResponse;
-    
-    /**
-     * Constructor.
-     */
-    public AbstractProfileAction() {
-    }
 
     /** {@inheritDoc} */
     @Override
     public synchronized void setId(String componentId) {
         super.setId(componentId);
     }
-
 
     /**
      * Get the current HTTP request if available.
