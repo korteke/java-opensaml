@@ -52,11 +52,8 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     
     /**
      * Constructor.
-     * 
-     * Initializes the ID of this action to the class name.
      */
     public AbstractProfileAction() {
-        setId(getClass().getName());
     }
 
     /** {@inheritDoc} */
