@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.criterion;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
@@ -25,27 +28,28 @@ import net.shibboleth.utilities.java.support.resolver.Criterion;
 public final class BindingCriterion implements Criterion {
 
     /** The SAML binding URI. */
-    private final String binding;
+    @Nonnull @NotEmpty private final String binding;
 
     /**
      * Constructor.
      * 
-     * @param bindingUri the SAML binding URI, never null or empty
+     * @param bindingUri the SAML binding URI
      */
-    public BindingCriterion(String bindingUri) {
-        binding = Constraint.isNotNull(StringSupport.trimOrNull(bindingUri), "Binding URI can not be null or empty");
+    public BindingCriterion(@Nonnull @NotEmpty final String bindingUri) {
+        binding = Constraint.isNotNull(StringSupport.trimOrNull(bindingUri), "Binding URI cannot be null or empty");
     }
 
     /**
-     * Gets the SAML binding URI.
+     * Get the SAML binding URI.
      * 
-     * @return the SAML binding URI, never null or empty
+     * @return the SAML binding URI
      */
-    public String getBinding() {
+    @Nonnull @NotEmpty public String getBinding() {
         return binding;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("BindingCriterion [binding=");
@@ -55,11 +59,13 @@ public final class BindingCriterion implements Criterion {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return binding.hashCode();
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

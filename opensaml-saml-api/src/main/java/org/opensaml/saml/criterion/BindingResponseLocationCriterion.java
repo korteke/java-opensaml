@@ -33,7 +33,7 @@ public final class BindingResponseLocationCriterion implements Criterion {
     /**
      * Constructor.
      * 
-     * @param responseLocationUri the binding response location URI, never null or empty
+     * @param responseLocationUri the binding response location URI
      */
     public BindingResponseLocationCriterion(@Nonnull @NotEmpty final String responseLocationUri) {
         location =
@@ -42,9 +42,9 @@ public final class BindingResponseLocationCriterion implements Criterion {
     }
 
     /**
-     * Gets the binding response location URI.
+     * Get the binding response location URI.
      * 
-     * @return the binding response location URI, never null or empty
+     * @return the binding response location URI
      */
     @Nonnull @NotEmpty public String getLocation() {
         return location;

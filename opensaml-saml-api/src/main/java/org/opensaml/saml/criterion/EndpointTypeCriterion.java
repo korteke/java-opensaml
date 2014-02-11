@@ -18,43 +18,41 @@
 package org.opensaml.saml.criterion;
 
 import javax.annotation.Nonnull;
+import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing an entity ID. */
-public final class ProtocolCriterion implements Criterion {
+/** {@link Criterion} representing a SAML metadata endpoint type. */
+public final class EndpointTypeCriterion implements Criterion {
 
-    /** The SAML protocol. */
-    @Nonnull @NotEmpty private final String protocol;
+    /** The endpoint type. */
+    @Nonnull private final QName type;
 
     /**
      * Constructor.
      * 
-     * @param protocolUri the SAML protocol
+     * @param endpointType the endpoint type
      */
-    public ProtocolCriterion(@Nonnull @NotEmpty final String protocolUri) {
-        protocol = Constraint.isNotNull(StringSupport.trimOrNull(protocolUri), 
-                "SAML protocol URI cannot be null or empty");
+    public EndpointTypeCriterion(@Nonnull final QName endpointType) {
+        type = Constraint.isNotNull(endpointType, "SAML metadata endpoint type cannot be null");
     }
 
     /**
-     * Get the SAML protocol URI.
+     * Get the endpoint type.
      * 
-     * @return SAML protocol URI
+     * @return the endpoint type
      */
-    @Nonnull @NotEmpty public String getProtocol() {
-        return protocol;
+    @Nonnull public QName getEndpointType() {
+        return type;
     }
 
     /** {@inheritDoc} */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ProtocolCriterion [protocol=");
-        builder.append(protocol);
+        builder.append("EndpointTypeCriterion [type=");
+        builder.append(type);
         builder.append("]");
         return builder.toString();
     }
@@ -62,7 +60,7 @@ public final class ProtocolCriterion implements Criterion {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return protocol.hashCode();
+        return type.hashCode();
     }
 
     /** {@inheritDoc} */
@@ -76,8 +74,8 @@ public final class ProtocolCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof ProtocolCriterion) {
-            return protocol.equals(((ProtocolCriterion) obj).protocol);
+        if (obj instanceof EndpointTypeCriterion) {
+            return type.equals(((EndpointTypeCriterion) obj).type);
         }
 
         return false;
