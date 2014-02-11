@@ -2,7 +2,7 @@
 <!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Phill Hallam-Baker (VeriSign Inc.) -->
 <schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:saml="urn:oasis:names:tc:SAML:1.0:assertion" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:oasis:names:tc:SAML:1.0:assertion" elementFormDefault="unqualified">
     
-    <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="classpath:/schema/xmldsig-core-schema.xsd"/>
+    <import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
         
     <annotation>
         <documentation>
