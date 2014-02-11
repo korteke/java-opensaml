@@ -47,6 +47,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         prc = new RequestContextBuilder().buildProfileRequestContext();
         
         action = new AddSubjectConfirmationToSubjects();
+        action.setId("test");
     }
 
     @Test(expectedExceptions = ComponentInitializationException.class)
