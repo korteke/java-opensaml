@@ -17,35 +17,39 @@
 
 package org.opensaml.saml.criterion;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /** {@link Criterion} representing a SAML binding location. */
-public final class BindingLocation implements Criterion {
+public final class BindingLocationCriterion implements Criterion {
 
     /** The binding location URI. */
-    private final String location;
+    @Nonnull @NotEmpty private final String location;
 
     /**
      * Constructor.
      * 
      * @param locationUri the binding location URI, never null or empty
      */
-    public BindingLocation(String locationUri) {
-        location = Constraint.isNotNull(StringSupport.trimOrNull(locationUri), "Location can not be null or empty");
+    public BindingLocationCriterion(@Nonnull @NotEmpty final String locationUri) {
+        location = Constraint.isNotNull(StringSupport.trimOrNull(locationUri), "Location cannot be null or empty");
     }
 
     /**
      * Gets the binding location URI.
      * 
-     * @return the binding location URI, never null or empty
+     * @return the binding location URI
      */
-    public String getLocation() {
+    @Nonnull @NotEmpty public String getLocation() {
         return location;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("BindingLocation [location=");
@@ -55,11 +59,13 @@ public final class BindingLocation implements Criterion {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return location.hashCode();
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -69,8 +75,8 @@ public final class BindingLocation implements Criterion {
             return false;
         }
 
-        if (obj instanceof BindingLocation) {
-            return location.equals(((BindingLocation) obj).location);
+        if (obj instanceof BindingLocationCriterion) {
+            return location.equals(((BindingLocationCriterion) obj).location);
         }
 
         return false;
