@@ -26,7 +26,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.junit.Assert;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -38,6 +37,7 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -100,9 +100,9 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
         RoleDescriptor roleDescriptor = roleResolver.resolveSingle(new CriteriaSet(
                 new EntityIdCriterion("http://www.example.org"), 
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
-       Assert.assertNotNull("Resolved RoleDescriptor was null", roleDescriptor);
-       Assert.assertEquals("Saw incorrect role type", SPSSODescriptor.DEFAULT_ELEMENT_NAME, 
-               roleDescriptor.getElementQName());
+        Assert.assertNotNull(roleDescriptor, "Resolved RoleDescriptor was null");
+        Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
+                "Saw incorrect role type");
     }
     
     @Test
@@ -110,16 +110,16 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
         Iterable<RoleDescriptor> roleDescriptors = roleResolver.resolve(new CriteriaSet(
                 new EntityIdCriterion("http://www.example.org"), 
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
-       Assert.assertNotNull("Resolved RoleDescriptor iterable was null", roleDescriptors);
+       Assert.assertNotNull(roleDescriptors, "Resolved RoleDescriptor iterable was null");
        
        int count = 0;
        for (RoleDescriptor roleDescriptor : roleDescriptors) {
-           Assert.assertEquals("Saw incorrect role type", SPSSODescriptor.DEFAULT_ELEMENT_NAME, 
-                   roleDescriptor.getElementQName());
+            Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
+                    "Saw incorrect role type");
            count++;
        }
        
-       Assert.assertEquals("Resolved unexpected number of RoleDescriptors", 2, count);
+       Assert.assertEquals(2, count, "Resolved unexpected number of RoleDescriptors");
     }
     
     @Test
@@ -129,11 +129,11 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
                 new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         
-       Assert.assertNotNull("Resolved RoleDescriptor was null", roleDescriptor);
-       Assert.assertEquals("Saw incorrect role type", SPSSODescriptor.DEFAULT_ELEMENT_NAME, 
-               roleDescriptor.getElementQName());
-       Assert.assertTrue("Returned RoleDescriptor didn't support specified protocol", 
-               roleDescriptor.getSupportedProtocols().contains(SAMLConstants.SAML20P_NS));
+        Assert.assertNotNull(roleDescriptor, "Resolved RoleDescriptor was null");
+        Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
+                "Saw incorrect role type");
+        Assert.assertTrue(roleDescriptor.getSupportedProtocols().contains(SAMLConstants.SAML20P_NS),
+                "Returned RoleDescriptor didn't support specified protocol");
     }
     
     @Test
@@ -142,18 +142,18 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
                 new EntityIdCriterion("http://www.example.org"), 
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
                 new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
-       Assert.assertNotNull("Resolved RoleDescriptor iterable was null", roleDescriptors);
+       Assert.assertNotNull(roleDescriptors, "Resolved RoleDescriptor iterable was null");
        
        int count = 0;
        for (RoleDescriptor roleDescriptor : roleDescriptors) {
-           Assert.assertEquals("Saw incorrect role type", SPSSODescriptor.DEFAULT_ELEMENT_NAME, 
-                   roleDescriptor.getElementQName());
-           Assert.assertTrue("Returned RoleDescriptor didn't support specified protocol", 
-                   roleDescriptor.getSupportedProtocols().contains(SAMLConstants.SAML20P_NS));
-           count++;
+            Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
+                    "Saw incorrect role type");
+            Assert.assertTrue(roleDescriptor.getSupportedProtocols().contains(SAMLConstants.SAML20P_NS),
+                    "Returned RoleDescriptor didn't support specified protocol");
+            count++;
        }
        
-       Assert.assertEquals("Resolved unexpected number of RoleDescriptors", 1, count);
+       Assert.assertEquals(1, count, "Resolved unexpected number of RoleDescriptors");
     }
     
     // Helper methods
