@@ -17,9 +17,10 @@
 
 package org.opensaml.xacml.ctx.provider;
 
-import junit.framework.Assert;
+
 
 import org.opensaml.xacml.policy.ObligationType;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**

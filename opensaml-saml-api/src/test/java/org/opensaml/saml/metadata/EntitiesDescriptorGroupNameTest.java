@@ -17,10 +17,11 @@
 
 package org.opensaml.saml.metadata;
 
-import junit.framework.Assert;
+
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class EntitiesDescriptorGroupNameTest {
@@ -28,10 +29,10 @@ public class EntitiesDescriptorGroupNameTest {
     @Test
     public void testConstructor() {
         EntitiesDescriptorGroupName groupName = new EntitiesDescriptorGroupName("foo");
-        Assert.assertEquals("foo", groupName.getName());
+        Assert.assertEquals(groupName.getName(), "foo");
         
         groupName = new EntitiesDescriptorGroupName("    foo    ");
-        Assert.assertEquals("foo", groupName.getName());
+        Assert.assertEquals(groupName.getName(), "foo");
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

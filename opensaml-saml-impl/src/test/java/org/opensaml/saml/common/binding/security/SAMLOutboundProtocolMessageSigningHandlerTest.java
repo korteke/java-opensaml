@@ -22,7 +22,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -40,6 +39,7 @@ import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -94,7 +94,7 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         
         handler.invoke(messageContext);
         
-        Assert.assertNotNull("Signature was null", response.getSignature());
+        Assert.assertNotNull(response.getSignature(), "Signature was null");
     }
 
 }
