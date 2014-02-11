@@ -17,54 +17,23 @@
 
 package org.opensaml.saml.criterion;
 
-import javax.annotation.Nonnull;
-import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing an entity role. */
-public final class EntityRoleCriterion implements Criterion {
-
-    /** The entity role. */
-    @Nonnull private final QName role;
-
-    /**
-     * Constructor.
-     * 
-     * @param samlRole the entity role
-     */
-    public EntityRoleCriterion(@Nonnull final QName samlRole) {
-        role = Constraint.isNotNull(samlRole, "SAML role cannot be null");
-    }
-
-    /**
-     * Gets the entity role.
-     * 
-     * @return the entity role
-     */
-    @Nonnull public QName getRole() {
-        return role;
-    }
+/** {@link Criterion} representing the use of a signed request. */
+public final class SignedRequestCriterion implements Criterion {
 
     /** {@inheritDoc} */
-    @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("EntityRoleCriterion [role=");
-        builder.append(role);
-        builder.append("]");
-        return builder.toString();
+        return "SignedRequestCriterion";
     }
 
     /** {@inheritDoc} */
-    @Override
     public int hashCode() {
-        return role.hashCode();
+        return Boolean.TRUE.hashCode();
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -74,8 +43,8 @@ public final class EntityRoleCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof EntityRoleCriterion) {
-            return role.equals(((EntityRoleCriterion) obj).role);
+        if (obj instanceof SignedRequestCriterion) {
+            return true;
         }
 
         return false;

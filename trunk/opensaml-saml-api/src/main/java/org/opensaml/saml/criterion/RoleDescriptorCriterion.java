@@ -19,42 +19,41 @@ package org.opensaml.saml.criterion;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing an entity ID. */
-public final class ProtocolCriterion implements Criterion {
+/** {@link Criterion} representing an entity role. */
+public final class RoleDescriptorCriterion implements Criterion {
 
-    /** The SAML protocol. */
-    @Nonnull @NotEmpty private final String protocol;
+    /** The entity role. */
+    @Nonnull private final RoleDescriptor role;
 
     /**
      * Constructor.
      * 
-     * @param protocolUri the SAML protocol
+     * @param samlRole the entity role
      */
-    public ProtocolCriterion(@Nonnull @NotEmpty final String protocolUri) {
-        protocol = Constraint.isNotNull(StringSupport.trimOrNull(protocolUri), 
-                "SAML protocol URI cannot be null or empty");
+    public RoleDescriptorCriterion(@Nonnull final RoleDescriptor samlRole) {
+        role = Constraint.isNotNull(samlRole, "SAML role cannot be null");
     }
 
     /**
-     * Get the SAML protocol URI.
+     * Gets the entity role.
      * 
-     * @return SAML protocol URI
+     * @return the entity role
      */
-    @Nonnull @NotEmpty public String getProtocol() {
-        return protocol;
+    @Nonnull public RoleDescriptor getRole() {
+        return role;
     }
 
     /** {@inheritDoc} */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ProtocolCriterion [protocol=");
-        builder.append(protocol);
+        builder.append("RoleDescriptorCriterion [role=");
+        builder.append(role);
         builder.append("]");
         return builder.toString();
     }
@@ -62,7 +61,7 @@ public final class ProtocolCriterion implements Criterion {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return protocol.hashCode();
+        return role.hashCode();
     }
 
     /** {@inheritDoc} */
@@ -76,8 +75,8 @@ public final class ProtocolCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof ProtocolCriterion) {
-            return protocol.equals(((ProtocolCriterion) obj).protocol);
+        if (obj instanceof RoleDescriptorCriterion) {
+            return role.equals(((RoleDescriptorCriterion) obj).role);
         }
 
         return false;

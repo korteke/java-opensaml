@@ -33,14 +33,14 @@ public final class BindingLocationCriterion implements Criterion {
     /**
      * Constructor.
      * 
-     * @param locationUri the binding location URI, never null or empty
+     * @param locationUri the binding location URI
      */
     public BindingLocationCriterion(@Nonnull @NotEmpty final String locationUri) {
         location = Constraint.isNotNull(StringSupport.trimOrNull(locationUri), "Location cannot be null or empty");
     }
 
     /**
-     * Gets the binding location URI.
+     * Get the binding location URI.
      * 
      * @return the binding location URI
      */
