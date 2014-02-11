@@ -72,6 +72,8 @@ public class SAMLSchemaBuilder {
     /** Classpath relative location of SAML 2_0 schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = { 
         "/schema/saml-schema-assertion-2.0.xsd",
+        "/schema/saml-schema-protocol-2.0.xsd",
+        "/schema/saml-schema-metadata-2.0.xsd",
         "/schema/saml-schema-authn-context-2.0.xsd",
         "/schema/saml-schema-authn-context-auth-telephony-2.0.xsd",
         "/schema/saml-schema-authn-context-ip-2.0.xsd",
@@ -100,8 +102,6 @@ public class SAMLSchemaBuilder {
         "/schema/saml-schema-authn-context-xmldsig-2.0.xsd",
         "/schema/saml-schema-dce-2.0.xsd",
         "/schema/saml-schema-ecp-2.0.xsd",
-        "/schema/saml-schema-metadata-2.0.xsd",
-        "/schema/saml-schema-protocol-2.0.xsd",
         "/schema/saml-schema-x500-2.0.xsd",
         "/schema/saml-schema-xacml-2.0.xsd",
         };

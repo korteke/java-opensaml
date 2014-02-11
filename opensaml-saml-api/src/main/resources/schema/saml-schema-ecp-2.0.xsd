@@ -12,11 +12,10 @@
     version="2.0-v2.0">
 
     <import namespace="urn:oasis:names:tc:SAML:2.0:protocol"
-        schemaLocation="classpath:/schema/saml-schema-protocol-2.0.xsd"/>
+        schemaLocation="http://docs.oasis-open.org/security/saml/v2.0/saml-schema-protocol-2.0.xsd"/>
     <import namespace="urn:oasis:names:tc:SAML:2.0:assertion"
-        schemaLocation="classpath:/schema/saml-schema-assertion-2.0.xsd"/>
-    <import namespace="http://schemas.xmlsoap.org/soap/envelope/"
-        schemaLocation="classpath:/schema/soap-envelope.xsd"/>
+        schemaLocation="http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd"/>
+    <import namespace="http://schemas.xmlsoap.org/soap/envelope/"/>
 
     <annotation>
         <documentation>

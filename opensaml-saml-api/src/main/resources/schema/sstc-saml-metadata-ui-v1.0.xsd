@@ -14,8 +14,8 @@
     </documentation>
   </annotation>
 
-  <import namespace="urn:oasis:names:tc:SAML:2.0:metadata" schemaLocation="classpath:/schema/saml-schema-metadata-2.0.xsd"/>
-  <import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="classpath:/schema/xml.xsd"/>
+  <import namespace="urn:oasis:names:tc:SAML:2.0:metadata" schemaLocation="http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd"/>
+  <import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
 
   <element name="UIInfo" type="mdui:UIInfoType"/>
   <complexType name="UIInfoType">

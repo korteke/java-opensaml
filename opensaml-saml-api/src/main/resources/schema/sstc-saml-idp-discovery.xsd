@@ -11,7 +11,7 @@
         </documentation>
     </annotation>
     
-    <import namespace="urn:oasis:names:tc:SAML:2.0:metadata" schemaLocation="classpath:/schema/saml-schema-metadata-2.0.xsd"/>
+    <import namespace="urn:oasis:names:tc:SAML:2.0:metadata" schemaLocation="http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd"/>
     
     <element name="DiscoveryResponse" type="md:IndexedEndpointType"/>
     

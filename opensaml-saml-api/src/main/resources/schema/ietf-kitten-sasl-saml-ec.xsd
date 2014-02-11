@@ -11,9 +11,8 @@
    version="1.0">
 
     <import namespace="http://www.w3.org/2000/09/xmldsig#"
-        schemaLocation="classpath:/schema/xmldsig-core-schema.xsd"/>
-    <import namespace="http://schemas.xmlsoap.org/soap/envelope/"
-        schemaLocation="classpath:/schema/soap-envelope.xsd"/>
+        schemaLocation="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"/>
+    <import namespace="http://schemas.xmlsoap.org/soap/envelope/"/>
 
   <element name="SessionKey" type="samlec:SessionKeyType"/>
   <complexType name="SessionKeyType">
