@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.apache.log4j.Logger;
 import org.opensaml.messaging.context.MessageContext;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -68,7 +68,7 @@ public abstract class AbstractMessageHandler<MessageType>
                 try {
                     doPostInvoke(messageContext, e);
                 } catch (Throwable t) {
-                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(getLogPrefix()
                             + " Unchecked exception/error thrown by doPostInvoke, "
                             + "superseding a MessageHandlerException ", e);
                     t.addSuppressed(e);
@@ -79,7 +79,7 @@ public abstract class AbstractMessageHandler<MessageType>
                 try {
                     doPostInvoke(messageContext);
                 } catch (Throwable t2) {
-                    Logger.getInstance(AbstractMessageHandler.class).warn(getLogPrefix()
+                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(getLogPrefix()
                             + " Unchecked exception/error thrown by doPostInvoke, "
                             + "superseding an unchecked exception/error ", t);
                     t2.addSuppressed(t);
