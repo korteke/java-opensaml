@@ -17,26 +17,41 @@
 
 package org.opensaml.saml.criterion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import com.google.common.collect.ImmutableList;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing a SAML binding. */
+/** {@link Criterion} representing an ordered list of SAML bindings. */
 public final class BindingCriterion implements Criterion {
 
     /** The SAML binding URI. */
-    @Nonnull @NotEmpty private final String binding;
+    @Nonnull @NonnullElements private final List<String> bindings;
 
     /**
      * Constructor.
      * 
-     * @param bindingUri the SAML binding URI
+     * @param bindingURIs list of SAML binding URIs
      */
-    public BindingCriterion(@Nonnull @NotEmpty final String bindingUri) {
-        binding = Constraint.isNotNull(StringSupport.trimOrNull(bindingUri), "Binding URI cannot be null or empty");
+    public BindingCriterion(@Nonnull @NonnullElements final List<String> bindingURIs) {
+        Constraint.isNotNull(bindingURIs, "Binding list cannot be null");
+        
+        bindings = new ArrayList(bindingURIs.size());
+        for (final String binding : bindingURIs) {
+            final String trimmed = StringSupport.trimOrNull(binding);
+            if (trimmed != null) {
+                bindings.add(trimmed);
+            }
+        }
     }
 
     /**
@@ -44,16 +59,16 @@ public final class BindingCriterion implements Criterion {
      * 
      * @return the SAML binding URI
      */
-    @Nonnull @NotEmpty public String getBinding() {
-        return binding;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getBindings() {
+        return ImmutableList.copyOf(bindings);
     }
 
     /** {@inheritDoc} */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("BindingCriterion [binding=");
-        builder.append(binding);
+        builder.append("BindingCriterion [bindings=");
+        builder.append(bindings);
         builder.append("]");
         return builder.toString();
     }
@@ -61,7 +76,7 @@ public final class BindingCriterion implements Criterion {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return binding.hashCode();
+        return bindings.hashCode();
     }
 
     /** {@inheritDoc} */
@@ -76,7 +91,7 @@ public final class BindingCriterion implements Criterion {
         }
 
         if (obj instanceof BindingCriterion) {
-            return binding.equals(((BindingCriterion) obj).binding);
+            return bindings.equals(((BindingCriterion) obj).bindings);
         }
 
         return false;

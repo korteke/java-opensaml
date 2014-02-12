@@ -32,10 +32,8 @@ import net.shibboleth.utilities.java.support.resolver.Resolver;
  * At a minimum, an {@link EndpointResolver} implementation MUST support the following criteria:
  * <ul>
  * <li>{@link org.opensaml.saml.criterion.BindingCriterion}</li>
- * <li>{@link org.opensaml.saml.criterion.BindingLocationCriterion}</li>
- * <li>{@link org.opensaml.saml.criterion.BindingResponseLocationCriterion}</li>
+ * <li>{@link org.opensaml.saml.criterion.EndpointCriterion}</li>
  * <li>{@link org.opensaml.saml.criterion.RoleDescriptorCriterion}</li>
- * <li>{@link org.opensaml.saml.criterion.EndpointTypeCriterion}</li>
  * </ul>
  * 
  * Implementations SHOULD also support the following criteria when possible:
