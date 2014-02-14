@@ -24,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.BaseContext;
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageChannelSecurityContext;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
@@ -39,7 +38,8 @@ import com.google.common.base.Function;
 public class AbstractMessageChannelSecurity extends AbstractProfileAction {
     
     /**
-     * Strategy used to look up the {@link BaseContext} on which the {@link MessageChannelSecurityContext} will be set.
+     * Strategy used to look up the parent {@link BaseContext} on which the {@link MessageChannelSecurityContext} 
+     * will be populated.
      */
     @Nonnull private Function<ProfileRequestContext, BaseContext> parentContextLookupStrategy;
     
@@ -56,13 +56,13 @@ public class AbstractMessageChannelSecurity extends AbstractProfileAction {
     }
     
     /**
-     * Set the strategy used to look up the {@link BasicMessageMetadataContext} associated with the inbound message
-     * context.
+     * Set the strategy used to look up the parent {@link BaseContext} on which the {@link MessageChannelSecurityContext}
+     * will be populated.
      * 
-     * @param strategy strategy used to look up the {@link BasicMessageMetadataContext} associated with the inbound
-     *            message context
+     * @param strategy strategy used to look up the parent {@link BaseContext} on which to populate
+     *          the {@link MessageChannelSecurityContext}
      */
-    public void setMessageMetadataContextLookupStrategy(
+    public void setParentContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext, BaseContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
