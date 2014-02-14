@@ -69,9 +69,11 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * 
  * <p>Subclasses should override the {{@link #doCheckEndpoint(CriteriaSet, Endpoint)} method to implement
  * further criteria.</p>
+ * 
+ * @param <EndpointType> type of endpoint
  */
-public abstract class AbstractEndpointResolver extends AbstractDestructableIdentifiableInitializableComponent
-        implements EndpointResolver {
+public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
+        extends AbstractDestructableIdentifiableInitializableComponent implements EndpointResolver<EndpointType> {
 
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AbstractEndpointResolver.class);
@@ -83,22 +85,22 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements public Iterable<Endpoint> resolve(@Nullable final CriteriaSet criteria)
+    @Nonnull @NonnullElements public Iterable<EndpointType> resolve(@Nullable final CriteriaSet criteria)
             throws ResolverException {
         validateCriteria(criteria);
         
         if (canUseRequestedEndpoint(criteria)) {
-            final Endpoint endpoint = criteria.get(EndpointCriterion.class).getEndpoint();
+            final EndpointType endpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
             if (doCheckEndpoint(criteria, endpoint)) {
-                return Collections.singletonList(endpoint);
+                return Collections.<EndpointType>singletonList(endpoint);
             } else {
                 log.debug("{} Requested endpoint was rejected by extended validation process", getLogPrefix());
                 return Collections.emptyList();
             }
         }
         
-        final List<Endpoint> candidates = getCandidatesFromMetadata(criteria);
-        final Iterator<Endpoint> i = candidates.iterator();
+        final List<EndpointType> candidates = getCandidatesFromMetadata(criteria);
+        final Iterator<EndpointType> i = candidates.iterator();
         while (i.hasNext()) {
             if (!doCheckEndpoint(criteria, i.next())) {
                 i.remove();
@@ -111,11 +113,11 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
 
     /** {@inheritDoc} */
     @Override
-    @Nullable public Endpoint resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
+    @Nullable public EndpointType resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         validateCriteria(criteria);
 
         if (canUseRequestedEndpoint(criteria)) {
-            final Endpoint endpoint = criteria.get(EndpointCriterion.class).getEndpoint();
+            final EndpointType endpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
             if (doCheckEndpoint(criteria, endpoint)) {
                 return endpoint;
             } else {
@@ -124,7 +126,7 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
             }
         }
         
-        for (final Endpoint candidate : getCandidatesFromMetadata(criteria)) {
+        for (final EndpointType candidate : getCandidatesFromMetadata(criteria)) {
             if (doCheckEndpoint(criteria, candidate)) {
                 return candidate;
             }
@@ -142,7 +144,7 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
      * 
      * @return  true iff the endpoint meets the supplied criteria
      */
-    protected boolean doCheckEndpoint(@Nonnull final CriteriaSet criteria, @Nonnull final Endpoint endpoint) {
+    protected boolean doCheckEndpoint(@Nonnull final CriteriaSet criteria, @Nonnull final EndpointType endpoint) {
         return true;
     }
 
@@ -175,7 +177,7 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
      * @return true iff the supplied endpoint via {@link EndpointCriterion} should be returned
      */
     private boolean canUseRequestedEndpoint(@Nonnull final CriteriaSet criteria) {
-        final Endpoint requestedEndpoint = criteria.get(EndpointCriterion.class).getEndpoint();
+        final EndpointType requestedEndpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
         if (criteria.contains(SignedRequestCriterion.class)) {
             if (requestedEndpoint.getBinding() != null && (requestedEndpoint.getLocation() != null
                     || requestedEndpoint.getResponseLocation() != null)) {
@@ -197,7 +199,8 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
      * 
      * @return mutable list of endpoints from the metadata
      */
-    @Nonnull @NonnullElements private List<Endpoint> getCandidatesFromMetadata(@Nonnull final CriteriaSet criteria) {
+    @Nonnull @NonnullElements private List<EndpointType> getCandidatesFromMetadata(
+            @Nonnull final CriteriaSet criteria) {
         
         // Check for metadata.
         final RoleDescriptorCriterion role = criteria.get(RoleDescriptorCriterion.class);
@@ -225,17 +228,17 @@ public abstract class AbstractEndpointResolver extends AbstractDestructableIdent
         // Use a linked list, and move the default endpoint to the head of the list.
         // SAML defaulting rules apply to IndexedEnpdoint types, and require checking
         // for the isDefault attribute.
-        final LinkedList<Endpoint> toReturn = Lists.newLinkedList();
+        final LinkedList<EndpointType> toReturn = Lists.newLinkedList();
         for (final Endpoint endpoint : endpoints) {
             if (endpoint instanceof IndexedEndpoint) {
                 Boolean flag = ((IndexedEndpoint) endpoint).isDefault();
                 if (flag != null && flag.booleanValue()) {
-                    toReturn.addFirst(endpoint);
+                    toReturn.addFirst((EndpointType) endpoint);
                 } else {
-                    toReturn.addLast(endpoint);
+                    toReturn.addLast((EndpointType) endpoint);
                 }
             } else {
-                toReturn.addLast(endpoint);
+                toReturn.addLast((EndpointType) endpoint);
             }
         }
         

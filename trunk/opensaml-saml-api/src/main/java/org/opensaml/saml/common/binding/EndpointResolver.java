@@ -40,8 +40,10 @@ import net.shibboleth.utilities.java.support.resolver.Resolver;
  * <ul>
  * <li>{@link org.opensaml.saml.criterion.SignedRequestCriterion}</li>
  * </ul>
+ * 
+ * @param <EndpointType> the type of endpoint to resolve
  */
-public interface EndpointResolver extends Resolver<Endpoint, CriteriaSet>, IdentifiableComponent,
-        InitializableComponent, DestructableComponent {
+public interface EndpointResolver<EndpointType extends Endpoint> extends Resolver<EndpointType, CriteriaSet>,
+        IdentifiableComponent, InitializableComponent, DestructableComponent {
     
 }

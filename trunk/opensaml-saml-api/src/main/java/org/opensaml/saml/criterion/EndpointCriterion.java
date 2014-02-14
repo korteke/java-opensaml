@@ -26,18 +26,22 @@ import com.google.common.base.Objects;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing a SAML metadata endpoint object. */
-public final class EndpointCriterion implements Criterion {
+/**
+ * {@link Criterion} representing a SAML metadata endpoint object.
+ *
+ * @param <EndpointType> the type of endpoint
+ */
+public final class EndpointCriterion<EndpointType extends Endpoint> implements Criterion {
 
     /** The endpoint. */
-    @Nonnull private final Endpoint endpoint;
+    @Nonnull private final EndpointType endpoint;
 
     /**
      * Constructor.
      * 
      * @param ep the endpoint
      */
-    public EndpointCriterion(@Nonnull final Endpoint ep) {
+    public EndpointCriterion(@Nonnull final EndpointType ep) {
         endpoint = Constraint.isNotNull(ep, "Endpoint cannot be null");
     }
 
@@ -46,7 +50,7 @@ public final class EndpointCriterion implements Criterion {
      * 
      * @return the endpoint type
      */
-    @Nonnull public Endpoint getEndpoint() {
+    @Nonnull public EndpointType getEndpoint() {
         return endpoint;
     }
 
