@@ -42,15 +42,17 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
  *  <dt> {@link BindingCriterion}
  *  <dd> Requires that the candidate endpoint's Binding attribute is among the bindings included in the criterion.
  * </dl>
+ * 
+ * @param <EndpointType> type of endpoint
  */
-public class DefaultEndpointResolver extends AbstractEndpointResolver {
+public class DefaultEndpointResolver<EndpointType extends Endpoint> extends AbstractEndpointResolver<EndpointType> {
 
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(DefaultEndpointResolver.class);
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doCheckEndpoint(@Nonnull final CriteriaSet criteria, @Nonnull final Endpoint endpoint) {
+    protected boolean doCheckEndpoint(@Nonnull final CriteriaSet criteria, @Nonnull final EndpointType endpoint) {
         
         // Make sure the candidate binding, if set, is one of the bindings specified.
         final BindingCriterion bindingCriterion = criteria.get(BindingCriterion.class);
@@ -59,7 +61,7 @@ public class DefaultEndpointResolver extends AbstractEndpointResolver {
         }
         
         // Compare individual fields to a comparison template.
-        final EndpointCriterion epCriterion = criteria.get(EndpointCriterion.class);
+        final EndpointCriterion<EndpointType> epCriterion = criteria.get(EndpointCriterion.class);
         if (epCriterion != null && !checkEndpointCriterion(epCriterion, endpoint)) {
             return false;
         }
@@ -75,7 +77,8 @@ public class DefaultEndpointResolver extends AbstractEndpointResolver {
      * 
      * @return true iff the candidate has no Binding, or its Binding is permitted
      */
-    private boolean checkBindingCriterion(@Nonnull final BindingCriterion bindings, @Nonnull final Endpoint endpoint) {
+    private boolean checkBindingCriterion(@Nonnull final BindingCriterion bindings,
+            @Nonnull final EndpointType endpoint) {
         
         if (endpoint.getBinding() != null) {
             if (!bindings.getBindings().contains(endpoint.getBinding())) {
@@ -95,10 +98,10 @@ public class DefaultEndpointResolver extends AbstractEndpointResolver {
      * @param endpoint      the candidate endpoint
      * @return  true iff the candidate's attributes match those of the criterion
      */
-    private boolean checkEndpointCriterion(@Nonnull final EndpointCriterion comparison,
-            @Nonnull final Endpoint endpoint) {
+    private boolean checkEndpointCriterion(@Nonnull final EndpointCriterion<EndpointType> comparison,
+            @Nonnull final EndpointType endpoint) {
 
-        final Endpoint comparisonEndpoint = comparison.getEndpoint();
+        final EndpointType comparisonEndpoint = comparison.getEndpoint();
         
         // Check binding.
         if (comparisonEndpoint.getBinding() != null &&
