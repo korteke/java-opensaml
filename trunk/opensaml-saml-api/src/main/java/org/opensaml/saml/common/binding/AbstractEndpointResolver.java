@@ -225,15 +225,42 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
                     endpointType);
         }
         
+        return sortCandidates(endpoints);
+    }
+    
+    /**
+     * Copy and sort the endpoints such that the default endpoint by SAML rules comes first.
+     * 
+     * @param candidates input list of endpoints
+     * 
+     * @return a new list containing the endpoints such that the default is first
+     */
+    // Checkstyle: CyclomaticComplexity OFF
+    @Nonnull @NonnullElements private List<EndpointType> sortCandidates(
+            @Nonnull @NonnullElements List<Endpoint> candidates) {
+        
         // Use a linked list, and move the default endpoint to the head of the list.
         // SAML defaulting rules apply to IndexedEnpdoint types, and require checking
-        // for the isDefault attribute.
+        // for the isDefault attribute. The default is the one marked true, or if none are,
+        // the first not marked false.
+        EndpointType hardDefault = null;
+        EndpointType softDefault = null;
         final LinkedList<EndpointType> toReturn = Lists.newLinkedList();
-        for (final Endpoint endpoint : endpoints) {
-            if (endpoint instanceof IndexedEndpoint) {
-                Boolean flag = ((IndexedEndpoint) endpoint).isDefault();
-                if (flag != null && flag.booleanValue()) {
-                    toReturn.addFirst((EndpointType) endpoint);
+        for (final Endpoint endpoint : candidates) {
+            if (hardDefault == null && endpoint instanceof IndexedEndpoint) {
+                final Boolean flag = ((IndexedEndpoint) endpoint).isDefault();
+                if (flag != null) {
+                    if (flag.booleanValue()) {
+                        hardDefault = (EndpointType) endpoint;
+                        if (softDefault != null) {
+                            toReturn.addFirst(softDefault);
+                            softDefault = null;
+                        }
+                    } else {
+                        toReturn.addLast((EndpointType) endpoint);
+                    }
+                } else if (hardDefault == null && softDefault == null) {
+                    softDefault = (EndpointType) endpoint;
                 } else {
                     toReturn.addLast((EndpointType) endpoint);
                 }
@@ -242,8 +269,15 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
             }
         }
         
+        if (hardDefault != null) {
+            toReturn.addFirst(hardDefault);
+        } else if (softDefault != null) {
+            toReturn.addFirst(softDefault);
+        }
+       
         return toReturn;
     }
+    // Checkstyle: CyclomaticComplexity ON
 
     /**
      * Return a prefix for logging messages for this component.
