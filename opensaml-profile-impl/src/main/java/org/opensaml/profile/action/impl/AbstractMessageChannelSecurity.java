@@ -35,7 +35,7 @@ import com.google.common.base.Function;
  * Abstract base class for profile actions which populate a {@link MessageChannelSecurityContext} on a {@link BaseContext},
  * where the latter is located using a lookup strategy.
  */
-public class AbstractMessageChannelSecurity extends AbstractProfileAction {
+public abstract class AbstractMessageChannelSecurity extends AbstractProfileAction {
     
     /**
      * Strategy used to look up the parent {@link BaseContext} on which the {@link MessageChannelSecurityContext} 
