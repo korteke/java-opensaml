@@ -51,7 +51,7 @@ public class StaticMessageChannelSecurity extends AbstractMessageChannelSecurity
     /**
      * Set whether message channel confidentiality is active.
      * 
-     * @param confidentialityActive The confidentialityActive to set.
+     * @param flag The confidentialityActive to set.
      */
     public void setConfidentialityActive(boolean flag) {
         confidentialityActive = flag;
@@ -69,7 +69,7 @@ public class StaticMessageChannelSecurity extends AbstractMessageChannelSecurity
     /**
      * Set whether message channel integrity is active.
      * 
-     * @param integrityActive The integrityActive to set.
+     * @param flag The integrityActive to set.
      */
     public void setIntegrityActive(boolean flag) {
         integrityActive = flag;
@@ -78,7 +78,8 @@ public class StaticMessageChannelSecurity extends AbstractMessageChannelSecurity
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
-        MessageChannelSecurityContext channelContext = getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
+        final MessageChannelSecurityContext channelContext =
+                getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
         channelContext.setConfidentialityActive(isConfidentialityActive());
         channelContext.setIntegrityActive(isIntegrityActive());
     }

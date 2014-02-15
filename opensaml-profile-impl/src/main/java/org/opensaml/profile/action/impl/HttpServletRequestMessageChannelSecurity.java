@@ -17,9 +17,6 @@
 
 package org.opensaml.profile.action.impl;
 
-import javax.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.messaging.context.MessageChannelSecurityContext;
@@ -27,41 +24,25 @@ import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 /**
- * Profile action which populates a {@link MessageChannelSecurityContext} based on an {@link HttpServletRequest}.
+ * Profile action which populates a {@link MessageChannelSecurityContext} based on a
+ * {@link javax.servlet.http.HttpServletRequest}.
  */
 public class HttpServletRequestMessageChannelSecurity extends AbstractMessageChannelSecurity {
-    
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
-
-    /**
-     * Get the {@link HttpServletRequest}
-     * 
-     * @return Returns the httpServletRequest.
-     */
-    public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
-    }
-
-    /**
-     * Set the {@link HttpServletRequest}
-     * 
-     * @param httpServletRequest The httpServletRequest to set.
-     */
-    public void setHttpServletRequest(HttpServletRequest request) {
-        httpServletRequest = request;
-    }
 
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        if (httpServletRequest == null) {
+        if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest is required");
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doExecute(ProfileRequestContext profileRequestContext) throws ProfileException {
-        MessageChannelSecurityContext channelContext = getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
+        final MessageChannelSecurityContext channelContext =
+                getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
         channelContext.setConfidentialityActive(getHttpServletRequest().isSecure());
         channelContext.setIntegrityActive(getHttpServletRequest().isSecure());
     }
