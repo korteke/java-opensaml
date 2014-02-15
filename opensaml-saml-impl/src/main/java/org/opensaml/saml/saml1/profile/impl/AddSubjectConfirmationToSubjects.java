@@ -68,7 +68,7 @@ import com.google.common.collect.Lists;
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
  */
-public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Object, Response> {
+public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddSubjectConfirmationToSubjects.class);
@@ -86,7 +86,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext<Object,Response>, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
     
     /** Methods to add. */
     @Nonnull @NonnullElements private Collection<String> confirmationMethods;
@@ -112,7 +112,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
         overwriteExisting = true;
         
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
+                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         confirmationMethods = Collections.emptyList();
     }
     
@@ -133,7 +133,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext<Object,Response>, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -163,8 +163,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         log.debug("{} Attempting to add SubjectConfirmation to assertions in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -185,10 +184,10 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
         return super.doPreExecute(profileRequestContext);
     }
     
+// Checkstyle: CyclomaticComplexity OFF    
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         final SubjectConfirmation confirmation = confirmationBuilder.buildObject();
         for (String method : confirmationMethods) {
@@ -222,6 +221,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
                     confirmationMethods, count);
         }
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Get the subject to which the confirmation will be added.
@@ -230,7 +230,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
      * 
      * @return the subject to which the confirmation will be added
      */
-    private Subject getStatementSubject(@Nonnull final SubjectStatement statement) {
+    @Nonnull private Subject getStatementSubject(@Nonnull final SubjectStatement statement) {
         if (statement.getSubject() != null) {
             return statement.getSubject();
         }

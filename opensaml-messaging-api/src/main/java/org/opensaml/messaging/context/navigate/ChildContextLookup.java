@@ -64,6 +64,7 @@ public class ChildContextLookup<ParentContext extends BaseContext, ChildContext 
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public ChildContext apply(@Nullable final ParentContext input) {
         if (input == null) {
             return null;

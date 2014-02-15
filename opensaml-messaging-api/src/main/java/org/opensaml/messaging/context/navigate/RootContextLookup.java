@@ -30,12 +30,13 @@ public class RootContextLookup<RootContext extends BaseContext> implements
         ContextDataLookupFunction<BaseContext, RootContext> {
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public RootContext apply(@Nullable final BaseContext input) {
         if (input == null) {
             return null;
         }
 
-        if(input.getParent() == null){
+        if (input.getParent() == null){
             return (RootContext) input;
         } else {
             return apply(input.getParent());

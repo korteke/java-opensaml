@@ -74,7 +74,7 @@ import com.google.common.collect.Lists;
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
  */
-public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response> {
+public class AddNameIDToSubjects extends AbstractProfileAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddNameIDToSubjects.class);
@@ -89,7 +89,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
     private boolean overwriteExisting;
 
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext<Object,Response>, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
 
     /** Strategy used to determine the formats to try. */
     @Nonnull private Function<ProfileRequestContext, List<String>> formatLookupStrategy;
@@ -121,7 +121,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
         overwriteExisting = true;
         
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
+                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         nameIdGeneratorMap = ArrayListMultimap.create();
         formats = Collections.emptyList();
@@ -144,7 +144,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext<Object,Response>, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -202,8 +202,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         log.debug("{} Attempting to add NameID to assertions in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -235,8 +234,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         final NameID nameId = generateNameID(profileRequestContext);
         if (nameId == null) {
@@ -274,7 +272,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
      * @return a format dictated by the request, or null 
      */
     @Nullable private String getRequiredFormat(
-            @Nonnull final ProfileRequestContext<Object, Response> profileRequestContext) {
+            @Nonnull final ProfileRequestContext profileRequestContext) {
         String format = null;
         
         if (profileRequestContext.getInboundMessageContext() != null) {
@@ -338,7 +336,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction<Object, Response>
      * 
      * @return the assertion to which the name identifier will be added
      */
-    private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
+    @Nonnull private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
         if (assertion.getSubject() != null) {
             return assertion.getSubject();
         }

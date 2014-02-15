@@ -17,7 +17,10 @@
 
 package org.opensaml.messaging.context.navigate;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 
@@ -26,13 +29,25 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <T> type of message
  */
-public class MessageLookup<T> implements ContextDataLookupFunction<MessageContext<T>, T> {
+public class MessageLookup<T> implements ContextDataLookupFunction<MessageContext, T> {
 
+    /** Child context type to look up. */
+    private final Class<T> messageType;
+    
+    /**
+     * Constructor.
+     * 
+     * @param type message type to look up
+     */
+    public MessageLookup(@Nonnull final Class<T> type) {
+        messageType = Constraint.isNotNull(type, "Message type cannot be null");
+    }
+    
     /** {@inheritDoc} */
     @Override
-    @Nullable public T apply(@Nullable final MessageContext<T> input) {
-        if (input != null) {
-            return input.getMessage();
+    @Nullable public T apply(@Nullable final MessageContext input) {
+        if (input != null && messageType.isInstance(input.getMessage())) {
+            return (T) input.getMessage();
         }
         return null;
     }

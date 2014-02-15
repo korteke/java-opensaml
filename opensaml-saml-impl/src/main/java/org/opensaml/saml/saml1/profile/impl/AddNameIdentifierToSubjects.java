@@ -73,7 +73,7 @@ import com.google.common.collect.Lists;
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
  */
-public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, Response> {
+public class AddNameIdentifierToSubjects extends AbstractProfileAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddNameIdentifierToSubjects.class);
@@ -88,7 +88,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext<Object,Response>, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
 
     /** Strategy used to determine the formats to try. */
     @Nonnull private Function<ProfileRequestContext, List<String>> formatLookupStrategy;
@@ -117,7 +117,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
         overwriteExisting = true;
         
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
+                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         nameIdGeneratorMap = ArrayListMultimap.create();
         formats = Collections.emptyList();
@@ -140,7 +140,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext<Object,Response>, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -198,8 +198,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         log.debug("{} Attempting to add NameIdentifier to statements in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -226,8 +225,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         final NameIdentifier nameIdentifier = generateNameIdentifier(profileRequestContext);
         if (nameIdentifier == null) {
@@ -304,7 +302,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction<Object, R
      * 
      * @return the subject to which the name identifier will be added
      */
-    private Subject getStatementSubject(@Nonnull final SubjectStatement statement) {
+    @Nonnull private Subject getStatementSubject(@Nonnull final SubjectStatement statement) {
         if (statement.getSubject() != null) {
             return statement.getSubject();
         }
