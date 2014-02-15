@@ -24,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.BaseContext;
-import org.opensaml.messaging.context.MessageChannelSecurityContext;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -32,17 +31,19 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import com.google.common.base.Function;
 
 /**
- * Abstract base class for profile actions which populate a {@link MessageChannelSecurityContext} on a {@link BaseContext},
+ * Abstract base class for profile actions which populate a
+ * {@link org.opensaml.messaging.context.MessageChannelSecurityContext} on a {@link BaseContext},
  * where the latter is located using a lookup strategy.
  */
 public abstract class AbstractMessageChannelSecurity extends AbstractProfileAction {
     
     /**
-     * Strategy used to look up the parent {@link BaseContext} on which the {@link MessageChannelSecurityContext} 
-     * will be populated.
+     * Strategy used to look up the parent {@link BaseContext} on which the
+     * {@link org.opensaml.messaging.context.MessageChannelSecurityContext} will be populated.
      */
     @Nonnull private Function<ProfileRequestContext, BaseContext> parentContextLookupStrategy;
     
+    /** Parent for eventual context. */
     @Nullable private BaseContext parentContext;
     
     /** Constructor. */
@@ -56,11 +57,11 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
     }
     
     /**
-     * Set the strategy used to look up the parent {@link BaseContext} on which the {@link MessageChannelSecurityContext}
-     * will be populated.
+     * Set the strategy used to look up the parent {@link BaseContext} on which the
+     * {@link org.opensaml.messaging.context.MessageChannelSecurityContext} will be populated.
      * 
      * @param strategy strategy used to look up the parent {@link BaseContext} on which to populate
-     *          the {@link MessageChannelSecurityContext}
+     *          the {@link org.opensaml.messaging.context.MessageChannelSecurityContext}
      */
     public void setParentContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext, BaseContext> strategy) {
@@ -74,7 +75,10 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         parentContext = parentContextLookupStrategy.apply(profileRequestContext);
-        return parentContext != null;
+        if (parentContext != null) {
+            return super.doPreExecute(profileRequestContext);
+        }
+        return false;
     }
     
     /**
