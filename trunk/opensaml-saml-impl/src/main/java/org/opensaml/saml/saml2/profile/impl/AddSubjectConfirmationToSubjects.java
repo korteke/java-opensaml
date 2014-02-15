@@ -58,7 +58,7 @@ import com.google.common.base.Functions;
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
  */
-public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Object, Response> {
+public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddSubjectConfirmationToSubjects.class);
@@ -73,7 +73,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext<Object,Response>, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
     
     /** Method to add. */
     @NonnullAfterInit private String confirmationMethod;
@@ -93,7 +93,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
         overwriteExisting = true;
         
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<Response>(), new OutboundMessageContextLookup<Response>());
+                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
     }
     
     /**
@@ -113,7 +113,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext<Object,Response>, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -143,8 +143,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         log.debug("{} Attempting to add SubjectConfirmation to assertions in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -162,8 +161,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext<Object, Response> profileRequestContext)
-            throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         final SubjectConfirmation confirmation = confirmationBuilder.buildObject();
         confirmation.setMethod(confirmationMethod);
@@ -192,7 +190,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction<Obje
      * 
      * @return the subject to which the confirmation will be added
      */
-    private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
+    @Nonnull private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
         if (assertion.getSubject() != null) {
             return assertion.getSubject();
         }

@@ -30,6 +30,7 @@ public class ParentContextLookup<ParentContext extends BaseContext> implements
         ContextDataLookupFunction<BaseContext, ParentContext> {
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public ParentContext apply(@Nullable final BaseContext input) {
         if (input == null) {
             return null;

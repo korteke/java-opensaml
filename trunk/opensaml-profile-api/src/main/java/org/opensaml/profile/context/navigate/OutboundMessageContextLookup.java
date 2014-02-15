@@ -25,15 +25,12 @@ import org.opensaml.profile.context.ProfileRequestContext;
 
 /**
  * A {@link Function} that returns the outbound {@link MessageContext} for a {@link ProfileRequestContext}.
- * 
- * @param <T> type of message
  */
-public class OutboundMessageContextLookup<T>
-    implements ContextDataLookupFunction<ProfileRequestContext<Object, T>, MessageContext<T>> {
+public class OutboundMessageContextLookup implements ContextDataLookupFunction<ProfileRequestContext, MessageContext> {
 
     /** {@inheritDoc} */
     @Override
-    @Nullable public MessageContext<T> apply(@Nullable final ProfileRequestContext<Object, T> input) {
+    @Nullable public MessageContext apply(@Nullable final ProfileRequestContext input) {
         if (input != null) {
             return input.getOutboundMessageContext();
         }
