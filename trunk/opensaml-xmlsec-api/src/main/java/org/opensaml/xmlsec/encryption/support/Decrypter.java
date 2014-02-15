@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.XMLConstants;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -36,6 +37,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
@@ -43,6 +45,7 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -182,7 +185,7 @@ import com.google.common.base.Strings;
 public class Decrypter {
 
     /** ParserPool used in parsing decrypted data. */
-    private final BasicParserPool parserPool;
+    private final ParserPool parserPool;
 
     /** Unmarshaller factory, used in decryption of EncryptedData objects. */
     private final UnmarshallerFactory unmarshallerFactory;
@@ -231,21 +234,10 @@ public class Decrypter {
 
         resolverCriteria = null;
         kekResolverCriteria = null;
-
-        // Note: this is hopefully only temporary, until Xerces implements DOM 3 LSParser.parseWithContext().
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
-
-        // Note: this is necessary due to an unresolved Xerces deferred DOM issue/bug
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
-        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
-        parserPool.setBuilderFeatures(features);
         
-        try {
-            parserPool.initialize();
-        } catch (ComponentInitializationException e) {
-            log.error("Error initializing decrypter's internal parser pool", e);
-        }
+        // Note: Use of this internal JAXP ParserPool is hopefully only temporary, 
+        // to be replaced when Xerces implements DOM 3 LSParser.parseWithContext(...).
+        parserPool = buildParserPool();
 
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         
@@ -989,6 +981,40 @@ public class Decrypter {
                 log.error("Error marshalling target XMLObject", e);
                 throw new DecryptionException("Error marshalling target XMLObject", e);
             }
+        }
+    }
+    
+    /**
+     * Build the internal parser pool instance used to parse decrypted XML.
+     * 
+     * <p>
+     * Note: When using a Xerces parser or derivative, the following feature must be set to false: 
+     * <code>http://apache.org/xml/features/dom/defer-node-expansion</code>
+     * </p>
+     * 
+     * @return a new parser pool instance
+     */
+    protected ParserPool buildParserPool() {
+        BasicParserPool pp = new BasicParserPool();
+        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
+        
+        pp.setNamespaceAware(true);
+        
+        // Note: this feature config is necessary due to an unresolved Xerces deferred DOM issue/bug
+        features.put("http://apache.org/xml/features/dom/defer-node-expansion", Boolean.FALSE);
+        
+        // The following config is to harden the parser pool against known XML security vulnerabilities
+        pp.setExpandEntityReferences(false);
+        features.put(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        features.put("http://apache.org/xml/features/disallow-doctype-decl", true);
+        
+        pp.setBuilderFeatures(features);
+        
+        try {
+            pp.initialize();
+            return pp;
+        } catch (ComponentInitializationException e) {
+            throw new XMLRuntimeException("Problem initializing Decrypter internal ParserPool", e);
         }
     }
 
