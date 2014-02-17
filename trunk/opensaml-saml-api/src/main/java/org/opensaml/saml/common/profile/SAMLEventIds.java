@@ -38,6 +38,9 @@ public final class SAMLEventIds {
 
     /** ID of the event returned upon failure to decrypt an {@link EncryptedAttribute}. */
     @Nonnull @NotEmpty public static final String DECRYPT_ATTRIBUTE_FAILED = "DecryptAttributeFailed";
+
+    /** ID of the event returned upon failure to resolve an outgoing message endpoint to use. */
+    @Nonnull @NotEmpty public static final String ENDPOINT_RESOLUTION_FAILED = "EndpointResolutionFailed";
     
     /** Constructor. */
     private SAMLEventIds() {
