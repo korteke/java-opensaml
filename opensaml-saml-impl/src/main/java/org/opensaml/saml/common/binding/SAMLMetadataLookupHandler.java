@@ -105,8 +105,14 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler<SAMLObject
         try {
             final RoleDescriptor roleMetadata = metadataResolver.resolveSingle(criteria);
             if (roleMetadata == null) {
-                log.info("{} No metadata returned for {} in role {}",
-                        new Object[]{getLogPrefix(), peerCtx.getEntityId(), peerCtx.getRole().toString(),});
+                if (protocolCriterion != null) {
+                    log.info("{} No metadata returned for {} in role {} with protocol {}",
+                            new Object[]{getLogPrefix(), peerCtx.getEntityId(), peerCtx.getRole(),
+                                protocolCriterion.getProtocol(),});
+                } else {
+                    log.info("{} No metadata returned for {} in role {}",
+                            new Object[]{getLogPrefix(), peerCtx.getEntityId(), peerCtx.getRole(),});
+                }
                 return;
             }
 
