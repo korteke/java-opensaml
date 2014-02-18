@@ -34,12 +34,13 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.binding.DefaultEndpointResolver;
 import org.opensaml.saml.common.binding.EndpointResolver;
@@ -59,6 +60,8 @@ import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -96,6 +99,15 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
     /** List of possible bindings, in preference order. */
     @Nonnull @NonnullElements private List<BindingDescriptor> bindingDescriptors;
     
+    /** Strategy function for access to {@link SAMLMetadataContext} for input to resolver. */
+    @Nonnull private Function<ProfileRequestContext,SAMLMetadataContext> metadataContextLookupStrategy;
+
+    /** Strategy function for access to {@link SAMLBindingContext} to populate. */
+    @Nonnull private Function<ProfileRequestContext,SAMLBindingContext> bindingContextLookupStrategy;
+
+    /** Strategy function for access to {@link SAMLEndpointContext} to populate. */
+    @Nonnull private Function<ProfileRequestContext,SAMLEndpointContext> endpointContextLookupStrategy;
+    
     /** Builder for template endpoints. */
     @NonnullAfterInit private XMLObjectBuilder<?> endpointBuilder;
     
@@ -110,6 +122,22 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
         endpointType = AssertionConsumerService.DEFAULT_ELEMENT_NAME;
         endpointResolver = new DefaultEndpointResolver();
         bindingDescriptors = Collections.emptyList();
+        
+        // Default: outbound msg context -> SAMLPeerEntityContext -> SAMLMetadataContext
+        metadataContextLookupStrategy = Functions.compose(
+                new ChildContextLookup<>(SAMLMetadataContext.class),
+                Functions.compose(new ChildContextLookup<>(SAMLPeerEntityContext.class),
+                        new OutboundMessageContextLookup()));
+        
+        // Default: outbound msg context -> SAMLBindingContext
+        bindingContextLookupStrategy = Functions.compose(
+                new ChildContextLookup<>(SAMLBindingContext.class, true), new OutboundMessageContextLookup());
+        
+        // Default: outbound msg context -> SAMLPeerEntityContext -> SAMLEndpointContext
+        endpointContextLookupStrategy = Functions.compose(
+                new ChildContextLookup<>(SAMLEndpointContext.class, true),
+                Functions.compose(new ChildContextLookup<>(SAMLPeerEntityContext.class, true),
+                        new OutboundMessageContextLookup()));
     }
     
     /**
@@ -146,9 +174,44 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
         bindingDescriptors = Lists.newArrayList(Collections2.filter(bindings, Predicates.notNull()));
     }
     
+    /**
+     * Set lookup strategy for {@link SAMLMetadataContext} for input to resolution.
+     * 
+     * @param strategy  lookup strategy
+     */
+    public void setMetadataContextLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,SAMLMetadataContext> strategy) {
+        metadataContextLookupStrategy = Constraint.isNotNull(strategy,
+                "SAMLMetadataContext lookup strategy cannot be null");
+    }
+
+    /**
+     * Set lookup strategy for {@link SAMLBindingContext} to populate.
+     * 
+     * @param strategy  lookup strategy
+     */
+    public void setBindingContextLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,SAMLBindingContext> strategy) {
+        bindingContextLookupStrategy = Constraint.isNotNull(strategy,
+                "SAMLBindingContext lookup strategy cannot be null");
+    }
+
+    /**
+     * Set lookup strategy for {@link SAMLEndpointContext} to populate.
+     * 
+     * @param strategy  lookup strategy
+     */
+    public void setEndpointContextLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,SAMLEndpointContext> strategy) {
+        endpointContextLookupStrategy = Constraint.isNotNull(strategy,
+                "SAMLEndpointContext lookup strategy cannot be null");
+    }
+    
     /** {@inheritDoc} */
     @Override
     protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
         endpointBuilder = XMLObjectSupport.getBuilder(endpointType);
         if (endpointBuilder == null) {
             throw new ComponentInitializationException("Unable to obtain builder for endpoint type " + endpointType);
@@ -173,11 +236,7 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
             return false;
         }
         
-        final SAMLPeerEntityContext peerContext =
-                profileRequestContext.getOutboundMessageContext().getSubcontext(SAMLPeerEntityContext.class, false);
-        if (peerContext != null) {
-            mdContext = peerContext.getSubcontext(SAMLMetadataContext.class, false);
-        }
+        mdContext = metadataContextLookupStrategy.apply(profileRequestContext);
 
         return super.doPreExecute(profileRequestContext);
     }
@@ -185,8 +244,6 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext)
             throws ProfileException {
-        
-        final MessageContext msgCtx = profileRequestContext.getOutboundMessageContext();
         
         log.debug("{} Attempting to resolve endpoint of type {} for outbound message", getLogPrefix(), endpointType);
 
@@ -198,7 +255,7 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
             }
         }
         if (bindings.isEmpty()) {
-            log.warn("{} No outbound bindings are eligible for use");
+            log.warn("{} No outbound bindings are eligible for use", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.ENDPOINT_RESOLUTION_FAILED);
             return;
         } else {
@@ -208,10 +265,10 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
         // Build criteria for the resolver.
         CriteriaSet criteria = new CriteriaSet(new EndpointCriterion(buildTemplateEndpoint()),
                 new BindingCriterion(bindings));
-        if (mdContext != null || mdContext.getRoleDescriptor() != null) {
+        if (mdContext != null && mdContext.getRoleDescriptor() != null) {
             criteria.add(new RoleDescriptorCriterion(mdContext.getRoleDescriptor()));
         } else {
-            log.debug("{} No metadata available for endpoint resolution");
+            log.debug("{} No metadata available for endpoint resolution", getLogPrefix());
         }
         
         try {
@@ -231,18 +288,17 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
         }
         
         if (resolvedEndpoint == null) {
-            log.warn("{} Unable to resolve outbound message endpoint");
+            log.warn("{} Unable to resolve outbound message endpoint", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.ENDPOINT_RESOLUTION_FAILED);
             return;
         }
         
         // Transfer results to contexts.
         
-        final SAMLEndpointContext endpointContext =
-                msgCtx.getSubcontext(SAMLPeerEntityContext.class, true).getSubcontext(SAMLEndpointContext.class, true);
+        final SAMLEndpointContext endpointContext = endpointContextLookupStrategy.apply(profileRequestContext);
         endpointContext.setEndpoint(resolvedEndpoint);
         
-        final SAMLBindingContext bindingCtx = msgCtx.getSubcontext(SAMLBindingContext.class, true);
+        final SAMLBindingContext bindingCtx = bindingContextLookupStrategy.apply(profileRequestContext);
         bindingCtx.setRelayState(SAMLBindingSupport.getRelayState(profileRequestContext.getInboundMessageContext()));
         bindingCtx.setBindingUri(resolvedEndpoint.getBinding());
     }
@@ -274,7 +330,8 @@ public class PopulateBindingAndEndpointContexts extends AbstractProfileAction {
             endpoint.setLocation(((AuthnRequest) inboundMessage).getAssertionConsumerServiceURL());
             endpoint.setBinding(((AuthnRequest) inboundMessage).getProtocolBinding());
             if (endpoint instanceof IndexedEndpoint) {
-                ((IndexedEndpoint) endpoint).setIndex(((AuthnRequest) endpoint).getAssertionConsumerServiceIndex());
+                ((IndexedEndpoint) endpoint).setIndex(
+                        ((AuthnRequest) inboundMessage).getAssertionConsumerServiceIndex());
             }
         }
         
