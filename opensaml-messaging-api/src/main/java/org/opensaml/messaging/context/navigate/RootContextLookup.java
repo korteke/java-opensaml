@@ -24,10 +24,11 @@ import org.opensaml.messaging.context.BaseContext;
 /**
  * A {@link ContextDataLookupFunction} that gets the root of context tree.
  * 
+ * @param <StartContext> type of the starting context
  * @param <RootContext> type of the root context
  */
-public class RootContextLookup<RootContext extends BaseContext> implements
-        ContextDataLookupFunction<BaseContext, RootContext> {
+public class RootContextLookup<StartContext extends BaseContext, RootContext extends BaseContext> implements
+        ContextDataLookupFunction<StartContext, RootContext> {
 
     /** {@inheritDoc} */
     @Override
