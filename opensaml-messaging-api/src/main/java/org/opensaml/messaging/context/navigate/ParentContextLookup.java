@@ -24,14 +24,15 @@ import org.opensaml.messaging.context.BaseContext;
 /**
  * A {@link ContextDataLookupFunction} that gets the parent of a given context.
  * 
+ * @param <StartContext> type of starting context
  * @param <ParentContext> type of the parent context
  */
-public class ParentContextLookup<ParentContext extends BaseContext> implements
-        ContextDataLookupFunction<BaseContext, ParentContext> {
+public class ParentContextLookup<StartContext extends BaseContext, ParentContext extends BaseContext>
+        implements ContextDataLookupFunction<StartContext, ParentContext> {
 
     /** {@inheritDoc} */
     @Override
-    @Nullable public ParentContext apply(@Nullable final BaseContext input) {
+    @Nullable public ParentContext apply(@Nullable final StartContext input) {
         if (input == null) {
             return null;
         }
