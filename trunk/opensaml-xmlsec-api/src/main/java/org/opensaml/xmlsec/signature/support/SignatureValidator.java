@@ -67,7 +67,8 @@ public final class SignatureValidator {
             if (iterator.hasNext()) {
                 validatorInstance = iterator.next();
             } else {
-                throw new SignatureException("Could not load a signature validation provider implementation via service API");
+                throw new SignatureException(
+                        "Could not load a signature validation provider implementation via service API");
             }
         }
         return validatorInstance;
