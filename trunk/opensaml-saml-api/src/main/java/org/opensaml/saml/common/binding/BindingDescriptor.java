@@ -35,6 +35,7 @@
 package org.opensaml.saml.common.binding;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -62,7 +63,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /**
      * Constructor.
      * 
-     * @param id unique ID of this binding, cannot be null or empty
+     * @param id unique ID of this binding
      */
     public BindingDescriptor(@Nonnull @NotEmpty final String id) {
         super.setId(id);
@@ -88,7 +89,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
 
     /** {@inheritDoc} */
     @Override
-    public boolean apply(ProfileRequestContext input) {
+    public boolean apply(@Nullable final ProfileRequestContext input) {
         return activationCondition.apply(input);
     }
 
