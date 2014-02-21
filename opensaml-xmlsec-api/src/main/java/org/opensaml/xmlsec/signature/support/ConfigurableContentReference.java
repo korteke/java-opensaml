@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.signature.support;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -31,13 +30,13 @@ public interface ConfigurableContentReference extends ContentReference {
      * 
      * @return the algorithm used to digest the content
      */
-    @Nullable public String getDigestAlgorithm();
+    @Nullable String getDigestAlgorithm();
 
     /**
      * Sets the algorithm used to digest the content.
      * 
      * @param newAlgorithm the algorithm used to digest the content
      */
-    public void setDigestAlgorithm(final @Nonnull String newAlgorithm);
+    void setDigestAlgorithm(@Nullable final String newAlgorithm);
 
 }
