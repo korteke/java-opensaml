@@ -26,7 +26,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -66,16 +65,13 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     }
 
     /** {@inheritDoc} */
+    @Override
     public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
         super.setId(componentId);
     }
     
     /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-        artifactStore.validate();
-    }
-    
-    /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
@@ -145,6 +141,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     }
     
     /** {@inheritDoc} */
+    @Override
     public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException {
         if (artifact.length() > artifactStoreKeySize) {
             throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
@@ -153,6 +150,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Attempting to retrieve entry for artifact: {}", artifact);
         
@@ -172,6 +170,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     }
 
     /** {@inheritDoc} */
+    @Override
     public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage) throws IOException {
 
@@ -195,6 +194,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractDestructableIdentifia
     }
 
     /** {@inheritDoc} */
+    @Override
     public void remove(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Removing artifact entry: {}", artifact);
         

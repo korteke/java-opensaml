@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
-import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 /**
  * Generic data storage facility. Implementations will vary in how much
@@ -49,7 +48,7 @@ import net.shibboleth.utilities.java.support.component.ValidatableComponent;
  */
 @ThreadSafeAfterInit
 public interface StorageService extends InitializableComponent, DestructableComponent,
-        IdentifiableComponent, ValidatableComponent {
+        IdentifiableComponent {
 
     /**
      * Returns the capabilities of the underlying store.
