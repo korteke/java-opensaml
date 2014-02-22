@@ -17,7 +17,7 @@
 
 package org.opensaml.messaging.decoder;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
 
@@ -28,13 +28,14 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageDecoder<MessageType> extends AbstractDestructableInitializableComponent implements
+public abstract class AbstractMessageDecoder<MessageType> extends AbstractInitializableComponent implements
         MessageDecoder<MessageType>, UnmodifiableComponent {
 
     /** Message context. */
     private MessageContext<MessageType> messageContext;
 
     /** {@inheritDoc} */
+    @Override
     public MessageContext<MessageType> getMessageContext() {
         return messageContext;
     }
@@ -49,6 +50,7 @@ public abstract class AbstractMessageDecoder<MessageType> extends AbstractDestru
     }
 
     /** {@inheritDoc} */
+    @Override
     public void decode() throws MessageDecodingException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);

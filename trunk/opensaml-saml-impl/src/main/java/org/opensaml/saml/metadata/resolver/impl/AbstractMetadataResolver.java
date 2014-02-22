@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -58,7 +58,7 @@ import org.w3c.dom.Document;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataResolver extends AbstractDestructableIdentifiedInitializableComponent 
+public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitializableComponent 
         implements MetadataResolver {
     
     /** Class logger. */
@@ -107,11 +107,13 @@ public abstract class AbstractMetadataResolver extends AbstractDestructableIdent
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable  public MetadataFilter getMetadataFilter() {
         return mdFilter;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setMetadataFilter(@Nullable MetadataFilter newFilter) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);

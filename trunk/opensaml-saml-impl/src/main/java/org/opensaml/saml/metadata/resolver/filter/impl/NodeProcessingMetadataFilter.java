@@ -23,7 +23,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.AbstractDestructableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
@@ -36,7 +36,7 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
  * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor}
  * to each element node in the metadata document tree. The node processors will be applied in 
  */
-public class NodeProcessingMetadataFilter extends AbstractDestructableInitializableComponent  
+public class NodeProcessingMetadataFilter extends AbstractInitializableComponent  
         implements MetadataFilter {
     
     /** The ordered list of metadata node processors. */
@@ -69,6 +69,7 @@ public class NodeProcessingMetadataFilter extends AbstractDestructableInitializa
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public XMLObject filter(@Nullable XMLObject metadata) throws FilterException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
@@ -82,6 +83,7 @@ public class NodeProcessingMetadataFilter extends AbstractDestructableInitializa
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         if (processors == null) {
@@ -90,6 +92,7 @@ public class NodeProcessingMetadataFilter extends AbstractDestructableInitializa
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         processors = null;
         super.doDestroy();
