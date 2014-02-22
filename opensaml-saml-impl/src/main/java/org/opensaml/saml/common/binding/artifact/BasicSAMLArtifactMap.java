@@ -31,7 +31,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.joda.time.DateTime;
@@ -40,8 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Basic artifact map implementation. */
-public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitializableComponent
-    implements SAMLArtifactMap {
+public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitializableComponent implements
+        SAMLArtifactMap {
 
     /** Class Logger. */
     private final Logger log = LoggerFactory.getLogger(BasicSAMLArtifactMap.class);
@@ -71,19 +70,14 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
         cleanupInterval = 300;
         entryFactory = new ExpiringSAMLArtifactMapEntryFactory();
     }
-    
+
     /** {@inheritDoc} */
-    public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
+    @Override public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
         super.setId(componentId);
     }
-    
-    /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-
-    }
 
     /** {@inheritDoc} */
-    protected void doInitialize() throws ComponentInitializationException {
+    @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         artifactStore = new ConcurrentHashMap<String, ExpiringSAMLArtifactMapEntry>();
 
@@ -93,9 +87,9 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
             cleanupTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
         }
     }
-    
+
     /** {@inheritDoc} */
-    protected void doDestroy() {
+    @Override protected void doDestroy() {
         if (cleanupTask != null) {
             cleanupTask.cancel();
             cleanupTask = null;
@@ -103,7 +97,7 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
         }
         super.doDestroy();
     }
-    
+
     /**
      * Get the artifact entry lifetime in milliseconds.
      * 
@@ -112,7 +106,7 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     public long getArtifactLifetime() {
         return artifactLifetime;
     }
-    
+
     /**
      * Get the map entry factory.
      * 
@@ -121,7 +115,7 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     @Nonnull public SAMLArtifactMapEntryFactory getEntryFactory() {
         return entryFactory;
     }
-    
+
     /**
      * Set the artifact entry lifetime in milliseconds.
      * 
@@ -130,7 +124,7 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     public void setArtifactLifetime(long lifetime) {
         artifactLifetime = lifetime;
     }
-    
+
     /**
      * Set the map entry factory.
      * 
@@ -139,14 +133,14 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     public void setEntryFactory(@Nonnull final SAMLArtifactMapEntryFactory factory) {
         entryFactory = Constraint.isNotNull(factory, "SAMLArtifactMapEntryFactory cannot be null");
     }
-    
+
     /** {@inheritDoc} */
-    public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException {
+    @Override public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException {
         return artifactStore.containsKey(artifact);
     }
 
     /** {@inheritDoc} */
-    @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException {
+    @Override @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Attempting to retrieve entry for artifact: {}", artifact);
         ExpiringSAMLArtifactMapEntry entry = artifactStore.get(artifact);
 
@@ -166,9 +160,8 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     }
 
     /** {@inheritDoc} */
-    public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
-            @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage)
-            throws IOException {
+    @Override public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
+            @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage) throws IOException {
 
         ExpiringSAMLArtifactMapEntry artifactEntry =
                 (ExpiringSAMLArtifactMapEntry) entryFactory.newEntry(artifact, issuerId, relyingPartyId, samlMessage);
@@ -183,32 +176,31 @@ public class BasicSAMLArtifactMap extends AbstractDestructableIdentifiableInitia
     }
 
     /** {@inheritDoc} */
-    public void remove(@Nonnull @NotEmpty final String artifact) throws IOException {
+    @Override public void remove(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Removing artifact entry: {}", artifact);
-        
+
         artifactStore.remove(artifact);
     }
 
     /**
-     * A cleanup task that relies on the weakly consistent iterator support in the
-     * map implementation.
+     * A cleanup task that relies on the weakly consistent iterator support in the map implementation.
      */
     protected class Cleanup extends TimerTask {
-        
+
         /** {@inheritDoc} */
-        public void run() {
+        @Override public void run() {
             log.info("Running cleanup task");
-            
+
             final Long now = System.currentTimeMillis();
-            
+
             Iterator<Map.Entry<String, ExpiringSAMLArtifactMapEntry>> i = artifactStore.entrySet().iterator();
             while (i.hasNext()) {
-                final Map.Entry<String, ExpiringSAMLArtifactMapEntry> entry = i.next(); 
+                final Map.Entry<String, ExpiringSAMLArtifactMapEntry> entry = i.next();
                 if (!entry.getValue().isValid(now)) {
                     i.remove();
                 }
             }
         }
     }
-    
+
 }
