@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.profile.ProfileException;
@@ -30,7 +30,6 @@ import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.LoggerFactory;
-
 
 //TODO perf metrics
 
@@ -40,21 +39,14 @@ import org.slf4j.LoggerFactory;
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType>
-        extends AbstractIdentifiedInitializableComponent
-        implements ProfileAction<InboundMessageType, OutboundMessageType> {
+public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType> extends
+        AbstractIdentifiableInitializeableComponent implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
     /** Current HTTP request, if available. */
     @Nullable private HttpServletRequest httpServletRequest;
 
     /** Current HTTP response, if available. */
     @Nullable private HttpServletResponse httpServletResponse;
-
-    /** {@inheritDoc} */
-    @Override
-    public synchronized void setId(String componentId) {
-        super.setId(componentId);
-    }
 
     /**
      * Get the current HTTP request if available.
@@ -72,7 +64,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      */
     public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+
         httpServletRequest = request;
     }
 
@@ -92,16 +84,15 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      */
     public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+
         httpServletResponse = response;
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    public void execute(
+    @Override public void execute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
-        
+
         // Clear any existing EventContext that might be hanging around, and if it exists,
         // copy the Event to a PreviousEventContext.
         EventContext previousEvent = profileRequestContext.getSubcontext(EventContext.class, false);
@@ -112,12 +103,12 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             // If there's no previous event, don't expose one.
             profileRequestContext.removeSubcontext(PreviousEventContext.class);
         }
-        
+
         // The try/catch logic is designed to suppress a checked exception raised by
         // the doInvoke step by any unchecked errors in the doPostInvoke method.
         // The original exception is logged, and can be accessed from the suppressing
         // error object using the Java 7 API.
-        
+
         if (doPreExecute(profileRequestContext)) {
             try {
                 doExecute(profileRequestContext);
@@ -125,9 +116,9 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
                 try {
                     doPostExecute(profileRequestContext, e);
                 } catch (Throwable t) {
-                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(getLogPrefix()
-                            + " Unchecked exception/error thrown by doPostInvoke, "
-                            + "superseding a MessageHandlerException ", e);
+                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(
+                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
+                                    + "superseding a MessageHandlerException ", e);
                     t.addSuppressed(e);
                     throw t;
                 }
@@ -136,9 +127,9 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
                 try {
                     doPostExecute(profileRequestContext);
                 } catch (Throwable t2) {
-                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(getLogPrefix()
-                            + " Unchecked exception/error thrown by doPostInvoke, "
-                            + "superseding an unchecked exception/error ", t);
+                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(
+                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
+                                    + "superseding an unchecked exception/error ", t);
                     t2.addSuppressed(t);
                     throw t2;
                 }
@@ -148,20 +139,22 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             doPostExecute(profileRequestContext);
         }
     }
-    
+
     /**
-     * Called prior to execution, actions may override this method to perform pre-processing for a
-     * request.
+     * Called prior to execution, actions may override this method to perform pre-processing for a request.
      * 
-     * <p>If false is returned, execution will not proceed, and the action should attach an
-     * {@link org.opensaml.profile.context.EventContext} to the context tree to signal how
-     * to continue with overall workflow processing.</p>
+     * <p>
+     * If false is returned, execution will not proceed, and the action should attach an
+     * {@link org.opensaml.profile.context.EventContext} to the context tree to signal how to continue with overall
+     * workflow processing.
+     * </p>
      * 
-     * <p>If returning successfully, the last step should be to return the result of the
-     * superclass version of this method.</p>
+     * <p>
+     * If returning successfully, the last step should be to return the result of the superclass version of this method.
+     * </p>
      * 
      * @param profileRequestContext the current IdP profile request context
-     * @return  true iff execution should proceed
+     * @return true iff execution should proceed
      * 
      * @throws ProfileException thrown if there is a problem executing the profile action
      */
@@ -169,8 +162,8 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
             throws ProfileException {
         return true;
-    }    
-    
+    }
+
     /**
      * Performs this action. Actions must override this method to perform their work.
      * 
@@ -185,32 +178,38 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
     }
 
     /**
-     * Called after execution, actions may override this method to perform post-processing for a
-     * request.
+     * Called after execution, actions may override this method to perform post-processing for a request.
      * 
-     * <p>Actions must not "fail" during this step and will not have the opportunity to signal
-     * events at this stage. This method will not be called if {@link #doPreExecute} fails, but
-     * is called if an exception is raised by {@link #doExecute}.</p>
+     * <p>
+     * Actions must not "fail" during this step and will not have the opportunity to signal events at this stage. This
+     * method will not be called if {@link #doPreExecute} fails, but is called if an exception is raised by
+     * {@link #doExecute}.
+     * </p>
      * 
      * @param profileRequestContext the current IdP profile request context
      */
     protected void doPostExecute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
-    }    
+    }
 
     /**
-     * Called after execution, actions may override this method to perform post-processing for a
-     * request.
+     * Called after execution, actions may override this method to perform post-processing for a request.
      * 
-     * <p>Actions must not "fail" during this step and will not have the opportunity to signal
-     * events at this stage. This method will not be called if {@link #doPreExecute} fails, but
-     * is called if an exception is raised by {@link #doExecute}.</p>
+     * <p>
+     * Actions must not "fail" during this step and will not have the opportunity to signal events at this stage. This
+     * method will not be called if {@link #doPreExecute} fails, but is called if an exception is raised by
+     * {@link #doExecute}.
+     * </p>
      * 
-     * <p>This version of the method will be called if an exception is raised during execution of
-     * the action. The overall action result will be to raise this error, so any errors inadvertently
-     * raised by this method will be logged and superseded.</p>
+     * <p>
+     * This version of the method will be called if an exception is raised during execution of the action. The overall
+     * action result will be to raise this error, so any errors inadvertently raised by this method will be logged and
+     * superseded.
+     * </p>
      * 
-     * <p>The default implementation simply calls the error-less version of this method.</p>
+     * <p>
+     * The default implementation simply calls the error-less version of this method.
+     * </p>
      * 
      * @param profileRequestContext the current IdP profile request context
      * @param e an exception raised by the {@link #doExecute} method
@@ -219,7 +218,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext,
             @Nonnull final Exception e) {
         doPostExecute(profileRequestContext);
-    }    
+    }
 
     /**
      * Return a prefix for logging messages for this component.

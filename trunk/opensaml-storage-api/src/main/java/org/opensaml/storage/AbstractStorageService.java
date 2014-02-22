@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.annotation.Duration;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -42,7 +42,7 @@ import org.opensaml.storage.annotation.AnnotationSupport;
  * The base class handles support for a background cleanup task, and handles calling of custom object serializers.
  * </p>
  */
-public abstract class AbstractStorageService extends AbstractIdentifiedInitializableComponent implements
+public abstract class AbstractStorageService extends AbstractIdentifiableInitializeableComponent implements
         StorageService, StorageCapabilities {
 
     /**
@@ -197,11 +197,6 @@ public abstract class AbstractStorageService extends AbstractIdentifiedInitializ
             internalTaskTimer = null;
         }
         super.doDestroy();
-    }
-
-    /** {@inheritDoc} */
-    @Override public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
-        super.setId(componentId);
     }
 
     /** {@inheritDoc} */

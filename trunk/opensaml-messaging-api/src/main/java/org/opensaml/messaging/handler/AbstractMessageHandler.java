@@ -20,27 +20,24 @@ package org.opensaml.messaging.handler;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.slf4j.LoggerFactory;
-
-
 
 /**
  * A base abstract implementation of {@link MessageHandler}.
  * 
  * @param <MessageType> the type of message being handled
  */
-public abstract class AbstractMessageHandler<MessageType>
-    extends AbstractIdentifiedInitializableComponent implements MessageHandler<MessageType> {
-    
+public abstract class AbstractMessageHandler<MessageType> extends AbstractIdentifiableInitializeableComponent implements
+        MessageHandler<MessageType> {
+
     /**
      * Constructor.
-     *
+     * 
      */
     public AbstractMessageHandler() {
         super();
@@ -48,19 +45,15 @@ public abstract class AbstractMessageHandler<MessageType>
     }
 
     /** {@inheritDoc} */
-    public void setId(@Nullable final String newId) {
-        super.setId(newId);
-    }
-    
-    /** {@inheritDoc} */
-    public void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException {
+    @Override public void invoke(@Nonnull final MessageContext<MessageType> messageContext)
+            throws MessageHandlerException {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
-        
+
         // The try/catch logic is designed to suppress a checked exception raised by
         // the doInvoke step by any unchecked errors in the doPostInvoke method.
         // The original exception is logged, and can be accessed from the suppressing
         // error object using the Java 7 API.
-        
+
         if (doPreInvoke(messageContext)) {
             try {
                 doInvoke(messageContext);
@@ -68,9 +61,9 @@ public abstract class AbstractMessageHandler<MessageType>
                 try {
                     doPostInvoke(messageContext, e);
                 } catch (Throwable t) {
-                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(getLogPrefix()
-                            + " Unchecked exception/error thrown by doPostInvoke, "
-                            + "superseding a MessageHandlerException ", e);
+                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(
+                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
+                                    + "superseding a MessageHandlerException ", e);
                     t.addSuppressed(e);
                     throw t;
                 }
@@ -79,9 +72,9 @@ public abstract class AbstractMessageHandler<MessageType>
                 try {
                     doPostInvoke(messageContext);
                 } catch (Throwable t2) {
-                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(getLogPrefix()
-                            + " Unchecked exception/error thrown by doPostInvoke, "
-                            + "superseding an unchecked exception/error ", t);
+                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(
+                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
+                                    + "superseding an unchecked exception/error ", t);
                     t2.addSuppressed(t);
                     throw t2;
                 }
@@ -93,23 +86,25 @@ public abstract class AbstractMessageHandler<MessageType>
     }
 
     /**
-     * Called prior to execution, handlers may override this method to perform pre-processing for a
-     * request.
+     * Called prior to execution, handlers may override this method to perform pre-processing for a request.
      * 
-     * <p>If false is returned, execution will not proceed.</p>
+     * <p>
+     * If false is returned, execution will not proceed.
+     * </p>
      * 
-     * <p>If returning successfully, the last step should be to return the result of the
-     * superclass version of this method.</p>
+     * <p>
+     * If returning successfully, the last step should be to return the result of the superclass version of this method.
+     * </p>
      * 
      * @param messageContext the message context on which to invoke the handler
-     * @return  true iff execution should proceed
+     * @return true iff execution should proceed
      * 
      * @throws MessageHandlerException if there is a problem executing the handler pre-routine
      */
     protected boolean doPreInvoke(@Nonnull final MessageContext<MessageType> messageContext)
             throws MessageHandlerException {
         return true;
-    }    
+    }
 
     /**
      * Performs the handler logic.
@@ -120,40 +115,44 @@ public abstract class AbstractMessageHandler<MessageType>
     protected abstract void doInvoke(@Nonnull final MessageContext<MessageType> messageContext)
             throws MessageHandlerException;
 
-
     /**
-     * Called after execution, handlers may override this method to perform post-processing for a
-     * request.
+     * Called after execution, handlers may override this method to perform post-processing for a request.
      * 
-     * <p>Handlers must not "fail" during this step. This method will not be called if {@link #doPreInvoke}
-     * fails, but is called if an exception is raised by {@link #doInvoke}.</p>
+     * <p>
+     * Handlers must not "fail" during this step. This method will not be called if {@link #doPreInvoke} fails, but is
+     * called if an exception is raised by {@link #doInvoke}.
+     * </p>
      * 
      * @param messageContext the message context on which the handler was invoked
      */
     protected void doPostInvoke(@Nonnull final MessageContext<MessageType> messageContext) {
-    }    
+    }
 
     /**
-     * Called after execution, handlers may override this method to perform post-processing for a
-     * request.
+     * Called after execution, handlers may override this method to perform post-processing for a request.
      * 
-     * <p>Handlers must not "fail" during this step. This method will not be called if {@link #doPreInvoke}
-     * fails, but is called if an exception is raised by {@link #doInvoke}.</p>
+     * <p>
+     * Handlers must not "fail" during this step. This method will not be called if {@link #doPreInvoke} fails, but is
+     * called if an exception is raised by {@link #doInvoke}.
+     * </p>
      * 
-     * <p>This version of the method will be called if an exception is raised during execution of
-     * the handler. The overall handler result will be to raise this error, so any errors inadvertently
-     * raised by this method will be logged and superseded.</p>
+     * <p>
+     * This version of the method will be called if an exception is raised during execution of the handler. The overall
+     * handler result will be to raise this error, so any errors inadvertently raised by this method will be logged and
+     * superseded.
+     * </p>
      * 
-     * <p>The default implementation simply calls the error-less version of this method.</p>
+     * <p>
+     * The default implementation simply calls the error-less version of this method.
+     * </p>
      * 
      * @param messageContext the message context on which the handler was invoked
      * @param e an exception raised by the {@link #doInvoke} method
      */
-    protected void doPostInvoke(@Nonnull final MessageContext<MessageType> messageContext,
-            @Nonnull final Exception e) {
+    protected void doPostInvoke(@Nonnull final MessageContext<MessageType> messageContext, @Nonnull final Exception e) {
         doPostInvoke(messageContext);
     }
-    
+
     /**
      * Return a prefix for logging messages for this component.
      * 
@@ -162,5 +161,5 @@ public abstract class AbstractMessageHandler<MessageType>
     @Nonnull protected String getLogPrefix() {
         return "Message Handler " + getId() + ":";
     }
-    
+
 }

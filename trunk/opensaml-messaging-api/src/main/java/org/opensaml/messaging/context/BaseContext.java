@@ -88,6 +88,7 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
     }
     
     /** {@inheritDoc} */
+    @Override
     public String getId() {
         return id;
     }
@@ -300,6 +301,7 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
     }
     
     /** {@inheritDoc} */
+    @Override
     public Iterator<BaseContext> iterator() {
         return new ContextSetNoRemoveIteratorDecorator(subcontexts.iterator());
     }
@@ -355,16 +357,19 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean hasNext() {
             return wrappedIterator.hasNext();
         }
 
         /** {@inheritDoc} */
+        @Override
         public BaseContext next() {
             return wrappedIterator.next();
         }
 
         /** {@inheritDoc} */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Removal of subcontexts via the iterator is unsupported");
         }
