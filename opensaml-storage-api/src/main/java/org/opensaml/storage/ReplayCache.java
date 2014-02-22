@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * store (lacking an atomic "check and insert" operation).</p>
  */
 @ThreadSafeAfterInit
-public class ReplayCache extends AbstractIdentifiedInitializableComponent {
+public class ReplayCache extends AbstractIdentifiableInitializeableComponent {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(ReplayCache.class);
@@ -94,12 +94,7 @@ public class ReplayCache extends AbstractIdentifiedInitializableComponent {
             throw new ComponentInitializationException("StorageService cannot be null");
         }
     }
-    
-    /** {@inheritDoc} */
-    public synchronized void setId(@Nonnull @NotEmpty String componentId) {
-        super.setId(componentId);
-    }
-    
+
     /**
      * Returns true iff the check value is not found in the cache, and stores it.
      * 

@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -36,18 +36,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Basic artifact map implementation. */
-public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializableComponent
-    implements SAMLArtifactMap {
+public class StorageServiceSAMLArtifactMap extends AbstractIdentifiableInitializeableComponent implements
+        SAMLArtifactMap {
 
     /** Storage context label. */
     @Nonnull @NotEmpty public static final String STORAGE_CONTEXT = StorageServiceSAMLArtifactMap.class.getName();
-        
+
     /** Class Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(StorageServiceSAMLArtifactMap.class);
 
     /** Artifact mapping storage. */
     @NonnullAfterInit private StorageService artifactStore;
-    
+
     /** Maximum size of artifacts we can handle. */
     private int artifactStoreKeySize;
 
@@ -65,21 +65,14 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     }
 
     /** {@inheritDoc} */
-    @Override
-    public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
-        super.setId(componentId);
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
+    @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        
+
         // We can't shorten the artifacts as lookup keys at the moment because
         // the key is used to recreate the original artifact value.
         artifactStoreKeySize = getStorageService().getCapabilities().getKeySize();
     }
-    
+
     /**
      * Get the artifact store.
      * 
@@ -88,7 +81,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     @NonnullAfterInit public StorageService getStorageService() {
         return artifactStore;
     }
-    
+
     /**
      * Get the artifact entry lifetime in milliseconds.
      * 
@@ -97,7 +90,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     public long getArtifactLifetime() {
         return artifactLifetime;
     }
-    
+
     /**
      * Get the map entry factory.
      * 
@@ -106,7 +99,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     @Nonnull public SAMLArtifactMapEntryFactory getEntryFactory() {
         return entryFactory;
     }
-    
+
     /**
      * Set the artifact store.
      * 
@@ -115,7 +108,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     public void setStorageService(@Nonnull final StorageService store) {
         artifactStore = Constraint.isNotNull(store, "StorageService cannot be null");
     }
-    
+
     /**
      * Set the artifact entry lifetime in milliseconds.
      * 
@@ -124,13 +117,15 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     public void setArtifactLifetime(long lifetime) {
         artifactLifetime = lifetime;
     }
-    
+
     /**
      * Set the map entry factory.
      * 
-     * <p>In addition to implementing the {@link SAMLArtifactMapEntryFactory} interface, the
-     * injected object must support the {@link StorageSerializer} interface
-     * to enable entries to be stored via the injected {@link StorageService} instance.</p> 
+     * <p>
+     * In addition to implementing the {@link SAMLArtifactMapEntryFactory} interface, the injected object must support
+     * the {@link StorageSerializer} interface to enable entries to be stored via the injected {@link StorageService}
+     * instance.
+     * </p>
      * 
      * @param factory map entry factory
      */
@@ -139,10 +134,9 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
                 "SAMLArtifactMapEntryFactory cannot be null and must support the StorageSerializer interface");
         entryFactory = factory;
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException {
+    @Override public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException {
         if (artifact.length() > artifactStoreKeySize) {
             throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
         }
@@ -150,16 +144,15 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException {
+    @Override @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Attempting to retrieve entry for artifact: {}", artifact);
-        
+
         if (artifact.length() > artifactStoreKeySize) {
             throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
         }
-        
+
         StorageRecord record = getStorageService().read(STORAGE_CONTEXT, artifact);
-        
+
         if (record == null) {
             log.debug("No unexpired entry found for artifact: {}", artifact);
             return null;
@@ -170,8 +163,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
+    @Override public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage) throws IOException {
 
         if (artifact.length() > artifactStoreKeySize) {
@@ -186,18 +178,18 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiedInitializab
                     new Object[] {artifact, relyingPartyId, getArtifactLifetime() / 1000});
         }
 
-        boolean success = getStorageService().create(STORAGE_CONTEXT, artifact, artifactEntry,
-                (StorageSerializer) getEntryFactory(), System.currentTimeMillis() + getArtifactLifetime());
+        boolean success =
+                getStorageService().create(STORAGE_CONTEXT, artifact, artifactEntry,
+                        (StorageSerializer) getEntryFactory(), System.currentTimeMillis() + getArtifactLifetime());
         if (!success) {
             throw new IOException("A duplicate artifact was generated");
         }
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void remove(@Nonnull @NotEmpty final String artifact) throws IOException {
+    @Override public void remove(@Nonnull @NotEmpty final String artifact) throws IOException {
         log.debug("Removing artifact entry: {}", artifact);
-        
+
         if (artifact.length() > artifactStoreKeySize) {
             throw new IOException("Length of artifact (" + artifact.length() + ") exceeds storage capabilities");
         }
