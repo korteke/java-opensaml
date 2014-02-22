@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
-import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 /**
@@ -48,7 +48,7 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
  */
 @ThreadSafeAfterInit
 public interface StorageService extends InitializableComponent, DestructableComponent,
-        IdentifiableComponent {
+        IdentifiedComponent {
 
     /**
      * Returns the capabilities of the underlying store.

@@ -25,7 +25,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
-import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * to this convention, auto-creation will fail.
  * </p>
  */
-public abstract class BaseContext implements IdentifiableComponent, Iterable<BaseContext> {
+public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseContext> {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(BaseContext.class);

@@ -20,7 +20,7 @@ package org.opensaml.saml.common.binding;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
-import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
+import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
@@ -44,6 +44,6 @@ import net.shibboleth.utilities.java.support.resolver.Resolver;
  * @param <EndpointType> the type of endpoint to resolve
  */
 public interface EndpointResolver<EndpointType extends Endpoint> extends Resolver<EndpointType, CriteriaSet>,
-        IdentifiableComponent, InitializableComponent, DestructableComponent {
+        IdentifiedComponent, InitializableComponent, DestructableComponent {
     
 }

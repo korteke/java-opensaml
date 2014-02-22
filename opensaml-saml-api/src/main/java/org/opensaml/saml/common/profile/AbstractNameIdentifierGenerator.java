@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -48,7 +48,7 @@ import com.google.common.base.Predicates;
  * @param <NameIdType>  type of object produced
  */
 public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObject>
-        extends AbstractIdentifiableInitializableComponent
+        extends AbstractIdentifiedInitializableComponent
         implements FormatSpecificNameIdentifierGenerator<NameIdType> {
 
     /** A predicate indicating whether the component applies to a request. */
