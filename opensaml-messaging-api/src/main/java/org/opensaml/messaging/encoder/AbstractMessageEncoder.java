@@ -17,7 +17,7 @@
 
 package org.opensaml.messaging.encoder;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
@@ -29,13 +29,14 @@ import org.opensaml.messaging.context.MessageContext;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestructableInitializableComponent implements
+public abstract class AbstractMessageEncoder<MessageType> extends AbstractInitializableComponent implements
         MessageEncoder<MessageType>, UnmodifiableComponent {
 
     /** The message context. */
     private MessageContext<MessageType> messageContext;
 
     /** {@inheritDoc} */
+    @Override
     public synchronized void setMessageContext(MessageContext<MessageType> context) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
@@ -44,6 +45,7 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestru
     }
 
     /** {@inheritDoc} */
+    @Override
     public void encode() throws MessageEncodingException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
@@ -55,6 +57,7 @@ public abstract class AbstractMessageEncoder<MessageType> extends AbstractDestru
      * 
      * Default implementation is a no-op.
      */
+    @Override
     public void prepareContext() throws MessageEncodingException {
         
     }

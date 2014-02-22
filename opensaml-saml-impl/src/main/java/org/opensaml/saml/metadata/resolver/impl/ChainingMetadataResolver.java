@@ -24,7 +24,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * while iterating over the registered resolvers in resolver list order.
  * 
  */
-public class ChainingMetadataResolver extends AbstractDestructableIdentifiedInitializableComponent 
+public class ChainingMetadataResolver extends AbstractIdentifiedInitializableComponent 
         implements MetadataResolver{
 
     /** Class logger. */
@@ -87,28 +87,33 @@ public class ChainingMetadataResolver extends AbstractDestructableIdentifiedInit
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isRequireValidMetadata() {
         log.warn("Attempt to access unsupported requireValidMetadata property on ChainingMetadataResolver");
         return false;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRequireValidMetadata(boolean requireValidMetadata) {
         throw new UnsupportedOperationException("Setting require valid metadata is not supported on chaining resolver");
     }
 
     /** {@inheritDoc} */
+    @Override
     public MetadataFilter getMetadataFilter() {
         log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataResolver");
         return null;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setMetadataFilter(MetadataFilter newFilter) {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
@@ -123,6 +128,7 @@ public class ChainingMetadataResolver extends AbstractDestructableIdentifiedInit
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         

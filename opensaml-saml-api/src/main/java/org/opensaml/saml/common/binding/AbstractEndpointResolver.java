@@ -26,6 +26,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.criterion.SignedRequestCriterion;
@@ -35,11 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Base implementation that resolves and validates protocol/profile endpoints using a combination of supplied
@@ -73,7 +73,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * @param <EndpointType> type of endpoint
  */
 public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
-        extends AbstractDestructableIdentifiedInitializableComponent implements EndpointResolver<EndpointType> {
+        extends AbstractIdentifiedInitializableComponent implements EndpointResolver<EndpointType> {
 
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AbstractEndpointResolver.class);

@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -41,7 +41,7 @@ import com.google.common.collect.Iterables;
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
  * {@link MetadataResolver}s.
  */
-public class CompositeMetadataResolver extends AbstractDestructableIdentifiedInitializableComponent 
+public class CompositeMetadataResolver extends AbstractIdentifiedInitializableComponent 
         implements MetadataResolver{
     
     /** Class logger. */
@@ -85,34 +85,40 @@ public class CompositeMetadataResolver extends AbstractDestructableIdentifiedIni
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isRequireValidMetadata() {
         log.warn("Attempt to access unsupported requireValidMetadata property on ChainingMetadataResolver");
         return false;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRequireValidMetadata(boolean requireValidMetadata) {
         throw new UnsupportedOperationException("Setting require valid metadata is not supported on chaining resolver");
     }
 
     /** {@inheritDoc} */
+    @Override
     public MetadataFilter getMetadataFilter() {
         log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataResolver");
         return null;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setMetadataFilter(MetadataFilter newFilter) {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
     }
 
     /** {@inheritDoc} */
+    @Override
     public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         return new CompositeMetadataResolverIterable(resolvers, criteria);
     }
 
     /** {@inheritDoc} */
+    @Override
     public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         EntityDescriptor metadata = null;
@@ -171,6 +177,7 @@ public class CompositeMetadataResolver extends AbstractDestructableIdentifiedIni
         }
 
         /** {@inheritDoc} */
+        @Override
         public Iterator<EntityDescriptor> iterator() {
             return new CompositeMetadataResolverIterator();
         }
@@ -193,6 +200,7 @@ public class CompositeMetadataResolver extends AbstractDestructableIdentifiedIni
             }
 
             /** {@inheritDoc} */
+            @Override
             public boolean hasNext() {
                 if (!currentResolverMetadataIterator.hasNext()) {
                     proceedToNextResolverIterator();
@@ -202,6 +210,7 @@ public class CompositeMetadataResolver extends AbstractDestructableIdentifiedIni
             }
 
             /** {@inheritDoc} */
+            @Override
             public EntityDescriptor next() {
                 if (!currentResolverMetadataIterator.hasNext()) {
                     proceedToNextResolverIterator();
@@ -211,6 +220,7 @@ public class CompositeMetadataResolver extends AbstractDestructableIdentifiedIni
             }
 
             /** {@inheritDoc} */
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
