@@ -17,18 +17,18 @@
 
 package org.opensaml.saml.common.binding.artifact;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-
 import java.io.IOException;
 
-import org.custommonkey.xmlunit.Diff;
 import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
-import org.opensaml.core.xml.io.MarshallingException;
+
+import org.custommonkey.xmlunit.Diff;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -58,7 +58,6 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         artifactMap = new BasicSAMLArtifactMap();
         artifactMap.setArtifactLifetime(lifetime);
         artifactMap.initialize();
-        artifactMap.validate();
     }
 
     @Test
@@ -105,7 +104,6 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         artifactMap = new BasicSAMLArtifactMap();
         artifactMap.setArtifactLifetime(1000);
         artifactMap.initialize();
-        artifactMap.validate();
 
         Assert.assertFalse(artifactMap.contains(artifact));
 

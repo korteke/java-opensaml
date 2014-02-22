@@ -53,8 +53,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Implementation of {@link StorageService} that stores data in an LDAP. Does not support expiration or versioning at
- * this time.
+ * Implementation of {@link org.opensaml.storage.StorageService} that stores data in an LDAP. Does not support
+ * expiration or versioning at this time.
  */
 public class LDAPStorageService extends AbstractStorageService {
 
@@ -166,8 +166,8 @@ public class LDAPStorageService extends AbstractStorageService {
     /** {@inheritDoc} */
     @Override @Nullable public Integer updateWithVersion(@Positive final int version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration)
-                    throws IOException, VersionMismatchException {
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException,
+            VersionMismatchException {
         throw new UnsupportedOperationException("Versioning not supported");
     }
 
@@ -194,7 +194,7 @@ public class LDAPStorageService extends AbstractStorageService {
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         throw new UnsupportedOperationException("Versioning not supported");
     }
-    
+
     /** {@inheritDoc} */
     @Override public void reap(@Nonnull @NotEmpty final String context) throws IOException {
         // no-op, expiration not supported

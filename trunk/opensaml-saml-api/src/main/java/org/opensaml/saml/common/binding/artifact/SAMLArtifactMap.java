@@ -26,23 +26,22 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiableComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
-import net.shibboleth.utilities.java.support.component.ValidatableComponent;
 
 import org.opensaml.saml.common.SAMLObject;
 
 /**
  * Maps an artifact to a SAML message and back again.
  * 
- * <p>An implementation of this interface MUST ensure that the persisted SAML message is no longer tied to any 
- * parent {@link org.opensaml.core.xml.XMLObject} that may have contained it. This ensures that it can be
- * safely added to another object once retrieved from the map. This might for example be achieved by:
- * 1) cloning the SAMLObject prior to storage, or 2) by serializing it to a string and re-parsing 
- * and unmarshalling it once retrieved from the underlying data store.
- * This requirement may be handled by the SAMLArtifactMap directly, or by the use of of a specific 
- * implementation of {@link SAMLArtifactMapEntryFactory}.</p>
+ * <p>
+ * An implementation of this interface MUST ensure that the persisted SAML message is no longer tied to any parent
+ * {@link org.opensaml.core.xml.XMLObject} that may have contained it. This ensures that it can be safely added to
+ * another object once retrieved from the map. This might for example be achieved by: 1) cloning the SAMLObject prior to
+ * storage, or 2) by serializing it to a string and re-parsing and unmarshalling it once retrieved from the underlying
+ * data store. This requirement may be handled by the SAMLArtifactMap directly, or by the use of of a specific
+ * implementation of {@link SAMLArtifactMapEntryFactory}.
+ * </p>
  */
-public interface SAMLArtifactMap extends InitializableComponent, DestructableComponent,
-    IdentifiableComponent, ValidatableComponent {
+public interface SAMLArtifactMap extends InitializableComponent, DestructableComponent, IdentifiableComponent {
 
     /**
      * Checks if a given artifact has a map entry.
@@ -62,11 +61,10 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * @param issuerId ID of the issuer of the artifact
      * @param samlMessage the SAML message
      * 
-     * @throws IOException  if an error occurs storing the information
+     * @throws IOException if an error occurs storing the information
      */
     public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
-            @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage)
-            throws IOException;
+            @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage) throws IOException;
 
     /**
      * Gets the artifact entry for the given artifact.
@@ -85,9 +83,9 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * @throws IOException if an error occurs retrieving the information
      */
     public void remove(@Nonnull @NotEmpty final String artifact) throws IOException;
-    
+
     /**
-     * Represents a mapping between an artifact and a SAML message with some associated information. 
+     * Represents a mapping between an artifact and a SAML message with some associated information.
      */
     public interface SAMLArtifactMapEntry {
 
@@ -119,13 +117,13 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
          */
         @Nonnull public SAMLObject getSamlMessage();
     }
-    
+
     /**
-     * A factory for producing SAMLArtifactMapEntry instances based on standard inputs,
-     * and reading/writing them from/to storage.
+     * A factory for producing SAMLArtifactMapEntry instances based on standard inputs, and reading/writing them from/to
+     * storage.
      */
     public interface SAMLArtifactMapEntryFactory {
-        
+
         /**
          * Factory method which produces a {@link SAMLArtifactMapEntry}.
          * 
@@ -137,9 +135,9 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
          * @return the new map entry instance
          */
         @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
-                @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId, 
+                @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId,
                 @Nonnull SAMLObject samlMessage);
-        
+
     }
-    
+
 }

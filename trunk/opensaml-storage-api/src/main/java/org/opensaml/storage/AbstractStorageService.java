@@ -24,8 +24,6 @@ import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.storage.annotation.AnnotationSupport;
-
 import net.shibboleth.utilities.java.support.annotation.Duration;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -33,17 +31,19 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.component.ComponentValidationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+
+import org.opensaml.storage.annotation.AnnotationSupport;
 
 /**
  * Abstract base class for {@link StorageService} implementations.
  * 
- * <p>The base class handles support for a background cleanup task, and handles
- * calling of custom object serializers.</p>
+ * <p>
+ * The base class handles support for a background cleanup task, and handles calling of custom object serializers.
+ * </p>
  */
-public abstract class AbstractStorageService extends AbstractDestructableIdentifiableInitializableComponent
-    implements StorageService, StorageCapabilities {
+public abstract class AbstractStorageService extends AbstractDestructableIdentifiableInitializableComponent implements
+        StorageService, StorageCapabilities {
 
     /**
      * Number of seconds between cleanup checks. Default value: (0)
@@ -55,7 +55,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
     /** Timer used to schedule cleanup tasks if no external one set. */
     private Timer internalTaskTimer;
-    
+
     /** Task that cleans up expired records. */
     private TimerTask cleanupTask;
 
@@ -67,18 +67,18 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
     /** Configurable value size limit. */
     @Positive private int valueSize;
-    
+
     /**
      * Constructor.
-     *
+     * 
      */
     public AbstractStorageService() {
         setId(getClass().getName());
     }
 
     /**
-     * Gets the number of seconds between one cleanup and another. A value of 0 indicates that no
-     * cleanup will be performed.
+     * Gets the number of seconds between one cleanup and another. A value of 0 indicates that no cleanup will be
+     * performed.
      * 
      * @return number of seconds between one cleanup and another
      */
@@ -87,8 +87,8 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     }
 
     /**
-     * Sets the number of seconds between one cleanup and another. A value of 0 indicates that no
-     * cleanup will be performed.
+     * Sets the number of seconds between one cleanup and another. A value of 0 indicates that no cleanup will be
+     * performed.
      * 
      * This setting cannot be changed after the service has been initialized.
      * 
@@ -97,8 +97,8 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     public synchronized void setCleanupInterval(@Duration @NonNegative final long interval) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        cleanupInterval = Constraint.isGreaterThanOrEqual(0, interval,
-                "Cleanup interval must be greater than or equal to zero");
+        cleanupInterval =
+                Constraint.isGreaterThanOrEqual(0, interval, "Cleanup interval must be greater than or equal to zero");
     }
 
     /**
@@ -122,11 +122,13 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
 
         cleanupTaskTimer = timer;
     }
-    
+
     /**
      * Returns a cleanup task function to schedule for background cleanup.
      * 
-     * <p>The default implementation does not supply one.</p>
+     * <p>
+     * The default implementation does not supply one.
+     * </p>
      * 
      * @return a task object, or null
      */
@@ -141,7 +143,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      */
     public void setContextSize(@Positive final int size) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+
         contextSize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
 
@@ -152,7 +154,7 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      */
     public void setKeySize(@Positive final int size) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+
         keySize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
 
@@ -163,19 +165,18 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
      */
     public void setValueSize(@Positive final int size) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+
         valueSize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
-    
+
     /** {@inheritDoc} */
-    protected void doInitialize() throws ComponentInitializationException {
+    @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 
         if (cleanupInterval > 0) {
             cleanupTask = getCleanupTask();
             if (cleanupTask == null) {
-                throw new ComponentInitializationException(
-                        "Cleanup task cannot be null if cleanupInterval is set.");
+                throw new ComponentInitializationException("Cleanup task cannot be null if cleanupInterval is set.");
             } else if (cleanupTaskTimer == null) {
                 internalTaskTimer = new Timer();
             } else {
@@ -184,9 +185,9 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
             internalTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
         }
     }
-    
+
     /** {@inheritDoc} */
-    protected void doDestroy() {
+    @Override protected void doDestroy() {
         if (cleanupTask != null) {
             cleanupTask.cancel();
             cleanupTask = null;
@@ -199,50 +200,45 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
     }
 
     /** {@inheritDoc} */
-    public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
+    @Override public synchronized void setId(@Nonnull @NotEmpty final String componentId) {
         super.setId(componentId);
     }
-    
-    /** {@inheritDoc} */
-    public void validate() throws ComponentValidationException {
-
-    }
 
     /** {@inheritDoc} */
-    @Nonnull public StorageCapabilities getCapabilities() {
+    @Override @Nonnull public StorageCapabilities getCapabilities() {
         return this;
     }
 
     /** {@inheritDoc} */
-    public int getContextSize() {
+    @Override public int getContextSize() {
         return contextSize;
     }
 
     /** {@inheritDoc} */
-    public int getKeySize() {
+    @Override public int getKeySize() {
         return keySize;
     }
 
     /** {@inheritDoc} */
-    public long getValueSize() {
+    @Override public long getValueSize() {
         return valueSize;
     }
-    
+
     /** {@inheritDoc} */
-    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    @Override public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
             @Nullable @Positive final Long expiration) throws IOException {
         return create(context, key, serializer.serialize(value), expiration);
     }
-    
+
     /** {@inheritDoc} */
-    public boolean create(@Nonnull final Object value) throws IOException {
+    @Override public boolean create(@Nonnull final Object value) throws IOException {
         return create(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
-    
+
     /** {@inheritDoc} */
-    @Nullable public Object read(@Nonnull final Object value) throws IOException {
+    @Override @Nullable public Object read(@Nonnull final Object value) throws IOException {
         StorageRecord record = read(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
         if (record != null) {
             AnnotationSupport.setValue(value, record.getValue());
@@ -251,53 +247,53 @@ public abstract class AbstractStorageService extends AbstractDestructableIdentif
         }
         return null;
     }
-    
+
     /** {@inheritDoc} */
-    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
-            @Nullable @Positive final Long expiration) throws IOException {
+    @Override @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
+            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException {
         return update(context, key, serializer.serialize(value), expiration);
     }
 
     /** {@inheritDoc} */
     // Checkstyle: ParameterNumber OFF
-    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration)
-                    throws IOException, VersionMismatchException {
+    @Override @Nullable public Integer updateWithVersion(@Positive final int version,
+            @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key, @Nonnull final Object value,
+            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException,
+            VersionMismatchException {
         return updateWithVersion(version, context, key, serializer.serialize(value), expiration);
     }
+
     // Checkstyle: ParameterNumber ON
 
     /** {@inheritDoc} */
-    @Nullable public Integer update(@Nonnull final Object value) throws IOException {
+    @Override @Nullable public Integer update(@Nonnull final Object value) throws IOException {
         return update(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
-    
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull final Object value)
+    @Override @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
         return updateWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateExpiration(@Nonnull final Object value) throws IOException {
+    @Override @Nullable public Integer updateExpiration(@Nonnull final Object value) throws IOException {
         return updateExpiration(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getExpiration(value));
     }
-    
+
     /** {@inheritDoc} */
-    public boolean delete(@Nonnull final Object value) throws IOException {
+    @Override public boolean delete(@Nonnull final Object value) throws IOException {
         return delete(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
     }
 
     /** {@inheritDoc} */
-    public boolean deleteWithVersion(@Positive final int version, @Nonnull final Object value)
+    @Override public boolean deleteWithVersion(@Positive final int version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
         return deleteWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
     }
-    
+
 }
