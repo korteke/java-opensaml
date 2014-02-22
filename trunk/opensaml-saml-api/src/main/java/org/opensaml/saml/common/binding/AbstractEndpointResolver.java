@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -73,7 +73,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * @param <EndpointType> type of endpoint
  */
 public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
-        extends AbstractDestructableIdentifiableInitializableComponent implements EndpointResolver<EndpointType> {
+        extends AbstractDestructableIdentifiedInitializableComponent implements EndpointResolver<EndpointType> {
 
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AbstractEndpointResolver.class);

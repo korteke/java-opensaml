@@ -44,7 +44,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -54,7 +54,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
  * <p>Configuration logic should expose the usable bindings to profile actions
  * through instances of this class.</p>
  */
-public class BindingDescriptor extends AbstractIdentifiableInitializableComponent
+public class BindingDescriptor extends AbstractIdentifiedInitializableComponent
         implements Predicate<ProfileRequestContext> {
     
     /** Predicate that must be true for this flow to be usable for a given request. */

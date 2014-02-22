@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -41,7 +41,7 @@ import com.google.common.collect.Iterables;
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
  * {@link MetadataResolver}s.
  */
-public class CompositeMetadataResolver extends AbstractDestructableIdentifiableInitializableComponent 
+public class CompositeMetadataResolver extends AbstractDestructableIdentifiedInitializableComponent 
         implements MetadataResolver{
     
     /** Class logger. */

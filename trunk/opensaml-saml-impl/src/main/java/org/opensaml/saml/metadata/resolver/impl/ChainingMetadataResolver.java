@@ -24,7 +24,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * while iterating over the registered resolvers in resolver list order.
  * 
  */
-public class ChainingMetadataResolver extends AbstractDestructableIdentifiableInitializableComponent 
+public class ChainingMetadataResolver extends AbstractDestructableIdentifiedInitializableComponent 
         implements MetadataResolver{
 
     /** Class logger. */

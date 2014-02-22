@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractDestructableIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -52,7 +52,7 @@ import com.google.common.base.Strings;
  * support basic EntityDescriptor resolution, and then performs further role-related filtering over the
  * returned EntityDescriptor.
  */
-public class BasicRoleDescriptorResolver extends AbstractDestructableIdentifiableInitializableComponent 
+public class BasicRoleDescriptorResolver extends AbstractDestructableIdentifiedInitializableComponent 
         implements RoleDescriptorResolver {
     
     /** Logger. */
