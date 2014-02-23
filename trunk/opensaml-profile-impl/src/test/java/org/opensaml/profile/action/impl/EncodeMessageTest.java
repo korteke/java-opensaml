@@ -17,14 +17,19 @@
 
 package org.opensaml.profile.action.impl;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
+import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
+import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
+import org.opensaml.profile.action.MessageEncoderFactory;
 import org.opensaml.profile.action.impl.EncodeMessage;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;
@@ -64,9 +69,17 @@ public class EncodeMessageTest {
         // Note: we don't init the encoder, b/c that is done by the action after setting the message context
     }
 
+    @Test(expectedExceptions = ComponentInitializationException.class)
+    public void testNoFactory() throws ComponentInitializationException {
+        final EncodeMessage action = new EncodeMessage();
+        action.setId("test");
+        action.initialize();
+    }
+    
     /** Test that the action proceeds properly if the message can be decoded. */
     @Test public void testDecodeMessage() throws Exception {
-        EncodeMessage action = new EncodeMessage(encoder);
+        EncodeMessage action = new EncodeMessage();
+        action.setMessageEncoderFactory(new MockEncoderFactory());
         action.setId("test");
         action.initialize();
 
@@ -80,7 +93,8 @@ public class EncodeMessageTest {
     @Test public void testThrowException() throws Exception {
         encoder.setThrowException(true);
 
-        EncodeMessage action = new EncodeMessage(encoder);
+        EncodeMessage action = new EncodeMessage();
+        action.setMessageEncoderFactory(new MockEncoderFactory());
         action.setId("test");
         action.initialize();
 
@@ -89,13 +103,10 @@ public class EncodeMessageTest {
     }
 
     /**
-     * Mock implementation of {@link MessageEncoder } which either returns a  
+     * Mock implementation of {@link MessageEncoder} which either returns a  
      * {@link MessageContext} with a mock message or throws a {@link MessageDecodingException}.
      */
-    /**
-     *
-     */
-    class MockMessageEncoder extends AbstractMessageEncoder<MockMessage> {
+    private class MockMessageEncoder extends AbstractMessageEncoder<MockMessage> {
 
         /** Whether a {@link MessageDecodingException} should be thrown by {@link #doDecode()}. */
         private boolean throwException = false;
@@ -122,6 +133,7 @@ public class EncodeMessageTest {
         }
 
         /** {@inheritDoc} */
+        @Override
         protected void doEncode() throws MessageEncodingException {
             if (throwException) {
                 throw new MessageEncodingException();
@@ -129,6 +141,18 @@ public class EncodeMessageTest {
                 message = getMessageContext().getMessage().getEncoded();
             }
         }
+    }
+ 
+    private class MockEncoderFactory implements MessageEncoderFactory {
+
+        /** {@inheritDoc} */
+        @Override
+        @Nonnull public MessageEncoder getMessageEncoder(@Nonnull final ProfileRequestContext profileRequestContext)
+                throws ProfileException {
+            
+            return encoder;
+        }
         
     }
+    
 }
