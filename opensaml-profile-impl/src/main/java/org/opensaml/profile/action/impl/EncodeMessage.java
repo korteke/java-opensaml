@@ -20,6 +20,7 @@ package org.opensaml.profile.action.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -32,6 +33,7 @@ import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
+import org.opensaml.profile.action.MessageEncoderFactory;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,88 +41,92 @@ import org.slf4j.LoggerFactory;
 /**
  * Action that encodes an outbound response from the outbound {@link MessageContext}. 
  * 
- * <p>
- * If the supplied instance of {@link MessageEncoder} is not already initialized, this action will
- * handle supplying the message context to encode via {@link MessageEncoder#setMessageContext(MessageContext)}, 
- * followed by invoking {@link MessageEncoder#initialize()}. If the encoder is already initialized,
- * these operations will be skipped.
- * </p>
+ * <p>The {@link MessageEncoderFactory} is used to obtain a new {@link MessageEncoder} to
+ * use, and the encoder is destroyed upon completion.</p>
  *
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
  * @event {@link EventIds#UNABLE_TO_ENCODE}
  * 
- * @post If ProfileRequestContext.getOutboundMessageContext() != null, it will be injected and
- * encoded.
- * @post The injected {@link MessageEncoder} is destroyed.
+ * @post If ProfileRequestContext.getOutboundMessageContext() != null, it will be injected and encoded.
  */
 public class EncodeMessage extends AbstractProfileAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EncodeMessage.class);
 
-    /** The {@link MessageEncoder} instance used to encode the outgoing message. */
-    @Nonnull private final MessageEncoder encoder;
+    /** The factory to use to obtain an encoder. */
+    @NonnullAfterInit private MessageEncoderFactory encoderFactory;
     
     /**
      * An optional {@link MessageHandler} instance to be invoked after 
      * {@link MessageEncoder#prepareContext()} and prior to {@link MessageEncoder#encode()}.
      */
-    @Nullable private final MessageHandler messageHandler;
+    @Nullable private MessageHandler messageHandler;
     
     /** The outbound MessageContext to encode. */
     @Nullable private MessageContext msgContext;
-
+    
     /**
-     * Constructor.
+     * Set the encoder factory to use.
      * 
-     * 
-     * @param messageEncoder the {@link MessageEncoder} used for the outbound response
+     * @param factory   factory to use
      */
-    public EncodeMessage(@Nonnull final MessageEncoder messageEncoder) {
-        this(messageEncoder, null);
+    public void setMessageEncoderFactory(@Nonnull final MessageEncoderFactory factory) {
+        encoderFactory = Constraint.isNotNull(factory, "MessageEncoderFactory cannot be null");
     }
     
     /**
-     * Constructor.
-     * 
-     * <p>
-     * The supplied {@link MessageHandler} will be invoked on the {@link MessageContext} after 
+     * <p>The supplied {@link MessageHandler} will be invoked on the {@link MessageContext} after 
      * {@link MessageEncoder#prepareContext()}, and prior to invoking {@link MessageEncoder#encode()}.
      * Its use is optional and primarily used for transport/binding-specific message handling, 
      * as opposed to more generalized message handling operations which would typically be invoked 
-     * earlier than this action.  For more details see {@link MessageEncoder}.
-     * </p>
+     * earlier than this action. For more details see {@link MessageEncoder}.</p>
      * 
-     * @param messageEncoder the {@link MessageEncoder} used for the outbound response
-     * @param handler the {@link MessageHandler} used for the outbound response
+     * @param handler a message handler
      */
-    public EncodeMessage(@Nonnull final MessageEncoder messageEncoder, @Nullable final MessageHandler handler) {
-        encoder = Constraint.isNotNull(messageEncoder, "MessageEncoder cannot be null");
+    public void setMessageHandler(@Nullable final MessageHandler handler) {
         messageHandler = handler;
     }
-
+    
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (encoderFactory == null) {
+            throw new ComponentInitializationException("MessageEncoderFactory cannot be null");
+        }
+    }
+    
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         
         msgContext = profileRequestContext.getOutboundMessageContext();
         if (msgContext == null) {
-            log.debug("{} Outbound message context was null, skipping action", getLogPrefix());
+            log.debug("{} Outbound message context was null", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
-            
-            // TODO: do we want to destroy the encoder here?
-            encoder.destroy();
             return false;
         }
         
-        return true;
+        return super.doPreExecute(profileRequestContext);
     }
     
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+        
+        final MessageEncoder encoder;
+        try {
+            encoder = encoderFactory.getMessageEncoder(profileRequestContext);
+        } catch (final ProfileException e) {
+            log.error(getLogPrefix() + " Error obtaining an outbound message encoder", e);
+            ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCODE);
+            return;
+        }
+
         try {
             log.debug("{} Encoding outbound response using message encoder of type {} for this response",
                     getLogPrefix(), encoder.getClass().getName());
@@ -144,11 +150,11 @@ public class EncodeMessage extends AbstractProfileAction {
             
             encoder.encode();
             
-            log.debug("{} Outbound response encoded from a message of type {}", getLogPrefix(),
+            log.debug("{} Outbound message encoded from a message of type {}", getLogPrefix(),
                     msgContext.getMessage().getClass().getName());
             
-        } catch (MessageEncodingException | ComponentInitializationException | MessageHandlerException e) {
-            log.error(getLogPrefix() + "{} Unable to encode outbound response", e);
+        } catch (final MessageEncodingException | ComponentInitializationException | MessageHandlerException e) {
+            log.error(getLogPrefix() + " Unable to encode outbound response", e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCODE);
         } finally {
             // TODO: do we want to destroy the encoder here?
