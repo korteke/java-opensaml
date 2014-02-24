@@ -19,6 +19,9 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.LoggerFactory;
@@ -27,7 +30,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 /**
- * Base class for profile actions.
+ * Base class for conditional profile actions.
+ * 
+ * <p>A condition does not represent a situation in which an error should be raised, but that normal
+ * processing should continue and the action simply doesn't apply, so a false condition does not
+ * raise a non-proceed event.</p>
  * 
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
@@ -43,6 +50,17 @@ public abstract class AbstractConditionalProfileAction<InboundMessageType, Outbo
         activationCondition = Predicates.alwaysTrue();
     }
 
+    /**
+     * Set activation condition indicating whether action should execute.
+     * 
+     * @param condition predicate to apply
+     */
+    public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
+    }
+    
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(
