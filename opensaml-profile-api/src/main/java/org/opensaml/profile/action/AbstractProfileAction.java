@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
@@ -36,9 +37,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Base class for profile actions.
  * 
+ * This base class is annotated with {@link Prototype} to indicate that it is stateful.
+ * 
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
+@Prototype
 public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType> extends
         AbstractIdentifiableInitializeableComponent implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
