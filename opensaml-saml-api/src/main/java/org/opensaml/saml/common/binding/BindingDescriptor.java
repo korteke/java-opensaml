@@ -37,7 +37,6 @@ package org.opensaml.saml.common.binding;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -60,14 +59,8 @@ public class BindingDescriptor extends AbstractIdentifiableInitializeableCompone
     /** Predicate that must be true for this flow to be usable for a given request. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;
     
-    /**
-     * Constructor.
-     * 
-     * @param id unique ID of this binding
-     */
-    public BindingDescriptor(@Nonnull @NotEmpty final String id) {
-        super.setId(id);
-        
+    /** Constructor. */
+    public BindingDescriptor() {
         activationCondition = Predicates.alwaysTrue();
     }
     
