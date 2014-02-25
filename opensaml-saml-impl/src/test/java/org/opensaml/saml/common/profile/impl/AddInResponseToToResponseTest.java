@@ -20,12 +20,12 @@ package org.opensaml.saml.common.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.LogoutResponse;
@@ -43,7 +43,7 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     public void setUp() {
         prc = new RequestContextBuilder().setInboundMessage(
                 SAML1ActionTestingSupport.buildAttributeQueryRequest(null)).buildProfileRequestContext();
-        prc.getInboundMessageContext().getSubcontext(BasicMessageMetadataContext.class, true).setMessageId(
+        prc.getInboundMessageContext().getSubcontext(SAMLMessageInfoContext.class, true).setMessageId(
                 SAML1ActionTestingSupport.REQUEST_ID);
     }
 
@@ -61,7 +61,7 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     /** Test that action proceeds properly if there is no request ID. */
     @Test
     public void testNoRequestID() throws Exception {
-        prc.getInboundMessageContext().removeSubcontext(BasicMessageMetadataContext.class);
+        prc.getInboundMessageContext().removeSubcontext(SAMLMessageInfoContext.class);
         
         final Response response = SAML1ActionTestingSupport.buildResponse();
         prc.getOutboundMessageContext().setMessage(response);

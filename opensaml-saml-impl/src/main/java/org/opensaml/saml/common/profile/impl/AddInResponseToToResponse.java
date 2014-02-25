@@ -30,10 +30,10 @@ import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
@@ -44,7 +44,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action that adds the <code>InResponseTo</code> attribute to a response message if a message ID is set on
+ * Action that adds the <code>InResponseTo</code> attribute to a response message if a SAML message ID is set on
  * the inbound message context.
  * 
  * <p>Supports all of the abstract types in SAML that carry this attribute.</p>
@@ -134,13 +134,13 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
             return null;
         }
 
-        final BasicMessageMetadataContext inMsgMetadataCtx = inMsgCtx.getSubcontext(BasicMessageMetadataContext.class);
-        if (inMsgMetadataCtx == null) {
-            log.debug("{} No inbound message metadata context available", getLogPrefix());
+        final SAMLMessageInfoContext infoCtx = inMsgCtx.getSubcontext(SAMLMessageInfoContext.class);
+        if (infoCtx == null) {
+            log.debug("{} No inbound SAMLMessageInfoContext available", getLogPrefix());
             return null;
         }
 
-        return inMsgMetadataCtx.getMessageId();
+        return infoCtx.getMessageId();
     }
     
 }
