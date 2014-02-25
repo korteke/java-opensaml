@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
@@ -69,6 +70,25 @@ public class SAML2ActionTestingSupport {
         return response;
     }
 
+    /**
+     * Builds an empty logout response. The ID of the message is {@link SamlActionTestingSupport#OUTBOUND_MSG_ID}, the issue
+     * instant is 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
+     * 
+     * @return the constructed response
+     */
+    @Nonnull public static LogoutResponse buildLogoutResponse() {
+        final SAMLObjectBuilder<LogoutResponse> responseBuilder = (SAMLObjectBuilder<LogoutResponse>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<LogoutResponse>getBuilderOrThrow(
+                        LogoutResponse.DEFAULT_ELEMENT_NAME);
+
+        final LogoutResponse response = responseBuilder.buildObject();
+        response.setID(ActionTestingSupport.OUTBOUND_MSG_ID);
+        response.setIssueInstant(new DateTime(0));
+        response.setVersion(SAMLVersion.VERSION_20);
+
+        return response;
+    }
+    
     /**
      * Builds an empty assertion. The ID of the message is {@link #ASSERTION_ID}, the issue instant is
      * 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.

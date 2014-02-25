@@ -79,7 +79,7 @@ public class AddNotBeforeConditionToAssertions extends AbstractConditionalProfil
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
-        log.debug("{} Attempting to add NameIdentifier to statements in outgoing Response", getLogPrefix());
+        log.debug("{} Attempting to add NotBefore condition to every Assertion in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
@@ -96,9 +96,7 @@ public class AddNotBeforeConditionToAssertions extends AbstractConditionalProfil
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext)
-            throws ProfileException {
-        log.debug("{} Attempting to add NotBefore condition to every Assertion in outgoing Response", getLogPrefix());
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         for (final Assertion assertion : response.getAssertions()) {
             final Conditions conditions = SAML1ActionSupport.addConditionsToAssertion(this, assertion);
