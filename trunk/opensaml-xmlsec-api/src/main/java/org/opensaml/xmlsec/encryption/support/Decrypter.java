@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.encryption.support;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.security.Key;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -58,6 +59,7 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -204,6 +206,12 @@ public class Decrypter {
 
     /** Resolver for EncryptedKey instances which contain the encrypted data encryption key. */
     private EncryptedKeyResolver encKeyResolver;
+    
+    /** The collection of algorithm URI's which are whitelisted. */
+    private Collection<String> whitelistedAlgorithmURIs;
+    
+    /** The collection of algorithm URI's which are blacklisted. */
+    private Collection<String> blacklistedAlgorithmURIs;
 
     /** Additional criteria to use when resolving credentials based on an EncryptedData's KeyInfo. */
     private CriteriaSet resolverCriteria;
@@ -220,6 +228,20 @@ public class Decrypter {
     
     /**
      * Constructor.
+     *
+     * @param params decryption parameters to use
+     */
+    public Decrypter(DecryptionParameters params) {
+        this(   params.getDataKeyInfoCredentialResolver(), 
+                params.getKEKKeyInfoCredentialResolver(),
+                params.getEncryptedKeyResolver(),
+                params.getWhitelistedAlgorithmURIs(),
+                params.getBlacklistedAlgorithmsURIs()
+                );
+    }
+    
+    /**
+     * Constructor.
      * 
      * @param newResolver resolver for data encryption keys.
      * @param newKEKResolver resolver for key encryption keys.
@@ -228,10 +250,38 @@ public class Decrypter {
     public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
             @Nullable final KeyInfoCredentialResolver newKEKResolver,
             @Nullable final EncryptedKeyResolver newEncKeyResolver) {
+        
+        this(newResolver, newKEKResolver, newEncKeyResolver, null, null);
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param newResolver resolver for data encryption keys.
+     * @param newKEKResolver resolver for key encryption keys.
+     * @param newEncKeyResolver resolver for EncryptedKey elements
+     * @param whitelistAlgos collection of whitelisted algorithm URIs
+     * @param blacklistAlgos collection of blacklisted algorithm URIs
+     */
+    public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
+            @Nullable final KeyInfoCredentialResolver newKEKResolver,
+            @Nullable final EncryptedKeyResolver newEncKeyResolver,
+            @Nullable final Collection<String> whitelistAlgos,
+            @Nullable final Collection<String> blacklistAlgos) {
+        
+        this();
+        
         resolver = newResolver;
         kekResolver = newKEKResolver;
         encKeyResolver = newEncKeyResolver;
-
+        whitelistedAlgorithmURIs = whitelistAlgos;
+        blacklistedAlgorithmURIs = blacklistAlgos;
+    }
+    
+    /**
+     * Constructor.
+     */
+    private Decrypter() {
         resolverCriteria = null;
         kekResolverCriteria = null;
         
@@ -288,60 +338,6 @@ public class Decrypter {
      */
     public void setJCAProviderName(@Nullable final String providerName) {
         jcaProviderName = providerName;
-    }
-
-    /**
-     * Get the data encryption key credential resolver.
-     * 
-     * @return the data encryption key resolver
-     */
-    public KeyInfoCredentialResolver getKeyResolver() {
-        return resolver;
-    }
-
-    /**
-     * Set a new data encryption key credential resolver.
-     * 
-     * @param newResolver the new data encryption key resolver
-     */
-    public void setKeyResolver(KeyInfoCredentialResolver newResolver) {
-        resolver = newResolver;
-    }
-
-    /**
-     * Get the key encryption key credential resolver.
-     * 
-     * @return the key encryption key resolver
-     */
-    public KeyInfoCredentialResolver getKEKResolver() {
-        return kekResolver;
-    }
-
-    /**
-     * Set a new key encryption key credential resolver.
-     * 
-     * @param newKEKResolver the new key encryption key resolver
-     */
-    public void setKEKResolver(KeyInfoCredentialResolver newKEKResolver) {
-        kekResolver = newKEKResolver;
-    }
-
-    /**
-     * Get the encrypted key resolver.
-     * 
-     * @return the encrypted key resolver
-     */
-    public EncryptedKeyResolver getEncryptedKeyResolver() {
-        return encKeyResolver;
-    }
-
-    /**
-     * Set a new encrypted key resolver.
-     * 
-     * @param newResolver the new encrypted key resolver
-     */
-    public void setEncryptedKeyResolver(EncryptedKeyResolver newResolver) {
-        encKeyResolver = newResolver;
     }
 
     /**
@@ -576,6 +572,8 @@ public class Decrypter {
             throw new DecryptionException("EncryptedData of unsupported type was encountered");
         }        
 
+        validateAlgorithmURI(encryptedData.getEncryptionMethod().getAlgorithm());
+        
         try {
             checkAndMarshall(encryptedData);
         } catch (DecryptionException e) {
@@ -675,6 +673,8 @@ public class Decrypter {
             log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
+        
+        validateAlgorithmURI(encryptedKey.getEncryptionMethod().getAlgorithm());
 
         try {
             checkAndMarshall(encryptedKey);
@@ -1016,6 +1016,43 @@ public class Decrypter {
         } catch (ComponentInitializationException e) {
             throw new XMLRuntimeException("Problem initializing Decrypter internal ParserPool", e);
         }
+    }
+    
+    /**
+     * Validate the supplied algorithm URI against the configured whitelist and blacklist.
+     * 
+     * @param algorithmURI the algorithm URI to evaluate
+     * @throws DecryptionException if the algorithm URI does not satisfy the whitelist/blacklist policy
+     */
+    protected void validateAlgorithmURI(@Nonnull final String algorithmURI) throws DecryptionException {
+        if (blacklistedAlgorithmURIs != null) {
+            log.debug("Saw non-null algorithm blacklist: {}", blacklistedAlgorithmURIs);
+            if (blacklistedAlgorithmURIs.contains(algorithmURI)) {
+                log.error("Algorithm '{}' failed blacklist validation");
+                throw new DecryptionException("Algorithm failed blacklist validation: " + algorithmURI);
+            } else {
+                log.debug("Algorithm '{}' passed blacklist validation", algorithmURI);
+            }
+        } else {
+            log.debug("Saw null algorithm blacklist, nothing to evaluate");
+        }
+        
+        if (whitelistedAlgorithmURIs != null) {
+            log.debug("Saw non-null algorithm whitelist: {}", whitelistedAlgorithmURIs);
+            if (!whitelistedAlgorithmURIs.isEmpty()) {
+                if (!whitelistedAlgorithmURIs.contains(algorithmURI)) {
+                    log.error("Algorithm '{}' failed whitelist validation");
+                    throw new DecryptionException("Algorithm failed whitelist validation: " + algorithmURI);
+                } else {
+                    log.debug("Algorithm '{}' passed whitelist validation", algorithmURI);
+                }
+            } else {
+               log.debug("Non-null algorithm whitelist was empty, skipping evaluation");
+            }
+        } else {
+            log.debug("Saw null algorithm whitelist, nothing to evaluate");
+        }
+        
     }
 
     /*

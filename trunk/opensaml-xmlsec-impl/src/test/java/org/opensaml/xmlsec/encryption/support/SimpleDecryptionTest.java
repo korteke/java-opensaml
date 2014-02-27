@@ -25,6 +25,7 @@ import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Collections;
 
 import javax.crypto.SecretKey;
 
@@ -150,6 +151,68 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         assertXMLEquals(targetDOM, decryptedXMLObject);
         
+    }
+    
+    /**
+     *  Test EncryptedData decryption which should fail due to blacklist validation.
+     * @throws DecryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedDataAlgorithmBlacklistFail() throws DecryptionException {
+        Decrypter decrypter = new Decrypter(keyResolver, null, null, null, Collections.singleton(encURI));
+        decrypter.decryptData(encryptedData);
+    }
+    
+    /**
+     *  Test EncryptedData decryption which should fail due to whitelist validation.
+     * @throws DecryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedDataAlgorithmWhitelistFail() throws DecryptionException {
+        Decrypter decrypter = new Decrypter(keyResolver, null, null, Collections.singleton("urn-x:some:bogus:algo"), null);
+        decrypter.decryptData(encryptedData);
+    }
+    
+    /**
+     *  Test EncryptedData decryption which should pass the whitelist validation b/c the list specifies
+     *  the algoritm in use.
+     * @throws DecryptionException 
+     */
+    @Test()
+    public void testEncryptedDataAlgorithmWhitelistPass() throws DecryptionException {
+        Decrypter decrypter = new Decrypter(keyResolver, null, null, Collections.singleton(encURI), null);
+        decrypter.decryptData(encryptedData);
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should fail due to blacklist validation.
+     * @throws DecryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyAlgorithmBlacklistFail() throws DecryptionException {
+        Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(kekURI));
+        decrypter.decryptKey(encryptedKey, encURI);
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should fail due to whitelist validation.
+     * @throws DecryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyAlgorithmWhitelistFail() throws DecryptionException {
+        Decrypter decrypter = new Decrypter(null, kekResolver, null, Collections.singleton("urn-x:some:bogus:algo"), null);
+        decrypter.decryptKey(encryptedKey, encURI);
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should pass the whitelist validation b/c the list specifies
+     *  the algoritm in use.
+     * @throws DecryptionException 
+     */
+    @Test()
+    public void testEncryptedKeyAlgorithmWhitelistPass() throws DecryptionException {
+        Decrypter decrypter = new Decrypter(null, kekResolver, null, Collections.singleton(kekURI), null);
+        decrypter.decryptKey(encryptedKey, encURI);
     }
     
     /**
