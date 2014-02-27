@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.encryption;
 
+import java.util.Collection;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,6 +32,7 @@ import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
+import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -52,14 +55,42 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
     /**
      * Constructor.
      *
+     * @param params decryption parameters to use
+     */
+    public Decrypter(DecryptionParameters params) {
+        super(params);
+    }
+    
+    /**
+     * Constructor.
+     * 
      * @param newResolver resolver for data encryption keys.
      * @param newKEKResolver resolver for key encryption keys.
      * @param newEncKeyResolver resolver for EncryptedKey elements
      */
     public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
-            @Nullable final KeyInfoCredentialResolver newKEKResolver, 
+            @Nullable final KeyInfoCredentialResolver newKEKResolver,
             @Nullable final EncryptedKeyResolver newEncKeyResolver) {
-        super(newResolver, newKEKResolver, newEncKeyResolver);
+        
+        super(newResolver, newKEKResolver, newEncKeyResolver, null, null);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param newResolver resolver for data encryption keys.
+     * @param newKEKResolver resolver for key encryption keys.
+     * @param newEncKeyResolver resolver for EncryptedKey elements
+     * @param whitelistAlgos collection of whitelisted algorithm URIs
+     * @param blacklistAlgos collection of blacklisted algorithm URIs
+     */
+    public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
+            @Nullable final KeyInfoCredentialResolver newKEKResolver, 
+            @Nullable final EncryptedKeyResolver newEncKeyResolver,
+            @Nullable final Collection<String> whitelistAlgos,
+            @Nullable final Collection<String> blacklistAlgos) {
+        
+        super(newResolver, newKEKResolver, newEncKeyResolver, whitelistAlgos, blacklistAlgos);
     }
     
     /**
