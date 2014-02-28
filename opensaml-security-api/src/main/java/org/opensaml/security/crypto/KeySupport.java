@@ -17,6 +17,7 @@
 
 package org.opensaml.security.crypto;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -55,12 +56,14 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.cryptacular.util.KeyPairUtil;
 import org.opensaml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
+
+import edu.vt.middleware.crypt.CryptException;
+import edu.vt.middleware.crypt.io.PrivateKeyCredentialReader;
 
 /**
  * Helper methods for cryptographic keys and key pairs.
@@ -181,12 +184,20 @@ public final class KeySupport {
     @Nonnull public static PrivateKey decodePrivateKey(@Nonnull final byte[] key, @Nullable final char[] password)
             throws KeyException {
         Constraint.isNotNull(key, "Encoded key bytes cannot be null");
-
-        if (password != null && password.length > 0) {
-        	return KeyPairUtil.decodePrivateKey(key, password);
-        } else {
-        	return KeyPairUtil.decodePrivateKey(key);
-        } 
+        
+        PrivateKeyCredentialReader credReader = new PrivateKeyCredentialReader();
+        ByteArrayInputStream bais = new ByteArrayInputStream(key);
+        try {
+            if (password != null && password.length > 0) {
+                return credReader.read(bais, password);
+            } else {
+                return credReader.read(bais);
+            } 
+        } catch (IOException e) {
+            throw new KeyException("Unable to decode private key", e);
+        } catch (CryptException e) {
+            throw new KeyException("Unable to decode private key", e);
+        }
     }
     
     /**
