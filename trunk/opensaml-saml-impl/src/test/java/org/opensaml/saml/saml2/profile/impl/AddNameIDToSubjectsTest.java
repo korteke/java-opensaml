@@ -235,6 +235,7 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         private final String identifier;
         
         public MockSAML2NameIDGenerator(@Nonnull final String id) {
+            setId("test");
             identifier = id;
         }
         
