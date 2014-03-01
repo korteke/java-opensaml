@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.security;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.XMLSignature;
@@ -28,6 +32,7 @@ import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -39,13 +44,15 @@ import com.google.common.base.Strings;
  * A validator for instances of {@link Signature}, which validates that the signature meets security-related
  * requirements indicated by the SAML profile of XML Signature.
  */
-public class SAMLSignatureProfileValidator {
+public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SAMLSignatureProfileValidator.class);
 
     /** {@inheritDoc} */
-    public void validate(Signature signature) throws SignatureException {
+    @Override
+    public void validate(@Nonnull final Signature signature) throws SignatureException {
+        Constraint.isNotNull(signature, "Signature was null");
 
         if (!(signature instanceof SignatureImpl)) {
             log.info("Signature was not an instance of SignatureImpl, was {} validation not supported", signature

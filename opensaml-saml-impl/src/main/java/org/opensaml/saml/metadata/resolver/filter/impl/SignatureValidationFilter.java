@@ -20,6 +20,9 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -36,6 +39,7 @@ import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,12 +61,13 @@ public class SignatureValidationFilter implements MetadataFilter {
     /** Set of externally specified default criteria for input to the trust engine. */
     private CriteriaSet defaultCriteria;
     
-    //TODO decide if this should an interface and impl
-    /** Pre-validator for XML Signature instances. */
-    private SAMLSignatureProfileValidator sigValidator;
+    /** Prevalidator for XML Signature instances. */
+    private SignaturePrevalidator signaturePrevalidator;
 
     /**
      * Constructor.
+     * 
+     * Signature pre-validator defaults to {@link SAMLSignatureProfileValidator}.
      * 
      * @param engine the trust engine used to validate signatures on incoming metadata.
      */
@@ -72,7 +77,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         }
 
         signatureTrustEngine = engine;
-        sigValidator = new SAMLSignatureProfileValidator();
+        signaturePrevalidator = new SAMLSignatureProfileValidator();
     }
 
     /**
@@ -80,7 +85,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return trust engine used to validate signatures on incoming metadata
      */
-    public SignatureTrustEngine getSignatureTrustEngine() {
+    @Nonnull public SignatureTrustEngine getSignatureTrustEngine() {
         return signatureTrustEngine;
     }
     
@@ -89,8 +94,17 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return the configured Signature validator, or null
      */
-    public SAMLSignatureProfileValidator getSignaturePrevalidator() {
-        return sigValidator;
+    @Nullable public SignaturePrevalidator getSignaturePrevalidator() {
+        return signaturePrevalidator;
+    }
+    
+    /**
+     * Set the validator used to perform pre-validation on Signature tokens.
+     * 
+     * @param validator the signature prevalidator to use
+     */
+    public void setSignaturePrevalidator(@Nullable final SignaturePrevalidator validator) {
+        signaturePrevalidator = validator;
     }
 
     /**
@@ -116,7 +130,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return the criteria set
      */
-    public CriteriaSet getDefaultCriteria() {
+    @Nullable public CriteriaSet getDefaultCriteria() {
         return defaultCriteria;
     }
     
@@ -125,7 +139,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @param newCriteria the new criteria set to use
      */
-    public void setDefaultCriteria(CriteriaSet newCriteria) {
+    public void setDefaultCriteria(@Nullable final CriteriaSet newCriteria) {
         defaultCriteria = newCriteria;
     }
 
