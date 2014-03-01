@@ -215,7 +215,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         if (formats == null || formats.isEmpty()) {
             log.debug("{} No candidate NameIdentifier formats, an arbitrary format will be chosen", getLogPrefix());
             formats = Lists.newArrayList(nameIdGeneratorMap.keySet());
-            log.debug("{} Candidate NameIdentifier formats x : {}", getLogPrefix(), formats);
+            log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         } else {
             log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         }
