@@ -1025,32 +1025,12 @@ public class Decrypter {
      * @throws DecryptionException if the algorithm URI does not satisfy the whitelist/blacklist policy
      */
     protected void validateAlgorithmURI(@Nonnull final String algorithmURI) throws DecryptionException {
-        if (blacklistedAlgorithmURIs != null) {
-            log.debug("Saw non-null algorithm blacklist: {}", blacklistedAlgorithmURIs);
-            if (blacklistedAlgorithmURIs.contains(algorithmURI)) {
-                log.error("Algorithm '{}' failed blacklist validation");
-                throw new DecryptionException("Algorithm failed blacklist validation: " + algorithmURI);
-            } else {
-                log.debug("Algorithm '{}' passed blacklist validation", algorithmURI);
-            }
-        } else {
-            log.debug("Saw null algorithm blacklist, nothing to evaluate");
-        }
+        log.debug("Validating algorithm URI against whitelist and blacklist: "
+                + "algorithm: {}, whitelist: {}, blacklist: {}",
+                algorithmURI, whitelistedAlgorithmURIs, blacklistedAlgorithmURIs);
         
-        if (whitelistedAlgorithmURIs != null) {
-            log.debug("Saw non-null algorithm whitelist: {}", whitelistedAlgorithmURIs);
-            if (!whitelistedAlgorithmURIs.isEmpty()) {
-                if (!whitelistedAlgorithmURIs.contains(algorithmURI)) {
-                    log.error("Algorithm '{}' failed whitelist validation");
-                    throw new DecryptionException("Algorithm failed whitelist validation: " + algorithmURI);
-                } else {
-                    log.debug("Algorithm '{}' passed whitelist validation", algorithmURI);
-                }
-            } else {
-               log.debug("Non-null algorithm whitelist was empty, skipping evaluation");
-            }
-        } else {
-            log.debug("Saw null algorithm whitelist, nothing to evaluate");
+        if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, whitelistedAlgorithmURIs, blacklistedAlgorithmURIs)) {
+            throw new DecryptionException("Algorithm failed whitelist/blacklist validation: " + algorithmURI);
         }
         
     }
