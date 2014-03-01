@@ -20,6 +20,8 @@ package org.opensaml.saml.common.binding.security;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
@@ -28,6 +30,7 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.security.SAMLSignatureProfileValidator;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,36 +56,36 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLProtocolMessageXMLSignatureSecurityHandler.class);
 
-    //TODO decide whether this should be an interface with an impl
     /** Validator for XML Signature instances. */
-    @Nullable private SAMLSignatureProfileValidator sigValidator;
+    @Nullable private SignaturePrevalidator signaturePrevalidator;
 
     /**
      * Constructor.
      * 
-     * Signature pre-validator defaults to {@link SAMLSignatureProfileValidator}.
+     * Signature prevalidator defaults to {@link SAMLSignatureProfileValidator}.
      * 
      */
     public SAMLProtocolMessageXMLSignatureSecurityHandler() {
-        setSigValidator(new SAMLSignatureProfileValidator());
+        setSignaturePrevalidator(new SAMLSignatureProfileValidator());
     }
 
     /**
-     * Get the validator for XML Signature instances.
+     * Get the prevalidator for XML Signature instances.
      * 
-     * @return Returns the sigValidator.
+     * @return Returns the prevalidator.
      */
-    @Nullable public SAMLSignatureProfileValidator getSigValidator() {
-        return sigValidator;
+    @Nullable public SignaturePrevalidator getSignaturePrevalidator() {
+        return signaturePrevalidator;
     }
 
     /**
-     * Set the validator for XML Signature instances.
+     * Set the prevalidator for XML Signature instances.
      * 
-     * @param validator The sigValidator to set.
+     * @param validator The prevalidator to set.
      */
-    public void setSigValidator(@Nullable final SAMLSignatureProfileValidator validator) {
-        sigValidator = validator;
+    public void setSignaturePrevalidator(@Nullable final SignaturePrevalidator validator) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        signaturePrevalidator = validator;
     }
 
     /** {@inheritDoc} */
@@ -147,15 +150,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
                     getLogPrefix());
             throw new MessageHandlerException("Context issuer unavailable, cannot validate signature");
         }
-    }
-
-    /**
-     * Get the validator used to perform pre-validation on Signature tokens.
-     * 
-     * @return the configured Signature validator, or null
-     */
-    @Nullable protected SAMLSignatureProfileValidator getSignaturePrevalidator() {
-        return getSigValidator();
     }
 
     /**
