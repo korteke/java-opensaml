@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.annotation.Prototype;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.profile.ProfileException;
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 @Prototype
 public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType> extends
-        AbstractIdentifiableInitializeableComponent implements ProfileAction<InboundMessageType, OutboundMessageType> {
+        AbstractIdentifiableInitializableComponent implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
     /** Current HTTP request, if available. */
     @Nullable private HttpServletRequest httpServletRequest;

@@ -37,7 +37,7 @@ package org.opensaml.saml.common.binding;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -53,7 +53,7 @@ import com.google.common.base.Predicates;
  * <p>Configuration logic should expose the usable bindings to profile actions
  * through instances of this class.</p>
  */
-public class BindingDescriptor extends AbstractIdentifiableInitializeableComponent
+public class BindingDescriptor extends AbstractIdentifiableInitializableComponent
         implements Predicate<ProfileRequestContext> {
     
     /** Predicate that must be true for this flow to be usable for a given request. */
