@@ -33,15 +33,10 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
 
     private static final String SP_NAME_QUALIFIER = "https://sp.example.org";
     
-    @Test
-    public void testNoFormat() {
+    @Test(expectedExceptions = ComponentInitializationException.class)
+    public void testNoFormat() throws ComponentInitializationException {
         final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator();
-        try {
-            mock.initialize();
-            Assert.fail();
-        } catch (ComponentInitializationException e) {
-            
-        }
+        mock.initialize();
     }
     
     @Test
@@ -106,6 +101,10 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
     
     private class MockSAML2NameIDGenerator extends AbstractSAML2NameIDGenerator {
 
+        public MockSAML2NameIDGenerator() {
+            setId("test");
+        }
+        
         /** {@inheritDoc} */
         @Override
         protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {

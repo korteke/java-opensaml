@@ -31,15 +31,10 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
     
-    @Test
-    public void testNoFormat() {
+    @Test(expectedExceptions = ComponentInitializationException.class)
+    public void testNoFormat() throws ComponentInitializationException {
         final MockSAML1NameIdentifierGenerator mock = new MockSAML1NameIdentifierGenerator();
-        try {
-            mock.initialize();
-            Assert.fail();
-        } catch (ComponentInitializationException e) {
-            
-        }
+        mock.initialize();
     }
     
     @Test
@@ -96,6 +91,10 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
     
     private class MockSAML1NameIdentifierGenerator extends AbstractSAML1NameIdentifierGenerator {
 
+        public MockSAML1NameIdentifierGenerator() {
+            setId("test");
+        }
+        
         /** {@inheritDoc} */
         @Override
         protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {

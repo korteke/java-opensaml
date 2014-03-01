@@ -74,8 +74,6 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
 
     /** Constructor. */
     protected AbstractNameIdentifierGenerator() {
-        super.setId(getClass().getName());
-
         activationCondition = Predicates.alwaysTrue();
     }
 
@@ -253,7 +251,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * 
      * @return the effective NameQualifier to set, or null
      */
-    @Nullable protected String getEffectiveIdPNameQualifier(@Nonnull final ProfileRequestContext profileRequestContext) {
+    @Nullable protected String getEffectiveIdPNameQualifier(
+            @Nonnull final ProfileRequestContext profileRequestContext) {
         if (idpNameQualifier != null) {
             if (omitQualifiers) {
                 if (!Objects.equal(idpNameQualifier, getDefaultIdPNameQualifier(profileRequestContext))) {
