@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Basic artifact map implementation. */
-public class StorageServiceSAMLArtifactMap extends AbstractIdentifiableInitializeableComponent implements
+public class StorageServiceSAMLArtifactMap extends AbstractIdentifiableInitializableComponent implements
         SAMLArtifactMap {
 
     /** Storage context label. */

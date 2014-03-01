@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializeableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @param <MessageType> the type of message being handled
  */
-public abstract class AbstractMessageHandler<MessageType> extends AbstractIdentifiableInitializeableComponent implements
+public abstract class AbstractMessageHandler<MessageType> extends AbstractIdentifiableInitializableComponent implements
         MessageHandler<MessageType> {
 
     /**
