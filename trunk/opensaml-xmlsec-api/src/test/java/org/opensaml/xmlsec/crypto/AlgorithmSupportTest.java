@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.crypto;
 
+import java.util.Collections;
+import java.util.HashSet;
+
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -65,5 +68,30 @@ public class AlgorithmSupportTest {
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
     }    
+    
+    /** Test algorithm URI whitelist and blacklist validation. */
+    @Test
+    public void testValidateAlgorithmURI() {
+        String targetURI = "urn:test:target";
+        HashSet<String> whiteList = new HashSet<>();
+        HashSet<String> blackList = new HashSet<>();
+        
+        Assert.assertTrue(AlgorithmSupport.validateAlgorithmURI(targetURI, null, null));
+        Assert.assertTrue(AlgorithmSupport.validateAlgorithmURI(targetURI, whiteList, null));
+        Assert.assertTrue(AlgorithmSupport.validateAlgorithmURI(targetURI, null, blackList));
+        Assert.assertTrue(AlgorithmSupport.validateAlgorithmURI(targetURI, whiteList, blackList));
+        
+        whiteList.add("urn:test:target");
+        Assert.assertTrue(AlgorithmSupport.validateAlgorithmURI(targetURI, whiteList, blackList));
+        whiteList.clear();
+        
+        blackList.add("urn:test:NOTtarget");
+        Assert.assertTrue(AlgorithmSupport.validateAlgorithmURI(targetURI, whiteList, blackList));
+        blackList.clear();
+        
+        whiteList.add("urn:test:NOTtarget");
+        Assert.assertFalse(AlgorithmSupport.validateAlgorithmURI(targetURI, whiteList, blackList));
+        whiteList.clear();
+    }
 
 }

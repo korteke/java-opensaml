@@ -21,6 +21,7 @@ import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,9 @@ import com.google.common.base.Strings;
  * Helper methods for working with XML security algorithm URI's.
  */
 public final class AlgorithmSupport {
+    
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(AlgorithmSupport.class);
     
     /** Additional algorithm URI's which imply RSA keys. */
     private static Set<String> rsaAlgorithmURIs;
@@ -214,6 +218,50 @@ public final class AlgorithmSupport {
             credential.setPrivateKey(keyPair.getPrivate());
         }
         return credential;
+    }
+    
+    /**
+     * Validate the supplied algorithm URI against the specified whitelist and blacklist.
+     * 
+     * @param algorithmURI the algorithm URI to evaluate
+     * @param whitelistedAlgorithmURIs the algorithm whitelist
+     * @param blacklistedAlgorithmURIs the algorithm blacklist
+     * 
+     * @return true if algorithm URI satisfies the specified whitelist and blacklist, otherwise false
+     */
+    public static boolean validateAlgorithmURI(@Nonnull final String algorithmURI, 
+            @Nullable final Collection<String> whitelistedAlgorithmURIs,
+            @Nullable final Collection<String> blacklistedAlgorithmURIs) {
+        
+        if (blacklistedAlgorithmURIs != null) {
+            LOG.debug("Saw non-null algorithm blacklist: {}", blacklistedAlgorithmURIs);
+            if (blacklistedAlgorithmURIs.contains(algorithmURI)) {
+                LOG.warn("Algorithm failed blacklist validation: {}", algorithmURI);
+                return false;
+            } else {
+                LOG.debug("Algorithm passed blacklist validation: {}", algorithmURI);
+            }
+        } else {
+            LOG.debug("Saw null algorithm blacklist, nothing to evaluate");
+        }
+        
+        if (whitelistedAlgorithmURIs != null) {
+            LOG.debug("Saw non-null algorithm whitelist: {}", whitelistedAlgorithmURIs);
+            if (!whitelistedAlgorithmURIs.isEmpty()) {
+                if (!whitelistedAlgorithmURIs.contains(algorithmURI)) {
+                    LOG.warn("Algorithm failed whitelist validation: {}", algorithmURI);
+                    return false;
+                } else {
+                    LOG.debug("Algorithm passed whitelist validation: {}", algorithmURI);
+                }
+            } else {
+               LOG.debug("Non-null algorithm whitelist was empty, skipping evaluation");
+            }
+        } else {
+            LOG.debug("Saw null algorithm whitelist, nothing to evaluate");
+        }
+        
+        return true;
     }
     
     /**
