@@ -104,10 +104,10 @@ public class AddResponseShell extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public synchronized void setIssuerLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, String> strategy) {
+            @Nullable final Function<ProfileRequestContext, String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        issuerLookupStrategy = Constraint.isNotNull(strategy, "Issuer lookup strategy cannot be null");
+        issuerLookupStrategy = strategy;
     }
     
     /** {@inheritDoc} */
