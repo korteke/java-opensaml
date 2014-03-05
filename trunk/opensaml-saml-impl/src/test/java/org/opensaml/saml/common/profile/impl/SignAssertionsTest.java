@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile.impl;
+package org.opensaml.saml.common.profile.impl;
 
 import java.security.KeyPair;
 
@@ -26,8 +26,7 @@ import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.saml.saml2.core.Assertion;
-import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
@@ -41,7 +40,7 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
 
     private SignAssertions action;
 
-    private ProfileRequestContext<Object,Response> prc;
+    private ProfileRequestContext prc;
 
     @BeforeMethod public void setUp() throws ComponentInitializationException {
 
@@ -62,6 +61,13 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
 
     @Test public void testNoResponse() throws Exception {
         prc.getOutboundMessageContext().setMessage(null);
+        
+        action.execute(prc);
+        ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
+    }
+
+    @Test public void testBadMessage() throws Exception {
+        prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -88,9 +94,26 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertProceedEvent(prc);
     }
 
-    @Test public void testSignAssertions() throws Exception {
-        final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
-        prc.getOutboundMessageContext().getMessage().getAssertions().add(assertion);
+    @Test public void testSignSAML1Assertions() throws Exception {
+        prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
+        final org.opensaml.saml.saml1.core.Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
+        ((org.opensaml.saml.saml1.core.Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(assertion);
+
+        final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
+        final KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
+        signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+
+        final SecurityParametersContext secParamCtx = new SecurityParametersContext();
+        secParamCtx.setSignatureSigningParameters(signingParameters);
+        prc.addSubcontext(secParamCtx);
+
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+    }
+    
+    @Test public void testSignSAML2Assertions() throws Exception {
+        final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
+        ((org.opensaml.saml.saml2.core.Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(assertion);
 
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         final KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
