@@ -55,6 +55,10 @@ import com.google.common.base.Functions;
  * <p>No assertions will be created by this action, but if no {@link Subject} exists in
  * the assertions found, it will be cretaed.</p>
  * 
+ * <p>An associated {@link SubjectConfirmationData} will be built to spec based on a set of
+ * lookup functions that optionally provide various attributes. They have appropriate defaults
+ * for the simple use case of a bearer SSO assertion but need to be overridden for other cases.</p>
+ * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
  */

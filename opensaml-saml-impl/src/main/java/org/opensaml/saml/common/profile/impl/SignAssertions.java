@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile.impl;
+package org.opensaml.saml.common.profile.impl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,8 +34,7 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
-import org.opensaml.saml.saml2.core.Assertion;
-import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
@@ -49,7 +48,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action that signs {@link Assertion}s in the {@link Response} returned by a lookup strategy,
+ * Action that signs {@link Assertion}s in a SAML 1/2 Response returned by a lookup strategy,
  * by default the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
  * <p>The {@link SecurityParametersContext} governing the signing process is located by a lookup
@@ -63,8 +62,8 @@ public class SignAssertions extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SignAssertions.class);
 
-    /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
+    /** Strategy used to locate the response to operate on. */
+    @Nonnull private Function<ProfileRequestContext,SAMLObject> responseLookupStrategy;
     
     /** Strategy used to locate the {@link SecurityParametersContext} to use for signing. */
     @Nonnull private Function<ProfileRequestContext,SecurityParametersContext> securityParametersLookupStrategy;
@@ -73,12 +72,12 @@ public class SignAssertions extends AbstractProfileAction {
     @Nullable private SignatureSigningParameters signatureSigningParameters;
 
     /** The response containing the assertions to be signed. */
-    @Nullable private Response response;
+    @Nullable private SAMLObject response;
 
     /** Constructor. */
     public SignAssertions() {
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+                Functions.compose(new MessageLookup<>(SAMLObject.class), new OutboundMessageContextLookup());
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class);
     }
     
@@ -88,7 +87,7 @@ public class SignAssertions extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -113,13 +112,24 @@ public class SignAssertions extends AbstractProfileAction {
 
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
-            log.debug("{} No SAML response located in current profile request context", getLogPrefix());
+            log.debug("{} No SAML Response located in current profile request context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         }
         
-        if (response.getAssertions().isEmpty()) {
-            log.debug("{} No assertions available, nothing to do", getLogPrefix());
+        if (response instanceof org.opensaml.saml.saml1.core.Response) {
+            if (((org.opensaml.saml.saml1.core.Response) response).getAssertions().isEmpty()) {
+                log.debug("{} No assertions available, nothing to do", getLogPrefix());
+                return false;
+            }
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
+            if (((org.opensaml.saml.saml2.core.Response) response).getAssertions().isEmpty()) {
+                log.debug("{} No assertions available, nothing to do", getLogPrefix());
+                return false;
+            }
+        } else {
+            log.debug("{} Message returned by lookup strategy was not a SAML Response", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         }
 
@@ -148,8 +158,16 @@ public class SignAssertions extends AbstractProfileAction {
                 logResponse("Response before signing:");
             }
 
-            for (final Assertion assertion : response.getAssertions()) {
-                SignatureSupport.signObject(assertion, signatureSigningParameters);
+            if (response instanceof org.opensaml.saml.saml1.core.Response) {
+                for (final org.opensaml.saml.saml1.core.Assertion assertion :
+                        ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
+                    SignatureSupport.signObject(assertion, signatureSigningParameters);
+                }
+            } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
+                for (final org.opensaml.saml.saml2.core.Assertion assertion :
+                        ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
+                    SignatureSupport.signObject(assertion, signatureSigningParameters);
+                }
             }
 
             // TODO Maybe the response should not be logged ?
