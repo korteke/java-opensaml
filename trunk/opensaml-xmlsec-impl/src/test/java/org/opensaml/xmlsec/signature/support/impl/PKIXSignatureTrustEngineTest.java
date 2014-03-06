@@ -45,6 +45,7 @@ import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.XMLSecurityTestingSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
@@ -55,6 +56,7 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -252,6 +254,61 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     }
     
     @Test
+    public void testWhitelistedAlgorithms() {
+        HashSet<String> algos = new HashSet<>();
+        algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setWhitelistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testValidateSuccess("Signature was valid with whitelisted algorithms");
+    }
+    
+    @Test
+    public void testBlacklistedSignatureAlgorithm() {
+        HashSet<String> algos = new HashSet<>();
+        algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setBlacklistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testValidateFailure("Signature algorithm was blacklisted");
+    }
+    
+    @Test
+    public void testBlacklistedDigestAlgorithm() {
+        HashSet<String> algos = new HashSet<>();
+        algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setBlacklistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testValidateFailure("Digest algorithm was blacklisted");
+    }
+    
+    @Test
     public void testRawGoodPathInAnchors() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
         rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
@@ -396,6 +453,45 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         testRawValidateFailure("Entity cert was good, but candidate credential was not an X509Credential");
     }
+    
+    @Test
+    public void testRawWhitelistedAlgorithm() throws SecurityException {
+        HashSet<String> algos = new HashSet<>();
+        algos.add(rawAlgorithmURI);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setWhitelistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateSuccess("Signature was valid with whitelisted algorithm");
+    }
+    
+    @Test
+    public void testRawBlacklistedAlgorithm() throws SecurityException {
+        HashSet<String> algos = new HashSet<>();
+        algos.add(rawAlgorithmURI);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setBlacklistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
+        rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
+        engine = getEngine(
+                getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
+                EMPTY_CRLS,
+                MAX_DEPTH,
+                subjectCN );
+        
+        testRawValidateFailure("Signature was invalid with blacklisted algorithm");
+    }
+    
     
     
     /********************

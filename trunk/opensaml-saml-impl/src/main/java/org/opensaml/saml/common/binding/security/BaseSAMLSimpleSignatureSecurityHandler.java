@@ -47,7 +47,10 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.xmlsec.SignatureValidationParameters;
+import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -386,13 +389,18 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
             Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
             Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
             criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
-
         } catch (ConstraintViolationException e) {
             throw new MessageHandlerException(e);
         }
-
+        
         criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         
+        SecurityParametersContext secParamsContext = messageContext.getSubcontext(SecurityParametersContext.class);
+        if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
+            criteriaSet.add(new SignatureValidationParametersCriterion(
+                    secParamsContext.getSignatureValidationParameters()));
+        }
+
         return criteriaSet;
     }
 

@@ -19,6 +19,7 @@ package org.opensaml.saml.common.binding.security;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -36,8 +37,11 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.SignatureValidationParameters;
+import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -167,6 +171,22 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         //TODO before this was evaling isInboundSAMLMessageAuthenticated
         Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
+    }
+    
+    /**
+     * 
+     * Test blacklisted signature algorithm.
+     * @throws MessageHandlerException 
+     */
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testBlacklistedSigntureAlgorithm() throws MessageHandlerException {
+        SignatureValidationParameters sigParams = new SignatureValidationParameters();
+        sigParams.setBlacklistedAlgorithmURIs(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigParams);
+        
+        trustedCredentials.add(signingX509Cred);
+        
+        handler.invoke(messageContext);
     }
     
     /**

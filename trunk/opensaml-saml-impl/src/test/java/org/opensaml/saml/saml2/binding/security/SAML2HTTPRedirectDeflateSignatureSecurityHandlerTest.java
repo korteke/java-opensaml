@@ -23,6 +23,7 @@ import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
@@ -52,8 +53,10 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SignatureSigningParameters;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -218,6 +221,21 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         //TODO before this was evaling isInboundSAMLMessageAuthenticated
         Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
+    }
+    
+    /**
+     * Test blacklisted signature algorithm.
+     * @throws MessageHandlerException 
+     */
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
+        SignatureValidationParameters sigParams = new SignatureValidationParameters();
+        sigParams.setBlacklistedAlgorithmURIs(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigParams);
+        
+        trustedCredentials.add(signingX509Cred);
+
+        handler.invoke(messageContext);
     }
     
     /**
