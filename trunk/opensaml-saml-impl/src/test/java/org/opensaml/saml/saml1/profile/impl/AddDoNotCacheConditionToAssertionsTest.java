@@ -32,7 +32,7 @@ import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/** {@link AddDoNotCacheConditionToAssertions} unit test. */
+/** {@link AddOneTimeUseConditionToAssertions} unit test. */
 public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTestCase {
 
     /** Test that action errors out properly if there is no response. */
