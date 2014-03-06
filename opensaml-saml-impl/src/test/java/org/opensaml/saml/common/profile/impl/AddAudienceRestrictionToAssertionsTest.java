@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml1.profile.impl;
+package org.opensaml.saml.common.profile.impl;
 
 import java.util.Collection;
 
@@ -28,11 +28,14 @@ import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.profile.impl.AddAudienceRestrictionToAssertions;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -188,4 +191,29 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         }
     }
     
+    /**
+     * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
+     * response.
+     */
+    @Test public void testSAML2Assertion() throws Exception {
+        final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
+        final org.opensaml.saml.saml2.core.Response response = SAML2ActionTestingSupport.buildResponse();
+        response.getAssertions().add(assertion);
+
+        final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
+
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+
+        Assert.assertNotNull(response.getAssertions());
+        Assert.assertEquals(response.getAssertions().size(), 1);
+
+        Assert.assertNotNull(assertion.getConditions());
+        Assert.assertEquals(assertion.getConditions().getAudienceRestrictions().size(), 1);
+        final AudienceRestriction audcond = assertion.getConditions().getAudienceRestrictions().get(0);
+        Assert.assertEquals(audcond.getAudiences().size(), 2);
+        Assert.assertEquals(audcond.getAudiences().get(0).getAudienceURI(), AUDIENCE1);
+        Assert.assertEquals(audcond.getAudiences().get(1).getAudienceURI(), AUDIENCE2);
+    }
+
 }

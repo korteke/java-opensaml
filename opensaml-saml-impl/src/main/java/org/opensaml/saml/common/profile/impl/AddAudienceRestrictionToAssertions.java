@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml1.profile.impl;
+package org.opensaml.saml.common.profile.impl;
 
 import java.util.Collection;
 
@@ -35,13 +35,12 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.saml1.core.Assertion;
-import org.opensaml.saml.saml1.core.Audience;
 import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
-import org.opensaml.saml.saml1.core.Conditions;
-import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.profile.SAML1ActionSupport;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,8 +48,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action adds an {@link AudienceRestrictionCondition} to every {@link Assertion} contained on a {@link Response}
- * message, with the audiences obtained from a lookup function. If the containing {@link Conditions} is not present,
+ * Action adds an {@link AudienceRestrictionCondition} to every {@link Assertion} contained in a SAML 1/2
+ * response, with the audiences obtained from a lookup function. If the containing {@link Conditions} is not present,
  * it will be created.
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
@@ -67,14 +66,14 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
      */
     private boolean addingAudiencesToExistingRestriction;
 
-    /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
+    /** Strategy used to locate the Response to operate on. */
+    @Nonnull private Function<ProfileRequestContext,SAMLObject> responseLookupStrategy;
 
     /** Strategy used to obtain the audiences to add. */
     @Nullable private Function<ProfileRequestContext,Collection<String>> audienceRestrictionsLookupStrategy;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @Nullable private SAMLObject response;
 
     /**
      * Constructor. Initializes {@link #addingAudiencesToExistingRestriction} to <code>true</code>. Initializes
@@ -84,9 +83,21 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         addingAudiencesToExistingRestriction = true;
 
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+                Functions.compose(new MessageLookup<>(SAMLObject.class), new OutboundMessageContextLookup());
     }
+    
+    /**
+     * Set the strategy used to locate the Response to operate on.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setResponseLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
+        responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
+    }
+    
     /**
      * Set whether, if an assertion already contains an audience restriction, this action will add its audiences to
      * that restriction or create another one.
@@ -131,11 +142,24 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
 
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
-            log.debug("{} No SAML response located in current profile request context", getLogPrefix());
+            log.debug("{} No SAML Response located in current profile request context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (response.getAssertions().isEmpty()) {
-            log.debug("{} No assertions in response message, nothing to do", getLogPrefix());
+        }
+        
+        if (response instanceof org.opensaml.saml.saml1.core.Response) {
+            if (((org.opensaml.saml.saml1.core.Response) response).getAssertions().isEmpty()) {
+                log.debug("{} No assertions available, nothing to do", getLogPrefix());
+                return false;
+            }
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
+            if (((org.opensaml.saml.saml2.core.Response) response).getAssertions().isEmpty()) {
+                log.debug("{} No assertions available, nothing to do", getLogPrefix());
+                return false;
+            }
+        } else {
+            log.debug("{} Message returned by lookup strategy was not a SAML Response", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         }
         
@@ -146,44 +170,80 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         
-        for (final Assertion assertion : response.getAssertions()) {
-            final Conditions conditions = SAML1ActionSupport.addConditionsToAssertion(this, assertion);
-            addAudienceRestriction(profileRequestContext, conditions);
-            log.debug("{} Added AudienceRestrictionCondition to Assertion {}", getLogPrefix(), assertion.getID());
+        if (response instanceof org.opensaml.saml.saml1.core.Response) {
+            for (final org.opensaml.saml.saml1.core.Assertion assertion :
+                    ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
+                addAudienceRestriction(profileRequestContext,
+                        SAML1ActionSupport.addConditionsToAssertion(this, assertion));
+                log.debug("{} Added AudienceRestrictionCondition to Assertion {}", getLogPrefix(), assertion.getID());
+            }
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
+            for (final org.opensaml.saml.saml2.core.Assertion assertion :
+                    ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
+                addAudienceRestriction(profileRequestContext,
+                        SAML2ActionSupport.addConditionsToAssertion(this, assertion));
+                log.debug("{} Added AudienceRestrictionCondition to Assertion {}", getLogPrefix(), assertion.getID());
+            }
         }
     }
 
     /**
-     * Adds the audiences obtained from a lookup function to the {@link AudienceRestrictionCondition}. If no
+     * Add the audiences obtained from a lookup function to the {@link AudienceRestrictionCondition}. If no
      * {@link AudienceRestrictionCondition} exists on the given {@link Conditions} one is created and added.
      * 
      * @param profileRequestContext current profile request context
      * @param conditions condition that has, or will receive the created, {@link AudienceRestrictionCondition}
      */
     private void addAudienceRestriction(@Nonnull final ProfileRequestContext profileRequestContext,
-            @Nonnull final Conditions conditions) {
+            @Nonnull final org.opensaml.saml.saml1.core.Conditions conditions) {
         final AudienceRestrictionCondition condition = getAudienceRestrictionCondition(conditions);
 
-        final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>) 
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>getBuilderOrThrow(
-                        Audience.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<org.opensaml.saml.saml1.core.Audience> audienceBuilder =
+                (SAMLObjectBuilder<org.opensaml.saml.saml1.core.Audience>) 
+                XMLObjectProviderRegistrySupport.getBuilderFactory(
+                        ).<org.opensaml.saml.saml1.core.Audience>getBuilderOrThrow(
+                                org.opensaml.saml.saml1.core.Audience.DEFAULT_ELEMENT_NAME);
         for (final String audienceId : audienceRestrictionsLookupStrategy.apply(profileRequestContext)) {
             log.debug("{} Adding {} as an Audience of the AudienceRestrictionCondition", getLogPrefix(), audienceId);
-            final Audience audience = audienceBuilder.buildObject();
+            final org.opensaml.saml.saml1.core.Audience audience = audienceBuilder.buildObject();
             audience.setUri(audienceId);
             condition.getAudiences().add(audience);
         }
     }
 
     /**
-     * Gets the {@link AudienceRestrictionCondition} to which audiences will be added.
+     * Add the audiences obtained from a lookup function to the {@link AudienceRestrictionCondition}. If no
+     * {@link AudienceRestrictionCondition} exists on the given {@link Conditions} one is created and added.
+     * 
+     * @param profileRequestContext current profile request context
+     * @param conditions condition that has, or will receive the created, {@link AudienceRestrictionCondition}
+     */
+    private void addAudienceRestriction(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final org.opensaml.saml.saml2.core.Conditions conditions) {
+        final AudienceRestriction condition = getAudienceRestriction(conditions);
+
+        final SAMLObjectBuilder<org.opensaml.saml.saml2.core.Audience> audienceBuilder =
+                (SAMLObjectBuilder<org.opensaml.saml.saml2.core.Audience>) 
+                XMLObjectProviderRegistrySupport.getBuilderFactory(
+                        ).<org.opensaml.saml.saml2.core.Audience>getBuilderOrThrow(
+                                org.opensaml.saml.saml2.core.Audience.DEFAULT_ELEMENT_NAME);
+        for (final String audienceId : audienceRestrictionsLookupStrategy.apply(profileRequestContext)) {
+            log.debug("{} Adding {} as an Audience of the AudienceRestriction", getLogPrefix(), audienceId);
+            final org.opensaml.saml.saml2.core.Audience audience = audienceBuilder.buildObject();
+            audience.setAudienceURI(audienceId);
+            condition.getAudiences().add(audience);
+        }
+    }
+    
+    /**
+     * Get the {@link AudienceRestrictionCondition} to which audiences will be added.
      * 
      * @param conditions existing set of conditions
      * 
      * @return the condition to which audiences will be added
      */
     @Nonnull private AudienceRestrictionCondition getAudienceRestrictionCondition(
-            @Nonnull final Conditions conditions) {
+            @Nonnull final org.opensaml.saml.saml1.core.Conditions conditions) {
         
         final AudienceRestrictionCondition condition;
 
@@ -192,7 +252,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
                     (SAMLObjectBuilder<AudienceRestrictionCondition>) XMLObjectProviderRegistrySupport
                             .getBuilderFactory().<AudienceRestrictionCondition>getBuilderOrThrow(
                                     AudienceRestrictionCondition.DEFAULT_ELEMENT_NAME);
-            log.debug("{} Conditions did not contain an AudienceRestrictionCondition, adding one", getLogPrefix());
+            log.debug("{} Adding new AudienceRestrictionCondition", getLogPrefix());
             condition = conditionBuilder.buildObject();
             conditions.getAudienceRestrictionConditions().add(condition);
         } else {
@@ -203,4 +263,32 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         return condition;
     }
     
+    /**
+     * Get the {@link AudienceRestriction} to which audiences will be added.
+     * 
+     * @param conditions existing set of conditions
+     * 
+     * @return the condition to which audiences will be added
+     */
+    @Nonnull private AudienceRestriction getAudienceRestriction(
+            @Nonnull final org.opensaml.saml.saml2.core.Conditions conditions) {
+        
+        final AudienceRestriction condition;
+
+        if (!addingAudiencesToExistingRestriction || conditions.getAudienceRestrictions().isEmpty()) {
+            final SAMLObjectBuilder<AudienceRestriction> conditionBuilder =
+                    (SAMLObjectBuilder<AudienceRestriction>) XMLObjectProviderRegistrySupport
+                            .getBuilderFactory().<AudienceRestriction>getBuilderOrThrow(
+                                    AudienceRestriction.DEFAULT_ELEMENT_NAME);
+            log.debug("{} Adding new AudienceRestriction", getLogPrefix());
+            condition = conditionBuilder.buildObject();
+            conditions.getAudienceRestrictions().add(condition);
+        } else {
+            log.debug("{} Conditions already contained an AudienceRestriction, using it", getLogPrefix());
+            condition = conditions.getAudienceRestrictions().get(0);
+        }
+
+        return condition;
+    }
+
 }
