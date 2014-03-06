@@ -25,11 +25,15 @@ import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,7 +42,7 @@ import org.testng.annotations.Test;
 /** Test for {@link AddSubjectConfirmationToSubjects}. */
 public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCase {
     
-    private ProfileRequestContext<Object,Response> prc;
+    private ProfileRequestContext<AuthnRequest,Response> prc;
     
     private AddSubjectConfirmationToSubjects action;
     
@@ -48,6 +52,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         
         action = new AddSubjectConfirmationToSubjects();
         action.setId("test");
+        action.setHttpServletRequest(new MockHttpServletRequest());
     }
 
     @Test(expectedExceptions = ComponentInitializationException.class)
@@ -89,12 +94,19 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertNotNull(subject);
         Assert.assertEquals(subject.getSubjectConfirmations().size(), 1);
         Assert.assertEquals(subject.getSubjectConfirmations().get(0).getMethod(), SubjectConfirmation.METHOD_BEARER);
-
+        
         assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertEquals(subject.getSubjectConfirmations().size(), 1);
         Assert.assertEquals(subject.getSubjectConfirmations().get(0).getMethod(), SubjectConfirmation.METHOD_BEARER);
+        
+        final SubjectConfirmationData data = subject.getSubjectConfirmations().get(0).getSubjectConfirmationData();
+        Assert.assertNotNull(data);
+        Assert.assertNull(data.getRecipient());
+        Assert.assertNotNull(data.getNotOnOrAfter());
+        Assert.assertEquals(data.getAddress(), "127.0.0.1");
+        Assert.assertEquals(data.getInResponseTo(), prc.getInboundMessageContext().getMessage().getID());
     }
     
     /** Set up the test message with some assertions. */
@@ -103,6 +115,8 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         prc.getOutboundMessageContext().setMessage(response);
+        prc.getInboundMessageContext().setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
+        prc.getInboundMessageContext().getSubcontext(SAMLMessageInfoContext.class, true);
     }
     
 }

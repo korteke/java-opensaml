@@ -17,9 +17,12 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.net.URI;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.joda.time.DateTime;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -35,12 +38,17 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.binding.BindingException;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,12 +80,27 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
 
     /** Builder for SubjectConfirmation objects. */
     @Nonnull private final SAMLObjectBuilder<SubjectConfirmation> confirmationBuilder;
+
+    /** Builder for SubjectConfirmation objects. */
+    @Nonnull private final SAMLObjectBuilder<SubjectConfirmationData> confirmationDataBuilder;
     
     /** Flag controlling whether to overwrite existing confirmations. */
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
+    
+    /** Optional strategy to obtain value for {@link SubjectConfirmationData#getAddress()}. */
+    @Nullable private Function<ProfileRequestContext,String> addressLookupStrategy;
+
+    /** Optional strategy to obtain value for {@link SubjectConfirmationData#getInResponseTo()}. */
+    @Nullable private Function<ProfileRequestContext,String> inResponseToLookupStrategy;
+
+    /** Optional strategy to obtain value for {@link SubjectConfirmationData#getRecipient()}. */
+    @Nullable private Function<ProfileRequestContext,String> recipientLookupStrategy;
+
+    /** Optional strategy to obtain value for {@link SubjectConfirmationData#getNotOnOrAfter()}. */
+    @Nullable private Function<ProfileRequestContext,Long> lifetimeLookupStrategy;
     
     /** Method to add. */
     @NonnullAfterInit private String confirmationMethod;
@@ -93,11 +116,68 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         confirmationBuilder = (SAMLObjectBuilder<SubjectConfirmation>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmation>getBuilderOrThrow(
                         SubjectConfirmation.DEFAULT_ELEMENT_NAME);
-        
+        confirmationDataBuilder = (SAMLObjectBuilder<SubjectConfirmationData>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmationData>getBuilderOrThrow(
+                        SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
         overwriteExisting = true;
-        
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+        
+        // Default pulls from servlet request.
+        addressLookupStrategy = new Function<ProfileRequestContext,String>() {
+            public String apply(ProfileRequestContext input) {
+                final String address = getHttpServletRequest() != null ? getHttpServletRequest().getRemoteAddr() : null;
+                log.debug("{} Setting confirmation data Address to {}", getLogPrefix(),
+                        address != null ? address : "(none)");
+                return address;
+            }
+        };
+        
+        // Default pulls from inbound message context and a SAMLMessageInfoContext child.
+        inResponseToLookupStrategy = new Function<ProfileRequestContext,String>() {
+            public String apply(ProfileRequestContext input) {
+                final MessageContext inMsgCtx = input.getInboundMessageContext();
+                if (inMsgCtx != null) {
+                    final SAMLMessageInfoContext infoCtx = inMsgCtx.getSubcontext(SAMLMessageInfoContext.class);
+                    if (infoCtx != null) {
+                        final String id = infoCtx.getMessageId();
+                        log.debug("{} Setting confirmation data InResponseTo to {}", getLogPrefix(),
+                                id != null ? id : "(none)");
+                        return id;
+                    }
+                }
+                log.debug("{} Setting confirmation data InResponseTo to (none)", getLogPrefix());
+                return null;
+            }
+        };
+        
+        // Default pulls from SAML endpoint on outbound message context.
+        recipientLookupStrategy = new Function<ProfileRequestContext,String>() {
+            public String apply(ProfileRequestContext input) {
+                if (input.getOutboundMessageContext() != null) {
+                    try {
+                        final URI uri = SAMLBindingSupport.getEndpointURL(input.getOutboundMessageContext());
+                        if (uri != null) {
+                            final String url = uri.toString();
+                            log.debug("{} Setting confirmation data Recipient to {}", getLogPrefix(), url);
+                            return url;
+                        }
+                    } catch (BindingException e) {
+                        log.debug(getLogPrefix() + " Error getting response endpoint", e);
+                    }
+                }
+                log.debug("{} Setting confirmation data Recipient to (none)", getLogPrefix());
+                return null;
+            }
+        };
+        
+        // Default is 5 minutes.
+        lifetimeLookupStrategy = new Function<ProfileRequestContext,Long>() {
+            public Long apply(ProfileRequestContext input) {
+                log.debug("{} Setting confirmation data NotOnOrAfter to 5 minutes from now", getLogPrefix());
+                return 5 * 60 * 1000L;
+            }
+        };
     }
     
     /**
@@ -117,10 +197,56 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
+    }
+
+    /**
+     * Set the strategy used to obtain value for {@link SubjectConfirmationData#getAddress()}.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setAddressLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        addressLookupStrategy = strategy;
+    }
+
+    /**
+     * Set the strategy used to obtain value for {@link SubjectConfirmationData#getInResponseTo()}.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setInResponseToLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        inResponseToLookupStrategy = strategy;
+    }
+
+    /**
+     * Set the strategy used to obtain value for {@link SubjectConfirmationData#getRecipient()}.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setRecipientLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        recipientLookupStrategy = strategy;
+    }
+
+    /**
+     * Set the strategy used to obtain value for {@link SubjectConfirmationData#getNotOnOrAfter()}.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setLifetimeLookupStrategy(@Nullable final Function<ProfileRequestContext,Long> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        lifetimeLookupStrategy = strategy;
     }
     
     /**
@@ -163,12 +289,47 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         return super.doPreExecute(profileRequestContext);
     }
     
+ // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
 
         final SubjectConfirmation confirmation = confirmationBuilder.buildObject();
         confirmation.setMethod(confirmationMethod);
+        
+        SubjectConfirmationData confirmationData = null;
+        
+        final String address = addressLookupStrategy != null
+                ? addressLookupStrategy.apply(profileRequestContext) : null;
+        if (address != null) {
+            confirmationData = confirmationData != null ? confirmationData : confirmationDataBuilder.buildObject();
+            confirmationData.setAddress(address);
+        }
+        
+        final String inResponseTo = inResponseToLookupStrategy != null
+                ? inResponseToLookupStrategy.apply(profileRequestContext) : null;
+        if (inResponseTo != null) {
+            confirmationData = confirmationData != null ? confirmationData : confirmationDataBuilder.buildObject();
+            confirmationData.setInResponseTo(inResponseTo);
+        }
+
+        final String recipient = recipientLookupStrategy != null
+                ? recipientLookupStrategy.apply(profileRequestContext) : null;
+        if (recipient != null) {
+            confirmationData = confirmationData != null ? confirmationData : confirmationDataBuilder.buildObject();
+            confirmationData.setRecipient(recipient);
+        }
+        
+        final Long lifetime = lifetimeLookupStrategy != null
+                ? lifetimeLookupStrategy.apply(profileRequestContext) : null;
+        if (lifetime != null) {
+            confirmationData = confirmationData != null ? confirmationData : confirmationDataBuilder.buildObject();
+            confirmationData.setNotOnOrAfter(new DateTime().plus(lifetime));
+        }
+        
+        if (confirmationData != null) {
+            confirmation.setSubjectConfirmationData(confirmationData);
+        }
         
         int count = 0;
         
@@ -186,6 +347,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
                     confirmationMethod, count);
         }
     }
+ // Checkstyle: CyclomaticComplexity ON
     
     /**
      * Get the subject to which the confirmation will be added.
@@ -214,6 +376,18 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     @Nonnull private SubjectConfirmation cloneConfirmation(@Nonnull final SubjectConfirmation confirmation) {
         final SubjectConfirmation clone = confirmationBuilder.buildObject();
         clone.setMethod(confirmation.getMethod());
+        
+        final SubjectConfirmationData data = confirmation.getSubjectConfirmationData();
+        if (data != null) {
+            final SubjectConfirmationData cloneData = confirmationDataBuilder.buildObject();
+            cloneData.setAddress(data.getAddress());
+            cloneData.setInResponseTo(data.getInResponseTo());
+            cloneData.setRecipient(data.getRecipient());
+            cloneData.setNotBefore(data.getNotBefore());
+            cloneData.setNotOnOrAfter(data.getNotOnOrAfter());
+            clone.setSubjectConfirmationData(cloneData);
+        }
+        
         return clone;
     }
     
