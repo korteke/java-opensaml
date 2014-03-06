@@ -86,11 +86,8 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    public boolean validate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
+    protected boolean doValidate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
-
-        // In our case, the trust basis can't be null.
-        checkParams(signature, trustBasisCriteria);
 
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);
@@ -129,12 +126,9 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+    protected boolean doValidate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
             @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
             @Nullable final Credential candidateCredential) throws SecurityException {
-
-        // In our case, the trust basis can't be null.
-        checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
 
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);

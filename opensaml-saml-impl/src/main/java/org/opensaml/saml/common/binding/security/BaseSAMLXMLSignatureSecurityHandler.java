@@ -35,7 +35,9 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.impl.BaseTrustEngineSecurityHandler;
+import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 
 import com.google.common.base.Strings;
 
@@ -70,6 +72,12 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler
         }
         
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
+        
+        SecurityParametersContext secParamsContext = messageContext.getSubcontext(SecurityParametersContext.class);
+        if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
+            criteriaSet.add(new SignatureValidationParametersCriterion(
+                    secParamsContext.getSignatureValidationParameters()));
+        }
         
         return criteriaSet;
     }

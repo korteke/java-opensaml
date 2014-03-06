@@ -19,8 +19,10 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Collections;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
@@ -36,7 +38,10 @@ import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
+import org.opensaml.xmlsec.SignatureValidationParameters;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -112,6 +117,21 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         } catch (FilterException e) {
             Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
+    }
+    
+    @Test(expectedExceptions=FilterException.class)
+    public void testSWITCHStandaloneBlacklistedSignatureAlgorithm() throws UnmarshallingException, FilterException {
+        XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentValid
+                .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
+        
+        SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        
+        SignatureValidationParameters sigParams = new SignatureValidationParameters();
+        sigParams.setBlacklistedAlgorithmURIs(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        CriteriaSet defaultCriteriaSet = new CriteriaSet(new SignatureValidationParametersCriterion(sigParams));
+        filter.setDefaultCriteria(defaultCriteriaSet);
+        
+        filter.filter(xmlObject);
     }
     
     @Test

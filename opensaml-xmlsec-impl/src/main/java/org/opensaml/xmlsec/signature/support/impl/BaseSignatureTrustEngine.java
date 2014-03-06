@@ -26,11 +26,14 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.SignatureValidationParameters;
+import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +81,96 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
     @Nullable public KeyInfoCredentialResolver getKeyInfoResolver() {
         return keyInfoCredentialResolver;
     }
+    
+    /** {@inheritDoc} */
+    public final boolean validate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
+            throws SecurityException {
+        
+        checkParams(signature, trustBasisCriteria);
+        
+        SignatureValidationParametersCriterion validationCriterion = 
+                trustBasisCriteria.get(SignatureValidationParametersCriterion.class);
+        if (validationCriterion != null) {
+            log.debug("Performing signature algorithm whitelist/blacklist validation using params from CriteriaSet");
+            SignatureAlgorithmValidator algorithmValidator = 
+                    new SignatureAlgorithmValidator(validationCriterion.getSignatureValidationParameters());
+            try {
+                algorithmValidator.validate(signature);
+            } catch (SignatureException e) {
+                log.warn("XML signature failed algorithm whitelist/blacklist validation");
+                return false;
+            }
+        }
+        
+        return doValidate(signature, trustBasisCriteria);
+    }
+    
+    /**
+     * Validate the signature using the supplied trust criteria.
+     * 
+     * @param signature the signature to validate
+     * @param trustBasisCriteria criteria used to describe and/or resolve the information
+     *          which serves as the basis for trust evaluation
+     * @return true if signature is valid and trusted, false otherwise
+     * @throws SecurityException if there is a fatal error evaluating the signature
+     */
+    protected abstract boolean doValidate(@Nonnull final Signature signature, 
+            @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException;
+        
+    
+    /** {@inheritDoc} */
+    public final boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+            @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
+            @Nullable final Credential candidateCredential) throws SecurityException {
+        
+        checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
+        
+        SignatureValidationParametersCriterion validationCriterion = 
+                trustBasisCriteria.get(SignatureValidationParametersCriterion.class);
+        if (validationCriterion != null) {
+            log.debug("Performing signature algorithm whitelist/blacklist validation using params from CriteriaSet");
+            SignatureValidationParameters params = validationCriterion.getSignatureValidationParameters();
+            if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, params.getWhitelistedAlgorithmURIs(), 
+                    params.getBlacklistedAlgorithmsURIs())) {
+                log.warn("Simple/raw signature failed algorithm whitelist/blacklist validation");
+                return false;
+            }
+        }
+        
+        return doValidate(signature, content, algorithmURI, trustBasisCriteria, candidateCredential);
+    }
+    
+    /**
+     * Determines whether a raw signature over specified content is valid and signed by a trusted credential.
+     * 
+     * <p>A candidate verification credential may optionally be supplied.  If one is supplied and is
+     * determined to successfully verify the signature, an attempt will be made to establish
+     * trust on this basis.</p>
+     * 
+     * <p>If a candidate credential is not supplied, or it does not successfully verify the signature,
+     * some implementations may be able to resolve candidate verification credential(s) in an
+     * implementation-specific manner based on the trusted criteria supplied, and then attempt 
+     * to verify the signature and establish trust on this basis.</p>
+     * 
+     * @param signature the signature value
+     * @param content the content that was signed
+     * @param algorithmURI the signature algorithm URI which was used to sign the content
+     * @param trustBasisCriteria criteria used to describe and/or resolve the information
+     *          which serves as the basis for trust evaluation
+     * @param candidateCredential the untrusted candidate credential containing the validation key
+     *          for the signature (optional)
+     * 
+     * @return true if the signature was valid for the provided content and was signed by a key
+     *          contained within a credential established as trusted based on the supplied criteria,
+     *          otherwise false
+     * 
+     * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
+     *             algorithim not being supported
+     */
+    protected abstract boolean doValidate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+            @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
+            @Nullable final Credential candidateCredential) throws SecurityException;
+
 
     /**
      * Attempt to establish trust by resolving signature verification credentials from the Signature's KeyInfo. If any

@@ -20,8 +20,11 @@ package org.opensaml.xmlsec.signature.support.impl;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.collection.CollectionSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -34,6 +37,7 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.XMLSecurityTestingSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -45,6 +49,7 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.DocumentInternalIDContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -225,6 +230,65 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     }
     
     /**
+     * Test whitelisted signature and digest method algorithm URIs.
+     * 
+     * @throws SecurityException 
+     */
+    @Test
+    public void testWhitelistedAlgorithms() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        HashSet<String> algos = new HashSet<>();
+        algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setWhitelistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        SignableXMLObject signableXO = getValidSignedObject();
+        Signature signature = signableXO.getSignature();
+        Assert.assertTrue(engine.validate(signature, criteriaSet), "Signature was valid with whitelisted algorithms");
+    }
+    
+    /**
+     * Test blacklisted signature method algorithm URI.
+     * 
+     * @throws SecurityException 
+     */
+    public void testBlacklistedSignatureAlgorithm() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        HashSet<String> algos = new HashSet<>();
+        algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setBlacklistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        SignableXMLObject signableXO = getValidSignedObject();
+        Signature signature = signableXO.getSignature();
+        Assert.assertFalse(engine.validate(signature, criteriaSet), "Signature algorithm was blacklisted");
+    }
+    
+    /**
+     * Test blacklisted digest method algorithm URI.
+     * 
+     * @throws SecurityException 
+     */
+    public void testBlacklistedDigestAlgorithm() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        HashSet<String> algos = new HashSet<>();
+        algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setBlacklistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        SignableXMLObject signableXO = getValidSignedObject();
+        Signature signature = signableXO.getSignature();
+        Assert.assertFalse(engine.validate(signature, criteriaSet), "Digest algorithm was blacklisted");
+    } 
+    
+    /**
      * Test valid raw signature, trusted signing credential.
      * 
      * @throws SecurityException
@@ -273,6 +337,46 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         Assert.assertFalse(engine.validate(rawControlSignature, tamperedData.getBytes(), rawAlgorithmURI, 
                 criteriaSet, signingX509Cred), 
                 "Raw Signature was invalid due to data tampering, supplied candidate signing cred was trusted");
+    }
+    
+    /**
+     * Test valid raw signature with whitelisted signature algorithm.
+     * 
+     * @throws SecurityException
+     */
+    @Test
+    public void testRawWhitelistedAlgorithm() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        HashSet<String> algos = new HashSet<>();
+        algos.add(rawAlgorithmURI);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setWhitelistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        Assert.assertTrue(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, signingX509Cred), 
+                "Raw Signature was valid with whitelisted algorithms");
+    }
+    
+    /**
+     * Test valid raw signature with whitelisted signature algorithm.
+     * 
+     * @throws SecurityException
+     */
+    @Test
+    public void testRawBlacklistedAlgorithm() throws SecurityException {
+        trustedCredentials.add(signingX509Cred);
+        
+        HashSet<String> algos = new HashSet<>();
+        algos.add(rawAlgorithmURI);
+        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        validationParams.setBlacklistedAlgorithmURIs(algos);
+        criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
+        
+        Assert.assertFalse(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
+                criteriaSet, signingX509Cred), 
+                "Raw Signature was invalid with blacklisted algorithms");
     }
     
     /**

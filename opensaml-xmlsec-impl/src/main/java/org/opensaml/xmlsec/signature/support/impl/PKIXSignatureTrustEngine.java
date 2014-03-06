@@ -145,11 +145,8 @@ public class PKIXSignatureTrustEngine extends
     }
 
     /** {@inheritDoc} */
-    public boolean validate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
+    protected boolean doValidate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
-
-        // In our case, the trust basis can't be null.
-        checkParams(signature, trustBasisCriteria);
 
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair  = 
             resolveValidationInfo(trustBasisCriteria);
@@ -163,7 +160,7 @@ public class PKIXSignatureTrustEngine extends
     }
 
     /** {@inheritDoc} */
-    public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+    protected boolean doValidate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
             @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
             @Nullable final Credential candidateCredential) throws SecurityException {
 
@@ -172,9 +169,6 @@ public class PKIXSignatureTrustEngine extends
             log.debug("PKIX trust engine requires supplied key, skipping PKIX trust evaluation");
             return false;
         }
-
-        // In our case, the trust basis can't be null.
-        checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
 
         Pair<Set<String>, Iterable<PKIXValidationInformation>> validationPair = 
             resolveValidationInfo(trustBasisCriteria);
