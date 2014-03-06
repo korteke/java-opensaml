@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml1.profile.impl;
+package org.opensaml.saml.common.profile.impl;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -28,7 +31,7 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
-import org.opensaml.saml.saml1.profile.impl.AddNotBeforeConditionToAssertions;
+import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,20 +41,22 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
 
     private ProfileRequestContext prc;
     
+    private AddNotBeforeConditionToAssertions action;
+    
     @BeforeMethod
-    public void setUp() {
+    public void setUp() throws ComponentInitializationException {
         prc = new RequestContextBuilder().setOutboundMessage(
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
+        
+        action = new AddNotBeforeConditionToAssertions();
+        action.setId("test");
+        action.initialize();
     }
     
     /** Test that action errors out properly if there is no response. */
     @Test
-    public void testNoResponse() throws Exception {
+    public void testNoResponse() throws ProfileException {
         prc.setOutboundMessageContext(null);
-        
-        final AddNotBeforeConditionToAssertions action = new AddNotBeforeConditionToAssertions();
-        action.setId("test");
-        action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -59,11 +64,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
 
     /** Test that action works properly if there is no assertion in the response. */
     @Test
-    public void testNoAssertion() throws Exception {
-        final AddNotBeforeConditionToAssertions action = new AddNotBeforeConditionToAssertions();
-        action.setId("test");
-        action.initialize();
-
+    public void testNoAssertion() throws ProfileException {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
     }
@@ -73,15 +74,11 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
      * response.
      */
     @Test
-    public void testSingleAssertion() throws Exception {
+    public void testSingleAssertion() throws ProfileException {
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
 
         final Response response = (Response) prc.getOutboundMessageContext().getMessage();
         response.getAssertions().add(assertion);
-
-        final AddNotBeforeConditionToAssertions action = new AddNotBeforeConditionToAssertions();
-        action.setId("test");
-        action.initialize();
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -98,7 +95,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
      * response.
      */
     @Test
-    public void testSingleAssertionWithExistingConditions() throws Exception {
+    public void testSingleAssertionWithExistingConditions() throws ProfileException {
         SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Conditions.DEFAULT_ELEMENT_NAME);
         final Conditions conditions = conditionsBuilder.buildObject();
@@ -108,10 +105,6 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
 
         final Response response = (Response) prc.getOutboundMessageContext().getMessage();
         response.getAssertions().add(assertion);
-
-        final AddNotBeforeConditionToAssertions action = new AddNotBeforeConditionToAssertions();
-        action.setId("test");
-        action.initialize();
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -123,15 +116,11 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
     @Test
-    public void testMultipleAssertion() throws Exception {
+    public void testMultipleAssertion() throws ProfileException {
         final Response response = (Response) prc.getOutboundMessageContext().getMessage();
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
-
-        final AddNotBeforeConditionToAssertions action = new AddNotBeforeConditionToAssertions();
-        action.setId("test");
-        action.initialize();
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -144,5 +133,27 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
             Assert.assertNotNull(assertion.getConditions().getNotBefore());
         }
     }
-    
+
+    /**
+     * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
+     * response.
+     */
+    @Test
+    public void testSAML2Assertion() throws ProfileException {
+        final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
+        final org.opensaml.saml.saml2.core.Response response = SAML2ActionTestingSupport.buildResponse();
+        
+        prc.getOutboundMessageContext().setMessage(response);
+        response.getAssertions().add(assertion);
+
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+
+        Assert.assertNotNull(response.getAssertions());
+        Assert.assertEquals(response.getAssertions().size(), 1);
+
+        Assert.assertNotNull(assertion.getConditions());
+        Assert.assertNotNull(assertion.getConditions().getNotBefore());
+    }
+
 }
