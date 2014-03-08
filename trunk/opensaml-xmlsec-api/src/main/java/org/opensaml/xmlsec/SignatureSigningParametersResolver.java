@@ -15,24 +15,14 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.config;
+package org.opensaml.xmlsec;
 
-import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.core.config.InitializationException;
-import org.opensaml.core.config.Initializer;
-import org.opensaml.xmlsec.SecurityConfiguration;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 /**
- * An initializer which initializes the global security configuration.
+ * An interface for components which which resolve {@link SignatureSigningParameters} based on a {@link CriteriaSet}.
  */
-public class GlobalSecurityConfigurationInitializer implements Initializer {
-    
-    //TODO split out for 4 new config types
-
-    /** {@inheritDoc} */
-    public void init() throws InitializationException {
-        BasicSecurityConfiguration secConfig = DefaultSecurityConfigurationBootstrap.buildDefaultConfig();
-        ConfigurationService.register(SecurityConfiguration.class, secConfig);
-    }
+public interface SignatureSigningParametersResolver extends Resolver<SignatureSigningParameters, CriteriaSet> {
 
 }
