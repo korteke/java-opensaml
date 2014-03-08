@@ -19,10 +19,11 @@ package org.opensaml.xmlsec;
 
 import java.security.interfaces.DSAParams;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
 
 /**
@@ -38,11 +39,20 @@ public interface SignatureSigningConfiguration {
     @Nullable public Credential getSigningCredential();
     
     /**
-     * Get the signature algorithm URI to use when signing.
+     * Get the signature algorithm URI for the specified JCA key algorithm name.
      * 
+     * @param jcaAlgorithmName a JCA key algorithm name
      * @return a signature algorithm URI mapping, or null if no mapping is available
      */
-    @Nullable public String getSignatureAlgorithmURI();
+    @Nullable public String getSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName);
+    
+    /**
+     * Get the signature algorithm URI for the signing key contained within the specified credential.
+     * 
+     * @param credential a credential containing a signing key
+     * @return a signature algorithm URI mapping, or null if no mapping is available
+     */
+    @Nullable public String getSignatureAlgorithmURI(@Nonnull final Credential credential);
     
     /**
      * Get a digest method algorithm URI suitable for use as a Signature Reference DigestMethod value.
@@ -76,10 +86,10 @@ public interface SignatureSigningConfiguration {
     @Nullable public DSAParams getDSAParams(int keyLength);
     
     /**
-     * Get the KeyInfoGenerator to use when generating the Signature/KeyInfo.
+     * Get the manager for named KeyInfoGenerator instances.
      * 
-     * @return the KeyInfoGenerator instance
+     * @return the KeyInfoGenerator manager, or null if none is configured
      */
-    @Nullable public KeyInfoGenerator getKeyInfoGenerator();
+    @Nullable public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager();
 
 }

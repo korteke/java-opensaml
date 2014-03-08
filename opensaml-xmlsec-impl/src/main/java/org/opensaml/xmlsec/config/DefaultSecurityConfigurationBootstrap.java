@@ -42,6 +42,8 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  */
 public class DefaultSecurityConfigurationBootstrap {
     
+    //TODO split out for new 4 config classes
+    
     /** Constructor. */
     protected DefaultSecurityConfigurationBootstrap() {}
     

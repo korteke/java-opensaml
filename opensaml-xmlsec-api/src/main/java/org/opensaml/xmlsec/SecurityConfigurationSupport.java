@@ -33,7 +33,44 @@ public final class SecurityConfigurationSupport {
      * @return the global XML security configuration
      */
     public static SecurityConfiguration getGlobalXMLSecurityConfiguration() {
+        //TODO remove when refactoring complete
         return ConfigurationService.get(SecurityConfiguration.class);
     }
+    
+    /**
+     * Get the global {@link DecryptionConfiguration}  instance.
+     * 
+     * @return the global decryption configuration
+     */
+    public static DecryptionConfiguration getGlobalDecryptionConfiguration() {
+        return ConfigurationService.get(DecryptionConfiguration.class);
+    }
 
+    /**
+     * Get the global {@link EncryptionConfiguration}  instance.
+     * 
+     * @return the global encryption configuration
+     */
+    public static EncryptionConfiguration getGlobalEncryptionConfiguration() {
+        return ConfigurationService.get(EncryptionConfiguration.class);
+    }
+    
+    /**
+     * Get the global {@link SignatureSigningConfiguration }  instance.
+     * 
+     * @return the global signature signing configuration
+     */
+    public static SignatureSigningConfiguration getGlobalSignatureSigningConfiguration() {
+        return ConfigurationService.get(SignatureSigningConfiguration.class);
+    }
+    
+    /**
+     * Get the global {@link SignatureValidationConfiguration}  instance.
+     * 
+     * @return the global signature validation configuration
+     */
+    public static SignatureValidationConfiguration getGlobalSignatureValidationConfiguration() {
+        return ConfigurationService.get(SignatureValidationConfiguration.class);
+    }
+    
 }
