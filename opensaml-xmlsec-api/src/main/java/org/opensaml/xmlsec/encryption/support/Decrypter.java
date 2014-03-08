@@ -346,7 +346,7 @@ public class Decrypter {
      * 
      * @return the static criteria set to use
      */
-    public CriteriaSet setKeyResolverCriteria() {
+    public CriteriaSet getKeyResolverCriteria() {
         return resolverCriteria;
     }
 
