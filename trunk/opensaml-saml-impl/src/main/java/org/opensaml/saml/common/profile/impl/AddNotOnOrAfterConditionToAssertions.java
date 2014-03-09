@@ -157,9 +157,8 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
             for (final org.opensaml.saml.saml1.core.Assertion assertion :
                     ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
 
-                final DateTime expiration =
-                        new DateTime(((org.opensaml.saml.saml1.core.Response) response).getIssueInstant()).plus(
-                                lifetime != null ? lifetime : defaultAssertionLifetime);
+                final DateTime expiration = new DateTime(assertion.getIssueInstant()).plus(
+                        lifetime != null ? lifetime : defaultAssertionLifetime);
                 log.debug("{} Added NotOnOrAfter condition, indicating an expiration of {}, to Assertion {}",
                         new Object[] {getLogPrefix(), expiration, assertion.getID()});
                 SAML1ActionSupport.addConditionsToAssertion(this, assertion).setNotOnOrAfter(expiration);
@@ -168,9 +167,8 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
             for (final org.opensaml.saml.saml2.core.Assertion assertion :
                     ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
 
-                final DateTime expiration =
-                        new DateTime(((org.opensaml.saml.saml2.core.Response) response).getIssueInstant()).plus(
-                                lifetime != null ? lifetime : defaultAssertionLifetime);
+                final DateTime expiration = new DateTime(assertion.getIssueInstant()).plus(
+                        lifetime != null ? lifetime : defaultAssertionLifetime);
                 log.debug("{} Added NotOnOrAfter condition, indicating an expiration of {}, to Assertion {}",
                         new Object[] {getLogPrefix(), expiration, assertion.getID()});
                 SAML2ActionSupport.addConditionsToAssertion(this, assertion).setNotOnOrAfter(expiration);
