@@ -38,12 +38,10 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
@@ -136,15 +134,10 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         // Default pulls from inbound message context and a SAMLMessageInfoContext child.
         inResponseToLookupStrategy = new Function<ProfileRequestContext,String>() {
             public String apply(ProfileRequestContext input) {
-                final MessageContext inMsgCtx = input.getInboundMessageContext();
-                if (inMsgCtx != null) {
-                    final SAMLMessageInfoContext infoCtx = inMsgCtx.getSubcontext(SAMLMessageInfoContext.class);
-                    if (infoCtx != null) {
-                        final String id = infoCtx.getMessageId();
-                        log.debug("{} Setting confirmation data InResponseTo to {}", getLogPrefix(),
-                                id != null ? id : "(none)");
-                        return id;
-                    }
+                if (response != null && response.getInResponseTo() != null) {
+                    log.debug("{} Setting confirmation data InResponseTo to {}", getLogPrefix(),
+                            response.getInResponseTo());
+                    return response.getInResponseTo();
                 }
                 log.debug("{} Setting confirmation data InResponseTo to (none)", getLogPrefix());
                 return null;

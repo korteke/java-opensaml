@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.common.profile.impl;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -27,14 +31,16 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
-import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
@@ -42,6 +48,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.collect.Sets;
 
 /**
  * Action that adds the <code>InResponseTo</code> attribute to a response message if a SAML message ID is set on
@@ -58,7 +65,10 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddInResponseToToResponse.class);
 
     /** Strategy used to locate the message to operate on. */
-    @Nonnull private Function<ProfileRequestContext, SAMLObject> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,SAMLObject> responseLookupStrategy;
+    
+    /** Strategy used to locate request ID to correlate. */
+    @Nonnull private Function<ProfileRequestContext,String> requestIdLookupStrategy;
     
     /** Message to modify. */
     @Nullable private SAMLObject response;
@@ -70,6 +80,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
     public AddInResponseToToResponse() {
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(SAMLObject.class), new OutboundMessageContextLookup());
+        requestIdLookupStrategy = new DefaultRequestIdLookupStrategy();
     }
     
     /**
@@ -78,10 +89,22 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
      * @param strategy strategy used to locate the message to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, SAMLObject> strategy) {
+            @Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
+    }
+    
+    /**
+     * Set the strategy used to locate the request ID.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setRequestIdLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        requestIdLookupStrategy = Constraint.isNotNull(strategy, "Request ID lookup strategy cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -89,19 +112,19 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         log.debug("{} Attempting to add InResponseTo to outgoing Response", getLogPrefix());
 
-        requestId = getInboundMessageId(profileRequestContext);
-        if (requestId == null) {
-            log.debug("{} Inbound message did not have an ID, nothing to do", getLogPrefix());
-            return false;
-        }
-        
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
             log.debug("{} No SAML message located in current profile request context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         }
-        
+
+        requestId = requestIdLookupStrategy.apply(profileRequestContext);
+        if (requestId == null) {
+            log.debug("{} No request ID, nothing to do", getLogPrefix());
+            return false;
+        }
+                
         return super.doPreExecute(profileRequestContext);
     }
     
@@ -121,26 +144,66 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
     }
 
     /**
-     * Get the ID of the inbound message.
-     * 
-     * @param profileRequestContext current profile request context
-     * 
-     * @return the inbound message ID or null if the was no ID
+     * Default lookup of request ID from inbound message context, suppressing lookup for bindings
+     * known to be supplying artificial IDs.
      */
-    @Nullable private String getInboundMessageId(final ProfileRequestContext<Object, Response> profileRequestContext) {
-        final MessageContext inMsgCtx = profileRequestContext.getInboundMessageContext();
-        if (inMsgCtx == null) {
-            log.debug("{} No inbound message context available", getLogPrefix());
-            return null;
-        }
+    public static class DefaultRequestIdLookupStrategy implements Function<ProfileRequestContext,String> {
 
-        final SAMLMessageInfoContext infoCtx = inMsgCtx.getSubcontext(SAMLMessageInfoContext.class);
-        if (infoCtx == null) {
-            log.debug("{} No inbound SAMLMessageInfoContext available", getLogPrefix());
-            return null;
+        /** Class logger. */
+        @Nonnull private final Logger log = LoggerFactory.getLogger(AddInResponseToToResponse.class);
+        
+        /** Set of bindings to ignore request ID for. */
+        @Nonnull @NonnullElements private Set<String> suppressForBindings;
+        
+        /** Constructor. */
+        public DefaultRequestIdLookupStrategy() {
+            suppressForBindings = Collections.emptySet();
         }
+        
+        /**
+         * Set the collection of bindings to suppress the lookup of a request ID for.
+         * 
+         * @param bindings collection of bindings
+         */
+        public void setSuppressForBindings(@Nonnull @NonnullElements Collection<String> bindings) {
+            Constraint.isNotNull(bindings, "Bindings collection cannot be null");
+            
+            suppressForBindings = Sets.newHashSet();
+            for (final String b : bindings) {
+                final String trimmed = StringSupport.trimOrNull(b);
+                if (trimmed != null) {
+                    suppressForBindings.add(trimmed);
+                }
+            }
+        }
+        
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public String apply(@Nullable final ProfileRequestContext input) {
+            final MessageContext inMsgCtx = input.getInboundMessageContext();
+            if (inMsgCtx == null) {
+                log.debug("No inbound message context available");
+                return null;
+            }
 
-        return infoCtx.getMessageId();
+            if (!suppressForBindings.isEmpty()) {
+                final SAMLBindingContext bindingCtx = inMsgCtx.getSubcontext(SAMLBindingContext.class);
+                if (bindingCtx != null && bindingCtx.getBindingUri() != null
+                        && suppressForBindings.contains(bindingCtx.getBindingUri())) {
+                    log.debug("Inbound binding {} is suppressed, ignoring request ID",
+                            bindingCtx.getBindingUri());
+                    return null;
+                }
+            }
+            
+            final SAMLMessageInfoContext infoCtx = inMsgCtx.getSubcontext(SAMLMessageInfoContext.class);
+            if (infoCtx == null) {
+                log.debug("No inbound SAMLMessageInfoContext available");
+                return null;
+            }
+
+            return infoCtx.getMessageId();
+        }
     }
     
 }
