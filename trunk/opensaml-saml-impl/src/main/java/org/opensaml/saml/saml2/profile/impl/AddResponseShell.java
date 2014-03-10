@@ -142,7 +142,9 @@ public class AddResponseShell extends AbstractProfileAction {
             return false;
         }
         
-        issuerId = issuerLookupStrategy.apply(profileRequestContext);
+        if (issuerLookupStrategy != null) {
+            issuerId = issuerLookupStrategy.apply(profileRequestContext);
+        }
 
         return super.doPreExecute(profileRequestContext);
     }
