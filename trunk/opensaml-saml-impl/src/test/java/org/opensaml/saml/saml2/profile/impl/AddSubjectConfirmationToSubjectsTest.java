@@ -117,6 +117,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         prc.getOutboundMessageContext().setMessage(response);
         prc.getInboundMessageContext().setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         prc.getInboundMessageContext().getSubcontext(SAMLMessageInfoContext.class, true);
+        response.setInResponseTo(prc.getInboundMessageContext().getMessage().getID());
     }
     
 }
