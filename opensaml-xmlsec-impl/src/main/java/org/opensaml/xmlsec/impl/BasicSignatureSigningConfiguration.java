@@ -35,7 +35,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Basic implementation of {@link SignatureSigningConfiguration}.
  */
-public class BasicSignatureSigningConfiguration implements SignatureSigningConfiguration {
+public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistConfiguration 
+        implements SignatureSigningConfiguration {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(BasicSignatureSigningConfiguration.class);

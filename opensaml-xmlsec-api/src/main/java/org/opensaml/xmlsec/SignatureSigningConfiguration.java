@@ -29,7 +29,7 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 /**
  * The configuration information to use when generating an XML signature.
  */
-public interface SignatureSigningConfiguration {
+public interface SignatureSigningConfiguration extends WhitelistBlacklistConfiguration {
     
     /**
      * Get the signing credential to use when signing.
