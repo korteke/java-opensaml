@@ -26,7 +26,8 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 /**
  * Basic implementation of {@link DecryptionConfiguration}.
  */
-public class BasicDecryptionConfiguration extends BasicWhitelistBlacklistConfiguration implements DecryptionConfiguration {
+public class BasicDecryptionConfiguration extends BasicWhitelistBlacklistConfiguration 
+        implements DecryptionConfiguration {
     
     /** The EncryptedData's KeyInfo credential resolver. */
     @Nullable private KeyInfoCredentialResolver dataKeyInfoCredentialResolver;
@@ -38,6 +39,11 @@ public class BasicDecryptionConfiguration extends BasicWhitelistBlacklistConfigu
     @Nullable private EncryptedKeyResolver encryptedKeyResolver;
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
+    
+    /** * Constructor. */
+    public BasicDecryptionConfiguration() {
+       super(); 
+    }
     
     /**
      * Get the KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
