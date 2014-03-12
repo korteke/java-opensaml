@@ -26,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Collection;
 
+import org.cryptacular.util.CertUtil;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
@@ -36,9 +37,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
-
-import edu.vt.middleware.crypt.CryptException;
-import edu.vt.middleware.crypt.io.X509CertificateCredentialReader;
 
 /**
  * Test the KeyInfoGeneratorFactory manager.
@@ -129,14 +127,13 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
      * @throws CryptException 
      * @throws IOException */
     @Test
-    public void testLookupFactory() throws NoSuchAlgorithmException, NoSuchProviderException, IOException, CryptException {
+    public void testLookupFactory() throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
         manager.registerFactory(basicFactory);
         manager.registerFactory(x509Factory);
         Assert.assertEquals(manager.getFactories().size(), 2, "Unexpected # of managed factories");
         
         Credential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
-        X509CertificateCredentialReader reader = new X509CertificateCredentialReader();
-        X509Credential x509Cred = new BasicX509Credential(reader.read(getClass().getResourceAsStream(certDER)));
+        X509Credential x509Cred = new BasicX509Credential(CertUtil.readCertificate(getClass().getResourceAsStream(certDER)));
         
         Assert.assertNotNull(manager.getFactory(basicCred), "Failed to find factory based on credential");
         Assert.assertTrue(basicFactory == manager.getFactory(basicCred), "Found incorrect factory based on credential");
