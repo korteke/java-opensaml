@@ -30,7 +30,6 @@ import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -46,15 +45,19 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.DERObject;
-import org.bouncycastle.asn1.DERObjectIdentifier;
-import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.DERSet;
-import org.bouncycastle.asn1.DERString;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
-import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.cryptacular.util.CertUtil;
+import org.cryptacular.util.CodecUtil;
+import org.cryptacular.x509.GeneralNameType;
+import org.cryptacular.x509.dn.AttributeType;
+import org.cryptacular.x509.dn.Attributes;
+import org.cryptacular.x509.dn.NameReader;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
@@ -63,11 +66,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
-
-import edu.vt.middleware.crypt.CryptException;
-import edu.vt.middleware.crypt.io.X509CertificateCredentialReader;
-import edu.vt.middleware.crypt.io.X509CertificatesCredentialReader;
-import edu.vt.middleware.crypt.util.HexConverter;
 
 /**
  * Utility class for working with X509 objects.
@@ -161,50 +159,8 @@ public class X509Support {
 
         Logger log = getLogger();
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
-        List<String> commonNames = new LinkedList<String>();
-        try {
-            ASN1InputStream asn1Stream = new ASN1InputStream(dn.getEncoded());
-            DERObject parent = asn1Stream.readObject();
-
-            String cn = null;
-            DERObject dnComponent;
-            DERSequence grandChild;
-            DERObjectIdentifier componentId;
-            for (int i = 0; i < ((DERSequence) parent).size(); i++) {
-                dnComponent = ((DERSequence) parent).getObjectAt(i).getDERObject();
-                if (!(dnComponent instanceof DERSet)) {
-                    log.debug("No DN components.");
-                    continue;
-                }
-
-                // Each DN component is a set
-                for (int j = 0; j < ((DERSet) dnComponent).size(); j++) {
-                    grandChild = (DERSequence) ((DERSet) dnComponent).getObjectAt(j).getDERObject();
-
-                    if (grandChild.getObjectAt(0) != null
-                            && grandChild.getObjectAt(0).getDERObject() instanceof DERObjectIdentifier) {
-                        componentId = (DERObjectIdentifier) grandChild.getObjectAt(0).getDERObject();
-
-                        if (CN_OID.equals(componentId.getId())) {
-                            // OK, this dn component is actually a cn attribute
-                            if (grandChild.getObjectAt(1) != null
-                                    && grandChild.getObjectAt(1).getDERObject() instanceof DERString) {
-                                cn = ((DERString) grandChild.getObjectAt(1).getDERObject()).getString();
-                                commonNames.add(cn);
-                            }
-                        }
-                    }
-                }
-            }
-
-            asn1Stream.close();
-
-            return commonNames;
-
-        } catch (IOException e) {
-            log.error("Unable to extract common names from DN: ASN.1 parsing failed: " + e);
-            return null;
-        }
+        final Attributes attrs = NameReader.readX500Principal(dn);
+        return attrs.getValues(AttributeType.CommonName);
     }
 
     /**
@@ -221,30 +177,18 @@ public class X509Support {
             return null;
         }
 
-        List<Object> names = new LinkedList<Object>();
-        Collection<List<?>> altNames = null;
-        try {
-            altNames = X509ExtensionUtil.getSubjectAlternativeNames(certificate);
-        } catch (CertificateParsingException e) {
-            getLogger().error("Encountered an problem trying to extract Subject Alternate "
-                    + "Name from supplied certificate: " + e);
-            return names;
+        final List<Object> altNames = new LinkedList<Object>();
+        final GeneralNameType[] types = new GeneralNameType[nameTypes.length];
+        for (int i = 0; i < nameTypes.length; i++) {
+            types[i]= GeneralNameType.fromTagNumber(nameTypes[i]);
         }
-
-        if (altNames != null) {
-            // 0th position represents the alt name type
-            // 1st position contains the alt name data
-            for (List altName : altNames) {
-                for (Integer nameType : nameTypes) {
-                    if (altName.get(0).equals(nameType)) {
-                        names.add(convertAltNameType(nameType, altName.get(1)));
-                        break;
-                    }
-                }
+        final GeneralNames names = CertUtil.subjectAltNames(certificate, types);
+        if (names != null) {
+            for (GeneralName name : names.getNames()) {
+                altNames.add(convertAltNameType(name.getTagNo(), name.getName().toASN1Primitive()));
             }
         }
-
-        return names;
+        return altNames;
     }
 
     /**
@@ -288,8 +232,8 @@ public class X509Support {
         }
 
         try {
-            SubjectKeyIdentifier ski = new SubjectKeyIdentifierStructure(derValue);
-            return ski.getKeyIdentifier();
+            final ASN1Primitive ski = X509ExtensionUtil.fromExtensionValue(derValue);
+            return ((DEROctetString) ski).getOctets();
         } catch (IOException e) {
             getLogger().error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
             return null;
@@ -356,15 +300,7 @@ public class X509Support {
      */
     @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final byte[] certs)
             throws CertificateException {
-        X509CertificatesCredentialReader credReader = new X509CertificatesCredentialReader();
-        ByteArrayInputStream bais = new ByteArrayInputStream(certs);
-        try {
-            return Arrays.asList(credReader.read(bais));
-        } catch (IOException e) {
-            throw new CertificateException("Unable to decode X.509 certificates", e);
-        } catch (CryptException e) {
-            throw new CertificateException("Unable to decode X.509 certificates", e);
-        }
+        return Arrays.asList(CertUtil.decodeCertificateChain(certs));
     }
     
     /**
@@ -403,15 +339,7 @@ public class X509Support {
      * @throws CertificateException thrown if the certificate cannot be decoded
      */
     @Nullable public static X509Certificate decodeCertificate(@Nonnull final byte[] cert) throws CertificateException {
-        X509CertificateCredentialReader credReader = new X509CertificateCredentialReader();
-        ByteArrayInputStream bais = new ByteArrayInputStream(cert);
-        try {
-            return credReader.read(bais);
-        } catch (IOException e) {
-            throw new CertificateException("Unable to decode X.509 certificate", e);
-        } catch (CryptException e) {
-            throw new CertificateException("Unable to decode X.509 certificate", e);
-        }
+        return CertUtil.decodeCertificate(cert);
     }
     
     /**
@@ -536,30 +464,29 @@ public class X509Support {
      * @return converted representation of name value, based on type
      */
     @Nullable private static Object convertAltNameType(@Nonnull final Integer nameType,
-            @Nonnull final Object nameValue) {
+            @Nonnull final ASN1Primitive nameValue) {
         Logger log = getLogger();
         
         if (DIRECTORY_ALT_NAME.equals(nameType) || DNS_ALT_NAME.equals(nameType) || RFC822_ALT_NAME.equals(nameType)
                 || URI_ALT_NAME.equals(nameType) || REGISTERED_ID_ALT_NAME.equals(nameType)) {
 
             // these are just strings in the appropriate format already, return as-is
-            return nameValue;
+            return nameValue.toString();
         } else if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
             // this is a byte[], IP addr in network byte order
-            byte [] nameValueBytes = (byte[]) nameValue;
+            byte [] nameValueBytes = ((DEROctetString) nameValue).getOctets();
             try {
                 return InetAddresses.toAddrString(InetAddress.getByAddress(nameValueBytes));
             } catch (UnknownHostException e) {
-                HexConverter hexConverter = new HexConverter(true);
                 log.warn("Was unable to convert IP address alt name byte[] to string: " +
-                        hexConverter.fromBytes(nameValueBytes), e);
+                        CodecUtil.hex(nameValueBytes, true), e);
                 return null;
             }
         } else if (EDI_PARTY_ALT_NAME.equals(nameType) || X400ADDRESS_ALT_NAME.equals(nameType)
                 || OTHER_ALT_NAME.equals(nameType)) {
 
             // these have no defined representation, just return a DER-encoded byte[]
-            return ((DERObject) nameValue).getDEREncoded();
+            return nameValue;
         } else {
             log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
             return nameValue;

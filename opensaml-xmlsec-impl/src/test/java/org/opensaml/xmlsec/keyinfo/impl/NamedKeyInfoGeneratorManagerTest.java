@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import org.cryptacular.util.CertUtil;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
@@ -35,9 +36,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
-
-import edu.vt.middleware.crypt.CryptException;
-import edu.vt.middleware.crypt.io.X509CertificateCredentialReader;
 
 /**
  * Test the NamedKeyInfoGeneratorFactory manager.
@@ -195,7 +193,7 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
      * @throws CryptException 
      * @throws IOException */
     @Test
-    public void testLookupFactory() throws IOException, CryptException {
+    public void testLookupFactory() throws IOException {
         manager.registerFactory(nameFoo, basicFactoryFoo);
         manager.registerFactory(nameFoo, x509FactoryFoo);
         manager.registerFactory(nameBar, basicFactoryBar);
@@ -206,8 +204,7 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(manager.getManager("BAZ").getFactories().size(), 0, "Unexpected # of managed factories");
         Assert.assertEquals(manager.getManagerNames().size(), 3, "Unexpected # of manager names");
         
-        X509CertificateCredentialReader reader = new X509CertificateCredentialReader();
-        X509Certificate cert = reader.read(getClass().getResourceAsStream(certDER));
+        X509Certificate cert = CertUtil.readCertificate(getClass().getResourceAsStream(certDER));
         
         Credential basicCred = new BasicCredential(cert.getPublicKey());
         
@@ -242,13 +239,12 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
      * @throws CryptException 
      * @throws IOException */
     @Test
-    public void testFallThroughToDefaultManager() throws IOException, CryptException {
+    public void testFallThroughToDefaultManager() throws IOException {
         KeyInfoGeneratorFactory defaultX509Factory = new X509KeyInfoGeneratorFactory();
         manager.registerDefaultFactory(defaultX509Factory);
         manager.registerFactory(nameFoo, basicFactoryFoo);
         
-        X509CertificateCredentialReader reader = new X509CertificateCredentialReader();
-        X509Credential x509Cred = new BasicX509Credential(reader.read(getClass().getResourceAsStream(certDER)));
+        X509Credential x509Cred = new BasicX509Credential(CertUtil.readCertificate(getClass().getResourceAsStream(certDER)));
         
         manager.setUseDefaultManager(true);
         
