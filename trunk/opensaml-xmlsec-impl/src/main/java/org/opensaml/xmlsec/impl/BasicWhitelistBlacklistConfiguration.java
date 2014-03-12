@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
@@ -34,7 +35,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * Basic implemenation of {@link WhitelistBlacklistConfiguration}.
+ * Basic implementation of {@link WhitelistBlacklistConfiguration}.
  */
 public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistConfiguration {
     
@@ -52,6 +53,12 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     
     /** Precedence flag. */
     private Precedence precedence;
+    
+    /** Constructor. */
+    public BasicWhitelistBlacklistConfiguration() {
+        whitelist = Collections.emptyList();
+        blacklist = Collections.emptyList();
+    }
     
     /**
      * Get the list of whitelisted algorithm URI's.

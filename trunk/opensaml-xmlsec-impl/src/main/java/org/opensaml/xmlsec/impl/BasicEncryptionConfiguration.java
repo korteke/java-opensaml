@@ -39,7 +39,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Basic implementation of {@link EncryptionConfiguration}.
  */
-public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfiguration implements EncryptionConfiguration {
+public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfiguration 
+        implements EncryptionConfiguration {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(BasicEncryptionConfiguration.class);
@@ -71,6 +72,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     
     /** Constructor. */
     public BasicEncryptionConfiguration() {
+        super();
         dataEncryptionAlgorithms = new HashMap<DataEncryptionIndex, String>();
         keyTransportEncryptionAlgorithms = new HashMap<KeyTransportEncryptionIndex, String>();
     }

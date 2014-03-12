@@ -33,6 +33,11 @@ public class BasicSignatureValidationConfiguration extends BasicWhitelistBlackli
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
+    /** * Constructor. */
+    public BasicSignatureValidationConfiguration() {
+       super(); 
+    }
+    
     /**
      * Get the signature trust engine to use.
      * 

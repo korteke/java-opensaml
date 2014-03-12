@@ -68,6 +68,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     
     /** Constructor. */
     public BasicSignatureSigningConfiguration() {
+        super();
         signatureAlgorithms = new HashMap<String, String>();
         dsaParams = new HashMap<Integer, DSAParams>();
     }
