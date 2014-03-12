@@ -27,7 +27,7 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 /**
  * The configuration information to use when generating encrypted XML.
  */
-public interface EncryptionConfiguration {
+public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration {
     
     /**
      * Get the encryption credential to use when encrypting the EncryptedData.

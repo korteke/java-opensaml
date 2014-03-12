@@ -17,35 +17,14 @@
 
 package org.opensaml.xmlsec;
 
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
-import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 
 /**
  * The configuration information to use when validating an XML signature.
  */
-public interface SignatureValidationConfiguration {
-    
-    /**
-     * Get the list of whitelisted algorithm URI's.
-     * 
-     * @return the list of algorithms
-     */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getWhitelistedAlgorithmURIs();
-    
-    /**
-     * Get the list of blacklisted algorithm URI's.
-     * 
-     * @return the list of algorithms
-     */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getBlacklistedAlgorithmsURIs();
+public interface SignatureValidationConfiguration extends WhitelistBlacklistConfiguration {
     
     /**
      * Get the signature trust engine to use.

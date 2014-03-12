@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Basic implementation of {@link EncryptionConfiguration}.
  */
-public class BasicEncryptionConfiguration implements EncryptionConfiguration {
+public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfiguration implements EncryptionConfiguration {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(BasicEncryptionConfiguration.class);
