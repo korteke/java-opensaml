@@ -35,7 +35,7 @@ public interface WhitelistBlacklistConfiguration {
         /** Whitelist takes precedence over blacklist. */
         WHITELIST,
         
-        /** Blacklist takes precedence over blacklist. */
+        /** Blacklist takes precedence over whitelist. */
         BLACKLIST
     }
     
