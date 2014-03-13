@@ -284,6 +284,12 @@ public final class SAMLConstants {
 
     /** URI for SAML 2 PAOS binding. */
     public static final String SAML2_PAOS_BINDING_URI = "urn:oasis:names:tc:SAML:2.0:bindings:PAOS";
+    
+    /** SAML 2.0 Metadata Profile for Algorithm Support Namespace. */
+    public static final String SAML20ALG_NS = "urn:oasis:names:tc:SAML:metadata:algsupport";
+    
+    /** SAML 2.0 Metadata Profile for Algorithm Support QName prefix. */
+    public static final String SAML20ALG_PREFIX = "alg";
 
     /** Constructor. */
     private SAMLConstants() {
