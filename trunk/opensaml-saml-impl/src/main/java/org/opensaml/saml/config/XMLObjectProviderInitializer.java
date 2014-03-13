@@ -32,6 +32,7 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
         "/saml2-assertion-config.xml", 
         "/saml2-assertion-delegation-restriction-config.xml",    
         "/saml2-ecp-config.xml",
+        "/saml2-metadata-algorithm-config.xml",
         "/saml2-metadata-attr-config.xml",
         "/saml2-metadata-config.xml",
         "/saml2-metadata-idp-discovery-config.xml",

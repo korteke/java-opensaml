@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns="http://www.opensaml.org/xmltooling-config" xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd">
+
+    <!-- SAML v2.0 Metadata Profile for Algorithm Support Version 1.0 XMLObject providers -->
+    <ObjectProviders>
+
+        <!-- DigestMethod provider -->
+        <ObjectProvider qualifiedName="alg:DigestMethod">
+            <BuilderClass className="org.opensaml.saml.ext.saml2alg.impl.DigestMethodBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.DigestMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.DigestMethodUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="alg:DigestMethodType">
+            <BuilderClass className="org.opensaml.saml.ext.saml2alg.impl.DigestMethodBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.DigestMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.DigestMethodUnmarshaller"/>
+        </ObjectProvider>
+        
+        <!-- SigningMethod provider -->
+        <ObjectProvider qualifiedName="alg:SigningMethod">
+            <BuilderClass className="org.opensaml.saml.ext.saml2alg.impl.SigningMethodBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.SigningMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.SigningMethodUnmarshaller"/>
+        </ObjectProvider>
+
+        <ObjectProvider qualifiedName="alg:SigningMethodType">
+            <BuilderClass className="org.opensaml.saml.ext.saml2alg.impl.SigningMethodBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.SigningMethodMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.ext.saml2alg.impl.SigningMethodUnmarshaller"/>
+        </ObjectProvider>
+
+    </ObjectProviders>
+</XMLTooling>
