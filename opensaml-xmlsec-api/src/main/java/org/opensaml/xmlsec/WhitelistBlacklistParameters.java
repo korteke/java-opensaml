@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.impl;
+package org.opensaml.xmlsec;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -27,45 +27,26 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
-
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * Basic implementation of {@link WhitelistBlacklistConfiguration}.
- * 
- * <p>
- * The value returned by {@link #getWhitelistBlacklistPrecedence()} defaults to {@link Precedence#WHITELIST}.
- * </p>
+ * The whitelist and blacklist algorithm parameters.
  */
-public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistConfiguration {
-    
-    /** Default precedence. */
-    public static final Precedence DEFAULT_PRECEDENCE = Precedence.WHITELIST;
+public class WhitelistBlacklistParameters {
     
     /** Whitelisted algorithm URIs. */
-    private Collection<String> whitelist;
-    
-    /** Whitelist merge flag. */
-    private boolean whitelistMerge;
+    @Nonnull @NonnullElements private Collection<String> whiteListedAlgorithmURIs;
     
     /** Blacklisted algorithm URIs. */
-    private Collection<String> blacklist;
-    
-    /** Blacklist merge flag. */
-    private boolean blacklistMerge;
-    
-    /** Precedence flag. */
-    private Precedence precedence;
-    
+    @Nonnull @NonnullElements private Collection<String> blackListedAlgorithmURIs;
+        
     /** Constructor. */
-    public BasicWhitelistBlacklistConfiguration() {
-        whitelist = Collections.emptyList();
-        blacklist = Collections.emptyList();
-        precedence = DEFAULT_PRECEDENCE;
+    public WhitelistBlacklistParameters() {
+        whiteListedAlgorithmURIs = Collections.emptyList();
+        blackListedAlgorithmURIs = Collections.emptyList();
     }
     
     /**
@@ -74,7 +55,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithmURIs() {
-        return ImmutableList.copyOf(whitelist);
+        return ImmutableList.copyOf(whiteListedAlgorithmURIs);
     }
     
     /**
@@ -83,22 +64,17 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @param uris the list of algorithms
      */
     public void setWhitelistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
-        Constraint.isNotNull(uris, "Whitelist may not be null");
-        whitelist = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
+        Constraint.isNotNull(uris, "Whitelist cannot be null");
+        whiteListedAlgorithmURIs = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
     }
-
-    /** {@inheritDoc} */
-    public boolean isWhitelistMerge() {
-        return whitelistMerge;
-    }
-
+    
     /**
      * Get the list of blacklisted algorithm URI's.
      * 
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithmsURIs() {
-        return ImmutableList.copyOf(blacklist);
+        return ImmutableList.copyOf(blackListedAlgorithmURIs);
     }
     
     /**
@@ -107,27 +83,8 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @param uris the list of algorithms
      */
     public void setBlacklistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
-        Constraint.isNotNull(uris, "Blacklist may not be null");
-        blacklist = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
-    }
-
-    /** {@inheritDoc} */
-    public boolean isBlacklistMerge() {
-        return blacklistMerge;
-    }
-
-    /** {@inheritDoc} */
-    @Nonnull public Precedence getWhitelistBlacklistPrecedence() {
-        return precedence;
+        Constraint.isNotNull(uris, "Blacklist cannot be null");
+        blackListedAlgorithmURIs = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
     }
     
-    /**
-     * Set preference value indicating which should take precedence when both whitelist and blacklist are non-empty.
-     * 
-     * @param value the precedence value
-     */
-    public void setWhitelistBlacklistPrecedence(@Nonnull Precedence value) {
-        precedence = Constraint.isNotNull(value, "Precedence may not be null");
-    }
-
 }
