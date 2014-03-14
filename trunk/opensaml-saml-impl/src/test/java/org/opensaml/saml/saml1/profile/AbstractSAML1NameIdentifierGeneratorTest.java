@@ -26,6 +26,8 @@ import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Function;
+
 /** Test for {@link AbstractSAML1NameIdentifierGenerator}. */
 public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTestCase {
 
@@ -93,6 +95,11 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
 
         public MockSAML1NameIdentifierGenerator() {
             setId("test");
+            setDefaultIdPNameQualifierLookupStrategy(new Function<ProfileRequestContext,String>() {
+                public String apply(ProfileRequestContext input) {
+                    return NAME_QUALIFIER;
+                }
+            });
         }
         
         /** {@inheritDoc} */
@@ -100,12 +107,5 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {
             return "foo";
         }
-
-        /** {@inheritDoc} */
-        @Override
-        protected String getDefaultIdPNameQualifier(ProfileRequestContext profileRequestContext) {
-            return NAME_QUALIFIER;
-        }
-        
     }
 }

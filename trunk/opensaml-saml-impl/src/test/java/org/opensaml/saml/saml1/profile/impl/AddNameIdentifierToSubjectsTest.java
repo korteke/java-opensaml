@@ -193,6 +193,11 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         
         public MockSAML1NameIdentifierGenerator(@Nonnull final String id) {
             setId("test");
+            setDefaultIdPNameQualifierLookupStrategy(new Function<ProfileRequestContext,String>() {
+                public String apply(ProfileRequestContext input) {
+                    return NAME_QUALIFIER;
+                }
+            });
             identifier = id;
         }
         
@@ -200,12 +205,6 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         @Override
         protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {
             return identifier;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        protected String getDefaultIdPNameQualifier(ProfileRequestContext profileRequestContext) {
-            return NAME_QUALIFIER;
         }
     }
     

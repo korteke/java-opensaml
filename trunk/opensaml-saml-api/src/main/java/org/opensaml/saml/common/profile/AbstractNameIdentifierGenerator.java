@@ -32,6 +32,7 @@ import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -57,6 +58,12 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     /** A predicate indicating whether the component applies to a request. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;
 
+    /** Optional lookup function for obtaining default NameQualifier. */
+    @Nullable private Function<ProfileRequestContext,String> defaultIdPNameQualifierLookupStrategy;
+    
+    /** Optional lookup function for obtaining default SPNameQualifier. */
+    @Nullable private Function<ProfileRequestContext,String> defaultSPNameQualifierLookupStrategy;
+    
     /** Flag allowing qualifier(s) to be omitted when they would match defaults or are not set. */
     private boolean omitQualifiers;
 
@@ -86,6 +93,48 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
+    }
+    
+    /**
+     * Get the lookup strategy to obtain the default IdP NameQualifier.
+     * 
+     * @return lookup strategy
+     */
+    @Nullable public Function<ProfileRequestContext,String> getDefaultIdPNameQualifierLookupStrategy() {
+        return defaultIdPNameQualifierLookupStrategy;
+    }
+    
+    /**
+     * Set the lookup strategy to obtain the default IdP NameQualifier.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setDefaultIdPNameQualifierLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        defaultIdPNameQualifierLookupStrategy = strategy;
+    }
+
+    /**
+     * Get the lookup strategy to obtain the default SPNameQualifier.
+     * 
+     * @return lookup strategy
+     */
+    @Nullable public Function<ProfileRequestContext,String> getDefaultSPNameQualifierLookupStrategy() {
+        return defaultSPNameQualifierLookupStrategy;
+    }
+    
+    /**
+     * Set the lookup strategy to obtain the default SPNameQualifier.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setDefaultSPNameQualifierLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        defaultSPNameQualifierLookupStrategy = strategy;
     }
 
     /**
@@ -255,7 +304,9 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
             @Nonnull final ProfileRequestContext profileRequestContext) {
         if (idpNameQualifier != null) {
             if (omitQualifiers) {
-                if (!Objects.equal(idpNameQualifier, getDefaultIdPNameQualifier(profileRequestContext))) {
+                if (defaultIdPNameQualifierLookupStrategy == null
+                        || !Objects.equal(idpNameQualifier,
+                                defaultIdPNameQualifierLookupStrategy.apply(profileRequestContext))) {
                     return idpNameQualifier;
                 } else {
                     return null;
@@ -263,8 +314,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
             } else {
                 return idpNameQualifier;
             }
-        } else if (!omitQualifiers) {
-            return getDefaultIdPNameQualifier(profileRequestContext);
+        } else if (!omitQualifiers && defaultIdPNameQualifierLookupStrategy != null) {
+            return defaultIdPNameQualifierLookupStrategy.apply(profileRequestContext);
         } else {
             return null;
         }
@@ -280,7 +331,9 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     @Nullable protected String getEffectiveSPNameQualifier(@Nonnull final ProfileRequestContext profileRequestContext) {
         if (spNameQualifier != null) {
             if (omitQualifiers) {
-                if (!Objects.equal(spNameQualifier, getDefaultSPNameQualifier(profileRequestContext))) {
+                if (defaultSPNameQualifierLookupStrategy == null
+                        || !Objects.equal(spNameQualifier,
+                                defaultSPNameQualifierLookupStrategy.apply(profileRequestContext))) {
                     return spNameQualifier;
                 } else {
                     return null;
@@ -288,33 +341,11 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
             } else {
                 return spNameQualifier;
             }
-        } else if (!omitQualifiers) {
-            return getDefaultSPNameQualifier(profileRequestContext);
+        } else if (!omitQualifiers && defaultSPNameQualifierLookupStrategy != null) {
+            return defaultSPNameQualifierLookupStrategy.apply(profileRequestContext);
         } else {
             return null;
         }
-    }
-
-    /**
-     * Get the default NameQualifier implied by the current profile request context, or null.
-     * 
-     * @param profileRequestContext current profile request context
-     * 
-     * @return default qualifier
-     */
-    @Nullable protected String getDefaultIdPNameQualifier(@Nonnull final ProfileRequestContext profileRequestContext) {
-        return null;
-    }
-
-    /**
-     * Get the default SPNameQualifier implied by the current profile request context, or null.
-     * 
-     * @param profileRequestContext current profile request context
-     * 
-     * @return default qualifier
-     */
-    @Nullable protected String getDefaultSPNameQualifier(@Nonnull final ProfileRequestContext profileRequestContext) {
-        return null;
     }
 
 }
