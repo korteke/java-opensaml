@@ -20,19 +20,34 @@ package org.opensaml.xmlsec.config;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
+import org.opensaml.xmlsec.DecryptionConfiguration;
+import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.SecurityConfiguration;
+import org.opensaml.xmlsec.SignatureSigningConfiguration;
+import org.opensaml.xmlsec.SignatureValidationConfiguration;
 
 /**
  * An initializer which initializes the global security configuration.
  */
 public class GlobalSecurityConfigurationInitializer implements Initializer {
-    
-    //TODO split out for 4 new config types
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
-        BasicSecurityConfiguration secConfig = DefaultSecurityConfigurationBootstrap.buildDefaultConfig();
-        ConfigurationService.register(SecurityConfiguration.class, secConfig);
+        //TODO remove when refactoring done
+        ConfigurationService.register(SecurityConfiguration.class, 
+                DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
+        
+        ConfigurationService.register(EncryptionConfiguration.class, 
+                DefaultSecurityConfigurationBootstrap.buildDefaultEncryptionConfiguration());
+        
+        ConfigurationService.register(DecryptionConfiguration.class, 
+                DefaultSecurityConfigurationBootstrap.buildDefaultDecryptionConfiguration());
+        
+        ConfigurationService.register(SignatureSigningConfiguration.class, 
+                DefaultSecurityConfigurationBootstrap.buildDefaultSignatureSigningConfiguration());
+        
+        ConfigurationService.register(SignatureValidationConfiguration.class, 
+                DefaultSecurityConfigurationBootstrap.buildDefaultSignatureValidationConfiguration());
     }
 
 }
