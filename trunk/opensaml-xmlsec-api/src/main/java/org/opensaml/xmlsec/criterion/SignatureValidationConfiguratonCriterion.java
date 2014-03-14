@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -48,7 +49,7 @@ public class SignatureValidationConfiguratonCriterion implements Criterion {
      *
      * @param configurations list of configuration instances
      */
-    public SignatureValidationConfiguratonCriterion(@Nonnull @NonnullElements 
+    public SignatureValidationConfiguratonCriterion(@Nonnull @NonnullElements @NotEmpty
             List<SignatureValidationConfiguration> configurations) {
         Constraint.isNotNull(configurations, "List of configurations may not be null");
         configs = Lists.newArrayList(Collections2.filter(configurations, Predicates.notNull()));
@@ -61,7 +62,7 @@ public class SignatureValidationConfiguratonCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public SignatureValidationConfiguratonCriterion(@Nonnull @NonnullElements 
+    public SignatureValidationConfiguratonCriterion(@Nonnull @NonnullElements @NotEmpty
             SignatureValidationConfiguration... configurations) {
         Constraint.isNotNull(configurations, "List of configurations may not be null");
         configs = Lists.newArrayList(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
@@ -72,7 +73,7 @@ public class SignatureValidationConfiguratonCriterion implements Criterion {
      * Get the list of configuration instances.
      * @return the list of configuration instances
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable
+    @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
     public List<SignatureValidationConfiguration> getConfigurations() {
         return ImmutableList.copyOf(configs);
     }
