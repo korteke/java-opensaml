@@ -26,6 +26,8 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Function;
+
 /** Test for {@link AbstractSAML2NameIDGenerator}. */
 public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
 
@@ -103,24 +105,23 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
 
         public MockSAML2NameIDGenerator() {
             setId("test");
+            setDefaultIdPNameQualifierLookupStrategy(new Function<ProfileRequestContext,String>() {
+                public String apply(ProfileRequestContext input) {
+                    return NAME_QUALIFIER;
+                }
+            });
+
+            setDefaultSPNameQualifierLookupStrategy(new Function<ProfileRequestContext,String>() {
+                public String apply(ProfileRequestContext input) {
+                    return SP_NAME_QUALIFIER;
+                }
+            });
         }
         
         /** {@inheritDoc} */
         @Override
         protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {
             return "foo";
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        protected String getDefaultIdPNameQualifier(ProfileRequestContext profileRequestContext) {
-            return NAME_QUALIFIER;
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        protected String getDefaultSPNameQualifier(ProfileRequestContext profileRequestContext) {
-            return SP_NAME_QUALIFIER;
         }
     }
 }
