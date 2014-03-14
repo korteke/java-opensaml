@@ -27,12 +27,17 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 
 import org.opensaml.security.credential.Credential;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A manager for named sets of {@link KeyInfoGeneratorFactory} instances. Each name key serves as an index to an
  * instance of {@link KeyInfoGeneratorManager}.
  */
 public class NamedKeyInfoGeneratorManager {
+    
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(NamedKeyInfoGeneratorManager.class);
     
     /** The set of named factory managers. */
     private final Map<String, KeyInfoGeneratorManager> managers;
@@ -159,12 +164,17 @@ public class NamedKeyInfoGeneratorManager {
             @Nonnull final Credential credential) {
         KeyInfoGeneratorManager manager = managers.get(name);
         if (manager == null) {
-            throw new IllegalArgumentException("Manager with name '" + name + "' does not exist");
+            if (useDefaultManager) {
+                log.debug("Manger with name '{}' was not registered, using default manager", name);
+                manager = defaultManager;
+            } else {
+                throw new IllegalArgumentException("Manager with name '" + name + "' does not exist");
+            }
         }
             
         KeyInfoGeneratorFactory factory = manager.getFactory(credential);
         if (factory == null) {
-            if (useDefaultManager) {
+            if (useDefaultManager && manager != defaultManager) {
                 factory = defaultManager.getFactory(credential);
             }
         }
