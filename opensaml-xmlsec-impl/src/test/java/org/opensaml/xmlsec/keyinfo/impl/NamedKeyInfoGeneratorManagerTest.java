@@ -227,12 +227,14 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         
         Assert.assertNull(manager.getFactory("BAZ", x509Cred), 
                 "Found non-existent factory based on name and credential");
-        try {
-            manager.getFactory("ABC123", x509Cred);
-            Assert.fail("Use of non-existent manager name should have caused an exception");
-        } catch (IllegalArgumentException e) {
-            // do nothing, should fail
-        }        
+        
+        Assert.assertNull(manager.getFactory("ABC123", x509Cred));
+        X509KeyInfoGeneratorFactory myFactory = new X509KeyInfoGeneratorFactory();
+        manager.registerDefaultFactory(myFactory);
+        Assert.assertNotNull(manager.getFactory("ABC123", x509Cred));
+        Assert.assertTrue(myFactory == manager.getFactory("ABC123", x509Cred));
+        manager.deregisterDefaultFactory(myFactory);
+        Assert.assertNull(manager.getFactory("ABC123", x509Cred));
     }
     
     /** Test proper functioning of option to use the default manager for unnamed factories. 
