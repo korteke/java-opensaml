@@ -167,10 +167,12 @@ public class KeySupportTest {
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("DSA", 1024, null).getPublic()), new Integer(1024));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("DSA", 1024, null).getPrivate()), new Integer(1024));
         
+        /*
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 112, null).getPublic()), new Integer(112));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 112, null).getPrivate()), new Integer(112));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 571, null).getPublic()), new Integer(571));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 571, null).getPrivate()), new Integer(571));
+        */
         
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("AES", 128, null)), new Integer(128));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("AES", 192, null)), new Integer(192));
