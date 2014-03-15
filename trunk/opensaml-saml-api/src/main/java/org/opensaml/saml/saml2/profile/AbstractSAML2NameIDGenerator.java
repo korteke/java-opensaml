@@ -20,14 +20,24 @@ package org.opensaml.saml.saml2.profile;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.AbstractNameIdentifierGenerator;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Strings;
 
 /**
  * Abstract base class for simple implementations of {@link SAML2NameIDGenerator}.
@@ -46,14 +56,32 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
     
     /** Builder for objects. */
     @Nonnull private final SAMLObjectBuilder<NameID> nameBuilder;
+
+    /** Strategy used to locate an {@link AuthnRequest} to check. */
+    @Nonnull private Function<ProfileRequestContext,AuthnRequest> requestLookupStrategy;
     
     /** Constructor. */
     protected AbstractSAML2NameIDGenerator() {
         nameBuilder = (SAMLObjectBuilder<NameID>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
                         NameID.DEFAULT_ELEMENT_NAME);
+        requestLookupStrategy =
+                Functions.compose(new MessageLookup<>(AuthnRequest.class), new InboundMessageContextLookup());
     }
-
+    
+    /**
+     * Set the strategy used to locate the {@link AuthnRequest} to check for a
+     * {@org.opensaml.saml.saml2.core.NameIDPolicy}.
+     * 
+     * @param strategy lookup strategy
+     */
+    public synchronized void setRequestLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+    
+        requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
+    }
+    
     /** {@inheritDoc} */
     @Override
     @Nullable protected NameID doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
@@ -75,6 +103,22 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
         nameIdentifier.setSPProvidedID(getSPProvidedID());
         
         return nameIdentifier;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Nullable protected String getEffectiveSPNameQualifier(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        // Override the default behavior if the SP specifies a qualifier in its request.
+        final AuthnRequest request = requestLookupStrategy.apply(profileRequestContext);
+        if (request != null && request.getNameIDPolicy() != null) {
+            final String qual = request.getNameIDPolicy().getSPNameQualifier();
+            if (!Strings.isNullOrEmpty(qual)) {
+                return qual;
+            }
+        }
+        
+        return super.getEffectiveSPNameQualifier(profileRequestContext);
     }
 
 }
