@@ -152,6 +152,37 @@ public class KeySupportTest {
             // expected
         }
     }
+    
+    @Test
+    public void testKeyLength() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("RSA", 1024, null).getPublic()), new Integer(1024));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("RSA", 1024, null).getPrivate()), new Integer(1024));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("RSA", 2048, null).getPublic()), new Integer(2048));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("RSA", 2048, null).getPrivate()), new Integer(2048));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("RSA", 4096, null).getPublic()), new Integer(4096));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("RSA", 4096, null).getPrivate()), new Integer(4096));
+        
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("DSA", 512, null).getPublic()), new Integer(512));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("DSA", 512, null).getPrivate()), new Integer(512));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("DSA", 1024, null).getPublic()), new Integer(1024));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("DSA", 1024, null).getPrivate()), new Integer(1024));
+        
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 112, null).getPublic()), new Integer(112));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 112, null).getPrivate()), new Integer(112));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 571, null).getPublic()), new Integer(571));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKeyPair("EC", 571, null).getPrivate()), new Integer(571));
+        
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("AES", 128, null)), new Integer(128));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("AES", 192, null)), new Integer(192));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("AES", 256, null)), new Integer(256));
+        
+        // These numbers are correct, albeit unintuitive. 
+        // DES keys are always 64 bits.
+        // DESede keys are always 64*3 = 192 bits (i.e. triple of DES).
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("DES", 56, null)), new Integer(64));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("DESede", 112, null)), new Integer(192));
+        Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("DESede", 168, null)), new Integer(192));
+    }
 
     /** Generic key testing. */
     protected PrivateKey testPrivKey(String keyFile, char[] password, String algo) throws Exception {

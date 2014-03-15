@@ -30,9 +30,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.DSAKey;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAKey;
@@ -82,12 +84,17 @@ public final class KeySupport {
      */
     @Nullable public static Integer getKeyLength(@Nonnull final Key key) {
         Logger log = getLogger();
-        // TODO investigate techniques (and use cases) to determine length in other cases,
-        // e.g. EC, DSA keys, and non-RAW format symmetric keys
+        log.debug("Attempting to determine length of Key with algorithm '{}' and encoding format '{}'", 
+                key.getAlgorithm(), key.getFormat());
+        // TODO investigate if exists, and can/how to support, non-RAW format symmetric keys
         if (key instanceof SecretKey && "RAW".equals(key.getFormat())) {
             return key.getEncoded().length * 8;
         } else if (key instanceof RSAKey) {
             return ((RSAKey) key).getModulus().bitLength();
+        } else if (key instanceof DSAKey) {
+            return ((DSAKey) key).getParams().getP().bitLength();
+        } else if (key instanceof ECKey) {
+            return ((ECKey) key).getParams().getCurve().getField().getFieldSize();
         }
         log.debug("Unable to determine length in bits of specified Key instance");
         return null;
