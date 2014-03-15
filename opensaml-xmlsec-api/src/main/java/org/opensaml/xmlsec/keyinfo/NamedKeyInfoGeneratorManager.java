@@ -168,13 +168,15 @@ public class NamedKeyInfoGeneratorManager {
                 log.debug("Manger with name '{}' was not registered, using default manager", name);
                 manager = defaultManager;
             } else {
-                throw new IllegalArgumentException("Manager with name '" + name + "' does not exist");
+                log.warn("Manager with name '{}' was not registered, and 'useDefaultManager' is false", name);
+                return null;
             }
         }
             
         KeyInfoGeneratorFactory factory = manager.getFactory(credential);
         if (factory == null) {
             if (useDefaultManager && manager != defaultManager) {
+                log.debug("Factory not found in manager with name '{}', attempting lookup in default manager", name);
                 factory = defaultManager.getFactory(credential);
             }
         }
