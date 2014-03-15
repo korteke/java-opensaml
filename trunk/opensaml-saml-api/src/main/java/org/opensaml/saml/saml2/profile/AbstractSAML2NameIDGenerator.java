@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Abstract base class for simple implementations of {@link SAML1NameIdentifierGenerator}.
+ * Abstract base class for simple implementations of {@link SAML2NameIDGenerator}.
  *
  * <p>This class is suitable for implementing generators that produce simple kinds of identifiers.
  * It supports various options controlling the inclusion of qualifier attributes.</p>
