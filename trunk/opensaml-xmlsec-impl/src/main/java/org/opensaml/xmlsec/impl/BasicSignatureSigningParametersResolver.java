@@ -198,7 +198,6 @@ public class BasicSignatureSigningParametersResolver
      */
     protected DSAParams resolveDSAParams(@Nonnull final CriteriaSet criteria, @Nonnull final Credential credential) {
         if (credential.getPublicKey() != null && "DSA".equals(credential.getPublicKey().getAlgorithm())) {
-            //TODO this KeySupport method currently doesn't support DSA keys. Need to investigate.
             Integer keyLength = KeySupport.getKeyLength(credential.getPublicKey());
             if (keyLength != null) {
                 for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfiguratonCriterion.class)
