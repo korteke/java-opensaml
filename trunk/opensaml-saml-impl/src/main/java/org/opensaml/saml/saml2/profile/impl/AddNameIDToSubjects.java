@@ -54,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ListMultimap;
@@ -271,21 +272,23 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @return a format dictated by the request, or null 
      */
-    @Nullable private String getRequiredFormat(
-            @Nonnull final ProfileRequestContext profileRequestContext) {
-        String format = null;
+    @Nullable private String getRequiredFormat(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         if (profileRequestContext.getInboundMessageContext() != null) {
             final Object request = profileRequestContext.getInboundMessageContext().getMessage();
             if (request != null && request instanceof AuthnRequest) {
                 final NameIDPolicy policy = ((AuthnRequest) request).getNameIDPolicy();
-                if (policy != null && policy.getFormat() != null) {
-                    format = policy.getFormat();
+                if (policy != null) {
+                    final String format = policy.getFormat();
+                    if (!Strings.isNullOrEmpty(format) && !NameID.UNSPECIFIED.equals(format)
+                            && !NameID.ENCRYPTED.equals(format)) {
+                        return format;
+                    }
                 }
             }
         }
         
-        return format;
+        return null;
     }
 
     /**
