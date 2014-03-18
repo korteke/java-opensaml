@@ -74,6 +74,7 @@ import com.google.common.collect.Lists;
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
+ * @event {@link SAMLEventIds#INVALID_NAMEID_POLICY}
  */
 public class AddNameIDToSubjects extends AbstractProfileAction {
 
