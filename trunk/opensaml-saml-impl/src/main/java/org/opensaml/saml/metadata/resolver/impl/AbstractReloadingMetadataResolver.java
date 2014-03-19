@@ -26,6 +26,8 @@ import java.util.TimerTask;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.Duration;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -69,7 +71,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     private boolean createdOwnTaskTimer;
         
     /** Current task to refresh metadata. */
-    private RefreshMetadataTask refresMetadataTask;
+    private RefreshMetadataTask refreshMetadataTask;
     
     /** Factor used to compute when the next refresh interval will occur. Default value: 0.75 */
     private float refreshDelayFactor = 0.75f;
@@ -78,10 +80,10 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * Refresh interval used when metadata does not contain any validUntil or cacheDuration information. Default value:
      * 14400000ms
      */
-    private long maxRefreshDelay = 14400000;
+    @Duration @Positive private long maxRefreshDelay = 14400000;
 
     /** Floor, in milliseconds, for the refresh interval. Default value: 300000ms */
-    private int minRefreshDelay = 300000;
+    @Duration @Positive private long minRefreshDelay = 300000;
 
     /** Time when the currently cached metadata file expires. */
     private DateTime expirationTime;
@@ -181,7 +183,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * @param delay maximum amount of time, in milliseconds, between refresh intervals
      */
-    public void setMaxRefreshDelay(long delay) {
+    public void setMaxRefreshDelay(@Duration @Positive long delay) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
@@ -221,7 +223,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * @return minimum amount of time, in milliseconds, between refreshes
      */
-    public int getMinRefreshDelay() {
+    public long getMinRefreshDelay() {
         return minRefreshDelay;
     }
 
@@ -230,7 +232,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * @param delay minimum amount of time, in milliseconds, between refreshes
      */
-    public void setMinRefreshDelay(int delay) {
+    public void setMinRefreshDelay(@Duration @Positive long delay) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
@@ -243,7 +245,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /** {@inheritDoc} */
     @Override
     protected void doDestroy() {
-        refresMetadataTask.cancel();
+        refreshMetadataTask.cancel();
         
         if (createdOwnTaskTimer) {
             taskTimer.cancel();
@@ -277,6 +279,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * 
      * @throws ResolverException thrown is there is a problem retrieving and processing the metadata
      */
+    @Override
     public synchronized void refresh() throws ResolverException {
         DateTime now = new DateTime(ISOChronology.getInstanceUTC());
         String mdId = getMetadataIdentifier();
@@ -301,9 +304,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                         t.getClass().getName(), t.getMessage()));
             }
         } finally {
-            refresMetadataTask = new RefreshMetadataTask();
+            refreshMetadataTask = new RefreshMetadataTask();
             long nextRefreshDelay = nextRefresh.getMillis() - System.currentTimeMillis();
-            taskTimer.schedule(refresMetadataTask, nextRefreshDelay);
+            taskTimer.schedule(refreshMetadataTask, nextRefreshDelay);
             log.info("Next refresh cycle for metadata provider '{}' will occur on '{}' ('{}' local time)",
                     new Object[] {mdId, nextRefresh, nextRefresh.toDateTime(DateTimeZone.getDefault()),});
             lastRefresh = now;
@@ -542,6 +545,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     private class RefreshMetadataTask extends TimerTask {
 
         /** {@inheritDoc} */
+        @Override
         public void run() {
             try {
                 if (!isInitialized()) {
