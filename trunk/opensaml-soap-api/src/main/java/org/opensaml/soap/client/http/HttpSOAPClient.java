@@ -178,9 +178,9 @@ public class HttpSOAPClient implements SOAPClient {
             log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
 
             if (code == HttpStatus.SC_OK) {
-                processSuccessfulResponse(post, context);
+                processSuccessfulResponse(result, context);
             } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                processFaultResponse(post, context);
+                processFaultResponse(result, context);
             } else {
                 throw new SOAPClientException("Received " + code + " HTTP response status code from HTTP request to "
                         + endpoint);
@@ -249,18 +249,18 @@ public class HttpSOAPClient implements SOAPClient {
     /**
      * Processes a successful, as determined by an HTTP 200 status code, response.
      * 
-     * @param httpMethod the HTTP method used to send the request and receive the response
+     * @param httpResponse the HTTP response
      * @param context current operation context
      * 
      * @throws SOAPClientException thrown if there is a problem reading the response from the {@link HttpPost}
      */
-    protected void processSuccessfulResponse(HttpPost httpMethod, InOutOperationContext context)
+    protected void processSuccessfulResponse(HttpResponse httpResponse, InOutOperationContext context)
             throws SOAPClientException {
         try {
-            if (httpMethod.getEntity() == null) {
+            if (httpResponse.getEntity() == null) {
                 throw new SOAPClientException("No response body from server");
             }
-            Envelope response = unmarshallResponse(httpMethod.getEntity().getContent());
+            Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
             context.setInboundMessageContext(new MessageContext());
             context.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).setEnvelope(response);
             //TODO: goes away?
@@ -273,19 +273,19 @@ public class HttpSOAPClient implements SOAPClient {
     /**
      * Processes a SOAP fault, as determined by an HTTP 500 status code, response.
      * 
-     * @param httpMethod the HTTP method used to send the request and receive the response
+     * @param httpResponse the HTTP response
      * @param context current operation context
      * 
      * @throws SOAPClientException thrown if the response can not be read from the {@link HttpPost}
      * @throws SOAPFaultException an exception containing the SOAP fault
      */
-    protected void processFaultResponse(HttpPost httpMethod, InOutOperationContext context)
+    protected void processFaultResponse(HttpResponse httpResponse, InOutOperationContext context)
             throws SOAPClientException, SOAPFaultException {
         try {
-            if (httpMethod.getEntity() == null) {
+            if (httpResponse.getEntity() == null) {
                 throw new SOAPClientException("No response body from server");
             }
-            Envelope response = unmarshallResponse(httpMethod.getEntity().getContent());
+            Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
             context.setInboundMessageContext(new MessageContext());
             context.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).setEnvelope(response);
 
