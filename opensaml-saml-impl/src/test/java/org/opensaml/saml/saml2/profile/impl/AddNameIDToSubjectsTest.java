@@ -17,14 +17,18 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
@@ -32,7 +36,9 @@ import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.common.binding.SAMLMetadataLookupHandlerTest;
 import org.opensaml.saml.common.profile.SAMLEventIds;
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
@@ -43,6 +49,8 @@ import org.opensaml.saml.saml2.profile.AbstractSAML2NameIDGenerator;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.opensaml.saml.saml2.profile.SAML2NameIDGenerator;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -50,9 +58,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 
 /** Test for {@link AddNameIDToSubjects}. */
-public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
+public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
+    
+    private FilesystemMetadataResolver metadataResolver;
     
     private SAMLObjectBuilder<NameIDPolicy> policyBuilder;
     
@@ -61,6 +71,22 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
     private ProfileRequestContext<Object,Response> prc;
     
     private AddNameIDToSubjects action;
+    
+    @BeforeClass
+    public void classSetUp() throws ResolverException, URISyntaxException, ComponentInitializationException {
+        final URL mdURL = SAMLMetadataLookupHandlerTest.class
+                .getResource("/data/org/opensaml/saml/saml2/profile/impl/affiliation-metadata.xml");
+        final File mdFile = new File(mdURL.toURI());
+
+        metadataResolver = new FilesystemMetadataResolver(mdFile);
+        metadataResolver.setParserPool(parserPool);
+        metadataResolver.initialize();
+    }
+    
+    @AfterClass
+    public void classTearDown() {
+        metadataResolver.destroy();
+    }
     
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
@@ -149,6 +175,69 @@ public class AddNameIDToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNull(subject);
+    }
+    
+    @Test void testQualifierAsIssuer() throws ComponentInitializationException, ProfileException {
+        addAssertions();
+        final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
+        final NameIDPolicy policy = policyBuilder.buildObject();
+        policy.setSPNameQualifier("foo");
+        request.setNameIDPolicy(policy);
+        prc.getInboundMessageContext().setMessage(request);
+        
+        action.setNameIDGenerators(generators);
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
+
+        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Subject subject = assertion.getSubject();
+        Assert.assertNull(subject);
+        
+        policy.setSPNameQualifier(request.getIssuer().getValue());
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertEquals(subject.getNameID().getValue(), "foo");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
+    }
+    
+    @Test void testAffiliation() throws ComponentInitializationException, ProfileException {
+        addAssertions();
+        final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
+        final NameIDPolicy policy = policyBuilder.buildObject();
+        policy.setSPNameQualifier("foo");
+        request.setNameIDPolicy(policy);
+        prc.getInboundMessageContext().setMessage(request);
+        
+        final AffiliationNameIDPolicyPredicate predicate = new AffiliationNameIDPolicyPredicate();
+        predicate.setId("test");
+        predicate.setMetadataResolver(metadataResolver);
+        predicate.initialize();
+        action.setNameIDGenerators(generators);
+        action.setNameIDPolicyPredicate(predicate);
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
+
+        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Subject subject = assertion.getSubject();
+        Assert.assertNull(subject);
+        
+        policy.setSPNameQualifier("http://affiliation.example.org");
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertEquals(subject.getNameID().getValue(), "foo");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
     }
     
     @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {

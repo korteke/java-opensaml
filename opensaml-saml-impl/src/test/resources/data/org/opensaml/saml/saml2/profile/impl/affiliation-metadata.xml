@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitiesDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="urn:mace:incommon" validUntil="2100-01-01T00:00:00Z">
+
+    <EntityDescriptor entityID="http://affiliation.example.org">
+        <AffiliationDescriptor>
+            <AffiliateMember>http://sp.example.org</AffiliateMember>
+        </AffiliationDescriptor>
+    </EntityDescriptor>
+
+</EntitiesDescriptor>
