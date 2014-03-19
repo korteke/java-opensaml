@@ -28,6 +28,7 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -53,6 +54,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
@@ -90,14 +92,20 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     /** Flag controlling whether to overwrite an existing NameID. */
     private boolean overwriteExisting;
 
+    /** Strategy used to locate the {@link AuthnRequest} to operate on, if any. */
+    @Nonnull private Function<ProfileRequestContext,AuthnRequest> requestLookupStrategy;
+    
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
+    /** Predicate to validate {@link NameIDPolicy}. */
+    @Nonnull private Predicate<ProfileRequestContext> nameIDPolicyPredicate;
+    
     /** Strategy used to determine the formats to try. */
-    @Nonnull private Function<ProfileRequestContext, List<String>> formatLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,List<String>> formatLookupStrategy;
     
     /** Map of formats to generators. */
-    @Nonnull @NonnullElements private ListMultimap<String, SAML2NameIDGenerator> nameIdGeneratorMap;
+    @Nonnull @NonnullElements private ListMultimap<String,SAML2NameIDGenerator> nameIdGeneratorMap;
     
     /** Fallback generator, generally for legacy support. */
     @Nullable private SAML2NameIDGenerator defaultNameIdGenerator;
@@ -107,6 +115,9 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     
     /** Format required by requested {@link NameIDPolicy}. */
     @Nullable private String requiredFormat;
+
+    /** Request to examine. */
+    @Nullable private AuthnRequest request;
     
     /** Response to modify. */
     @Nullable private Response response;
@@ -122,8 +133,12 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         overwriteExisting = true;
         
+        requestLookupStrategy =
+                Functions.compose(new MessageLookup<>(AuthnRequest.class), new InboundMessageContextLookup());
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+        
+        nameIDPolicyPredicate = new DefaultNameIDPolicyPredicate();
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         nameIdGeneratorMap = ArrayListMultimap.create();
         formats = Collections.emptyList();
@@ -139,6 +154,18 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         overwriteExisting = flag;
     }
+
+    /**
+     * Set the strategy used to locate the {@link AuthnRequest} to examine, if any.
+     * 
+     * @param strategy strategy used to locate the {@link AuthnRequest}
+     */
+    public synchronized void setRequestLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
+    }
     
     /**
      * Set the strategy used to locate the {@link Response} to operate on.
@@ -146,10 +173,21 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
+    }
+    
+    /**
+     * Set the predicate used to evaluate the {@link NameIDPolicy}.
+     * 
+     * @param predicate predicate used to evaluate the {@link NameIDPolicy}
+     */
+    public synchronized void setNameIDPolicyPredicate(@Nonnull final Predicate<ProfileRequestContext> predicate) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        nameIDPolicyPredicate = Constraint.isNotNull(predicate, "NameIDPolicy predicate cannot be null");
     }
 
     /**
@@ -158,7 +196,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param strategy  format lookup strategy
      */
     public synchronized void setFormatLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, List<String>> strategy) {
+            @Nonnull final Function<ProfileRequestContext,List<String>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         formatLookupStrategy = Constraint.isNotNull(strategy, "Format lookup strategy cannot be null");
@@ -173,7 +211,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param generators generators to use
      */
     public synchronized void setNameIDGenerators(
-            @Nonnull @NullableElements List<SAML2NameIDGenerator> generators) {
+            @Nonnull @NullableElements final List<SAML2NameIDGenerator> generators) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         Constraint.isNotNull(generators, "NameIdentifierGenerator list cannot be null");
         
@@ -206,7 +244,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         log.debug("{} Attempting to add NameID to assertions in outgoing Response", getLogPrefix());
-
+        
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
             log.debug("{} No SAML response located in current profile request context", getLogPrefix());
@@ -216,6 +254,14 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
             log.debug("{} No assertions in response message, nothing to do", getLogPrefix());
             return false;
         }
+        
+        if (!nameIDPolicyPredicate.apply(profileRequestContext)) {
+            log.debug("{} NameIDPolicy was unacceptable", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.INVALID_NAMEID_POLICY);
+            return false;
+        }
+        
+        request = requestLookupStrategy.apply(profileRequestContext);
         
         requiredFormat = getRequiredFormat(profileRequestContext);
         if (requiredFormat != null) {
@@ -275,16 +321,13 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      */
     @Nullable private String getRequiredFormat(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        if (profileRequestContext.getInboundMessageContext() != null) {
-            final Object request = profileRequestContext.getInboundMessageContext().getMessage();
-            if (request != null && request instanceof AuthnRequest) {
-                final NameIDPolicy policy = ((AuthnRequest) request).getNameIDPolicy();
-                if (policy != null) {
-                    final String format = policy.getFormat();
-                    if (!Strings.isNullOrEmpty(format) && !NameID.UNSPECIFIED.equals(format)
-                            && !NameID.ENCRYPTED.equals(format)) {
-                        return format;
-                    }
+        if (request != null) {
+            final NameIDPolicy policy = request.getNameIDPolicy();
+            if (policy != null) {
+                final String format = policy.getFormat();
+                if (!Strings.isNullOrEmpty(format) && !NameID.UNSPECIFIED.equals(format)
+                        && !NameID.ENCRYPTED.equals(format)) {
+                    return format;
                 }
             }
         }
