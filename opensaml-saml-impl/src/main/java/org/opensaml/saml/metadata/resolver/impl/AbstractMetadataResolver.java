@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -58,12 +58,12 @@ import org.w3c.dom.Document;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitializableComponent 
-        implements MetadataResolver {
-    
+public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements
+        MetadataResolver {
+
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
-    
+
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
     private UnmarshallerFactory unmarshallerFactory;
 
@@ -78,7 +78,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
      * assumption being that in most cases a provider will recover at some point in the future. Default: true.
      */
     private boolean failFastInitialization;
-    
+
     /** Backing store for runtime EntityDescriptor data. */
     private EntityBackingStore entityBackingStore;
 
@@ -91,30 +91,26 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         setId(UUID.randomUUID().toString());
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    public boolean isRequireValidMetadata() {
+    @Override public boolean isRequireValidMetadata() {
         return requireValidMetadata;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setRequireValidMetadata(boolean require) {
+    @Override public void setRequireValidMetadata(boolean require) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         requireValidMetadata = require;
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nullable  public MetadataFilter getMetadataFilter() {
+    @Override @Nullable public MetadataFilter getMetadataFilter() {
         return mdFilter;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setMetadataFilter(@Nullable MetadataFilter newFilter) {
+    @Override public void setMetadataFilter(@Nullable MetadataFilter newFilter) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         mdFilter = newFilter;
@@ -161,12 +157,11 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         parser = Constraint.isNotNull(pool, "ParserPool may not be null");
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+    @Override @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+
         Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             Iterator<EntityDescriptor> iterator = iterable.iterator();
@@ -176,9 +171,9 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
         }
         return null;
     }
-    
+
     /**
-     * Get the XMLObject unmarshaller factory to use. 
+     * Get the XMLObject unmarshaller factory to use.
      * 
      * @return the unmarshaller factory instance to use
      */
@@ -187,10 +182,9 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
     }
 
     /** {@inheritDoc} */
-    @Override
-    protected final void doInitialize() throws ComponentInitializationException {
+    @Override protected final void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        
+
         try {
             initMetadataResolver();
         } catch (ComponentInitializationException e) {
@@ -198,23 +192,22 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
                 log.error("Metadata provider failed to properly initialize, fail-fast=true, halting", e);
                 throw e;
             } else {
-                log.error("Metadata provider failed to properly initialize, fail-fast=false, " 
+                log.error("Metadata provider failed to properly initialize, fail-fast=false, "
                         + "continuing on in a degraded state", e);
             }
         }
     }
 
     /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
+    @Override protected void doDestroy() {
         unmarshallerFactory = null;
         mdFilter = null;
         entityBackingStore = null;
         parser = null;
 
-        super.doDestroy();        
+        super.doDestroy();
     }
-    
+
     /**
      * Subclasses should override this method to perform any initialization logic necessary. Default implementation is a
      * no-op.
@@ -235,9 +228,9 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
      * 
      * @throws UnmarshallingException thrown if the metadata can no be unmarshalled
      */
-    @Nonnull protected XMLObject unmarshallMetadata(@Nonnull final InputStream metadataInput) 
+    @Nonnull protected XMLObject unmarshallMetadata(@Nonnull final InputStream metadataInput)
             throws UnmarshallingException {
-        
+
         try {
             if (parser == null) {
                 throw new UnmarshallingException("ParserPool is null, can't parse input stream");
@@ -248,8 +241,9 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
             log.trace("Unmarshalling and caching metdata DOM");
             Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(mdDocument.getDocumentElement());
             if (unmarshaller == null) {
-                String msg ="No unmarshaller registered for document element " + QNameSupport
-                        .getNodeQName(mdDocument.getDocumentElement());
+                String msg =
+                        "No unmarshaller registered for document element "
+                                + QNameSupport.getNodeQName(mdDocument.getDocumentElement());
                 log.error(msg);
                 throw new UnmarshallingException(msg);
             }
@@ -331,7 +325,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
             log.debug("Metadata document does not contain any EntityDescriptors with the ID {}", entityID);
             return descriptors;
         }
-        
+
         Iterator<EntityDescriptor> entitiesIter = descriptors.iterator();
         while (entitiesIter.hasNext()) {
             EntityDescriptor descriptor = entitiesIter.next();
@@ -344,10 +338,10 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
 
         return descriptors;
     }
-    
+
     /**
-     * Lookup the specified entityID from the index. The returned list will be a copy of what is
-     * stored in the backing index, and is safe to be manipulated by callers.
+     * Lookup the specified entityID from the index. The returned list will be a copy of what is stored in the backing
+     * index, and is safe to be manipulated by callers.
      * 
      * @param entityID the entityID to lookup
      * 
@@ -361,61 +355,59 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
             return Collections.emptyList();
         }
     }
-    
+
     /**
-     * Create a new backing store instance for EntityDescriptor data.  Subclasses may override to return
-     * a more specialized subclass type. Note this method does not make the returned backing store
-     * the effective one in use.  The caller is responsible for calling 
-     * {@link #setBackingStore(EntityBackingStore)} to make it the effective instance in use.
+     * Create a new backing store instance for EntityDescriptor data. Subclasses may override to return a more
+     * specialized subclass type. Note this method does not make the returned backing store the effective one in use.
+     * The caller is responsible for calling {@link #setBackingStore(EntityBackingStore)} to make it the effective
+     * instance in use.
      * 
      * @return the new backing store instance
      */
     @Nonnull protected EntityBackingStore createNewBackingStore() {
         return new EntityBackingStore();
     }
-    
+
     /**
      * Get the EntityDescriptor backing store currently in use by the metadata resolver.
      * 
      * @return the current effective entity backing store
      */
     @Nonnull protected EntityBackingStore getBackingStore() {
-       return entityBackingStore;
+        return entityBackingStore;
     }
-    
+
     /**
      * Set the EntityDescriptor backing store currently in use by the metadata resolver.
      * 
      * @param newBackingStore the new entity backing store
      */
     protected void setBackingStore(@Nonnull EntityBackingStore newBackingStore) {
-       entityBackingStore = Constraint.isNotNull(newBackingStore, "EntityBackingStore may not be null");
+        entityBackingStore = Constraint.isNotNull(newBackingStore, "EntityBackingStore may not be null");
     }
 
     /**
-     * Pre-process the specified entity descriptor, updating the specified entity backing
-     * store instance as necessary.
+     * Pre-process the specified entity descriptor, updating the specified entity backing store instance as necessary.
      * 
      * @param entityDescriptor the target entity descriptor to process
      * @param backingStore the backing store instance to update
      */
-    protected void preProcessEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor, 
+    protected void preProcessEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor,
             @Nonnull final EntityBackingStore backingStore) {
-        
+
         backingStore.getOrderedDescriptors().add(entityDescriptor);
         indexEntityDescriptor(entityDescriptor, backingStore);
     }
-    
+
     /**
-     * Index the specified entity descriptor, updating the specified entity backing
-     * store instance as necessary.
+     * Index the specified entity descriptor, updating the specified entity backing store instance as necessary.
      * 
      * @param entityDescriptor the target entity descriptor to process
      * @param backingStore the backing store instance to update
      */
-    protected void indexEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor, 
+    protected void indexEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor,
             @Nonnull final EntityBackingStore backingStore) {
-        
+
         String entityID = StringSupport.trimOrNull(entityDescriptor.getEntityID());
         if (entityID != null) {
             List<EntityDescriptor> entities = backingStore.getIndexedDescriptors().get(entityID);
@@ -430,15 +422,14 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
     }
 
     /**
-     * Pre-process the specified entities descriptor, updating the specified entity backing
-     * store instance as necessary.
+     * Pre-process the specified entities descriptor, updating the specified entity backing store instance as necessary.
      * 
      * @param entitiesDescriptor the target entities descriptor to process
      * @param backingStore the backing store instance to update
      */
-    protected void preProcessEntitiesDescriptor(@Nonnull final EntitiesDescriptor entitiesDescriptor, 
+    protected void preProcessEntitiesDescriptor(@Nonnull final EntitiesDescriptor entitiesDescriptor,
             EntityBackingStore backingStore) {
-        
+
         for (XMLObject child : entitiesDescriptor.getOrderedChildren()) {
             if (child instanceof EntityDescriptor) {
                 preProcessEntityDescriptor((EntityDescriptor) child, backingStore);
@@ -447,18 +438,18 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
             }
         }
     }
-    
+
     /**
      * The collection of data which provides the backing store for the processed metadata.
      */
     protected class EntityBackingStore {
-        
+
         /** Index of entity IDs to their descriptors. */
         private Map<String, List<EntityDescriptor>> indexedDescriptors;
-        
+
         /** Ordered list of entity descriptors. */
         private List<EntityDescriptor> orderedDescriptors;
-        
+
         /** Constructor. */
         protected EntityBackingStore() {
             indexedDescriptors = new ConcurrentHashMap<>();
@@ -473,7 +464,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
         @Nonnull public Map<String, List<EntityDescriptor>> getIndexedDescriptors() {
             return indexedDescriptors;
         }
-        
+
         /**
          * Get the ordered entity descriptor list.
          * 
@@ -482,7 +473,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiedInitial
         @Nonnull public List<EntityDescriptor> getOrderedDescriptors() {
             return orderedDescriptors;
         }
-        
+
     }
 
 }
