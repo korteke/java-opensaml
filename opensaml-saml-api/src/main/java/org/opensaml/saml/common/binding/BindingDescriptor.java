@@ -59,8 +59,12 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** Predicate that must be true for this flow to be usable for a given request. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;
     
+    /** Identifies a binding that is direct request/response between two parties (i.e., SOAP). */
+    private boolean synchronous;
+    
     /** Constructor. */
     public BindingDescriptor() {
+        synchronous = false;
         activationCondition = Predicates.alwaysTrue();
     }
     
@@ -72,6 +76,24 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
      */
     public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
         activationCondition = Constraint.isNotNull(condition, "Activation condition predicate cannot be null");
+    }
+    
+    /**
+     * Get whether the binding is synchronous (direct request/response, typically SOAP).
+     * 
+     * @return true iff the binding is synchronous
+     */
+    public boolean isSynchronous() {
+       return synchronous; 
+    }
+    
+    /**
+     * Set whether the binding is synchronous (direct request/response, typically SOAP).
+     * 
+     * @param flag  flag to set
+     */
+    public void setSynchronous(final boolean flag) {
+        synchronous = flag;
     }
 
     /** {@inheritDoc} */
@@ -107,7 +129,9 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("bindingId", getId()).toString();
+        return Objects.toStringHelper(this).add("bindingId", getId())
+                .add("synchronous", synchronous)
+                .toString();
     }
 
 }
