@@ -88,6 +88,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     /** Constructor. */
     public AbstractMetadataResolver() {
         failFastInitialization = true;
+        requireValidMetadata = true;
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         setId(UUID.randomUUID().toString());
     }
