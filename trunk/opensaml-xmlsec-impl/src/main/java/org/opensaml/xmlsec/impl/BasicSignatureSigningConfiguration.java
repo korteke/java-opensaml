@@ -17,20 +17,29 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.security.Key;
 import java.security.interfaces.DSAParams;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * Basic implementation of {@link SignatureSigningConfiguration}.
@@ -41,17 +50,17 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(BasicSignatureSigningConfiguration.class);
     
-    /** Credential to use when signing. */
-    private Credential signingCredential;
+    /** Signing credentials. */
+    private List<Credential> signingCredentials;
     
-    /** JCA algorithm to signature URI mappings. */
-    private final Map<String, String> signatureAlgorithms;
+    /** Signature method algorithm URIs. */
+    private List<String> signatureAlgorithms;
+    
+    /** Digest method algorithm URIs. */
+    private List<String> signatureReferenceDigestMethods;
     
     /** Signature canonicalization algorithm URI. */
     private String signatureCanonicalization;
-    
-    /** Signature Reference digest method algorithm URI. */
-    private String signatureReferenceDigestMethod;
     
     /** Signature HMAC output length. */
     private Integer signatureHMACOutputLength;
@@ -69,60 +78,63 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     /** Constructor. */
     public BasicSignatureSigningConfiguration() {
         super();
-        signatureAlgorithms = new HashMap<String, String>();
+        signingCredentials = Collections.emptyList();
+        signatureAlgorithms = Collections.emptyList();
         dsaParams = new HashMap<Integer, DSAParams>();
     }
     
     /** {@inheritDoc} */
-    @Nullable public Credential getSigningCredential() {
-        return signingCredential;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getSigningCredentials() {
+        return ImmutableList.copyOf(signingCredentials);
     }
     
     /**
-     * Set the signing credential to use when signing.
+     * Set the signing credentials to use when signing.
      * 
-     * @param credential the signing credential
+     * @param credentials the list of signing credentials
      */
-    @Nullable public void setSigningCredential(@Nullable final Credential credential) {
-        signingCredential = credential;
-    }
-    
-    /** {@inheritDoc} */
-    @Nullable public String getSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName) {
-        return signatureAlgorithms.get(jcaAlgorithmName);
-    }
-    
-    /** {@inheritDoc} */
-    @Nullable public String getSignatureAlgorithmURI(@Nonnull final Credential credential) {
-        Key key = CredentialSupport.extractSigningKey(credential);
-        if (key == null) {
-            log.debug("Could not extract signing key from credential, unable to map to algorithm URI");
-            return null;
-        } else if (key.getAlgorithm() == null) {
-            log.debug("Signing key algorithm value was not available, unable to map to algorithm URI");
-            return null;
+    public void setSigningCredentials(@Nullable final List<Credential> credentials) {
+        if (credentials == null) {
+            signingCredentials = Collections.emptyList();
+            return;
         }
-        return getSignatureAlgorithmURI(key.getAlgorithm());
+        signingCredentials = Lists.newArrayList(Collections2.filter(credentials, Predicates.notNull()));
+    }
+    
+    /** {@inheritDoc} */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithmURIs() {
+        return ImmutableList.copyOf(signatureAlgorithms);
     }
     
     /**
-     * Register a mapping from the specified JCA key algorithm name to a signature algorithm URI.
+     * Set the signature algorithms to use when signing.
      * 
-     * @param jcaAlgorithmName the JCA key algorithm name to register
-     * @param algorithmURI the algorithm URI to register
+     * @param algorithms the list of signature algorithms
      */
-    public void registerSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName,
-            @Nonnull final String algorithmURI) {
-        signatureAlgorithms.put(jcaAlgorithmName, algorithmURI);
+    public void setSignatureAlgorithmURIs(@Nullable final List<String> algorithms) {
+        if (algorithms == null) {
+            signatureAlgorithms = Collections.emptyList();
+            return;
+        }
+        signatureAlgorithms = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+    }
+    
+    /** {@inheritDoc} */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods() {
+        return ImmutableList.copyOf(signatureReferenceDigestMethods);
     }
     
     /**
-     * Deregister a mapping for the specified JCA key algorithm name.
+     * Set a digest method algorithm URI suitable for use as a Signature Reference DigestMethod value.
      * 
-     * @param jcaAlgorithmName the JCA key algorithm name to deregister
+     * @param algorithms a list of digest method algorithm URIs
      */
-    public void deregisterSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName) {
-        signatureAlgorithms.remove(jcaAlgorithmName);
+    public void setSignatureReferenceDigestMethod(@Nullable final List<String> algorithms) {
+        if (algorithms == null) {
+            signatureReferenceDigestMethods = Collections.emptyList();
+            return;
+        }
+        signatureReferenceDigestMethods = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
@@ -139,20 +151,6 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
         signatureCanonicalization = algorithmURI;
     }
 
-    /** {@inheritDoc} */
-    @Nullable public String getSignatureReferenceDigestMethod() {
-        return signatureReferenceDigestMethod;
-    }
-    
-    /**
-     * Set a digest method algorithm URI suitable for use as a Signature Reference DigestMethod value.
-     * 
-     * @param algorithmURI a digest method algorithm URI
-     */
-    public void setSignatureReferenceDigestMethod(@Nullable final String algorithmURI) {
-        signatureReferenceDigestMethod = algorithmURI;
-    }
- 
     /** {@inheritDoc} */
     @Nullable public Integer getSignatureHMACOutputLength() {
         return signatureHMACOutputLength;
