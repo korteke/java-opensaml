@@ -18,9 +18,14 @@
 package org.opensaml.xmlsec;
 
 import java.security.interfaces.DSAParams;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
@@ -32,34 +37,26 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 public interface SignatureSigningConfiguration extends WhitelistBlacklistConfiguration {
     
     /**
-     * Get the signing credential to use when signing.
+     * Get the list of signing credentials to use when signing, in preference order.
      * 
-     * @return the signing credential
+     * @return the list of signing credentials, may be empty
      */
-    @Nullable public Credential getSigningCredential();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getSigningCredentials();
     
     /**
-     * Get the signature algorithm URI for the specified JCA key algorithm name.
+     * Get the list of preferred signature algorithm URIs, in preference order.
      * 
-     * @param jcaAlgorithmName a JCA key algorithm name
-     * @return a signature algorithm URI mapping, or null if no mapping is available
+     * @return the list of algorithm URIs, may be empty
      */
-    @Nullable public String getSignatureAlgorithmURI(@Nonnull final String jcaAlgorithmName);
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithmURIs();
     
     /**
-     * Get the signature algorithm URI for the signing key contained within the specified credential.
-     * 
-     * @param credential a credential containing a signing key
-     * @return a signature algorithm URI mapping, or null if no mapping is available
-     */
-    @Nullable public String getSignatureAlgorithmURI(@Nonnull final Credential credential);
-    
-    /**
-     * Get a digest method algorithm URI suitable for use as a Signature Reference DigestMethod value.
+     * Get the list of digest method algorithm URIs suitable for use as a Signature Reference DigestMethod value,
+     * in preference order.
      * 
      * @return a digest method algorithm URI
      */
-    @Nullable public String getSignatureReferenceDigestMethod();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods();
     
     /**
      * Get a canonicalization algorithm URI suitable for use as a Signature CanonicalizationMethod value.

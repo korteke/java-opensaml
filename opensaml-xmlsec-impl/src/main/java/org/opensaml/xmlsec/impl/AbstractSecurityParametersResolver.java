@@ -21,16 +21,23 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.opensaml.xmlsec.WhitelistBlacklistParameters;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 
 /**
  * Abstract base class for security parameters resolvers which supplies commonly used functionality for reuse.
@@ -77,6 +84,45 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
             case BLACKLIST:
                 params.setBlacklistedAlgorithmURIs(blacklist);
                 break;
+            default:
+                throw new IllegalArgumentException("WhitelistBlacklistPrecedence value is unknown: " + precedence);
+                    
+        }
+        
+    }
+    
+    /**
+     * Get a predicate which operates according to the effective configured whitelist and blacklist policy.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @param configs the effective list of {@link WhitelistBlacklistConfiguration} instances to consider
+     * 
+     * @return a predicate instance which operates accordingly to the effective whitelist and blacklist policy
+     */
+    @Nonnull protected Predicate<String> resolveWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria, 
+            @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
+        
+        Collection<String> whitelist = resolveEffectiveWhitelist(criteria, configs);
+        Collection<String> blacklist = resolveEffectiveBlacklist(criteria, configs);
+        
+        if (whitelist.isEmpty() && blacklist.isEmpty()) {
+            return Predicates.alwaysTrue();
+        }
+        
+        if (whitelist.isEmpty()) {
+            return new BlacklistPredicate(blacklist);
+        }
+        
+        if (blacklist.isEmpty()) {
+            return new WhitelistPredicate(whitelist);
+        }
+        
+        WhitelistBlacklistConfiguration.Precedence precedence = resolveWhitelistBlacklistPrecedence(criteria, configs);
+        switch(precedence) {
+            case WHITELIST:
+                return new WhitelistPredicate(whitelist);
+            case BLACKLIST:
+                return new BlacklistPredicate(blacklist);
             default:
                 throw new IllegalArgumentException("WhitelistBlacklistPrecedence value is unknown: " + precedence);
                     
@@ -139,6 +185,65 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
             @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
         
         return configs.get(0).getWhitelistBlacklistPrecedence();
+    }
+    
+    /**
+     * Predicate which implements an algorithm URI whitelist policy.
+     */
+    public class WhitelistPredicate implements Predicate<String> {
+        
+        /** Whitelisted algorithms. */
+        private Collection<String> whitelist;
+        
+        /**
+         * Constructor.
+         *
+         * @param algorithms collection of whitelisted algorithms
+         */
+        public WhitelistPredicate(@Nonnull Collection<String> algorithms) {
+            Constraint.isNotNull(algorithms, "Whitelist may not be null");
+            whitelist = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        }
+
+        /** {@inheritDoc} */
+        public boolean apply(@Nullable String input) {
+            if (input == null) {
+                throw new IllegalArgumentException("Algorithm URI to evaluate may not be null");
+            }
+            if (whitelist.isEmpty()) {
+                return true;
+            }
+            return whitelist.contains(input);
+        }
+        
+    }
+
+    /**
+     * Predicate which implements an algorithm URI blacklist policy.
+     */
+    public class BlacklistPredicate implements Predicate<String> {
+        
+        /** Blacklisted algorithms. */
+        private Collection<String> blacklist;
+        
+        /**
+         * Constructor.
+         *
+         * @param algorithms collection of blacklisted algorithms
+         */
+        public BlacklistPredicate(@Nonnull Collection<String> algorithms) {
+            Constraint.isNotNull(algorithms, "Blacklist may not be null");
+            blacklist = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        }
+
+        /** {@inheritDoc} */
+        public boolean apply(@Nullable String input) {
+            if (input == null) {
+                throw new IllegalArgumentException("Algorithm URI to evaluate may not be null");
+            }
+            return ! blacklist.contains(input);
+        }
+        
     }
 
 }

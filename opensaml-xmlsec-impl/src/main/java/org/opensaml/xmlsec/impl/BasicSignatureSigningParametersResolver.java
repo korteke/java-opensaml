@@ -18,7 +18,9 @@
 package org.opensaml.xmlsec.impl;
 
 import java.security.interfaces.DSAParams;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +41,11 @@ import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 /**
  * Basic implementation of {@link SignatureSigningParametersResolver}.
@@ -54,6 +61,9 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 public class BasicSignatureSigningParametersResolver 
         extends AbstractSecurityParametersResolver<SignatureSigningParameters> 
         implements SignatureSigningParametersResolver {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(BasicSignatureSigningParametersResolver.class);
 
     /** {@inheritDoc} */
     @Nonnull
@@ -73,11 +83,13 @@ public class BasicSignatureSigningParametersResolver
         Constraint.isNotNull(criteria.get(SignatureSigningConfiguratonCriterion.class), 
                 "Resolver requires an instance of SignatureSigningConfigurationCriterion");
         
+        Predicate<String> whitelistBlacklistPredicate = getWhitelistBlacklistPredicate(criteria);
+        
         SignatureSigningParameters params = new SignatureSigningParameters();
         
-        resolveAndPopulateCredentialAndSigningMethod(params, criteria);
+        resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
         
-        params.setSignatureReferenceDigestMethod(resolveReferenceDigestMethod(criteria));
+        params.setSignatureReferenceDigestMethod(resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate));
         
         params.setSignatureCanonicalizationAlgorithm(resolveCanonicalizationAlgorithm(criteria));
         
@@ -92,9 +104,12 @@ public class BasicSignatureSigningParametersResolver
         
         return params;
     }
-
+    
     /**
-     * @param params
+     * Validate that the {@link SignatureSigningParameters} instance has all the required properties populated.
+     * 
+     * @param params the parameters instance to evaluate
+     * @throws ResolverException if params instance is not populated with all required data
      */
     protected void validate(@Nonnull final SignatureSigningParameters params) throws ResolverException {
         // TODO Auto-generated method stub
@@ -102,29 +117,125 @@ public class BasicSignatureSigningParametersResolver
     }
 
     /**
-     * @param params
-     * @param criteria
+     * Get a predicate which implements the effective configured whitelist/blacklist policy.
+     * 
+     * @param criteria the input criteria being evaluated
+     * 
+     * @return a whitelist/blacklist predicate instance
      */
-    protected void resolveAndPopulateCredentialAndSigningMethod(@Nonnull final SignatureSigningParameters params, 
-            @Nonnull final CriteriaSet criteria) {
-        // TODO Auto-generated method stub
+    @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
+        return resolveWhitelistBlacklistPredicate(criteria, 
+                criteria.get(SignatureSigningConfiguratonCriterion.class).getConfigurations());
+    }
+
+    /**
+     * Resolve and populate the signing credential and signature method algorithm URI on the 
+     * supplied parameters instance.
+     * 
+     * @param params the parameters instance being populated
+     * @param criteria the input criteria being evaluated
+     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to with which to evaluate the 
+     *          candidate signing method algorithm URIs
+     */
+    protected void resolveAndPopulateCredentialAndSignatureAlgorithm(@Nonnull final SignatureSigningParameters params, 
+            @Nonnull final CriteriaSet criteria, Predicate<String> whitelistBlacklistPredicate) {
+        
+        List<Credential> credentials = getEffectiveSigningCredentials(criteria);
+        List<String> algorithms = getEffectiveSignatureAlgorithms(criteria, whitelistBlacklistPredicate);
+        
+        for (Credential credential : credentials) {
+            for (String algorithm : algorithms) {
+                if (credentialSupportsAlgorithm(credential, algorithm)) {
+                    params.setSigningCredential(credential);
+                    params.setSignatureAlgorithmURI(algorithm);
+                    return;
+                }
+            }
+        }
         
     }
 
     /**
-     * @param criteria
-     * @return
+     * Evaluate whether the specified credential is supported for use with the specified algorithm URI.
+     * 
+     * @param credential the credential to evaluate
+     * @param algorithm the algorithm URI to evaluate
+     * @return true if credential may be used with the supplied algorithm URI, false otherwise
      */
-    protected String resolveReferenceDigestMethod(@Nonnull final CriteriaSet criteria) {
-        // TODO Auto-generated method stub
+    protected boolean credentialSupportsAlgorithm(@Nonnull final Credential credential, 
+            @Nonnull @NotEmpty final String algorithm) {
+        
+        // TODO consult AlgorithmRegistry, etc
+        
+        return false;
+    }
+
+    /**
+     * Get the effective list of signing credentials to consider.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @return the list of credentials
+     */
+    @Nonnull protected List<Credential> getEffectiveSigningCredentials(@Nonnull final CriteriaSet criteria) {
+        ArrayList<Credential> accumulator = new ArrayList<>();
+        for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfiguratonCriterion.class)
+                .getConfigurations()) {
+            
+            accumulator.addAll(config.getSigningCredentials());
+            
+        }
+        return accumulator;
+    }
+    
+    /**
+     * Get the effective list of signature algorithm URIs to consider, including application of 
+     * whitelist/blacklist policy.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to use
+     * @return the list of effective algorithm URIs
+     */
+    @Nonnull protected List<String> getEffectiveSignatureAlgorithms(@Nonnull final CriteriaSet criteria, 
+            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        ArrayList<String> accumulator = new ArrayList<>();
+        for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfiguratonCriterion.class)
+                .getConfigurations()) {
+            
+            accumulator.addAll(Collections2.filter(config.getSignatureAlgorithmURIs(), whitelistBlacklistPredicate));
+            
+        }
+        return accumulator;
+    }
+
+    /**
+     * Resolve and return the digest method algorithm URI to use, including application of whitelist/blacklist policy.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to use
+     * @return the resolved digest method algorithm URI
+     */
+    @Nullable protected String resolveReferenceDigestMethod(@Nonnull final CriteriaSet criteria, 
+            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfiguratonCriterion.class)
+                .getConfigurations()) {
+            
+            for (String digestMethod : config.getSignatureReferenceDigestMethods()) {
+                if (whitelistBlacklistPredicate.apply(digestMethod)) {
+                    return digestMethod;
+                }
+            }
+            
+        }
         return null;
     }
 
     /**
-     * @param criteria
-     * @return
+     * Resolve and return the canonicalization algorithm URI to use.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @return the canonicalization algorithm URI
      */
-    protected String resolveCanonicalizationAlgorithm(@Nonnull final CriteriaSet criteria) {
+    @Nullable protected String resolveCanonicalizationAlgorithm(@Nonnull final CriteriaSet criteria) {
         for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfiguratonCriterion.class)
                 .getConfigurations()) {
             
@@ -137,11 +248,13 @@ public class BasicSignatureSigningParametersResolver
     }
 
     /**
-     * @param criteria
-     * @param signingCredential
-     * @return
+     * Resolve and return the {@link KeyInfoGenerator} instance to use with the specified credential.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @param signingCredential the credential being evaluated
+     * @return KeyInfo generator instance, or null
      */
-    protected KeyInfoGenerator resolveKeyInfoGenerator(@Nonnull final CriteriaSet criteria, 
+    @Nullable protected KeyInfoGenerator resolveKeyInfoGenerator(@Nonnull final CriteriaSet criteria, 
             @Nonnull final Credential signingCredential) {
         
         String name = null;
@@ -172,12 +285,15 @@ public class BasicSignatureSigningParametersResolver
     }
 
     /**
-     * @param criteria
-     * @param signingCredential
-     * @param string 
-     * @return
+     * Resolve and return the effective HMAC output length to use, if applicable to the specified signing credential
+     * and signature method algorithm URI.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @param signingCredential the signing credential being evaluated
+     * @param algorithmURI the signature method algorithm URI being evaluated
+     * @return the HMAC output length to use, or null
      */
-    protected Integer resolveHMACOutputLength(@Nonnull final CriteriaSet criteria, 
+    @Nullable protected Integer resolveHMACOutputLength(@Nonnull final CriteriaSet criteria, 
             @Nonnull final Credential signingCredential, @Nonnull @NotEmpty final String algorithmURI) {
         
         if (AlgorithmSupport.isHMAC(algorithmURI)) {
@@ -192,11 +308,14 @@ public class BasicSignatureSigningParametersResolver
     }
 
     /**
-     * @param criteria
-     * @param credential 
-     * @return
+     * Resolve and return the DSAParams instance to use, if applicable.  Only effective for DSA signing credentials.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @param credential  the credential being evaluated
+     * @return the DSAParams instance, or null
      */
-    protected DSAParams resolveDSAParams(@Nonnull final CriteriaSet criteria, @Nonnull final Credential credential) {
+    @Nullable protected DSAParams resolveDSAParams(@Nonnull final CriteriaSet criteria, 
+            @Nonnull final Credential credential) {
         if (credential.getPublicKey() != null && "DSA".equals(credential.getPublicKey().getAlgorithm())) {
             Integer keyLength = KeySupport.getKeyLength(credential.getPublicKey());
             if (keyLength != null) {
