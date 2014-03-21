@@ -23,6 +23,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.NameIdentifier;
+import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml2.core.NameID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,9 +150,8 @@ public class SAMLSubjectNameIdentifierContext extends BaseContext {
             } else {
                 return null;
             }
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.SubjectQuery) {
-            final org.opensaml.saml.saml1.core.SubjectQuery query = 
-                    (org.opensaml.saml.saml1.core.SubjectQuery) samlMessage;
+        } else if (samlMessage instanceof Request && ((Request) samlMessage).getSubjectQuery() != null) {
+            final org.opensaml.saml.saml1.core.SubjectQuery query = ((Request) samlMessage).getSubjectQuery();
             if (query.getSubject() != null) {
                 return query.getSubject().getNameIdentifier();
             } else {
