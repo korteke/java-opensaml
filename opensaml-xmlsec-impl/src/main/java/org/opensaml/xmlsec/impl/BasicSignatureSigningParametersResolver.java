@@ -39,8 +39,6 @@ import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
 import org.opensaml.xmlsec.criterion.SignatureSigningConfiguratonCriterion;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
-import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
-import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -265,18 +263,9 @@ public class BasicSignatureSigningParametersResolver
         for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfiguratonCriterion.class)
                 .getConfigurations()) {
             
-            NamedKeyInfoGeneratorManager manager = config.getKeyInfoGeneratorManager();
-            if (manager != null) {
-                KeyInfoGeneratorFactory factory = null;
-                if (name != null) {
-                    factory = manager.getFactory(name, signingCredential);
-                } else {
-                    factory = manager.getDefaultManager().getFactory(signingCredential);
-                }
-                
-                if (factory != null) {
-                    return factory.newInstance();
-                }
+            KeyInfoGenerator kig = lookupKeyInfoGenerator(signingCredential, config.getKeyInfoGeneratorManager(), name);
+            if (kig != null) {
+                return kig;
             }
             
         }

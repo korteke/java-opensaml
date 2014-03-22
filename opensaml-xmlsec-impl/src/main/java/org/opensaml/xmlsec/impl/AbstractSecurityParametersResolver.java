@@ -30,9 +30,13 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.opensaml.xmlsec.WhitelistBlacklistParameters;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -46,6 +50,38 @@ import com.google.common.collect.Lists;
  */
 public abstract class AbstractSecurityParametersResolver<ProductType> 
         implements Resolver<ProductType, CriteriaSet>{
+    
+    /**
+     * Resolve a {@link KeyInfoGenerator} instance based on a {@link NamedKeyInfoGeneratorManager}, 
+     * {@link Credential} and optional KeyInfo generation profile name.
+     * 
+     * @param credential the credential for which a KeyInfo generator is needed
+     * @param manager the named KeyInfo generator manager instance
+     * @param keyInfoProfileName KeyInfo generation profile name
+     * 
+     * @return the resolved KeyInfo generator instance, or null
+     */
+    @Nullable protected KeyInfoGenerator lookupKeyInfoGenerator(@Nonnull final Credential credential, 
+            @Nullable final NamedKeyInfoGeneratorManager manager, @Nullable String keyInfoProfileName) {
+        Constraint.isNotNull(credential, "Credential may not be null");
+        
+        if (manager == null) {
+            return null;
+        }
+        
+        KeyInfoGeneratorFactory factory = null;
+        if (keyInfoProfileName != null) {
+            factory = manager.getFactory(keyInfoProfileName, credential);
+        } else {
+            factory = manager.getDefaultManager().getFactory(credential);
+        }
+        
+        if (factory != null) {
+            return factory.newInstance();
+        }
+        
+        return null;
+    }
     
     /**
      * Resolve and populate the effective whitelist or blacklist on the supplied instance of 
