@@ -115,24 +115,26 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             return false;
         }
         
-        Key signingKey = CredentialSupport.extractSigningKey(credential);
-        if (signingKey == null) {
-            log.warn("Could not extract signing key from credential. Failing evaluation");
-            return false;
-        }
-        
-        Integer keyLength = KeySupport.getKeyLength(signingKey);
-        if (keyLength == null) {
-            log.warn("Could not determine key length of candidate signing credential. Failing evaluation");
-            return false;
-        }
-        
-        if (signingMethod.getMinKeySize() != null && keyLength < signingMethod.getMinKeySize()) {
-            return false;
-        }
-        
-        if (signingMethod.getMaxKeySize() != null && keyLength > signingMethod.getMaxKeySize()) {
-            return false;
+        if (signingMethod.getMinKeySize() != null  || signingMethod.getMaxKeySize() != null) {
+            Key signingKey = CredentialSupport.extractSigningKey(credential);
+            if (signingKey == null) {
+                log.warn("Could not extract signing key from credential. Failing evaluation");
+                return false;
+            }
+            
+            Integer keyLength = KeySupport.getKeyLength(signingKey);
+            if (keyLength == null) {
+                log.warn("Could not determine key length of candidate signing credential. Failing evaluation");
+                return false;
+            }
+            
+            if (signingMethod.getMinKeySize() != null && keyLength < signingMethod.getMinKeySize()) {
+                return false;
+            }
+            
+            if (signingMethod.getMaxKeySize() != null && keyLength > signingMethod.getMaxKeySize()) {
+                return false;
+            }
         }
         
         return true;
