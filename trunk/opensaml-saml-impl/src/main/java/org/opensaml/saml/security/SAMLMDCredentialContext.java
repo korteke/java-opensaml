@@ -68,7 +68,7 @@ public class SAMLMDCredentialContext implements CredentialContext {
      * 
      * @return a list of SAML metadata encryption method associated with this context
      */
-    public List<EncryptionMethod> getEncryptionMethod() {
+    public List<EncryptionMethod> getEncryptionMethods() {
         return encMethods;
     }
 
