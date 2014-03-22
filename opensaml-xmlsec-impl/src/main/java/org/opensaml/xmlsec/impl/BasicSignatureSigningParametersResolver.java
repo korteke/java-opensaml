@@ -134,7 +134,7 @@ public class BasicSignatureSigningParametersResolver
      * 
      * @param params the parameters instance being populated
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to with which to evaluate the 
+     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate with which to evaluate the 
      *          candidate signing method algorithm URIs
      */
     protected void resolveAndPopulateCredentialAndSignatureAlgorithm(@Nonnull final SignatureSigningParameters params, 
