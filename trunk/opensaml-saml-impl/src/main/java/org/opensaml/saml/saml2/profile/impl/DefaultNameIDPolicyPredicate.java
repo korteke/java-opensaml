@@ -97,7 +97,7 @@ public class DefaultNameIDPolicyPredicate extends AbstractIdentifiableInitializa
         final Issuer issuer = request.getIssuer();
         if (issuer != null && issuer.getValue() != null &&
                 (issuer.getFormat() == null || NameID.ENTITY.equals(issuer.getFormat()))) {
-            return doApply(request, issuer.getValue(), qualifier);
+            return doApply(issuer.getValue(), qualifier);
         } else {
             log.debug("Request did not contain an Issuer");
         }
@@ -108,14 +108,12 @@ public class DefaultNameIDPolicyPredicate extends AbstractIdentifiableInitializa
     /**
      * Apply a predicate to the request.
      * 
-     * @param request   the request
      * @param issuer    request issuer
      * @param qualifier the qualifier
      * 
      * @return  true iff the combination of inputs satisfies a policy
      */
-    protected boolean doApply(@Nonnull final AuthnRequest request, @Nonnull @NotEmpty final String issuer,
-            @Nonnull @NotEmpty final String qualifier) {
+    protected boolean doApply(@Nonnull @NotEmpty final String issuer, @Nonnull @NotEmpty final String qualifier) {
         
         if (qualifier.equals(issuer)) {
             log.debug("Requested SPNqmeQualifier {} matches request issuer", qualifier);

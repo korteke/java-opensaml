@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
-import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -77,11 +76,10 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doApply(@Nonnull final AuthnRequest request, @Nonnull @NotEmpty final String issuer,
-            @Nonnull @NotEmpty final String qualifier) {
+    protected boolean doApply(@Nonnull @NotEmpty final String issuer, @Nonnull @NotEmpty final String qualifier) {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
-        if (super.doApply(request, issuer, qualifier)) {
+        if (super.doApply(issuer, qualifier)) {
             return true;
         }
         
