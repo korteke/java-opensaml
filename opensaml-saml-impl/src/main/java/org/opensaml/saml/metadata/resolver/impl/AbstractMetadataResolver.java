@@ -88,6 +88,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     /** Constructor. */
     public AbstractMetadataResolver() {
         failFastInitialization = true;
+        requireValidMetadata = true;
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         setId(UUID.randomUUID().toString());
     }
@@ -254,8 +255,8 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         } finally {
             try {
                 metadataInput.close();
-            } catch (IOException e) {
-                // ignore
+            } catch (IOException e2) {
+                log.debug("Failed to close input: {}", e2);
             }
         }
     }

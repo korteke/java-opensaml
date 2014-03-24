@@ -30,8 +30,6 @@ import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
 import org.opensaml.saml.common.xml.SAMLSchemaBuilder.SAML1Version;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.impl.SchemaValidationFilter;
-import org.opensaml.saml.metadata.resolver.impl.ChainingMetadataResolver;
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
