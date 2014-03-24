@@ -33,6 +33,7 @@ import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NullableElements;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -73,6 +74,9 @@ import com.google.common.collect.Lists;
  * <p>The source of the {@link NameID} is one of a set of candidate {@link SAML2NameIDGenerator}
  * plugins injected into the action. The plugin(s) to attempt to use are derived from the Format value,
  * which is established by a lookup strategy.</p>
+ * 
+ * <p>In addition, the generation process is influenced by the requested {@link NameIDPolicy}, which
+ * is evaluated using a pluggable predicate.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
@@ -122,8 +126,11 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     /** Response to modify. */
     @Nullable private Response response;
     
-    /** Constructor. */
-    public AddNameIDToSubjects() {
+    /** Constructor.
+     *  
+     * @throws ComponentInitializationException if an error occurs initializing default predicate.
+     */
+    public AddNameIDToSubjects() throws ComponentInitializationException {
         subjectBuilder = (SAMLObjectBuilder<Subject>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
                         Subject.DEFAULT_ELEMENT_NAME);
@@ -138,7 +145,11 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         
+        // Default predicate pulls SPNameQualifier from NameIDPolicy and does a direct match
+        // against issuer. Handles simple cases, overridden for complex ones.
         nameIDPolicyPredicate = new DefaultNameIDPolicyPredicate();
+        ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).initialize();
+        
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         nameIdGeneratorMap = ArrayListMultimap.create();
         formats = Collections.emptyList();

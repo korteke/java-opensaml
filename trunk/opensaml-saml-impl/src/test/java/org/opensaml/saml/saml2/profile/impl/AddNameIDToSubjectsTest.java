@@ -215,8 +215,12 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         prc.getInboundMessageContext().setMessage(request);
         
         final AffiliationNameIDPolicyPredicate predicate = new AffiliationNameIDPolicyPredicate();
-        predicate.setId("test");
         predicate.setMetadataResolver(metadataResolver);
+        predicate.setRequesterIdLookupStrategy(new Function<ProfileRequestContext,String>() {
+            public String apply(ProfileRequestContext input) {
+                return request.getIssuer().getValue();
+            }
+        });
         predicate.initialize();
         action.setNameIDGenerators(generators);
         action.setNameIDPolicyPredicate(predicate);

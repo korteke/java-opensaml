@@ -18,9 +18,9 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -76,34 +76,39 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doApply(@Nonnull @NotEmpty final String issuer, @Nonnull @NotEmpty final String qualifier) {
+    protected boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
+            @Nullable final String nameQualifier, @Nullable final String spNameQualifier) {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
-        if (super.doApply(issuer, qualifier)) {
+        if (super.doApply(requesterId, responderId, nameQualifier, spNameQualifier)) {
+            return true;
+        } else if (spNameQualifier == null) {
             return true;
         }
         
         try {
             final EntityDescriptor affiliation =
-                    metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(qualifier)));
+                    metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(spNameQualifier)));
             if (affiliation != null) {
                 final AffiliationDescriptor descriptor = affiliation.getAffiliationDescriptor();
                 if (descriptor != null) {
                     for (final AffiliateMember member : descriptor.getMembers()) {
-                        if (Objects.equal(member.getID(), issuer)) {
-                            log.debug("Entity {} is authorized as a member of Affiliation {}", issuer, qualifier);
+                        if (Objects.equal(member.getID(), requesterId)) {
+                            log.debug("Entity {} is authorized as a member of Affiliation {}", requesterId,
+                                    spNameQualifier);
                             return true;
                         }
                     }
-                    log.warn("Entity {} was not a member of Affiliation {}", issuer, qualifier);
+                    log.warn("Entity {} was not a member of Affiliation {}", requesterId, spNameQualifier);
                 } else {
-                    log.warn("Entity {} found, but did not contain an AffiliationDescriptor", qualifier);
+                    log.warn("Affiliation entity {} found, but did not contain an AffiliationDescriptor",
+                            spNameQualifier);
                 }
             } else {
-                log.warn("No metadata found for affiliation {}", qualifier);
+                log.warn("No metadata found for affiliation {}", spNameQualifier);
             }
         } catch (final ResolverException e) {
-            log.error("Error resolving metadata for affiliation " + qualifier, e);
+            log.error("Error resolving metadata for affiliation " + spNameQualifier, e);
         }
         
         return false;
