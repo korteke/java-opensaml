@@ -38,6 +38,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.SAMLMetadataLookupHandlerTest;
 import org.opensaml.saml.common.profile.SAMLEventIds;
+import org.opensaml.saml.common.profile.logic.AffiliationNameIDPolicyPredicate;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;

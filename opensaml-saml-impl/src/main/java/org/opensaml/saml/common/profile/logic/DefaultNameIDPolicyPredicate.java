@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile.impl;
+package org.opensaml.saml.common.profile.logic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.saml.common.profile.logic.AbstractNameIDPolicyPredicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
