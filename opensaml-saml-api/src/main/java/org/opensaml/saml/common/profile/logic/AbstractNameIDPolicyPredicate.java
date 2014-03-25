@@ -21,28 +21,25 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
-import org.opensaml.saml.saml2.core.AuthnRequest;
-import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml2.core.NameID;
-import org.opensaml.saml.saml2.core.RequestAbstractType;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
 
 /**
  * Base class for implementations of {@link NameIDPolicyPredicate} that handles all the basic lookup
  * functions and calls the {@link #doApply(String, String, String, String)} method to do actual work.
  */
 public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializableComponent
-        implements NameIDPolicyPredicate {
+        implements Predicate<ProfileRequestContext> {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractNameIDPolicyPredicate.class);
@@ -53,17 +50,14 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     /** Responder ID lookup function. */
     @Nullable private Function<ProfileRequestContext,String> responderIdLookupStrategy;
 
-    /** NameQualifier lookup function. */
-    @Nullable private Function<ProfileRequestContext,String> nameQualifierLookupStrategy;
+    /** NameIDPolicy lookup function. */
+    @Nullable private Function<ProfileRequestContext,NameIDPolicy> nameIDPolicyLookupStrategy;
 
-    /** SPNameQualifier lookup function. */
-    @Nullable private Function<ProfileRequestContext,String> spNameQualifierLookupStrategy;
-    
-    /** Constructor. */
-    public AbstractNameIDPolicyPredicate() {
-        requesterIdLookupStrategy = new RequesterIdFromIssuerFunction();
-        spNameQualifierLookupStrategy = new SPNameQualifierFromNameIDPolicyFunction();
-    }
+    /** NameID lookup function. */
+    @Nullable private Function<ProfileRequestContext,NameID> nameIDLookupStrategy;
+
+    /** NameIdentifier lookup function. */
+    @Nullable private Function<ProfileRequestContext,NameIdentifier> nameIdentifierLookupStrategy;
 
     /**
      * Set the strategy used to locate the requester ID.
@@ -71,10 +65,10 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup strategy
      */
     public synchronized void setRequesterIdLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        requesterIdLookupStrategy = Constraint.isNotNull(strategy, "Requester ID lookup strategy cannot be null");
+        requesterIdLookupStrategy = strategy;
     }
 
     /**
@@ -83,45 +77,65 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup strategy
      */
     public synchronized void setResponderIdLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        responderIdLookupStrategy = Constraint.isNotNull(strategy, "Responder ID lookup strategy cannot be null");
+        responderIdLookupStrategy = strategy;
     }
     
     /**
-     * Set the strategy used to locate the NameQualifier.
+     * Set a lookup strategy used to locate a {@link NameIDPolicy} to evaluate.
      * 
-     * @param strategy lookup strategy
+     * @param strategy lookup function
      */
-    public synchronized void setNameQualifierLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+    public synchronized void setNameIDPolicyLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,NameIDPolicy> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        nameQualifierLookupStrategy = Constraint.isNotNull(strategy, "NameQualifier lookup strategy cannot be null");
+        nameIDPolicyLookupStrategy = strategy;
     }
 
     /**
-     * Set the strategy used to locate the SPNameQualifier.
+     * Set a lookup strategy used to locate a {@link NameID} to evaluate.
      * 
-     * @param strategy lookup strategy
+     * @param strategy lookup function
      */
-    public synchronized void setSPNameQualifierLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+    public synchronized void setNameIDLookupStrategy(@Nullable final Function<ProfileRequestContext,NameID> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        spNameQualifierLookupStrategy = Constraint.isNotNull(strategy,
-                "SPNameQualifier lookup strategy cannot be null");
+        nameIDLookupStrategy = strategy;
+    }
+
+    /**
+     * Set a lookup strategy used to locate a {@link NameIdentifier} to evaluate.
+     * 
+     * @param strategy lookup function
+     */
+    public synchronized void setNameIdentifierLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,NameIdentifier> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        nameIdentifierLookupStrategy = strategy;
     }
     
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (nameIDPolicyLookupStrategy == null && nameIDLookupStrategy == null
+                && nameIdentifierLookupStrategy == null) {
+            throw new ComponentInitializationException(
+                    "One of NameIDPolicy, NameID, or NameIdentifier lookup strategies must be non-null");
+        }
+    }
+
     /** {@inheritDoc} */
     @Override
     public boolean apply(@Nullable final ProfileRequestContext input) {
         
         final String requesterId;
         final String responderId;
-        final String nameQualifier;
-        final String spNameQualifier;
         
         if (requesterIdLookupStrategy != null) {
             requesterId = requesterIdLookupStrategy.apply(input);
@@ -134,20 +148,30 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
         } else {
             responderId = null;
         }
-        
-        if (nameQualifierLookupStrategy != null) {
-            nameQualifier = nameQualifierLookupStrategy.apply(input);
-        } else {
-            nameQualifier = null;
+
+        if (nameIdentifierLookupStrategy != null) {
+            final NameIdentifier nameIdentifier = nameIdentifierLookupStrategy.apply(input);
+            if (nameIdentifier != null) {
+                return doApply(requesterId, responderId, nameIdentifier.getNameQualifier(), null);
+            }
         }
 
-        if (spNameQualifierLookupStrategy != null) {
-            spNameQualifier = spNameQualifierLookupStrategy.apply(input);
-        } else {
-            spNameQualifier = null;
+        if (nameIDLookupStrategy != null) {
+            final NameID nameID = nameIDLookupStrategy.apply(input);
+            if (nameID != null) {
+                return doApply(requesterId, responderId, nameID.getNameQualifier(), nameID.getSPNameQualifier());
+            }
         }
         
-        return doApply(requesterId, responderId, nameQualifier, spNameQualifier);
+        if (nameIDPolicyLookupStrategy != null) {
+            final NameIDPolicy policy = nameIDPolicyLookupStrategy.apply(input);
+            if (policy != null) {
+                return doApply(requesterId, responderId, null, policy.getSPNameQualifier());
+            }
+        }
+        
+        // If no objects were found to evaluate, then there's no reason to fail.
+        return true;
     }
     
     /**
@@ -162,85 +186,5 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      */
     protected abstract boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
             @Nullable final String nameQualifier, @Nullable final String spNameQualifier);
-    
-    /**
-     * Lookup function that returns {@link org.opensaml.saml.saml2.core.RequestAbstractType#getIssuer()}
-     * from a request message returned from a lookup function, by default the inbound message.
-     */
-    public static class RequesterIdFromIssuerFunction implements Function<ProfileRequestContext,String> {
-
-        /** Strategy used to locate the {@link AuthnRequest} to operate on. */
-        @Nonnull private Function<ProfileRequestContext,RequestAbstractType> requestLookupStrategy;
         
-        /** Constructor. */
-        public RequesterIdFromIssuerFunction() {
-            requestLookupStrategy = Functions.compose(new MessageLookup<>(RequestAbstractType.class),
-                    new InboundMessageContextLookup());
-        }
-
-        /**
-         * Set the strategy used to locate the {@link RequestAbstractType} to examine.
-         * 
-         * @param strategy strategy used to locate the {@link RequestAbstractType}
-         */
-        public void setRequestLookupStrategy(
-                @Nonnull final Function<ProfileRequestContext,RequestAbstractType> strategy) {
-            requestLookupStrategy = Constraint.isNotNull(strategy, "Request lookup strategy cannot be null");
-        }
-        
-        /** {@inheritDoc} */
-        @Override
-        @Nullable public String apply(@Nullable final ProfileRequestContext profileRequestContext) {
-            
-            final RequestAbstractType request = requestLookupStrategy.apply(profileRequestContext);
-            if (request != null && request.getIssuer() != null) {
-                final Issuer issuer = request.getIssuer();
-                if (issuer.getFormat() == null || NameID.ENTITY.equals(issuer.getFormat())) {
-                    return issuer.getValue();
-                }
-            }
-            
-            return null;
-        }
-        
-    }
-    
-    /**
-     * Lookup function that returns {@link org.opensaml.saml.saml2.core.NameIDPolicy#getSPNameQualifier()}
-     * from an {@link AuthnRequest} message returned from a lookup function, by default the inbound message.
-     */
-    public static class SPNameQualifierFromNameIDPolicyFunction implements Function<ProfileRequestContext,String> {
-
-        /** Strategy used to locate the {@link AuthnRequest} to operate on. */
-        @Nonnull private Function<ProfileRequestContext,AuthnRequest> requestLookupStrategy;
-        
-        /** Constructor. */
-        public SPNameQualifierFromNameIDPolicyFunction() {
-            requestLookupStrategy =
-                    Functions.compose(new MessageLookup<>(AuthnRequest.class), new InboundMessageContextLookup());
-        }
-
-        /**
-         * Set the strategy used to locate the {@link AuthnRequest} to examine.
-         * 
-         * @param strategy strategy used to locate the {@link AuthnRequest}
-         */
-        public void setRequestLookupStrategy(@Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
-            requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
-        }
-        
-        /** {@inheritDoc} */
-        @Override
-        @Nullable public String apply(@Nullable final ProfileRequestContext profileRequestContext) {
-            
-            final AuthnRequest request = requestLookupStrategy.apply(profileRequestContext);
-
-            if (request != null && request.getNameIDPolicy() != null) {
-                return request.getNameIDPolicy().getSPNameQualifier();
-            }
-            
-            return null;
-        }
-        
-    }
 }

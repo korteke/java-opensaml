@@ -46,8 +46,10 @@ import org.opensaml.saml.common.profile.impl.logic.DefaultNameIDPolicyPredicate;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.SAML2NameIDGenerator;
@@ -149,6 +151,10 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         // Default predicate pulls SPNameQualifier from NameIDPolicy and does a direct match
         // against issuer. Handles simple cases, overridden for complex ones.
         nameIDPolicyPredicate = new DefaultNameIDPolicyPredicate();
+        ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).setRequesterIdLookupStrategy(
+                new RequesterIdFromIssuerFunction());
+        ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).setNameIDPolicyLookupStrategy(
+                new NameIDPolicyLookupFunction());
         ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).initialize();
         
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
@@ -422,6 +428,87 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         clone.setValue(nameId.getValue());
         
         return clone;
+    }
+
+    /**
+     * Lookup function that returns the {@link NameIDPolicy} from an {@link AuthnRequest} message returned
+     * from a lookup function, by default the inbound message.
+     */
+    public static class NameIDPolicyLookupFunction implements Function<ProfileRequestContext,NameIDPolicy> {
+
+        /** Strategy used to locate the {@link AuthnRequest} to operate on. */
+        @Nonnull private Function<ProfileRequestContext,AuthnRequest> requestLookupStrategy;
+        
+        /** Constructor. */
+        public NameIDPolicyLookupFunction() {
+            requestLookupStrategy =
+                    Functions.compose(new MessageLookup<>(AuthnRequest.class), new InboundMessageContextLookup());
+        }
+
+        /**
+         * Set the strategy used to locate the {@link AuthnRequest} to examine.
+         * 
+         * @param strategy strategy used to locate the {@link AuthnRequest}
+         */
+        public void setRequestLookupStrategy(@Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
+            requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
+        }
+        
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public NameIDPolicy apply(@Nullable final ProfileRequestContext profileRequestContext) {
+            
+            final AuthnRequest request = requestLookupStrategy.apply(profileRequestContext);
+
+            if (request != null) {
+                return request.getNameIDPolicy();
+            }
+            
+            return null;
+        }
+        
+    }
+
+    /**
+     * Lookup function that returns {@link org.opensaml.saml.saml2.core.RequestAbstractType#getIssuer()}
+     * from a request message returned from a lookup function, by default the inbound message.
+     */
+    public static class RequesterIdFromIssuerFunction implements Function<ProfileRequestContext,String> {
+
+        /** Strategy used to locate the {@link AuthnRequest} to operate on. */
+        @Nonnull private Function<ProfileRequestContext,RequestAbstractType> requestLookupStrategy;
+        
+        /** Constructor. */
+        public RequesterIdFromIssuerFunction() {
+            requestLookupStrategy = Functions.compose(new MessageLookup<>(RequestAbstractType.class),
+                    new InboundMessageContextLookup());
+        }
+
+        /**
+         * Set the strategy used to locate the {@link RequestAbstractType} to examine.
+         * 
+         * @param strategy strategy used to locate the {@link RequestAbstractType}
+         */
+        public void setRequestLookupStrategy(
+                @Nonnull final Function<ProfileRequestContext,RequestAbstractType> strategy) {
+            requestLookupStrategy = Constraint.isNotNull(strategy, "Request lookup strategy cannot be null");
+        }
+        
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public String apply(@Nullable final ProfileRequestContext profileRequestContext) {
+            
+            final RequestAbstractType request = requestLookupStrategy.apply(profileRequestContext);
+            if (request != null && request.getIssuer() != null) {
+                final Issuer issuer = request.getIssuer();
+                if (issuer.getFormat() == null || NameID.ENTITY.equals(issuer.getFormat())) {
+                    return issuer.getValue();
+                }
+            }
+            
+            return null;
+        }
+        
     }
     
 }
