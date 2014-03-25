@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile.impl;
+package org.opensaml.saml.common.profile.logic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
