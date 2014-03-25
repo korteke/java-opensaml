@@ -39,6 +39,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.FormatSpecificNameIdentifierGenerator;
 import org.opensaml.saml.common.profile.SAMLEventIds;
@@ -153,7 +154,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         nameIDPolicyPredicate = new DefaultNameIDPolicyPredicate();
         ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).setRequesterIdLookupStrategy(
                 new RequesterIdFromIssuerFunction());
-        ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).setNameIDPolicyLookupStrategy(
+        ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).setObjectLookupStrategy(
                 new NameIDPolicyLookupFunction());
         ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).initialize();
         
@@ -434,7 +435,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * Lookup function that returns the {@link NameIDPolicy} from an {@link AuthnRequest} message returned
      * from a lookup function, by default the inbound message.
      */
-    public static class NameIDPolicyLookupFunction implements Function<ProfileRequestContext,NameIDPolicy> {
+    public static class NameIDPolicyLookupFunction implements Function<ProfileRequestContext,SAMLObject> {
 
         /** Strategy used to locate the {@link AuthnRequest} to operate on. */
         @Nonnull private Function<ProfileRequestContext,AuthnRequest> requestLookupStrategy;
@@ -456,7 +457,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         /** {@inheritDoc} */
         @Override
-        @Nullable public NameIDPolicy apply(@Nullable final ProfileRequestContext profileRequestContext) {
+        @Nullable public SAMLObject apply(@Nullable final ProfileRequestContext profileRequestContext) {
             
             final AuthnRequest request = requestLookupStrategy.apply(profileRequestContext);
 
