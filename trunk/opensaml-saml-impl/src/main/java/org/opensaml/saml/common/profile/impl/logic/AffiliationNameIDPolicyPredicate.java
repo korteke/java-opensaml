@@ -77,10 +77,11 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
     /** {@inheritDoc} */
     @Override
     protected boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
-            @Nullable final String nameQualifier, @Nullable final String spNameQualifier) {
+            @Nullable final String format, @Nullable final String nameQualifier,
+            @Nullable final String spNameQualifier) {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
-        if (super.doApply(requesterId, responderId, nameQualifier, spNameQualifier)) {
+        if (super.doApply(requesterId, responderId, format, nameQualifier, spNameQualifier)) {
             return true;
         } else if (spNameQualifier == null) {
             return true;
