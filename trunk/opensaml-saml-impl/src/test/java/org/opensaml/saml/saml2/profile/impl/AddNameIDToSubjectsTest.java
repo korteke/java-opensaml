@@ -217,11 +217,8 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         
         final AffiliationNameIDPolicyPredicate predicate = new AffiliationNameIDPolicyPredicate();
         predicate.setMetadataResolver(metadataResolver);
-        predicate.setRequesterIdLookupStrategy(new Function<ProfileRequestContext,String>() {
-            public String apply(ProfileRequestContext input) {
-                return request.getIssuer().getValue();
-            }
-        });
+        predicate.setRequesterIdLookupStrategy(new AddNameIDToSubjects.RequesterIdFromIssuerFunction());
+        predicate.setNameIDPolicyLookupStrategy(new AddNameIDToSubjects.NameIDPolicyLookupFunction());
         predicate.initialize();
         action.setNameIDGenerators(generators);
         action.setNameIDPolicyPredicate(predicate);
