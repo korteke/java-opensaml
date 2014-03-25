@@ -19,4 +19,4 @@
  * Functions and predicates supporting common SAML profile behavior.
  */
 
-package org.opensaml.saml.common.profile.logic;
+package org.opensaml.saml.common.profile.impl.logic;
