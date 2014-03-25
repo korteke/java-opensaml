@@ -108,8 +108,12 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         MockSAML2NameIDGenerator mock3 = new MockSAML2NameIDGenerator("baz");
         mock3.setFormat(NameID.EMAIL);
         mock3.initialize();
+
+        MockSAML2NameIDGenerator mock4 = new MockSAML2NameIDGenerator("baf");
+        mock4.setFormat(NameID.PERSISTENT);
+        mock4.initialize();
         
-        generators = Arrays.<SAML2NameIDGenerator>asList(mock, mock2, mock3);
+        generators = Arrays.<SAML2NameIDGenerator>asList(mock, mock2, mock3, mock4);
 
         policyBuilder = (SAMLObjectBuilder<NameIDPolicy>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDPolicy>getBuilderOrThrow(
@@ -182,6 +186,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         addAssertions();
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
         final NameIDPolicy policy = policyBuilder.buildObject();
+        policy.setFormat(NameID.PERSISTENT);
         policy.setSPNameQualifier("foo");
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
@@ -203,14 +208,15 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
-        Assert.assertEquals(subject.getNameID().getValue(), "foo");
-        Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
+        Assert.assertEquals(subject.getNameID().getValue(), "baf");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.PERSISTENT);
     }
     
     @Test void testAffiliation() throws ComponentInitializationException, ProfileException {
         addAssertions();
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
         final NameIDPolicy policy = policyBuilder.buildObject();
+        policy.setFormat(NameID.PERSISTENT);
         policy.setSPNameQualifier("foo");
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
@@ -238,8 +244,8 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
-        Assert.assertEquals(subject.getNameID().getValue(), "foo");
-        Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
+        Assert.assertEquals(subject.getNameID().getValue(), "baf");
+        Assert.assertEquals(subject.getNameID().getFormat(), NameID.PERSISTENT);
     }
     
     @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {

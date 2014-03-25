@@ -17,14 +17,19 @@
 
 package org.opensaml.saml.common.profile.logic;
 
+import java.util.Collection;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
@@ -36,6 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 
 /**
  * Base class for implementations of {@link NameIDPolicyPredicate} that handles all the basic lookup
@@ -56,6 +62,14 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     /** Object lookup function. */
     @NonnullAfterInit private Function<ProfileRequestContext,SAMLObject> objectLookupStrategy;
 
+    /** Formats to apply policy to. */
+    @Nonnull @NonnullElements private Set<String> formats;
+    
+    /** Constructor. */
+    public AbstractNameIDPolicyPredicate() {
+        formats = Sets.newHashSet(NameID.TRANSIENT, NameID.PERSISTENT);
+    }
+    
     /**
      * Set the strategy used to locate the requester ID.
      * 
@@ -92,6 +106,22 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
         objectLookupStrategy = Constraint.isNotNull(strategy, "Object lookup strategy cannot be null");
     }
     
+    /**
+     * Set the formats to apply the predicate to.
+     * 
+     * @param newFormats    formats to apply predicate to
+     */
+    public synchronized void setFormats(@Nonnull @NonnullElements final Collection<String> newFormats) {
+        Constraint.isNotNull(formats, "Format collection cannot be null");
+        
+        for (final String s : newFormats) {
+            final String trimmed = StringSupport.trimOrNull(s);
+            if (trimmed != null) {
+                formats.add(trimmed);
+            }
+        }
+    }
+    
     /** {@inheritDoc} */
     @Override
     protected void doInitialize() throws ComponentInitializationException {
@@ -105,21 +135,6 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     /** {@inheritDoc} */
     @Override
     public boolean apply(@Nullable final ProfileRequestContext input) {
-        
-        final String requesterId;
-        final String responderId;
-        
-        if (requesterIdLookupStrategy != null) {
-            requesterId = requesterIdLookupStrategy.apply(input);
-        } else {
-            requesterId = null;
-        }
-
-        if (responderIdLookupStrategy != null) {
-            responderId = responderIdLookupStrategy.apply(input);
-        } else {
-            responderId = null;
-        }
 
         final SAMLObject target = objectLookupStrategy.apply(input);
         if (target == null) {
@@ -128,15 +143,83 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
         }
         
         if (target instanceof NameIdentifier) {
-            return doApply(requesterId, responderId, ((NameIdentifier) target).getNameQualifier(), null);
+            return doApply(input, (NameIdentifier) target);
         } else if (target instanceof NameID) {
-            return doApply(requesterId, responderId, ((NameID) target).getNameQualifier(),
-                    ((NameID) target).getSPNameQualifier());
+            return doApply(input, (NameID) target);
         } else if (target instanceof NameIDPolicy) {
-            return doApply(requesterId, responderId, null, ((NameIDPolicy) target).getSPNameQualifier());
+            return doApply(input, (NameIDPolicy) target);
         } else {
             log.error("Lookup function returned an object of an unsupported type: {}", target.getElementQName());
             return false;
+        }
+    }
+
+    /**
+     * Apply policy to the target object.
+     * 
+     * @param input current profile request context
+     * @param target target object
+     * 
+     * @return result of policy
+     */
+    private boolean doApply(@Nullable final ProfileRequestContext input, @Nonnull final NameIdentifier target) {
+        final String requesterId = requesterIdLookupStrategy != null ? requesterIdLookupStrategy.apply(input) : null;
+        final String responderId = responderIdLookupStrategy != null ? responderIdLookupStrategy.apply(input) : null;
+
+        final String format = target.getFormat();
+        if (formats.contains(format != null ? format : NameIdentifier.UNSPECIFIED)) {
+            log.debug("Applying policy to NameIdentifier with Format {}",
+                    format != null ? format : NameIdentifier.UNSPECIFIED);
+            return doApply(requesterId, responderId, format, target.getNameQualifier(), null);
+        } else {
+            log.debug("Policy checking disabled for NameIdentifier Format {}",
+                    format != null ? format : NameIdentifier.UNSPECIFIED);
+            return true;
+        }
+    }
+
+    /**
+     * Apply policy to the target object.
+     * 
+     * @param input current profile request context
+     * @param target target object
+     * 
+     * @return result of policy
+     */
+    private boolean doApply(@Nullable final ProfileRequestContext input, @Nonnull final NameID target) {
+        final String requesterId = requesterIdLookupStrategy != null ? requesterIdLookupStrategy.apply(input) : null;
+        final String responderId = responderIdLookupStrategy != null ? responderIdLookupStrategy.apply(input) : null;
+
+        final String format = target.getFormat();
+        if (formats.contains(format != null ? format : NameID.UNSPECIFIED)) {
+            log.debug("Applying policy to NameID with Format {}", format != null ? format : NameID.UNSPECIFIED);
+            return doApply(requesterId, responderId, format, target.getNameQualifier(), target.getSPNameQualifier());
+        } else {
+            log.debug("Policy checking disabled for NameID Format {}", format != null ? format : NameID.UNSPECIFIED);
+            return true;
+        }
+    }
+    
+    /**
+     * Apply policy to the target object.
+     * 
+     * @param input current profile request context
+     * @param target target object
+     * 
+     * @return result of policy
+     */
+    private boolean doApply(@Nullable final ProfileRequestContext input, @Nonnull final NameIDPolicy target) {
+        final String requesterId = requesterIdLookupStrategy != null ? requesterIdLookupStrategy.apply(input) : null;
+        final String responderId = responderIdLookupStrategy != null ? responderIdLookupStrategy.apply(input) : null;
+
+        final String format = target.getFormat();
+        if (formats.contains(format != null ? format : NameID.UNSPECIFIED)) {
+            log.debug("Applying policy to NameIDPolicy with Format {}", format != null ? format : NameID.UNSPECIFIED);
+            return doApply(requesterId, responderId, format, null, target.getSPNameQualifier());
+        } else {
+            log.debug("Policy checking disabled for NameIDPolicy with Format {}",
+                    format != null ? format : NameID.UNSPECIFIED);
+            return true;
         }
     }
     
@@ -145,12 +228,14 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * 
      * @param requesterId the requester
      * @param responderId the responder
+     * @param format format of identifier
      * @param nameQualifier the NameQualifier
      * @param spNameQualifier the SPNameQualifier
      * 
      * @return  true iff the combination of inputs satisfies a policy
      */
     protected abstract boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
-            @Nullable final String nameQualifier, @Nullable final String spNameQualifier);
-        
+            @Nullable final String format, @Nullable final String nameQualifier,
+            @Nullable final String spNameQualifier);
+    
 }

@@ -33,7 +33,8 @@ public class DefaultNameIDPolicyPredicate extends AbstractNameIDPolicyPredicate 
     /** {@inheritDoc} */
     @Override
     protected boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
-            @Nullable final String nameQualifier, @Nullable final String spNameQualifier) {
+            @Nullable final String format, @Nullable final String nameQualifier,
+            @Nullable final String spNameQualifier) {
         
         if (spNameQualifier != null) {
             if (requesterId == null || !spNameQualifier.equals(requesterId)) {
