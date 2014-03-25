@@ -20,11 +20,14 @@ package org.opensaml.saml.common.profile.logic;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
@@ -50,14 +53,8 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     /** Responder ID lookup function. */
     @Nullable private Function<ProfileRequestContext,String> responderIdLookupStrategy;
 
-    /** NameIDPolicy lookup function. */
-    @Nullable private Function<ProfileRequestContext,NameIDPolicy> nameIDPolicyLookupStrategy;
-
-    /** NameID lookup function. */
-    @Nullable private Function<ProfileRequestContext,NameID> nameIDLookupStrategy;
-
-    /** NameIdentifier lookup function. */
-    @Nullable private Function<ProfileRequestContext,NameIdentifier> nameIdentifierLookupStrategy;
+    /** Object lookup function. */
+    @NonnullAfterInit private Function<ProfileRequestContext,SAMLObject> objectLookupStrategy;
 
     /**
      * Set the strategy used to locate the requester ID.
@@ -84,38 +81,15 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     }
     
     /**
-     * Set a lookup strategy used to locate a {@link NameIDPolicy} to evaluate.
+     * Set the lookup strategy used to locate the object to evaluate.
      * 
      * @param strategy lookup function
      */
-    public synchronized void setNameIDPolicyLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,NameIDPolicy> strategy) {
+    public synchronized void setObjectLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        nameIDPolicyLookupStrategy = strategy;
-    }
-
-    /**
-     * Set a lookup strategy used to locate a {@link NameID} to evaluate.
-     * 
-     * @param strategy lookup function
-     */
-    public synchronized void setNameIDLookupStrategy(@Nullable final Function<ProfileRequestContext,NameID> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        nameIDLookupStrategy = strategy;
-    }
-
-    /**
-     * Set a lookup strategy used to locate a {@link NameIdentifier} to evaluate.
-     * 
-     * @param strategy lookup function
-     */
-    public synchronized void setNameIdentifierLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,NameIdentifier> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        nameIdentifierLookupStrategy = strategy;
+        objectLookupStrategy = Constraint.isNotNull(strategy, "Object lookup strategy cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -123,10 +97,8 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (nameIDPolicyLookupStrategy == null && nameIDLookupStrategy == null
-                && nameIdentifierLookupStrategy == null) {
-            throw new ComponentInitializationException(
-                    "One of NameIDPolicy, NameID, or NameIdentifier lookup strategies must be non-null");
+        if (objectLookupStrategy == null) {
+            throw new ComponentInitializationException("Object lookup strategy cannot be null");
         }
     }
 
@@ -149,29 +121,23 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
             responderId = null;
         }
 
-        if (nameIdentifierLookupStrategy != null) {
-            final NameIdentifier nameIdentifier = nameIdentifierLookupStrategy.apply(input);
-            if (nameIdentifier != null) {
-                return doApply(requesterId, responderId, nameIdentifier.getNameQualifier(), null);
-            }
-        }
-
-        if (nameIDLookupStrategy != null) {
-            final NameID nameID = nameIDLookupStrategy.apply(input);
-            if (nameID != null) {
-                return doApply(requesterId, responderId, nameID.getNameQualifier(), nameID.getSPNameQualifier());
-            }
+        final SAMLObject target = objectLookupStrategy.apply(input);
+        if (target == null) {
+            log.debug("No object to operate on, returning true");
+            return true;
         }
         
-        if (nameIDPolicyLookupStrategy != null) {
-            final NameIDPolicy policy = nameIDPolicyLookupStrategy.apply(input);
-            if (policy != null) {
-                return doApply(requesterId, responderId, null, policy.getSPNameQualifier());
-            }
+        if (target instanceof NameIdentifier) {
+            return doApply(requesterId, responderId, ((NameIdentifier) target).getNameQualifier(), null);
+        } else if (target instanceof NameID) {
+            return doApply(requesterId, responderId, ((NameID) target).getNameQualifier(),
+                    ((NameID) target).getSPNameQualifier());
+        } else if (target instanceof NameIDPolicy) {
+            return doApply(requesterId, responderId, null, ((NameIDPolicy) target).getSPNameQualifier());
+        } else {
+            log.error("Lookup function returned an object of an unsupported type: {}", target.getElementQName());
+            return false;
         }
-        
-        // If no objects were found to evaluate, then there's no reason to fail.
-        return true;
     }
     
     /**
