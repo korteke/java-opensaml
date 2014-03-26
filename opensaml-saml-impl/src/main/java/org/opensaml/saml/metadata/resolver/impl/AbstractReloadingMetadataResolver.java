@@ -120,7 +120,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     
     /** {@inheritDoc} */
     @Override
-    public void setCacheSourceMetadata(final boolean flag) {
+    protected void setCacheSourceMetadata(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
