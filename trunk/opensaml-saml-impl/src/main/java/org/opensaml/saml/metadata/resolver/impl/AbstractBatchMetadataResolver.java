@@ -67,7 +67,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * 
      * @return true if source should be cached, false otherwise
      */
-    public boolean isCacheSourceMetadata() {
+    protected boolean isCacheSourceMetadata() {
         return cacheSourceMetadata;
     }
     
@@ -76,7 +76,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * 
      * @param flag true if source should be cached, false otherwise
      */
-    public void setCacheSourceMetadata(boolean flag) {
+    protected void setCacheSourceMetadata(boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         cacheSourceMetadata = flag; 
