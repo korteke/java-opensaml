@@ -23,6 +23,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Timer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -119,29 +122,43 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     public String getMetadataURI() {
         return metadataURI.toASCIIString();
     }
-
+    
     /**
-     * Sets the username and password used to access the metadata URL. To disable BASIC authentication set the username
-     * and password to null. If the <code>authScope</code> is null, one will be generated based off of 
-     * the metadata URI's hostname and port.
+     * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass 
+     * null for the credentials instance.
      * 
-     * @param username the username
-     * @param password the password
+     * An {@link AuthScope} will be generated based off of the metadata URI's hostname and port.
+     * 
+     * @param credentials the username and password credentials to user
+     */
+    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
+        setBasicCredentials(credentials, null);
+    }
+    
+    /**
+     * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass 
+     * null for the credentials instance.
+     * 
+     * <p>
+     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated based off of 
+     * the metadata URI's hostname and port.
+     * </p>
+     * 
+     * @param
      * @param scope the HTTP client auth scope with which to scope the credentials, may be null
      */
-    public void setBasicCredentials(String username, String password, AuthScope scope) {
+    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials, 
+            @Nullable final AuthScope scope) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
-        if (username != null && password != null) {
-            UsernamePasswordCredentials usernamePasswordCredentials = 
-                    new UsernamePasswordCredentials(username, password);
+        if (credentials != null) {
             AuthScope authScope = scope;
             if (authScope == null) {
                 authScope = new AuthScope(metadataURI.getHost(), metadataURI.getPort());
             }
             BasicCredentialsProvider provider = new BasicCredentialsProvider();
-            provider.setCredentials(authScope, usernamePasswordCredentials);
+            provider.setCredentials(authScope, credentials);
             credentialsProvider = provider;
         } else {
             log.debug("Either username or password were null, disabling basic auth");
