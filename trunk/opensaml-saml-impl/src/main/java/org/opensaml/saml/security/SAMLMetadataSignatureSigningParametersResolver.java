@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -69,13 +70,8 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             return;
         }
         
-        List<XMLObject> signingMethods = null;
-        
-        Extensions extensions = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole());
-        
-        if (extensions != null) {
-            signingMethods = extensions.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME);
-        }
+        List<XMLObject> signingMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
+                SigningMethod.DEFAULT_ELEMENT_NAME);
         
         if (signingMethods == null || signingMethods.isEmpty()) {
             super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
@@ -147,13 +143,8 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
         }
         
-        List<XMLObject> digestMethods = null;
-        
-        Extensions extensions = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole());
-        
-        if (extensions != null) {
-            digestMethods = extensions.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
-        }
+        List<XMLObject> digestMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
+                DigestMethod.DEFAULT_ELEMENT_NAME);
         
         if (digestMethods == null || digestMethods.isEmpty()) {
             return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
@@ -170,29 +161,35 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
     }
     
     /**
-     * Get the effective {@link Extensions} instance to consider.
-     * <p>
-     * Note that per the SAML metadata algorithm support extension specification, the parent 
-     * EntityDescriptor's Extensions should only be considered if the RoleDescriptor's Extensions
-     * contains neither a SigningMethod nor a DigestMethod.
-     * </p>
+     * Get the extensions indicated by the passed QName.  The passed RoleDescriptor's Extensions element
+     * is examined first. If at least 1 such extension is found there, that list list returned.
+     * If no such extensions are found on the RoleDescriptor, then the RoleDescriptor's parent EntityDescriptor 
+     * will be examined.
      * 
-     * @param roleDescriptor the role descriptor to evaluate
-     * @return the extensions instance to use, or null
+     * @param roleDescriptor the role descriptor instance to examine
+     * @param extensionName the extension name for which to search
+     * @return the list of extension XMLObjects found, or null
      */
-    @Nullable protected Extensions getExtensions(@Nonnull final RoleDescriptor roleDescriptor) {
+    @Nullable protected List<XMLObject> getExtensions(@Nonnull final RoleDescriptor roleDescriptor, 
+            @Nonnull final QName extensionName) {
+        List<XMLObject> result;
         Extensions extensions = roleDescriptor.getExtensions();
         if (extensions != null) {
-            if (extensions.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME).size() > 0
-                    || extensions.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).size() > 0) {
-                return extensions;
+            result = extensions.getUnknownXMLObjects(extensionName);
+            if (!result.isEmpty()) {
+                return result;
             }
         }
         
         if (roleDescriptor.getParent() instanceof EntityDescriptor) {
-            return ((EntityDescriptor) roleDescriptor.getParent()).getExtensions();
+            extensions = ((EntityDescriptor)roleDescriptor.getParent()).getExtensions();
+            if (extensions != null) {
+                result = extensions.getUnknownXMLObjects(extensionName);
+                if (!result.isEmpty()) {
+                    return result;
+                }
+            }
         }
-        
         return null;
     }
 
