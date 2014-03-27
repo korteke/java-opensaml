@@ -162,9 +162,9 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
     
     /**
      * Get the extensions indicated by the passed QName.  The passed RoleDescriptor's Extensions element
-     * is examined first. If at least 1 such extension is found there, that list list returned.
+     * is examined first. If at least 1 such extension is found there, that list is returned.
      * If no such extensions are found on the RoleDescriptor, then the RoleDescriptor's parent EntityDescriptor 
-     * will be examined.
+     * will be examined, if it exists.
      * 
      * @param roleDescriptor the role descriptor instance to examine
      * @param extensionName the extension name for which to search
