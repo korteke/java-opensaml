@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.profile.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -38,6 +39,7 @@ import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.ManageNameIDRequest;
@@ -59,6 +61,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 /**
  * Action to decrypt an {@link EncryptedID} element and replace it with the decrypted {@link NameID}
@@ -69,7 +73,7 @@ import com.google.common.base.Functions;
  * message.</p> 
  * 
  * <p>The {@link SecurityParametersContext} governing the decryption process is located by a lookup
- * strategy, by default a child of the profile request context.</p>
+ * strategy, by default a child of the inbound message context.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
@@ -90,17 +94,22 @@ public class DecryptNameIDs extends AbstractProfileAction {
     /** Strategy used to locate the SAML message to operate on. */
     @Nonnull private Function<ProfileRequestContext, Object> messageLookupStrategy;
     
+    /** Predicate dertermining whether to attempt decryption. */
+    @Nonnull private Predicate<Pair<ProfileRequestContext,EncryptedElementType>> decryptionPredicate;
+    
     /** The decryption object. */
     @Nullable private Decrypter decrypter;
     
     /** Message to operate on. */
-    @Nullable private Object message;
+    @Nullable private SAMLObject message;
     
     /** Constructor. */
     public DecryptNameIDs() {
         errorFatal = true;
-        securityParamsLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class);
+        securityParamsLookupStrategy = Functions.compose(new ChildContextLookup<>(SecurityParametersContext.class),
+                new InboundMessageContextLookup());
         messageLookupStrategy = Functions.compose(new MessageLookup<>(Object.class), new InboundMessageContextLookup());
+        decryptionPredicate = Predicates.alwaysTrue();
     }
     
     /**
@@ -141,18 +150,32 @@ public class DecryptNameIDs extends AbstractProfileAction {
         messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
     }
     
+    /**
+     * Set the predicate used to determine whether to attempt decryption.
+     * 
+     * @param predicate predicate to use
+     */
+    public synchronized void setDecryptionPredicate(
+            @Nonnull final Predicate<Pair<ProfileRequestContext,EncryptedElementType>> predicate) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        decryptionPredicate = Constraint.isNotNull(predicate, "Decryption predicate cannot be null");
+    }
+    
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
-        message = messageLookupStrategy.apply(profileRequestContext);
-        if (message == null) {
+        Object theMessage = messageLookupStrategy.apply(profileRequestContext);
+        if (theMessage == null) {
             log.debug("{} No message was returned by lookup strategy", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (!(message instanceof SAMLObject)) {
+        } else if (!(theMessage instanceof SAMLObject)) {
             log.debug("{} Message was not a SAML construct, nothing to do", getLogPrefix());
             return false;
         }
+        
+        message = (SAMLObject) theMessage;
         
         final SecurityParametersContext paramsCtx = securityParamsLookupStrategy.apply(profileRequestContext);
         if (paramsCtx == null || paramsCtx.getDecryptionParameters() == null) {
@@ -171,267 +194,283 @@ public class DecryptNameIDs extends AbstractProfileAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         
-        boolean result = true;
-        
-        if (message instanceof AuthnRequest) {
-            result = processSubject(((AuthnRequest) message).getSubject());
-        } else if (message instanceof SubjectQuery) {
-            result = processSubject(((SubjectQuery) message).getSubject());
-        } else if (message instanceof Response) {
-            for (final Assertion a : ((Response) message).getAssertions()) {
-                if (!processAssertion(a)) {
-                    result = false;
-                    break;
+        try {
+            if (message instanceof AuthnRequest) {
+                processSubject(profileRequestContext, ((AuthnRequest) message).getSubject());
+            } else if (message instanceof SubjectQuery) {
+                processSubject(profileRequestContext, ((SubjectQuery) message).getSubject());
+            } else if (message instanceof Response) {
+                for (final Assertion a : ((Response) message).getAssertions()) {
+                    processAssertion(profileRequestContext, a);
                 }
+            } else if (message instanceof LogoutRequest) {
+                processLogoutRequest(profileRequestContext, (LogoutRequest) message);
+            } else if (message instanceof ManageNameIDRequest) {
+                processManageNameIDRequest(profileRequestContext, (ManageNameIDRequest) message);
+            } else if (message instanceof NameIDMappingRequest) {
+                processNameIDMappingRequest(profileRequestContext, (NameIDMappingRequest) message);
+            } else if (message instanceof NameIDMappingResponse) {
+                processNameIDMappingResponse(profileRequestContext, (NameIDMappingResponse) message);
+            } else if (message instanceof Assertion) {
+                processAssertion(profileRequestContext, (Assertion) message);
+            } else {
+                log.debug("{} Message was of unrecognized type {}, nothing to do", getLogPrefix(),
+                        message.getClass().getName());
+                return;
             }
-        } else if (message instanceof LogoutRequest) {
-            result = processLogoutRequest((LogoutRequest) message);
-        } else if (message instanceof ManageNameIDRequest) {
-            result = processManageNameIDRequest((ManageNameIDRequest) message);
-        } else if (message instanceof NameIDMappingRequest) {
-            result = processNameIDMappingRequest((NameIDMappingRequest) message);
-        } else if (message instanceof NameIDMappingResponse) {
-            result = processNameIDMappingResponse((NameIDMappingResponse) message);
-        } else if (message instanceof Assertion) {
-            result = processAssertion((Assertion) message);
-        } else {
-            log.debug("{} Message was of unrecognized type {}, nothing to do", getLogPrefix(),
-                    message.getClass().getName());
-            return;
+        } catch (final DecryptionException e) {
+            log.warn(getLogPrefix() + "Failure performing decryption", e);
+            if (errorFatal) {
+                ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.DECRYPT_NAMEID_FAILED);
+            }
         }
         
-        if (!result && errorFatal) {
-            ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.DECRYPT_NAMEID_FAILED);
-        }
     }
 // Checkstyle: CyclomaticComplexity ON
     
     /**
      * Decrypt an {@link EncryptedID} and return the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param encID the encrypted object
-     * @return the decrypted name, or null
+     * 
+     * @return the decrypted name, or null if the object did not need decryption
+     * @throws DecryptionException if an error occurs during decryption
      */
-    @Nullable private NameID processEncryptedID(@Nonnull final EncryptedID encID) {
-        if (decrypter == null) {
-            log.warn("{} No decryption parameters, unable to decrypt EncryptedID", getLogPrefix());
+    @Nullable private NameID processEncryptedID(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final EncryptedID encID) throws DecryptionException {
+        
+        if (!decryptionPredicate.apply(
+                new Pair<ProfileRequestContext,EncryptedElementType>(profileRequestContext, encID))) {
             return null;
         }
         
-        try {
-            final SAMLObject object = decrypter.decrypt(encID);
-            if (object instanceof NameID) {
-                return (NameID) object;
-            }
-            log.warn("{} Decrypted EncryptedID was not a NameID, was a {}", getLogPrefix(),
-                    object.getElementQName().toString());
-        } catch (DecryptionException e) {
-            log.warn(getLogPrefix() + " Error decrypting EncryptedID", e);
+        if (decrypter == null) {
+            throw new DecryptionException("No decryption parameters, unable to decrypt EncryptedID");
         }
-        return null;
+        
+        final SAMLObject object = decrypter.decrypt(encID);
+        if (object instanceof NameID) {
+            return (NameID) object;
+        }
+        throw new DecryptionException("Decrypted EncryptedID was not a NameID, was a "
+                + object.getElementQName().toString());
     }
 
     /**
      * Decrypt a {@link NewEncryptedID} and return the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param encID the encrypted object
-     * @return the decrypted name, or null
+     * 
+     * @return the decrypted name, or null if the object did not need decryption
+     * @throws DecryptionException if an error occurs during decryption
      */
-    @Nullable private NewID processNewEncryptedID(@Nonnull final NewEncryptedID encID) {
-        if (decrypter == null) {
-            log.warn("{} No decryption parameters, unable to decrypt NewEncryptedID", getLogPrefix());
+    @Nullable private NewID processNewEncryptedID(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final NewEncryptedID encID) throws DecryptionException {
+        
+        if (!decryptionPredicate.apply(
+                new Pair<ProfileRequestContext,EncryptedElementType>(profileRequestContext, encID))) {
             return null;
         }
 
-        try {
-            return decrypter.decrypt(encID);
-        } catch (DecryptionException e) {
-            log.warn(getLogPrefix() + " Error decrypting NewEncryptedID", e);
+        if (decrypter == null) {
+            throw new DecryptionException("No decryption parameters, unable to decrypt NewEncryptedID");
         }
-        
-        return null;
+
+        return decrypter.decrypt(encID);
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Decrypt any {@link EncryptedID} found in a subject and replace it with the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param subject   subject to operate on
-     * @return  true iff no decryption failures occurred
+     * 
+     * @throws DecryptionException if an error occurs
      */
-    private boolean processSubject(@Nullable final Subject subject) {
+    private void processSubject(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nullable final Subject subject) throws DecryptionException {
         
         if (subject != null) {
             if (subject.getEncryptedID() != null) {
                 log.debug("{} Decrypting EncryptedID in Subject", getLogPrefix());
-                final NameID decrypted = processEncryptedID(subject.getEncryptedID());
-                if (decrypted != null) {
-                    subject.setNameID(decrypted);
-                    subject.setEncryptedID(null);
-                } else {
-                    return false;
+                try {
+                    final NameID decrypted = processEncryptedID(profileRequestContext, subject.getEncryptedID());
+                    if (decrypted != null) {
+                        subject.setNameID(decrypted);
+                        subject.setEncryptedID(null);
+                    }
+                } catch (final DecryptionException e) {
+                    if (errorFatal) {
+                        throw e;
+                    }
+                    log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in Subject", e);
                 }
             }
             
             for (final SubjectConfirmation sc : subject.getSubjectConfirmations()) {
                 if (sc.getEncryptedID() != null) {
                     log.debug("{} Decrypting EncryptedID in SubjectConfirmation", getLogPrefix());
-                    final NameID decrypted = processEncryptedID(subject.getEncryptedID());
-                    if (decrypted != null) {
-                        sc.setNameID(decrypted);
-                        sc.setEncryptedID(null);
-                    } else {
-                        return false;
+                    try {
+                        final NameID decrypted = processEncryptedID(profileRequestContext, subject.getEncryptedID());
+                        if (decrypted != null) {
+                            sc.setNameID(decrypted);
+                            sc.setEncryptedID(null);
+                        }
+                    } catch (final DecryptionException e) {
+                        if (errorFatal) {
+                            throw e;
+                        }
+                        log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in SubjectConfirmation", e);
                     }
                 }
             }
         }
-        
-        return true;
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Decrypt any {@link EncryptedID} found in a LogoutRequest and replace it with the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param request   request to operate on
-     * @return  true iff no decryption failures occurred
+     * 
+     * @throws DecryptionException if an error occurs
      */
-    private boolean processLogoutRequest(@Nullable final LogoutRequest request) {
+    private void processLogoutRequest(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final LogoutRequest request) throws DecryptionException {
         
-        if (request != null) {
-            if (request.getEncryptedID() != null) {
-                log.debug("{} Decrypting EncryptedID in LogoutRequest", getLogPrefix());
-                final NameID decrypted = processEncryptedID(request.getEncryptedID());
-                if (decrypted != null) {
-                    request.setNameID(decrypted);
-                    request.setEncryptedID(null);
-                } else {
-                    return false;
-                }
+        if (request.getEncryptedID() != null) {
+            log.debug("{} Decrypting EncryptedID in LogoutRequest", getLogPrefix());
+            final NameID decrypted = processEncryptedID(profileRequestContext, request.getEncryptedID());
+            if (decrypted != null) {
+                request.setNameID(decrypted);
+                request.setEncryptedID(null);
             }
         }
-        
-        return true;
     }
 
     /**
      * Decrypt any {@link EncryptedID} found in a ManageNameIDRequest and replace it with the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param request   request to operate on
-     * @return  true iff no decryption failures occurred
+     * 
+     * @throws DecryptionException if an error occurs
      */
-    private boolean processManageNameIDRequest(@Nullable final ManageNameIDRequest request) {
+    private void processManageNameIDRequest(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final ManageNameIDRequest request) throws DecryptionException {
         
-        if (request != null) {
-            if (request.getEncryptedID() != null) {
-                log.debug("{} Decrypting EncryptedID in ManageNameIDRequest", getLogPrefix());
-                final NameID decrypted = processEncryptedID(request.getEncryptedID());
-                if (decrypted != null) {
-                    request.setNameID(decrypted);
-                    request.setEncryptedID(null);
-                } else {
-                    return false;
-                }
-            }
-            
-            if (request.getNewEncryptedID() != null) {
-                log.debug("{} Decrypting NewEncryptedID in ManageNameIDRequest", getLogPrefix());
-                final NewID decrypted = processNewEncryptedID(request.getNewEncryptedID());
-                if (decrypted != null) {
-                    request.setNewID(decrypted);
-                    request.setNewEncryptedID(null);
-                } else {
-                    return false;
-                }
+        if (request.getEncryptedID() != null) {
+            log.debug("{} Decrypting EncryptedID in ManageNameIDRequest", getLogPrefix());
+            final NameID decrypted = processEncryptedID(profileRequestContext, request.getEncryptedID());
+            if (decrypted != null) {
+                request.setNameID(decrypted);
+                request.setEncryptedID(null);
             }
         }
         
-        return true;
+        if (request.getNewEncryptedID() != null) {
+            log.debug("{} Decrypting NewEncryptedID in ManageNameIDRequest", getLogPrefix());
+            final NewID decrypted = processNewEncryptedID(profileRequestContext, request.getNewEncryptedID());
+            if (decrypted != null) {
+                request.setNewID(decrypted);
+                request.setNewEncryptedID(null);
+            }
+        }
     }
 
     /**
      * Decrypt any {@link EncryptedID} found in a NameIDMappingRequest and replace it with the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param request   request to operate on
-     * @return  true iff no decryption failures occurred
+     * 
+     * @throws DecryptionException if an error occurs
      */
-    private boolean processNameIDMappingRequest(@Nullable final NameIDMappingRequest request) {
+    private void processNameIDMappingRequest(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final NameIDMappingRequest request) throws DecryptionException {
         
-        if (request != null) {
-            if (request.getEncryptedID() != null) {
-                log.debug("{} Decrypting EncryptedID in NameIDMappingRequest", getLogPrefix());
-                final NameID decrypted = processEncryptedID(request.getEncryptedID());
-                if (decrypted != null) {
-                    request.setNameID(decrypted);
-                    request.setEncryptedID(null);
-                } else {
-                    return false;
-                }
+        if (request.getEncryptedID() != null) {
+            log.debug("{} Decrypting EncryptedID in NameIDMappingRequest", getLogPrefix());
+            final NameID decrypted = processEncryptedID(profileRequestContext, request.getEncryptedID());
+            if (decrypted != null) {
+                request.setNameID(decrypted);
+                request.setEncryptedID(null);
             }
         }
-        
-        return true;
     }
 
     /**
      * Decrypt any {@link EncryptedID} found in a NameIDMappingResponse and replace it with the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param response   response to operate on
-     * @return  true iff no decryption failures occurred
+     * 
+     * @throws DecryptionException if an error occurs 
      */
-    private boolean processNameIDMappingResponse(@Nullable final NameIDMappingResponse response) {
+    private void processNameIDMappingResponse(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final NameIDMappingResponse response) throws DecryptionException {
         
-        if (response != null) {
-            if (response.getEncryptedID() != null) {
-                log.debug("{} Decrypting EncryptedID in NameIDMappingRequest", getLogPrefix());
-                final NameID decrypted = processEncryptedID(response.getEncryptedID());
-                if (decrypted != null) {
-                    response.setNameID(decrypted);
-                    response.setEncryptedID(null);
-                } else {
-                    return false;
-                }
+        if (response.getEncryptedID() != null) {
+            log.debug("{} Decrypting EncryptedID in NameIDMappingRequest", getLogPrefix());
+            final NameID decrypted = processEncryptedID(profileRequestContext, response.getEncryptedID());
+            if (decrypted != null) {
+                response.setNameID(decrypted);
+                response.setEncryptedID(null);
             }
         }
-        
-        return true;
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Decrypt any {@link EncryptedID} found in an assertion and replace it with the result.
      * 
+     * @param profileRequestContext current profile request context
      * @param assertion   assertion to operate on
-     * @return  true iff no decryption failures occurred
+     * 
+     * @throws DecryptionException if an error occurs
      */
-    private boolean processAssertion(@Nullable final Assertion assertion) {
-        
-        if (assertion != null) {
-            boolean result = processSubject(assertion.getSubject());
-            if (!result) {
-                return result;
+    private void processAssertion(@Nonnull final ProfileRequestContext profileRequestContext,
+            @Nonnull final Assertion assertion) throws DecryptionException {
+
+        try {
+            processSubject(profileRequestContext, assertion.getSubject());
+        } catch (final DecryptionException e) {
+            if (errorFatal) {
+                throw e;
             }
+            log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedIDs in Subjectn", e);
+        }
             
-            if (assertion.getConditions() != null) {
-                for (final Condition c : assertion.getConditions().getConditions()) {
-                    if (!(c instanceof DelegationRestrictionType)) {
-                        continue;
-                    }
-                    for (final Delegate d : ((DelegationRestrictionType) c).getDelegates()) {
-                        if (d.getEncryptedID() != null) {
-                            log.debug("{} Decrypting EncryptedID in Delegate", getLogPrefix());
-                            final NameID decrypted = processEncryptedID(d.getEncryptedID());
+        
+        if (assertion.getConditions() != null) {
+            for (final Condition c : assertion.getConditions().getConditions()) {
+                if (!(c instanceof DelegationRestrictionType)) {
+                    continue;
+                }
+                for (final Delegate d : ((DelegationRestrictionType) c).getDelegates()) {
+                    if (d.getEncryptedID() != null) {
+                        log.debug("{} Decrypting EncryptedID in Delegate", getLogPrefix());
+                        try {
+                            final NameID decrypted = processEncryptedID(profileRequestContext, d.getEncryptedID());
                             if (decrypted != null) {
                                 d.setNameID(decrypted);
                                 d.setEncryptedID(null);
-                            } else {
-                                return false;
                             }
+                        } catch (final DecryptionException e) {
+                            if (errorFatal) {
+                                throw e;
+                            }
+                            log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in Delegate", e);
                         }
                     }
                 }
             }
         }
-        
-        return true;
     }
+// Checkstyle: CyclomaticComplexity OFF
     
 }
