@@ -127,12 +127,12 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass 
      * null for the credentials instance.
      * 
-     * An {@link AuthScope} will be generated based off of the metadata URI's hostname and port.
+     * An {@link AuthScope} will be generated based off the metadata URI's hostname and port.
      * 
-     * @param credentials the username and password credentials to user
+     * @param credentials the username and password credentials
      */
     public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
-        setBasicCredentials(credentials, null);
+        setBasicCredentialsWithScope(credentials, null);
     }
     
     /**
@@ -140,14 +140,14 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * null for the credentials instance.
      * 
      * <p>
-     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated based off of 
+     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated based off
      * the metadata URI's hostname and port.
      * </p>
      * 
-     * @param
+     * @param credentials the username and password credentials
      * @param scope the HTTP client auth scope with which to scope the credentials, may be null
      */
-    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials, 
+    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials, 
             @Nullable final AuthScope scope) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
