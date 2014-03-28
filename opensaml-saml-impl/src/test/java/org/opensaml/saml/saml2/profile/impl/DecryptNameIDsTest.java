@@ -80,7 +80,7 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
                         Subject.DEFAULT_ELEMENT_NAME);
 
-        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
+        final Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new EncryptionParameters();
         encParams.setAlgorithm(encURI);
@@ -92,7 +92,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         decParams.setDataKeyInfoCredentialResolver(keyResolver);
         
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getSubcontext(SecurityParametersContext.class, true).setDecryptionParameters(decParams);
+        prc.getInboundMessageContext().getSubcontext(
+                SecurityParametersContext.class, true).setDecryptionParameters(decParams);
         
         action = new DecryptNameIDs();
         action.setId("test");
@@ -129,7 +130,7 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         action.initialize();
         
-        prc.removeSubcontext(SecurityParametersContext.class);
+        prc.getInboundMessageContext().removeSubcontext(SecurityParametersContext.class);
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.DECRYPT_NAMEID_FAILED);
@@ -201,8 +202,9 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         KeyInfoCredentialResolver badKeyResolver = new StaticKeyInfoCredentialResolver(encCred);
-        prc.getSubcontext(SecurityParametersContext.class).getDecryptionParameters().setDataKeyInfoCredentialResolver(
-                badKeyResolver);
+        prc.getInboundMessageContext().getSubcontext(
+                SecurityParametersContext.class).getDecryptionParameters().setDataKeyInfoCredentialResolver(
+                        badKeyResolver);
         
         action.initialize();
         
@@ -236,8 +238,9 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         KeyInfoCredentialResolver badKeyResolver = new StaticKeyInfoCredentialResolver(encCred);
-        prc.getSubcontext(SecurityParametersContext.class).getDecryptionParameters().setDataKeyInfoCredentialResolver(
-                badKeyResolver);
+        prc.getInboundMessageContext().getSubcontext(
+                SecurityParametersContext.class).getDecryptionParameters().setDataKeyInfoCredentialResolver(
+                        badKeyResolver);
         
         action.setErrorFatal(false);
         action.initialize();
