@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.context;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
@@ -56,9 +57,13 @@ public class SecurityParametersContext extends BaseContext {
      * Set the parameters to use for XML signature signing operations.
      * 
      * @param params the parameters
+     * 
+     * @return this context
      */
-    public void setSignatureSigningParameters(@Nullable final SignatureSigningParameters params) {
+    @Nonnull public SecurityParametersContext setSignatureSigningParameters(
+            @Nullable final SignatureSigningParameters params) {
         signatureSigningParameters = params;
+        return this;
     }
 
     /**
@@ -73,10 +78,14 @@ public class SecurityParametersContext extends BaseContext {
     /**
      * Set the parameters to use for XML signature validation operations.
      * 
-     * @param params The signatureValidationParameters to set.
+     * @param params The signatureValidationParameters to set
+     * 
+     * @return this context
      */
-    public void setSignatureValidationParameters(@Nullable final SignatureValidationParameters params) {
+    @Nonnull public SecurityParametersContext setSignatureValidationParameters(
+            @Nullable final SignatureValidationParameters params) {
         signatureValidationParameters = params;
+        return this;
     }
 
     /**
@@ -92,9 +101,12 @@ public class SecurityParametersContext extends BaseContext {
      * Set the parameters to use for XML encryption operations.
      * 
      * @param params the parameters
+     * 
+     * @return this context
      */
-    public void setEncryptionParameters(@Nullable final EncryptionParameters params) {
+    @Nonnull public SecurityParametersContext setEncryptionParameters(@Nullable final EncryptionParameters params) {
         encryptionParameters = params;
+        return this;
     }
 
     /**
@@ -110,9 +122,12 @@ public class SecurityParametersContext extends BaseContext {
      * Set the parameters to use for XML decryption operations.
      * 
      * @param params the parameters
+     * 
+     * @return this context
      */
-    public void setDecryptionParameters(@Nullable final DecryptionParameters params) {
+    @Nonnull public SecurityParametersContext setDecryptionParameters(@Nullable final DecryptionParameters params) {
         decryptionParameters = params;
+        return this;
     }
 
 }
