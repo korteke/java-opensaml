@@ -24,7 +24,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureValidationParameters;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.EncryptionParameters;
 
 /**
  * A context implementation for storing parameter instances for XML signature signing and validation, and XML
