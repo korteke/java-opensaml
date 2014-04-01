@@ -17,58 +17,64 @@
 
 package org.opensaml.profile.action;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /** Constants to use for {@link ProfileAction} {@link org.opensaml.profile.context.EventContext}s. */
 public final class EventIds {
 
-    /**
-     * ID of event returned if an I/O-related error occurs.
-     */
-    public static final String IO_ERROR = "InputOutputError";
+    /** ID of event returned if an I/O-related error occurs. */
+    @Nonnull @NotEmpty public static final String IO_ERROR = "InputOutputError";
     
     /**
      * ID of event returned if the {@link org.opensaml.profile.context.ProfileRequestContext} associated with the
      * current request is missing or corrupt in some way.
      */
-    public static final String INVALID_PROFILE_CTX = "InvalidProfileContext";
+    @Nonnull @NotEmpty public static final String INVALID_PROFILE_CTX = "InvalidProfileContext";
 
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.context.MessageContext} is missing or corrupt in some
      * way.
      */
-    public static final String INVALID_MSG_CTX = "InvalidMessageContext";
+    @Nonnull @NotEmpty public static final String INVALID_MSG_CTX = "InvalidMessageContext";
 
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.context.BasicMessageMetadataContext} is missing or
      * corrupt in some way.
      */
-    public static final String INVALID_MSG_MD = "InvalidMessageMetadata";
+    @Nonnull @NotEmpty public static final String INVALID_MSG_MD = "InvalidMessageMetadata";
 
+    /** ID of event returned if an error occurs with security configuration. */
+    @Nonnull @NotEmpty public static final String INVALID_SEC_CFG = "SecurityConfigurationError";
+    
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.decoder.MessageDecoder} is unable to decode a
      * message.
      */
-    public static final String UNABLE_TO_DECODE = "UnableToDecode";
+    @Nonnull @NotEmpty public static final String UNABLE_TO_DECODE = "UnableToDecode";
     
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.encoder.MessageEncoder} is unable to encode a
      * message.
      */
-    public static final String UNABLE_TO_ENCODE = "UnableToEncode";
+    @Nonnull @NotEmpty public static final String UNABLE_TO_ENCODE = "UnableToEncode";
     
     /**
      * ID of the event returned if a {@link org.opensaml.xmlsec.signature.support.Signer} is unable to sign a signature.
      */
-    public static final String UNABLE_TO_SIGN = "UnableToSign";
+    @Nonnull @NotEmpty public static final String UNABLE_TO_SIGN = "UnableToSign";
 
     /** ID of the event returned if a SAML message version is incorrect or unsupported. */
-    public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
+    @Nonnull @NotEmpty public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
     
     /**
      * ID of an Event indicating that an action completed successfully and processing should move on to the next step.
      */
-    public static final String PROCEED_EVENT_ID = "proceed";
+    @Nonnull @NotEmpty public static final String PROCEED_EVENT_ID = "proceed";
 
     /** Constructor. */
     private EventIds() {
+        
     }
 }
