@@ -47,6 +47,7 @@
 
     <properties>
         <svn.relative.location>java-opensaml</svn.relative.location>
+        <java-support.version>3.0-SNAPSHOT</java-support.version>
     </properties>
 
     <repositories>
@@ -72,7 +73,7 @@
         <dependency>
             <groupId>net.shibboleth.utilities</groupId>
             <artifactId>java-support</artifactId>
-            <version>3.0-SNAPSHOT</version>
+            <version>${java-support.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -87,7 +88,7 @@
         <dependency>
             <groupId>net.shibboleth.utilities</groupId>
             <artifactId>java-support</artifactId>
-            <version>2.1-SNAPSHOT</version>
+            <version>${java-support.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
