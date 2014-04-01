@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.xmlsec.SignatureValidationConfiguration;
 import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.SignatureValidationParametersResolver;
-import org.opensaml.xmlsec.criterion.SignatureValidationConfiguratonCriterion;
+import org.opensaml.xmlsec.criterion.SignatureValidationConfigurationCriterion;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 
 /**
@@ -38,7 +38,7 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
  * <ul>
- * <li>{@link SignatureValidationConfiguratonCriterion} - required</li> 
+ * <li>{@link SignatureValidationConfigurationCriterion} - required</li> 
  * </ul>
  * </p>
  */
@@ -62,13 +62,13 @@ public class BasicSignatureValidationParametersResolver
     @Nullable
     public SignatureValidationParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
         Constraint.isNotNull(criteria, "CriteriaSet was null");
-        Constraint.isNotNull(criteria.get(SignatureValidationConfiguratonCriterion.class), 
+        Constraint.isNotNull(criteria.get(SignatureValidationConfigurationCriterion.class), 
                 "Resolver requires an instance of SignatureValidationConfigurationCriterion");
         
         SignatureValidationParameters params = new SignatureValidationParameters();
         
         resolveAndPopulateWhiteAndBlacklists(params, criteria, 
-                criteria.get(SignatureValidationConfiguratonCriterion.class).getConfigurations());
+                criteria.get(SignatureValidationConfigurationCriterion.class).getConfigurations());
         
         params.setSignatureTrustEngine(resolveSignatureTrustEngine(criteria));
         
@@ -84,7 +84,7 @@ public class BasicSignatureValidationParametersResolver
      */
     @Nullable protected SignatureTrustEngine resolveSignatureTrustEngine(@Nonnull final CriteriaSet criteria) {
         
-        for (SignatureValidationConfiguration config : criteria.get(SignatureValidationConfiguratonCriterion.class)
+        for (SignatureValidationConfiguration config : criteria.get(SignatureValidationConfigurationCriterion.class)
                 .getConfigurations()) {
             if (config.getSignatureTrustEngine() != null) {
                 return config.getSignatureTrustEngine();
