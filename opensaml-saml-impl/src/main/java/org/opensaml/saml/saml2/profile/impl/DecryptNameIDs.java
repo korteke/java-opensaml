@@ -21,17 +21,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.messaging.context.navigate.ChildContextLookup;
-import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.ProfileException;
-import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
-import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
@@ -52,17 +45,9 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectQuery;
-import org.opensaml.saml.saml2.encryption.Decrypter;
-import org.opensaml.xmlsec.DecryptionParameters;
-import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
 /**
  * Action to decrypt an {@link EncryptedID} element and replace it with the decrypted {@link NameID}
@@ -76,123 +61,19 @@ import com.google.common.base.Predicates;
  * strategy, by default a child of the inbound message context.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
- * @event {@link EventIds#INVALID_MSG_CTX}
- * @event {@link EventIds#INVALID_PROFILE_CTX}
  * @event {@link SAMLEventIds#DECRYPT_NAMEID_FAILED}
  */
-public class DecryptNameIDs extends AbstractProfileAction {
+public class DecryptNameIDs extends AbstractDecryptAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(DecryptNameIDs.class);
-    
-    /** Are decryption failures a fatal condition? */
-    private boolean errorFatal;
-
-    /** Strategy used to locate the {@link SecurityParametersContext}. */
-    @Nonnull private Function<ProfileRequestContext, SecurityParametersContext> securityParamsLookupStrategy;
-
-    /** Strategy used to locate the SAML message to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Object> messageLookupStrategy;
-    
-    /** Predicate dertermining whether to attempt decryption. */
-    @Nonnull private Predicate<Pair<ProfileRequestContext,EncryptedElementType>> decryptionPredicate;
-    
-    /** The decryption object. */
-    @Nullable private Decrypter decrypter;
-    
-    /** Message to operate on. */
-    @Nullable private SAMLObject message;
-    
-    /** Constructor. */
-    public DecryptNameIDs() {
-        errorFatal = true;
-        securityParamsLookupStrategy = Functions.compose(new ChildContextLookup<>(SecurityParametersContext.class),
-                new InboundMessageContextLookup());
-        messageLookupStrategy = Functions.compose(new MessageLookup<>(Object.class), new InboundMessageContextLookup());
-        decryptionPredicate = Predicates.alwaysTrue();
-    }
-    
-    /**
-     * Set whether decryption failure should be treated as an error or ignored.
-     * 
-     * @param flag  true iff decryption failure should be fatal
-     */
-    public synchronized void setErrorFatal(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        errorFatal = flag;
-    }
-    
-    /**
-     * Set the strategy used to locate the {@link SecurityParametersContext} associated with a given
-     * {@link ProfileRequestContext}.
-     * 
-     * @param strategy strategy used to locate the {@link SecurityParametersContext} associated with a given
-     *            {@link ProfileRequestContext}
-     */
-    public synchronized void setSecurityParametersContextLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
-        securityParamsLookupStrategy =
-                Constraint.isNotNull(strategy, "SecurityParametersContext lookup strategy cannot be null");
-    }
-    
-    /**
-     * Set the strategy used to locate the {@link SAMLObect} to operate on.
-     * 
-     * @param strategy strategy used to locate the {@link SAMLObject} to operate on
-     */
-    public synchronized void setMessageLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Object> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
-        messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
-    }
-    
-    /**
-     * Set the predicate used to determine whether to attempt decryption.
-     * 
-     * @param predicate predicate to use
-     */
-    public synchronized void setDecryptionPredicate(
-            @Nonnull final Predicate<Pair<ProfileRequestContext,EncryptedElementType>> predicate) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        decryptionPredicate = Constraint.isNotNull(predicate, "Decryption predicate cannot be null");
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
-        Object theMessage = messageLookupStrategy.apply(profileRequestContext);
-        if (theMessage == null) {
-            log.debug("{} No message was returned by lookup strategy", getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
-            return false;
-        } else if (!(theMessage instanceof SAMLObject)) {
-            log.debug("{} Message was not a SAML construct, nothing to do", getLogPrefix());
-            return false;
-        }
-        
-        message = (SAMLObject) theMessage;
-        
-        final SecurityParametersContext paramsCtx = securityParamsLookupStrategy.apply(profileRequestContext);
-        if (paramsCtx == null || paramsCtx.getDecryptionParameters() == null) {
-            log.debug("{} No security parameter context or decryption parameters", getLogPrefix());
-        } else {
-            final DecryptionParameters params = paramsCtx.getDecryptionParameters();
-            decrypter = new Decrypter(params.getDataKeyInfoCredentialResolver(),
-                    params.getKEKKeyInfoCredentialResolver(), params.getEncryptedKeyResolver());
-        }
-        
-        return super.doPreExecute(profileRequestContext);
-    }
     
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+        
+        final SAMLObject message = getSAMLObject();
         
         try {
             if (message instanceof AuthnRequest) {
@@ -220,7 +101,7 @@ public class DecryptNameIDs extends AbstractProfileAction {
             }
         } catch (final DecryptionException e) {
             log.warn(getLogPrefix() + "Failure performing decryption", e);
-            if (errorFatal) {
+            if (isErrorFatal()) {
                 ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.DECRYPT_NAMEID_FAILED);
             }
         }
@@ -240,16 +121,16 @@ public class DecryptNameIDs extends AbstractProfileAction {
     @Nullable private NameID processEncryptedID(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final EncryptedID encID) throws DecryptionException {
         
-        if (!decryptionPredicate.apply(
+        if (!getDecryptionPredicate().apply(
                 new Pair<ProfileRequestContext,EncryptedElementType>(profileRequestContext, encID))) {
             return null;
         }
         
-        if (decrypter == null) {
+        if (getDecrypter() == null) {
             throw new DecryptionException("No decryption parameters, unable to decrypt EncryptedID");
         }
         
-        final SAMLObject object = decrypter.decrypt(encID);
+        final SAMLObject object = getDecrypter().decrypt(encID);
         if (object instanceof NameID) {
             return (NameID) object;
         }
@@ -269,16 +150,16 @@ public class DecryptNameIDs extends AbstractProfileAction {
     @Nullable private NewID processNewEncryptedID(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final NewEncryptedID encID) throws DecryptionException {
         
-        if (!decryptionPredicate.apply(
+        if (!getDecryptionPredicate().apply(
                 new Pair<ProfileRequestContext,EncryptedElementType>(profileRequestContext, encID))) {
             return null;
         }
 
-        if (decrypter == null) {
+        if (getDecrypter() == null) {
             throw new DecryptionException("No decryption parameters, unable to decrypt NewEncryptedID");
         }
 
-        return decrypter.decrypt(encID);
+        return getDecrypter().decrypt(encID);
     }
     
 // Checkstyle: CyclomaticComplexity OFF
@@ -303,7 +184,7 @@ public class DecryptNameIDs extends AbstractProfileAction {
                         subject.setEncryptedID(null);
                     }
                 } catch (final DecryptionException e) {
-                    if (errorFatal) {
+                    if (isErrorFatal()) {
                         throw e;
                     }
                     log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in Subject", e);
@@ -320,7 +201,7 @@ public class DecryptNameIDs extends AbstractProfileAction {
                             sc.setEncryptedID(null);
                         }
                     } catch (final DecryptionException e) {
-                        if (errorFatal) {
+                        if (isErrorFatal()) {
                             throw e;
                         }
                         log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in SubjectConfirmation", e);
@@ -439,7 +320,7 @@ public class DecryptNameIDs extends AbstractProfileAction {
         try {
             processSubject(profileRequestContext, assertion.getSubject());
         } catch (final DecryptionException e) {
-            if (errorFatal) {
+            if (isErrorFatal()) {
                 throw e;
             }
             log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedIDs in Subjectn", e);
@@ -461,7 +342,7 @@ public class DecryptNameIDs extends AbstractProfileAction {
                                 d.setEncryptedID(null);
                             }
                         } catch (final DecryptionException e) {
-                            if (errorFatal) {
+                            if (isErrorFatal()) {
                                 throw e;
                             }
                             log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in Delegate", e);
