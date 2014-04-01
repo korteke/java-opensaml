@@ -62,6 +62,13 @@
         </dependency>
 
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-xmlsec-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>${spring.groupId}</groupId>
             <version>${spring.version}</version>
             <artifactId>spring-core</artifactId>
