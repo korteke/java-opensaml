@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.DecryptionParametersResolver;
-import org.opensaml.xmlsec.criterion.DecryptionConfiguratonCriterion;
+import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
@@ -39,7 +39,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
  * <ul>
- * <li>{@link DecryptionConfiguratonCriterion} - required</li> 
+ * <li>{@link DecryptionConfigurationCriterion} - required</li> 
  * </ul>
  * </p>
  */
@@ -61,13 +61,13 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     /** {@inheritDoc} */
     @Nullable public DecryptionParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
         Constraint.isNotNull(criteria, "CriteriaSet was null");
-        Constraint.isNotNull(criteria.get(DecryptionConfiguratonCriterion.class), 
+        Constraint.isNotNull(criteria.get(DecryptionConfigurationCriterion.class), 
                 "Resolver requires an instance of DecryptionConfigurationCriterion");
         
         DecryptionParameters params = new DecryptionParameters();
         
         resolveAndPopulateWhiteAndBlacklists(params, criteria, 
-                criteria.get(DecryptionConfiguratonCriterion.class).getConfigurations());
+                criteria.get(DecryptionConfigurationCriterion.class).getConfigurations());
         
         params.setDataKeyInfoCredentialResolver(resolveDataKeyInfoCredentialResolver(criteria));
         params.setKEKKeyInfoCredentialResolver(resolveKEKKeyInfoCredentialResolver(criteria));
@@ -85,7 +85,7 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
      */
     @Nullable protected EncryptedKeyResolver resolveEncryptedKeyResolver(@Nonnull final CriteriaSet criteria) {
         
-        for (DecryptionConfiguration config : criteria.get(DecryptionConfiguratonCriterion.class).getConfigurations()) {
+        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class).getConfigurations()) {
             if (config.getEncryptedKeyResolver() != null) {
                 return config.getEncryptedKeyResolver();
             }
@@ -103,7 +103,7 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     @Nullable protected KeyInfoCredentialResolver resolveKEKKeyInfoCredentialResolver(
             @Nonnull final CriteriaSet criteria) {
         
-        for (DecryptionConfiguration config : criteria.get(DecryptionConfiguratonCriterion.class).getConfigurations()) {
+        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class).getConfigurations()) {
             if (config.getKEKKeyInfoCredentialResolver() != null) {
                 return config.getKEKKeyInfoCredentialResolver();
             }
@@ -121,7 +121,7 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     @Nullable protected KeyInfoCredentialResolver resolveDataKeyInfoCredentialResolver(
             @Nonnull final CriteriaSet criteria) {
         
-        for (DecryptionConfiguration config : criteria.get(DecryptionConfiguratonCriterion.class).getConfigurations()) {
+        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class).getConfigurations()) {
             if (config.getDataKeyInfoCredentialResolver() != null) {
                 return config.getDataKeyInfoCredentialResolver();
             }
