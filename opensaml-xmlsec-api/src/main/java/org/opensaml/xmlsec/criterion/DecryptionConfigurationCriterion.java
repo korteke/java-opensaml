@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import org.opensaml.xmlsec.SignatureSigningConfiguration;
+import org.opensaml.xmlsec.DecryptionConfiguration;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
@@ -37,20 +37,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * Criterion which holds one or more instances of {@link SignatureSigningConfiguration}.
+ * Criterion which holds one or more instances of {@link DecryptionConfiguration}.
  */
-public class SignatureSigningConfiguratonCriterion implements Criterion {
+public class DecryptionConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    private List<SignatureSigningConfiguration> configs;
+    private List<DecryptionConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public SignatureSigningConfiguratonCriterion(@Nonnull @NonnullElements @NotEmpty
-            List<SignatureSigningConfiguration> configurations) {
+    public DecryptionConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
+            List<DecryptionConfiguration> configurations) {
         Constraint.isNotNull(configurations, "List of configurations may not be null");
         configs = Lists.newArrayList(Collections2.filter(configurations, Predicates.notNull()));
         Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
@@ -62,8 +62,8 @@ public class SignatureSigningConfiguratonCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public SignatureSigningConfiguratonCriterion(@Nonnull @NonnullElements  @NotEmpty
-            SignatureSigningConfiguration... configurations) {
+    public DecryptionConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
+            DecryptionConfiguration... configurations) {
         Constraint.isNotNull(configurations, "List of configurations may not be null");
         configs = Lists.newArrayList(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
         Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
@@ -74,7 +74,7 @@ public class SignatureSigningConfiguratonCriterion implements Criterion {
      * @return the list of configuration instances
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<SignatureSigningConfiguration> getConfigurations() {
+    public List<DecryptionConfiguration> getConfigurations() {
         return ImmutableList.copyOf(configs);
     }
     
@@ -82,7 +82,7 @@ public class SignatureSigningConfiguratonCriterion implements Criterion {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("SignatureSigningConfigurationCriterion [configs=");
+        builder.append("DecryptionConfigurationCriterion [configs=");
         builder.append(configs);
         builder.append("]");
         return builder.toString();
@@ -105,8 +105,8 @@ public class SignatureSigningConfiguratonCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof SignatureSigningConfiguratonCriterion) {
-            return configs.equals(((SignatureSigningConfiguratonCriterion) obj).getConfigurations());
+        if (obj instanceof DecryptionConfigurationCriterion) {
+            return configs.equals(((DecryptionConfigurationCriterion) obj).getConfigurations());
         }
 
         return false;

@@ -19,17 +19,16 @@ package org.opensaml.xmlsec.criterion;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
-import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
-
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing an a KeyInfo generation "profile" name used
- * when looking up a {@link KeyInfoGeneratorManager} from a {@link NamedKeyInfoGeneratorManager}.
- * */
+/**
+ * {@link Criterion} representing an a KeyInfo generation "profile" name used
+ * when looking up a {@link org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager} from a
+ * {@link org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager}.
+ */
 public final class KeyInfoGenerationProfileCriterion implements Criterion {
 
     /** The KeyInfo generation "profile" name. */
