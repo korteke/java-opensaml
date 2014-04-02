@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.profile.ProfileException;
-import org.opensaml.profile.action.AbstractProfileAction;
+import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -58,7 +58,7 @@ import com.google.common.collect.Lists;
  * @event {@link EventIds#INVALID_PROFILE_CTX}
  * @event {@link EventIds#INVALID_SEC_CFG}
  */
-public class PopulateDecryptionParameters extends AbstractProfileAction {
+public class PopulateDecryptionParameters extends AbstractConditionalProfileAction {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(PopulateDecryptionParameters.class);
