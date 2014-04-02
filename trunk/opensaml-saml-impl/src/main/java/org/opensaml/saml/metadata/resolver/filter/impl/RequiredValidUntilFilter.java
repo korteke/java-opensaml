@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import net.shibboleth.utilities.java.support.annotation.Duration;
+
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
@@ -41,7 +43,7 @@ public class RequiredValidUntilFilter implements MetadataFilter {
     private final Logger log = LoggerFactory.getLogger(RequiredValidUntilFilter.class);
 
     /** The maximum interval, in milliseconds, between now and the <code>validUntil</code> date. */
-    private long maxValidityInterval;
+    @Duration private long maxValidityInterval;
 
     /** Constructor. */
     public RequiredValidUntilFilter() {
@@ -66,8 +68,19 @@ public class RequiredValidUntilFilter implements MetadataFilter {
     public long getMaxValidityInterval() {
         return maxValidityInterval;
     }
+    
+    /**
+     * Sets the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
+     * A value of less than 1 indicates that there is no restriction.
+     * 
+     * @param validity time in milliseconds between now and the <code>validUntil</code> date
+     */
+    public void setMaxValidityInterval(@Duration long validity) {
+        maxValidityInterval = validity;
+    }
 
     /** {@inheritDoc} */
+    @Override
     public XMLObject filter(XMLObject metadata) throws FilterException {
         if (metadata == null) {
             return null;
