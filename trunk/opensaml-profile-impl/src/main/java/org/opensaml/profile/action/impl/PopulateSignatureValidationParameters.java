@@ -123,6 +123,8 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
     /** {@inheritDoc} */
     @Override
     protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
         if (resolver == null) {
             throw new ComponentInitializationException("SignatureValidationParametersResolver cannot be null");
         }
