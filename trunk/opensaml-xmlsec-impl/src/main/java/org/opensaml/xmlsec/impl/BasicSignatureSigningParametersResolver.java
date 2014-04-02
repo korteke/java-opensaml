@@ -91,12 +91,12 @@ public class BasicSignatureSigningParametersResolver
         
         params.setSignatureCanonicalizationAlgorithm(resolveCanonicalizationAlgorithm(criteria));
         
-        params.setKeyInfoGenerator(resolveKeyInfoGenerator(criteria, params.getSigningCredential()));
-        
-        params.setSignatureHMACOutputLength(resolveHMACOutputLength(criteria, params.getSigningCredential(), 
-                params.getSignatureAlgorithmURI()));
-        
-        params.setDSAParams(resolveDSAParams(criteria, params.getSigningCredential()));
+        if (params.getSigningCredential() != null) {
+            params.setKeyInfoGenerator(resolveKeyInfoGenerator(criteria, params.getSigningCredential()));
+            params.setSignatureHMACOutputLength(resolveHMACOutputLength(criteria, params.getSigningCredential(), 
+                    params.getSignatureAlgorithmURI()));
+            params.setDSAParams(resolveDSAParams(criteria, params.getSigningCredential()));
+        }
         
         validate(params);
         

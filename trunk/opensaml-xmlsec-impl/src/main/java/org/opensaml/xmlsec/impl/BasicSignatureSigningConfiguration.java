@@ -48,28 +48,28 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
         implements SignatureSigningConfiguration {
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BasicSignatureSigningConfiguration.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicSignatureSigningConfiguration.class);
     
     /** Signing credentials. */
-    private List<Credential> signingCredentials;
+    @Nonnull @NonnullElements private List<Credential> signingCredentials;
     
     /** Signature method algorithm URIs. */
-    private List<String> signatureAlgorithms;
+    @Nonnull @NonnullElements private List<String> signatureAlgorithms;
     
     /** Digest method algorithm URIs. */
-    private List<String> signatureReferenceDigestMethods;
+    @Nonnull @NonnullElements private List<String> signatureReferenceDigestMethods;
     
     /** Signature canonicalization algorithm URI. */
-    private String signatureCanonicalization;
+    @Nullable private String signatureCanonicalization;
     
     /** Signature HMAC output length. */
-    private Integer signatureHMACOutputLength;
+    @Nullable private Integer signatureHMACOutputLength;
     
     /** Manager for named KeyInfoGenerator instances. */
-    private NamedKeyInfoGeneratorManager keyInfoGeneratorManager;
+    @Nullable private NamedKeyInfoGeneratorManager keyInfoGeneratorManager;
     
     /** Default DSA key family parameters. */
-    private final Map<Integer, DSAParams> dsaParams;
+    @Nonnull @NonnullElements private final Map<Integer, DSAParams> dsaParams;
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
@@ -77,10 +77,10 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     
     /** Constructor. */
     public BasicSignatureSigningConfiguration() {
-        super();
         signingCredentials = Collections.emptyList();
         signatureAlgorithms = Collections.emptyList();
-        dsaParams = new HashMap<Integer, DSAParams>();
+        signatureReferenceDigestMethods = Collections.emptyList();
+        dsaParams = new HashMap<>();
     }
     
     /** {@inheritDoc} */
