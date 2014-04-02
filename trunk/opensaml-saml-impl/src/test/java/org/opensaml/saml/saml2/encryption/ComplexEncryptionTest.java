@@ -38,7 +38,7 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -54,7 +54,7 @@ import com.google.common.base.Strings;
 public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     
     private Encrypter encrypter;
-    private EncryptionParameters encParams;
+    private DataEncryptionParameters encParams;
     private List<KeyEncryptionParameters> kekParamsList;
     private KeyEncryptionParameters kekParamsRSA, kekParamsAES;
     
@@ -84,7 +84,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         Credential kekCredAES = AlgorithmSupport.generateSymmetricKeyAndCredential(kekURIAES);
         Credential kekCredRSA = AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 2048, false);
         
-        encParams = new EncryptionParameters();
+        encParams = new DataEncryptionParameters();
         encParams.setAlgorithm(algoURI);
         encParams.setEncryptionCredential(encCred);
         

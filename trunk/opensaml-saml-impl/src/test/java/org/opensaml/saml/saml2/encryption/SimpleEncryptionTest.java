@@ -37,7 +37,7 @@ import org.opensaml.saml.saml2.encryption.Encrypter;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -51,7 +51,7 @@ import com.google.common.base.Strings;
 public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     
     private Encrypter encrypter;
-    private EncryptionParameters encParams;
+    private DataEncryptionParameters encParams;
     private KeyEncryptionParameters kekParamsRSA;
     private List<KeyEncryptionParameters> kekParamsList;
     
@@ -75,7 +75,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
-        encParams = new EncryptionParameters();
+        encParams = new DataEncryptionParameters();
         encParams.setAlgorithm(algoURI);
         encParams.setEncryptionCredential(AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI));
         

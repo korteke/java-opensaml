@@ -25,7 +25,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 /**
  * Parameters for encrypting XMLObjects.
  */
-public class EncryptionParameters {
+public class DataEncryptionParameters {
 
     /** Credential used to encrypt. */
     private Credential encryptionCredential;
@@ -40,7 +40,7 @@ public class EncryptionParameters {
     /**
      * Constructor.
      */
-    public EncryptionParameters() {
+    public DataEncryptionParameters() {
         // This will be the default for auto encryption key generation
         setAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
     }

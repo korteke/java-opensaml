@@ -61,7 +61,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     private Credential signingCredential;
 
     /** The data encryption parameters object. */
-    private EncryptionParameters encParams;
+    private DataEncryptionParameters encParams;
 
     /** Resolver for the data encryption key. */
     private KeyInfoCredentialResolver encKeyResolver;
@@ -76,7 +76,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         String encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
-        encParams = new EncryptionParameters();
+        encParams = new DataEncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionCredential(encCred);
         encKeyResolver = new StaticKeyInfoCredentialResolver(encCred);

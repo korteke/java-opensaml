@@ -42,7 +42,7 @@ import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.Encrypter;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -61,7 +61,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     private String encURI;
     private Key encKey;
-    private EncryptionParameters encParams;
+    private DataEncryptionParameters encParams;
     private EncryptedData encryptedData;
     private EncryptedData encryptedContent;
     
@@ -91,7 +91,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         encKey = encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
-        encParams = new EncryptionParameters();
+        encParams = new DataEncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionCredential(encCred);
         

@@ -49,7 +49,7 @@ import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -132,7 +132,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     private IdentifierGenerationStrategy idGenerator;
 
     /** The parameters to use for encrypting the data. */
-    private EncryptionParameters encParams;
+    private DataEncryptionParameters encParams;
 
     /** The parameters to use for encrypting (wrapping) the data encryption key. */
     private List<KeyEncryptionParameters> kekParamsList;
@@ -149,7 +149,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param dataEncParams the data encryption parameters
      * @param keyEncParams the key encryption parameters
      */
-    public Encrypter(EncryptionParameters dataEncParams, List<KeyEncryptionParameters> keyEncParams) {
+    public Encrypter(DataEncryptionParameters dataEncParams, List<KeyEncryptionParameters> keyEncParams) {
         super();
 
         this.encParams = dataEncParams;
@@ -164,7 +164,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param dataEncParams the data encryption parameters
      * @param keyEncParam the key encryption parameter
      */
-    public Encrypter(EncryptionParameters dataEncParams, KeyEncryptionParameters keyEncParam) {
+    public Encrypter(DataEncryptionParameters dataEncParams, KeyEncryptionParameters keyEncParam) {
         super();
 
         List<KeyEncryptionParameters> keks = new ArrayList<KeyEncryptionParameters>();
@@ -181,7 +181,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * 
      * @param dataEncParams the data encryption parameters
      */
-    public Encrypter(EncryptionParameters dataEncParams) {
+    public Encrypter(DataEncryptionParameters dataEncParams) {
         super();
 
         List<KeyEncryptionParameters> keks = new ArrayList<KeyEncryptionParameters>();
