@@ -17,9 +17,13 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 
 /**
@@ -43,6 +47,20 @@ public class DataEncryptionParameters {
     public DataEncryptionParameters() {
         // This will be the default for auto encryption key generation
         setAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+    }
+
+    /**
+     * Convenience constructor which allows copying the relevant data encryption parameters from
+     * an instance of {@link EncryptionParameters}.
+     * 
+     * @param params the encryption parameters instance
+     */
+    public DataEncryptionParameters(@Nonnull final EncryptionParameters params) {
+        this();
+        Constraint.isNotNull(params, "EncryptionParameters instance was null");
+        setEncryptionCredential(params.getDataEncryptionCredential());
+        setAlgorithm(params.getDataEncryptionAlgorithmURI());
+        setKeyInfoGenerator(params.getDataKeyInfoGenerator());
     }
 
     /**
