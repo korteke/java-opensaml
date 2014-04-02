@@ -25,10 +25,12 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
@@ -36,6 +38,8 @@ import org.opensaml.xmlsec.criterion.SignatureSigningConfigurationCriterion;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.google.common.base.Functions;
 
 /** Unit test for {@link PopulateSignatureSigningParameters}. */
 public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTestCase {
@@ -81,6 +85,26 @@ public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTest
         ActionTestingSupport.assertProceedEvent(prc);
         Assert.assertNotNull(prc.getOutboundMessageContext().getSubcontext(
                 SecurityParametersContext.class).getSignatureSigningParameters());
+    }    
+
+    @Test public void testCopy() throws Exception {
+        action.setSignatureSigningParametersResolver(new MockResolver(true));
+        action.setExistingParametersContextLookupStrategy(
+                Functions.compose(new ChildContextLookup(SecurityParametersContext.class),
+                        new OutboundMessageContextLookup()));
+        action.setSecurityParametersContextLookupStrategy(
+                new ChildContextLookup<ProfileRequestContext,SecurityParametersContext>(
+                        SecurityParametersContext.class, true));
+        action.initialize();
+        
+        prc.getOutboundMessageContext().getSubcontext(
+                SecurityParametersContext.class, true).setSignatureSigningParameters(
+                        new SignatureSigningParameters());
+        
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        Assert.assertSame(prc.getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters(),
+                prc.getOutboundMessageContext().getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters());
     }    
     
     private class MockResolver implements SignatureSigningParametersResolver {

@@ -68,6 +68,9 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
     
     /** Strategy used to look up the {@link SecurityParametersContext} to set the parameters for. */
     @Nonnull private Function<ProfileRequestContext,SecurityParametersContext> securityParametersContextLookupStrategy;
+
+    /** Strategy used to look up an existing {@link SecurityParametersContext} to copy. */
+    @Nullable private Function<ProfileRequestContext,SecurityParametersContext> existingParametersContextLookupStrategy;
     
     /** Strategy used to look up a per-request {@link SignatureSigningConfiguration}. */
     @Nullable private Function<ProfileRequestContext,SignatureSigningConfiguration> configurationLookupStrategy;
@@ -87,7 +90,7 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
         // Create context by default.
         securityParametersContextLookupStrategy = Functions.compose(
                 new ChildContextLookup<>(SecurityParametersContext.class, true), new OutboundMessageContextLookup());
-        
+
         // Default: outbound msg context -> SAMLPeerEntityContext -> SAMLMetadataContext
         metadataContextLookupStrategy = Functions.compose(
                 new ChildContextLookup<>(SAMLMetadataContext.class),
@@ -106,6 +109,19 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
+    }
+
+    /**
+     * Set the strategy used to look up an existing {@link SecurityParametersContext} to copy instead
+     * of actually resolving the parameters to set.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setExistingParametersContextLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        existingParametersContextLookupStrategy = strategy;
     }
     
     /**
@@ -167,6 +183,7 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
         }
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
@@ -179,6 +196,16 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
             log.debug("{} No SecurityParametersContext returned by lookup strategy", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_PROFILE_CTX);
             return;
+        }
+        
+        if (existingParametersContextLookupStrategy != null) {
+            final SecurityParametersContext existingCtx =
+                    existingParametersContextLookupStrategy.apply(profileRequestContext);
+            if (existingCtx != null && existingCtx.getSignatureSigningParameters() != null) {
+                log.debug("{} Found existing SecurityParametersContext to copy from", getLogPrefix());
+                paramsCtx.setSignatureSigningParameters(existingCtx.getSignatureSigningParameters());
+                return;
+            }
         }
         
         // TODO: do we include anything but the global default and the per-profile configs?
@@ -216,5 +243,6 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
         }
     }
+// Checkstyle: CyclomaticComplexity ON
     
 }
