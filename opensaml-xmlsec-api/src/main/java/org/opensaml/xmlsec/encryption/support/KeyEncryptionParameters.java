@@ -19,6 +19,10 @@ package org.opensaml.xmlsec.encryption.support;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
+import org.opensaml.xmlsec.EncryptionParameters;
+
 
 /**
  * Parameters for encrypting keys.
@@ -37,6 +41,22 @@ public class KeyEncryptionParameters extends DataEncryptionParameters {
         // can't autogenerate a key encryption key, always needs to be derived
         // from the key in the (for KEK, mandatory) encryption credential.
         setAlgorithm(null);
+    }
+    
+    /**
+     * Convenience constructor which allows copying the relevant key encryption parameters from
+     * an instance of {@link EncryptionParameters}.
+     * 
+     * @param params the encryption parameters instance
+     * @param recipientId the recipient of the key
+     */
+    public KeyEncryptionParameters(EncryptionParameters params, String recipientId) {
+        this();
+        Constraint.isNotNull(params, "EncryptionParameters instance was null");
+        setEncryptionCredential(params.getKeyTransportEncryptionCredential());
+        setAlgorithm(params.getKeyTransportEncryptionAlgorithmURI());
+        setKeyInfoGenerator(params.getKeyTransportKeyInfoGenerator());
+        setRecipient(recipientId);
     }
 
     /**
