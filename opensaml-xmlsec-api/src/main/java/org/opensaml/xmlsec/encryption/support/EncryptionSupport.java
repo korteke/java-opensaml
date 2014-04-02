@@ -44,7 +44,7 @@ public final class EncryptionSupport {
     }
 
     /**
-     * Build an instance of {@link EncryptionParameters} suitable for passing to an
+     * Build an instance of {@link DataEncryptionParameters} suitable for passing to an
      * {@link org.opensaml.xmlsec.encryption.support.Encrypter}.
      * 
      * <p>
@@ -80,7 +80,7 @@ public final class EncryptionSupport {
      * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
      * @return a new instance of EncryptionParameters
      */
-    public static EncryptionParameters buildDataEncryptionParams(Credential encryptionCredential,
+    public static DataEncryptionParameters buildDataEncryptionParams(Credential encryptionCredential,
             SecurityConfiguration config, String keyInfoGenName) {
         Logger log = getLogger();
     
@@ -91,7 +91,7 @@ public final class EncryptionSupport {
             secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
         }
     
-        EncryptionParameters encParams = new EncryptionParameters();
+        DataEncryptionParameters encParams = new DataEncryptionParameters();
         encParams.setEncryptionCredential(encryptionCredential);
     
         if (encryptionCredential == null) {

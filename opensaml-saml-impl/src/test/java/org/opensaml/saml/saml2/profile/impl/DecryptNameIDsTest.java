@@ -47,7 +47,7 @@ import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 
@@ -58,7 +58,7 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     
     private String encURI;
     
-    private EncryptionParameters encParams;
+    private DataEncryptionParameters encParams;
     
     private Encrypter encrypter;
     
@@ -82,7 +82,7 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         final Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
-        encParams = new EncryptionParameters();
+        encParams = new DataEncryptionParameters();
         encParams.setAlgorithm(encURI);
         encParams.setEncryptionCredential(encCred);
         

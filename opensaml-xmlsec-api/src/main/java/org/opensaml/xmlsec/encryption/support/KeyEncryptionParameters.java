@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 /**
  * Parameters for encrypting keys.
  */
-public class KeyEncryptionParameters extends EncryptionParameters {
+public class KeyEncryptionParameters extends DataEncryptionParameters {
 
     /** Recipient of the key. */
     private String recipient;

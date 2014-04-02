@@ -73,15 +73,15 @@ import com.google.common.base.Strings;
  * </p>
  * 
  * <p>
- * The parameters for data encryption are specified with an instance of {@link EncryptionParameters}. The parameters for
+ * The parameters for data encryption are specified with an instance of {@link DataEncryptionParameters}. The parameters for
  * key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
  * </p>
  * 
  * <p>
- * The data encryption credential supplied by {@link EncryptionParameters#getEncryptionCredential()} is mandatory unless
+ * The data encryption credential supplied by {@link DataEncryptionParameters#getEncryptionCredential()} is mandatory unless
  * key encryption is also being performed and all associated key encryption parameters contain a valid key encryption
  * credential containing a valid key encryption key. In this case the data encryption key will be randomly generated
- * based on the algorithm URI supplied by {@link EncryptionParameters#getAlgorithm()}.
+ * based on the algorithm URI supplied by {@link DataEncryptionParameters#getAlgorithm()}.
  * </p>
  * 
  * <p>
@@ -162,7 +162,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams) throws EncryptionException {
+            @Nonnull final DataEncryptionParameters encParams) throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, false);
     }
@@ -179,7 +179,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
+            @Nonnull final DataEncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
                     throws EncryptionException {
         List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
         kekParamsList.add(kekParams);
@@ -198,7 +198,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
+            @Nonnull final DataEncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
                     throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, false);
     }
@@ -213,7 +213,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams) throws EncryptionException {
+            @Nonnull final DataEncryptionParameters encParams) throws EncryptionException {
         List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, true);
     }
@@ -230,7 +230,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
+            @Nonnull final DataEncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
                     throws EncryptionException {
         List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
         kekParamsList.add(kekParams);
@@ -249,7 +249,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
+            @Nonnull final DataEncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
                     throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, true);
     }
@@ -492,7 +492,7 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull private EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
-            @Nonnull final EncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList,
+            @Nonnull final DataEncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList,
             boolean encryptContentMode) throws EncryptionException {
 
         checkParams(encParams, kekParamsList);
@@ -561,7 +561,7 @@ public class Encrypter {
      * 
      * @throws EncryptionException thrown if any parameters are missing or have invalid values
      */
-    protected void checkParams(@Nonnull final EncryptionParameters encParams) throws EncryptionException {
+    protected void checkParams(@Nonnull final DataEncryptionParameters encParams) throws EncryptionException {
         if (encParams == null) {
             log.error("Data encryption parameters are required");
             throw new EncryptionException("Data encryption parameters are required");
@@ -635,7 +635,7 @@ public class Encrypter {
      * @param kekParamsList the key encryption parameters to use
      * @throws EncryptionException exception thrown on encryption errors
      */
-    protected void checkParams(@Nonnull final EncryptionParameters encParams,
+    protected void checkParams(@Nonnull final DataEncryptionParameters encParams,
             @Nullable final List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
 
         checkParams(encParams);
