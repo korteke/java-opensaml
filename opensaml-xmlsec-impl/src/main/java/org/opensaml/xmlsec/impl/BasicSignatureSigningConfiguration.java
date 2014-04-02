@@ -129,7 +129,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      * 
      * @param algorithms a list of digest method algorithm URIs
      */
-    public void setSignatureReferenceDigestMethod(@Nullable final List<String> algorithms) {
+    public void setSignatureReferenceDigestMethods(@Nullable final List<String> algorithms) {
         if (algorithms == null) {
             signatureReferenceDigestMethods = Collections.emptyList();
             return;
