@@ -17,8 +17,14 @@
 
 package org.opensaml.xmlsec;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
@@ -30,78 +36,32 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration {
     
     /**
-     * Get the encryption credential to use when encrypting the EncryptedData.
+     * Get the list of data encryption credentials to use, in preference order.
      * 
-     * @return the encryption credential
+     * @return the list of encryption credentials, may be empty
      */
-    @Nullable public Credential getDataEncryptionCredential();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getDataEncryptionCredentials();
     
     /**
-     * Get the encryption algorithm URI for the specified JCA key algorithm name and optional key
-     * length.
+     * Get the list of preferred data encryption algorithm URIs, in preference order.
      * 
-     * Passing <code>null</code> as the key length will return the default algorithm URI for the specified
-     * JCA algorithm, if a default is configured.  If no mapping for the specified key length is available,
-     * the default mapping will be returned.
-     * 
-     * @param jcaAlgorithmName a JCA key algorithm name
-     * @param keyLength  optional key length parameter
-     * @return an encryption algorithm URI, or null if no mapping is available
+     * @return the list of algorithm URIs, may be empty
      */
-    @Nullable public String getDataEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
-            @Nullable final Integer keyLength);
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithmURIs();
     
     /**
-     * Get the encryption algorithm URI for the encryption key contained within the specified credential.
+     * Get the list of key transport encryption credentials to use, in preference order.
      * 
-     * @param credential a credential containing an encryption key
-     * @return an encryption algorithm URI mapping, or null if no mapping is available
+     * @return the list of encryption credentials, may be empty
      */
-    @Nullable public String getDataEncryptionAlgorithmURI(@Nonnull final Credential credential);
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getKeyTransportEncryptionCredentials();
     
     /**
-     * Get the encryption credential to use when encrypting the EncryptedKey.
+     * Get the list of preferred key transport encryption algorithm URIs, in preference order.
      * 
-     * @return the encryption credential
+     * @return the list of algorithm URIs, may be empty
      */
-    @Nullable public Credential getKeyTransportEncryptionCredential();
-    
-    /**
-     * Get the key transport encryption algorithm URI for the specified JCA key algorithm name, optional key
-     * length and optional JCA key algorithm name of the key to be encrypted.
-     * 
-     * Note that typically the key length parameter is required for lookup of symmetric key wrap algorithm
-     * URI's, but is typically not required or relevant for asymmetric key transport algorithms.
-     * 
-     * If a mapping is not available considering the optional key length and wrapped algorithm parameters as passed,
-     * a lookup will next be attempted by omiting the (non-null) wrapped key algorithm, and if that is unsuccessful,
-     * by then omitting the (non-null) key length parameter.  If a mapping has still not been found, then a final
-     * lookup attempt will be made using the key encryption key's JCA algorithm name alone.
-     * 
-     * @param jcaAlgorithmName a JCA key algorithm name for the key encryption key
-     * @param keyLength  optional key length parameter
-     * @param wrappedKeyAlgorithm a JCA key algorithm name for the key to be encrypted
-     * @return an encryption algorithm URI, or null if no mapping is available
-     */
-    @Nullable public String getKeyTransportEncryptionAlgorithmURI(@Nonnull final String jcaAlgorithmName,
-            @Nullable final Integer keyLength, @Nullable final String wrappedKeyAlgorithm);
-    
-    /**
-     * Get the key transport encryption algorithm URI for the encryption key contained within the specified credential.
-     * 
-     * @param credential a credential containing an encryption key
-     * @param wrappedKeyAlgorithm the JCA key algorithm name of the key being encrypted
-     * @return an encryption algorithm URI mapping, or null if no mapping is available
-     */
-    @Nullable public String getKeyTransportEncryptionAlgorithmURI(@Nonnull final Credential credential,
-            @Nullable final String wrappedKeyAlgorithm);
-    
-    /**
-     * Get the encryption algorithm URI to be used when auto-generating random data encryption keys.
-     * 
-     * @return an encryption algorithm URI, or null if no default is available
-     */
-    @Nullable public String getAutoGeneratedDataEncryptionKeyAlgorithmURI();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithmURIs();
 
     /**
      * Get the KeyInfoGenerator manager to use when generating the EncryptedData/KeyInfo.
