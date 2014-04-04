@@ -242,8 +242,8 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
                     final NameIdentifier existing = subject.getNameIdentifier();
                     if (existing == null || overwriteExisting) {
                         subject.setNameIdentifier(count > 0 ? cloneNameIdentifier(nameIdentifier) : nameIdentifier);
+                        count ++;
                     }
-                    count ++;
                 }
             }
         }
