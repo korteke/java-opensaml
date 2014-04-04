@@ -87,7 +87,7 @@ public final class KeySupport {
         log.debug("Attempting to determine length of Key with algorithm '{}' and encoding format '{}'", 
                 key.getAlgorithm(), key.getFormat());
         // TODO investigate if exists, and can/how to support, non-RAW format symmetric keys
-        if (key instanceof SecretKey && "RAW".equals(key.getFormat())) {
+        if (key instanceof SecretKey && JCAConstants.KEY_FORMAT_RAW.equals(key.getFormat())) {
             return key.getEncoded().length * 8;
         } else if (key instanceof RSAKey) {
             return ((RSAKey) key).getModulus().bitLength();
@@ -132,15 +132,15 @@ public final class KeySupport {
         
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
         try {
-            return buildKey(keySpec, "RSA");
+            return buildKey(keySpec, JCAConstants.KEY_ALGO_RSA);
         } catch (KeyException ex) {
         }
         try {
-            return buildKey(keySpec, "DSA");
+            return buildKey(keySpec, JCAConstants.KEY_ALGO_DSA);
         } catch (KeyException ex) {
         }
         try {
-            return buildKey(keySpec, "EC");
+            return buildKey(keySpec, JCAConstants.KEY_ALGO_EC);
         } catch (KeyException ex) {
         }
         throw new KeyException("Unsupported key type.");
@@ -215,7 +215,7 @@ public final class KeySupport {
             DSAPublicKeySpec pubKeySpec = new DSAPublicKeySpec(y, keyParams.getP(), keyParams.getQ(), keyParams.getG());
 
             try {
-                factory = KeyFactory.getInstance("DSA");
+                factory = KeyFactory.getInstance(JCAConstants.KEY_ALGO_DSA);
                 return factory.generatePublic(pubKeySpec);
             } catch (GeneralSecurityException e) {
                 throw new KeyException("Unable to derive public key from DSA private key", e);
@@ -225,7 +225,7 @@ public final class KeySupport {
             RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(rsaKey.getModulus(), rsaKey.getPublicExponent());
 
             try {
-                factory = KeyFactory.getInstance("RSA");
+                factory = KeyFactory.getInstance(JCAConstants.KEY_ALGO_RSA);
                 return factory.generatePublic(pubKeySpec);
             } catch (GeneralSecurityException e) {
                 throw new KeyException("Unable to derive public key from RSA private key", e);
@@ -245,7 +245,7 @@ public final class KeySupport {
     @Nonnull public static DSAPublicKey buildJavaDSAPublicKey(@Nonnull final String base64EncodedKey)
             throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
-        return (DSAPublicKey) buildKey(keySpec, "DSA");
+        return (DSAPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_DSA);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class KeySupport {
     @Nonnull public static RSAPublicKey buildJavaRSAPublicKey(@Nonnull final String base64EncodedKey)
             throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
-        return (RSAPublicKey) buildKey(keySpec, "RSA");
+        return (RSAPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_RSA);
     }
 
     /**
@@ -271,7 +271,7 @@ public final class KeySupport {
     @Nonnull public static ECPublicKey buildJavaECPublicKey(@Nonnull final String base64EncodedKey)
             throws KeyException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
-        return (ECPublicKey) buildKey(keySpec, "EC");
+        return (ECPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_EC);
     }
 
     /**
@@ -340,7 +340,7 @@ public final class KeySupport {
      * 
      * @return the generated {@link PublicKey}
      * 
-     * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not contain
+     * @throws KeyException thrown if the key algorithm is not supported by the JCA or the key spec does not contain
      *             valid information
      */
     @Nonnull public static PublicKey buildKey(@Nullable final KeySpec keySpec, @Nonnull final String keyAlgorithm)
@@ -351,7 +351,7 @@ public final class KeySupport {
             KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
             return keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new KeyException(keyAlgorithm + "algorithm is not supported by the JCE", e);
+            throw new KeyException(keyAlgorithm + "algorithm is not supported by the JCA", e);
         } catch (InvalidKeySpecException e) {
             throw new KeyException("Invalid key information", e);
         }
@@ -449,9 +449,9 @@ public final class KeySupport {
 
     static {
         keyMatchAlgorithms = new LazyMap<String, String>();
-        keyMatchAlgorithms.put("RSA", "SHA1withRSA");
-        keyMatchAlgorithms.put("DSA", "SHA1withDSA");
-        keyMatchAlgorithms.put("EC", "SHA1withECDSA");
+        keyMatchAlgorithms.put(JCAConstants.KEY_ALGO_RSA, JCAConstants.SIGNATURE_RSA_SHA1);
+        keyMatchAlgorithms.put(JCAConstants.KEY_ALGO_DSA, JCAConstants.SIGNATURE_DSA_SHA1);
+        keyMatchAlgorithms.put(JCAConstants.KEY_ALGO_EC, JCAConstants.SIGNATURE_ECDSA_SHA1);
     }
 
 }
