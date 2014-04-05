@@ -35,10 +35,12 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.ApacheXMLSecurityConstants;
+import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +67,15 @@ public final class AlgorithmSupport {
     /** Constructor. */
     private AlgorithmSupport() {
         
+    }
+    
+    /**
+     * Get the global {@link AlgorithmRegistry} instance.
+     * 
+     * @return the global algorithm registry, or null if nothing registered
+     */
+    @Nullable public static AlgorithmRegistry getGlobalAlgorithmRegistry() {
+        return ConfigurationService.get(AlgorithmRegistry.class);
     }
 
     /**
