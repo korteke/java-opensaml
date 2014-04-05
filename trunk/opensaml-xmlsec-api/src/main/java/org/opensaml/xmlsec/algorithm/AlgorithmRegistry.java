@@ -190,7 +190,7 @@ public class AlgorithmRegistry {
     /**
      * Class used as index key for signature algorithm lookup.
      */
-    public static class SignatureAlgorithmIndex {
+    protected class SignatureAlgorithmIndex {
         
         /** Key type. */
         private String key;
