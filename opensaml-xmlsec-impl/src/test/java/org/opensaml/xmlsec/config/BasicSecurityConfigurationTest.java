@@ -17,24 +17,23 @@
 
 package org.opensaml.xmlsec.config;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.security.KeyPair;
 
-import org.apache.xml.security.Init;
+import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
-import org.opensaml.xmlsec.config.BasicSecurityConfiguration;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Testing some aspects of the basic security config impl.
  */
-public class BasicSecurityConfigurationTest {
+public class BasicSecurityConfigurationTest extends OpenSAMLInitBaseTestCase {
     
     private BasicSecurityConfiguration config;
     
@@ -43,10 +42,6 @@ public class BasicSecurityConfigurationTest {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        if (!Init.isInitialized()) {
-            Init.init();
-        }
-        
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         rsaCred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         aes128Cred = AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
