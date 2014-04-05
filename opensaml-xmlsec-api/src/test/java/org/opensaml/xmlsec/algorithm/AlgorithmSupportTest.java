@@ -17,9 +17,9 @@
 
 package org.opensaml.xmlsec.algorithm;
 
-import java.util.Collections;
 import java.util.HashSet;
 
+import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * Unit test for {@link KeySupport}.
  */
-public class AlgorithmSupportTest {
+public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
 
     /** Test mapping algorithm URI's to JCA key algorithm specifiers. */
     @Test
