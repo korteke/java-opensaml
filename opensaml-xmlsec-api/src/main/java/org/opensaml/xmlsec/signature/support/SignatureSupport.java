@@ -31,7 +31,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;

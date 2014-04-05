@@ -32,7 +32,7 @@ import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEvaluator;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;

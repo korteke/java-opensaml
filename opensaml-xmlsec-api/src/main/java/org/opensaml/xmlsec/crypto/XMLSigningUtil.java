@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.SigningUtil;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 
 /**
  * A utility class for computing and verifying raw signatures and MAC values.

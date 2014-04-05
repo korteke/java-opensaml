@@ -48,7 +48,7 @@ import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;

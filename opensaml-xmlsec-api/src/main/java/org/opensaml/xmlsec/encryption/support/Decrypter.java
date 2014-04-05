@@ -60,7 +60,7 @@ import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.security.criteria.KeyLengthCriterion;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.xmlsec.DecryptionParameters;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.EncryptedType;

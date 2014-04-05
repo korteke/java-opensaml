@@ -54,7 +54,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;
