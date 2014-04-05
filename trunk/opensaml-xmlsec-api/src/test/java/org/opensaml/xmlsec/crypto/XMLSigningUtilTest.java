@@ -32,6 +32,7 @@ import java.util.Arrays;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 
+import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
@@ -42,7 +43,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Test the SigningUtil operations for generating and verifying simple, raw signatures and MAC's.
  */
-public class XMLSigningUtilTest {
+public class XMLSigningUtilTest extends OpenSAMLInitBaseTestCase {
     
     private SecretKey secretKeyAES128;
     private KeyPair keyPairRSA;
