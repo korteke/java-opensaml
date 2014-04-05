@@ -19,7 +19,6 @@ package org.opensaml.xmlsec.algorithm;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.crypto.JCAConstants;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;

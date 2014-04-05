@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.crypto;
+package org.opensaml.xmlsec.algorithm;
 
 import java.security.KeyException;
 import java.security.KeyPair;
@@ -40,7 +40,6 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.ApacheXMLSecurityConstants;
-import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

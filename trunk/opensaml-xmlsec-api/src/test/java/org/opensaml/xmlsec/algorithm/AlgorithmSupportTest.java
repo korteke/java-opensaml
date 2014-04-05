@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.crypto;
+package org.opensaml.xmlsec.algorithm;
 
 import java.util.Collections;
 import java.util.HashSet;
 
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.crypto.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
