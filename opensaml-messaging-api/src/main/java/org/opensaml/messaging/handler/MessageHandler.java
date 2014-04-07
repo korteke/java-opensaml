@@ -39,6 +39,6 @@ public interface MessageHandler<MessageType> extends IdentifiedComponent, Initia
      * @param messageContext the message context on which to invoke the handler
      * @throws MessageHandlerException if the there is an error invoking the handler on the message context
      */
-    public void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException;
+    void invoke(@Nonnull final MessageContext<MessageType> messageContext) throws MessageHandlerException;
     
 }

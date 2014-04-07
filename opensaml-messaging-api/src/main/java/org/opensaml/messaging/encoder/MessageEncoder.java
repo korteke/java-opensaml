@@ -57,19 +57,19 @@ public interface MessageEncoder<MessageType> extends InitializableComponent, Des
      * 
      * @throws MessageEncodingException if there is a problem preparing the message context for encoding
      */
-    public void prepareContext() throws MessageEncodingException;
+    void prepareContext() throws MessageEncodingException;
 
     /**
      * Encode the {@link MessageContext} supplied via {@link #setMessageContext(MessageContext)} to the sink.
      * 
      * @throws MessageEncodingException if there is a problem encoding the message context
      */
-    public void encode() throws MessageEncodingException;
+    void encode() throws MessageEncodingException;
 
     /**
      * Set the {@link MessageContext} which is to be encoded.
      * 
      * @param messageContext the message context
      */
-    public void setMessageContext(MessageContext<MessageType> messageContext);
+    void setMessageContext(MessageContext<MessageType> messageContext);
 }

@@ -34,13 +34,13 @@ public interface HttpServletResponseMessageEncoder<MessageType> extends MessageE
      * 
      * @return the HTTP servlet response
      */
-    @Nullable public HttpServletResponse getHttpServletResponse();
+    @Nullable HttpServletResponse getHttpServletResponse();
     
     /**
      * Set the HTTP servlet response on which to operate.
      * 
      * @param response the HTTP servlet response
      */
-    public void setHttpServletResponse(@Nullable final HttpServletResponse response);
+    void setHttpServletResponse(@Nullable final HttpServletResponse response);
     
 }
