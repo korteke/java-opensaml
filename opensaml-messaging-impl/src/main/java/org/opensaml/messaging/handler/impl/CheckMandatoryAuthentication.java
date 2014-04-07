@@ -31,22 +31,23 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import com.google.common.base.Function;
 
 /**
- * Message handler that checks that a message context has an issuer.
+ * Message handler that checks that a message context is authenticated.
  */
-public final class CheckMandatoryIssuer extends AbstractMessageHandler {
+public final class CheckMandatoryAuthentication extends AbstractMessageHandler {
 
-    /** Strategy used to look up the issuer associated with the message context. */
-    @NonnullAfterInit private Function<MessageContext,String> issuerLookupStrategy;
+    /** Strategy used to look up the authentication state associated with the message context. */
+    @NonnullAfterInit private Function<MessageContext,Boolean> authenticationLookupStrategy;
     
     /**
-     * Set the strategy used to look up the issuer associated with the message context.
+     * Set the strategy used to look up the authentication state associated with the message context.
      * 
      * @param strategy lookup strategy
      */
-    public void setIssuerLookupStrategy(@Nonnull final Function<MessageContext,String> strategy) {
+    public void setAuthenticationLookupStrategy(@Nonnull final Function<MessageContext,Boolean> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        issuerLookupStrategy = Constraint.isNotNull(strategy, "Message context issuer lookup strategy cannot be null");
+        authenticationLookupStrategy = Constraint.isNotNull(strategy,
+                "Message context authentication lookup strategy cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -54,17 +55,19 @@ public final class CheckMandatoryIssuer extends AbstractMessageHandler {
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (issuerLookupStrategy == null) {
-            throw new ComponentInitializationException("Message context issuer lookup strategy cannot be null");
+        if (authenticationLookupStrategy == null) {
+            throw new ComponentInitializationException("Message context authentication lookup strategy cannot be null");
         }
     }
 
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final String issuer = issuerLookupStrategy.apply(messageContext);
-        if (issuer == null) {
-            throw new MessageHandlerException("Message context did not contain an issuer");
+        final Boolean authenticated = authenticationLookupStrategy.apply(messageContext);
+        if (authenticated == null) {
+            throw new MessageHandlerException("Message context did not contain any authentication state");
+        } else if (!authenticated) {
+            throw new MessageHandlerException("Message context was not authenticated");
         }
     }
     
