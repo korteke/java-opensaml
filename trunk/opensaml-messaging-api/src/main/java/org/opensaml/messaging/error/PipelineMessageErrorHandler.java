@@ -34,27 +34,27 @@ public interface PipelineMessageErrorHandler<MessageType> extends MessageErrorHa
      * 
      * @return the outbound error handler
      */
-    public MessageHandler<MessageType> getHandler();
+    MessageHandler<MessageType> getHandler();
     
     /**
      * Set the handler to invoke on the outbound error message.
      * 
      * @param handler the outbound error handler
      */
-    public void setHandler(MessageHandler<MessageType> handler);
+    void setHandler(MessageHandler<MessageType> handler);
 
     /**
      * Get the message encoder used to encode the outbound error message.
      * 
      * @return the outbound error message encoder
      */
-    public MessageEncoder<MessageType> getMessageEncoder();
+    MessageEncoder<MessageType> getMessageEncoder();
     
     /**
      * Set the message encoder used to encode the outbound error message.
      * 
      * @param messageEncoder the outbound error message encoder
      */
-    public void setMessageEncoder(MessageEncoder<MessageType> messageEncoder);
+    void setMessageEncoder(MessageEncoder<MessageType> messageEncoder);
     
 }

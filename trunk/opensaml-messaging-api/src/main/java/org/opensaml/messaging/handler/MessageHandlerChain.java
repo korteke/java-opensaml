@@ -37,6 +37,6 @@ public interface MessageHandlerChain<MessageType> extends MessageHandler<Message
      * 
      * @return the list of members of the handler chain
      */
-    @NonnullAfterInit @NonnullElements public List<MessageHandler<MessageType>> getHandlers();
+    @NonnullAfterInit @NonnullElements List<MessageHandler<MessageType>> getHandlers();
     
 }

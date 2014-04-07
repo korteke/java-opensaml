@@ -40,12 +40,12 @@ public interface MessageDecoder<MessageType> extends InitializableComponent, Des
      * 
      * @throws MessageDecodingException if there is a problem decoding the message context
      */
-    public void decode() throws MessageDecodingException;
+    void decode() throws MessageDecodingException;
 
     /**
      * Get the decoded message context.
      * 
      * @return the decoded message context
      */
-    public MessageContext<MessageType> getMessageContext();
+    MessageContext<MessageType> getMessageContext();
 }

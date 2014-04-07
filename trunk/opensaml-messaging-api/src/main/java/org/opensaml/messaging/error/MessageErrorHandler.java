@@ -33,6 +33,6 @@ public interface MessageErrorHandler<MessageType> {
      * @param messageContext the message context being processed, if available
      * @return true if error was successfully handled, false otherwise
      */
-    public boolean handleError(Throwable t, MessageContext<MessageType> messageContext);
+    boolean handleError(Throwable t, MessageContext<MessageType> messageContext);
 
 }

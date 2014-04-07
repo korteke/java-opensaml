@@ -35,13 +35,13 @@ public interface HttpServletRequestMessageDecoder<MessageType> extends MessageDe
      * 
      * @return the HTTP servlet request
      */
-    @Nullable public HttpServletRequest getHttpServletRequest();
+    @Nullable HttpServletRequest getHttpServletRequest();
     
     /**
      * Set the HTTP servlet request on which to operate.
      * 
      * @param request the HTTP servlet request
      */
-    public void setHttpServletRequest(@Nullable final HttpServletRequest request);
+    void setHttpServletRequest(@Nullable final HttpServletRequest request);
     
 }

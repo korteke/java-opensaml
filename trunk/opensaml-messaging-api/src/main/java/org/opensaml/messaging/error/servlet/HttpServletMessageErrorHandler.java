@@ -36,27 +36,27 @@ public interface HttpServletMessageErrorHandler<MessageType> extends MessageErro
      * 
      * @return the HTTP servlet request
      */
-    @Nullable public HttpServletRequest getHttpServletRequest();
+    @Nullable HttpServletRequest getHttpServletRequest();
     
     /**
      * Set the HTTP servlet request.
      * 
      * @param request the HTTP servlet request
      */
-    public void setHttpServletRequest(@Nullable final HttpServletRequest request);
+    void setHttpServletRequest(@Nullable final HttpServletRequest request);
     
     /**
      * Get the HTTP servlet response.
      * 
      * @return the HTTP servlet response
      */
-    @Nullable public HttpServletResponse getHttpServletResponse();
+    @Nullable HttpServletResponse getHttpServletResponse();
     
     /**
      * Set the HTTP servlet response.
      * 
      * @param response the HTTP servlet response
      */
-    public void setHttpServletResponse(@Nullable final HttpServletResponse response);
+    void setHttpServletResponse(@Nullable final HttpServletResponse response);
 
 }
