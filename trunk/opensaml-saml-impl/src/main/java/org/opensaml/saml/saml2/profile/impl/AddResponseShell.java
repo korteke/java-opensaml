@@ -73,6 +73,9 @@ public class AddResponseShell extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AddResponseShell.class);
 
+    /** Overwrite an existing message? */
+    private boolean overwriteExisting;
+    
     /** Strategy used to locate the {@link IdentifierGenerationStrategy} to use. */
     @NonnullAfterInit private Function<ProfileRequestContext,IdentifierGenerationStrategy> idGeneratorLookupStrategy;
 
@@ -84,6 +87,17 @@ public class AddResponseShell extends AbstractProfileAction {
 
     /** EntityID to populate into Issuer element. */
     @Nullable private String issuerId;
+    
+    /**
+     * Set whether to overwrite an existing message.
+     * 
+     * @param flag flag to set
+     */
+    public synchronized void setOverwriteExisting(final boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        overwriteExisting = flag;
+    }
     
     /**
      * Set the strategy used to locate the {@link IdentifierGenerationStrategy} to use.
@@ -129,7 +143,7 @@ public class AddResponseShell extends AbstractProfileAction {
             log.debug("{} No Outbound message context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (outboundMessageCtx.getMessage() != null) {
+        } else if (!overwriteExisting && outboundMessageCtx.getMessage() != null) {
             log.debug("{} Outbound message context already contains a Response", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
@@ -146,6 +160,8 @@ public class AddResponseShell extends AbstractProfileAction {
             issuerId = issuerLookupStrategy.apply(profileRequestContext);
         }
 
+        outboundMessageCtx.setMessage(null);
+        
         return super.doPreExecute(profileRequestContext);
     }
 
@@ -193,7 +209,7 @@ public class AddResponseShell extends AbstractProfileAction {
         messageMetadata.setMessageIssueInstant(response.getIssueInstant().getMillis());
         messageMetadata.setMessageIssuer(issuerId);
 
-        profileRequestContext.getOutboundMessageContext().addSubcontext(messageMetadata);
+        profileRequestContext.getOutboundMessageContext().addSubcontext(messageMetadata, true);
     }
 
 }
