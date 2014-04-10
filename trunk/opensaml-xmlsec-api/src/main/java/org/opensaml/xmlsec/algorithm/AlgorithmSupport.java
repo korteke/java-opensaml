@@ -17,10 +17,13 @@
 
 package org.opensaml.xmlsec.algorithm;
 
+import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
@@ -31,6 +34,7 @@ import javax.crypto.SecretKey;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +61,161 @@ public final class AlgorithmSupport {
      */
     @Nullable public static AlgorithmRegistry getGlobalAlgorithmRegistry() {
         return ConfigurationService.get(AlgorithmRegistry.class);
+    }
+    
+    /**
+     * Check whether the supplied descriptor represents an algorithm that my be used for
+     * key encryption, i.e. a key transport or symmetric key wrap algorithm.
+     * 
+     * @param algorithm the algorithm descriptor to evaluate
+     * @return true if the algorithm may be used for key encryption, false otherwise
+     */
+    public static boolean isKeyEncryptionAlgorithm(@Nullable final AlgorithmDescriptor algorithm) {    
+        if (algorithm == null) {
+            return false;
+        }
+        
+        switch(algorithm.getType()) {
+            case KeyTransport:
+            case SymmetricKeyWrap:
+                return true;
+            default:
+                return false;
+        }
+    }
+    
+    /**
+     * Check whether the supplied descriptor represents an algorithm that my be used for
+     * data encryption, i.e. a block encryption algorithm.
+     * 
+     * @param algorithm the algorithm descriptor to evaluate
+     * @return true if the algorithm may be used for key encryption, false otherwise
+     */
+    public static boolean isDataEncryptionAlgorithm(@Nullable AlgorithmDescriptor algorithm) {
+        if (algorithm == null) {
+            return false;
+        }
+        
+        switch(algorithm.getType()) {
+            case BlockEncryption:
+                return true;
+            default:
+                return false;
+        }
+    }
+    
+    /**
+     * Check whether the supplied credential may be used with the supplied algorithm for the purpose of
+     * signing.  
+     * 
+     * <p>
+     * This checks the consistency of the type of credential signing key and the algorithm type, as well
+     * as the key algorithm and length where applicable.
+     * </p>
+     * 
+     * @param credential the candidate signing credential to evaluate
+     * @param algorithm the candidate signing algorithm to evaluate
+     * @return true if the credential may be used with the algorithm for signing, false otherwise
+     */
+    public static boolean credentialSupportsAlgorithmForSigning(@Nullable final Credential credential, 
+            @Nullable final AlgorithmDescriptor algorithm) {
+        if (credential == null || algorithm == null) {
+            return false;
+        }
+        
+        Key key = CredentialSupport.extractSigningKey(credential);
+        if (key == null) {
+            return false;
+        }
+        
+        switch(algorithm.getType()) {
+            case Signature:
+                if (!(key instanceof PrivateKey)) {
+                    return false;
+                }
+                break;
+            case Mac:
+                if (!(key instanceof SecretKey)) {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+        }
+        
+        return checkKeyAlgorithmAndLength(key, algorithm);
+    }
+
+    /**
+     * Check whether the supplied credential may be used with the supplied algorithm for the purpose of
+     * encryption.  
+     * 
+     * <p>
+     * This checks the consistency of the extracted credential encryption key and the algorithm type, as well
+     * as the key algorithm and length where applicable.
+     * </p>
+     * 
+     * @param credential the candidate encryption credential to evaluate
+     * @param algorithm the candidate encryption algorithm to evaluate
+     * @return true if the credential may be used with the algorithm for encryption, false otherwise
+     */
+    public static boolean credentialSupportsAlgorithmForEncryption(@Nullable final Credential credential, 
+            @Nullable final AlgorithmDescriptor algorithm) {
+        if (credential == null || algorithm == null) {
+            return false;
+        }
+        
+        Key key = CredentialSupport.extractEncryptionKey(credential);
+        if (key == null) {
+            return false;
+        }
+        
+        switch(algorithm.getType()) {
+            case KeyTransport:
+                if (!(key instanceof PublicKey)) {
+                    return false;
+                }
+                break;
+            case BlockEncryption:
+            case SymmetricKeyWrap:
+                if (!(key instanceof SecretKey)) {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+        }
+        
+        return checkKeyAlgorithmAndLength(key, algorithm);
+    }
+    
+    /**
+     * Check that the supplied key is consistent with the supplied algorithm's specified key algorithm and key length,
+     * where applicable.
+     * 
+     * @param key the key to evaluate
+     * @param algorithm the algorithm to evaluate
+     * @return true if the key is consistent with key algorithm and length specified by the algorithm (if any)
+     *          false otherwise
+     */
+    public static boolean checkKeyAlgorithmAndLength(@Nonnull final Key key, 
+            @Nonnull final AlgorithmDescriptor algorithm) {
+        
+        if (algorithm instanceof KeySpecifiedAlgorithm) {
+            String specifiedKey = ((KeySpecifiedAlgorithm)algorithm).getKey();
+            if (!specifiedKey.equals(key.getAlgorithm())) {
+                return false;
+            }
+        }
+        
+        if (algorithm instanceof KeyLengthSpecifiedAlgorithm) {
+            Integer specifiedKeyLength = ((KeyLengthSpecifiedAlgorithm)algorithm).getKeyLength();
+            if (!specifiedKeyLength.equals(KeySupport.getKeyLength(key))) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     /**

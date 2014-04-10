@@ -17,10 +17,46 @@
 
 package org.opensaml.xmlsec.algorithm;
 
+import java.security.Key;
+import java.security.KeyException;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.HashSet;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128CBC;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128GCM;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES192CBC;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES192GCM;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES256CBC;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES256GCM;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionDESede;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSA15;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEP;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEPMGF1P;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureDSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES128;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES192;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES256;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapDESede;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
@@ -30,10 +66,240 @@ import org.testng.annotations.Test;
  * Unit test for {@link KeySupport}.
  */
 public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
+    
+    @Test
+    public void testIsKeyTransportAlgorithm() {
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new KeyTransportRSA15()));
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new KeyTransportRSAOAEP()));
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new KeyTransportRSAOAEPMGF1P()));
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new SymmetricKeyWrapAES128()));
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new SymmetricKeyWrapAES192()));
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new SymmetricKeyWrapAES256()));
+        Assert.assertTrue(AlgorithmSupport.isKeyEncryptionAlgorithm(new SymmetricKeyWrapDESede()));
+        
+        //Test some failure cases
+        Assert.assertFalse(AlgorithmSupport.isKeyEncryptionAlgorithm(new BlockEncryptionAES128CBC()));
+        Assert.assertFalse(AlgorithmSupport.isKeyEncryptionAlgorithm(new SignatureRSASHA256()));
+        Assert.assertFalse(AlgorithmSupport.isKeyEncryptionAlgorithm(new DigestSHA256()));
+    }
 
+    @Test
+    public void testIsDataEncryptionAlgorithm() {
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionAES128CBC()));
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionAES128GCM()));
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionAES192CBC()));
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionAES192GCM()));
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionAES256CBC()));
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionAES256GCM()));
+        Assert.assertTrue(AlgorithmSupport.isDataEncryptionAlgorithm(new BlockEncryptionDESede()));
+        
+        //Test some failure cases
+        Assert.assertFalse(AlgorithmSupport.isDataEncryptionAlgorithm(new KeyTransportRSA15()));
+        Assert.assertFalse(AlgorithmSupport.isDataEncryptionAlgorithm(new SymmetricKeyWrapAES128()));
+        Assert.assertFalse(AlgorithmSupport.isDataEncryptionAlgorithm(new SignatureRSASHA256()));
+        Assert.assertFalse(AlgorithmSupport.isDataEncryptionAlgorithm(new DigestSHA256()));
+    }
+    
+    @Test
+    public void testCredentialSupportsAlgorithmForSigning() throws NoSuchAlgorithmException, KeyException, NoSuchProviderException {
+        Credential credential;
+        KeyPair kp;
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_DESEDE, 168, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 128, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 192, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
+        
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA256()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA384()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA512()));
+        
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 4096, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA256()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA384()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA512()));
+        
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureDSASHA1()));
+        
+        try {
+            kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, 256, null);
+            credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+            Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA1()));
+            Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA256()));
+            Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA384()));
+            Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA512()));
+        } catch (NoSuchAlgorithmException e) {
+            // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
+            // Just ignore unsupported algorithm failures here for now. 
+        }
+        
+        // Test some failure cases
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA1()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA256()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA1()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA256()));
+    }
+    
+    @Test
+    public void testCredentialSupportsAlgorithmForEncryption() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Credential credential;
+        KeyPair kp;
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_DESEDE, 168, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionDESede()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new SymmetricKeyWrapDESede()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 128, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES128CBC()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES128GCM()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new SymmetricKeyWrapAES128()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 192, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES192CBC()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES192GCM()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new SymmetricKeyWrapAES192()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES256CBC()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES256GCM()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new SymmetricKeyWrapAES256()));
+        
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSA15()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSAOAEP()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSAOAEPMGF1P()));
+        
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 4096, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSA15()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSAOAEP()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSAOAEPMGF1P()));
+        
+        // Test some failure cases
+        kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null);
+        credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSA15()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new SymmetricKeyWrapAES128()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES128CBC()));
+        
+        credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new KeyTransportRSA15()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new SymmetricKeyWrapAES128()));
+        Assert.assertFalse(AlgorithmSupport.credentialSupportsAlgorithmForEncryption(credential, new BlockEncryptionAES128CBC()));
+    }
+    
+    @Test
+    public void testCheckKeyAlgorithmAndLength() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Key key;
+        
+        key = KeySupport.generateKey(JCAConstants.KEY_ALGO_DESEDE, 168, null);
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionDESede()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapDESede()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
+        
+        key = KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 128, null);
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES128CBC()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES128GCM()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES128()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
+        
+        key = KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 192, null);
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES192CBC()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES192GCM()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES192()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
+        
+        key = KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null);
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES256CBC()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES256GCM()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES256()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
+        
+        key = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null).getPrivate();
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new KeyTransportRSA15()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new KeyTransportRSAOAEP()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new KeyTransportRSAOAEPMGF1P()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA256()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA384()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA512()));
+        
+        key = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null).getPrivate();
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureDSASHA1()));
+        
+        try {
+            key = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, 256, null).getPrivate();
+            Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA1()));
+            Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA256()));
+            Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA384()));
+            Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA512()));
+        } catch (NoSuchAlgorithmException e) {
+            // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
+            // Just ignore unsupported algorithm failures here for now.
+        }
+        
+        // Test some failure cases
+        key = KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 128, null);
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionDESede()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES192CBC()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES256()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA1()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new KeyTransportRSA15()));
+        
+        key = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null).getPrivate();
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES192CBC()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES256()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureDSASHA1()));
+        Assert.assertFalse(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA256()));
+    }
+    
     /** Test mapping algorithm URI's to JCA key algorithm specifiers. */
     @Test
-    public void testKeyAlgorithmURIMappings() {
+    public void testGetKeyAlgorithm() {
         // Encryption related.
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP), "RSA");

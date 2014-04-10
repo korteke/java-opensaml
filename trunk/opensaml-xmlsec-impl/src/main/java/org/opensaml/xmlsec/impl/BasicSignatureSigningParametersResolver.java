@@ -35,6 +35,7 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
+import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
 import org.opensaml.xmlsec.criterion.SignatureSigningConfigurationCriterion;
@@ -62,6 +63,38 @@ public class BasicSignatureSigningParametersResolver
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(BasicSignatureSigningParametersResolver.class);
+    
+    /** The AlgorithmRegistry used when processing algorithm URIs. */
+    private AlgorithmRegistry algorithmRegistry;
+    
+    /** Constructor. */
+    public BasicSignatureSigningParametersResolver() {
+        algorithmRegistry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+    }
+
+    /**
+     * Get the {@link AlgorithmRegistry} instance used when resolving algorithm URIs. Defaults to
+     * the registry obtained via {@link AlgorithmSupport#getGlobalAlgorithmRegistry()}.
+     * 
+     * @return the algorithm registry instance
+     */
+    public AlgorithmRegistry getAlgorithmRegistry() {
+        // Handle case where this resolver was constructed before the library was properly initialized.
+        if (algorithmRegistry == null) {
+            return AlgorithmSupport.getGlobalAlgorithmRegistry();
+        }
+        return algorithmRegistry;
+    }
+
+    /**
+     * Set the {@link AlgorithmRegistry} instance used when resolving algorithm URIs. Defaults to
+     * the registry obtained via {@link AlgorithmSupport#getGlobalAlgorithmRegistry()}.
+     * 
+     * @param registry the new algorithm registry instance
+     */
+    public void setAlgorithmRegistry(@Nonnull final AlgorithmRegistry registry) {
+        algorithmRegistry = Constraint.isNotNull(registry, "AlgorithmRegistry was null");
+    }
 
     /** {@inheritDoc} */
     @Nonnull
@@ -163,9 +196,8 @@ public class BasicSignatureSigningParametersResolver
     protected boolean credentialSupportsAlgorithm(@Nonnull final Credential credential, 
             @Nonnull @NotEmpty final String algorithm) {
         
-        // TODO consult AlgorithmRegistry, etc
-        
-        return false;
+        return AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, 
+                getAlgorithmRegistry().get(algorithm));
     }
 
     /**
