@@ -81,11 +81,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
     /** Predicate determining whether detailed error information is permitted. */
     @Nonnull private Predicate<ProfileRequestContext> detailedErrorsCondition;
 
+    /** Optional method to obtain status codes. */
+    @Nullable private Function<ProfileRequestContext,List<String>> statusCodesLookupStrategy;
+    
     /** Optional method to obtain a status message. */
     @Nullable private Function<ProfileRequestContext,String> statusMessageLookupStrategy;
     
     /** One or more status codes to insert. */
-    @Nonnull @NonnullElements private List<String> statusCodes;
+    @Nonnull @NonnullElements private List<String> defaultStatusCodes;
     
     /** A default status message to include. */
     @Nullable private String statusMessage;
@@ -101,7 +104,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         detailedErrorsCondition = Predicates.alwaysFalse();
-        statusCodes = Collections.emptyList();
+        defaultStatusCodes = Collections.emptyList();
         detailedErrors = false;
     }
 
@@ -129,6 +132,18 @@ public class AddStatusToResponse extends AbstractProfileAction {
         detailedErrorsCondition =
                 Constraint.isNotNull(condition, "Detailed errors condition cannot be null");
     }
+    
+    /**
+     * Set the optional strategy used to obtain status codes to include.
+     * 
+     * @param strategy strategy used to obtain status codes
+     */
+    public synchronized void setStatusCodesLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,List<String>> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        statusCodesLookupStrategy = strategy;
+    }
 
     /**
      * Set the optional strategy used to obtain a status message to include.
@@ -152,7 +167,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         Constraint.isNotNull(codes, "Status code list cannot be null");
-        statusCodes = Lists.newArrayList(Collections2.filter(codes, Predicates.notNull()));
+        defaultStatusCodes = Lists.newArrayList(Collections2.filter(codes, Predicates.notNull()));
     }
     
     /**
@@ -198,7 +213,17 @@ public class AddStatusToResponse extends AbstractProfileAction {
 
         final Status status = statusBuilder.buildObject();
         response.setStatus(status);
-        buildStatusCode(status);
+        
+        if (statusCodesLookupStrategy != null) {
+            final List<String> codes = statusCodesLookupStrategy.apply(profileRequestContext);
+            if (codes == null || codes.isEmpty()) {
+                buildStatusCode(status, defaultStatusCodes);
+            } else {
+                buildStatusCode(status, codes);
+            }
+        } else {
+            buildStatusCode(status, defaultStatusCodes);
+        }
                 
         // StatusMessage processing.
         if (!detailedErrors || statusMessageLookupStrategy == null) {
@@ -224,8 +249,9 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * Build and attach {@link StatusCode} element.
      * 
      * @param status    the element to attach to
+     * @param codes     the status codes to use
      */
-    private void buildStatusCode(@Nonnull final Status status) {
+    private void buildStatusCode(@Nonnull final Status status, @Nonnull @NonnullElements final List<String> codes) {
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>getBuilderOrThrow(
                         StatusCode.TYPE_NAME);
@@ -233,11 +259,11 @@ public class AddStatusToResponse extends AbstractProfileAction {
         // Build nested StatusCodes.
         StatusCode statusCode = statusCodeBuilder.buildObject();
         status.setStatusCode(statusCode);
-        if (statusCodes.isEmpty()) {
+        if (codes.isEmpty()) {
             statusCode.setValue(StatusCode.RESPONDER_URI);
         } else {
-            statusCode.setValue(statusCodes.get(0));
-            final Iterator<String> i = statusCodes.iterator();
+            statusCode.setValue(codes.get(0));
+            final Iterator<String> i = codes.iterator();
             i.next();
             while (i.hasNext()) {
                 final StatusCode subcode = statusCodeBuilder.buildObject();

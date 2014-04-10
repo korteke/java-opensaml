@@ -82,11 +82,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
     /** Predicate determining whether detailed error information is permitted. */
     @Nonnull private Predicate<ProfileRequestContext> detailedErrorsCondition;
 
+    /** Optional method to obtain status codes. */
+    @Nullable private Function<ProfileRequestContext,List<QName>> statusCodesLookupStrategy;
+
     /** Optional method to obtain a status message. */
     @Nullable private Function<ProfileRequestContext,String> statusMessageLookupStrategy;
     
-    /** One or more status codes to insert. */
-    @Nonnull @NonnullElements private List<QName> statusCodes;
+    /** One or more default status codes to insert. */
+    @Nonnull @NonnullElements private List<QName> defaultStatusCodes;
     
     /** A default status message to include. */
     @Nullable private String statusMessage;
@@ -102,7 +105,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         detailedErrorsCondition = Predicates.alwaysFalse();
-        statusCodes = Collections.emptyList();
+        defaultStatusCodes = Collections.emptyList();
         detailedErrors = false;
     }
 
@@ -119,12 +122,24 @@ public class AddStatusToResponse extends AbstractProfileAction {
     }
 
     /**
+     * Set the optional strategy used to obtain status codes to include.
+     * 
+     * @param strategy strategy used to obtain status codes
+     */
+    public synchronized void setStatusCodesLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,List<QName>> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        statusCodesLookupStrategy = strategy;
+    }
+    
+    /**
      * Set the optional strategy used to obtain a status message to include.
      * 
      * @param strategy strategy used to obtain a status message
      */
     public synchronized void setStatusMessageLookupStrategy(
-            @Nullable final Function<ProfileRequestContext, String> strategy) {
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         statusMessageLookupStrategy = strategy;
@@ -136,14 +151,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+            @Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
     /**
-     * Set the list of status code values to insert, ordered such that the top level code is first
+     * Set the default list of status code values to insert, ordered such that the top level code is first
      * and every other code will be nested inside the previous one.
      * 
      * @param codes list of status code values to insert
@@ -152,7 +167,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         Constraint.isNotNull(codes, "Status code list cannot be null");
-        statusCodes = Lists.newArrayList(Collections2.filter(codes, Predicates.notNull()));
+        defaultStatusCodes = Lists.newArrayList(Collections2.filter(codes, Predicates.notNull()));
     }
     
     /**
@@ -198,7 +213,17 @@ public class AddStatusToResponse extends AbstractProfileAction {
 
         final Status status = statusBuilder.buildObject();
         response.setStatus(status);
-        buildStatusCode(status);
+        
+        if (statusCodesLookupStrategy != null) {
+            final List<QName> codes = statusCodesLookupStrategy.apply(profileRequestContext);
+            if (codes == null || codes.isEmpty()) {
+                buildStatusCode(status, defaultStatusCodes);
+            } else {
+                buildStatusCode(status, codes);
+            }
+        } else {
+            buildStatusCode(status, defaultStatusCodes);
+        }
                 
         // StatusMessage processing.
         if (!detailedErrors || statusMessageLookupStrategy == null) {
@@ -224,20 +249,21 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * Build and attach {@link StatusCode} element.
      * 
      * @param status    the element to attach to
+     * @param codes     the status codes to use
      */
-    private void buildStatusCode(@Nonnull final Status status) {
+    private void buildStatusCode(@Nonnull final Status status, @Nonnull @NonnullElements final List<QName> codes) {
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>getBuilderOrThrow(
                         StatusCode.TYPE_NAME);
-
+                
         // Build nested StatusCodes.
         StatusCode statusCode = statusCodeBuilder.buildObject();
         status.setStatusCode(statusCode);
-        if (statusCodes.isEmpty()) {
+        if (codes.isEmpty()) {
             statusCode.setValue(StatusCode.RESPONDER);
         } else {
-            statusCode.setValue(statusCodes.get(0));
-            final Iterator<QName> i = statusCodes.iterator();
+            statusCode.setValue(codes.get(0));
+            final Iterator<QName> i = codes.iterator();
             i.next();
             while (i.hasNext()) {
                 final StatusCode subcode = statusCodeBuilder.buildObject();
