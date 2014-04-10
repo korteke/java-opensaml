@@ -143,8 +143,18 @@ public class BasicSignatureSigningParametersResolver
      * @throws ResolverException if params instance is not populated with all required data
      */
     protected void validate(@Nonnull final SignatureSigningParameters params) throws ResolverException {
-        // TODO Auto-generated method stub
-        
+        if (params.getSigningCredential() == null) {
+            throw new ResolverException("Unable to resolve signing credential");
+        }
+        if (params.getSignatureAlgorithmURI() == null) {
+            throw new ResolverException("Unable to resolve signing algorithm URI");
+        }
+        if (params.getSignatureCanonicalizationAlgorithm() == null) {
+            throw new ResolverException("Unable to resolve signing canonicalization algorithm URI");
+        }
+        if (params.getSignatureReferenceDigestMethod() == null) {
+            throw new ResolverException("Unable to resolve reference digest algorithm URI");
+        }
     }
 
     /**

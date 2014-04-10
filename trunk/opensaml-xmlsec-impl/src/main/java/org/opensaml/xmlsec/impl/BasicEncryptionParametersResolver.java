@@ -164,8 +164,24 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * @throws ResolverException if params instance is not populated with all required data
      */
     protected void validate(@Nonnull final EncryptionParameters params) throws ResolverException {
-        // TODO Auto-generated method stub
-        
+        if (params.getKeyTransportEncryptionCredential() == null 
+                && params.getDataEncryptionCredential() == null) {
+            throw new ResolverException("Failed to resolve both a data and a key encryption credential");
+        }
+        if (params.getKeyTransportEncryptionCredential() != null 
+                && params.getKeyTransportEncryptionAlgorithmURI() == null) {
+            throw new ResolverException("Unable to resolve key encryption algorithm URI for credential");
+        }
+        if (params.getDataEncryptionCredential() != null 
+                && params.getDataEncryptionAlgorithmURI() == null) {
+            throw new ResolverException("Unable to resolve data encryption algorithm URI for credential");
+        }
+        if (params.getKeyTransportEncryptionCredential() != null 
+                && params.getDataEncryptionCredential() == null
+                && params.getDataEncryptionAlgorithmURI() == null) {
+            throw new ResolverException("Unable to resolve a data encryption algorithm URI " 
+                    + "for auto-generation of data encryption key");
+        }
     }
 
     /**
