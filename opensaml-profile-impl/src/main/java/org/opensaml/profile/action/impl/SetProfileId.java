@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
+
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -36,7 +37,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 public class SetProfileId extends AbstractProfileAction {
 
     /** ID of the profile in use. */
-    private final String profileId;
+    @Nonnull @NotEmpty private final String profileId;
 
     /**
      * Constructor.
@@ -44,12 +45,11 @@ public class SetProfileId extends AbstractProfileAction {
      * @param id ID of the profile in use
      */
     public SetProfileId(@Nonnull @NotEmpty final String id) {
-        super();
-
         profileId = Constraint.isNotNull(StringSupport.trimOrNull(id), "Profile ID cannot be null or empty");
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
         profileRequestContext.setProfileId(profileId);
     }
