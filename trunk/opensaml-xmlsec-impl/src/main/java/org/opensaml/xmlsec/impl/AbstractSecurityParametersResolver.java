@@ -179,7 +179,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         
         LazySet<String> accumulator = new LazySet<>();
         for (WhitelistBlacklistConfiguration config : configs) {
-            accumulator.addAll(config.getBlacklistedAlgorithmsURIs());
+            accumulator.addAll(config.getBlacklistedAlgorithmURIs());
             if (!config.isBlacklistMerge()) {
                 break;
             }

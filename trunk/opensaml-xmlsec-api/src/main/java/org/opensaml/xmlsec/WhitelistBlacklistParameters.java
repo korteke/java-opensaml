@@ -73,7 +73,7 @@ public class WhitelistBlacklistParameters {
      * 
      * @return the list of algorithms
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithmsURIs() {
+    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithmURIs() {
         return ImmutableList.copyOf(blackListedAlgorithmURIs);
     }
     

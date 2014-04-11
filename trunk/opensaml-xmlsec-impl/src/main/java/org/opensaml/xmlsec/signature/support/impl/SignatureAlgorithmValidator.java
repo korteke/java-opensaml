@@ -83,7 +83,7 @@ public class SignatureAlgorithmValidator {
     public SignatureAlgorithmValidator(@Nonnull final SignatureValidationParameters params) {
         Constraint.isNotNull(params, "SignatureValidationParameters may not be null");
         whitelistedAlgorithmURIs = params.getWhitelistedAlgorithmURIs();
-        blacklistedAlgorithmURIs = params.getBlacklistedAlgorithmsURIs();
+        blacklistedAlgorithmURIs = params.getBlacklistedAlgorithmURIs();
     }
     
     /**
