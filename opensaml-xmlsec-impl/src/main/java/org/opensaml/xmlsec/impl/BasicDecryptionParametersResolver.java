@@ -85,7 +85,8 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
      */
     @Nullable protected EncryptedKeyResolver resolveEncryptedKeyResolver(@Nonnull final CriteriaSet criteria) {
         
-        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class).getConfigurations()) {
+        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class)
+                .getConfigurations()) {
             if (config.getEncryptedKeyResolver() != null) {
                 return config.getEncryptedKeyResolver();
             }
@@ -103,7 +104,8 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     @Nullable protected KeyInfoCredentialResolver resolveKEKKeyInfoCredentialResolver(
             @Nonnull final CriteriaSet criteria) {
         
-        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class).getConfigurations()) {
+        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class)
+                .getConfigurations()) {
             if (config.getKEKKeyInfoCredentialResolver() != null) {
                 return config.getKEKKeyInfoCredentialResolver();
             }
@@ -121,7 +123,8 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     @Nullable protected KeyInfoCredentialResolver resolveDataKeyInfoCredentialResolver(
             @Nonnull final CriteriaSet criteria) {
         
-        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class).getConfigurations()) {
+        for (DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class)
+                .getConfigurations()) {
             if (config.getDataKeyInfoCredentialResolver() != null) {
                 return config.getDataKeyInfoCredentialResolver();
             }
