@@ -91,6 +91,16 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     public boolean isWhitelistMerge() {
         return whitelistMerge;
     }
+    
+    /**
+     * Set the flag indicating whether to merge this configuration's whitelist with one of a lower order of precedence,
+     * or to treat this whitelist as authoritative.
+     * 
+     * @param flag true if should merge, false otherwise
+     */
+    public void setWhitelistMerge(boolean flag) {
+        whitelistMerge = flag;
+    }
 
     /**
      * Get the list of blacklisted algorithm URI's.
@@ -114,6 +124,16 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     /** {@inheritDoc} */
     public boolean isBlacklistMerge() {
         return blacklistMerge;
+    }
+
+    /**
+     * Set the flag indicating whether to merge this configuration's blacklist with one of a lower order of precedence,
+     * or to treat this blacklist as authoritative.
+     * 
+     * @param flag true if should merge, false otherwise
+     */
+    public void setBlacklistMerge(boolean flag) {
+        blacklistMerge = flag;
     }
 
     /** {@inheritDoc} */
