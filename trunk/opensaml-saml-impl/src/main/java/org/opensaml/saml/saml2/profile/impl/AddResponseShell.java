@@ -20,11 +20,10 @@ package org.opensaml.saml.saml2.profile.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
+import net.shibboleth.utilities.java.support.security.SecureRandomIdentifierGenerationStrategy;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -49,15 +48,15 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 
 /**
- * Action that creates an empty {@link Response}, and sets it as the
- * message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
+ * Action that creates an empty {@link Response}, and sets it as the message returned by
+ * {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
  * <p>The {@link Status} is set to {@link StatusCode#SUCCESS_URI} as a default assumption,
  * and this can be overridden by subsequent actions.</p>
  * 
  * <p>If the {@link RelyingPartyContext} contains a responder identity (via
  * {@link net.shibboleth.idp.relyingparty.RelyingPartyConfiguration#getResponderId()},
- * it is set as the Issuer of the message.
+ * it is set as the Issuer of the message.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
@@ -77,7 +76,7 @@ public class AddResponseShell extends AbstractProfileAction {
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link IdentifierGenerationStrategy} to use. */
-    @NonnullAfterInit private Function<ProfileRequestContext,IdentifierGenerationStrategy> idGeneratorLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,IdentifierGenerationStrategy> idGeneratorLookupStrategy;
 
     /** Strategy used to obtain the response issuer value. */
     @Nullable private Function<ProfileRequestContext,String> issuerLookupStrategy;
@@ -87,6 +86,16 @@ public class AddResponseShell extends AbstractProfileAction {
 
     /** EntityID to populate into Issuer element. */
     @Nullable private String issuerId;
+    
+    /** Constructor. */
+    public AddResponseShell() {
+        // Default strategy is a 16-byte secure random source.
+        idGeneratorLookupStrategy = new Function<ProfileRequestContext,IdentifierGenerationStrategy>() {
+            public IdentifierGenerationStrategy apply(ProfileRequestContext input) {
+                return new SecureRandomIdentifierGenerationStrategy();
+            }
+        };
+    }
     
     /**
      * Set whether to overwrite an existing message.
@@ -122,16 +131,6 @@ public class AddResponseShell extends AbstractProfileAction {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         issuerLookupStrategy = strategy;
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (idGeneratorLookupStrategy == null) {
-            throw new ComponentInitializationException("IdentifierGenerationStrategy lookup strategy cannot be null");
-        }
     }
 
     /** {@inheritDoc} */
