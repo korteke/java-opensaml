@@ -18,11 +18,10 @@
 package org.opensaml.profile.context;
 
 /**
- * A context component which holds the last result produced by a profile action that produced
- * an "event".
+ * A context component which holds an "event" corresponding to an error condition.
  *
  * @param <EventType> the event type of the context 
  */
-public class PreviousEventContext<EventType> extends EventContext {
+public class ErrorEventContext<EventType> extends EventContext {
 
 }
