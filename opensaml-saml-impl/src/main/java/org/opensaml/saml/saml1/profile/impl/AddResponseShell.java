@@ -20,11 +20,10 @@ package org.opensaml.saml.saml1.profile.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
+import net.shibboleth.utilities.java.support.security.SecureRandomIdentifierGenerationStrategy;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -68,13 +67,23 @@ public class AddResponseShell extends AbstractProfileAction {
     @Nonnull private Logger log = LoggerFactory.getLogger(AddResponseShell.class);
 
     /** Strategy used to locate the {@link IdentifierGenerationStrategy} to use. */
-    @NonnullAfterInit private Function<ProfileRequestContext, IdentifierGenerationStrategy> idGeneratorLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,IdentifierGenerationStrategy> idGeneratorLookupStrategy;
 
     /** Overwrite an existing message? */
     private boolean overwriteExisting;
     
     /** The generator to use. */
     @Nullable private IdentifierGenerationStrategy idGenerator;
+    
+    /** Constructor. */
+    public AddResponseShell() {
+        // Default strategy is a 16-byte secure random source.
+        idGeneratorLookupStrategy = new Function<ProfileRequestContext,IdentifierGenerationStrategy>() {
+            public IdentifierGenerationStrategy apply(ProfileRequestContext input) {
+                return new SecureRandomIdentifierGenerationStrategy();
+            }
+        };
+    }
     
     /**
      * Set whether to overwrite an existing message.
@@ -100,16 +109,6 @@ public class AddResponseShell extends AbstractProfileAction {
                 Constraint.isNotNull(strategy, "IdentifierGenerationStrategy lookup strategy cannot be null");
     }
     
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (idGeneratorLookupStrategy == null) {
-            throw new ComponentInitializationException("IdentifierGenerationStrategy lookup strategy cannot be null");
-        }
-    }
-
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {

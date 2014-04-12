@@ -18,8 +18,6 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
-import net.shibboleth.utilities.java.support.security.SecureRandomIdentifierGenerationStrategy;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
@@ -50,11 +48,6 @@ public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         action = new AddResponseShell();
         action.setId("test");
-        action.setIdentifierGeneratorLookupStrategy(new Function<ProfileRequestContext,IdentifierGenerationStrategy>() {
-            public IdentifierGenerationStrategy apply(ProfileRequestContext input) {
-                return new SecureRandomIdentifierGenerationStrategy();
-            }
-        });
         action.setIssuerLookupStrategy(new Function<ProfileRequestContext,String>() {
             public String apply(ProfileRequestContext input) {
                 return issuer;
