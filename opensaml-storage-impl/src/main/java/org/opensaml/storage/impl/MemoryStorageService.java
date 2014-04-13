@@ -57,6 +57,7 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
     @NonnullAfterInit private ReadWriteLock lock;
 
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         contextMap = Maps.newHashMap();
@@ -64,6 +65,7 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         super.doDestroy();
         contextMap = null;
@@ -72,16 +74,19 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
 
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord>> getContextMap() {
         return contextMap;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected ReadWriteLock getLock() {
         return lock;
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable protected TimerTask getCleanupTask() {
         return new TimerTask() {
             /** {@inheritDoc} */
