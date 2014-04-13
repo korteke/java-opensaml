@@ -37,7 +37,8 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
         AttributedString attributedString = (AttributedString) xmlObject;
         
         if (!Strings.isNullOrEmpty(attributedString.getWSUId())) {
-            XMLObjectSupport.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(AttributedString.WSU_ID_ATTR_NAME, attributedString.getWSUId(),
+                    domElement, true);
         }
         
         XMLObjectSupport.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);

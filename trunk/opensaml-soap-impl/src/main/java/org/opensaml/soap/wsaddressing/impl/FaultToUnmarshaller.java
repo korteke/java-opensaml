@@ -17,11 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.FaultTo;
-
 /**
- * Unmarshaller for the {@link FaultTo} element.
- * 
+ * Unmarshaller for the &lt;wsa:FaultTo&gt; element.
  */
 public class FaultToUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 

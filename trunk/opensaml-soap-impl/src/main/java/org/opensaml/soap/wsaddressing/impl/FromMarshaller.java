@@ -17,11 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.From;
-
 /**
- * Marshaller for the {@link From} element.
- * 
+ * Marshaller for the &lt;wsa:From&gt; element.
  */
 public class FromMarshaller extends EndpointReferenceTypeMarshaller {
 

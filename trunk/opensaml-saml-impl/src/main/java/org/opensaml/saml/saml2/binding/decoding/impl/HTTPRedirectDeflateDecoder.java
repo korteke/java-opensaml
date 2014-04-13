@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
@@ -44,7 +44,7 @@ import com.google.common.base.Strings;
  * 
  * This decoder only supports DEFLATE compression.
  */
-public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAMLObject> 
+public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXMLMessageDecoder<SAMLObject> 
     implements SAMLMessageDecoder {
 
     /** Class logger. */

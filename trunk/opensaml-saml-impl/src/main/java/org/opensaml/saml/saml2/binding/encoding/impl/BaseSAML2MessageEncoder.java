@@ -21,7 +21,7 @@ import java.net.URI;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
-import org.opensaml.messaging.encoder.servlet.BaseHttpServletResponseXmlMessageEncoder;
+import org.opensaml.messaging.encoder.servlet.BaseHttpServletResponseXMLMessageEncoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -30,7 +30,7 @@ import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
 /**
  * Base class for SAML 2 message encoders.
  */
-public abstract class BaseSAML2MessageEncoder extends BaseHttpServletResponseXmlMessageEncoder<SAMLObject> 
+public abstract class BaseSAML2MessageEncoder extends BaseHttpServletResponseXMLMessageEncoder<SAMLObject> 
         implements SAMLMessageEncoder {
     
     /**

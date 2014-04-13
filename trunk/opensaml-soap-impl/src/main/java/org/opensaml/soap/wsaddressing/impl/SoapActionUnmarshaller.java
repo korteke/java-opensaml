@@ -18,10 +18,9 @@
 package org.opensaml.soap.wsaddressing.impl;
 
 import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
-import org.opensaml.soap.wsaddressing.SoapAction;
 
 /**
- * Unmarshaller for instances of {@link SoapAction}.
+ * Unmarshaller for instances of &lt;SoapAction&gt;.
  */
 public class SoapActionUnmarshaller extends XSURIUnmarshaller {
 

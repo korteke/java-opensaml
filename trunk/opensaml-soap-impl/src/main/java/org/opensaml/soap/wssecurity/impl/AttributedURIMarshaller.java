@@ -37,7 +37,8 @@ public class AttributedURIMarshaller extends AbstractWSSecurityObjectMarshaller 
         AttributedURI attributedURI = (AttributedURI) xmlObject;
         
         if (!Strings.isNullOrEmpty(attributedURI.getWSUId())) {
-            XMLObjectSupport.marshallAttribute(AttributedURI.WSU_ID_ATTR_NAME, attributedURI.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(AttributedURI.WSU_ID_ATTR_NAME, attributedURI.getWSUId(), domElement,
+                    true);
         }
         
         XMLObjectSupport.marshallAttributeMap(attributedURI.getUnknownAttributes(), domElement);

@@ -32,14 +32,14 @@ import org.w3c.dom.Element;
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class BaseHttpServletResponseXmlMessageEncoder<MessageType extends XMLObject> 
+public abstract class BaseHttpServletResponseXMLMessageEncoder<MessageType extends XMLObject> 
     extends AbstractHttpServletResponseMessageEncoder<MessageType> {
     
     /** Used to log protocol messages. */
     private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseHttpServletResponseXmlMessageEncoder.class);
+    private final Logger log = LoggerFactory.getLogger(BaseHttpServletResponseXMLMessageEncoder.class);
 
     /** {@inheritDoc} */
     public void encode() throws MessageEncodingException {

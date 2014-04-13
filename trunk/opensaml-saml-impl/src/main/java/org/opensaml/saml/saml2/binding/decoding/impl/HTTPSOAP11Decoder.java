@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 /**
  * SAML 2.0 SOAP 1.1 over HTTP binding decoder.
  */
-public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.HTTPSOAP11Decoder<SAMLObject> 
+public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.impl.HTTPSOAP11Decoder<SAMLObject> 
         implements SAMLMessageDecoder {
 
     /** Class logger. */

@@ -41,10 +41,10 @@ import org.xml.sax.SAXException;
  * 
  * @pre <pre>MessageContext.getMessage().getDOM() != null</pre>
  */
-public class SchemaValidateXmlMessage<MessageType extends XMLObject> extends AbstractMessageHandler<MessageType> {
+public class SchemaValidateXMLMessage<MessageType extends XMLObject> extends AbstractMessageHandler<MessageType> {
 
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(SchemaValidateXmlMessage.class);
+    private Logger log = LoggerFactory.getLogger(SchemaValidateXMLMessage.class);
 
     /** Schema used to validate incoming messages. */
     private final Schema validationSchema;
@@ -54,7 +54,7 @@ public class SchemaValidateXmlMessage<MessageType extends XMLObject> extends Abs
      * 
      * @param schema schema used to validate incoming messages
      */
-    public SchemaValidateXmlMessage(@Nonnull final Schema schema) {
+    public SchemaValidateXMLMessage(@Nonnull final Schema schema) {
         validationSchema = Constraint.isNotNull(schema, "Schema cannot be null");
     }
 

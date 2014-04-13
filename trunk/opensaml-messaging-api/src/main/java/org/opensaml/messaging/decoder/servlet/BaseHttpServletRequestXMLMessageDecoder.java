@@ -20,7 +20,6 @@ package org.opensaml.messaging.decoder.servlet;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -39,24 +38,24 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * Base class for message decoders which decode XML messages from an {@link HttpServletRequest}.
+ * Base class for message decoders which decode XML messages from an {@link javax.servlet.http.HttpServletRequest}.
  * 
  * @param <MessageType> the message type of the message context on which to operate
  */
-public abstract class BaseHttpServletRequestXmlMessageDecoder<MessageType extends XMLObject>
+public abstract class BaseHttpServletRequestXMLMessageDecoder<MessageType extends XMLObject>
     extends AbstractHttpServletRequestMessageDecoder<MessageType> {
     
     /** Used to log protocol messages. */
     private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseHttpServletRequestXmlMessageDecoder.class);
+    private final Logger log = LoggerFactory.getLogger(BaseHttpServletRequestXMLMessageDecoder.class);
 
     /** Parser pool used to deserialize the message. */
     private ParserPool parserPool;
 
     /** Constructor. */
-    public BaseHttpServletRequestXmlMessageDecoder() {
+    public BaseHttpServletRequestXMLMessageDecoder() {
         parserPool = XMLObjectProviderRegistrySupport.getParserPool();
     }
 

@@ -17,11 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.From;
-
 /**
- * Unmarshaller for the {@link From} element.
- * 
+ * Unmarshaller for the &lt;wsa:From&gt; element.
  */
 public class FromUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 

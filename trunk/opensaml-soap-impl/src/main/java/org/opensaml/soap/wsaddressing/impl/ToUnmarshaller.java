@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.To;
-
 /**
  * Unmarshaller for the &lt;wsa:To&gt; element.
  * 

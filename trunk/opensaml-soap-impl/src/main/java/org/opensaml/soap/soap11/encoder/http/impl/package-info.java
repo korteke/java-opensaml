@@ -15,28 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.wssecurity.impl;
-
-import org.opensaml.soap.wssecurity.AttributedDateTime;
-
-
-/**
- * Implementation of {@link AttributedDateTime}.
- * 
- * @deprecated replacement {@link AttributedDateTimeImpl}.
- * 
- */
-public class AttributedDataTimeImpl extends AttributedDateTimeImpl {
-
-    /**
-     * Constructor.
-     * 
-     * @param namespaceURI namespace of the element
-     * @param elementLocalName name of the element
-     * @param namespacePrefix namespace prefix of the element
-     */
-    public AttributedDataTimeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
-        super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-}
+/** SOAP over HTTP 1.1 message encoder and handlers. */
+package org.opensaml.soap.soap11.encoder.http.impl;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.decoder.http;
+package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  * @param <MessageType> the message type of the message context on which to operate
  */
 public class HTTPSOAP11Decoder<MessageType extends XMLObject> 
-    extends BaseHttpServletRequestXmlMessageDecoder<MessageType> {
+    extends BaseHttpServletRequestXMLMessageDecoder<MessageType> {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
@@ -59,11 +59,6 @@ public class HTTPSOAP11Decoder<MessageType extends XMLObject>
     /** Message handler to use in processing the message body. */
     private MessageHandler<MessageType> bodyHandler;
     
-    /** Constructor. */
-    public HTTPSOAP11Decoder() {
-        super();
-    }
-
     /**
      * Get the configured body handler MessageHandler.
      * 
@@ -83,6 +78,7 @@ public class HTTPSOAP11Decoder<MessageType extends XMLObject>
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDecode() throws MessageDecodingException {
         MessageContext<MessageType> messageContext = new MessageContext<MessageType>();
         HttpServletRequest request = getHttpServletRequest();
@@ -118,6 +114,7 @@ public class HTTPSOAP11Decoder<MessageType extends XMLObject>
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
@@ -127,6 +124,7 @@ public class HTTPSOAP11Decoder<MessageType extends XMLObject>
     }    
     
     /** {@inheritDoc} */
+    @Override
     protected XMLObject getMessageToLog() {
         return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
     }

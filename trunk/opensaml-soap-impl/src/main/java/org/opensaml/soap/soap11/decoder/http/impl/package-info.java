@@ -15,12 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.wsaddressing.impl;
-
-/**
- * Marshaller for the &lt;wsa:FaultTo&gt; element.
- * 
- */
-public class FaultToMarshaller extends EndpointReferenceTypeMarshaller {
-
-}
+/** SOAP over HTTP 1.1 message decoder and handlers. */
+package org.opensaml.soap.soap11.decoder.http.impl;

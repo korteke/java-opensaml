@@ -17,11 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.ReplyTo;
-
 /**
- * Marshaller for the {@link ReplyTo} element.
- * 
+ * Marshaller for the &lt;wsa:ReplyTo&gt; element.
  */
 public class ReplyToMarshaller extends EndpointReferenceTypeMarshaller {
 

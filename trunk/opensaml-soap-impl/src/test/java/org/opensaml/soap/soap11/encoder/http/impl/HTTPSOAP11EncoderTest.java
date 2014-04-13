@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.encoder.http;
+package org.opensaml.soap.soap11.encoder.http.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -37,6 +37,7 @@ import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
+import org.opensaml.soap.soap11.encoder.http.impl.HTTPSOAP11Encoder;
 import org.opensaml.soap.util.SOAPSupport;
 import org.opensaml.soap.wsaddressing.Action;
 import org.springframework.mock.web.MockHttpServletResponse;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.decoder.http;
+package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
 
@@ -31,6 +31,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.decoder.http.impl.HTTPSOAP11Decoder;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

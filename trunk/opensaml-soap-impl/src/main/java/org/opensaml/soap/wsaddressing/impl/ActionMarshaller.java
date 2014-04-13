@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.Action;
-
 /**
  * Marshaller for the &lt;wsa:Action&gt; element.
  * 

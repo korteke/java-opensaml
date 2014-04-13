@@ -156,15 +156,13 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
         } else {
             soap12MustUnderstand = prepareForAssignment(soap12MustUnderstand, null);
         }
-        manageQualifiedAttributeNamespace(org.opensaml.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
-                soap12MustUnderstand != null);
+        manageQualifiedAttributeNamespace(SOAP12_MUST_UNDERSTAND_ATTR_NAME, soap12MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
     public void setSOAP12MustUnderstand(XSBooleanValue newMustUnderstand) {
             soap12MustUnderstand = prepareForAssignment(soap12MustUnderstand, newMustUnderstand);
-            manageQualifiedAttributeNamespace(org.opensaml.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME, 
-                    soap12MustUnderstand != null);
+            manageQualifiedAttributeNamespace(SOAP12_MUST_UNDERSTAND_ATTR_NAME,  soap12MustUnderstand != null);
     }
 
     /** {@inheritDoc} */

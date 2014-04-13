@@ -38,7 +38,8 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
         AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
         if (!Strings.isNullOrEmpty(dateTime.getWSUId())) {
-            XMLObjectSupport.marshallAttribute(AttributedDateTime.WSU_ID_ATTR_NAME, dateTime.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(AttributedDateTime.WSU_ID_ATTR_NAME, dateTime.getWSUId(), domElement,
+                    true);
         }
         
         XMLObjectSupport.marshallAttributeMap(dateTime.getUnknownAttributes(), domElement);

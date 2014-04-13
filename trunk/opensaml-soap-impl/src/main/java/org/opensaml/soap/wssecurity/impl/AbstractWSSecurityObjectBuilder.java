@@ -23,17 +23,15 @@ import org.opensaml.soap.wssecurity.WSSecurityObject;
 import org.opensaml.soap.wssecurity.WSSecurityObjectBuilder;
 
 /**
- * AbstractWSSecurityObjectBuilder
+ * AbstractWSSecurityObjectBuilder.
  * 
+ * @param <WSSecurityObjectType> type of object
  */
 public abstract class AbstractWSSecurityObjectBuilder<WSSecurityObjectType extends WSSecurityObject>
         extends AbstractXMLObjectBuilder<WSSecurityObjectType> implements
         WSSecurityObjectBuilder<WSSecurityObjectType> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.soap.wssecurity.WSSecurityObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
+    @Override
     public abstract WSSecurityObjectType buildObject();
 }

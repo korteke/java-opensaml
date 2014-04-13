@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.MessageID;
-
 /**
  * Unmarshaller for the &lt;wsa:MessageID&gt; element.
  * 

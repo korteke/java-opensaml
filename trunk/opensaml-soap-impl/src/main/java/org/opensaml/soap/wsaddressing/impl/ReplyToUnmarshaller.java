@@ -17,11 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.ReplyTo;
-
 /**
- * Unmarshaller for the {@link ReplyTo} element.
- * 
+ * Unmarshaller for the &lt;wsa:ReplyTo&gt; element.
  */
 public class ReplyToUnmarshaller extends EndpointReferenceTypeUnmarshaller {
 
