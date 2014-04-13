@@ -19,13 +19,12 @@ package org.opensaml.security.messaging.impl;
 
 import java.util.LinkedHashSet;
 
-import javax.security.auth.x500.X500Principal;
-
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 
 /**
- * Options for deriving message context issuer names from an X.509 certificate. Used by {@link BaseClientCertAuthSecurityHandler}.
+ * Options for deriving message context issuer names from an X.509 certificate.
+ * Used by {@link BaseClientCertAuthSecurityHandler}.
  */
 public class CertificateNameOptions implements Cloneable {
 
@@ -39,7 +38,8 @@ public class CertificateNameOptions implements Cloneable {
     private LinkedHashSet<Integer> subjectAltNames;
 
     /**
-     * Responsible for serializing X.500 names to strings from certificate-derived {@link X500Principal} instances.
+     * Responsible for serializing X.500 names to strings from certificate-derived
+     * {@link javax.security.auth.x500.X500Principal} instances.
      */
     private X500DNHandler x500DNHandler;
 

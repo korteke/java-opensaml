@@ -23,7 +23,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -32,7 +31,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * <strong>NOTE:</strong> this class is not yet implemented
- * A {@link CredentialResolver} that pulls credential information from the file system.
+ * A {@link org.opensaml.security.credential.CredentialResolver} that pulls credential information from the file system.
  * 
  * This credential resolver attempts to retrieve credential information from the file system. Specifically it will
  * attempt to find key, cert, and crl information from files within the given directory. The filename must start with
