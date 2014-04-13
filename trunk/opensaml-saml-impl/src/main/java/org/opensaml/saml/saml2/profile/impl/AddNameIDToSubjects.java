@@ -43,7 +43,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.FormatSpecificNameIdentifierGenerator;
 import org.opensaml.saml.common.profile.SAMLEventIds;
-import org.opensaml.saml.common.profile.impl.logic.DefaultNameIDPolicyPredicate;
+import org.opensaml.saml.common.profile.logic.DefaultNameIDPolicyPredicate;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;

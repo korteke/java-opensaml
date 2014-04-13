@@ -152,7 +152,6 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(descriptor.getEndpoints().size(), 9);
         
         Assert.assertNotNull(descriptor.getDefaultArtifactResolutionService());
-        Assert.assertNotNull(descriptor.getDefaultArtificateResolutionService());
         Assert.assertNotNull(descriptor.getDefaultAttributeConsumingService());
         Assert.assertNotNull(descriptor.getDefaultAssertionConsumerService());
     }
