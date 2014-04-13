@@ -33,7 +33,6 @@ import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseP
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerTest;
 
-import org.opensaml.storage.RequestScopedStorageService;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.StorageServiceTest;

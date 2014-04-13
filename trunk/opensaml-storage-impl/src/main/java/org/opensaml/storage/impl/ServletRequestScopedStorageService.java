@@ -118,12 +118,11 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
 
     /** Constructor. */
     public ServletRequestScopedStorageService() {
-        super();
-        
         cookieName = DEFAULT_COOKIE_NAME;
     }
 
     /** {@inheritDoc} */
+    @Override
     public synchronized void setCleanupInterval(long interval) {
         // Don't allow a cleanup task.
         super.setCleanupInterval(0);
@@ -185,6 +184,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
@@ -196,6 +196,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
         
@@ -208,6 +209,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /** {@inheritDoc} */
+    @Override
     public void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
             throws IOException {
         super.updateContextExpiration(context, expiration);
@@ -216,6 +218,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
     
     /** {@inheritDoc} */
+    @Override
     public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
         super.deleteContext(context);
         
@@ -223,6 +226,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /** {@inheritDoc} */
+    @Override
     public void reap(@Nonnull @NotEmpty final String context) throws IOException {
         super.reap(context);
         
@@ -230,11 +234,13 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /** {@inheritDoc} */
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         
     }
 
     /** {@inheritDoc} */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         if (!(response instanceof HttpServletResponse)) {
@@ -354,11 +360,9 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             final JsonGenerator gen = Json.createGenerator(sink);
             
             gen.writeStartObject();
-            
             for (Map.Entry<String,Map<String, MutableStorageRecord>> context : contextMap.entrySet()) {
                 
                 gen.writeStartObject(context.getKey());
-                
                 for (Map.Entry<String,MutableStorageRecord> entry : context.getValue().entrySet()) {
                     final MutableStorageRecord record = entry.getValue();
                     final Long recexp = record.getExpiration();
@@ -373,10 +377,8 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
                         gen.writeEnd();
                     }
                 }
-                
                 gen.writeEnd();
             }
-            
             gen.writeEnd().close();
 
             if (empty) {
@@ -405,6 +407,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
@@ -416,6 +419,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /** {@inheritDoc} */
+    @Override
     protected boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         if (super.deleteImpl(version, context, key)) {
@@ -427,11 +431,13 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable protected TimerTask getCleanupTask() {
         return null;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord>> getContextMap() {
         
         Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
@@ -455,6 +461,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected ReadWriteLock getLock() {
         return DUMMY_LOCK;
     }
