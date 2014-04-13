@@ -26,7 +26,8 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
  * The &lt;wsse:TransformationParameters&gt; element.
  * 
  */
-public interface TransformationParameters extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSSecurityObject {
+public interface TransformationParameters
+        extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "TransformationParameters";

@@ -28,7 +28,8 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface EndpointReferenceType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
+public interface EndpointReferenceType
+        extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "EndpointReferenceType"; 

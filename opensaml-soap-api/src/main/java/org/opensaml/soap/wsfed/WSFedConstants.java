@@ -18,7 +18,7 @@
 package org.opensaml.soap.wsfed;
 
 /** WS-Federation Constants. */
-public class WSFedConstants {
+public final class WSFedConstants {
 
     /** WSFED 1.1 protocol XML namespace. */
     public static final String WSFED11P_NS = "http://schemas.xmlsoap.org/ws/2005/02/trust";
@@ -37,5 +37,9 @@ public class WSFedConstants {
 
     /** WSFED 1.X Address QName prefix. */
     public static final String WSADDRESS_PREFIX = "wsa";
-
+    
+    /** Constructor. */
+    private WSFedConstants() {
+        
+    }
 }

@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public class WSAddressingConstants {
+public final class WSAddressingConstants {
     
     /** WS-Addressing 1.0 namespace. */
     public static final String WSA_NS= "http://www.w3.org/2005/08/addressing";
@@ -80,6 +80,8 @@ public class WSAddressingConstants {
         new QName(WSA_NS, "EndpointUnavailable", WSA_PREFIX);
     
     /** Prevent instantiation. */
-    private WSAddressingConstants() { }
+    private WSAddressingConstants() {
+        
+    }
 
 }
