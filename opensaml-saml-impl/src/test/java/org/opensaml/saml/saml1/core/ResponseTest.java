@@ -19,7 +19,6 @@ package org.opensaml.saml.saml1.core;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.testng.Assert;
 import java.io.InputStream;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;

@@ -17,34 +17,21 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-import java.util.Set;
-
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.opensaml.core.xml.Namespace;
-import org.opensaml.core.xml.NamespaceManager;
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.core.xml.util.IDIndex;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
-import org.opensaml.saml.saml2.metadata.EncryptionMethod;
-import org.opensaml.saml.saml2.metadata.KeyDescriptor;
-import org.opensaml.security.credential.UsageType;
-import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.w3c.dom.Element;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

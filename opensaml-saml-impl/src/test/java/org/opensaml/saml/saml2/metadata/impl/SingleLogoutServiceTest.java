@@ -20,25 +20,16 @@
  */
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-import java.util.Set;
-
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.Namespace;
-import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
-import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.core.xml.util.IDIndex;
-import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.w3c.dom.Element;
 
 /**
  * Test case for creating, marshalling, and unmarshalling

@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.core.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
@@ -29,7 +28,6 @@ import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
