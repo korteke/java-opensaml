@@ -24,8 +24,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wssecurity.WSSecurityObject;
 
 /**
- * AbstractWSSecurityObject
- * 
+ * AbstractWSSecurityObject.
  */
 public abstract class AbstractWSSecurityObject extends AbstractXMLObject implements WSSecurityObject {
 
@@ -40,11 +39,8 @@ public abstract class AbstractWSSecurityObject extends AbstractXMLObject impleme
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /*
-     * No-op method. No child by default.
-     * 
-     * @see org.opensaml.xml.XMLObject#getOrderedChildren()
-     */
+    /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         // no children
         return null;

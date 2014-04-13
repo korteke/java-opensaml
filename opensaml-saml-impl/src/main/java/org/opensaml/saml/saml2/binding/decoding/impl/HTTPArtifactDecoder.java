@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <strong>NOTE: This decoder is not yet implemented.</strong>
  * */
-public class HTTPArtifactDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAMLObject> 
+public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder<SAMLObject> 
         implements SAMLMessageDecoder {
 
     /** Class logger. */

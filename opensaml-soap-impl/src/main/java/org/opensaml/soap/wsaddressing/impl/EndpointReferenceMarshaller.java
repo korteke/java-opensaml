@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.EndpointReference;
-
 /**
  * Marshaller for the &lt;wsa:EndpointReference&gt; element.
  * 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.encoder.http;
+package org.opensaml.soap.soap11.encoder.http.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +32,7 @@ import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
-import org.opensaml.messaging.encoder.servlet.BaseHttpServletResponseXmlMessageEncoder;
+import org.opensaml.messaging.encoder.servlet.BaseHttpServletResponseXMLMessageEncoder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
  * @param <MessageType> the message type of the message context on which to operate
  */
 public class HTTPSOAP11Encoder<MessageType extends XMLObject> 
-        extends BaseHttpServletResponseXmlMessageEncoder<MessageType> {
+        extends BaseHttpServletResponseXMLMessageEncoder<MessageType> {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Encoder.class);

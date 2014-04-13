@@ -20,8 +20,7 @@ package org.opensaml.soap.wssecurity.impl;
 import org.opensaml.soap.wssecurity.Expires;
 
 /**
- * ExpiresBuilder
- * 
+ * ExpiresBuilder.
  */
 public class ExpiresBuilder extends AbstractWSSecurityObjectBuilder<Expires> {
 

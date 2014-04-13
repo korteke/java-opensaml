@@ -17,10 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.RetryAfter;
-
 /**
- * Marshaller for instances of {@link RetryAfter}.
+ * Marshaller for instances of &lt;wsa:RetryAfter&gt;.
  */
 public class RetryAfterMarshaller extends AttributedUnsignedLongMarshaller {
 

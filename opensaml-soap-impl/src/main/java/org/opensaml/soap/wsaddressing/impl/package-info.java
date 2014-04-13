@@ -15,12 +15,5 @@
  * limitations under the License.
  */
 
+/** XML Object provider implementations for WS-Addressing. */
 package org.opensaml.soap.wsaddressing.impl;
-
-/**
- * Marshaller for the &lt;wsa:FaultTo&gt; element.
- * 
- */
-public class FaultToMarshaller extends EndpointReferenceTypeMarshaller {
-
-}

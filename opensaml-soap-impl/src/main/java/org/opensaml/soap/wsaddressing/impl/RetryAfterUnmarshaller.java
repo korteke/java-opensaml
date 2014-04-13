@@ -17,10 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.RetryAfter;
-
 /**
- * Unmarshaller for instances of {@link RetryAfter}.
+ * Unmarshaller for instances of &lt;wsa:RetryAfter&gt;.
  */
 public class RetryAfterUnmarshaller extends AttributedUnsignedLongUnmarshaller {
 

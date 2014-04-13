@@ -21,7 +21,7 @@ import javax.xml.validation.Schema;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.messaging.handler.impl.SchemaValidateXmlMessage;
+import org.opensaml.messaging.handler.impl.SchemaValidateXMLMessage;
 
 import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
 
@@ -35,8 +35,8 @@ import org.springframework.core.io.Resource;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-/** Unit test for {@link SchemaValidateXmlMessage}. */
-public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
+/** Unit test for {@link SchemaValidateXMLMessage}. */
+public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
 
     /** Simple xml object schema file. */
     private static final String SCHEMA_FILE = "org/opensaml/messaging/handler/impl/schemaValidateXmlMessageTest-schema.xsd";
@@ -69,7 +69,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
     @Test
     public void testNullInboundMessageContext() throws Exception {
 
-        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
         handler.initialize();
 
         MessageContext messageContext = new MessageContext();
@@ -84,7 +84,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
     /** Test a null dom. */
     @Test public void testNullDom() throws Exception {
 
-        SchemaValidateXmlMessage<SimpleXMLObject> handler = new SchemaValidateXmlMessage(schema);
+        SchemaValidateXMLMessage<SimpleXMLObject> handler = new SchemaValidateXMLMessage(schema);
         handler.initialize();
 
         MessageContext messageContext = new MessageContext();
@@ -103,7 +103,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
     /** Test validation of an invalid xml file. */
     @Test public void testInvalidSchema() throws Exception {
 
-        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
         handler.initialize();
 
         MessageContext messageContext = new MessageContext();
@@ -125,7 +125,7 @@ public class SchemaValidateXmlMessageTest extends XMLObjectBaseTestCase {
     /** Test validation of a valid xml file. */
     @Test public void testValidSchema() throws Exception {
 
-        SchemaValidateXmlMessage handler = new SchemaValidateXmlMessage(schema);
+        SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
         handler.initialize();
 
         MessageContext messageContext = new MessageContext();

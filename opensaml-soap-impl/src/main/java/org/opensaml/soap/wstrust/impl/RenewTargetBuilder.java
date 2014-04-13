@@ -25,10 +25,14 @@ import org.opensaml.soap.wstrust.RenewTarget;
  */
 public class RenewTargetBuilder extends AbstractWSTrustObjectBuilder<RenewTarget> {
 
+    /** {@inheritDoc} */
+    @Override
     public RenewTarget buildObject() {
         return buildObject(RenewTarget.ELEMENT_NAME);
     }
 
+    /** {@inheritDoc} */
+    @Override
     public RenewTarget buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new RenewTargetImpl(namespaceURI, localName, namespacePrefix);
     }

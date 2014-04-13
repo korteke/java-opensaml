@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import org.opensaml.soap.wsaddressing.ProblemHeaderQName;
-
 /**
  * Marshaller for the &lt;wsa:ProblemHeaderQName&gt; element.
  * 

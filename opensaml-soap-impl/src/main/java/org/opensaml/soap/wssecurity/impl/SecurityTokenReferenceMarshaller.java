@@ -38,7 +38,8 @@ public class SecurityTokenReferenceMarshaller extends AbstractWSSecurityObjectMa
         SecurityTokenReference str = (SecurityTokenReference) xmlObject;
         
         if (!Strings.isNullOrEmpty(str.getWSUId())) {
-            XMLObjectSupport.marshallAttribute(SecurityTokenReference.WSU_ID_ATTR_NAME, str.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(SecurityTokenReference.WSU_ID_ATTR_NAME, str.getWSUId(), domElement,
+                    true);
         }
         
         List<String> usages = str.getWSSEUsages();

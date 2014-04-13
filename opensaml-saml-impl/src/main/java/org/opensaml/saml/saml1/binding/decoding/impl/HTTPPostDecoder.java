@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXmlMessageDecoder;
+import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 /**
  * SAML 1.X HTTP POST message decoder.
  */
-public class HTTPPostDecoder extends BaseHttpServletRequestXmlMessageDecoder<SAMLObject> implements SAMLMessageDecoder {
+public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder<SAMLObject> implements SAMLMessageDecoder {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostDecoder.class);

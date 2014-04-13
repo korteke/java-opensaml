@@ -35,7 +35,8 @@ public class UsernameTokenMarshaller extends AbstractWSSecurityObjectMarshaller 
         UsernameToken usernameToken = (UsernameToken) xmlObject;
         
         if (!Strings.isNullOrEmpty(usernameToken.getWSUId())) {
-            XMLObjectSupport.marshallAttribute(UsernameToken.WSU_ID_ATTR_NAME, usernameToken.getWSUId(), domElement, true);
+            XMLObjectSupport.marshallAttribute(UsernameToken.WSU_ID_ATTR_NAME, usernameToken.getWSUId(), domElement,
+                    true);
         }
         
         XMLObjectSupport.marshallAttributeMap(usernameToken.getUnknownAttributes(), domElement);

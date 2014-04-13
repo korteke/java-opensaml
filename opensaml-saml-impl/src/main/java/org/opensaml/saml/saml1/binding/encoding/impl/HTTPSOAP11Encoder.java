@@ -23,7 +23,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 /**
  * SAML 1.X HTTP SOAP 1.1 binding message encoder.
  */
-public class HTTPSOAP11Encoder extends org.opensaml.soap.soap11.encoder.http.HTTPSOAP11Encoder<SAMLObject> {
+public class HTTPSOAP11Encoder extends org.opensaml.soap.soap11.encoder.http.impl.HTTPSOAP11Encoder<SAMLObject> {
 
     /** Constructor. */
     public HTTPSOAP11Encoder() {

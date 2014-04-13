@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11.decoder.http;
+package org.opensaml.soap.soap11.decoder.http.impl;
 
 import javax.annotation.Nonnull;
 

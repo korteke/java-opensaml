@@ -25,11 +25,14 @@ import org.opensaml.soap.wstrust.CombinedHash;
  */
 public class CombinedHashBuilder extends AbstractWSTrustObjectBuilder<CombinedHash> {
 
+    /** {@inheritDoc} */
+    @Override
     public CombinedHash buildObject() {
         return buildObject(CombinedHash.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public CombinedHash buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new CombinedHashImpl(namespaceURI, localName, namespacePrefix);
     }
