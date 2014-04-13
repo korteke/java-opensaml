@@ -30,8 +30,8 @@ public interface RequestedUnattachedReference extends RequestedReferenceType {
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "RequestedUnattachedReference";
 
-    /** Default element name */
-    public final static QName ELEMENT_NAME =
+    /** Default element name. */
+    public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

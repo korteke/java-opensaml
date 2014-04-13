@@ -15,22 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.wstrust;
-
-import org.opensaml.core.xml.XMLObjectBuilder;
-
-/**
- * WSTrustObjectBuilder.
- * 
- * @param <WSTrustObjectType> type of object
- */
-public interface WSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject>
-        extends XMLObjectBuilder<WSTrustObjectType> {
-
-    /**
-     * Builds a WS-Trust object of the given type.
-     * 
-     * @return the built object
-     */
-    public WSTrustObjectType buildObject();
-}
+/** XMLObject interfaces for WS-Policy 1.2 elements. */
+package org.opensaml.soap.wspolicy;

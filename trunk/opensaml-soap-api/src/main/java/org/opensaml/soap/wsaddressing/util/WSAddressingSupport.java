@@ -52,7 +52,8 @@ public final class WSAddressingSupport {
                 .put(IsReferenceParameterBearing.WSA_IS_REFERENCE_PARAMETER_ATTR_NAME, 
                         new XSBooleanValue(isReferenceParameter, false).toString());
         } else {
-            throw new IllegalArgumentException("Specified object was neither IsReferenceParameterBearing nor AttributeExtensible");
+            throw new IllegalArgumentException(
+                    "Specified object was neither IsReferenceParameterBearing nor AttributeExtensible");
         }
     }
 

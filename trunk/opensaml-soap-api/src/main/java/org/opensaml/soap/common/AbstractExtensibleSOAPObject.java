@@ -35,7 +35,7 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 /**
  * Abstract class implementing element and attribute extensibility.
  */
-public class AbstractExtensibleSOAPObject extends AbstractXMLObject implements SOAPObject,
+public abstract class AbstractExtensibleSOAPObject extends AbstractXMLObject implements SOAPObject,
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** "Any" type children. */

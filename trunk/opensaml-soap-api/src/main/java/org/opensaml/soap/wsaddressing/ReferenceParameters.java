@@ -28,7 +28,8 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
  * @see "WS-Addressing 1.0 - Core"
  * 
  */
-public interface ReferenceParameters extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
+public interface ReferenceParameters
+        extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Element local name. */
     public static final String ELEMENT_LOCAL_NAME = "ReferenceParameters";
