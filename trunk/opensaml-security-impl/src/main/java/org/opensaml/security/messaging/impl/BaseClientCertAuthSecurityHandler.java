@@ -84,7 +84,8 @@ import com.google.common.base.Strings;
  * 
  * @param <MessageType> type of message contained in the message context being evaluated
  */
-public abstract class BaseClientCertAuthSecurityHandler<MessageType> extends BaseTrustEngineSecurityHandler<X509Credential, MessageType> {
+public abstract class BaseClientCertAuthSecurityHandler<MessageType>
+        extends BaseTrustEngineSecurityHandler<X509Credential, MessageType> {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(BaseClientCertAuthSecurityHandler.class);
