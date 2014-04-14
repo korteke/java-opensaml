@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,6 +29,7 @@ import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
+import org.opensaml.profile.context.ErrorEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
@@ -53,6 +55,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
  * Action that sets {@link Status} content in a {@link Response} obtained from
@@ -289,4 +292,41 @@ public class AddStatusToResponse extends AbstractProfileAction {
         status.setStatusMessage(sm);
     }
     
+    /** A default method to map event IDs to SAML 2 StatusCode URIs based on {@link ErrorEventContext}. */
+    public static class StatusCodeMappingFunction implements Function<ProfileRequestContext,List<String>> {
+
+        /** Code mappings. */
+        @Nonnull @NonnullElements private Map<String,List<String>> codeMappings;
+        
+        /**
+         * Constructor.
+         *
+         * @param mappings the status code mappings to use
+         */
+        public StatusCodeMappingFunction(@Nonnull @NonnullElements final Map<String,List<String>> mappings) {
+            Constraint.isNotNull(mappings, "Status code mappings cannot be null");
+            
+            codeMappings = Maps.newHashMapWithExpectedSize(mappings.size());
+            for (Map.Entry<String,List<String>> entry : mappings.entrySet()) {
+                final String event = StringSupport.trimOrNull(entry.getKey());
+                if (event != null && entry.getValue() != null) {
+                    codeMappings.put(event,
+                            Lists.newArrayList(Collections2.filter(entry.getValue(), Predicates.notNull())));
+                }
+            }
+        }
+        
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public List<String> apply(@Nullable final ProfileRequestContext input) {
+            if (input != null) {
+                final ErrorEventContext error = input.getSubcontext(ErrorEventContext.class);
+                if (error != null && error.getEvent() != null) {
+                    return codeMappings.get(error.getEvent().toString());
+                }
+            }
+            return Collections.emptyList();
+        }
+    }
+
 }
