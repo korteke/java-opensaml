@@ -75,6 +75,8 @@ public class SignatureValidationFilter implements MetadataFilter {
         if (engine == null) {
             throw new IllegalArgumentException("Signature trust engine may not be null");
         }
+        
+        requireSignature = true;
 
         signatureTrustEngine = engine;
         signaturePrevalidator = new SAMLSignatureProfileValidator();
@@ -109,6 +111,7 @@ public class SignatureValidationFilter implements MetadataFilter {
 
     /**
      * Gets whether incoming metadata's root element is required to be signed.
+     * Defaults to <code>true</code>.
      * 
      * @return whether incoming metadata is required to be signed
      */
@@ -118,6 +121,7 @@ public class SignatureValidationFilter implements MetadataFilter {
 
     /**
      * Sets whether incoming metadata's root element is required to be signed.
+     * Defaults to <code>true</code>.
      * 
      * @param require whether incoming metadata is required to be signed
      */
