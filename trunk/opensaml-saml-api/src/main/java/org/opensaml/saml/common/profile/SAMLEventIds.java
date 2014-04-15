@@ -27,20 +27,23 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
  */
 public final class SAMLEventIds {
 
-    /** ID of the event returned if the requested NameIDPolicy can't be satisfied. */
-    @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
-    
     /** ID of the event returned upon failure to decrypt an {@link EncryptedAssertion}. */
     @Nonnull @NotEmpty public static final String DECRYPT_ASSERTION_FAILED = "DecryptAssertionFailed";
 
+    /** ID of the event returned upon failure to decrypt an {@link EncryptedAttribute}. */
+    @Nonnull @NotEmpty public static final String DECRYPT_ATTRIBUTE_FAILED = "DecryptAttributeFailed";
+    
     /** ID of the event returned upon failure to decrypt an {@link EncryptedID}. */
     @Nonnull @NotEmpty public static final String DECRYPT_NAMEID_FAILED = "DecryptNameIDFailed";
 
-    /** ID of the event returned upon failure to decrypt an {@link EncryptedAttribute}. */
-    @Nonnull @NotEmpty public static final String DECRYPT_ATTRIBUTE_FAILED = "DecryptAttributeFailed";
-
     /** ID of the event returned upon failure to resolve an outgoing message endpoint to use. */
     @Nonnull @NotEmpty public static final String ENDPOINT_RESOLUTION_FAILED = "EndpointResolutionFailed";
+
+    /** ID of the event returned if the requested NameIDPolicy can't be satisfied. */
+    @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
+
+    /** ID of the event returned if passive authentication isn't possible. */
+    @Nonnull @NotEmpty public static final String NO_PASSIVE = "NoPassive";
     
     /** Constructor. */
     private SAMLEventIds() {
