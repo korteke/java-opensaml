@@ -41,9 +41,6 @@ public final class SAMLEventIds {
 
     /** ID of the event returned if the requested NameIDPolicy can't be satisfied. */
     @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
-
-    /** ID of the event returned if passive authentication isn't possible. */
-    @Nonnull @NotEmpty public static final String NO_PASSIVE = "NoPassive";
     
     /** Constructor. */
     private SAMLEventIds() {
