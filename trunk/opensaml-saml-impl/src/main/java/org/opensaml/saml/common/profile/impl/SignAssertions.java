@@ -28,7 +28,6 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.context.navigate.MessageLookup;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -108,7 +107,7 @@ public class SignAssertions extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
@@ -151,7 +150,7 @@ public class SignAssertions extends AbstractProfileAction {
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         try {
             // TODO Maybe the response should not be logged ?
             if (log.isTraceEnabled()) {

@@ -24,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.BaseContext;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -72,7 +71,7 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         parentContext = parentContextLookupStrategy.apply(profileRequestContext);
         if (parentContext != null) {

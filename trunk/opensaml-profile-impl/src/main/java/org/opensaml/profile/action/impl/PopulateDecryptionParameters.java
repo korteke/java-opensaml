@@ -22,7 +22,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -131,7 +130,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         log.debug("{} Resolving DecryptionParameters for request", getLogPrefix());
         

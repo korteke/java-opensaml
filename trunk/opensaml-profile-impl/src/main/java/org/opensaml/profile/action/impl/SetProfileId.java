@@ -19,7 +19,6 @@ package org.opensaml.profile.action.impl;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -50,7 +49,7 @@ public class SetProfileId extends AbstractProfileAction {
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         profileRequestContext.setProfileId(profileId);
     }
 }

@@ -198,7 +198,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         log.debug("{} Attempting to add NameIdentifier to statements in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -225,7 +225,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         final NameIdentifier nameIdentifier = generateNameIdentifier(profileRequestContext);
         if (nameIdentifier == null) {

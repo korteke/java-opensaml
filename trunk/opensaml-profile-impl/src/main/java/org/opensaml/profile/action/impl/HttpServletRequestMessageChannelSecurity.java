@@ -20,7 +20,6 @@ package org.opensaml.profile.action.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.messaging.context.MessageChannelSecurityContext;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 /**
@@ -40,7 +39,7 @@ public class HttpServletRequestMessageChannelSecurity extends AbstractMessageCha
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(ProfileRequestContext profileRequestContext) {
         final MessageChannelSecurityContext channelContext =
                 getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
         channelContext.setConfidentialityActive(getHttpServletRequest().isSecure());

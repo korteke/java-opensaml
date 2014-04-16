@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.LoggerFactory;
 
@@ -64,8 +63,7 @@ public abstract class AbstractConditionalProfileAction<InboundMessageType, Outbo
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(
-            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
-            throws ProfileException {
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
         if (activationCondition.apply(profileRequestContext)) {
             return super.doPreExecute(profileRequestContext);
         } else {

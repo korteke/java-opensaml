@@ -26,7 +26,6 @@ import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -94,8 +93,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
 
     /** {@inheritDoc} */
     @Override public void execute(
-            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
-            throws ProfileException {
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
 
         // Clear any existing EventContext that might be hanging around, and if it exists,
         // copy the Event to a PreviousEventContext.
@@ -116,24 +114,17 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
         if (doPreExecute(profileRequestContext)) {
             try {
                 doExecute(profileRequestContext);
-            } catch (ProfileException e) {
+            } catch (final Throwable t) {
                 try {
-                    doPostExecute(profileRequestContext, e);
-                } catch (Throwable t) {
-                    LoggerFactory.getLogger(AbstractProfileAction.class).warn(
-                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
-                                    + "superseding a MessageHandlerException ", e);
-                    t.addSuppressed(e);
-                    throw t;
-                }
-                throw e;
-            } catch (Throwable t) {
-                try {
-                    doPostExecute(profileRequestContext);
+                    if (t instanceof Exception) {
+                        doPostExecute(profileRequestContext, (Exception) t);
+                    } else {
+                        doPostExecute(profileRequestContext);
+                    }
                 } catch (Throwable t2) {
                     LoggerFactory.getLogger(AbstractProfileAction.class).warn(
                             getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
-                                    + "superseding an unchecked exception/error ", t);
+                                    + "superseding earlier exception/error ", t);
                     t2.addSuppressed(t);
                     throw t2;
                 }
@@ -159,12 +150,9 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      * 
      * @param profileRequestContext the current IdP profile request context
      * @return true iff execution should proceed
-     * 
-     * @throws ProfileException thrown if there is a problem executing the profile action
      */
     protected boolean doPreExecute(
-            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
-            throws ProfileException {
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
         return true;
     }
 
@@ -172,13 +160,10 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      * Performs this action. Actions must override this method to perform their work.
      * 
      * @param profileRequestContext the current IdP profile request context
-     * 
-     * @throws ProfileException thrown if there is a problem executing the profile action
      */
     protected void doExecute(
-            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
-            throws ProfileException {
-        throw new ProfileException("This operation is not implemented.");
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
+        
     }
 
     /**

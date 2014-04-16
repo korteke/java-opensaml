@@ -19,7 +19,6 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import org.testng.Assert;
@@ -51,7 +50,7 @@ public class AbstractProfileActionTest {
 
         try {
             action.execute(new ProfileRequestContext());
-        } catch (ProfileException e) {
+        } catch (Exception e) {
             Assert.assertFalse(action.didPre);
             Assert.assertFalse(action.didExec);
             Assert.assertFalse(action.didPost);
@@ -68,7 +67,7 @@ public class AbstractProfileActionTest {
         try {
             action.execute(new ProfileRequestContext());
         } catch (NullPointerException e) {
-            Assert.assertTrue(e.getSuppressed()[0] instanceof ProfileException);
+            Assert.assertTrue(e.getSuppressed()[0] instanceof RuntimeException);
             Assert.assertTrue(action.didPre);
             Assert.assertFalse(action.didExec);
             Assert.assertFalse(action.didPost);
@@ -117,11 +116,11 @@ public class AbstractProfileActionTest {
             setId(getClass().getName());
         }
         
-        protected boolean doPreExecute(@Nonnull final ProfileRequestContext prc) throws ProfileException {
+        protected boolean doPreExecute(@Nonnull final ProfileRequestContext prc) {
             return didPre = true;
         }
         
-        protected void doExecute(@Nonnull final ProfileRequestContext prc) throws ProfileException {
+        protected void doExecute(@Nonnull final ProfileRequestContext prc) {
             didExec = true;
         }
 
@@ -132,15 +131,15 @@ public class AbstractProfileActionTest {
 
     private class PreFailProfileAction extends BaseProfileAction {
         
-        protected boolean doPreExecute(@Nonnull final ProfileRequestContext prc) throws ProfileException {
-            throw new ProfileException();
+        protected boolean doPreExecute(@Nonnull final ProfileRequestContext prc) {
+            throw new RuntimeException();
         }
     }
     
     private class ExecFailProfileAction extends BaseProfileAction {
         
-        protected void doExecute(@Nonnull final ProfileRequestContext prc) throws ProfileException {
-            throw new ProfileException();
+        protected void doExecute(@Nonnull final ProfileRequestContext prc) {
+            throw new RuntimeException();
         }
 
         protected void doPostExecute(@Nonnull final ProfileRequestContext prc) {
@@ -150,7 +149,7 @@ public class AbstractProfileActionTest {
 
     private class ExecUncheckedProfileAction extends BaseProfileAction {
         
-        protected void doExecute(@Nonnull final ProfileRequestContext prc) throws ProfileException {
+        protected void doExecute(@Nonnull final ProfileRequestContext prc) {
             throw new IllegalArgumentException();
         }
 

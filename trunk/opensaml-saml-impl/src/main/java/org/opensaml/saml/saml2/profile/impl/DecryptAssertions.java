@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
@@ -61,7 +60,7 @@ public class DecryptAssertions extends AbstractDecryptAction {
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final SAMLObject message = getSAMLObject();
         

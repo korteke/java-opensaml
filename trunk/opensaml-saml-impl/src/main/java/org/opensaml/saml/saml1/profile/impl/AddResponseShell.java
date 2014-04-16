@@ -31,7 +31,6 @@ import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -111,7 +110,7 @@ public class AddResponseShell extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final MessageContext<Response> outboundMessageCtx = profileRequestContext.getOutboundMessageContext();
         if (outboundMessageCtx == null) {
@@ -138,7 +137,7 @@ public class AddResponseShell extends AbstractProfileAction {
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         final XMLObjectBuilderFactory bf = XMLObjectProviderRegistrySupport.getBuilderFactory();
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder =
