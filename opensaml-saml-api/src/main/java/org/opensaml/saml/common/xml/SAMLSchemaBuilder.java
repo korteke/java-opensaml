@@ -74,7 +74,6 @@ public class SAMLSchemaBuilder {
         "/schema/saml-schema-assertion-2.0.xsd",
         "/schema/saml-schema-protocol-2.0.xsd",
         "/schema/saml-schema-metadata-2.0.xsd",
-        "/schema/saml-schema-authn-context-types-2.0.xsd",
         "/schema/saml-schema-authn-context-2.0.xsd",
         "/schema/saml-schema-authn-context-auth-telephony-2.0.xsd",
         "/schema/saml-schema-authn-context-ip-2.0.xsd",
