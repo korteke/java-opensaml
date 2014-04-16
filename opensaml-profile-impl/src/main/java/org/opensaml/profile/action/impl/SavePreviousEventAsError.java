@@ -19,7 +19,6 @@ package org.opensaml.profile.action.impl;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ErrorEventContext;
 import org.opensaml.profile.context.PreviousEventContext;
@@ -37,7 +36,7 @@ public class SavePreviousEventAsError extends AbstractProfileAction {
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final ErrorEventContext error = profileRequestContext.getSubcontext(ErrorEventContext.class, true);
         

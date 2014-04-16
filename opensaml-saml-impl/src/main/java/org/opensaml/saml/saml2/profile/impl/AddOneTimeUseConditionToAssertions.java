@@ -24,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.navigate.MessageLookup;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -81,7 +80,7 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         log.debug("{} Attempting to add OneTimeUse condition to every Assertion in Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -99,7 +98,7 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         final SAMLObjectBuilder<OneTimeUse> conditionBuilder = (SAMLObjectBuilder<OneTimeUse>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<OneTimeUse>getBuilderOrThrow(

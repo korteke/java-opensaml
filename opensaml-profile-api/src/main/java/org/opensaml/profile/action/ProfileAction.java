@@ -19,7 +19,6 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
@@ -46,10 +45,7 @@ public interface ProfileAction<InboundMessageType, OutboundMessageType>
      * Performs this action.
      * 
      * @param profileRequestContext the current IdP profile request context
-     * 
-     * @throws ProfileException thrown if there is a problem executing the profile action
      */
     public void execute(
-            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext)
-            throws ProfileException;
+            @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext);
 }

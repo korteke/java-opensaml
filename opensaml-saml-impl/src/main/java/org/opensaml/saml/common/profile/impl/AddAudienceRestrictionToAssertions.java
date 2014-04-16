@@ -22,7 +22,6 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -136,7 +135,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         log.debug("{} Attempting to add an AudienceRestrictionCondition to every Assertion in Response",
                 getLogPrefix());
 
@@ -168,7 +167,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         if (response instanceof org.opensaml.saml.saml1.core.Response) {
             for (final org.opensaml.saml.saml1.core.Assertion assertion :

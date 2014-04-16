@@ -22,7 +22,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -172,7 +171,7 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         if (super.doPreExecute(profileRequestContext)) {
             log.debug("{} Signing enabled", getLogPrefix());
@@ -186,7 +185,7 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         log.debug("{} Resolving SignatureSigningParameters for request", getLogPrefix());
         

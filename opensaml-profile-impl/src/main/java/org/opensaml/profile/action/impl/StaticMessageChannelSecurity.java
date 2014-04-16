@@ -20,7 +20,6 @@ package org.opensaml.profile.action.impl;
 import javax.annotation.Nonnull;
 
 import org.opensaml.messaging.context.MessageChannelSecurityContext;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 /**
@@ -33,11 +32,6 @@ public class StaticMessageChannelSecurity extends AbstractMessageChannelSecurity
     
     /** Message channel integrity flag. */
     private boolean integrityActive;
-    
-    /** Constructor. */
-    public StaticMessageChannelSecurity() {
-        super();
-    }
 
     /**
      * Get whether message channel confidentiality is active.
@@ -77,7 +71,7 @@ public class StaticMessageChannelSecurity extends AbstractMessageChannelSecurity
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         final MessageChannelSecurityContext channelContext =
                 getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
         channelContext.setConfidentialityActive(isConfidentialityActive());

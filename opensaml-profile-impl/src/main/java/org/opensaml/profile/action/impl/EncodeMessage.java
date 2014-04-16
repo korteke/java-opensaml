@@ -102,7 +102,7 @@ public class EncodeMessage extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         msgContext = profileRequestContext.getOutboundMessageContext();
         if (msgContext == null) {
@@ -116,7 +116,7 @@ public class EncodeMessage extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final MessageEncoder encoder;
         try {

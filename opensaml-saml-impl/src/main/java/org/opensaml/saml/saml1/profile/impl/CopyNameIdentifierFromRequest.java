@@ -20,7 +20,6 @@ package org.opensaml.saml.saml1.profile.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -146,7 +145,7 @@ public class CopyNameIdentifierFromRequest extends AbstractProfileAction {
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         log.debug("{} Attempting to add NameIdentifier to statements in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -178,7 +177,7 @@ public class CopyNameIdentifierFromRequest extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) throws ProfileException {
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         int count = 0;
         
