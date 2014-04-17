@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.encoder.HTMLEncoder;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
@@ -38,8 +39,6 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
-import org.owasp.esapi.ESAPI;
-import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -200,9 +199,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
     protected void populateVelocityContext(VelocityContext velocityContext, MessageContext<SAMLObject> messageContext,
             String endpointURL) throws MessageEncodingException {
 
-        Encoder esapiEncoder = ESAPI.encoder();
-
-        String encodedEndpointURL = esapiEncoder.encodeForHTMLAttribute(endpointURL);
+        String encodedEndpointURL = HTMLEncoder.encodeForHTMLAttribute(endpointURL);
         log.debug("Encoding action url of '{}' with encoded value '{}'", endpointURL, encodedEndpointURL);
         velocityContext.put("action", encodedEndpointURL);
         velocityContext.put("binding", getBindingURI());
@@ -230,7 +227,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
 
         String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(relayState);
+            String encodedRelayState = HTMLEncoder.encodeForHTMLAttribute(relayState);
             log.debug("Setting RelayState parameter to: '{}', encoded as '{}'", relayState, encodedRelayState);
             velocityContext.put("RelayState", encodedRelayState);
         }
