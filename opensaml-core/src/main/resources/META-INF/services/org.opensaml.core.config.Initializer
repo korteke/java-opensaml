@@ -1,3 +1,2 @@
-org.opensaml.core.config.ESAPIInitializer
 org.opensaml.core.xml.config.XMLObjectProviderInitializer
 org.opensaml.core.xml.config.GlobalParserPoolInitializer
