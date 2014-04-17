@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml1.profile.impl;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -42,14 +41,14 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
     
     private AddStatusToResponse action;
     
-    @BeforeMethod public void setUp() throws ComponentInitializationException, ProfileException {
+    @BeforeMethod public void setUp() throws ComponentInitializationException {
         prc = new RequestContextBuilder().setOutboundMessage(
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
         action = new AddStatusToResponse();
         action.setId("test");
     }
 
-    @Test public void testMinimal() throws ProfileException, ComponentInitializationException {
+    @Test public void testMinimal() throws ComponentInitializationException {
         action.initialize();
         
         action.execute(prc);
@@ -67,7 +66,7 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(status.getStatusMessage());
     }
 
-    @Test public void testMultiStatus() throws ProfileException, ComponentInitializationException {
+    @Test public void testMultiStatus() throws ComponentInitializationException {
         action.setStatusCodes(Lists.newArrayList(StatusCode.REQUESTER, StatusCode.REQUEST_VERSION_DEPRECATED));
         action.initialize();
         
@@ -88,7 +87,7 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(status.getStatusMessage());
     }
 
-    @Test public void testFixedMessage() throws ProfileException, ComponentInitializationException {
+    @Test public void testFixedMessage() throws ComponentInitializationException {
         action.setStatusMessage("Foo");
         action.initialize();
         

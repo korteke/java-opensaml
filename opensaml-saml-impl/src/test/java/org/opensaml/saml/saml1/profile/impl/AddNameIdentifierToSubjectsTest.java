@@ -25,11 +25,11 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Response;
@@ -79,14 +79,14 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
-    public void testNoMessage() throws ComponentInitializationException, ProfileException {
+    public void testNoMessage() throws ComponentInitializationException {
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
     @Test
-    public void testNoAssertions() throws ComponentInitializationException, ProfileException {
+    public void testNoAssertions() throws ComponentInitializationException {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         action.initialize();
         action.execute(prc);
@@ -95,7 +95,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test
-    public void testNoStatements() throws ComponentInitializationException, ProfileException {
+    public void testNoStatements() throws ComponentInitializationException {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         prc.getOutboundMessageContext().getMessage().getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         
@@ -106,7 +106,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().get(0).getStatements().isEmpty());
     }
 
-    @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
+    @Test void testArbitraryFormat() throws ComponentInitializationException {
         addStatements();
         
         action.setNameIdentifierGenerators(generators);
@@ -129,7 +129,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(subject.getNameIdentifier().getFormat());
     }
 
-    @Test void testSingleGenerator() throws ComponentInitializationException, ProfileException {
+    @Test void testSingleGenerator() throws ComponentInitializationException {
         addStatements();
         
         action.setFormatLookupStrategy(new X509FormatLookupStrategy());
@@ -153,7 +153,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.X509_SUBJECT);
     }
 
-    @Test void testMultipleGenerators() throws ComponentInitializationException, ProfileException {
+    @Test void testMultipleGenerators() throws ComponentInitializationException {
         addStatements();
         
         action.setFormatLookupStrategy(new EmailFormatLookupStrategy());
@@ -203,7 +203,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         
         /** {@inheritDoc} */
         @Override
-        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {
+        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws SAMLException {
             return identifier;
         }
     }

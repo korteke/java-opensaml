@@ -18,9 +18,9 @@
 package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.messaging.encoder.MessageEncoder;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 /**
@@ -34,10 +34,8 @@ public interface MessageEncoderFactory {
      * 
      * @param profileRequestContext current profile request context
      * 
-     * @return  the encoder to use
-     * @throws ProfileException if the encoder can't be determined or constructed
+     * @return  the encoder to use, or null
      */
-    @Nonnull MessageEncoder getMessageEncoder(@Nonnull final ProfileRequestContext profileRequestContext)
-        throws ProfileException;
+    @Nullable MessageEncoder getMessageEncoder(@Nonnull final ProfileRequestContext profileRequestContext);
     
 }

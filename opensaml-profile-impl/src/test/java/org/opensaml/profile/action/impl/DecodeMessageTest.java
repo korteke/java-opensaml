@@ -23,7 +23,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.action.impl.DecodeMessage;
@@ -55,10 +54,9 @@ public class DecodeMessageTest {
      * Test that the action proceeds properly if the message can be decoded.
      *  
      * @throws ComponentInitializationException 
-     * @throws ProfileException
      */
     @Test public void testDecodeMessage() throws ComponentInitializationException {
-        DecodeMessage action = new DecodeMessage(decoder);
+        final DecodeMessage action = new DecodeMessage(decoder);
         action.setId("test");
         action.initialize();
 
@@ -74,12 +72,11 @@ public class DecodeMessageTest {
      * Test that the action errors out properly if the message can not be decoded.
      * 
      * @throws ComponentInitializationException 
-     * @throws ProfileException
      */
     @Test public void testFailure() throws ComponentInitializationException {
         decoder.setThrowException(true);
 
-        DecodeMessage action = new DecodeMessage(decoder);
+        final DecodeMessage action = new DecodeMessage(decoder);
         action.setId("test");
         action.initialize();
 
@@ -123,7 +120,7 @@ public class DecodeMessageTest {
             if (throwException) {
                 throw new MessageDecodingException();
             } else {
-                MessageContext<MockMessage> messageContext = new MessageContext<>();
+                final MessageContext<MockMessage> messageContext = new MessageContext<>();
                 if (message != null) {
                     messageContext.setMessage(message);
                 } else {
@@ -134,4 +131,5 @@ public class DecodeMessageTest {
         }
 
     }
+    
 }

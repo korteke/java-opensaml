@@ -23,7 +23,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -37,6 +36,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.FormatSpecificNameIdentifierGenerator;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
@@ -285,7 +285,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
                                     format);
                             return nameIdentifier;
                         }
-                    } catch (ProfileException e) {
+                    } catch (SAMLException e) {
                         log.error(getLogPrefix() + " Error while generating NameIdentifier", e);
                     }
                 }

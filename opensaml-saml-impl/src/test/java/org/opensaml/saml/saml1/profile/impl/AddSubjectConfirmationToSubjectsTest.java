@@ -23,7 +23,6 @@ import java.util.Collections;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -56,12 +55,12 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     }
 
     @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testBadConfig() throws ComponentInitializationException, ProfileException {
+    public void testBadConfig() throws ComponentInitializationException {
         action.initialize();
     }
     
     @Test
-    public void testNoMessage() throws ComponentInitializationException, ProfileException {
+    public void testNoMessage() throws ComponentInitializationException {
         action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
         action.initialize();
         action.execute(prc);
@@ -69,7 +68,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     }
 
     @Test
-    public void testNoAssertions() throws ComponentInitializationException, ProfileException {
+    public void testNoAssertions() throws ComponentInitializationException {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         
         action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
@@ -81,7 +80,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     }
 
     @Test
-    public void testNoStatements() throws ComponentInitializationException, ProfileException {
+    public void testNoStatements() throws ComponentInitializationException {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         prc.getOutboundMessageContext().getMessage().getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         
@@ -93,7 +92,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().get(0).getStatements().isEmpty());
     }
 
-    @Test void testSingle() throws ComponentInitializationException, ProfileException {
+    @Test void testSingle() throws ComponentInitializationException {
         addStatements();
         
         action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
@@ -119,7 +118,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
                 ConfirmationMethod.METHOD_BEARER);
     }
 
-    @Test void testMultiple() throws ComponentInitializationException, ProfileException {
+    @Test void testMultiple() throws ComponentInitializationException {
         addStatements();
         
         action.setMethods(Arrays.asList(ConfirmationMethod.METHOD_BEARER, ConfirmationMethod.METHOD_SENDER_VOUCHES));
@@ -149,7 +148,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
                 ConfirmationMethod.METHOD_SENDER_VOUCHES);
     }
     
-    @Test void testArtifact() throws ComponentInitializationException, ProfileException {
+    @Test void testArtifact() throws ComponentInitializationException {
         addStatements();
         prc.getOutboundMessageContext().getSubcontext(SAMLBindingContext.class, true).setBindingUri(
                 SAMLConstants.SAML1_ARTIFACT_BINDING_URI);

@@ -22,7 +22,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -56,7 +55,7 @@ public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
         action.initialize();
     }
 
-    @Test public void testAddResponse() throws ProfileException, ComponentInitializationException {
+    @Test public void testAddResponse() {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
 
         issuer = null;
@@ -86,7 +85,7 @@ public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(messageMetadata.getMessageIssueInstant(), response.getIssueInstant().getMillis());
     }
 
-    @Test public void testAddResponseWithIssuer() throws ProfileException, ComponentInitializationException {
+    @Test public void testAddResponseWithIssuer() {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
 
         issuer = "foo";
@@ -107,8 +106,7 @@ public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(messageMetadata.getMessageIssuer(), "foo");
     }
     
-    @Test public void testAddResponseWhenResponseAlreadyExist() throws ProfileException,
-            ComponentInitializationException {
+    @Test public void testAddResponseWhenResponseAlreadyExist() {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
 

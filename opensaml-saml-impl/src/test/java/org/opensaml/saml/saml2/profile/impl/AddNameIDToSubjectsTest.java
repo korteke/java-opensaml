@@ -30,11 +30,11 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.impl.SAMLMetadataLookupHandlerTest;
 import org.opensaml.saml.common.profile.SAMLEventIds;
@@ -121,14 +121,14 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void testNoMessage() throws ComponentInitializationException, ProfileException {
+    public void testNoMessage() throws ComponentInitializationException {
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
     @Test
-    public void testNoAssertions() throws ComponentInitializationException, ProfileException {
+    public void testNoAssertions() throws ComponentInitializationException {
         prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
         action.initialize();
         action.execute(prc);
@@ -136,7 +136,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().isEmpty());
     }
 
-    @Test void testRequiredFormat() throws ComponentInitializationException, ProfileException {
+    @Test void testRequiredFormat() throws ComponentInitializationException {
         addAssertions();
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
         final NameIDPolicy policy = policyBuilder.buildObject();
@@ -164,7 +164,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.EMAIL);
     }
 
-    @Test void testRequiredFormatError() throws ComponentInitializationException, ProfileException {
+    @Test void testRequiredFormatError() throws ComponentInitializationException {
         addAssertions();
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
         final NameIDPolicy policy = policyBuilder.buildObject();
@@ -182,7 +182,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertNull(subject);
     }
     
-    @Test void testQualifierAsIssuer() throws ComponentInitializationException, ProfileException {
+    @Test void testQualifierAsIssuer() throws ComponentInitializationException {
         addAssertions();
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
         final NameIDPolicy policy = policyBuilder.buildObject();
@@ -212,7 +212,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.PERSISTENT);
     }
     
-    @Test void testAffiliation() throws ComponentInitializationException, ProfileException {
+    @Test void testAffiliation() throws ComponentInitializationException {
         addAssertions();
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();
         final NameIDPolicy policy = policyBuilder.buildObject();
@@ -248,7 +248,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.PERSISTENT);
     }
     
-    @Test void testArbitraryFormat() throws ComponentInitializationException, ProfileException {
+    @Test void testArbitraryFormat() throws ComponentInitializationException {
         addAssertions();
         
         action.setNameIDGenerators(generators);
@@ -271,7 +271,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(subject.getNameID().getFormat());
     }
     
-    @Test void testSingleGenerator() throws ComponentInitializationException, ProfileException {
+    @Test void testSingleGenerator() throws ComponentInitializationException {
         addAssertions();
         
         action.setFormatLookupStrategy(new X509FormatLookupStrategy());
@@ -295,7 +295,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
     }
 
-    @Test void testMultipleGenerators() throws ComponentInitializationException, ProfileException {
+    @Test void testMultipleGenerators() throws ComponentInitializationException {
         addAssertions();
         
         action.setFormatLookupStrategy(new EmailFormatLookupStrategy());
@@ -343,7 +343,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         
         /** {@inheritDoc} */
         @Override
-        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {
+        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws SAMLException {
             return identifier;
         }
     }

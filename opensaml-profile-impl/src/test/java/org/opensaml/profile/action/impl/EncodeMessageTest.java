@@ -18,6 +18,7 @@
 package org.opensaml.profile.action.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
@@ -26,7 +27,6 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.action.MessageEncoderFactory;
@@ -147,9 +147,7 @@ public class EncodeMessageTest {
 
         /** {@inheritDoc} */
         @Override
-        @Nonnull public MessageEncoder getMessageEncoder(@Nonnull final ProfileRequestContext profileRequestContext)
-                throws ProfileException {
-            
+        @Nullable public MessageEncoder getMessageEncoder(@Nonnull final ProfileRequestContext profileRequestContext) {
             return encoder;
         }
         

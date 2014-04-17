@@ -21,7 +21,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -50,7 +49,7 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
     
     /** Test that action errors out properly if there is no response. */
     @Test
-    public void testNoResponse() throws ProfileException {
+    public void testNoResponse() {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
 
         action.execute(prc);
@@ -59,7 +58,7 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
 
     /** Test that action errors out properly if there is no assertion in the response. */
     @Test
-    public void testNoAssertion() throws Exception {
+    public void testNoAssertion() {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
 
@@ -72,7 +71,7 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
      * response.
      */
     @Test
-    public void testSingleAssertion() throws Exception {
+    public void testSingleAssertion() {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
 
         final Response response = SAML2ActionTestingSupport.buildResponse();
@@ -96,7 +95,7 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
      * response.
      */
     @Test
-    public void testSingleAssertionWithExistingCondition() throws Exception {
+    public void testSingleAssertionWithExistingCondition() {
         final SAMLObjectBuilder<OneTimeUse> conditionBuilder = (SAMLObjectBuilder<OneTimeUse>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(OneTimeUse.DEFAULT_ELEMENT_NAME);
         final OneTimeUse condition = conditionBuilder.buildObject();
@@ -124,7 +123,7 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
     @Test
-    public void testMultipleAssertion() throws Exception {
+    public void testMultipleAssertion() {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());

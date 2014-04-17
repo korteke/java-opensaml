@@ -29,7 +29,6 @@ import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -118,11 +117,9 @@ public class EncodeMessage extends AbstractProfileAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        final MessageEncoder encoder;
-        try {
-            encoder = encoderFactory.getMessageEncoder(profileRequestContext);
-        } catch (final ProfileException e) {
-            log.error(getLogPrefix() + " Error obtaining an outbound message encoder", e);
+        final MessageEncoder encoder = encoderFactory.getMessageEncoder(profileRequestContext);
+        if (encoder == null) {
+            log.error("{} Unable to locate an outbound message encoder", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCODE);
             return;
         }
