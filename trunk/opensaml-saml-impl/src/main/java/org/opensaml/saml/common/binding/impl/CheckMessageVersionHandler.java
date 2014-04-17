@@ -24,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
@@ -32,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Handler that checks whether a SAML message has an appropriate version. */
-public class CheckMessageVersionHandler extends AbstractMessageHandler<SAMLObject> {
+public class CheckMessageVersionHandler extends AbstractMessageHandler {
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(CheckMessageVersionHandler.class);
@@ -54,9 +53,9 @@ public class CheckMessageVersionHandler extends AbstractMessageHandler<SAMLObjec
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
-        final SAMLObject message = messageContext.getMessage();
+        final Object message = messageContext.getMessage();
         if (message == null) {
             log.debug("Message was not found");
             if (!ignoreMissingOrUnrecognized) {
