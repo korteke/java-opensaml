@@ -153,6 +153,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         nameOptions.getSubjectAltNames().clear();
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
+        handler.setId("test");
         handler.setTrustEngine(engine);
         handler.setHttpServletRequest(request);
         handler.setCertificateNameOptions(nameOptions);

@@ -17,10 +17,9 @@
 
 package org.opensaml.messaging.handler;
 
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -32,17 +31,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @param <MessageType> the type of message being handled
  */
+@Prototype
 public abstract class AbstractMessageHandler<MessageType> extends AbstractIdentifiableInitializableComponent implements
         MessageHandler<MessageType> {
-
-    /**
-     * Constructor.
-     * 
-     */
-    public AbstractMessageHandler() {
-        super();
-        setId(UUID.randomUUID().toString());
-    }
 
     /** {@inheritDoc} */
     @Override public void invoke(@Nonnull final MessageContext<MessageType> messageContext)

@@ -196,6 +196,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
+        handler.setId("test");
         handler.setHttpServletRequest(buildServletRequest());
         handler.setTrustEngine(engine);
         handler.initialize();

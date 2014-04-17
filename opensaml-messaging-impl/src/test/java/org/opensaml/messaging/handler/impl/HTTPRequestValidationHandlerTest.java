@@ -48,6 +48,7 @@ public class HTTPRequestValidationHandlerTest {
         messageContext = new MessageContext();
         
         handler = new HTTPRequestValidationHandler();
+        handler.setId("test");
         handler.setHttpServletRequest(httpRequest);
         handler.setRequiredContentType(contentType);
         handler.setRequiredRequestMethod(method);
