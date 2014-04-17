@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.encoder.HTMLEncoder;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.UrlBuilder;
 
@@ -45,8 +46,6 @@ import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.binding.artifact.AbstractSAML2Artifact;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilder;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactType0004;
-import org.owasp.esapi.ESAPI;
-import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -231,9 +230,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
         log.debug("Creating velocity context");
         VelocityContext context = new VelocityContext();
-        Encoder esapiEncoder = ESAPI.encoder();
         String endpointURL = getEndpointURL(messageContext).toString();
-        String encodedEndpointURL = esapiEncoder.encodeForHTMLAttribute(endpointURL);
+        String encodedEndpointURL = HTMLEncoder.encodeForHTMLAttribute(endpointURL);
         log.debug("Setting action parameter to: '{}', encoded as '{}'", endpointURL, encodedEndpointURL);
         context.put("action", encodedEndpointURL);
         context.put("SAMLArt", buildArtifact(messageContext).base64Encode());
@@ -241,7 +239,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
         String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(relayState);
+            String encodedRelayState = HTMLEncoder.encodeForHTMLAttribute(relayState);
             log.debug("Setting RelayState parameter to: '{}', encoded as '{}'", relayState, encodedRelayState);
             context.put("RelayState", encodedRelayState);
         }

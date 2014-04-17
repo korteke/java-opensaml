@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.encoder.HTMLEncoder;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
@@ -36,8 +37,6 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.owasp.esapi.ESAPI;
-import org.owasp.esapi.Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,10 +167,9 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
 
         try {
             VelocityContext context = new VelocityContext();
-            Encoder esapiEncoder = ESAPI.encoder();
             SAMLObject message = messageContext.getMessage();
 
-            String encodedEndpointURL = esapiEncoder.encodeForHTMLAttribute(endpointURL);
+            String encodedEndpointURL = HTMLEncoder.encodeForHTMLAttribute(endpointURL);
             log.debug("Encoding action url of '{}' with encoded value '{}'", endpointURL, encodedEndpointURL);
             context.put("action", encodedEndpointURL);
             context.put("binding", getBindingURI());
@@ -183,7 +181,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
 
             String relayState = SAMLBindingSupport.getRelayState(messageContext);
             if (relayState != null) {
-                String encodedRelayState = esapiEncoder.encodeForHTMLAttribute(relayState);
+                String encodedRelayState = HTMLEncoder.encodeForHTMLAttribute(relayState);
                 log.debug("Setting TARGET parameter to: '{}', encoded as '{}'", relayState, encodedRelayState);
                 context.put("TARGET", encodedRelayState);
             }
