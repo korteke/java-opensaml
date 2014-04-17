@@ -19,6 +19,8 @@ package org.opensaml.saml.common.binding.impl;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -26,18 +28,40 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Handler that checks whether a SAML message has an appropriate version. */
 public class CheckMessageVersionHandler extends AbstractMessageHandler<SAMLObject> {
     
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(CheckMessageVersionHandler.class);
+    
+    /** Flag controlling handling of missing or unrecognized messages. */
+    private boolean ignoreMissingOrUnrecognized;
+    
+    /**
+     * Set whether to ignore cases where a message does not exist or is not recognized.
+     * 
+     * @param flag  flag to set
+     */
+    public void setIgnoreMissingOrUnrecognized(final boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        ignoreMissingOrUnrecognized = flag;
+    }
+    
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext)
-            throws MessageHandlerException {
-
+    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+        
         final SAMLObject message = messageContext.getMessage();
         if (message == null) {
-            throw new MessageHandlerException("Message was not found");
+            log.debug("Message was not found");
+            if (!ignoreMissingOrUnrecognized) {
+                throw new MessageHandlerException("Message was not found");
+            }
         } else if (message instanceof org.opensaml.saml.saml1.core.RequestAbstractType) {
             final SAMLVersion version = ((org.opensaml.saml.saml1.core.RequestAbstractType) message).getVersion();
             if (version.getMajorVersion() != 1) { 
@@ -59,8 +83,12 @@ public class CheckMessageVersionHandler extends AbstractMessageHandler<SAMLObjec
                 throw new MessageHandlerException("Response major version  was invalid");
             }
         } else {
-            throw new MessageHandlerException("Message type was not recognized");
+            log.debug("Message type was not recognized");
+            if (!ignoreMissingOrUnrecognized) {
+                throw new MessageHandlerException("Message type was not recognized");
+            }
         }
     }
+// Checkstyle: CyclomaticComplexity ON
     
 }

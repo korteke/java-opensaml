@@ -34,13 +34,57 @@ import org.testng.annotations.Test;
 /** {@link CheckMessageVersionHandler} unit test. */
 public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
 
+    @Test(expectedExceptions = MessageHandlerException.class)
+    public void testNoMessageThrows() throws ComponentInitializationException, MessageHandlerException {
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        handler.initialize();
+        
+        handler.invoke(messageCtx);
+    }
+
+    @Test
+    public void testNoMessageSilent() throws ComponentInitializationException, MessageHandlerException {
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        handler.setIgnoreMissingOrUnrecognized(true);
+        handler.initialize();
+        
+        handler.invoke(messageCtx);
+    }
+    
+    @Test(expectedExceptions = MessageHandlerException.class)
+    public void testBadMessageThrows() throws ComponentInitializationException, MessageHandlerException {
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+        messageCtx.setMessage(SAML1ActionTestingSupport.buildAssertion());
+
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        handler.initialize();
+        
+        handler.invoke(messageCtx);
+    }
+
+    @Test
+    public void testBadMessageSilent() throws ComponentInitializationException, MessageHandlerException {
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+        messageCtx.setMessage(SAML1ActionTestingSupport.buildAssertion());
+
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        handler.setIgnoreMissingOrUnrecognized(true);
+        handler.initialize();
+        
+        handler.invoke(messageCtx);
+    }
+    
     /** Test that the handler accepts SAML 1.0 and 1.1 messages. */
     @Test
     public void testSaml1Message() throws MessageHandlerException, ComponentInitializationException {
-        MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
         messageCtx.setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
 
-        CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -49,11 +93,11 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
     /** Test that the handler errors out on SAML 2 messages. */
     @Test(expectedExceptions = MessageHandlerException.class)
     public void testSaml2MessageFail() throws MessageHandlerException, ComponentInitializationException {
-        MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
         messageCtx.setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
         ((RequestAbstractType) messageCtx.getMessage()).setVersion(SAMLVersion.VERSION_20);
 
-        CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -62,10 +106,10 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
     /** Test that the handler accepts SAML 2.0 messages. */
     @Test
     public void testSaml2Message() throws MessageHandlerException, ComponentInitializationException {
-        MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
 
-        CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -74,11 +118,11 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
     /** Test that the handler errors out on SAML 1 messages. */
     @Test(expectedExceptions = MessageHandlerException.class)
     public void testSaml1MessageFail() throws MessageHandlerException, ComponentInitializationException {
-        MessageContext<SAMLObject> messageCtx = new MessageContext<>();
+        final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
         ((AttributeQuery) messageCtx.getMessage()).setVersion(SAMLVersion.VERSION_11);
 
-        CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
+        final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
