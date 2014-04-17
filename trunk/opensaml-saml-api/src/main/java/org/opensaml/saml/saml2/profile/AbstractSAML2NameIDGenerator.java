@@ -25,9 +25,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.AbstractNameIdentifierGenerator;
 import org.opensaml.saml.saml2.core.AuthnRequest;
@@ -85,7 +85,7 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
     /** {@inheritDoc} */
     @Override
     @Nullable protected NameID doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
-            throws ProfileException {
+            throws SAMLException {
         
         final String identifier = getIdentifier(profileRequestContext);
         if (identifier == null) {

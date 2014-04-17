@@ -22,19 +22,17 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.opensaml.saml.saml2.core.NameID;
 
-/**
- * Specialization of {@link NameIdentifierGenerator} for SAML 2.0.
- */
+/** Specialization of {@link NameIdentifierGenerator} for SAML 2.0. */
 public interface SAML2NameIDGenerator extends NameIdentifierGenerator<NameID> {
 
     /** {@inheritDoc} */
     @Override
     @Nullable NameID generate(@Nonnull final ProfileRequestContext profileRequestContext,
-            @Nonnull @NotEmpty final String format) throws ProfileException;
+            @Nonnull @NotEmpty final String format) throws SAMLException;
     
 }

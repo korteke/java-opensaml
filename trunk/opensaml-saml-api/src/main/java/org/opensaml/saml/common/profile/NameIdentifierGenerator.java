@@ -22,8 +22,8 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObject;
 
 import com.google.common.base.Predicate;
@@ -54,9 +54,9 @@ public interface NameIdentifierGenerator<NameIdType extends SAMLObject> extends 
      * @param format the identifier format to generate
      * 
      * @return  the identifier object, or null
-     * @throws ProfileException if an error occurs while generating the identifier
+     * @throws SAMLException if an error occurs generating an identifier
      */
     @Nullable NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
-            @Nonnull @NotEmpty final String format) throws ProfileException;
+            @Nonnull @NotEmpty final String format) throws SAMLException;
     
 }

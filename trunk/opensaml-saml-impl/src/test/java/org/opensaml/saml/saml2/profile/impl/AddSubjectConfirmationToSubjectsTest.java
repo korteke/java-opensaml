@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -47,7 +46,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     private AddSubjectConfirmationToSubjects action;
     
     @BeforeMethod
-    public void setUp() throws ComponentInitializationException {
+    public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         
         action = new AddSubjectConfirmationToSubjects();
@@ -56,12 +55,12 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     }
 
     @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testBadConfig() throws ComponentInitializationException, ProfileException {
+    public void testBadConfig() throws ComponentInitializationException {
         action.initialize();
     }
     
     @Test
-    public void testNoMessage() throws ComponentInitializationException, ProfileException {
+    public void testNoMessage() throws ComponentInitializationException {
         action.setMethod(SubjectConfirmation.METHOD_BEARER);
         action.initialize();
         action.execute(prc);
@@ -69,7 +68,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     }
 
     @Test
-    public void testNoAssertions() throws ComponentInitializationException, ProfileException {
+    public void testNoAssertions() throws ComponentInitializationException {
         prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
         
         action.setMethod(SubjectConfirmation.METHOD_BEARER);
@@ -80,7 +79,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().isEmpty());
     }
 
-    @Test void testSuccess() throws ComponentInitializationException, ProfileException {
+    @Test void testSuccess() throws ComponentInitializationException {
         addAssertions();
         
         action.setMethod(SubjectConfirmation.METHOD_BEARER);

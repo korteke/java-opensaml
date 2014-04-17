@@ -20,7 +20,6 @@ package org.opensaml.saml.common.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -49,7 +48,7 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
 
     /** Test that action errors out properly if there is no response. */
     @Test
-    public void testNoResponse() throws ComponentInitializationException, ProfileException {
+    public void testNoResponse() throws ComponentInitializationException {
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
         action.setId("test");
         action.initialize();

@@ -21,7 +21,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -55,7 +54,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
     
     /** Test that action errors out properly if there is no response. */
     @Test
-    public void testNoResponse() throws ProfileException {
+    public void testNoResponse() {
         prc.setOutboundMessageContext(null);
         
         action.execute(prc);
@@ -64,7 +63,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
 
     /** Test that action works properly if there is no assertion in the response. */
     @Test
-    public void testNoAssertion() throws ProfileException {
+    public void testNoAssertion() {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
     }
@@ -74,7 +73,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
      * response.
      */
     @Test
-    public void testSingleAssertion() throws ProfileException {
+    public void testSingleAssertion() {
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
 
         final Response response = (Response) prc.getOutboundMessageContext().getMessage();
@@ -95,7 +94,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
      * response.
      */
     @Test
-    public void testSingleAssertionWithExistingConditions() throws ProfileException {
+    public void testSingleAssertionWithExistingConditions() {
         SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Conditions.DEFAULT_ELEMENT_NAME);
         final Conditions conditions = conditionsBuilder.buildObject();
@@ -116,7 +115,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
     @Test
-    public void testMultipleAssertion() throws ProfileException {
+    public void testMultipleAssertion() {
         final Response response = (Response) prc.getOutboundMessageContext().getMessage();
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
@@ -139,7 +138,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
      * response.
      */
     @Test
-    public void testSAML2Assertion() throws ProfileException {
+    public void testSAML2Assertion() {
         final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
         final org.opensaml.saml.saml2.core.Response response = SAML2ActionTestingSupport.buildResponse();
         

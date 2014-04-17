@@ -28,8 +28,8 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObject;
 
 import com.google.common.base.Function;
@@ -260,11 +260,11 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
 
     /** {@inheritDoc} */
     @Override @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
-            @Nonnull @NotEmpty final String theFormat) throws ProfileException {
+            @Nonnull @NotEmpty final String theFormat) throws SAMLException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
         if (!Objects.equal(format, theFormat)) {
-            throw new ProfileException("The format to generate does not match the value configured");
+            throw new SAMLException("The format to generate does not match the value configured");
         }
         return doGenerate(profileRequestContext);
     }
@@ -274,10 +274,10 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * 
      * @param profileRequestContext current profile request context
      * @return the generated object
-     * @throws ProfileException if an error occurs
+     * @throws SAMLException if an error occurs
      */
     @Nullable protected abstract NameIdType doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
-            throws ProfileException;
+            throws SAMLException;
 
     /**
      * Override this method to reuse this implementation of {@link #doGenerate(ProfileRequestContext)}, and return the
@@ -286,10 +286,10 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param profileRequestContext current profile request context
      * 
      * @return the generated identifier
-     * @throws ProfileException if an error occurs
+     * @throws SAMLException if an error occurs
      */
     @Nullable protected String getIdentifier(@Nonnull final ProfileRequestContext profileRequestContext)
-            throws ProfileException {
+            throws SAMLException {
         return null;
     }
 

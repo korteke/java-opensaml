@@ -28,7 +28,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -71,7 +70,7 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     private SAMLObjectBuilder<Subject> subjectBuilder;
     
     @BeforeMethod
-    public void setUp() throws NoSuchAlgorithmException, KeyException, ComponentInitializationException {
+    public void setUp() throws NoSuchAlgorithmException, KeyException {
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         nameIdBuilder = (SAMLObjectBuilder<NameID>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
@@ -100,7 +99,7 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
-    public void testNoMessage() throws ComponentInitializationException, ProfileException {
+    public void testNoMessage() throws ComponentInitializationException {
         action.initialize();
         
         action.execute(prc);
@@ -112,10 +111,9 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
      *  
      * @throws EncryptionException
      * @throws ComponentInitializationException 
-     * @throws ProfileException 
      */
     @Test
-    public void testEncryptedNameIDNoParams() throws EncryptionException, ComponentInitializationException, ProfileException {
+    public void testEncryptedNameIDNoParams() throws EncryptionException, ComponentInitializationException {
         final AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
         prc.getInboundMessageContext().setMessage(authnRequest);
         final Subject subject = subjectBuilder.buildObject();
@@ -152,10 +150,9 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
      *  
      * @throws EncryptionException
      * @throws ComponentInitializationException 
-     * @throws ProfileException 
      */
     @Test
-    public void testEncryptedNameID() throws EncryptionException, ComponentInitializationException, ProfileException {
+    public void testEncryptedNameID() throws EncryptionException, ComponentInitializationException {
         final AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
         prc.getInboundMessageContext().setMessage(authnRequest);
         final Subject subject = subjectBuilder.buildObject();
@@ -179,12 +176,6 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
     /**
      * Test failed decryption of an NameID as an EncryptedID.
-     *  
-     * @throws EncryptionException
-     * @throws ComponentInitializationException 
-     * @throws ProfileException 
-     * @throws KeyException 
-     * @throws NoSuchAlgorithmException 
      */
     @Test
     public void testWrongKeyFatal() throws Exception {
@@ -215,12 +206,6 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
     /**
      * Test failed decryption of an NameID as an EncryptedID.
-     *  
-     * @throws EncryptionException
-     * @throws ComponentInitializationException 
-     * @throws ProfileException 
-     * @throws KeyException 
-     * @throws NoSuchAlgorithmException 
      */
     @Test
     public void testWrongKeyNonFatal() throws Exception {

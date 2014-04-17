@@ -20,7 +20,6 @@ package org.opensaml.saml.saml1.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -54,13 +53,13 @@ public class CopyNameIdentifierFromRequestTest extends OpenSAMLInitBaseTestCase 
     }
     
     @Test
-    public void testNoResponse() throws ComponentInitializationException, ProfileException {
+    public void testNoResponse() {
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
     @Test
-    public void testNoAssertions() throws ComponentInitializationException, ProfileException {
+    public void testNoAssertions() {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
 
         action.execute(prc);
@@ -69,7 +68,7 @@ public class CopyNameIdentifierFromRequestTest extends OpenSAMLInitBaseTestCase 
     }
 
     @Test
-    public void testNoRequest() throws ProfileException {
+    public void testNoRequest() {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         prc.getOutboundMessageContext().getMessage().getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         addStatements();
@@ -79,7 +78,7 @@ public class CopyNameIdentifierFromRequestTest extends OpenSAMLInitBaseTestCase 
     }
 
     @Test
-    public void testNoName() throws ProfileException {
+    public void testNoName() {
         prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         prc.getOutboundMessageContext().getMessage().getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         addStatements();
@@ -90,7 +89,7 @@ public class CopyNameIdentifierFromRequestTest extends OpenSAMLInitBaseTestCase 
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
     
-    @Test void testCopy() throws ComponentInitializationException, ProfileException {
+    @Test void testCopy() {
         
         Subject subject = SAML1ActionTestingSupport.buildSubject("jdoe");
         subject.getNameIdentifier().setNameQualifier(NAME_QUALIFIER);

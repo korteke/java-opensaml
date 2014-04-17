@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.AbstractNameIdentifierGenerator;
 import org.opensaml.saml.saml1.core.NameIdentifier;
@@ -57,7 +57,7 @@ public abstract class AbstractSAML1NameIdentifierGenerator extends AbstractNameI
     /** {@inheritDoc} */
     @Override
     @Nullable protected NameIdentifier doGenerate(@Nonnull final ProfileRequestContext profileRequestContext)
-            throws ProfileException {
+            throws SAMLException {
         
         final String identifier = getIdentifier(profileRequestContext);
         if (identifier == null) {

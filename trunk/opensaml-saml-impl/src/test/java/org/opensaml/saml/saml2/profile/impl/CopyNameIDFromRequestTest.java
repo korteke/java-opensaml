@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
@@ -33,7 +32,6 @@ import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 
 /** Test for {@link CopyNameIDFromRequest}. */
 public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
@@ -54,13 +52,13 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
-    public void testNoResponse() throws ComponentInitializationException, ProfileException {
+    public void testNoResponse() {
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
     @Test
-    public void testNoAssertions() throws ComponentInitializationException, ProfileException {
+    public void testNoAssertions() {
         prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
 
         action.execute(prc);
@@ -69,7 +67,7 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test
-    public void testNoRequest() throws ProfileException {
+    public void testNoRequest() {
         prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
         prc.getOutboundMessageContext().getMessage().getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         addAssertions();
@@ -79,7 +77,7 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test
-    public void testNoName() throws ProfileException {
+    public void testNoName() {
         prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
         prc.getOutboundMessageContext().getMessage().getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         addAssertions();
@@ -90,7 +88,7 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
     
-    @Test void testCopy() throws ComponentInitializationException, ProfileException {
+    @Test void testCopy() {
         
         Subject subject = SAML2ActionTestingSupport.buildSubject("jdoe");
         subject.getNameID().setNameQualifier(NAME_QUALIFIER);

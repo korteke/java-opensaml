@@ -20,8 +20,8 @@ package org.opensaml.saml.saml2.profile;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.ProfileException;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.saml2.core.NameID;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -42,7 +42,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
-    public void testFull() throws ComponentInitializationException, ProfileException {
+    public void testFull() throws ComponentInitializationException, SAMLException {
         final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator();
         mock.setFormat(NameID.X509_SUBJECT);
         mock.setIdPNameQualifier(NAME_QUALIFIER);
@@ -59,7 +59,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test
-    public void testOmitSet() throws ComponentInitializationException, ProfileException {
+    public void testOmitSet() throws ComponentInitializationException, SAMLException {
         final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator();
         mock.setFormat(NameID.X509_SUBJECT);
         mock.setIdPNameQualifier(NAME_QUALIFIER);
@@ -75,7 +75,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test
-    public void testOmitUnset() throws ComponentInitializationException, ProfileException {
+    public void testOmitUnset() throws ComponentInitializationException, SAMLException {
         final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator();
         mock.setFormat(NameID.X509_SUBJECT);
         mock.setOmitQualifiers(true);
@@ -89,7 +89,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test
-    public void testDefaultQualifier() throws ComponentInitializationException, ProfileException {
+    public void testDefaultQualifier() throws ComponentInitializationException, SAMLException {
         final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator();
         mock.setFormat(NameID.X509_SUBJECT);
         mock.initialize();
@@ -120,7 +120,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         
         /** {@inheritDoc} */
         @Override
-        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws ProfileException {
+        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws SAMLException {
             return "foo";
         }
     }
