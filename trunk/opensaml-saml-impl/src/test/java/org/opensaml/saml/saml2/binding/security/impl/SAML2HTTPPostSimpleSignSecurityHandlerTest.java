@@ -211,6 +211,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
+        handler.setId("test");
         handler.setHttpServletRequest(buildServletRequest());
         handler.setTrustEngine(engine);
         handler.setParser(parserPool);

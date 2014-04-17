@@ -59,80 +59,75 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
      */
     @BeforeClass public void setUp() throws Exception {
 
-        Resource r = new ClassPathResource(SCHEMA_FILE);
+        final Resource r = new ClassPathResource(SCHEMA_FILE);
         final SchemaBuilder schemaBuilder = new SchemaBuilder();
         schemaBuilder.addSchema(r.getInputStream());
         schema = schemaBuilder.buildSchema();
     }
 
     /** Test a null inbound message context. */
-    @Test
+    @Test(expectedExceptions=MessageHandlerException.class)
     public void testNullInboundMessageContext() throws Exception {
 
-        SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
+        final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
+        handler.setId("test");
         handler.initialize();
 
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
 
-        try {
-            handler.invoke(messageContext);
-        } catch (MessageHandlerException e) {
-            
-        }
+        handler.invoke(messageContext);
     }
 
     /** Test a null dom. */
-    @Test public void testNullDom() throws Exception {
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNullDom() throws Exception {
 
-        SchemaValidateXMLMessage<SimpleXMLObject> handler = new SchemaValidateXMLMessage(schema);
+        final SchemaValidateXMLMessage<SimpleXMLObject> handler = new SchemaValidateXMLMessage(schema);
+        handler.setId("test");
         handler.initialize();
 
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
 
-        SimpleXMLObject simpleXml = new SimpleXMLObjectBuilder().buildObject();
+        final SimpleXMLObject simpleXml = new SimpleXMLObjectBuilder().buildObject();
 
         messageContext.setMessage(simpleXml);
         
-        try {
-            handler.invoke(messageContext);
-        } catch (MessageHandlerException e) {
-            
-        }
+        handler.invoke(messageContext);
     }
 
     /** Test validation of an invalid xml file. */
-    @Test public void testInvalidSchema() throws Exception {
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testInvalidSchema() throws Exception {
 
-        SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
+        final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
+        handler.setId("test");
         handler.initialize();
 
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
 
-        Resource invalidXmlResource = new ClassPathResource(INVALID_XML_FILE);
+        final Resource invalidXmlResource = new ClassPathResource(INVALID_XML_FILE);
 
-        XMLObject invalidXml =
+        final XMLObject invalidXml =
                 XMLObjectSupport.unmarshallFromInputStream(parserPool, invalidXmlResource.getInputStream());
 
         messageContext.setMessage(invalidXml);
                 
-        try {
-            handler.invoke(messageContext);
-        } catch (MessageHandlerException e) {
-            
-        }
+        handler.invoke(messageContext);
     }
 
     /** Test validation of a valid xml file. */
     @Test public void testValidSchema() throws Exception {
 
-        SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
+        final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
+        handler.setId("test");
         handler.initialize();
 
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
 
-        Resource validXmlResource = new ClassPathResource(VALID_XML_FILE);
+        final Resource validXmlResource = new ClassPathResource(VALID_XML_FILE);
 
-        XMLObject validXml = XMLObjectSupport.unmarshallFromInputStream(parserPool, validXmlResource.getInputStream());
+        final XMLObject validXml =
+                XMLObjectSupport.unmarshallFromInputStream(parserPool, validXmlResource.getInputStream());
 
         messageContext.setMessage(validXml);
         

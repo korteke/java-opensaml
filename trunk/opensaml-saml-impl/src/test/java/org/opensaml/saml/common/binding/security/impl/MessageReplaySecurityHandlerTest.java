@@ -67,6 +67,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
         
         handler = new MessageReplaySecurityHandler();
         handler.setReplayCache(replayCache);
+        handler.setId("test");
         handler.initialize();
     }
 
@@ -122,6 +123,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     @Test
     public void testReplayValidWithExpiration() throws InterruptedException, MessageHandlerException, ComponentInitializationException {
         handler = new MessageReplaySecurityHandler();
+        handler.setId("test");
         handler.setReplayCache(replayCache);
         
         // Set rule with 3 second expiration, with no clock skew

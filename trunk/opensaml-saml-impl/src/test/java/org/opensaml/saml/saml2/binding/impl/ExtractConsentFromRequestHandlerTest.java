@@ -34,27 +34,25 @@ import org.testng.annotations.Test;
 public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCase {
     
     /** Test that the handler errors on a missing request. */
-    @Test public void testMissingContext() throws MessageHandlerException, ComponentInitializationException {
-        MessageContext<RequestAbstractType> messageCtx = new MessageContext<>();
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testMissingContext() throws MessageHandlerException, ComponentInitializationException {
+        final MessageContext<RequestAbstractType> messageCtx = new MessageContext<>();
 
-        ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
+        final ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
+        handler.setId("test");
         handler.initialize();
         
-        try {
-            handler.invoke(messageCtx);
-            Assert.fail();
-        } catch (MessageHandlerException e) {
-            
-        }
+        handler.invoke(messageCtx);
     }
 
     /** Test that the handler works. */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
-        MessageContext<RequestAbstractType> messageCtx = new MessageContext<>();
+        final MessageContext<RequestAbstractType> messageCtx = new MessageContext<>();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
         messageCtx.getMessage().setConsent(StatusResponseType.IMPLICIT_CONSENT);
         
-        ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
+        final ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
+        handler.setId("test");
         handler.initialize();
         
         handler.invoke(messageCtx);

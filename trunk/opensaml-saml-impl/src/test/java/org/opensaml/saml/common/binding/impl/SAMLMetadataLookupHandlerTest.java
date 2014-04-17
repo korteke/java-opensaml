@@ -72,8 +72,8 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     public void setUp() {
-
         handler = new SAMLMetadataLookupHandler();
+        handler.setId("test");
         messageContext = new MessageContext<SAMLObject>();
     }
     

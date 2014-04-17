@@ -147,6 +147,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         TrustEngine<Signature> engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         handler = new SAMLProtocolMessageXMLSignatureSecurityHandler();
+        handler.setId("test");
         handler.setTrustEngine(engine);
         handler.initialize();
         
