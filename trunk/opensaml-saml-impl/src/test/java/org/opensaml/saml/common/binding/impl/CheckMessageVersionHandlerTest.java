@@ -39,7 +39,6 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -50,7 +49,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         final MessageContext<SAMLObject> messageCtx = new MessageContext<>();
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.setIgnoreMissingOrUnrecognized(true);
         handler.initialize();
         
@@ -63,7 +62,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         messageCtx.setMessage(SAML1ActionTestingSupport.buildAssertion());
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -75,7 +74,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         messageCtx.setMessage(SAML1ActionTestingSupport.buildAssertion());
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.setIgnoreMissingOrUnrecognized(true);
         handler.initialize();
         
@@ -89,7 +88,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         messageCtx.setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -103,7 +102,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         ((RequestAbstractType) messageCtx.getMessage()).setVersion(SAMLVersion.VERSION_20);
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -116,7 +115,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -130,7 +129,7 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         ((AttributeQuery) messageCtx.getMessage()).setVersion(SAMLVersion.VERSION_11);
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
-        handler.setId("test");
+        
         handler.initialize();
         
         handler.invoke(messageCtx);

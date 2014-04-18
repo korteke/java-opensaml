@@ -39,7 +39,6 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
     @Test public void testNoResponse() throws Exception {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
         final AddDoNotCacheConditionToAssertions action = new AddDoNotCacheConditionToAssertions();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);
@@ -52,7 +51,6 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
 
         final AddDoNotCacheConditionToAssertions action = new AddDoNotCacheConditionToAssertions();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);
@@ -72,7 +70,6 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
         final AddDoNotCacheConditionToAssertions action = new AddDoNotCacheConditionToAssertions();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);
@@ -105,7 +102,6 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
         final AddDoNotCacheConditionToAssertions action = new AddDoNotCacheConditionToAssertions();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);
@@ -138,7 +134,6 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
         final AddDoNotCacheConditionToAssertions action = new AddDoNotCacheConditionToAssertions();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);
@@ -159,7 +154,6 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
         final AddDoNotCacheConditionToAssertions action = new AddDoNotCacheConditionToAssertions();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);

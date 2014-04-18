@@ -115,11 +115,6 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     private String issuer;
     
-    
-    /** Constructor. */
-    public SAMLMDClientCertAuthSecurityHandlerTest() {
-        
-    }
 
     /** {@inheritDoc} */
     @BeforeMethod
@@ -133,7 +128,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
         
-        BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
+        final BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
         otherCred1.setEntityId("other-1");
         
         trustedCredentials = new ArrayList<Credential>();
@@ -141,19 +136,18 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
         
-        TrustEngine<X509Credential> engine = new ExplicitX509CertificateTrustEngine(credResolver);
+        final TrustEngine<X509Credential> engine = new ExplicitX509CertificateTrustEngine(credResolver);
         
         request = new MockHttpServletRequest();
         request.setAttribute(ServletRequestX509CredentialAdapter.X509_CERT_REQUEST_ATTRIBUTE, 
                 new X509Certificate[] {validCert});
         
-        CertificateNameOptions nameOptions = new CertificateNameOptions();
+        final CertificateNameOptions nameOptions = new CertificateNameOptions();
         nameOptions.setEvaluateSubjectCommonName(true);
         nameOptions.setEvaluateSubjectDN(false);
         nameOptions.getSubjectAltNames().clear();
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
-        handler.setId("test");
         handler.setTrustEngine(engine);
         handler.setHttpServletRequest(request);
         handler.setCertificateNameOptions(nameOptions);
@@ -202,8 +196,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         trustedCredentials.add(validX509Cred);
         
         // Build a SAML message from which the SAML peer entityID can not be resolved.
-        Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
-        AttributeQuery query = buildXMLObject(AttributeQuery.DEFAULT_ELEMENT_NAME);
+        final Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final AttributeQuery query = buildXMLObject(AttributeQuery.DEFAULT_ELEMENT_NAME);
         query.setResource(null); // Set null for good measure
         request.setQuery(query);
         messageContext.setMessage(request);
@@ -245,12 +239,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
                 "Unexpected value for context authentication state");
     }
 
-    /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
-        AuthnRequest request = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
-        
-        return request;
+        return unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
     }
 
 }

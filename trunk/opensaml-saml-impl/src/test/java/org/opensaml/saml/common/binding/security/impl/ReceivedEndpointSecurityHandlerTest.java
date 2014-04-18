@@ -67,7 +67,6 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         intendedDestinationUri = SAMLBindingSupport.getIntendedDestinationEndpointURI(messageContext);
         
         handler = new ReceivedEndpointSecurityHandler();
-        handler.setId("test");
         handler.setHttpServletRequest(httpRequest);
         handler.initialize();
     }

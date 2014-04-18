@@ -20,7 +20,8 @@ package org.opensaml.messaging.handler;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.annotation.Prototype;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -32,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * @param <MessageType> the type of message being handled
  */
 @Prototype
-public abstract class AbstractMessageHandler<MessageType> extends AbstractIdentifiableInitializableComponent implements
+public abstract class AbstractMessageHandler<MessageType> extends AbstractInitializableComponent implements
         MessageHandler<MessageType> {
 
     /** {@inheritDoc} */
@@ -149,8 +150,8 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractIdenti
      * 
      * @return a string for insertion at the beginning of any log messages
      */
-    @Nonnull protected String getLogPrefix() {
-        return "Message Handler " + getId() + ":";
+    @Nonnull @NotEmpty protected String getLogPrefix() {
+        return "Message Handler: ";
     }
 
 }

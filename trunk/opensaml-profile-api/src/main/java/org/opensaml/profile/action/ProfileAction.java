@@ -21,9 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
-import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
-
 
 /**
  * Interface for actions that operate on a {@link ProfileRequestContext}.
@@ -38,8 +36,7 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-public interface ProfileAction<InboundMessageType, OutboundMessageType>
-    extends IdentifiedComponent, InitializableComponent {
+public interface ProfileAction<InboundMessageType, OutboundMessageType> extends InitializableComponent {
 
     /**
      * Performs this action.

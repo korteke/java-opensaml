@@ -39,7 +39,6 @@ public class AddConsentToResponseHandlerTest extends OpenSAMLInitBaseTestCase {
         messageCtx.setMessage(SAML2ActionTestingSupport.buildResponse());
 
         final AddConsentToResponseHandler handler = new AddConsentToResponseHandler();
-        handler.setId("test");
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -52,7 +51,6 @@ public class AddConsentToResponseHandlerTest extends OpenSAMLInitBaseTestCase {
         messageCtx.getSubcontext(SAMLConsentContext.class, true).setConsent(StatusResponseType.EXPLICIT_CONSENT);
         
         final AddConsentToResponseHandler handler = new AddConsentToResponseHandler();
-        handler.setId("test");
         handler.initialize();
         
         handler.invoke(messageCtx);

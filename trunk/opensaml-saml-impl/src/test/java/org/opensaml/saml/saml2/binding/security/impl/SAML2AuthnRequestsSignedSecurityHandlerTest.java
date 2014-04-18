@@ -48,7 +48,6 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     @BeforeMethod
     protected void setUp() throws Exception {
         handler = new SAML2AuthnRequestsSignedSecurityHandler();
-        handler.setId("test");
         handler.initialize();
         
         spssoDescriptor = buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME);

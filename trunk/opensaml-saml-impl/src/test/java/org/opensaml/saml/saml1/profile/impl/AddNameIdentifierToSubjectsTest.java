@@ -60,7 +60,6 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         
         action = new AddNameIdentifierToSubjects();
-        action.setId("test");
         
         MockSAML1NameIdentifierGenerator mock = new MockSAML1NameIdentifierGenerator("foo");
         mock.setFormat(NameIdentifier.X509_SUBJECT);

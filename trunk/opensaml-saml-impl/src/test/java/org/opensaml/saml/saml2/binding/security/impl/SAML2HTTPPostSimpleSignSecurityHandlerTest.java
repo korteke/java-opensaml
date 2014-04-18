@@ -207,11 +207,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
         credResolver = new CollectionCredentialResolver(trustedCredentials);
 
-        KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
-        SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        final KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
+        final SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
-        handler.setId("test");
         handler.setHttpServletRequest(buildServletRequest());
         handler.setTrustEngine(engine);
         handler.setParser(parserPool);
@@ -248,7 +247,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
-        SignatureValidationParameters sigParams = new SignatureValidationParameters();
+        final SignatureValidationParameters sigParams = new SignatureValidationParameters();
         sigParams.setBlacklistedAlgorithmURIs(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigParams);
         
@@ -274,7 +273,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     public void testInvalidSignature() throws MessageHandlerException {
         trustedCredentials.add(signingX509Cred);
 
-        MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
+        final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         request.setParameter("RelayState", "AlteredData" + request.getParameter("RelayState"));
         
         handler.invoke(messageContext);
@@ -298,7 +297,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     public void testSuccessNoKeyInfo() throws MessageHandlerException {
         trustedCredentials.add(signingX509Cred);
 
-        MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
+        final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         request.removeParameter("KeyInfo");
 
         handler.invoke(messageContext);
@@ -316,7 +315,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testFailureNoKeyInfo() throws MessageHandlerException {
-        MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
+        final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         request.removeParameter("KeyInfo");
 
         handler.invoke(messageContext);
@@ -324,9 +323,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
-        AuthnRequest request = (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-
-        return request;
+        return unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
     }
 
     /** {@inheritDoc} */
@@ -334,25 +331,25 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         //
         // Encode the "outbound" message context, with simple signature
         //
-        SAMLObjectBuilder<Endpoint> endpointBuilder =
+        final SAMLObjectBuilder<Endpoint> endpointBuilder =
                 (SAMLObjectBuilder<Endpoint>) builderFactory.getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        final MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(buildInboundSAMLMessage());
         SAMLBindingSupport.setRelayState(messageContext, expectedRelayValue);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
         
-        SignatureSigningParameters signingParameters = new SignatureSigningParameters();
+        final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(signingX509Cred);
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         
-        HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
+        final HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
         encoder.setHttpServletResponse(response);
         
@@ -373,7 +370,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         }
 
         // Now populate the new "inbound" message context with the "outbound" encoded info
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
 
         request.setMethod("POST");
 

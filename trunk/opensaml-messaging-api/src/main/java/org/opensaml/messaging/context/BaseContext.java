@@ -20,14 +20,11 @@ package org.opensaml.messaging.context;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
-import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.joda.time.DateTime;
 import org.opensaml.messaging.MessageRuntimeException;
@@ -58,7 +55,7 @@ import org.slf4j.LoggerFactory;
  * to this convention, auto-creation will fail.
  * </p>
  */
-public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseContext> {
+public abstract class BaseContext implements Iterable<BaseContext> {
 
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(BaseContext.class);
@@ -68,9 +65,6 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
 
     /** The subcontexts being managed. */
     private ClassIndexedSet<BaseContext> subcontexts;
-    
-    /** The context id. */
-    private String id;
     
     /** The context creation time. */
     private DateTime creationTime;
@@ -84,22 +78,6 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
         creationTime = new DateTime();
         
         setAutoCreateSubcontexts(false);
-        setId(UUID.randomUUID().toString());
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    public String getId() {
-        return id;
-    }
-    
-    /**
-     * Set the context id. 
-     * 
-     * @param newId the new context id
-     */
-    protected void setId(@Nonnull final String newId) {
-        id = Constraint.isNotNull(StringSupport.trimOrNull(newId), "Context ID cannot be null or empty");
     }
     
     /**
@@ -196,8 +174,8 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
         
         // Note: This will throw if replace == false and existing != null.
         // In that case, no link management happens, which is what we want, to leave things in a consistent state.
-        log.trace("Attempting to store a subcontext with type '{}' id '{}' with replace option '{}'", 
-                new Object[]{subcontext.getClass().getName(), subcontext.getId(), new Boolean(replace).toString()});
+        log.trace("Attempting to store a subcontext with type '{}' with replace option '{}'", 
+                new Object[]{subcontext.getClass().getName(), new Boolean(replace).toString()});
         subcontexts.add(subcontext, replace);
         
         // Manage parent/child links
@@ -205,24 +183,21 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
         // If subcontext was formerly a child of another parent, remove that link
         BaseContext oldParent = subcontext.getParent();
         if (oldParent != null && oldParent != this) {
-            log.trace("New subcontext with type '{}' id '{}' is currently a subcontext of "
-                    + "parent with type '{}' id '{}', removing it",
-                    new Object[]{subcontext.getClass().getName(), subcontext.getId(), 
-                    oldParent.getClass().getName(), oldParent.getId(),});
+            log.trace("New subcontext with type '{}' is currently a subcontext of "
+                    + "parent with type '{}', removing it",
+                    new Object[]{subcontext.getClass().getName(), oldParent.getClass().getName(),});
             subcontext.getParent().removeSubcontext(subcontext);
         }
         
         // Set parent pointer of new subcontext to this instance
-        log.trace("New subcontext with type '{}' id '{}' set to have parent with type '{}' id '{}'",
-                new Object[]{subcontext.getClass().getName(), subcontext.getId(), 
-                this.getClass().getName(), this.getId(),});
+        log.trace("New subcontext with type '{}' set to have parent with type '{}'",
+                new Object[]{subcontext.getClass().getName(), getClass().getName(),});
         subcontext.setParent(this);
         
         // If we're replacing an existing subcontext (if class was a duplicate, will only get here if replace == true),
         // then clear out its parent pointer.
         if (existing != null) {
-            log.trace("Old subcontext with type '{}' id '{}' will have parent cleared",
-                    new Object[]{existing.getClass().getName(), existing.getId(),});
+            log.trace("Old subcontext with type '{}' will have parent cleared", existing.getClass().getName());
             existing.setParent(null);
         }
         
@@ -236,9 +211,8 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
     public void removeSubcontext(@Nonnull final BaseContext subcontext) {
         Constraint.isNotNull(subcontext, "Subcontext cannot be null");
         
-        log.trace("Removing subcontext with type '{}' id '{}' from parent with type '{}' id '{}'",
-                new Object[]{subcontext.getClass().getName(), subcontext.getId(), 
-                this.getClass().getName(), this.getId(),});
+        log.trace("Removing subcontext with type '{}' from parent with type '{}'",
+                new Object[]{subcontext.getClass().getName(), getClass().getName()});
         subcontext.setParent(null);
         subcontexts.remove(subcontext);
     }
@@ -274,8 +248,7 @@ public abstract class BaseContext implements IdentifiedComponent, Iterable<BaseC
      * Clear the subcontexts of the current context.
      */
     public void clearSubcontexts() {
-        log.trace("Clearing all subcontexts from context with type '{}' id '{}'",
-                this.getClass().getName(), this.getId());
+        log.trace("Clearing all subcontexts from context with type '{}'", this.getClass().getName());
         for (BaseContext subcontext : subcontexts) {
             subcontext.setParent(null);
         }

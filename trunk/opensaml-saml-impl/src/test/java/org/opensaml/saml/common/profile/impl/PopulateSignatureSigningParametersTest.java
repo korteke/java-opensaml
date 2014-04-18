@@ -51,7 +51,6 @@ public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTest
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         action = new PopulateSignatureSigningParameters();
-        action.setId("test");
     }
     
     @Test(expectedExceptions=ComponentInitializationException.class)

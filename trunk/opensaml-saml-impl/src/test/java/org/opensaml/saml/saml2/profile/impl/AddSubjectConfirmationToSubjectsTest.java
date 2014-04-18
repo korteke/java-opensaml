@@ -50,7 +50,6 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         prc = new RequestContextBuilder().buildProfileRequestContext();
         
         action = new AddSubjectConfirmationToSubjects();
-        action.setId("test");
         action.setHttpServletRequest(new MockHttpServletRequest());
     }
 

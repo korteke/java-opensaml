@@ -32,7 +32,6 @@ public class AbstractMessageHandlerTest {
     public void testSuccess() throws Exception {
 
         final BaseMessageHandler handler = new BaseMessageHandler();
-        handler.setId("test");
         handler.initialize();
         handler.invoke(new MessageContext());
 
@@ -46,7 +45,6 @@ public class AbstractMessageHandlerTest {
     public void testPreFailure() throws Exception {
 
         final BaseMessageHandler handler = new PreFailMessageHandler();
-        handler.setId("test");
         handler.initialize();
 
         try {
@@ -63,7 +61,6 @@ public class AbstractMessageHandlerTest {
     public void testExecFailure() throws Exception {
 
         final BaseMessageHandler handler = new ExecFailMessageHandler();
-        handler.setId("test");
         handler.initialize();
 
         try {
@@ -81,7 +78,6 @@ public class AbstractMessageHandlerTest {
     public void testExecUnchecked() throws Exception {
 
         final BaseMessageHandler handler = new ExecUncheckedMessageHandler();
-        handler.setId("test");
         handler.initialize();
 
         try {
@@ -99,7 +95,6 @@ public class AbstractMessageHandlerTest {
     public void testPostFailure() throws Exception {
 
         final BaseMessageHandler handler = new PostFailMessageHandler();
-        handler.setId("test");
         handler.initialize();
 
         try {

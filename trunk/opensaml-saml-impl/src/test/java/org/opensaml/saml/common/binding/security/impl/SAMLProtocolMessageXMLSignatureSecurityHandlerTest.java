@@ -133,7 +133,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         
         otherCert1 = X509Support.decodeCertificate(otherCert1Base64);
         
-        BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
+        final BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
         otherCred1.setEntityId("other-1");
         
         trustedCredentials = new ArrayList<Credential>();
@@ -143,11 +143,10 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         
         //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
         //Testing with inline cert
-        KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
-        TrustEngine<Signature> engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        final KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
+        final TrustEngine<Signature> engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         handler = new SAMLProtocolMessageXMLSignatureSecurityHandler();
-        handler.setId("test");
         handler.setTrustEngine(engine);
         handler.initialize();
         

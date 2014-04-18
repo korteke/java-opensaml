@@ -192,11 +192,10 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
         
-        KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
-        SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        final KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
+        final SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
-        handler.setId("test");
         handler.setHttpServletRequest(buildServletRequest());
         handler.setTrustEngine(engine);
         handler.initialize();
@@ -231,7 +230,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
-        SignatureValidationParameters sigParams = new SignatureValidationParameters();
+        final SignatureValidationParameters sigParams = new SignatureValidationParameters();
         sigParams.setBlacklistedAlgorithmURIs(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigParams);
         
@@ -257,8 +256,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     public void testInvalidSignature() throws MessageHandlerException {
         trustedCredentials.add(signingX509Cred);
         
-        MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
-        String queryString = request.getQueryString();
+        final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
+        final String queryString = request.getQueryString();
         request.setQueryString( queryString.replaceFirst("RelayState=", "RelayState=AlteredData") );
         // Really only the query string is necessary to cause failure, but just to be safe...
         request.setParameter("RelayState", "AlteredData" + request.getParameter("RelayState") );
@@ -280,10 +279,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
 
     /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
-        AuthnRequest request = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
-        
-        return request;
+        return unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
     }
     
     /** {@inheritDoc} */
@@ -291,25 +287,25 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         //
         // Encode the "outbound" message context, with simple signature
         //
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
         .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        final MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
         messageContext.setMessage(buildInboundSAMLMessage());
         SAMLBindingSupport.setRelayState(messageContext, expectedRelayValue);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
         
-        SignatureSigningParameters signingParameters = new SignatureSigningParameters();
+        final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(signingX509Cred);
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         
-        HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
+        final HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
         encoder.setHttpServletResponse(response);
         
@@ -327,7 +323,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         }
         
         // Now populate the new "inbound" message context with the "outbound" encoded info
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
         
         request.setMethod("GET");
         

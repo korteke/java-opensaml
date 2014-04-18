@@ -48,7 +48,6 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
         
         action = new AddNotBeforeConditionToAssertions();
-        action.setId("test");
         action.initialize();
     }
     

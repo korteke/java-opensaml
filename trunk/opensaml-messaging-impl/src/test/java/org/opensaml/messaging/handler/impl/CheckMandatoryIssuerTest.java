@@ -31,7 +31,6 @@ public class CheckMandatoryIssuerTest {
 
     @Test public void testWithIssuer() throws Exception {
         final CheckMandatoryIssuer action = new CheckMandatoryIssuer();
-        action.setId("test");
         action.setIssuerLookupStrategy(new MockIssuer("issuer"));
         action.initialize();
 
@@ -41,7 +40,6 @@ public class CheckMandatoryIssuerTest {
 
     @Test(expectedExceptions=MessageHandlerException.class) public void testNoIssuer() throws Exception {
         final CheckMandatoryIssuer action = new CheckMandatoryIssuer();
-        action.setId("test");
         action.setIssuerLookupStrategy(new MockIssuer(null));
         action.initialize();
 

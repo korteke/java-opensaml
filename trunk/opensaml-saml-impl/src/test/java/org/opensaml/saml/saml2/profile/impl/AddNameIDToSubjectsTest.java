@@ -94,7 +94,6 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         
         action = new AddNameIDToSubjects();
-        action.setId("test");
         
         MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator("foo");
         mock.setFormat(NameID.X509_SUBJECT);

@@ -43,7 +43,6 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
         action = new AddOneTimeUseConditionToAssertions();
-        action.setId("test");
         action.initialize();
     }
     

@@ -50,7 +50,6 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     @Test
     public void testNoResponse() throws ComponentInitializationException {
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
-        action.setId("test");
         action.initialize();
         
         action.execute(prc);
@@ -66,7 +65,6 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
         prc.getOutboundMessageContext().setMessage(response);
         
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
-        action.setId("test");
         action.initialize();
         
         action.execute(prc);
@@ -80,7 +78,6 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
         prc.getOutboundMessageContext().setMessage(response);
 
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);
@@ -94,7 +91,6 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
         prc.getOutboundMessageContext().setMessage(response);
 
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
-        action.setId("test");
         action.initialize();
 
         action.execute(prc);

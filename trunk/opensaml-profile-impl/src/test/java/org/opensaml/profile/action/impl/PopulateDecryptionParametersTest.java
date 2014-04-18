@@ -47,7 +47,6 @@ public class PopulateDecryptionParametersTest extends OpenSAMLInitBaseTestCase {
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         action = new PopulateDecryptionParameters();
-        action.setId("test");
     }
     
     @Test(expectedExceptions=ComponentInitializationException.class)
