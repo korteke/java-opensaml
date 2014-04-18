@@ -45,8 +45,11 @@ public final class EventIds {
      */
     @Nonnull @NotEmpty public static final String INVALID_MSG_MD = "InvalidMessageMetadata";
 
+    /** ID of the event returned if the preparation of an outbound message fails in some way. */
+    @Nonnull @NotEmpty public static final String MESSAGE_PROC_ERROR = "MessageProcessingError";
+    
     /** ID of event returned if an error occurs with security configuration. */
-    @Nonnull @NotEmpty public static final String INVALID_SEC_CFG = "SecurityConfigurationError";
+    @Nonnull @NotEmpty public static final String INVALID_SEC_CFG = "InvalidSecurityConfiguration";
     
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.decoder.MessageDecoder} is unable to decode a
