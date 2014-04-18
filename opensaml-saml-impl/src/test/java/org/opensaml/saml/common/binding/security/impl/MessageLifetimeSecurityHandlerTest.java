@@ -53,7 +53,6 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageIssueInstant(now);
         
         handler = new MessageLifetimeSecurityHandler();
-        handler.setId("test");
         handler.setClockSkew(clockSkew);
         handler.setMessageLifetime(messageLifetime);
         handler.initialize();

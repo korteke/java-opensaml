@@ -38,8 +38,8 @@ import com.google.common.base.Predicates;
  * @param <InboundMessageType> type of in-bound message
  * @param <OutboundMessageType> type of out-bound message
  */
-public abstract class AbstractConditionalProfileAction<InboundMessageType, OutboundMessageType> extends
-        AbstractProfileAction<InboundMessageType, OutboundMessageType> {
+public abstract class AbstractConditionalProfileAction<InboundMessageType, OutboundMessageType>
+        extends AbstractProfileAction<InboundMessageType, OutboundMessageType> {
     
     /** Condition dictating whether to run or not. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;

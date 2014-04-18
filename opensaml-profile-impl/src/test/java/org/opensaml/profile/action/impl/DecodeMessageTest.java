@@ -57,7 +57,6 @@ public class DecodeMessageTest {
      */
     @Test public void testDecodeMessage() throws ComponentInitializationException {
         final DecodeMessage action = new DecodeMessage(decoder);
-        action.setId("test");
         action.initialize();
 
         action.execute(profileCtx);
@@ -77,7 +76,6 @@ public class DecodeMessageTest {
         decoder.setThrowException(true);
 
         final DecodeMessage action = new DecodeMessage(decoder);
-        action.setId("test");
         action.initialize();
 
         action.execute(profileCtx);

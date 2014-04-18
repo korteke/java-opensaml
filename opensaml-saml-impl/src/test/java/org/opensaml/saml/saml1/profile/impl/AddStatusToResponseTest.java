@@ -45,7 +45,6 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         prc = new RequestContextBuilder().setOutboundMessage(
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
         action = new AddStatusToResponse();
-        action.setId("test");
     }
 
     @Test public void testMinimal() throws ComponentInitializationException {

@@ -112,10 +112,6 @@ public class AbstractProfileActionTest {
         private boolean didExec = false;
         private boolean didPost = false;
         
-        protected BaseProfileAction() {
-            setId(getClass().getName());
-        }
-        
         protected boolean doPreExecute(@Nonnull final ProfileRequestContext prc) {
             return didPre = true;
         }

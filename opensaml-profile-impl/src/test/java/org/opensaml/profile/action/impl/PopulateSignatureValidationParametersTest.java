@@ -47,7 +47,6 @@ public class PopulateSignatureValidationParametersTest extends OpenSAMLInitBaseT
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         action = new PopulateSignatureValidationParameters();
-        action.setId("test");
     }
     
     @Test(expectedExceptions=ComponentInitializationException.class)

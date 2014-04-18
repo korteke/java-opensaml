@@ -70,7 +70,6 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
     public void testNullInboundMessageContext() throws Exception {
 
         final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
-        handler.setId("test");
         handler.initialize();
 
         final MessageContext messageContext = new MessageContext();
@@ -83,7 +82,6 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
     public void testNullDom() throws Exception {
 
         final SchemaValidateXMLMessage<SimpleXMLObject> handler = new SchemaValidateXMLMessage(schema);
-        handler.setId("test");
         handler.initialize();
 
         final MessageContext messageContext = new MessageContext();
@@ -100,7 +98,6 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
     public void testInvalidSchema() throws Exception {
 
         final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
-        handler.setId("test");
         handler.initialize();
 
         final MessageContext messageContext = new MessageContext();
@@ -119,7 +116,6 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
     @Test public void testValidSchema() throws Exception {
 
         final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);
-        handler.setId("test");
         handler.initialize();
 
         final MessageContext messageContext = new MessageContext();

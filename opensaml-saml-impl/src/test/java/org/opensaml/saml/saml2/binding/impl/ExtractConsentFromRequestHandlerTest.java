@@ -39,7 +39,6 @@ public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCa
         final MessageContext<RequestAbstractType> messageCtx = new MessageContext<>();
 
         final ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
-        handler.setId("test");
         handler.initialize();
         
         handler.invoke(messageCtx);
@@ -52,7 +51,6 @@ public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCa
         messageCtx.getMessage().setConsent(StatusResponseType.IMPLICIT_CONSENT);
         
         final ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
-        handler.setId("test");
         handler.initialize();
         
         handler.invoke(messageCtx);

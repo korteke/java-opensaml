@@ -34,7 +34,6 @@ public class BaseContextTest {
     public void testNoArgConstructor() {
         TestContext context = new TestContext();
         Assert.assertNull(context.getParent());
-        Assert.assertNotNull(context.getId());
         Assert.assertNotNull(context.getCreationTime());
     }
     

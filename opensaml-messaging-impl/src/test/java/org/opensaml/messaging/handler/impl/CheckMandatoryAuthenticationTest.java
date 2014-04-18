@@ -28,7 +28,6 @@ public class CheckMandatoryAuthenticationTest {
 
     @Test public void testAuthenticated() throws Exception {
         final CheckMandatoryAuthentication action = new CheckMandatoryAuthentication();
-        action.setId("test");
         action.setAuthenticationLookupStrategy(new MockAuthenticated(true));
         action.initialize();
 
@@ -38,7 +37,6 @@ public class CheckMandatoryAuthenticationTest {
 
     @Test(expectedExceptions=MessageHandlerException.class) public void testNotAuthenticated() throws Exception {
         final CheckMandatoryAuthentication action = new CheckMandatoryAuthentication();
-        action.setId("test");
         action.setAuthenticationLookupStrategy(new MockAuthenticated(false));
         action.initialize();
 

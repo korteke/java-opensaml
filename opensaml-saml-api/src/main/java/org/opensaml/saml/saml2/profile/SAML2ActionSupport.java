@@ -74,7 +74,7 @@ public final class SAML2ActionSupport {
         assertion.setVersion(SAMLVersion.VERSION_20);
 
         getLogger().debug("Profile Action {}: Added Assertion {} to Response {}",
-                new Object[] {action.getId(), assertion.getID(), response.getID(),});
+                new Object[] {action.getClass().getSimpleName(), assertion.getID(), response.getID(),});
         response.getAssertions().add(assertion);
 
         return assertion;
@@ -99,10 +99,10 @@ public final class SAML2ActionSupport {
             conditions = conditionsBuilder.buildObject();
             assertion.setConditions(conditions);
             getLogger().debug("Profile Action {}: Assertion {} did not already contain a Conditions, one was added",
-                    action.getId(), assertion.getID());
+                    action.getClass().getSimpleName(), assertion.getID());
         } else {
             getLogger().debug("Profile Action {}: Assertion {} already contain a Conditions, nothing was done",
-                    action.getId(), assertion.getID());
+                    action.getClass().getSimpleName(), assertion.getID());
         }
 
         return conditions;

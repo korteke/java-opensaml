@@ -51,7 +51,6 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
         
         action = new AddNotOnOrAfterConditionToAssertions();
-        action.setId("test");
         action.initialize();
     }
     
@@ -113,7 +112,6 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         response.getAssertions().add(assertion);
 
         final AddNotOnOrAfterConditionToAssertions action = new AddNotOnOrAfterConditionToAssertions();
-        action.setId("test");
         action.setDefaultAssertionLifetime(10 * 60 * 1000);
         action.initialize();
 
@@ -137,7 +135,6 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
 
         final AddNotOnOrAfterConditionToAssertions action = new AddNotOnOrAfterConditionToAssertions();
-        action.setId("test");
         action.setAssertionLifetimeStrategy(
                 new Function<ProfileRequestContext,Long>() {
                     public Long apply(ProfileRequestContext input) {

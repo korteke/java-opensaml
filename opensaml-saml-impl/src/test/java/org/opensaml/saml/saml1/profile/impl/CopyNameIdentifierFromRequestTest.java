@@ -48,7 +48,6 @@ public class CopyNameIdentifierFromRequestTest extends OpenSAMLInitBaseTestCase 
         prc = new RequestContextBuilder().buildProfileRequestContext();
         
         action = new CopyNameIdentifierFromRequest();
-        action.setId("test");
         action.initialize();
     }
     

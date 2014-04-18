@@ -95,7 +95,6 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
                 SecurityParametersContext.class, true).setDecryptionParameters(decParams);
         
         action = new DecryptNameIDs();
-        action.setId("test");
     }
     
     @Test
@@ -135,7 +134,6 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(authnRequest.getSubject().getNameID());
         
         action = new DecryptNameIDs();
-        action.setId("test");
         action.setErrorFatal(false);
         action.initialize();
         

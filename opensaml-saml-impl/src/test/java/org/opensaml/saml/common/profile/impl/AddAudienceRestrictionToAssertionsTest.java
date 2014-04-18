@@ -53,7 +53,6 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
     
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         action = new AddAudienceRestrictionToAssertions();
-        action.setId("test");
         action.setAudienceRestrictionsLookupStrategy(new Function<ProfileRequestContext,Collection<String>>() {
             public Collection<String> apply(ProfileRequestContext input) {
                 return ImmutableList.of(AUDIENCE1, AUDIENCE2);

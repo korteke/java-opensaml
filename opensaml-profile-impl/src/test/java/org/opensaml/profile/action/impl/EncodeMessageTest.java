@@ -72,7 +72,6 @@ public class EncodeMessageTest {
     @Test(expectedExceptions = ComponentInitializationException.class)
     public void testNoFactory() throws ComponentInitializationException {
         final EncodeMessage action = new EncodeMessage();
-        action.setId("test");
         action.initialize();
     }
     
@@ -80,7 +79,6 @@ public class EncodeMessageTest {
     @Test public void testDecodeMessage() throws Exception {
         EncodeMessage action = new EncodeMessage();
         action.setMessageEncoderFactory(new MockEncoderFactory());
-        action.setId("test");
         action.initialize();
 
         action.execute(profileCtx);
@@ -95,7 +93,6 @@ public class EncodeMessageTest {
 
         EncodeMessage action = new EncodeMessage();
         action.setMessageEncoderFactory(new MockEncoderFactory());
-        action.setId("test");
         action.initialize();
 
         action.execute(profileCtx);
