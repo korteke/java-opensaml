@@ -80,6 +80,17 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
         
         replayCache = Constraint.isNotNull(cache, "ReplayCache cannot be null");
     }
+    
+    /**
+     * Set whether this rule is required to be met.
+     * 
+     * @param flag  flag to set
+     */
+    public void setRequiredRule(final boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        requiredRule = flag;
+    }
 
     /**
      * Gets the lifetime in milliseconds of replay entries.
