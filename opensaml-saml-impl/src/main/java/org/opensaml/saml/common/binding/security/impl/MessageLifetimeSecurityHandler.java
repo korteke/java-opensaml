@@ -47,7 +47,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
      */
     @Duration @NonNegative private long clockSkew;
 
-    /** Amount of time in milliseconds for which a message is valid after it is issued. Default value: 5 minutes */
+    /** Amount of time in milliseconds for which a message is valid after it is issued. Default value: 3 minutes */
     @Duration @NonNegative private long messageLifetime;
     
     /** Whether this rule is required to be met. */
@@ -56,7 +56,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
     /** Constructor. */
     public MessageLifetimeSecurityHandler() {
         clockSkew = 60 * 3 * 1000;
-        messageLifetime = 60 * 5 * 1000;
+        messageLifetime = 180 * 1000;
         requiredRule = true;
     }
     
