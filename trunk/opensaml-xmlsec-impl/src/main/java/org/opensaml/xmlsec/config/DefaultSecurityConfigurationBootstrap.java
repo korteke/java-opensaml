@@ -26,8 +26,6 @@ import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureValidationConfiguration;
-import org.opensaml.xmlsec.encryption.EncryptedData;
-import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -49,8 +47,6 @@ import org.opensaml.xmlsec.keyinfo.impl.provider.DEREncodedKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
-import org.opensaml.xmlsec.signature.KeyInfo;
-import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 
@@ -220,8 +216,9 @@ public class DefaultSecurityConfigurationBootstrap {
     }
 
     /**
-     * Build a basic instance of {@link KeyInfoCredentialResolver} for handling {@link KeyInfo}
-     * instances located within an {@link EncryptedData}.
+     * Build a basic instance of {@link KeyInfoCredentialResolver} for handling
+     * {@link org.opensaml.xmlsec.signature.KeyInfo} instances located within an
+     * {@link org.opensaml.xmlsec.encryption.EncryptedData}.
      * 
      * @return a KeyInfo credential resolver instance
      */
@@ -230,8 +227,9 @@ public class DefaultSecurityConfigurationBootstrap {
     }
     
     /**
-     * Build a basic instance of {@link KeyInfoCredentialResolver} for handling {@link KeyInfo}
-     * instances located within an {@link EncryptedKey}.
+     * Build a basic instance of {@link KeyInfoCredentialResolver} for handling
+     * {@link org.opensaml.xmlsec.signature.KeyInfo} instances located within an
+     * {@link org.opensaml.xmlsec.encryption.EncryptedKey}.
      * 
      * @return a KeyInfo credential resolver instance
      */
@@ -257,7 +255,8 @@ public class DefaultSecurityConfigurationBootstrap {
     }
 
     /**
-     * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an {@link EncryptedData}.
+     * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an
+     * {@link org.opensaml.xmlsec.encryption.EncryptedData}.
      * 
      * @return a named KeyInfo generator manager instance
      */
@@ -266,7 +265,8 @@ public class DefaultSecurityConfigurationBootstrap {
     }
     
     /**
-     * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an {@link EncryptedData}.
+     * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an
+     * {@link org.opensaml.xmlsec.encryption.EncryptedData}.
      * 
      * @return a named KeyInfo generator manager instance
      */
@@ -275,7 +275,8 @@ public class DefaultSecurityConfigurationBootstrap {
     }
     
     /**
-     * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an {@link Signature}.
+     * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an
+     * {@link org.opensaml.xmlsec.signature.Signature}.
      * 
      * @return a named KeyInfo generator manager instance
      */
