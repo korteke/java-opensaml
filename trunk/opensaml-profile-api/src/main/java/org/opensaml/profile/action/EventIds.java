@@ -24,9 +24,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /** Constants to use for {@link ProfileAction} {@link org.opensaml.profile.context.EventContext}s. */
 public final class EventIds {
 
-    /** ID of event returned if an I/O-related error occurs. */
-    @Nonnull @NotEmpty public static final String IO_ERROR = "InputOutputError";
-    
     /**
      * ID of event returned if the {@link org.opensaml.profile.context.ProfileRequestContext} associated with the
      * current request is missing or corrupt in some way.
@@ -45,11 +42,26 @@ public final class EventIds {
      */
     @Nonnull @NotEmpty public static final String INVALID_MSG_MD = "InvalidMessageMetadata";
 
-    /** ID of the event returned if the preparation of an outbound message fails in some way. */
-    @Nonnull @NotEmpty public static final String MESSAGE_PROC_ERROR = "MessageProcessingError";
-    
+    /** ID of the event returned if a SAML message version is incorrect or unsupported. */
+    @Nonnull @NotEmpty public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
+
     /** ID of event returned if an error occurs with security configuration. */
     @Nonnull @NotEmpty public static final String INVALID_SEC_CFG = "InvalidSecurityConfiguration";
+
+    /** ID of event returned if an I/O-related error occurs. */
+    @Nonnull @NotEmpty public static final String IO_ERROR = "InputOutputError";
+        
+    /** ID of the event returned if a message can't be authenticated. */
+    @Nonnull @NotEmpty public static final String MESSAGE_AUTHN_ERROR = "MessageAuthenticationError";
+    
+    /** ID of the event returned if a message is stale. */
+    @Nonnull @NotEmpty public static final String MESSAGE_EXPIRED = "MessageExpired";
+
+    /** ID of the event returned if the preparation of an outbound message fails in some way. */
+    @Nonnull @NotEmpty public static final String MESSAGE_PROC_ERROR = "MessageProcessingError";
+
+    /** ID of the event returned if a message is replayed. */
+    @Nonnull @NotEmpty public static final String MESSAGE_REPLAY = "MessageReplay";
     
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.decoder.MessageDecoder} is unable to decode a
@@ -67,9 +79,6 @@ public final class EventIds {
      * ID of the event returned if a {@link org.opensaml.xmlsec.signature.support.Signer} is unable to sign a signature.
      */
     @Nonnull @NotEmpty public static final String UNABLE_TO_SIGN = "UnableToSign";
-
-    /** ID of the event returned if a SAML message version is incorrect or unsupported. */
-    @Nonnull @NotEmpty public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
     
     /**
      * ID of an Event indicating that an action completed successfully and processing should move on to the next step.
