@@ -73,15 +73,15 @@ import com.google.common.base.Strings;
  * </p>
  * 
  * <p>
- * The parameters for data encryption are specified with an instance of {@link DataEncryptionParameters}. The parameters for
- * key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
+ * The parameters for data encryption are specified with an instance of {@link DataEncryptionParameters}. The parameters
+ * for key encryption are specified with one or more instances of {@link KeyEncryptionParameters}.
  * </p>
  * 
  * <p>
- * The data encryption credential supplied by {@link DataEncryptionParameters#getEncryptionCredential()} is mandatory unless
- * key encryption is also being performed and all associated key encryption parameters contain a valid key encryption
- * credential containing a valid key encryption key. In this case the data encryption key will be randomly generated
- * based on the algorithm URI supplied by {@link DataEncryptionParameters#getAlgorithm()}.
+ * The data encryption credential supplied by {@link DataEncryptionParameters#getEncryptionCredential()} is mandatory
+ * unless key encryption is also being performed and all associated key encryption parameters contain a valid key
+ * encryption credential containing a valid key encryption key. In this case the data encryption key will be randomly
+ * generated based on the algorithm URI supplied by {@link DataEncryptionParameters#getAlgorithm()}.
  * </p>
  * 
  * <p>
@@ -198,8 +198,8 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
-            @Nonnull final DataEncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
-                    throws EncryptionException {
+            @Nonnull final DataEncryptionParameters encParams,
+            @Nonnull final List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, false);
     }
 
@@ -249,8 +249,8 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
-            @Nonnull final DataEncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList)
-                    throws EncryptionException {
+            @Nonnull final DataEncryptionParameters encParams,
+            @Nonnull final List<KeyEncryptionParameters> kekParamsList) throws EncryptionException {
         return encryptElement(xmlObject, encParams, kekParamsList, true);
     }
 
@@ -492,8 +492,9 @@ public class Encrypter {
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull private EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
-            @Nonnull final DataEncryptionParameters encParams, @Nonnull final List<KeyEncryptionParameters> kekParamsList,
-            boolean encryptContentMode) throws EncryptionException {
+            @Nonnull final DataEncryptionParameters encParams,
+            @Nonnull final List<KeyEncryptionParameters> kekParamsList, boolean encryptContentMode)
+                    throws EncryptionException {
 
         checkParams(encParams, kekParamsList);
 
