@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * OpenSAML {@link Initializer} implementation for algorithms.
  */
 public class GlobalAlgorithmRegistryInitializer implements Initializer {
     
