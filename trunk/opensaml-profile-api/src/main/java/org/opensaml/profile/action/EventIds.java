@@ -63,6 +63,9 @@ public final class EventIds {
     /** ID of the event returned if a message is replayed. */
     @Nonnull @NotEmpty public static final String MESSAGE_REPLAY = "MessageReplay";
     
+    /** ID of the event returned if an error is to be handled locally and not signaled using a protocol. */
+    @Nonnull @NotEmpty public static final String TRAP_ERROR = "TrapError";
+    
     /**
      * ID of the event returned if a {@link org.opensaml.messaging.decoder.MessageDecoder} is unable to decode a
      * message.
