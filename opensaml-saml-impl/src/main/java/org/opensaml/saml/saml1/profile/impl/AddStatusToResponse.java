@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.context.ErrorEventContext;
+import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
@@ -291,7 +291,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         status.setStatusMessage(sm);
     }
     
-    /** A default method to map event IDs to SAML 1 StatusCode QNames based on {@link ErrorEventContext}. */
+    /** A default method to map event IDs to SAML 1 StatusCode QNames based on {@link PreviousEventContext}. */
     public static class StatusCodeMappingFunction implements Function<ProfileRequestContext,List<QName>> {
 
         /** Code mappings. */
@@ -319,7 +319,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         @Override
         @Nullable public List<QName> apply(@Nullable final ProfileRequestContext input) {
             if (input != null) {
-                final ErrorEventContext error = input.getSubcontext(ErrorEventContext.class);
+                final PreviousEventContext error = input.getSubcontext(PreviousEventContext.class);
                 if (error != null && error.getEvent() != null) {
                     return codeMappings.get(error.getEvent().toString());
                 }

@@ -34,12 +34,12 @@ public final class ActionSupport {
     }
 
     /**
-     * Builds a {@link EventIds#PROCEED_EVENT_ID} {@link EventContext} with no related attributes.
+     * Signals a successful outcome by an action.
      * 
      * @param profileRequestContext the context to carry the event
      */
     public static void buildProceedEvent(@Nonnull final ProfileRequestContext profileRequestContext) {
-        buildEvent(profileRequestContext, EventIds.PROCEED_EVENT_ID);
+        profileRequestContext.removeSubcontext(EventContext.class);
     }
 
     /**

@@ -97,14 +97,12 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
 
         // Clear any existing EventContext that might be hanging around, and if it exists,
-        // copy the Event to a PreviousEventContext.
+        // copy the Event to a PreviousEventContext. Don't clear any existing PreviousEventContext
+        // because it may be from an earlier error of interest to other actions.
         EventContext previousEvent = profileRequestContext.getSubcontext(EventContext.class, false);
         if (previousEvent != null) {
             profileRequestContext.getSubcontext(PreviousEventContext.class, true).setEvent(previousEvent.getEvent());
             profileRequestContext.removeSubcontext(EventContext.class);
-        } else {
-            // If there's no previous event, don't expose one.
-            profileRequestContext.removeSubcontext(PreviousEventContext.class);
         }
 
         // The try/catch logic is designed to suppress a checked exception raised by
