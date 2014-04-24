@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.context.ErrorEventContext;
+import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
@@ -68,8 +68,8 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
     /** Strategy function for access to {@link SAMLEndpointContext} to check. */
     @Nonnull private Function<ProfileRequestContext,SAMLEndpointContext> endpointContextLookupStrategy;
 
-    /** Strategy function for access to {@link ErrorEventContext} to check. */
-    @Nonnull private Function<ProfileRequestContext,ErrorEventContext> errorEventContextLookupStrategy;
+    /** Strategy function for access to {@link PreviousEventContext} to check. */
+    @Nonnull private Function<ProfileRequestContext,PreviousEventContext> previousEventContextLookupStrategy;
     
     /** Error events to handle locally, even if possible to do so with a response. */
     @Nonnull @NonnullElements private Set<String> localEvents;
@@ -90,7 +90,7 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
                 Functions.compose(new ChildContextLookup<>(SAMLPeerEntityContext.class),
                         new OutboundMessageContextLookup()));
         
-        errorEventContextLookupStrategy = new ChildContextLookup<>(ErrorEventContext.class);
+        previousEventContextLookupStrategy = new ChildContextLookup<>(PreviousEventContext.class);
         
         localEvents = Collections.emptySet();
     }
@@ -122,16 +122,16 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
     }
 
     /**
-     * Set lookup strategy for {@link ErrorEventContext} to check.
+     * Set lookup strategy for {@link PreviousEventContext} to check.
      * 
      * @param strategy  lookup strategy
      */
-    public void setErrorEventContextLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,ErrorEventContext> strategy) {
+    public void setPreviousEventContextLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,PreviousEventContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        errorEventContextLookupStrategy = Constraint.isNotNull(strategy,
-                "ErrorEventContext lookup strategy cannot be null");
+        previousEventContextLookupStrategy = Constraint.isNotNull(strategy,
+                "PreviousEventContext lookup strategy cannot be null");
     }
     
     /**
@@ -181,13 +181,13 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
-        final ErrorEventContext errorEventCtx = errorEventContextLookupStrategy.apply(profileRequestContext);
-        if (errorEventCtx == null || errorEventCtx.getEvent() == null) {
+        final PreviousEventContext previousEventCtx = previousEventContextLookupStrategy.apply(profileRequestContext);
+        if (previousEventCtx == null || previousEventCtx.getEvent() == null) {
             log.debug("{} No event found, assuming error handled with response", getLogPrefix());
             return;
         }
         
-        final String event = errorEventCtx.getEvent().toString();
+        final String event = previousEventCtx.getEvent().toString();
         if (localEvents.contains(event)) {
             log.debug("{} Error event {} will be handled locally", getLogPrefix(), event);
             ActionSupport.buildEvent(profileRequestContext, EventIds.TRAP_ERROR);

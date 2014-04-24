@@ -27,7 +27,7 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.context.ErrorEventContext;
+import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
@@ -85,7 +85,7 @@ public class CheckErrorHandlingStrategyTest extends OpenSAMLInitBaseTestCase {
         prc.getOutboundMessageContext().getSubcontext(SAMLPeerEntityContext.class, true).getSubcontext(
                 SAMLEndpointContext.class, true).setEndpoint(ep);
         
-        prc.getSubcontext(ErrorEventContext.class, true).setEvent("Foo");
+        prc.getSubcontext(PreviousEventContext.class, true).setEvent("Foo");
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -99,7 +99,7 @@ public class CheckErrorHandlingStrategyTest extends OpenSAMLInitBaseTestCase {
         prc.getOutboundMessageContext().getSubcontext(SAMLPeerEntityContext.class, true).getSubcontext(
                 SAMLEndpointContext.class, true).setEndpoint(ep);
         
-        prc.getSubcontext(ErrorEventContext.class, true).setEvent("Foo");
+        prc.getSubcontext(PreviousEventContext.class, true).setEvent("Foo");
         
         action = new CheckErrorHandlingStrategy();
         action.setLocalEvents(Collections.singletonList("Foo"));

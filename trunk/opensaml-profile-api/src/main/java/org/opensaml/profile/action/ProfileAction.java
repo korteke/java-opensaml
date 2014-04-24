@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
  * 
  * <p>Actions are expected to interact with the environment, access data,
  * and produce results using the context tree provided at execution time.
- * They signal state transitions by attaching an {@link org.opensaml.profile.context.EventContext}
+ * They signal unusual state transitions by attaching an {@link org.opensaml.profile.context.EventContext}
  * to the tree.</p>
  * 
  * <p>Actions may be stateful or stateless, and are therefore not inherently thread-safe.</p>
