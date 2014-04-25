@@ -17,18 +17,26 @@
 
 package org.opensaml.security.trust.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * Evaluate a token in sequence using a chain of subordinate trust engines. If the token may be established as trusted
@@ -44,9 +52,14 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
     /** The chain of subordinate trust engines. */
     private List<TrustEngine<TokenType>> engines;
 
-    /** Constructor. */
-    public ChainingTrustEngine() {
-        engines = new ArrayList<TrustEngine<TokenType>>();
+    /** 
+     * Constructor.
+     * 
+     * @param chain the list of trust engines in the chain
+     */
+    public ChainingTrustEngine(@Nonnull final List<TrustEngine<TokenType>> chain) {
+        Constraint.isNotNull(chain, "TrustEngine list was null");
+        engines = Lists.newArrayList(Collections2.filter(chain, Predicates.notNull()));
     }
 
     /**
@@ -54,8 +67,8 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    @Nonnull public List<TrustEngine<TokenType>> getChain() {
-        return engines;
+    @Nonnull  @NonnullElements @Unmodifiable @NotLive public List<TrustEngine<TokenType>> getChain() {
+        return ImmutableList.copyOf(engines);
     }
 
     /** {@inheritDoc} */

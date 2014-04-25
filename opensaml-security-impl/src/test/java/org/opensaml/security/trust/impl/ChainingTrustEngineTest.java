@@ -17,6 +17,10 @@
 
 package org.opensaml.security.trust.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -35,6 +39,8 @@ public class ChainingTrustEngineTest {
     
     private ChainingTrustEngine<FooToken> engine;
     
+    private List<TrustEngine<FooToken>> chain;
+    
     private FooToken token;
 
     @BeforeMethod
@@ -42,7 +48,7 @@ public class ChainingTrustEngineTest {
         
         token = new FooToken();
         
-        engine = new ChainingTrustEngine<FooToken>();
+        chain = new ArrayList<>();
         
         criteriaSet = new CriteriaSet();
         criteriaSet.add( new EntityIdCriterion("dummyEntityID") );
@@ -50,35 +56,49 @@ public class ChainingTrustEngineTest {
     
     @Test
     public void testFirstTrusted() throws SecurityException {
-        engine.getChain().add( new FooEngine(Boolean.TRUE));
-        engine.getChain().add( new FooEngine(Boolean.FALSE));
+        chain.add( new FooEngine(Boolean.TRUE));
+        chain.add( new FooEngine(Boolean.FALSE));
+        engine = new ChainingTrustEngine<>(chain);
         Assert.assertTrue(engine.validate(token, criteriaSet), "Engine # 1 evaled token as trusted");
     }
 
     @Test
     public void testSecondTrusted() throws SecurityException {
-        engine.getChain().add( new FooEngine(Boolean.FALSE));
-        engine.getChain().add( new FooEngine(Boolean.TRUE));
+        chain.add( new FooEngine(Boolean.FALSE));
+        chain.add( new FooEngine(Boolean.TRUE));
+        engine = new ChainingTrustEngine<>(chain);
         Assert.assertTrue(engine.validate(token, criteriaSet), "Engine # 2 evaled token as trusted");
     }
     
     @Test
     public void testNoneTrusted() throws SecurityException {
-        engine.getChain().add( new FooEngine(Boolean.FALSE));
-        engine.getChain().add( new FooEngine(Boolean.FALSE));
+        chain.add( new FooEngine(Boolean.FALSE));
+        chain.add( new FooEngine(Boolean.FALSE));
+        engine = new ChainingTrustEngine<>(chain);
         Assert.assertFalse(engine.validate(token, criteriaSet), "No engine evaled token as trusted");
     }
     
     @Test
-    public void testException() {
-        engine.getChain().add( new FooEngine(Boolean.FALSE));
-        engine.getChain().add( new FooEngine(null));
-        try {
-            engine.validate(token, criteriaSet);
-            Assert.fail("Should have thrown security exception");
-        } catch (SecurityException e) {
-            // do nothing, expected
-        }
+    public void testNullEngineOK() throws SecurityException {
+        chain.add( new FooEngine(Boolean.FALSE));
+        chain.add( null );
+        chain.add( new FooEngine(Boolean.TRUE));
+        engine = new ChainingTrustEngine<>(chain);
+        Assert.assertTrue(engine.validate(token, criteriaSet), 
+                "Engine # 3 evaled token as trusted with intervening null engine");
+    }
+    
+    @Test(expectedExceptions=SecurityException.class)
+    public void testException() throws SecurityException {
+        chain.add( new FooEngine(Boolean.FALSE));
+        chain.add( new FooEngine(null));
+        engine = new ChainingTrustEngine<>(chain);
+        engine.validate(token, criteriaSet);
+    }
+    
+    @Test(expectedExceptions=ConstraintViolationException.class)
+    public void testNullChain() {
+        engine = new ChainingTrustEngine<>(null);
     }
     
     /** Mock token type. */
