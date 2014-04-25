@@ -17,12 +17,15 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.security.SecurityException;
@@ -32,6 +35,11 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * Evaluate a signature in sequence using a chain of subordinate trust engines. If the signature may be established as
@@ -43,11 +51,16 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
     private final Logger log = LoggerFactory.getLogger(ChainingSignatureTrustEngine.class);
 
     /** The chain of subordinate trust engines. */
-    private final List<SignatureTrustEngine> engines;
+    private List<SignatureTrustEngine> engines;
 
-    /** Constructor. */
-    public ChainingSignatureTrustEngine() {
-        engines = new ArrayList<SignatureTrustEngine>();
+    /**
+     *  Constructor. 
+     *  
+     *  @param chain the list of trust engines in the chain
+     */
+    public ChainingSignatureTrustEngine(@Nonnull final List<SignatureTrustEngine> chain) {
+        Constraint.isNotNull(chain, "SignatureTrustEngine list was null");
+        engines = Lists.newArrayList(Collections2.filter(chain, Predicates.notNull()));
     }
 
     /**
@@ -55,8 +68,8 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    @Nonnull public List<SignatureTrustEngine> getChain() {
-        return engines;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<SignatureTrustEngine> getChain() {
+        return ImmutableList.copyOf(engines);
     }
 
     /** {@inheritDoc} */
