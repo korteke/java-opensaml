@@ -62,7 +62,7 @@ public class ExpiringSAMLArtifactMapEntry extends BasicSAMLArtifactMapEntry {
      * 
      * @param exp the expiration
      */
-    public void setExpiration(long exp) {
+    public void setExpiration(final long exp) {
         expiration = exp;
     }
     
@@ -81,7 +81,7 @@ public class ExpiringSAMLArtifactMapEntry extends BasicSAMLArtifactMapEntry {
      * @param effectiveTime the time to evaluate validity against
      * @return true iff the entry is valid as of a specified time
      */
-    public boolean isValid(long effectiveTime) {
+    public boolean isValid(final long effectiveTime) {
         return effectiveTime < expiration;
     }
 }

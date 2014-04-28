@@ -66,21 +66,25 @@ public class BasicSAMLArtifactMapEntry implements SAMLArtifactMapEntry {
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NotEmpty public String getArtifact() {
         return artifact;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NotEmpty public String getIssuerId() {
         return issuer;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NotEmpty public String getRelyingPartyId() {
         return relyingParty;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull public SAMLObject getSamlMessage() {
         return message;
     }

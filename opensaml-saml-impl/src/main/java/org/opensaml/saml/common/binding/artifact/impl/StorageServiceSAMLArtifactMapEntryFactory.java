@@ -92,6 +92,7 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
     
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
             @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull SAMLObject samlMessage) {
@@ -104,10 +105,11 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull public String serialize(@Nonnull final SAMLArtifactMapEntry instance) throws IOException {        
         log.debug("Serializing SAMLArtifactMapEntry for storage");
         
-        Element marshalledMessage;
+        final Element marshalledMessage;
         try {
             marshalledMessage = XMLObjectSupport.marshall(instance.getSamlMessage());
         } catch (MarshallingException e) {
@@ -169,9 +171,9 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
             }
             
             return newEntry(key, issuer, relyingParty, (SAMLObject) message);
-        } catch (XMLParserException e) {
+        } catch (final XMLParserException e) {
             throw new IOException("Error parsing XML into DOM", e);
-        } catch (UnmarshallingException e) {
+        } catch (final UnmarshallingException e) {
             throw new IOException("Error unmarshalling DOM into SAMLObject", e);
         }
     }
