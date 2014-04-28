@@ -35,19 +35,15 @@ import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMap
  */
 public class ExpiringSAMLArtifactMapEntryFactory implements SAMLArtifactMapEntryFactory {
 
-    /** Constructor. */
-    public ExpiringSAMLArtifactMapEntryFactory() {
-        
-    }
-
     /** {@inheritDoc} */
+    @Override
     @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
             @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull SAMLObject samlMessage) {
         
         try {
             return new ExpiringSAMLArtifactMapEntry(artifact, issuerId, relyingPartyId, samlMessage);
-        } catch (MarshallingException | UnmarshallingException e) {
+        } catch (final MarshallingException | UnmarshallingException e) {
             throw new XMLRuntimeException("Error creating BasicSAMLArtifactMapEntry", e);
         }
     }

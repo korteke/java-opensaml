@@ -27,8 +27,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.Duration;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -45,25 +48,25 @@ public class BasicSAMLArtifactMap extends AbstractIdentifiableInitializableCompo
         SAMLArtifactMap {
 
     /** Class Logger. */
-    private final Logger log = LoggerFactory.getLogger(BasicSAMLArtifactMap.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicSAMLArtifactMap.class);
 
     /** Artifact mapping storage. */
-    @NonnullAfterInit private Map<String, ExpiringSAMLArtifactMapEntry> artifactStore;
+    @NonnullAfterInit private Map<String,ExpiringSAMLArtifactMapEntry> artifactStore;
 
     /** Lifetime of an artifact in milliseconds. */
-    private long artifactLifetime;
+    @Duration @Positive private long artifactLifetime;
 
     /** Factory for SAMLArtifactMapEntry instances. */
     @Nonnull private SAMLArtifactMapEntryFactory entryFactory;
 
     /** Number of seconds between cleanup checks. Default value: (300) */
-    private long cleanupInterval;
+    @Duration @NonNegative private long cleanupInterval;
 
     /** Timer used to schedule cleanup tasks. */
     @NonnullAfterInit private Timer cleanupTaskTimer;
 
     /** Task that cleans up expired records. */
-    @NonnullAfterInit private TimerTask cleanupTask;
+    @Nullable private TimerTask cleanupTask;
 
     /** Constructor. */
     public BasicSAMLArtifactMap() {
@@ -92,6 +95,8 @@ public class BasicSAMLArtifactMap extends AbstractIdentifiableInitializableCompo
             cleanupTask = null;
             cleanupTaskTimer = null;
         }
+        artifactStore = null;
+        
         super.doDestroy();
     }
 
@@ -100,7 +105,7 @@ public class BasicSAMLArtifactMap extends AbstractIdentifiableInitializableCompo
      * 
      * @return the artifact entry lifetime in milliseconds
      */
-    public long getArtifactLifetime() {
+    @Positive public long getArtifactLifetime() {
         return artifactLifetime;
     }
 
@@ -118,10 +123,19 @@ public class BasicSAMLArtifactMap extends AbstractIdentifiableInitializableCompo
      * 
      * @param lifetime artifact entry lifetime in milliseconds
      */
-    public void setArtifactLifetime(long lifetime) {
-        artifactLifetime = lifetime;
+    public void setArtifactLifetime(@Duration @Positive final long lifetime) {
+        artifactLifetime = Constraint.isGreaterThan(0, lifetime, "Artifact lifetime must be greater than zero");
     }
 
+    /**
+     * Set the cleanup interval in milliseconds, or 0 for none.
+     * 
+     * @param interval  cleanup interval in milliseconds
+     */
+    public void setCleanupInterval(@Duration @NonNegative final long interval) {
+        cleanupInterval = Constraint.isGreaterThanOrEqual(0, interval, "Cleanup interval must be non-negative");
+    }
+    
     /**
      * Set the map entry factory.
      * 

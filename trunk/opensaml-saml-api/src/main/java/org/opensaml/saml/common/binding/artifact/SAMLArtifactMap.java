@@ -51,7 +51,7 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * @return true iff this map has an entry for the given artifact
      * @throws IOException if an error occurs retrieving the information
      */
-    public boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException;
+    boolean contains(@Nonnull @NotEmpty final String artifact) throws IOException;
 
     /**
      * Creates a mapping between a given artifact and the SAML message to which it maps.
@@ -63,7 +63,7 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * 
      * @throws IOException if an error occurs storing the information
      */
-    public void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
+    void put(@Nonnull @NotEmpty final String artifact, @Nonnull @NotEmpty final String relyingPartyId,
             @Nonnull @NotEmpty final String issuerId, @Nonnull final SAMLObject samlMessage) throws IOException;
 
     /**
@@ -74,7 +74,7 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * @return the entry, or null if the artifact has already expired or did not exist
      * @throws IOException if an error occurs retrieving the information
      */
-    @Nullable public SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException;
+    @Nullable SAMLArtifactMapEntry get(@Nonnull @NotEmpty final String artifact) throws IOException;
 
     /**
      * Removes the artifact from this map.
@@ -82,47 +82,47 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
      * @param artifact artifact to be removed
      * @throws IOException if an error occurs retrieving the information
      */
-    public void remove(@Nonnull @NotEmpty final String artifact) throws IOException;
+    void remove(@Nonnull @NotEmpty final String artifact) throws IOException;
 
     /**
      * Represents a mapping between an artifact and a SAML message with some associated information.
      */
-    public interface SAMLArtifactMapEntry {
+    interface SAMLArtifactMapEntry {
 
         /**
          * Gets the artifact that maps to the SAML message.
          * 
          * @return artifact that maps to the SAML message
          */
-        @Nonnull @NotEmpty public String getArtifact();
+        @Nonnull @NotEmpty String getArtifact();
 
         /**
          * Gets the ID of the issuer of the artifact.
          * 
          * @return ID of the issuer of the artifact
          */
-        @Nonnull @NotEmpty public String getIssuerId();
+        @Nonnull @NotEmpty String getIssuerId();
 
         /**
          * Gets the ID of the relying party the artifact was sent to.
          * 
          * @return ID of the relying party the artifact was sent to
          */
-        @Nonnull @NotEmpty public String getRelyingPartyId();
+        @Nonnull @NotEmpty String getRelyingPartyId();
 
         /**
          * Gets SAML message the artifact maps to.
          * 
          * @return SAML message the artifact maps to
          */
-        @Nonnull public SAMLObject getSamlMessage();
+        @Nonnull SAMLObject getSamlMessage();
     }
 
     /**
      * A factory for producing SAMLArtifactMapEntry instances based on standard inputs, and reading/writing them from/to
      * storage.
      */
-    public interface SAMLArtifactMapEntryFactory {
+    interface SAMLArtifactMapEntryFactory {
 
         /**
          * Factory method which produces a {@link SAMLArtifactMapEntry}.
@@ -134,7 +134,7 @@ public interface SAMLArtifactMap extends InitializableComponent, DestructableCom
          * 
          * @return the new map entry instance
          */
-        @Nonnull public SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
+        @Nonnull SAMLArtifactMapEntry newEntry(@Nonnull @NotEmpty final String artifact,
                 @Nonnull @NotEmpty final String issuerId, @Nonnull @NotEmpty final String relyingPartyId,
                 @Nonnull SAMLObject samlMessage);
 
