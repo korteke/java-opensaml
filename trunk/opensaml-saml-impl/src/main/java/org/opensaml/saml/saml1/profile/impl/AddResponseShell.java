@@ -29,7 +29,6 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -57,8 +56,6 @@ import com.google.common.base.Function;
  * @event {@link EventIds#INVALID_PROFILE_CTX}
  * 
  * @post ProfileRequestContext.getOutboundMessageContext().getMessage() != null
- * @post ProfileRequestContext.getOutboundMessageContext().getSubcontext(
- *  BasicMessageMetadataContext.class, false) != null
  */
 public class AddResponseShell extends AbstractProfileAction {
 
@@ -161,13 +158,6 @@ public class AddResponseShell extends AbstractProfileAction {
         response.setVersion(SAMLVersion.VERSION_11);
 
         profileRequestContext.getOutboundMessageContext().setMessage(response);
-
-        // TODO: Should this be here? Are other contexts also needed?
-        final BasicMessageMetadataContext messageMetadata = new BasicMessageMetadataContext();
-        messageMetadata.setMessageId(response.getID());
-        messageMetadata.setMessageIssueInstant(response.getIssueInstant().getMillis());
-
-        profileRequestContext.getOutboundMessageContext().addSubcontext(messageMetadata, true);
     }
 
 }

@@ -20,12 +20,8 @@ package org.opensaml.profile;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
-
-import com.google.common.base.Objects;
 
 /**
  * Builder used to construct {@link ProfileRequestContext} used in {@link org.opensaml.profile.action.ProfileAction}
@@ -211,52 +207,7 @@ public class RequestContextBuilder {
     @Nonnull protected MessageContext buildInboundMessageContext() {
         final MessageContext context = new MessageContext();
         context.setMessage(inboundMessage);
-        buildInboudMessageMetadataContext(context);
         return context;
-    }
-
-    /**
-     * Builds a {@link BasicMessageMetadataContext} and adds it to the given inbound {@link MessageContext}.
-     * 
-     * The default implementation builds a {@link BasicMessageMetadataContext} that contains:
-     * <ul>
-     * <li>a message ID provided by {@link #setInboundMessageId(String)} or {@link ActionTestingSupport#INBOUND_MSG_ID}
-     * if none is given</li>
-     * <li>a message issue instant provided by {@link #setInboundMessageIssueInstant(long)} or 0 (1970-01-01T00:00:00Z)
-     * if none is given</li>
-     * <li>a message issuer provided by {@link #setInboundMessageIssuer(String)} or
-     * {@link ActionTestingSupport#INBOUND_MSG_ISSUER} if none is given
-     * </ul>
-     * 
-     * @param inboundMsgCtx the inbound message context to which the constructed {@link BasicMessageMetadataContext} is
-     *            added
-     * 
-     * @return the constructed {@link BasicMessageMetadataContext}
-     */
-    @Nullable protected BasicMessageMetadataContext buildInboudMessageMetadataContext(
-            @Nonnull final MessageContext inboundMsgCtx) {
-        if (Objects.equal(NO_VAL, inboundMessageId) && Objects.equal(NO_VAL, inboundMessageIssuer)) {
-            return null;
-        }
-
-        final BasicMessageMetadataContext metadataCtx = new BasicMessageMetadataContext();
-        inboundMsgCtx.addSubcontext(metadataCtx);
-
-        if (Objects.equal(NO_VAL, inboundMessageId)) {
-            metadataCtx.setMessageId(ActionTestingSupport.OUTBOUND_MSG_ID);
-        } else {
-            metadataCtx.setMessageId(inboundMessageId);
-        }
-
-        metadataCtx.setMessageIssueInstant(inboundMessageIssueInstant);
-
-        if (Objects.equal(NO_VAL, inboundMessageIssuer)) {
-            metadataCtx.setMessageIssuer(ActionTestingSupport.OUTBOUND_MSG_ISSUER);
-        } else {
-            metadataCtx.setMessageIssuer(inboundMessageIssuer);
-        }
-
-        return metadataCtx;
     }
 
     /**
@@ -273,53 +224,8 @@ public class RequestContextBuilder {
     @Nonnull protected MessageContext buildOutboundMessageContext() {
         final MessageContext context = new MessageContext();
         context.setMessage(outboundMessage);
-        buildOutboundMessageMetadataContext(context);
         return context;
 
-    }
-
-    /**
-     * Builds a {@link BasicMessageMetadataContext} and adds it to the given outbound {@link MessageContext}.
-     * 
-     * The default implementation builds a {@link BasicMessageMetadataContext} that contains:
-     * <ul>
-     * <li>a message ID provided by {@link #setOutboundMessageId(String)} or {@link ActionTestingSupport#INBOUND_MSG_ID}
-     * if none is given</li>
-     * <li>a message issue instant provided by {@link #setOutboundMessageIssueInstant(long)} or 0 (1970-01-01T00:00:00Z)
-     * if none is given</li>
-     * <li>a message issuer provided by {@link #setOutboundMessageIssuer(String)} or
-     * {@link ActionTestingSupport#INBOUND_MSG_ISSUER} if none is given
-     * </ul>
-     * 
-     * @param outboundMsgCtx the outbound message context to which the constructed {@link BasicMessageMetadataContext}
-     *            is added
-     * 
-     * @return the constructed {@link BasicMessageMetadataContext}
-     */
-    @Nonnull protected BasicMessageMetadataContext buildOutboundMessageMetadataContext(
-            @Nonnull final MessageContext outboundMsgCtx) {
-        if (Objects.equal(NO_VAL, outboundMessageId) && Objects.equal(NO_VAL, outboundMessageIssuer)) {
-            return null;
-        }
-
-        final BasicMessageMetadataContext metadataCtx = new BasicMessageMetadataContext();
-        outboundMsgCtx.addSubcontext(metadataCtx);
-
-        if (Objects.equal(NO_VAL, outboundMessageId)) {
-            metadataCtx.setMessageId(ActionTestingSupport.OUTBOUND_MSG_ID);
-        } else {
-            metadataCtx.setMessageId(outboundMessageId);
-        }
-
-        metadataCtx.setMessageIssueInstant(outboundMessageIssueInstant);
-
-        if (Objects.equal(NO_VAL, outboundMessageIssuer)) {
-            metadataCtx.setMessageIssuer(ActionTestingSupport.OUTBOUND_MSG_ISSUER);
-        } else {
-            metadataCtx.setMessageIssuer(outboundMessageIssuer);
-        }
-
-        return metadataCtx;
     }
 
 }

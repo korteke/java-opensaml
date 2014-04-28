@@ -18,24 +18,14 @@
 package org.opensaml.saml.saml1.binding.encoding.impl;
 
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * SAML 1.X HTTP SOAP 1.1 binding message encoder.
  */
 public class HTTPSOAP11Encoder extends org.opensaml.soap.soap11.encoder.http.impl.HTTPSOAP11Encoder<SAMLObject> {
-
-    /** Constructor. */
-    public HTTPSOAP11Encoder() {
-        super();
-    }
-
-    /** {@inheritDoc} */
-    public String getBindingURI() {
-        return SAMLConstants.SAML1_SOAP11_BINDING_URI;
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected String getSOAPAction() {
         return "http://www.oasis-open.org/committees/security";
     }
