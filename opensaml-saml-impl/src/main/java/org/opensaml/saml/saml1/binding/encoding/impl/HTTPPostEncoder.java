@@ -113,16 +113,6 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
     }
 
     /** {@inheritDoc} */
-    public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException {
-        return false;
-    }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException {
-        return false;
-    }
-
-    /** {@inheritDoc} */
     protected void doDestroy() {
         velocityEngine = null;
         velocityTemplateId = null;

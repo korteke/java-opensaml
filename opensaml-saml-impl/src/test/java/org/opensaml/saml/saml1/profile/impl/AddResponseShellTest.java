@@ -20,7 +20,6 @@ package org.opensaml.saml.saml1.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
@@ -63,12 +62,6 @@ public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(status);
         Assert.assertNotNull(status.getStatusCode());
         Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
-
-        final BasicMessageMetadataContext messageMetadata =
-                outMsgCtx.getSubcontext(BasicMessageMetadataContext.class, false);
-        Assert.assertNotNull(messageMetadata);
-        Assert.assertEquals(messageMetadata.getMessageId(), response.getID());
-        Assert.assertEquals(messageMetadata.getMessageIssueInstant(), response.getIssueInstant().getMillis());
     }
 
     @Test public void testAddResponseWhenResponseAlreadyExist() {

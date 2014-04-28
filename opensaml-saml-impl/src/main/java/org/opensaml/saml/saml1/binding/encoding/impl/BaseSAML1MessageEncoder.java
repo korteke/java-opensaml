@@ -19,6 +19,8 @@ package org.opensaml.saml.saml1.binding.encoding.impl;
 
 import java.net.URI;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.messaging.encoder.servlet.BaseHttpServletResponseXMLMessageEncoder;
@@ -42,10 +44,11 @@ public abstract class BaseSAML1MessageEncoder extends BaseHttpServletResponseXML
      * 
      * @throws MessageEncodingException throw if no relying party endpoint is available
      */
-    protected URI getEndpointURL(MessageContext<SAMLObject> messageContext) throws MessageEncodingException {
+    @Nonnull protected URI getEndpointURL(@Nonnull final MessageContext<SAMLObject> messageContext)
+            throws MessageEncodingException {
         try {
             return SAMLBindingSupport.getEndpointURL(messageContext);
-        } catch (BindingException e) {
+        } catch (final BindingException e) {
             throw new MessageEncodingException("Could not obtain message endpoint URL", e);
         }
     }

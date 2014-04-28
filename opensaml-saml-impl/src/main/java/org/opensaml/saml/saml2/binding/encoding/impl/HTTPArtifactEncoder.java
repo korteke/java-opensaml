@@ -22,18 +22,22 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.UrlBuilder;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.opensaml.messaging.context.BasicMessageMetadataContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.saml.common.SAMLObject;
@@ -41,6 +45,8 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
+import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLSelfEntityContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.binding.artifact.AbstractSAML2Artifact;
@@ -55,40 +61,40 @@ import org.slf4j.LoggerFactory;
 public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     
     /** Default template ID. */
-    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-artifact-binding.vm";
+    @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-artifact-binding.vm";
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPArtifactEncoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPArtifactEncoder.class);
 
     /** Whether the POST encoding should be used, instead of GET. */
     private boolean postEncoding;
 
     /** Velocity engine used to evaluate the template when performing POST encoding. */
-    private VelocityEngine velocityEngine;
+    @Nullable private VelocityEngine velocityEngine;
 
     /** ID of the velocity template used when performing POST encoding. */
-    private String velocityTemplateId;
+    @Nonnull @NotEmpty private String velocityTemplateId;
 
     /** SAML artifact map used to store created artifacts for later retrieval. */
-    private SAMLArtifactMap artifactMap;
+    @NonnullAfterInit private SAMLArtifactMap artifactMap;
 
     /** Default artifact type to use when encoding messages. */
-    private byte[] defaultArtifactType;
+    @Nonnull @NotEmpty private byte[] defaultArtifactType;
 
     /** Constructor. */
     public HTTPArtifactEncoder() {
-        super();
         defaultArtifactType = SAML2ArtifactType0004.TYPE_CODE;
         setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBindingURI() {
         return SAMLConstants.SAML2_ARTIFACT_BINDING_URI;
     }
     
     /**
-     * Gets whether the encoder will encode the artifact via POST encoding.
+     * Get whether the encoder will encode the artifact via POST encoding.
      * 
      * @return true if POST encoding will be used, false if GET encoding will be used
      */
@@ -97,7 +103,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     }
 
     /**
-     * Sets whether the encoder will encode the artifact via POST encoding.
+     * Set whether the encoder will encode the artifact via POST encoding.
      * 
      * @param post true if POST encoding will be used, false if GET encoding will be used
      */
@@ -112,7 +118,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @return return the VelocityEngine instance
      */
-    public VelocityEngine getVelocityEngine() {
+    @Nullable public VelocityEngine getVelocityEngine() {
         return velocityEngine;
     }
 
@@ -121,9 +127,10 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @param newVelocityEngine the new VelocityEngine instane
      */
-    public void setVelocityEngine(VelocityEngine newVelocityEngine) {
+    public void setVelocityEngine(@Nullable final VelocityEngine newVelocityEngine) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         velocityEngine = newVelocityEngine;
     }
     
@@ -134,7 +141,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @return return the Velocity template id
      */
-    public String getVelocityTemplateId() {
+    @Nonnull @NotEmpty public String getVelocityTemplateId() {
         return velocityTemplateId;
     }
 
@@ -145,10 +152,12 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @param newVelocityTemplateId the new Velocity template id
      */
-    public void setVelocityTemplateId(String newVelocityTemplateId) {
+    public void setVelocityTemplateId(@Nonnull @NotEmpty final String newVelocityTemplateId) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        velocityTemplateId = newVelocityTemplateId;
+        
+        velocityTemplateId = Constraint.isNotNull(StringSupport.trimOrNull(newVelocityTemplateId),
+                "Velocity template ID cannot be null or empty");
     }
 
     /**
@@ -156,7 +165,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @return the artifactMap.
      */
-    public SAMLArtifactMap getArtifactMap() {
+    @NonnullAfterInit public SAMLArtifactMap getArtifactMap() {
         return artifactMap;
     }
 
@@ -165,49 +174,45 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @param newArtifactMap the new artifactMap 
      */
-    public void setArtifactMap(SAMLArtifactMap newArtifactMap) {
+    public void setArtifactMap(@Nonnull final SAMLArtifactMap newArtifactMap) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        artifactMap = newArtifactMap;
-    }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException {
-        return false;
-    }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException {
-        return false;
+        
+        artifactMap = Constraint.isNotNull(newArtifactMap, "SAMLArtifactMap cannot be null");
     }
     
     /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (artifactMap == null) {
+            throw new ComponentInitializationException("SAMLArtifactMap cannot be null");
+        }
+        if (isPostEncoding()) {
+            if (velocityEngine == null) {
+                throw new ComponentInitializationException("VelocityEngine cannot be null when POST is used");
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         velocityEngine = null;
         velocityTemplateId = null;
         artifactMap = null;
+        
         super.doDestroy();
     }
 
     /** {@inheritDoc} */
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        if (artifactMap == null) {
-            throw new ComponentInitializationException("SAML artifact map must be supplied");
-        }
-        if (isPostEncoding()) {
-            if (velocityEngine == null) {
-                throw new ComponentInitializationException("VelocityEngine must be supplied");
-            }
-            if (velocityTemplateId == null) {
-                throw new ComponentInitializationException("Velocity template id must be supplied");
-            }
-        }
-    }
-
-    /** {@inheritDoc} */
+    @Override
     protected void doEncode() throws MessageEncodingException {
-        HttpServletResponse response = getHttpServletResponse();
+        final HttpServletResponse response = getHttpServletResponse();
+        if (response == null) {
+            throw new MessageEncodingException("HttpServletResponse was null");
+        }
         response.setCharacterEncoding("UTF-8");
 
         if (postEncoding) {
@@ -226,30 +231,30 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     protected void postEncode() throws MessageEncodingException {
         log.debug("Performing HTTP POST SAML 2 artifact encoding");
         
-        MessageContext<SAMLObject> messageContext = getMessageContext();
+        final MessageContext<SAMLObject> messageContext = getMessageContext();
 
         log.debug("Creating velocity context");
-        VelocityContext context = new VelocityContext();
-        String endpointURL = getEndpointURL(messageContext).toString();
-        String encodedEndpointURL = HTMLEncoder.encodeForHTMLAttribute(endpointURL);
+        final VelocityContext context = new VelocityContext();
+        final String endpointURL = getEndpointURL(messageContext).toString();
+        final String encodedEndpointURL = HTMLEncoder.encodeForHTMLAttribute(endpointURL);
         log.debug("Setting action parameter to: '{}', encoded as '{}'", endpointURL, encodedEndpointURL);
         context.put("action", encodedEndpointURL);
         context.put("SAMLArt", buildArtifact(messageContext).base64Encode());
         context.put("binding", getBindingURI());
 
-        String relayState = SAMLBindingSupport.getRelayState(messageContext);
+        final String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            String encodedRelayState = HTMLEncoder.encodeForHTMLAttribute(relayState);
+            final String encodedRelayState = HTMLEncoder.encodeForHTMLAttribute(relayState);
             log.debug("Setting RelayState parameter to: '{}', encoded as '{}'", relayState, encodedRelayState);
             context.put("RelayState", encodedRelayState);
         }
 
         try {
             log.debug("Invoking velocity template");
-            HttpServletResponse response = getHttpServletResponse();
-            OutputStreamWriter outWriter = new OutputStreamWriter(response.getOutputStream());
+            final HttpServletResponse response = getHttpServletResponse();
+            final OutputStreamWriter outWriter = new OutputStreamWriter(response.getOutputStream());
             velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, outWriter);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error invoking velocity template to create POST form", e);
             throw new MessageEncodingException("Error creating output document", e);
         }
@@ -263,36 +268,36 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     protected void getEncode() throws MessageEncodingException {
         log.debug("Performing HTTP GET SAML 2 artifact encoding");
 
-        MessageContext<SAMLObject> messageContext = getMessageContext();
+        final MessageContext<SAMLObject> messageContext = getMessageContext();
         
-        String endpointUrl = getEndpointURL(messageContext).toString();
+        final String endpointUrl = getEndpointURL(messageContext).toString();
         
-        UrlBuilder urlBuilder = null;
+        final UrlBuilder urlBuilder;
         try {
             urlBuilder = new UrlBuilder(endpointUrl);
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             throw new MessageEncodingException("Endpoint URL " + endpointUrl + " is not a valid URL", e);
         }
 
-        List<Pair<String, String>> queryParams = urlBuilder.getQueryParams();
+        final List<Pair<String, String>> queryParams = urlBuilder.getQueryParams();
         queryParams.clear();
 
-        AbstractSAMLArtifact artifact = buildArtifact(messageContext);
+        final AbstractSAMLArtifact artifact = buildArtifact(messageContext);
         if (artifact == null) {
             log.error("Unable to build artifact for message to relying party");
             throw new MessageEncodingException("Unable to builder artifact for message to relying party");
         }
         queryParams.add(new Pair<String, String>("SAMLart", artifact.base64Encode()));
 
-        String relayState = SAMLBindingSupport.getRelayState(messageContext);
+        final String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
             queryParams.add(new Pair<String, String>("RelayState", relayState));
         }
 
-        HttpServletResponse response = getHttpServletResponse();
+        final HttpServletResponse response = getHttpServletResponse();
         try {
             response.sendRedirect(urlBuilder.buildURL());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new MessageEncodingException("Problem sending HTTP redirect", e);
         }
     }
@@ -306,31 +311,35 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @throws MessageEncodingException thrown if the artifact can not be created
      */
-    protected AbstractSAML2Artifact buildArtifact(MessageContext<SAMLObject> messageContext) 
+    @Nonnull protected AbstractSAML2Artifact buildArtifact(@Nonnull final MessageContext<SAMLObject> messageContext) 
             throws MessageEncodingException {
 
-        SAML2ArtifactBuilder artifactBuilder;
+        final String requester = getInboundMessageIssuer(messageContext);
+        final String issuer = getOutboundMessageIssuer(messageContext);
+        if (requester == null || issuer == null) {
+            throw new MessageEncodingException("Unable to obtain issuer or relying party for message encoding");
+        }
         
-        byte[] artifactType = getSamlArtifactType(messageContext);
+        final SAML2ArtifactBuilder artifactBuilder;
+        final byte[] artifactType = getSAMLArtifactType(messageContext);
         if (artifactType != null) {
             artifactBuilder = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory()
                     .getArtifactBuilder(artifactType);
         } else {
             artifactBuilder = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory()
                     .getArtifactBuilder(defaultArtifactType);
-            storeSamlArtifactType(messageContext, defaultArtifactType);
+            storeSAMLArtifactType(messageContext, defaultArtifactType);
         }
 
-        AbstractSAML2Artifact artifact = artifactBuilder.buildArtifact(messageContext);
+        final AbstractSAML2Artifact artifact = artifactBuilder.buildArtifact(messageContext);
         if (artifact == null) {
             log.error("Unable to build artifact for message to relying party");
             throw new MessageEncodingException("Unable to builder artifact for message to relying party");
         }
-        String encodedArtifact = artifact.base64Encode();
+        final String encodedArtifact = artifact.base64Encode();
         try {
-            artifactMap.put(encodedArtifact, getInboundMessageIssuer(messageContext),
-                    getOutboundMessageIssuer(messageContext), messageContext.getMessage());
-        } catch (IOException e) {
+            artifactMap.put(encodedArtifact, requester, issuer, messageContext.getMessage());
+        } catch (final IOException e) {
             log.error("Unable to store message mapping for artifact", e);
             throw new MessageEncodingException("Unable to store message mapping for artifact", e);
         }
@@ -344,23 +353,28 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param messageContext  the message context
      * @return the outbound message issuer
      */
-    private String getOutboundMessageIssuer(MessageContext<SAMLObject> messageContext) {
-        // TODO need to reconcile the old terminology of "issuer" vs other SAML concepts
-        BasicMessageMetadataContext basicContext = 
-                messageContext.getSubcontext(BasicMessageMetadataContext.class, false);
-        Constraint.isNotNull(basicContext, "Message context did not contain a BasicMessageMetadataContext");
-        return basicContext.getMessageIssuer();
+    @Nullable private String getOutboundMessageIssuer(@Nonnull final MessageContext<SAMLObject> messageContext) {
+        final SAMLSelfEntityContext selfCtx = messageContext.getSubcontext(SAMLSelfEntityContext.class);
+        if (selfCtx == null) {
+            return null;
+        }
+        
+        return selfCtx.getEntityId();
     }
 
     /**
-     * @param messageContext
-     * @return
+     * Get the requester.
+     * 
+     * @param messageContext the message context
+     * @return the requester
      */
-    private String getInboundMessageIssuer(MessageContext<SAMLObject> messageContext) {
-        // TODO need to reconcile the old terminology of "issuer" vs other SAML concepts
-        // TODO will the original inbound message context "issuer" data be copied to the outbound message context, 
-        // or do we assume we can walk the tree somehow, possibly with a context navigator instance
-        return null;
+    @Nullable private String getInboundMessageIssuer(@Nonnull final MessageContext<SAMLObject> messageContext) {
+        final SAMLPeerEntityContext peerCtx = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+        if (peerCtx == null) {
+            return null;
+        }
+        
+        return peerCtx.getEntityId();
     }
 
     /**
@@ -370,7 +384,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @param artifactType the artifact type to store
      */
-    private void storeSamlArtifactType(MessageContext<SAMLObject> messageContext, byte[] artifactType) {
+    private void storeSAMLArtifactType(@Nonnull final MessageContext<SAMLObject> messageContext,
+            @Nonnull @NotEmpty final byte[] artifactType) {
         messageContext.getSubcontext(SAMLArtifactContext.class, true).setArtifactType(artifactType);
     }
 
@@ -381,8 +396,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * 
      * @return the artifact type
      */
-    private byte[] getSamlArtifactType(MessageContext<SAMLObject> messageContext) {
+    @Nullable private byte[] getSAMLArtifactType(@Nonnull final MessageContext<SAMLObject> messageContext) {
         return messageContext.getSubcontext(SAMLArtifactContext.class, true).getArtifactType();
     }
-
+    
 }

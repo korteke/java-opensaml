@@ -36,12 +36,6 @@ public final class EventIds {
      */
     @Nonnull @NotEmpty public static final String INVALID_MSG_CTX = "InvalidMessageContext";
 
-    /**
-     * ID of the event returned if a {@link org.opensaml.messaging.context.BasicMessageMetadataContext} is missing or
-     * corrupt in some way.
-     */
-    @Nonnull @NotEmpty public static final String INVALID_MSG_MD = "InvalidMessageMetadata";
-
     /** ID of the event returned if a SAML message version is incorrect or unsupported. */
     @Nonnull @NotEmpty public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
 
