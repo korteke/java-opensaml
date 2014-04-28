@@ -62,9 +62,13 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** Identifies a binding that is direct request/response between two parties (i.e., SOAP). */
     private boolean synchronous;
     
+    /** Identifies a binding that relies on SAML artifacts. */
+    private boolean artifact;
+    
     /** Constructor. */
     public BindingDescriptor() {
         synchronous = false;
+        artifact = false;
         activationCondition = Predicates.alwaysTrue();
     }
     
@@ -94,6 +98,24 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
      */
     public void setSynchronous(final boolean flag) {
         synchronous = flag;
+    }
+
+    /**
+     * Get whether the binding is artifact-based.
+     * 
+     * @return true iff the binding is artifact-based
+     */
+    public boolean isArtifact() {
+       return artifact;
+    }
+    
+    /**
+     * Set whether the binding is artifact-based.
+     * 
+     * @param flag  flag to set
+     */
+    public void setArtifact(final boolean flag) {
+        artifact = flag;
     }
 
     /** {@inheritDoc} */
@@ -131,6 +153,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     public String toString() {
         return Objects.toStringHelper(this).add("bindingId", getId())
                 .add("synchronous", synchronous)
+                .add("artifact", artifact)
                 .toString();
     }
 
