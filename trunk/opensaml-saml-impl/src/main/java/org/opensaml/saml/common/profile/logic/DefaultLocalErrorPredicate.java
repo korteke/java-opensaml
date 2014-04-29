@@ -15,17 +15,15 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.profile.impl;
+package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import org.opensaml.profile.action.AbstractConditionalProfileAction;
-import org.opensaml.profile.action.ActionSupport;
-import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
@@ -34,7 +32,6 @@ import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -44,23 +41,21 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 
 /**
- * Action that decides whether to handle an error by returning a SAML response to a requester
+ * Predicate that decides whether to handle an error by returning a SAML response to a requester
  * or fail locally.
  * 
  * <p>This is principally determined based on whether or not the necessary message context children
  * are present so that a response can be delivered, but is also tunable based on the error event
  * being handled.</p>
- * 
- * @event {@link EventIds#PROCEED_EVENT_ID}
- * @event {@link EventIds#TRAP_ERROR}
  */
-public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction {
+public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestContext> {
 
     /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(CheckErrorHandlingStrategy.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(DefaultLocalErrorPredicate.class);
     
     /** Strategy function for access to {@link SAMLBindingContext} to check. */
     @Nonnull private Function<ProfileRequestContext,SAMLBindingContext> bindingContextLookupStrategy;
@@ -74,12 +69,8 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
     /** Error events to handle locally, even if possible to do so with a response. */
     @Nonnull @NonnullElements private Set<String> localEvents;
     
-    /**
-     * Constructor.
-     * 
-     * Initializes {@link #messageMetadataContextLookupStrategy} to {@link ChildContextLookup}.
-     */
-    public CheckErrorHandlingStrategy() {
+    /** Constructor. */
+    public DefaultLocalErrorPredicate() {
         // Default: outbound msg context -> SAMLBindingContext
         bindingContextLookupStrategy = Functions.compose(
                 new ChildContextLookup<>(SAMLBindingContext.class), new OutboundMessageContextLookup());
@@ -102,8 +93,6 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
      */
     public void setBindingContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SAMLBindingContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
         bindingContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SAMLBindingContext lookup strategy cannot be null");
     }
@@ -115,8 +104,6 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
      */
     public void setEndpointContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SAMLEndpointContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
         endpointContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SAMLEndpointContext lookup strategy cannot be null");
     }
@@ -128,8 +115,6 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
      */
     public void setPreviousEventContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,PreviousEventContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
         previousEventContextLookupStrategy = Constraint.isNotNull(strategy,
                 "PreviousEventContext lookup strategy cannot be null");
     }
@@ -140,7 +125,6 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
      * @param events locally handled events
      */
     public void setLocalEvents(@Nonnull @NonnullElements Collection<String> events) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         Constraint.isNotNull(events, "Event collection cannot be null");
         
         localEvents = Sets.newHashSetWithExpectedSize(events.size());
@@ -152,48 +136,44 @@ public class CheckErrorHandlingStrategy extends AbstractConditionalProfileAction
         }
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+    public boolean apply(@Nullable final ProfileRequestContext input) {
         
-        final SAMLBindingContext bindingCtx = bindingContextLookupStrategy.apply(profileRequestContext);
-        if (bindingCtx == null || bindingCtx.getBindingUri() == null) {
-            log.debug("{} No SAMLBindingContext or binding URI available, error must be handled locally",
-                    getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.TRAP_ERROR);
-            return false;
+        if (input == null) {
+            return true;
         }
         
-        final SAMLEndpointContext endpointCtx = endpointContextLookupStrategy.apply(profileRequestContext);
+        final SAMLBindingContext bindingCtx = bindingContextLookupStrategy.apply(input);
+        if (bindingCtx == null || bindingCtx.getBindingUri() == null) {
+            log.debug("No SAMLBindingContext or binding URI available, error must be handled locally");
+            return true;
+        }
+        
+        final SAMLEndpointContext endpointCtx = endpointContextLookupStrategy.apply(input);
         if (endpointCtx == null || endpointCtx.getEndpoint() == null ||
                 (endpointCtx.getEndpoint().getLocation() == null
                     && endpointCtx.getEndpoint().getResponseLocation() == null)) {
-            log.debug("{} No SAMLEndpointContext or endpoint location available, error must be handled locally",
-                    getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.TRAP_ERROR);
-            return false;
+            log.debug("No SAMLEndpointContext or endpoint location available, error must be handled locally");
+            return true;
         }
-        
-        return super.doPreExecute(profileRequestContext);
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
-        final PreviousEventContext previousEventCtx = previousEventContextLookupStrategy.apply(profileRequestContext);
+        final PreviousEventContext previousEventCtx = previousEventContextLookupStrategy.apply(input);
         if (previousEventCtx == null || previousEventCtx.getEvent() == null) {
-            log.debug("{} No event found, assuming error handled with response", getLogPrefix());
-            return;
+            log.debug("No event found, assuming error handled with response");
+            return false;
         }
         
         final String event = previousEventCtx.getEvent().toString();
         if (localEvents.contains(event)) {
-            log.debug("{} Error event {} will be handled locally", getLogPrefix(), event);
-            ActionSupport.buildEvent(profileRequestContext, EventIds.TRAP_ERROR);
+            log.debug("Error event {} will be handled locally", event);
+            return true;
         } else {
-            log.debug("{} Error event {} will be handled with response", getLogPrefix(), event);
+            log.debug("Error event {} will be handled with response", event);
+            return false;
         }
     }
+// Checkstyle: CyclomaticComplexity ON
     
 }
