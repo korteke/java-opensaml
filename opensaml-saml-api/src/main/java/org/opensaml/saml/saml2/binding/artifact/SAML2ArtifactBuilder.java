@@ -17,6 +17,11 @@
 
 package org.opensaml.saml.saml2.binding.artifact;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 
@@ -36,7 +41,7 @@ public interface SAML2ArtifactBuilder<ArtifactType extends AbstractSAML2Artifact
      * 
      * @return constructed artifcate
      */
-    public ArtifactType buildArtifact(MessageContext<SAMLObject> requestContext);
+    @Nullable ArtifactType buildArtifact(@Nonnull final MessageContext<SAMLObject> requestContext);
 
     /**
      * Builds a populated artifact given the artifact's byte-array representation.
@@ -45,6 +50,6 @@ public interface SAML2ArtifactBuilder<ArtifactType extends AbstractSAML2Artifact
      * 
      * @return populated artifact
      */
-    public ArtifactType buildArtifact(byte[] artifact);
+    @Nullable ArtifactType buildArtifact(@Nonnull @NotEmpty byte[] artifact);
 
 }

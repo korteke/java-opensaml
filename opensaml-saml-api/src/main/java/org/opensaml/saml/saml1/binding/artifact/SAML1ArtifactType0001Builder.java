@@ -21,7 +21,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
@@ -36,27 +37,40 @@ import org.slf4j.LoggerFactory;
 public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1ArtifactType0001> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SAML1ArtifactType0001Builder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAML1ArtifactType0001Builder.class);
 
     /** {@inheritDoc} */
-    public SAML1ArtifactType0001 buildArtifact(byte[] artifact) {
-        return SAML1ArtifactType0001.parseArtifact(artifact);
+    @Override
+    @Nullable public SAML1ArtifactType0001 buildArtifact(byte[] artifact) {
+        try {
+            return SAML1ArtifactType0001.parseArtifact(artifact);
+        } catch (final IllegalArgumentException e) {
+            log.warn("Error parsing type 1 artifact", e);
+            return null;
+        }
     }
 
     /** {@inheritDoc} */
-    public SAML1ArtifactType0001 buildArtifact(MessageContext<SAMLObject> requestContext, Assertion assertion) {
+    @Override
+    @Nullable public SAML1ArtifactType0001 buildArtifact(@Nonnull final MessageContext<SAMLObject> requestContext,
+            @Nonnull final Assertion assertion) {
+        final String sourceId = getSourceEntityId(requestContext);
+        if (sourceId == null) {
+            return null;
+        }
+        
         try {
-            MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
-            byte[] source = sha1Digester.digest(getSourceEntityId(requestContext).getBytes());
+            final MessageDigest sha1Digester = MessageDigest.getInstance("SHA-1");
+            final byte[] source = sha1Digester.digest(sourceId.getBytes());
 
-            SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
-            byte[] assertionHandle = new byte[20];
+            final SecureRandom handleGenerator = SecureRandom.getInstance("SHA1PRNG");
+            final byte[] assertionHandle = new byte[20];
             handleGenerator.nextBytes(assertionHandle);
 
             return new SAML1ArtifactType0001(source, assertionHandle);
-        } catch (NoSuchAlgorithmException e) {
-            log.error("JVM does not support required cryptography algorithms.", e);
-            throw new InternalError("JVM does not support required cryptography algorithms: SHA-1 and/or SHA1PRNG.");
+        } catch (final NoSuchAlgorithmException e) {
+            log.warn("JVM does not support required cryptography algorithms.", e);
+            return null;
         }
     }
     
@@ -66,8 +80,9 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
      * @param requestContext the current message context
      * @return the SAML artifact context, or null
      */
-    protected SAMLArtifactContext getArtifactContext(MessageContext<SAMLObject> requestContext) {
-        return requestContext.getSubcontext(SAMLArtifactContext.class, false);
+    @Nullable protected SAMLArtifactContext getArtifactContext(
+            @Nonnull final MessageContext<SAMLObject> requestContext) {
+        return requestContext.getSubcontext(SAMLArtifactContext.class);
     }
 
     /**
@@ -77,12 +92,18 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
      * 
      * @return the local entityId
      */
-    protected String getSourceEntityId(MessageContext<SAMLObject> requestContext) {
-        SAMLArtifactContext artifactContext = getArtifactContext(requestContext);
-        Constraint.isNotNull(artifactContext, "Message context did not contain a SAMLArtifactContext");
-        Constraint.isNotNull(artifactContext.getSourceEntityId(), 
-                "SAMLArtifactContext did not contain a source entityID");
-        return artifactContext.getSourceEntityId();
+    @Nullable protected String getSourceEntityId(@Nonnull final MessageContext<SAMLObject> requestContext) {
+        final SAMLArtifactContext artifactContext = getArtifactContext(requestContext);
+        if (artifactContext != null) {
+            if (artifactContext.getSourceEntityId() != null) {
+                return artifactContext.getSourceEntityId(); 
+            } else {
+                log.warn("SAMLArtifactContext did not contain a source entityID");
+            }
+        } else {
+            log.warn("Message context did not contain a SAMLArtifactContext");
+        }
+        return null;
     }
     
 }
