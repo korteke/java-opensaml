@@ -23,6 +23,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.BaseContext;
+import org.opensaml.saml.common.binding.BindingDescriptor;
 
 /**
  * Context for holding information related to the SAML binding in use.
@@ -31,6 +32,9 @@ public class SAMLBindingContext extends BaseContext {
     
     /** The relay state associated with the message. */
     @Nullable @NotEmpty private String relayState;
+    
+    /** The binding descriptor. */
+    @Nullable private BindingDescriptor bindingDescriptor;
     
     /** The binding URI. */
     @Nullable @NotEmpty private String bindingUri;
@@ -66,7 +70,13 @@ public class SAMLBindingContext extends BaseContext {
      * @return Returns the bindingUri.
      */
     @Nullable @NotEmpty public String getBindingUri() {
-        return bindingUri;
+        if (bindingUri != null) {
+            return bindingUri;
+        } else if (bindingDescriptor != null) {
+            return bindingDescriptor.getId();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -78,6 +88,24 @@ public class SAMLBindingContext extends BaseContext {
         bindingUri = StringSupport.trimOrNull(newBindingUri);
     }
 
+    /**
+     * Get the SAML binding descriptor.
+     * 
+     * @return the descriptor
+     */
+    @Nullable public BindingDescriptor getBindingDescriptor() {
+        return bindingDescriptor;
+    }
+
+    /**
+     * Set the SAML binding descriptor.
+     * 
+     * @param descriptor the new binding descriptor
+     */
+    public void setBindingDescriptor(@Nullable final BindingDescriptor descriptor) {
+        bindingDescriptor = descriptor;
+    }
+    
     /**
      * Get the flag indicating whether the message is signed at the binding level.
      * 
