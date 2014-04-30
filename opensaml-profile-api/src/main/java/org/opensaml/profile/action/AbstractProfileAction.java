@@ -214,7 +214,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      * @return a string for insertion at the beginning of any log messages
      */
     @Nonnull @NotEmpty protected String getLogPrefix() {
-        return "Profile Action: ";
+        return "Profile Action:";
     }
 
 }
