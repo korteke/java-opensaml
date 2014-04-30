@@ -17,15 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
@@ -33,7 +27,6 @@ import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**

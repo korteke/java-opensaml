@@ -21,19 +21,11 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**

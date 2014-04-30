@@ -21,10 +21,6 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObject;
