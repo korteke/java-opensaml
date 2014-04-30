@@ -42,6 +42,9 @@ public final class SAMLEventIds {
     /** ID of the event returned if the requested NameIDPolicy can't be satisfied. */
     @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
     
+    /** ID of the event returned if a SAML artifact cannot be resolved. */
+    @Nonnull @NotEmpty public static final String UNABLE_RESOLVE_ARTIFACT = "UnableToResolveArtifact";
+    
     /** Constructor. */
     private SAMLEventIds() {
         
