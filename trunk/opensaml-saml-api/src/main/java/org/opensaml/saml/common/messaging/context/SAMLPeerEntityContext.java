@@ -28,7 +28,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.Assertion;
-import org.opensaml.saml.saml1.core.AssertionArtifact;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -222,13 +221,6 @@ public class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEntityCont
                 return entityId;
             }
         }
-
-        if (request.getAssertionArtifacts() != null) {
-            entityId = processSaml1AssertionArtifacts(request.getAssertionArtifacts());
-            if (entityId != null) {
-                return entityId;
-            }
-        }
         
         return null;
     }
@@ -270,32 +262,6 @@ public class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEntityCont
                 return resource;
             }
         }
-        return null;
-    }
-    
-    /**
-     * Resolve the SAML entity ID from a SAML 1 AssertionArtifact list.
-     * 
-     * @param artifacts the artifact list
-     * 
-     * @return the entity ID, or null if it could not be resolved
-     */
-    @Nullable protected String processSaml1AssertionArtifacts(@Nonnull final List<AssertionArtifact> artifacts) {
-        if (artifacts.size() == 0) {
-            return null;
-        }
-        
-        //TODO can we support this?  Would need the artifact map.
-        /*
-        log.debug("Attempting to extract issuer based on first AssertionArtifact in request");
-        AssertionArtifact artifact = artifacts.get(0);
-        SAMLArtifactMapEntry artifactEntry = artifactMap.get(artifact.getAssertionArtifact());
-        String issuer = artifactEntry.getRelyingPartyId();
-        log.debug("Extracted issuer from SAML 1.x AssertionArtifact: {}", issuer);
-        return issuer;
-        */
-        
-        log.info("Dynamic resolution of SAML peer entity ID from SAML 1 AssertionArtifacts is not currently supported");
         return null;
     }
 

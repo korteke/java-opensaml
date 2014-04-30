@@ -26,6 +26,7 @@ import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.Assertion;
+import org.opensaml.saml.saml1.core.AssertionArtifact;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.AttributeStatement;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
@@ -164,10 +165,10 @@ public class SAML1ActionTestingSupport {
             query.setSubject(subject);
         }
 
-        SAMLObjectBuilder<Request> requestBuilder = (SAMLObjectBuilder<Request>)
+        final SAMLObjectBuilder<Request> requestBuilder = (SAMLObjectBuilder<Request>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Request>getBuilderOrThrow(
                         Request.DEFAULT_ELEMENT_NAME);
-        Request request = requestBuilder.buildObject();
+        final Request request = requestBuilder.buildObject();
         request.setID(REQUEST_ID);
         request.setIssueInstant(new DateTime(0));
         request.setQuery(query);
@@ -176,4 +177,35 @@ public class SAML1ActionTestingSupport {
         return request;
     }
     
+    /**
+     * Builds a {@link Request} containing {@link AssertionArtifact}s.
+     * 
+     * @param artifacts the artifacts to add to the request
+     * 
+     * @return the built request
+     */
+    @Nonnull public static Request buildArtifactRequest(final @Nullable String... artifacts) {
+        final SAMLObjectBuilder<AssertionArtifact> artifactBuilder = (SAMLObjectBuilder<AssertionArtifact>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AssertionArtifact>getBuilderOrThrow(
+                        AssertionArtifact.DEFAULT_ELEMENT_NAME);
+
+        final SAMLObjectBuilder<Request> requestBuilder = (SAMLObjectBuilder<Request>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Request>getBuilderOrThrow(
+                        Request.DEFAULT_ELEMENT_NAME);
+        final Request request = requestBuilder.buildObject();
+        request.setID(REQUEST_ID);
+        request.setIssueInstant(new DateTime(0));
+        request.setVersion(SAMLVersion.VERSION_11);
+        
+        if (artifacts != null) {
+            for (final String artifact : artifacts) {
+                final AssertionArtifact aa = artifactBuilder.buildObject();
+                aa.setAssertionArtifact(artifact);
+                request.getAssertionArtifacts().add(aa);
+            }
+        }
+
+        return request;
+    }
+
 }
