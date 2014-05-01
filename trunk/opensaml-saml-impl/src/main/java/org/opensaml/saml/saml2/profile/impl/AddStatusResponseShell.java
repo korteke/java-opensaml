@@ -19,7 +19,10 @@ package org.opensaml.saml.saml2.profile.impl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
@@ -34,27 +37,26 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Issuer;
-import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 
 /**
- * Action that creates an empty {@link Response}, and sets it as the message returned by
- * {@link ProfileRequestContext#getOutboundMessageContext()}.
+ * Action that creates an empty object derived from {@link StatusResponseType},
+ * and sets it as the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
  * <p>The {@link Status} is set to {@link StatusCode#SUCCESS_URI} as a default assumption,
  * and this can be overridden by subsequent actions.</p>
  * 
- * <p>If the {@link RelyingPartyContext} contains a responder identity (via
- * {@link net.shibboleth.idp.relyingparty.RelyingPartyConfiguration#getResponderId()},
- * it is set as the Issuer of the message.</p>
+ * <p>If an issuer value is returned via a lookup strategy, then it's set as the Issuer of the message.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
@@ -63,11 +65,14 @@ import com.google.common.base.Function;
  * 
  * @post ProfileRequestContext.getOutboundMessageContext().getMessage() != null
  */
-public class AddResponseShell extends AbstractProfileAction {
+public class AddStatusResponseShell extends AbstractProfileAction {
 
     /** Class logger. */
-    @Nonnull private Logger log = LoggerFactory.getLogger(AddResponseShell.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AbstractResponseShellAction.class);
 
+    /** Message type to create. */
+    @NonnullAfterInit private QName messageType;
+    
     /** Overwrite an existing message? */
     private boolean overwriteExisting;
     
@@ -84,13 +89,22 @@ public class AddResponseShell extends AbstractProfileAction {
     @Nullable private String issuerId;
     
     /** Constructor. */
-    public AddResponseShell() {
+    public AddStatusResponseShell() {
         // Default strategy is a 16-byte secure random source.
         idGeneratorLookupStrategy = new Function<ProfileRequestContext,IdentifierGenerationStrategy>() {
             public IdentifierGenerationStrategy apply(ProfileRequestContext input) {
                 return new SecureRandomIdentifierGenerationStrategy();
             }
         };
+    }
+    
+    /**
+     * Set the type of message to create.
+     * 
+     * @param type  message type
+     */
+    public synchronized void setMessageType(@Nonnull final QName type) {
+        messageType = Constraint.isNotNull(type, "Message type cannot be null");
     }
     
     /**
@@ -128,18 +142,28 @@ public class AddResponseShell extends AbstractProfileAction {
 
         issuerLookupStrategy = strategy;
     }
+    
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (messageType == null) {
+            throw new ComponentInitializationException("Message type cannot be null");
+        }
+    }
 
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
-        final MessageContext<Response> outboundMessageCtx = profileRequestContext.getOutboundMessageContext();
+        final MessageContext outboundMessageCtx = profileRequestContext.getOutboundMessageContext();
         if (outboundMessageCtx == null) {
-            log.debug("{} No Outbound message context", getLogPrefix());
+            log.debug("{} No outbound message context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         } else if (!overwriteExisting && outboundMessageCtx.getMessage() != null) {
-            log.debug("{} Outbound message context already contains a Response", getLogPrefix());
+            log.debug("{} Outbound message context already contains a response", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         }
@@ -169,8 +193,7 @@ public class AddResponseShell extends AbstractProfileAction {
                 (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>getBuilderOrThrow(StatusCode.TYPE_NAME);
         final SAMLObjectBuilder<Status> statusBuilder =
                 (SAMLObjectBuilder<Status>) bf.<Status>getBuilderOrThrow(Status.TYPE_NAME);
-        final SAMLObjectBuilder<Response> responseBuilder =
-                (SAMLObjectBuilder<Response>) bf.<Response>getBuilderOrThrow(Response.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder responseBuilder = (SAMLObjectBuilder) bf.getBuilderOrThrow(messageType);
 
         final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS_URI);
@@ -178,8 +201,16 @@ public class AddResponseShell extends AbstractProfileAction {
         final Status status = statusBuilder.buildObject();
         status.setStatusCode(statusCode);
 
-        final Response response = responseBuilder.buildObject();
+        final SAMLObject object = responseBuilder.buildObject();
+        if (!(object instanceof StatusResponseType)) {
+            log.error("{} Message was not derived from StatusResponseType, not compatible with this action",
+                    getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.MESSAGE_PROC_ERROR);
+            return;
+        }
 
+        final StatusResponseType response = (StatusResponseType) object;
+        
         response.setID(idGenerator.generateIdentifier());
         response.setIssueInstant(new DateTime(ISOChronology.getInstanceUTC()));
         response.setStatus(status);
@@ -198,5 +229,5 @@ public class AddResponseShell extends AbstractProfileAction {
 
         profileRequestContext.getOutboundMessageContext().setMessage(response);
     }
-
+    
 }
