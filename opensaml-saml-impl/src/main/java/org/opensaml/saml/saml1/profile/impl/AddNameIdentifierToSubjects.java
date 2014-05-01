@@ -29,8 +29,9 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NullableElements;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -38,7 +39,6 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.common.profile.FormatSpecificNameIdentifierGenerator;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
@@ -52,11 +52,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 
 /**
  * Action that builds a {@link NameIdentifier} and adds it to the {@link Subject} of all the statements
@@ -92,12 +87,9 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
 
     /** Strategy used to determine the formats to try. */
     @Nonnull private Function<ProfileRequestContext, List<String>> formatLookupStrategy;
-    
-    /** Map of formats to generators. */
-    @Nonnull @NonnullElements private ListMultimap<String, SAML1NameIdentifierGenerator> nameIdGeneratorMap;
 
-    /** Fallback generator, generally for legacy support. */
-    @Nullable private SAML1NameIdentifierGenerator defaultNameIdGenerator;
+    /** Generator to use. */
+    @NonnullAfterInit private SAML1NameIdentifierGenerator generator;
     
     /** Formats to try. */
     @Nonnull @NonnullElements private List<String> formats;
@@ -119,7 +111,6 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
-        nameIdGeneratorMap = ArrayListMultimap.create();
         formats = Collections.emptyList();
     }
     
@@ -157,45 +148,28 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         formatLookupStrategy = Constraint.isNotNull(strategy, "Format lookup strategy cannot be null");
     }
-    
+
     /**
-     * Set the format-specific name identifier generators to use.
+     * Set the generator to use.
      * 
-     * <p>Only generators that support the {@link FormatSpecificNameIdentifierGenerator} interface are
-     * installed, and the generators are prioritized for a given format by the order they are supplied.</p> 
-     * 
-     * @param generators generators to use
+     * @param theGenerator the generator to use
      */
-    public synchronized void setNameIdentifierGenerators(
-            @Nonnull @NullableElements List<SAML1NameIdentifierGenerator> generators) {
+    public synchronized void setNameIdentifierGenerator(@Nonnull final SAML1NameIdentifierGenerator theGenerator) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        Constraint.isNotNull(generators, "NameIdentifierGenerator list cannot be null");
         
-        nameIdGeneratorMap.clear();
-        for (final SAML1NameIdentifierGenerator generator : Collections2.filter(generators, Predicates.notNull())) {
-            if (generator instanceof FormatSpecificNameIdentifierGenerator) {
-                nameIdGeneratorMap.put(((FormatSpecificNameIdentifierGenerator) generator).getFormat(), generator);
-            } else {
-                log.warn("{} Unable to install NameIdentifierGenerator of type {}, not format-specific",
-                        getLogPrefix(), generator.getClass().getName());
-            }
+        generator = Constraint.isNotNull(theGenerator, "SAML1NameIdentifierGenerator cannot be null");
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (generator == null) {
+            throw new ComponentInitializationException("SAML1NameIdentifierGenerator cannot be null");
         }
     }
 
-    /**
-     * Set the NameID generator to try if no generator(s) are mapped to a desired format.
-     * 
-     * <p>This is generally used for legacy support of the V2 attribute encoder approach,
-     * which is format neutral and can't be mapped explicitly.</p>
-     * 
-     * @param generator a fallback default generator, if any
-     */
-    public synchronized void setDefaultNameIDGenerator(@Nullable final SAML1NameIdentifierGenerator generator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        defaultNameIdGenerator = generator;
-    }
-    
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
@@ -213,9 +187,8 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         formats = formatLookupStrategy.apply(profileRequestContext);
         if (formats == null || formats.isEmpty()) {
-            log.debug("{} No candidate NameIdentifier formats, an arbitrary format will be chosen", getLogPrefix());
-            formats = Lists.newArrayList(nameIdGeneratorMap.keySet());
-            log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
+            log.debug("{} No candidate NameIdentifier formats, nothing to do", getLogPrefix());
+            return false;
         } else {
             log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         }
@@ -266,28 +239,16 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         // See if we can generate one.
         for (final String format : formats) {
             log.debug("{} Trying to generate NameIdentifier with Format {}", getLogPrefix(), format);
-            List<SAML1NameIdentifierGenerator> generators = nameIdGeneratorMap.get(format);
-            if (generators.isEmpty()) {
-                if (defaultNameIdGenerator != null) {
-                    log.debug("{} No generators installed for Format {}, trying default/fallback method",
-                            getLogPrefix(), format);
-                    generators = Collections.singletonList(defaultNameIdGenerator);
-                } else {
-                    continue;
-                }
-            }
-            for (final SAML1NameIdentifierGenerator generator : generators) {
-                if (generator.apply(profileRequestContext)) {
-                    try {
-                        final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, format);
-                        if (nameIdentifier != null) {
-                            log.debug("{} Successfully generated NameIdentifier with Format {}", getLogPrefix(),
-                                    format);
-                            return nameIdentifier;
-                        }
-                    } catch (SAMLException e) {
-                        log.error(getLogPrefix() + " Error while generating NameIdentifier", e);
+            if (generator.apply(profileRequestContext)) {
+                try {
+                    final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, format);
+                    if (nameIdentifier != null) {
+                        log.debug("{} Successfully generated NameIdentifier with Format {}", getLogPrefix(),
+                                format);
+                        return nameIdentifier;
                     }
+                } catch (SAMLException e) {
+                    log.error(getLogPrefix() + " Error while generating NameIdentifier", e);
                 }
             }
         }

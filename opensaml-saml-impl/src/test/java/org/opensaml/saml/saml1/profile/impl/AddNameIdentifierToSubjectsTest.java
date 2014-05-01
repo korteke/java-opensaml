@@ -30,13 +30,13 @@ import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
+import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.profile.AbstractSAML1NameIdentifierGenerator;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
-import org.opensaml.saml.saml1.profile.SAML1NameIdentifierGenerator;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -49,7 +49,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
     
-    private List<SAML1NameIdentifierGenerator> generators;
+    private ChainingSAML1NameIdentifierGenerator generator;
 
     private ProfileRequestContext<Object,Response> prc;
     
@@ -61,20 +61,23 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         
         action = new AddNameIdentifierToSubjects();
         
-        MockSAML1NameIdentifierGenerator mock = new MockSAML1NameIdentifierGenerator("foo");
+        final MockSAML1NameIdentifierGenerator mock = new MockSAML1NameIdentifierGenerator("foo");
         mock.setFormat(NameIdentifier.X509_SUBJECT);
         mock.initialize();
 
-        MockSAML1NameIdentifierGenerator mock2 = new MockSAML1NameIdentifierGenerator("bar");
+        final MockSAML1NameIdentifierGenerator mock2 = new MockSAML1NameIdentifierGenerator("bar");
         mock2.setFormat(NameIdentifier.EMAIL);
         mock2.setActivationCondition(Predicates.<ProfileRequestContext>alwaysFalse());
         mock2.initialize();
 
-        MockSAML1NameIdentifierGenerator mock3 = new MockSAML1NameIdentifierGenerator("baz");
+        final MockSAML1NameIdentifierGenerator mock3 = new MockSAML1NameIdentifierGenerator("baz");
         mock3.setFormat(NameIdentifier.EMAIL);
         mock3.initialize();
         
-        generators = Arrays.<SAML1NameIdentifierGenerator>asList(mock, mock2, mock3);
+        generator = new ChainingSAML1NameIdentifierGenerator();
+        generator.setNameIdentifierGenerators(Arrays.<NameIdentifierGenerator<NameIdentifier>>asList(mock, mock2, mock3));
+        
+        action.setNameIdentifierGenerator(generator);
     }
     
     @Test
@@ -108,31 +111,25 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
     @Test void testArbitraryFormat() throws ComponentInitializationException {
         addStatements();
         
-        action.setNameIdentifierGenerators(generators);
+        action.setNameIdentifierGenerator(generator);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
         Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
         Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertNotNull(subject.getNameIdentifier().getNameIdentifier());
-        Assert.assertNotNull(subject.getNameIdentifier().getFormat());
+        Assert.assertNull(subject);
 
         assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
         subject = assertion.getAttributeStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertNotNull(subject.getNameIdentifier().getNameIdentifier());
-        Assert.assertNotNull(subject.getNameIdentifier().getFormat());
+        Assert.assertNull(subject);
     }
 
     @Test void testSingleGenerator() throws ComponentInitializationException {
         addStatements();
         
         action.setFormatLookupStrategy(new X509FormatLookupStrategy());
-        action.setNameIdentifierGenerators(generators);
+        action.setNameIdentifierGenerator(generator);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -156,7 +153,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         addStatements();
         
         action.setFormatLookupStrategy(new EmailFormatLookupStrategy());
-        action.setNameIdentifierGenerators(generators);
+        action.setNameIdentifierGenerator(generator);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
