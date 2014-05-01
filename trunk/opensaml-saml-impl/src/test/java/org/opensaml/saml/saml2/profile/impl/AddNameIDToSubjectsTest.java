@@ -37,6 +37,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.impl.SAMLMetadataLookupHandlerTest;
+import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.common.profile.logic.AffiliationNameIDPolicyPredicate;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
@@ -48,7 +49,6 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.AbstractSAML2NameIDGenerator;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
-import org.opensaml.saml.saml2.profile.SAML2NameIDGenerator;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -67,7 +67,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
     
     private SAMLObjectBuilder<NameIDPolicy> policyBuilder;
     
-    private List<SAML2NameIDGenerator> generators;
+    private ChainingSAML2NameIDGenerator generator;
 
     private ProfileRequestContext<Object,Response> prc;
     
@@ -95,25 +95,28 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         
         action = new AddNameIDToSubjects();
         
-        MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator("foo");
+        final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator("foo");
         mock.setFormat(NameID.X509_SUBJECT);
         mock.initialize();
 
-        MockSAML2NameIDGenerator mock2 = new MockSAML2NameIDGenerator("bar");
+        final MockSAML2NameIDGenerator mock2 = new MockSAML2NameIDGenerator("bar");
         mock2.setFormat(NameID.EMAIL);
         mock2.setActivationCondition(Predicates.<ProfileRequestContext>alwaysFalse());
         mock2.initialize();
 
-        MockSAML2NameIDGenerator mock3 = new MockSAML2NameIDGenerator("baz");
+        final MockSAML2NameIDGenerator mock3 = new MockSAML2NameIDGenerator("baz");
         mock3.setFormat(NameID.EMAIL);
         mock3.initialize();
 
-        MockSAML2NameIDGenerator mock4 = new MockSAML2NameIDGenerator("baf");
+        final MockSAML2NameIDGenerator mock4 = new MockSAML2NameIDGenerator("baf");
         mock4.setFormat(NameID.PERSISTENT);
         mock4.initialize();
         
-        generators = Arrays.<SAML2NameIDGenerator>asList(mock, mock2, mock3, mock4);
+        generator = new ChainingSAML2NameIDGenerator();
+        generator.setNameIdentifierGenerators(Arrays.<NameIdentifierGenerator<NameID>>asList(mock, mock2, mock3, mock4));
 
+        action.setNameIDGenerator(generator);
+        
         policyBuilder = (SAMLObjectBuilder<NameIDPolicy>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDPolicy>getBuilderOrThrow(
                         NameIDPolicy.DEFAULT_ELEMENT_NAME);
@@ -143,7 +146,6 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
         
-        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -171,7 +173,6 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
         
-        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
@@ -190,7 +191,6 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         request.setNameIDPolicy(policy);
         prc.getInboundMessageContext().setMessage(request);
         
-        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
@@ -225,7 +225,6 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         predicate.setRequesterIdLookupStrategy(new AddNameIDToSubjects.RequesterIdFromIssuerFunction());
         predicate.setObjectLookupStrategy(new AddNameIDToSubjects.NameIDPolicyLookupFunction());
         predicate.initialize();
-        action.setNameIDGenerators(generators);
         action.setNameIDPolicyPredicate(predicate);
         action.initialize();
         action.execute(prc);
@@ -250,31 +249,23 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
     @Test void testArbitraryFormat() throws ComponentInitializationException {
         addAssertions();
         
-        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
         Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
         Subject subject = assertion.getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getNameID());
-        Assert.assertNotNull(subject.getNameID().getValue());
-        Assert.assertNotNull(subject.getNameID().getFormat());
+        Assert.assertNull(subject);
 
         assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
         subject = assertion.getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getNameID());
-        Assert.assertNotNull(subject.getNameID().getValue());
-        Assert.assertNotNull(subject.getNameID().getFormat());
+        Assert.assertNull(subject);
     }
     
     @Test void testSingleGenerator() throws ComponentInitializationException {
         addAssertions();
         
         action.setFormatLookupStrategy(new X509FormatLookupStrategy());
-        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -298,7 +289,6 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         addAssertions();
         
         action.setFormatLookupStrategy(new EmailFormatLookupStrategy());
-        action.setNameIDGenerators(generators);
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
