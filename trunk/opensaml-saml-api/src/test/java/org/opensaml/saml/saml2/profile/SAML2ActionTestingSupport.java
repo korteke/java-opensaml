@@ -25,6 +25,9 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.saml2.core.Artifact;
+import org.opensaml.saml.saml2.core.ArtifactResolve;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
@@ -70,6 +73,25 @@ public class SAML2ActionTestingSupport {
         return response;
     }
 
+    /**
+     * Builds an empty artifact response. The ID of the message is {@link SamlActionTestingSupport#OUTBOUND_MSG_ID}, the issue
+     * instant is 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
+     * 
+     * @return the constructed response
+     */
+    @Nonnull public static ArtifactResponse buildArtifactResponse() {
+        final SAMLObjectBuilder<ArtifactResponse> responseBuilder = (SAMLObjectBuilder<ArtifactResponse>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ArtifactResponse>getBuilderOrThrow(
+                        ArtifactResponse.DEFAULT_ELEMENT_NAME);
+
+        final ArtifactResponse response = responseBuilder.buildObject();
+        response.setID(ActionTestingSupport.OUTBOUND_MSG_ID);
+        response.setIssueInstant(new DateTime(0));
+        response.setVersion(SAMLVersion.VERSION_20);
+
+        return response;
+    }
+    
     /**
      * Builds an empty logout response. The ID of the message is {@link SamlActionTestingSupport#OUTBOUND_MSG_ID}, the issue
      * instant is 1970-01-01T00:00:00Z and the SAML version is {@link SAMLVersion#VERSION_11}.
@@ -220,6 +242,34 @@ public class SAML2ActionTestingSupport {
         request.setIssueInstant(new DateTime(0));
         request.setIssuer(issuer);
         request.setVersion(SAMLVersion.VERSION_20);
+
+        return request;
+    }
+
+    /**
+     * Builds a {@link ArtifactResolve}.
+     * 
+     * @param artifact the artifact to add to the request
+     * 
+     * @return the built request
+     */
+    @Nonnull public static ArtifactResolve buildArtifactResolve(final @Nullable String artifact) {
+        final SAMLObjectBuilder<ArtifactResolve> requestBuilder = (SAMLObjectBuilder<ArtifactResolve>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ArtifactResolve>getBuilderOrThrow(
+                        ArtifactResolve.DEFAULT_ELEMENT_NAME);
+        final ArtifactResolve request = requestBuilder.buildObject();
+        request.setID(REQUEST_ID);
+        request.setIssueInstant(new DateTime(0));
+        request.setVersion(SAMLVersion.VERSION_11);
+        
+        if (artifact != null) {
+            final SAMLObjectBuilder<Artifact> artifactBuilder = (SAMLObjectBuilder<Artifact>)
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Artifact>getBuilderOrThrow(
+                            Artifact.DEFAULT_ELEMENT_NAME);
+            final Artifact art = artifactBuilder.buildObject();
+            art.setArtifact(artifact);
+            request.setArtifact(art);
+        }
 
         return request;
     }
