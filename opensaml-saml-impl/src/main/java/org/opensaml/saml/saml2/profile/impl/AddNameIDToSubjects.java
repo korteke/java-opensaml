@@ -339,16 +339,14 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         // See if we can generate one.
         for (final String format : formats) {
             log.debug("{} Trying to generate NameID with Format {}", getLogPrefix(), format);
-            if (generator.apply(profileRequestContext)) {
-                try {
-                    final NameID nameId = generator.generate(profileRequestContext, format);
-                    if (nameId != null) {
-                        log.debug("{} Successfully generated NameID with Format {}", getLogPrefix(), format);
-                        return nameId;
-                    }
-                } catch (final SAMLException e) {
-                    log.error(getLogPrefix() + " Error while generating NameID", e);
+            try {
+                final NameID nameId = generator.generate(profileRequestContext, format);
+                if (nameId != null) {
+                    log.debug("{} Successfully generated NameID with Format {}", getLogPrefix(), format);
+                    return nameId;
                 }
+            } catch (final SAMLException e) {
+                log.error(getLogPrefix() + " Error while generating NameID", e);
             }
         }
         
