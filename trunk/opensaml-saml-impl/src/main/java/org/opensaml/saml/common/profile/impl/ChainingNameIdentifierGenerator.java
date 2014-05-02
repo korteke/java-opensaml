@@ -95,12 +95,6 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
     public void setDefaultNameIDGenerator(@Nullable final NameIdentifierGenerator<NameIdType> generator) {
         defaultNameIdGenerator = generator;
     }
-    
-    /** {@inheritDoc} */
-    @Override
-    public boolean apply(@Nullable final ProfileRequestContext input) {
-        return true;
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -116,16 +110,14 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
         }
         
         for (final NameIdentifierGenerator<NameIdType> generator : generators) {
-            if (generator.apply(profileRequestContext)) {
-                try {
-                    final NameIdType nameIdentifier = generator.generate(profileRequestContext, format);
-                    if (nameIdentifier != null) {
-                        log.debug("Successfully generated identifier with Format {}", format);
-                        return nameIdentifier;
-                    }
-                } catch (final SAMLException e) {
-                    log.error("Error while generating identifier", e);
+            try {
+                final NameIdType nameIdentifier = generator.generate(profileRequestContext, format);
+                if (nameIdentifier != null) {
+                    log.debug("Successfully generated identifier with Format {}", format);
+                    return nameIdentifier;
                 }
+            } catch (final SAMLException e) {
+                log.error("Error while generating identifier", e);
             }
         }
         

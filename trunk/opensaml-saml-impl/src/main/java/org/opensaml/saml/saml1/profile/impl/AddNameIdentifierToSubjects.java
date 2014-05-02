@@ -239,17 +239,15 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         // See if we can generate one.
         for (final String format : formats) {
             log.debug("{} Trying to generate NameIdentifier with Format {}", getLogPrefix(), format);
-            if (generator.apply(profileRequestContext)) {
-                try {
-                    final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, format);
-                    if (nameIdentifier != null) {
-                        log.debug("{} Successfully generated NameIdentifier with Format {}", getLogPrefix(),
-                                format);
-                        return nameIdentifier;
-                    }
-                } catch (SAMLException e) {
-                    log.error(getLogPrefix() + " Error while generating NameIdentifier", e);
+            try {
+                final NameIdentifier nameIdentifier = generator.generate(profileRequestContext, format);
+                if (nameIdentifier != null) {
+                    log.debug("{} Successfully generated NameIdentifier with Format {}", getLogPrefix(),
+                            format);
+                    return nameIdentifier;
                 }
+            } catch (SAMLException e) {
+                log.error(getLogPrefix() + " Error while generating NameIdentifier", e);
             }
         }
         

@@ -52,8 +52,9 @@ import com.google.common.base.Predicates;
  * 
  * @param <NameIdType> type of object produced
  */
-public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObject> extends
-        AbstractIdentifiableInitializableComponent implements FormatSpecificNameIdentifierGenerator<NameIdType> {
+public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObject>
+        extends AbstractIdentifiableInitializableComponent
+        implements FormatSpecificNameIdentifierGenerator<NameIdType>, Predicate<ProfileRequestContext> {
 
     /** A predicate indicating whether the component applies to a request. */
     @Nonnull private Predicate<ProfileRequestContext> activationCondition;
@@ -245,7 +246,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     }
 
     /** {@inheritDoc} */
-    @Override protected void doInitialize() throws ComponentInitializationException {
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 
         if (format == null) {
@@ -254,17 +256,21 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     }
 
     /** {@inheritDoc} */
-    @Override public boolean apply(@Nullable final ProfileRequestContext input) {
+    @Override
+    public boolean apply(@Nullable final ProfileRequestContext input) {
         return activationCondition.apply(input);
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
+    @Override
+    @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull @NotEmpty final String theFormat) throws SAMLException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
         if (!Objects.equal(format, theFormat)) {
             throw new SAMLException("The format to generate does not match the value configured");
+        } else if (!apply(profileRequestContext)) {
+            return null;
         }
         return doGenerate(profileRequestContext);
     }
