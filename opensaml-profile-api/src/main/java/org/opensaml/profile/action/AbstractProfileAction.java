@@ -46,6 +46,9 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageType>
         extends AbstractInitializableComponent implements ProfileAction<InboundMessageType, OutboundMessageType> {
 
+    /** Cached log prefix. */
+    @Nullable private String logPrefix;
+    
     /** Current HTTP request, if available. */
     @Nullable private HttpServletRequest httpServletRequest;
 
@@ -99,7 +102,7 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
         // Clear any existing EventContext that might be hanging around, and if it exists,
         // copy the Event to a PreviousEventContext. Don't clear any existing PreviousEventContext
         // because it may be from an earlier error of interest to other actions.
-        EventContext previousEvent = profileRequestContext.getSubcontext(EventContext.class, false);
+        final EventContext<?> previousEvent = profileRequestContext.getSubcontext(EventContext.class);
         if (previousEvent != null) {
             profileRequestContext.getSubcontext(PreviousEventContext.class, true).setEvent(previousEvent.getEvent());
             profileRequestContext.removeSubcontext(EventContext.class);
@@ -214,7 +217,10 @@ public abstract class AbstractProfileAction<InboundMessageType, OutboundMessageT
      * @return a string for insertion at the beginning of any log messages
      */
     @Nonnull @NotEmpty protected String getLogPrefix() {
-        return "Profile Action:";
+        if (logPrefix == null) {
+            logPrefix = "Profile Action " + getClass().getSimpleName() + ":";
+        }
+        return logPrefix;
     }
 
 }
