@@ -75,7 +75,7 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         mock3.initialize();
         
         generator = new ChainingSAML1NameIdentifierGenerator();
-        generator.setNameIdentifierGenerators(Arrays.<NameIdentifierGenerator<NameIdentifier>>asList(mock, mock2, mock3));
+        generator.setGenerators(Arrays.<NameIdentifierGenerator<NameIdentifier>>asList(mock, mock2, mock3));
         
         action.setNameIdentifierGenerator(generator);
     }

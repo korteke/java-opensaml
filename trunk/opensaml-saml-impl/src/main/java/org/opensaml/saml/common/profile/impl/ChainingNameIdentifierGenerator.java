@@ -72,14 +72,16 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
      * 
      * @param generators generators to use
      */
-    public void setNameIdentifierGenerators(
+    public void setGenerators(
             @Nonnull @NullableElements List<NameIdentifierGenerator<NameIdType>> generators) {
         Constraint.isNotNull(generators, "NameIdentifierGenerator list cannot be null");
         
         nameIdGeneratorMap.clear();
-        for (final NameIdentifierGenerator generator : Collections2.filter(generators, Predicates.notNull())) {
+        for (final NameIdentifierGenerator<NameIdType> generator
+                : Collections2.filter(generators, Predicates.notNull())) {
             if (generator instanceof FormatSpecificNameIdentifierGenerator) {
-                nameIdGeneratorMap.put(((FormatSpecificNameIdentifierGenerator) generator).getFormat(), generator);
+                nameIdGeneratorMap.put(
+                        ((FormatSpecificNameIdentifierGenerator<NameIdType>) generator).getFormat(), generator);
             } else {
                 log.warn("Unable to install NameIdentifierGenerator of type {}, not format-specific",
                         generator.getClass().getName());
@@ -92,7 +94,7 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
      * 
      * @param generator a fallback default generator, if any
      */
-    public void setDefaultNameIDGenerator(@Nullable final NameIdentifierGenerator<NameIdType> generator) {
+    public void setDefaultGenerator(@Nullable final NameIdentifierGenerator<NameIdType> generator) {
         defaultNameIdGenerator = generator;
     }
 
