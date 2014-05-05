@@ -113,7 +113,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         mock4.initialize();
         
         generator = new ChainingSAML2NameIDGenerator();
-        generator.setNameIdentifierGenerators(Arrays.<NameIdentifierGenerator<NameID>>asList(mock, mock2, mock3, mock4));
+        generator.setGenerators(Arrays.<NameIdentifierGenerator<NameID>>asList(mock, mock2, mock3, mock4));
 
         action.setNameIDGenerator(generator);
         
