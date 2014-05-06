@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
@@ -82,7 +83,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * 
      * @param uris the list of algorithms
      */
-    public void setWhitelistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
+    public void setWhitelistedAlgorithmURIs(@Nullable final Collection<String> uris) {
         if (uris == null) {
             whitelist = Collections.emptySet();
             return;
@@ -119,7 +120,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * 
      * @param uris the list of algorithms
      */
-    public void setBlacklistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
+    public void setBlacklistedAlgorithmURIs(@Nullable final Collection<String> uris) {
         if (uris == null) {
             blacklist = Collections.emptySet();
             return;
