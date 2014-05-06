@@ -40,8 +40,6 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 /**
  * Abstract base class for security parameters resolvers which supplies commonly used functionality for reuse.
@@ -221,65 +219,6 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
             @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
         
         return configs.get(0).getWhitelistBlacklistPrecedence();
-    }
-    
-    /**
-     * Predicate which implements an algorithm URI whitelist policy.
-     */
-    public class WhitelistPredicate implements Predicate<String> {
-        
-        /** Whitelisted algorithms. */
-        private Collection<String> whitelist;
-        
-        /**
-         * Constructor.
-         *
-         * @param algorithms collection of whitelisted algorithms
-         */
-        public WhitelistPredicate(@Nonnull Collection<String> algorithms) {
-            Constraint.isNotNull(algorithms, "Whitelist may not be null");
-            whitelist = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
-        }
-
-        /** {@inheritDoc} */
-        public boolean apply(@Nullable String input) {
-            if (input == null) {
-                throw new IllegalArgumentException("Algorithm URI to evaluate may not be null");
-            }
-            if (whitelist.isEmpty()) {
-                return true;
-            }
-            return whitelist.contains(input);
-        }
-        
-    }
-
-    /**
-     * Predicate which implements an algorithm URI blacklist policy.
-     */
-    public class BlacklistPredicate implements Predicate<String> {
-        
-        /** Blacklisted algorithms. */
-        private Collection<String> blacklist;
-        
-        /**
-         * Constructor.
-         *
-         * @param algorithms collection of blacklisted algorithms
-         */
-        public BlacklistPredicate(@Nonnull Collection<String> algorithms) {
-            Constraint.isNotNull(algorithms, "Blacklist may not be null");
-            blacklist = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
-        }
-
-        /** {@inheritDoc} */
-        public boolean apply(@Nullable String input) {
-            if (input == null) {
-                throw new IllegalArgumentException("Algorithm URI to evaluate may not be null");
-            }
-            return ! blacklist.contains(input);
-        }
-        
     }
 
 }
