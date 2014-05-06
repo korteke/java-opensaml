@@ -83,7 +83,10 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @param uris the list of algorithms
      */
     public void setWhitelistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
-        Constraint.isNotNull(uris, "Whitelist may not be null");
+        if (uris == null) {
+            whitelist = Collections.emptySet();
+            return;
+        }
         whitelist = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
     }
 
@@ -117,7 +120,10 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @param uris the list of algorithms
      */
     public void setBlacklistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
-        Constraint.isNotNull(uris, "Blacklist may not be null");
+        if (uris == null) {
+            blacklist = Collections.emptySet();
+            return;
+        }
         blacklist = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
     }
 
