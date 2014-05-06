@@ -31,8 +31,8 @@ import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 /**
  * Basic implementation of {@link WhitelistBlacklistConfiguration}.
@@ -74,7 +74,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithmURIs() {
-        return ImmutableList.copyOf(whitelist);
+        return ImmutableSet.copyOf(whitelist);
     }
     
     /**
@@ -87,7 +87,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
             whitelist = Collections.emptySet();
             return;
         }
-        whitelist = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
+        whitelist = Sets.newHashSet(Collections2.filter(uris, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
@@ -111,7 +111,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithmURIs() {
-        return ImmutableList.copyOf(blacklist);
+        return ImmutableSet.copyOf(blacklist);
     }
     
     /**
@@ -124,7 +124,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
             blacklist = Collections.emptySet();
             return;
         }
-        blacklist = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
+        blacklist = Sets.newHashSet(Collections2.filter(uris, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
