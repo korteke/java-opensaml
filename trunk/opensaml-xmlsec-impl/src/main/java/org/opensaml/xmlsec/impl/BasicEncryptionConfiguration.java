@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.EncryptionConfiguration;
@@ -112,7 +113,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
             dataEncryptionAlgorithms = Collections.emptyList();
             return;
         }
-        dataEncryptionAlgorithms = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        dataEncryptionAlgorithms = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */
@@ -148,7 +149,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
             keyTransportEncryptionAlgorithms = Collections.emptyList();
             return;
         }
-        keyTransportEncryptionAlgorithms = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        keyTransportEncryptionAlgorithms = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */

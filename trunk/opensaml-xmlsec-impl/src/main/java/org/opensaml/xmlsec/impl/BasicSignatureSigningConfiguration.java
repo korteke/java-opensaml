@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
@@ -116,7 +117,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
             signatureAlgorithms = Collections.emptyList();
             return;
         }
-        signatureAlgorithms = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        signatureAlgorithms = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */
@@ -134,7 +135,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
             signatureReferenceDigestMethods = Collections.emptyList();
             return;
         }
-        signatureReferenceDigestMethods = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        signatureReferenceDigestMethods = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
     }
 
     /** {@inheritDoc} */
@@ -148,7 +149,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      * @param algorithmURI a canonicalization algorithm URI
      */
     public void setSignatureCanonicalizationAlgorithm(@Nullable final String algorithmURI) {
-        signatureCanonicalization = algorithmURI;
+        signatureCanonicalization = StringSupport.trimOrNull(algorithmURI);
     }
 
     /** {@inheritDoc} */

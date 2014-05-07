@@ -27,11 +27,10 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -88,7 +87,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
             whitelist = Collections.emptySet();
             return;
         }
-        whitelist = Sets.newHashSet(Collections2.filter(uris, Predicates.notNull()));
+        whitelist = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
     }
 
     /** {@inheritDoc} */
@@ -125,7 +124,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
             blacklist = Collections.emptySet();
             return;
         }
-        blacklist = Sets.newHashSet(Collections2.filter(uris, Predicates.notNull()));
+        blacklist = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
     }
 
     /** {@inheritDoc} */
