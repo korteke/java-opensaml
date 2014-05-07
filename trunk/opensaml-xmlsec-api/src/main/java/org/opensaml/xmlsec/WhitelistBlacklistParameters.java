@@ -21,16 +21,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 /**
  * The whitelist and blacklist algorithm parameters.
@@ -45,8 +44,8 @@ public class WhitelistBlacklistParameters {
         
     /** Constructor. */
     public WhitelistBlacklistParameters() {
-        whiteListedAlgorithmURIs = Collections.emptyList();
-        blackListedAlgorithmURIs = Collections.emptyList();
+        whiteListedAlgorithmURIs = Collections.emptySet();
+        blackListedAlgorithmURIs = Collections.emptySet();
     }
     
     /**
@@ -55,7 +54,7 @@ public class WhitelistBlacklistParameters {
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithmURIs() {
-        return ImmutableList.copyOf(whiteListedAlgorithmURIs);
+        return ImmutableSet.copyOf(whiteListedAlgorithmURIs);
     }
     
     /**
@@ -63,9 +62,12 @@ public class WhitelistBlacklistParameters {
      * 
      * @param uris the list of algorithms
      */
-    public void setWhitelistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
-        Constraint.isNotNull(uris, "Whitelist cannot be null");
-        whiteListedAlgorithmURIs = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
+    public void setWhitelistedAlgorithmURIs(@Nullable final Collection<String> uris) {
+        if (uris == null) {
+            whiteListedAlgorithmURIs = Collections.emptySet();
+            return;
+        }
+        whiteListedAlgorithmURIs = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
     }
     
     /**
@@ -74,7 +76,7 @@ public class WhitelistBlacklistParameters {
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithmURIs() {
-        return ImmutableList.copyOf(blackListedAlgorithmURIs);
+        return ImmutableSet.copyOf(blackListedAlgorithmURIs);
     }
     
     /**
@@ -83,8 +85,11 @@ public class WhitelistBlacklistParameters {
      * @param uris the list of algorithms
      */
     public void setBlacklistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
-        Constraint.isNotNull(uris, "Blacklist cannot be null");
-        blackListedAlgorithmURIs = Lists.newArrayList(Collections2.filter(uris, Predicates.notNull()));
+        if (uris == null) {
+            blackListedAlgorithmURIs = Collections.emptySet();
+            return;
+        }
+        blackListedAlgorithmURIs = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
     }
     
 }

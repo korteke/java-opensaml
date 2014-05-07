@@ -63,8 +63,8 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     
     /** Constructor. */
     public BasicWhitelistBlacklistConfiguration() {
-        whitelist = Collections.emptyList();
-        blacklist = Collections.emptyList();
+        whitelist = Collections.emptySet();
+        blacklist = Collections.emptySet();
         precedence = DEFAULT_PRECEDENCE;
     }
     
