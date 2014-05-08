@@ -31,6 +31,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureSigningParameters;
@@ -183,13 +184,22 @@ public class BasicSignatureSigningParametersResolver
         
         List<Credential> credentials = getEffectiveSigningCredentials(criteria);
         List<String> algorithms = getEffectiveSignatureAlgorithms(criteria, whitelistBlacklistPredicate);
+        log.trace("Resolved effective signature algorithms: {}", algorithms);
         
         for (Credential credential : credentials) {
+            if (log.isTraceEnabled()) {
+                log.trace("Evaluating credential of type: {}", 
+                        CredentialSupport.extractSigningKey(credential).getAlgorithm());
+            }
             for (String algorithm : algorithms) {
+                log.trace("Evaluating credential against algorithm: {}", algorithm);
                 if (credentialSupportsAlgorithm(credential, algorithm)) {
+                    log.trace("Credential passed eval against algorithm: {}", algorithm);
                     params.setSigningCredential(credential);
                     params.setSignatureAlgorithmURI(algorithm);
                     return;
+                } else {
+                    log.trace("Credential failed eval against algorithm: {}", algorithm);
                 }
             }
         }
