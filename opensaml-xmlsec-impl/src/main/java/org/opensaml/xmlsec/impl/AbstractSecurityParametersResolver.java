@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.security.Key;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.opensaml.xmlsec.WhitelistBlacklistParameters;
@@ -69,20 +71,34 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         Constraint.isNotNull(credential, "Credential may not be null");
         
         if (manager == null) {
+            log.trace("NamedKeyInfoGeneratorManger was null, can not resolve");
             return null;
+        }
+        
+        if (log.isTraceEnabled()) {
+            Key key = CredentialSupport.extractSigningKey(credential);
+            if (key == null) {
+                key = CredentialSupport.extractEncryptionKey(credential);
+            }
+            log.trace("Attempting to resolve KeyInfoGenerator for credential with key algo '{}' of impl: {}", 
+                    key != null ? key.getAlgorithm() : "n/a", credential.getClass().getName());
         }
         
         KeyInfoGeneratorFactory factory = null;
         if (keyInfoProfileName != null) {
+            log.trace("Resolving KeyInfoGeneratorFactory using profile name: {}", keyInfoProfileName);
             factory = manager.getFactory(keyInfoProfileName, credential);
         } else {
+            log.trace("Resolving KeyInfoGeneratorFactory using default manager: {}", keyInfoProfileName);
             factory = manager.getDefaultManager().getFactory(credential);
         }
         
         if (factory != null) {
+            log.trace("Found KeyInfoGeneratorFactory: {}", factory.getClass().getName());
             return factory.newInstance();
         }
         
+        log.trace("Unable to resolve KeyInfoGeneratorFactory for credential");
         return null;
     }
     

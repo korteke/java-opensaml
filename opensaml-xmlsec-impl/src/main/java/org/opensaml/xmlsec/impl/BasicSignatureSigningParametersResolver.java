@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.security.Key;
 import java.security.interfaces.DSAParams;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -188,8 +189,8 @@ public class BasicSignatureSigningParametersResolver
         
         for (Credential credential : credentials) {
             if (log.isTraceEnabled()) {
-                log.trace("Evaluating credential of type: {}", 
-                        CredentialSupport.extractSigningKey(credential).getAlgorithm());
+                Key key = CredentialSupport.extractSigningKey(credential);
+                log.trace("Evaluating credential of type: {}", key != null ? key.getAlgorithm() : "n/a");
             }
             for (String algorithm : algorithms) {
                 log.trace("Evaluating credential against algorithm: {}", algorithm);
