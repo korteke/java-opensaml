@@ -37,6 +37,8 @@ import org.opensaml.xmlsec.WhitelistBlacklistParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -48,6 +50,9 @@ import com.google.common.base.Predicates;
  */
 public abstract class AbstractSecurityParametersResolver<ProductType> 
         implements Resolver<ProductType, CriteriaSet>{
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(AbstractSecurityParametersResolver.class);
     
     /**
      * Resolve a {@link KeyInfoGenerator} instance based on a {@link NamedKeyInfoGeneratorManager}, 
@@ -94,28 +99,37 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
             @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
         
         Collection<String> whitelist = resolveEffectiveWhitelist(criteria, configs);
+        log.trace("Resolved effective whitelist: {}", whitelist);
+        
         Collection<String> blacklist = resolveEffectiveBlacklist(criteria, configs);
+        log.trace("Resolved effective blacklist: {}", blacklist);
         
         if (whitelist.isEmpty() && blacklist.isEmpty()) {
+            log.trace("Both empty, nothing to populate");
             return;
         }
         
         if (whitelist.isEmpty()) {
+            log.trace("Whitelist empty, populating blacklist");
             params.setBlacklistedAlgorithmURIs(blacklist);
             return;
         }
         
         if (blacklist.isEmpty()) {
+            log.trace("Blacklist empty, populating whitelist");
             params.setWhitelistedAlgorithmURIs(whitelist);
             return;
         }
         
         WhitelistBlacklistConfiguration.Precedence precedence = resolveWhitelistBlacklistPrecedence(criteria, configs);
+        log.trace("Resolved effective precedence: {}", precedence);
         switch(precedence) {
             case WHITELIST:
+                log.trace("Based on precedence, populating whitelist");
                 params.setWhitelistedAlgorithmURIs(whitelist);
                 break;
             case BLACKLIST:
+                log.trace("Based on precedence, populating blacklist");
                 params.setBlacklistedAlgorithmURIs(blacklist);
                 break;
             default:
@@ -137,25 +151,34 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
             @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
         
         Collection<String> whitelist = resolveEffectiveWhitelist(criteria, configs);
+        log.trace("Resolved effective whitelist: {}", whitelist);
+        
         Collection<String> blacklist = resolveEffectiveBlacklist(criteria, configs);
+        log.trace("Resolved effective blacklist: {}", blacklist);
         
         if (whitelist.isEmpty() && blacklist.isEmpty()) {
+            log.trace("Both empty, returning alwaysTrue predicate");
             return Predicates.alwaysTrue();
         }
         
         if (whitelist.isEmpty()) {
+            log.trace("Whitelist empty, returning BlacklistPredicate");
             return new BlacklistPredicate(blacklist);
         }
         
         if (blacklist.isEmpty()) {
+            log.trace("Blacklist empty, returning WhitelistPredicate");
             return new WhitelistPredicate(whitelist);
         }
         
         WhitelistBlacklistConfiguration.Precedence precedence = resolveWhitelistBlacklistPrecedence(criteria, configs);
+        log.trace("Resolved effective precedence: {}", precedence);
         switch(precedence) {
             case WHITELIST:
+                log.trace("Based on precedence, returning WhitelistPredicate");
                 return new WhitelistPredicate(whitelist);
             case BLACKLIST:
+                log.trace("Based on precedence, returning BlacklistPredicate");
                 return new BlacklistPredicate(blacklist);
             default:
                 throw new IllegalArgumentException("WhitelistBlacklistPrecedence value is unknown: " + precedence);
