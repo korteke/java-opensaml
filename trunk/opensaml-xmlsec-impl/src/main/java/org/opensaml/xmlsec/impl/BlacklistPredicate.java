@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * Predicate which implements an algorithm URI blacklist policy.
@@ -44,7 +44,7 @@ public class BlacklistPredicate implements Predicate<String> {
      */
     public BlacklistPredicate(@Nonnull Collection<String> algorithms) {
         Constraint.isNotNull(algorithms, "Blacklist may not be null");
-        blacklist = Lists.newArrayList(Collections2.filter(algorithms, Predicates.notNull()));
+        blacklist = Sets.newHashSet(Collections2.filter(algorithms, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
