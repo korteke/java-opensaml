@@ -24,7 +24,7 @@ import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
+import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.LogoutResponse;
@@ -42,8 +42,6 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     public void setUp() {
         prc = new RequestContextBuilder().setInboundMessage(
                 SAML1ActionTestingSupport.buildAttributeQueryRequest(null)).buildProfileRequestContext();
-        prc.getInboundMessageContext().getSubcontext(SAMLMessageInfoContext.class, true).setMessageId(
-                SAML1ActionTestingSupport.REQUEST_ID);
     }
 
     /** Test that action errors out properly if there is no response. */
@@ -59,7 +57,7 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     /** Test that action proceeds properly if there is no request ID. */
     @Test
     public void testNoRequestID() throws Exception {
-        prc.getInboundMessageContext().removeSubcontext(SAMLMessageInfoContext.class);
+        ((RequestAbstractType) prc.getInboundMessageContext().getMessage()).setID(null);
         
         final Response response = SAML1ActionTestingSupport.buildResponse();
         prc.getOutboundMessageContext().setMessage(response);
