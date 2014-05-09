@@ -98,12 +98,14 @@ public class KeySupportTest {
         PublicKey pubKey = KeySupport.derivePublicKey(privKey);
         Assert.assertNotNull(pubKey);
         Assert.assertEquals(pubKey.getAlgorithm(), "RSA");
+        Assert.assertTrue(KeySupport.matchKeyPair(pubKey, privKey));
         
         pubKey = null;
         privKey = testPrivKey(dsaPrivKeyPEMNoEncrypt, null, "DSA");
         pubKey = KeySupport.derivePublicKey(privKey);
         Assert.assertNotNull(pubKey);
         Assert.assertEquals(pubKey.getAlgorithm(), "DSA");
+        Assert.assertTrue(KeySupport.matchKeyPair(pubKey, privKey));
     }
 
     
