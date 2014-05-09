@@ -39,12 +39,11 @@ import org.slf4j.LoggerFactory;
 /**
  * A metadata provider that uses registered resolvers, in turn, to answer queries.
  * 
- * The Iterable of entity descriptors returned is the first non-null and non-empty Iterable found 
- * while iterating over the registered resolvers in resolver list order.
+ * The Iterable of entity descriptors returned is the first non-null and non-empty Iterable found while iterating over
+ * the registered resolvers in resolver list order.
  * 
  */
-public class ChainingMetadataResolver extends AbstractIdentifiableInitializableComponent 
-        implements MetadataResolver{
+public class ChainingMetadataResolver extends AbstractIdentifiableInitializableComponent implements MetadataResolver {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ChainingMetadataResolver.class);
@@ -77,46 +76,41 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     public void setResolvers(List<MetadataResolver> newResolvers) throws ResolverException {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+
         if (newResolvers == null || newResolvers.isEmpty()) {
             resolvers = Collections.emptyList();
             return;
         }
-        
+
         resolvers = Collections.unmodifiableList(newResolvers);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public boolean isRequireValidMetadata() {
+    @Override public boolean isRequireValidMetadata() {
         log.warn("Attempt to access unsupported requireValidMetadata property on ChainingMetadataResolver");
         return false;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setRequireValidMetadata(boolean requireValidMetadata) {
+    @Override public void setRequireValidMetadata(boolean requireValidMetadata) {
         throw new UnsupportedOperationException("Setting require valid metadata is not supported on chaining resolver");
     }
 
     /** {@inheritDoc} */
-    @Override
-    public MetadataFilter getMetadataFilter() {
+    @Override public MetadataFilter getMetadataFilter() {
         log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataResolver");
         return null;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setMetadataFilter(MetadataFilter newFilter) {
+    @Override public void setMetadataFilter(MetadataFilter newFilter) {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+    @Override @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+
         Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             Iterator<EntityDescriptor> iterator = iterable.iterator();
@@ -126,12 +120,11 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
         return null;
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+    @Override @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+
         for (MetadataResolver resolver : resolvers) {
             try {
                 Iterable<EntityDescriptor> descriptors = resolver.resolve(criteria);
@@ -139,17 +132,18 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
                     return descriptors;
                 }
             } catch (ResolverException e) {
-                log.warn("Error retrieving metadata from resolver of type {}, proceeding to next resolver",
-                        resolver.getClass().getName(), e);
+                log.warn("Error retrieving metadata from resolver of type {}, proceeding to next resolver", resolver
+                        .getClass().getName(), e);
                 continue;
             }
         }
-        
+
         return Collections.emptyList();
     }
 
     /** {@inheritDoc} */
-    protected void doInitialize() throws ComponentInitializationException {
+    @Override protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
         if (resolvers == null) {
             log.warn("ChainingMetadataResolver was not configured with any member MetadataResolvers");
             resolvers = Collections.emptyList();
@@ -157,9 +151,8 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     }
 
     /** {@inheritDoc} */
-    protected void doDestroy() {
-        super.destroy();
-        
+    @Override protected void doDestroy() {
+        super.doDestroy();
         resolvers = Collections.emptyList();
     }
 

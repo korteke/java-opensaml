@@ -133,7 +133,9 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
         if (resolvers == null) {
             log.warn("CompositeMetadataResolver was not configured with any member MetadataResolvers");
             resolvers = Collections.emptyList();
@@ -141,8 +143,9 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
-        super.destroy();
+        super.doDestroy();
         
         resolvers = Collections.emptyList();
     }
