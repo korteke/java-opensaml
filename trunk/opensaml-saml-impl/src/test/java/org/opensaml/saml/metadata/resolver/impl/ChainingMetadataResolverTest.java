@@ -50,6 +50,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         entityID2 = "urn:mace:switch.ch:SWITCHaai:ethz.ch";
 
         metadataProvider = new ChainingMetadataResolver();
+        metadataProvider.setId("test MP provider");
         ArrayList<MetadataResolver> resolvers = new ArrayList<>();
 
         URL mdURL = ChainingMetadataResolverTest.class
