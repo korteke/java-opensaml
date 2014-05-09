@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
@@ -63,8 +64,8 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
     /** Strategy function for access to {@link SAMLEndpointContext} to check. */
     @Nonnull private Function<ProfileRequestContext,SAMLEndpointContext> endpointContextLookupStrategy;
 
-    /** Strategy function for access to {@link PreviousEventContext} to check. */
-    @Nonnull private Function<ProfileRequestContext,PreviousEventContext> previousEventContextLookupStrategy;
+    /** Strategy function for access to {@link EventContext} to check. */
+    @Nonnull private Function<ProfileRequestContext,EventContext> eventContextLookupStrategy;
     
     /** Error events to handle locally, even if possible to do so with a response. */
     @Nonnull @NonnullElements private Set<String> localEvents;
@@ -81,7 +82,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
                 Functions.compose(new ChildContextLookup<>(SAMLPeerEntityContext.class),
                         new OutboundMessageContextLookup()));
         
-        previousEventContextLookupStrategy = new ChildContextLookup<>(PreviousEventContext.class);
+        eventContextLookupStrategy = new CurrentOrPreviousEventLookupFunction();
         
         localEvents = Collections.emptySet();
     }
@@ -109,14 +110,12 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
     }
 
     /**
-     * Set lookup strategy for {@link PreviousEventContext} to check.
+     * Set lookup strategy for {@link EventContext} to check.
      * 
      * @param strategy  lookup strategy
      */
-    public void setPreviousEventContextLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,PreviousEventContext> strategy) {
-        previousEventContextLookupStrategy = Constraint.isNotNull(strategy,
-                "PreviousEventContext lookup strategy cannot be null");
+    public void setEventContextLookupStrategy(@Nonnull final Function<ProfileRequestContext,EventContext> strategy) {
+        eventContextLookupStrategy = Constraint.isNotNull(strategy, "EventContext lookup strategy cannot be null");
     }
     
     /**
@@ -159,13 +158,13 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
             return true;
         }
 
-        final PreviousEventContext previousEventCtx = previousEventContextLookupStrategy.apply(input);
-        if (previousEventCtx == null || previousEventCtx.getEvent() == null) {
+        final EventContext eventCtx = eventContextLookupStrategy.apply(input);
+        if (eventCtx == null || eventCtx.getEvent() == null) {
             log.debug("No event found, assuming error handled with response");
             return false;
         }
         
-        final String event = previousEventCtx.getEvent().toString();
+        final String event = eventCtx.getEvent().toString();
         if (localEvents.contains(event)) {
             log.debug("Error event {} will be handled locally", event);
             return true;
@@ -176,4 +175,23 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
     }
 // Checkstyle: CyclomaticComplexity ON
     
+    /** Access either current or previous event from context tree. */
+    private class CurrentOrPreviousEventLookupFunction implements Function<ProfileRequestContext,EventContext> {
+
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public EventContext apply(@Nullable final ProfileRequestContext input) {
+            if (input != null) {
+                final EventContext eventCtx = input.getSubcontext(EventContext.class);
+                if (eventCtx != null) {
+                    return eventCtx;
+                } else {
+                    return input.getSubcontext(PreviousEventContext.class);
+                }
+            } else {
+                return null;
+            }
+        }
+        
+    }
 }
