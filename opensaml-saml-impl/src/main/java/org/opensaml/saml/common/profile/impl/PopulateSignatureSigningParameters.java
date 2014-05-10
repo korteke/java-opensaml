@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.profile.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -50,7 +51,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
 
 /**
  * Action that resolves and populates {@link SignatureSigningParameters} on a {@link SecurityParametersContext}
@@ -71,8 +71,9 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
     /** Strategy used to look up an existing {@link SecurityParametersContext} to copy. */
     @Nullable private Function<ProfileRequestContext,SecurityParametersContext> existingParametersContextLookupStrategy;
     
-    /** Strategy used to look up a per-request {@link SignatureSigningConfiguration}. */
-    @Nullable private Function<ProfileRequestContext,SignatureSigningConfiguration> configurationLookupStrategy;
+    /** Strategy used to look up a per-request {@link SignatureSigningConfiguration} list. */
+    @NonnullAfterInit
+    private Function<ProfileRequestContext,List<SignatureSigningConfiguration>> configurationLookupStrategy;
 
     /** Strategy used to look up a SAML metadata context. */
     @Nullable private Function<ProfileRequestContext,SAMLMetadataContext> metadataContextLookupStrategy;
@@ -124,18 +125,6 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
     }
     
     /**
-     * Set the strategy used to look up a per-request {@link SignatureSigningConfiguration}.
-     * 
-     * @param strategy lookup strategy
-     */
-    public void setConfigurationLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,SignatureSigningConfiguration> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        configurationLookupStrategy = strategy;
-    }
-    
-    /**
      * Set lookup strategy for {@link SAMLMetadataContext} for input to resolution.
      * 
      * @param strategy  lookup strategy
@@ -145,6 +134,19 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         metadataContextLookupStrategy = strategy;
+    }
+
+    /**
+     * Set the strategy used to look up a per-request {@link SignatureSigningConfiguration} list.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setConfigurationLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,List<SignatureSigningConfiguration>> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        configurationLookupStrategy = Constraint.isNotNull(strategy,
+                "SignatureSigningConfiguration lookup strategy cannot be null");
     }
     
     /**
@@ -166,6 +168,13 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
         
         if (resolver == null) {
             throw new ComponentInitializationException("SignatureSigningParametersResolver cannot be null");
+        } else if (configurationLookupStrategy == null) {
+            configurationLookupStrategy = new Function<ProfileRequestContext,List<SignatureSigningConfiguration>>() {
+                public List<SignatureSigningConfiguration> apply(ProfileRequestContext input) {
+                    return Collections.singletonList(
+                            SecurityConfigurationSupport.getGlobalSignatureSigningConfiguration());
+                }
+            };
         }
     }
     
@@ -207,19 +216,11 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
             }
         }
         
-        // TODO: do we include anything but the global default and the per-profile configs?
-        // Maybe a global IdP config in addition or instead of the OpenSAML one?
-        
-        final List<SignatureSigningConfiguration> configs = Lists.newArrayList();
-        configs.add(SecurityConfigurationSupport.getGlobalSignatureSigningConfiguration());
-        
-        if (configurationLookupStrategy != null) {
-            log.debug("{} Looking up per-request SignatureSigningConfiguration", getLogPrefix());
-            final SignatureSigningConfiguration perRequestConfig =
-                    configurationLookupStrategy.apply(profileRequestContext);
-            if (perRequestConfig != null) {
-                configs.add(perRequestConfig);
-            }
+        final List<SignatureSigningConfiguration> configs = configurationLookupStrategy.apply(profileRequestContext);
+        if (configs == null || configs.isEmpty()) {
+            log.error("{} No SignatureSigningConfiguration returned by lookup strategy", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
+            return;
         }
         
         final CriteriaSet criteria = new CriteriaSet(new SignatureSigningConfigurationCriterion(configs));

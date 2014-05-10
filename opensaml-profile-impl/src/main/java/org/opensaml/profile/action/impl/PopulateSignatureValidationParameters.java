@@ -17,6 +17,7 @@
 
 package org.opensaml.profile.action.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -47,7 +48,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
 
 /**
  * Action that resolves and populates {@link SignatureValidationParameters} on a {@link SecurityParametersContext}
@@ -65,8 +65,9 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
     /** Strategy used to look up the {@link SecurityParametersContext} to set the parameters for. */
     @Nonnull private Function<ProfileRequestContext,SecurityParametersContext> securityParametersContextLookupStrategy;
     
-    /** Strategy used to lookup a per-request {@link SignatureValidationConfiguration}. */
-    @Nullable private Function<ProfileRequestContext,SignatureValidationConfiguration> configurationLookupStrategy;
+    /** Strategy used to lookup a per-request {@link SignatureValidationConfiguration} list. */
+    @NonnullAfterInit
+    private Function<ProfileRequestContext,List<SignatureValidationConfiguration>> configurationLookupStrategy;
     
     /** Resolver for parameters to store into context. */
     @NonnullAfterInit private SignatureValidationParametersResolver resolver;
@@ -96,15 +97,16 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
     }
     
     /**
-     * Set the strategy used to look up a per-request {@link SignatureValidationConfiguration}.
+     * Set the strategy used to look up a per-request {@link SignatureValidationConfiguration} list.
      * 
      * @param strategy lookup strategy
      */
     public void setConfigurationLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,SignatureValidationConfiguration> strategy) {
+            @Nonnull final Function<ProfileRequestContext,List<SignatureValidationConfiguration>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        configurationLookupStrategy = strategy;
+        configurationLookupStrategy = Constraint.isNotNull(strategy,
+                "SignatureValidationConfiguration lookup strategy cannot be null");
     }
     
     /**
@@ -126,6 +128,13 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
         
         if (resolver == null) {
             throw new ComponentInitializationException("SignatureValidationParametersResolver cannot be null");
+        } else if (configurationLookupStrategy == null) {
+            configurationLookupStrategy = new Function<ProfileRequestContext,List<SignatureValidationConfiguration>>() {
+                public List<SignatureValidationConfiguration> apply(ProfileRequestContext input) {
+                    return Collections.singletonList(
+                            SecurityConfigurationSupport.getGlobalSignatureValidationConfiguration());
+                }
+            };
         }
     }
     
@@ -135,27 +144,19 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
 
         log.debug("{} Resolving SignatureValidationParameters for request", getLogPrefix());
         
+        final List<SignatureValidationConfiguration> configs = configurationLookupStrategy.apply(profileRequestContext);
+        if (configs == null || configs.isEmpty()) {
+            log.error("{} No SignatureValidationConfiguration returned by lookup strategy", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
+            return;
+        }
+        
         final SecurityParametersContext paramsCtx =
                 securityParametersContextLookupStrategy.apply(profileRequestContext);
         if (paramsCtx == null) {
             log.debug("{} No SecurityParametersContext returned by lookup strategy", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_PROFILE_CTX);
             return;
-        }
-        
-        // TODO: do we include anything but the global default and the per-profile configs?
-        // Maybe a global IdP config in addition or instead of the OpenSAML one?
-        
-        final List<SignatureValidationConfiguration> configs = Lists.newArrayList();
-        configs.add(SecurityConfigurationSupport.getGlobalSignatureValidationConfiguration());
-        
-        if (configurationLookupStrategy != null) {
-            log.debug("{} Looking up per-request SignatureValidationConfiguration", getLogPrefix());
-            final SignatureValidationConfiguration perRequestConfig =
-                    configurationLookupStrategy.apply(profileRequestContext);
-            if (perRequestConfig != null) {
-                configs.add(perRequestConfig);
-            }
         }
         
         try {
