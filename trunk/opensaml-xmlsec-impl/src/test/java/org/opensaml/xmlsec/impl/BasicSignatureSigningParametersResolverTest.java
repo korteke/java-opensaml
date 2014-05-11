@@ -108,7 +108,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config3 = new BasicSignatureSigningConfiguration();
         
         // Set these as defaults on the last config in the chain, just so don't have to set in every test.
-        config3.setSignatureAlgorithmURIs(Lists.newArrayList(defaultRSAAlgo, defaultDSAAlgo, defaultECAlgo, defaultHMACAlgo));
+        config3.setSignatureAlgorithms(Lists.newArrayList(defaultRSAAlgo, defaultDSAAlgo, defaultECAlgo, defaultHMACAlgo));
         config3.setSignatureReferenceDigestMethods(Lists.newArrayList(defaultReferenceDigest));
         config3.setSignatureCanonicalizationAlgorithm(defaultC14N);
         config3.setSignatureHMACOutputLength(defaultHMACOutputLength);
@@ -144,7 +144,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     public void testRSAWithAlgorithmOverride() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
         
-        config2.setSignatureAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -163,7 +163,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config1.setBlacklistedAlgorithmURIs(Sets.newHashSet(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA1));
         
         // Deliberately putting SHA-1 variants first here.  They should be filtered out.
-        config2.setSignatureAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         config2.setSignatureReferenceDigestMethods(Lists.newArrayList(SignatureConstants.ALGO_ID_DIGEST_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -183,7 +183,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config1.setWhitelistedAlgorithmURIs(Sets.newHashSet(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
         // Deliberately putting SHA-1 variants first here.  They should be filtered out.
-        config2.setSignatureAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         config2.setSignatureReferenceDigestMethods(Lists.newArrayList(SignatureConstants.ALGO_ID_DIGEST_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -249,7 +249,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     public void testHMACWithOverrides() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(hmacCred));
         
-        config2.setSignatureAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
+        config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
         config2.setSignatureReferenceDigestMethods(Lists.newArrayList(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         config2.setSignatureHMACOutputLength(160);
         
@@ -341,7 +341,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config1.setSigningCredentials(Lists.newArrayList(dsaCred));
         
         config2.setSigningCredentials(Lists.newArrayList(rsaCred, dsaCred, hmacCred));
-        config2.setSignatureAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -413,7 +413,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     @Test(expectedExceptions=ResolverException.class)
     public void testNoAlgorithms() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
-        config3.setSignatureAlgorithmURIs(new ArrayList<String>());
+        config3.setSignatureAlgorithms(new ArrayList<String>());
         resolver.resolve(criteriaSet);
     }
     

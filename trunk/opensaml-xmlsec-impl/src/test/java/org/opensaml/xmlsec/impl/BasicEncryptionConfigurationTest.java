@@ -61,14 +61,14 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNotNull(config.getDataEncryptionCredentials());
         Assert.assertTrue(config.getDataEncryptionCredentials().isEmpty());
         
-        Assert.assertNotNull(config.getDataEncryptionAlgorithmURIs());
-        Assert.assertTrue(config.getDataEncryptionAlgorithmURIs().isEmpty());
+        Assert.assertNotNull(config.getDataEncryptionAlgorithms());
+        Assert.assertTrue(config.getDataEncryptionAlgorithms().isEmpty());
         
         Assert.assertNotNull(config.getKeyTransportEncryptionCredentials());
         Assert.assertTrue(config.getKeyTransportEncryptionCredentials().isEmpty());
         
-        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithmURIs());
-        Assert.assertTrue(config.getKeyTransportEncryptionAlgorithmURIs().isEmpty());
+        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithms());
+        Assert.assertTrue(config.getKeyTransportEncryptionAlgorithms().isEmpty());
         
         Assert.assertNull(config.getDataKeyInfoGeneratorManager());
         Assert.assertNull(config.getKeyTransportKeyInfoGeneratorManager());
@@ -98,27 +98,27 @@ public class BasicEncryptionConfigurationTest {
     
     @Test
     public void testDataEncryptionAlgorithmURIs() {
-        Assert.assertNotNull(config.getDataEncryptionAlgorithmURIs());
-        Assert.assertEquals(config.getDataEncryptionAlgorithmURIs().size(), 0);
+        Assert.assertNotNull(config.getDataEncryptionAlgorithms());
+        Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 0);
         
         config.setDataEncryptionAlgorithmURIs(Lists.newArrayList("   A   ", null, null, "   B    ", null, "   C    "));
         
-        Assert.assertNotNull(config.getDataEncryptionAlgorithmURIs());
-        Assert.assertEquals(config.getDataEncryptionAlgorithmURIs().size(), 3);
-        Assert.assertEquals(config.getDataEncryptionAlgorithmURIs().get(0), "A");
-        Assert.assertEquals(config.getDataEncryptionAlgorithmURIs().get(1), "B");
-        Assert.assertEquals(config.getDataEncryptionAlgorithmURIs().get(2), "C");
+        Assert.assertNotNull(config.getDataEncryptionAlgorithms());
+        Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 3);
+        Assert.assertEquals(config.getDataEncryptionAlgorithms().get(0), "A");
+        Assert.assertEquals(config.getDataEncryptionAlgorithms().get(1), "B");
+        Assert.assertEquals(config.getDataEncryptionAlgorithms().get(2), "C");
         
         config.setDataEncryptionAlgorithmURIs(null);
         
-        Assert.assertNotNull(config.getDataEncryptionAlgorithmURIs());
-        Assert.assertEquals(config.getDataEncryptionAlgorithmURIs().size(), 0);
+        Assert.assertNotNull(config.getDataEncryptionAlgorithms());
+        Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 0);
     }
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testDataEncryptionAlgorithmURIsImmutable() {
         config.setDataEncryptionAlgorithmURIs(Lists.newArrayList("A", "B", "C"));
-        config.getDataEncryptionAlgorithmURIs().add("D");
+        config.getDataEncryptionAlgorithms().add("D");
     }
     
     @Test
@@ -145,27 +145,27 @@ public class BasicEncryptionConfigurationTest {
     
     @Test
     public void testKeyTransportEncryptionAlgorithmURIs() {
-        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithmURIs());
-        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURIs().size(), 0);
+        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithms());
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithms().size(), 0);
         
         config.setKeyTransportEncryptionAlgorithmURIs(Lists.newArrayList("   A    ", null, null, "   B   ", null, "   C   "));
         
-        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithmURIs());
-        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURIs().size(), 3);
-        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURIs().get(0), "A");
-        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURIs().get(1), "B");
-        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURIs().get(2), "C");
+        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithms());
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithms().size(), 3);
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithms().get(0), "A");
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithms().get(1), "B");
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithms().get(2), "C");
         
         config.setKeyTransportEncryptionAlgorithmURIs(null);
         
-        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithmURIs());
-        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithmURIs().size(), 0);
+        Assert.assertNotNull(config.getKeyTransportEncryptionAlgorithms());
+        Assert.assertEquals(config.getKeyTransportEncryptionAlgorithms().size(), 0);
     }
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testKeyTransportEncryptionAlgorithmURIsImmutable() {
         config.setKeyTransportEncryptionAlgorithmURIs(Lists.newArrayList("A", "B", "C"));
-        config.getKeyTransportEncryptionAlgorithmURIs().add("D");
+        config.getKeyTransportEncryptionAlgorithms().add("D");
     }
     
     @Test

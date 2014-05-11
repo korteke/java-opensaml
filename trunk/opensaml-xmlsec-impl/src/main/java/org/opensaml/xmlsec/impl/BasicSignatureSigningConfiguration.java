@@ -85,6 +85,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getSigningCredentials() {
         return ImmutableList.copyOf(signingCredentials);
     }
@@ -103,6 +104,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithmURIs() {
         return ImmutableList.copyOf(signatureAlgorithms);
     }
@@ -112,7 +114,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      * 
      * @param algorithms the list of signature algorithms
      */
-    public void setSignatureAlgorithmURIs(@Nullable final List<String> algorithms) {
+    public void setSignatureAlgorithms(@Nullable final List<String> algorithms) {
         if (algorithms == null) {
             signatureAlgorithms = Collections.emptyList();
             return;
@@ -121,6 +123,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods() {
         return ImmutableList.copyOf(signatureReferenceDigestMethods);
     }
@@ -139,6 +142,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public String getSignatureCanonicalizationAlgorithm() {
         return signatureCanonicalization;
     }
@@ -153,6 +157,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public Integer getSignatureHMACOutputLength() {
         return signatureHMACOutputLength;
     }
@@ -168,6 +173,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager() {
         return keyInfoGeneratorManager;
     }
@@ -182,6 +188,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public DSAParams getDSAParams(int keyLength) {
         return dsaParams.get(keyLength);
     }

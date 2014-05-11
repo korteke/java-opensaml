@@ -81,6 +81,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getDataEncryptionCredentials() {
         return ImmutableList.copyOf(dataEncryptionCredentials);
     }
@@ -99,7 +100,8 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     }
     
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithmURIs() {
+    @Override
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithms() {
         return ImmutableList.copyOf(dataEncryptionAlgorithms);
     }
     
@@ -117,6 +119,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getKeyTransportEncryptionCredentials() {
         return ImmutableList.copyOf(keyTransportEncryptionCredentials);
     }
@@ -135,7 +138,8 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     }
     
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithmURIs() {
+    @Override
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithms() {
         return ImmutableList.copyOf(keyTransportEncryptionAlgorithms);
     }
     
@@ -153,6 +157,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public NamedKeyInfoGeneratorManager getDataKeyInfoGeneratorManager() {
         return dataKeyInfoGeneratorManager;
     }
@@ -167,6 +172,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public NamedKeyInfoGeneratorManager getKeyTransportKeyInfoGeneratorManager() {
         return keyTransportKeyInfoGeneratorManager;
     }
