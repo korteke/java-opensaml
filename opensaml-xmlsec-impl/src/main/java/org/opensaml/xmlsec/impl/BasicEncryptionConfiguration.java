@@ -110,7 +110,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      * 
      * @param algorithms the list of algorithms
      */
-    public void setDataEncryptionAlgorithmURIs(@Nullable final List<String> algorithms) {
+    public void setDataEncryptionAlgorithms(@Nullable final List<String> algorithms) {
         if (algorithms == null) {
             dataEncryptionAlgorithms = Collections.emptyList();
             return;
@@ -148,7 +148,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      * 
      * @param algorithms the list of algorithms
      */
-    public void setKeyTransportEncryptionAlgorithmURIs(@Nullable final List<String> algorithms) {
+    public void setKeyTransportEncryptionAlgorithms(@Nullable final List<String> algorithms) {
         if (algorithms == null) {
             keyTransportEncryptionAlgorithms = Collections.emptyList();
             return;
