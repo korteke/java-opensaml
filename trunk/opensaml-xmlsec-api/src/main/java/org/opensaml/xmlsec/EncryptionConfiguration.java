@@ -47,7 +47,7 @@ public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithmURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithms();
     
     /**
      * Get the list of key transport encryption credentials to use, in preference order.
@@ -61,7 +61,7 @@ public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithmURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithms();
 
     /**
      * Get the KeyInfoGenerator manager to use when generating the EncryptedData/KeyInfo.
