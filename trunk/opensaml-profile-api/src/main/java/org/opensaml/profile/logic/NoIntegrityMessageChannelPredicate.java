@@ -25,17 +25,22 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import com.google.common.base.Predicate;
 
 /**
- * A predicate that returns true iff the outbound message context does not contain a
- * {@link MessageChannelSecurityContext} such that {@link MessageChannelSecurityContext#isIntegrityActive()}
- * is true.
+ * A predicate implementation that indicates whether the outbound message channel does
+ * <strong>NOT</strong> support integrity end-to-end.
+ * 
+ * <p>Typically but not exclusively used as a predicate for whether to sign something.</p>
  */
-public class UnprotectedMessageChannelPredicate implements Predicate<ProfileRequestContext> {
+public class NoIntegrityMessageChannelPredicate implements Predicate<ProfileRequestContext> {
 
     /** {@inheritDoc} */
     public boolean apply(@Nullable final ProfileRequestContext input) {
-        return input == null || input.getOutboundMessageContext() == null
-                || !input.getOutboundMessageContext().getSubcontext(
-                        MessageChannelSecurityContext.class, true).isIntegrityActive();
-    }
+        if (input == null || input.getOutboundMessageContext() == null) {
+            throw new IllegalArgumentException(
+                    "Message channel predicate requires non-null outbound message context");
+        }
+        return !input.getOutboundMessageContext().getSubcontext(
+                MessageChannelSecurityContext.class, true).isIntegrityActive();
 
+    }
+    
 }
