@@ -99,7 +99,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSignatureAlgorithmURIs());
         Assert.assertEquals(config.getSignatureAlgorithmURIs().size(), 0);
         
-        config.setSignatureAlgorithmURIs(Lists.newArrayList("  A   ", null, null, "  B   ", null, "  C   "));
+        config.setSignatureAlgorithms(Lists.newArrayList("  A   ", null, null, "  B   ", null, "  C   "));
         
         Assert.assertNotNull(config.getSignatureAlgorithmURIs());
         Assert.assertEquals(config.getSignatureAlgorithmURIs().size(), 3);
@@ -107,7 +107,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertEquals(config.getSignatureAlgorithmURIs().get(1), "B");
         Assert.assertEquals(config.getSignatureAlgorithmURIs().get(2), "C");
         
-        config.setSignatureAlgorithmURIs(null);
+        config.setSignatureAlgorithms(null);
         
         Assert.assertNotNull(config.getSignatureAlgorithmURIs());
         Assert.assertEquals(config.getSignatureAlgorithmURIs().size(), 0);
@@ -115,7 +115,7 @@ public class BasicSignatureSigningConfigurationTest {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSignatureAlgorithmURIsImmutable() {
-        config.setSignatureAlgorithmURIs(Lists.newArrayList("A", "B", "C"));
+        config.setSignatureAlgorithms(Lists.newArrayList("A", "B", "C"));
         config.getSignatureAlgorithmURIs().add("D");
     }
 

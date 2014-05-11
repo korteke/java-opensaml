@@ -118,8 +118,8 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
     }
 
     /** {@inheritDoc} */
-    @Nonnull
-    public Iterable<EncryptionParameters> resolve(@Nonnull final CriteriaSet criteria) 
+    @Override
+    @Nonnull public Iterable<EncryptionParameters> resolve(@Nonnull final CriteriaSet criteria) 
             throws ResolverException {
         EncryptionParameters params = resolveSingle(criteria);
         if (params != null) {
@@ -130,8 +130,8 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
     }
 
     /** {@inheritDoc} */
-    @Nullable
-    public EncryptionParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
+    @Override
+    @Nullable public EncryptionParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
         Constraint.isNotNull(criteria, "CriteriaSet was null");
         Constraint.isNotNull(criteria.get(EncryptionConfigurationCriterion.class), 
                 "Resolver requires an instance of EncryptionConfigurationCriterion");
@@ -411,7 +411,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
                 .getConfigurations()) {
             
-            accumulator.addAll(Collections2.filter(config.getDataEncryptionAlgorithmURIs(), 
+            accumulator.addAll(Collections2.filter(config.getDataEncryptionAlgorithms(), 
                     whitelistBlacklistPredicate));
             
         }
@@ -451,7 +451,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
                 .getConfigurations()) {
             
-            accumulator.addAll(Collections2.filter(config.getKeyTransportEncryptionAlgorithmURIs(), 
+            accumulator.addAll(Collections2.filter(config.getKeyTransportEncryptionAlgorithms(), 
                     whitelistBlacklistPredicate));
             
         }
