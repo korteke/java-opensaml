@@ -22,11 +22,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
-import org.joda.time.DateTime;
 import org.opensaml.messaging.MessageRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,16 +60,13 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseContext implements Iterable<BaseContext> {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseContext.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BaseContext.class);
     
     /** The owning parent context. */
-    private BaseContext parent;
+    @Nullable private BaseContext parent;
 
     /** The subcontexts being managed. */
-    private ClassIndexedSet<BaseContext> subcontexts;
-    
-    /** The context creation time. */
-    private DateTime creationTime;
+    @Nonnull @NonnullElements private ClassIndexedSet<BaseContext> subcontexts;
     
     /** Flag indicating whether subcontexts should, by default, be created if they do not exist. */
     private boolean autoCreateSubcontexts;
@@ -75,18 +74,8 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     /** Constructor. Generates a random context id. */
     public BaseContext() {
         subcontexts = new ClassIndexedSet<BaseContext>();
-        creationTime = new DateTime();
         
         setAutoCreateSubcontexts(false);
-    }
-    
-    /**
-     * Get the timestamp of the creation of the context.
-     * 
-     * @return the creation timestamp
-     */
-    public DateTime getCreationTime() {
-        return creationTime;
     }
     
     /**
@@ -94,7 +83,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @return the parent context or null 
      */
-    public BaseContext getParent() {
+    @Nullable public BaseContext getParent() {
         return parent;
     }
     
@@ -103,7 +92,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @param newParent the new context parent
      */
-    protected void setParent(final BaseContext newParent) {
+    protected void setParent(@Nullable final BaseContext newParent) {
         parent = newParent;
     }
     
@@ -114,7 +103,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param clazz the class type to obtain
      * @return the held instance of the class, or null
      */
-    public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz) {
+    @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz) {
         return getSubcontext(clazz, isAutoCreateSubcontexts());
     }
     
@@ -126,7 +115,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * @return the held instance of the class, or null
      */ 
-    public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, boolean autocreate) {
+    @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, final boolean autocreate) {
         Constraint.isNotNull(clazz, "Class type cannot be null");
         
         log.trace("Request for subcontext of type: {}", clazz.getName());
@@ -146,6 +135,31 @@ public abstract class BaseContext implements Iterable<BaseContext> {
         log.trace("Subcontext not found of type: {}", clazz.getName());
         return null;
     }
+
+    /**
+     * Get a subcontext of the current context.
+     * 
+     * @param className the name of the class type to obtain
+     * @return the held instance of the class, or null
+     * @throws ClassNotFoundException 
+     */ 
+    @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className)
+            throws ClassNotFoundException {
+        return getSubcontext(className, isAutoCreateSubcontexts());
+    }
+    
+    /**
+     * Get a subcontext of the current context.
+     * 
+     * @param className the name of the class type to obtain
+     * @param autocreate flag indicating whether the subcontext instance should be auto-created
+     * @return the held instance of the class, or null
+     * @throws ClassNotFoundException 
+     */ 
+    @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate)
+            throws ClassNotFoundException {
+        return getSubcontext(Class.forName(className).asSubclass(BaseContext.class), autocreate);
+    }
     
     /**
      * Add a subcontext to the current context.
@@ -163,10 +177,10 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param replace flag indicating whether to replace the existing instance of the subcontext if present
      * 
      */
-    public void addSubcontext(@Nonnull final BaseContext subcontext, boolean replace) {
+    public void addSubcontext(@Nonnull final BaseContext subcontext, final boolean replace) {
         Constraint.isNotNull(subcontext, "Subcontext cannot be null");
         
-        BaseContext existing = subcontexts.get(subcontext.getClass());
+        final BaseContext existing = subcontexts.get(subcontext.getClass());
         if (existing == subcontext) {
             log.trace("Subcontext to add is already a child of the current context, skipping");
             return;
@@ -181,7 +195,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
         // Manage parent/child links
         
         // If subcontext was formerly a child of another parent, remove that link
-        BaseContext oldParent = subcontext.getParent();
+        final BaseContext oldParent = subcontext.getParent();
         if (oldParent != null && oldParent != this) {
             log.trace("New subcontext with type '{}' is currently a subcontext of "
                     + "parent with type '{}', removing it",
@@ -224,7 +238,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param clazz the subcontext class to remove
      */
     public <T extends BaseContext>void removeSubcontext(@Nonnull final Class<T> clazz) {
-        BaseContext subcontext = getSubcontext(clazz, false);
+        final BaseContext subcontext = getSubcontext(clazz, false);
         if (subcontext != null) {
             removeSubcontext(subcontext);
         }
@@ -269,13 +283,13 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @param autoCreate whether the context should auto-create subcontexts
      */
-    public void setAutoCreateSubcontexts(boolean autoCreate) {
+    public void setAutoCreateSubcontexts(final boolean autoCreate) {
         autoCreateSubcontexts = autoCreate;
     }
     
     /** {@inheritDoc} */
     @Override
-    public Iterator<BaseContext> iterator() {
+    @Nonnull public Iterator<BaseContext> iterator() {
         return new ContextSetNoRemoveIteratorDecorator(subcontexts.iterator());
     }
     
@@ -286,27 +300,27 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param clazz the class of the subcontext instance to create
      * @return the new subcontext instance
      */
-    protected <T extends BaseContext> T createSubcontext(@Nonnull final Class<T> clazz) {
+    @Nonnull protected <T extends BaseContext> T createSubcontext(@Nonnull final Class<T> clazz) {
         Constructor<T> constructor;
         try {
             constructor = clazz.getConstructor();
             return constructor.newInstance();
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             log.error("Security error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             log.error("No such method error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             log.error("Illegal argument error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             log.error("Instantiation error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             log.error("Illegal access error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (InvocationTargetException e) {
+        } catch (final InvocationTargetException e) {
             log.error("Invocation target error on creating subcontext", e);
             throw new MessageRuntimeException("Error creating subcontext", e);
         }

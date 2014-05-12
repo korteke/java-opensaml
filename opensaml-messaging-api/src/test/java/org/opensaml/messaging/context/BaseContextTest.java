@@ -34,7 +34,6 @@ public class BaseContextTest {
     public void testNoArgConstructor() {
         TestContext context = new TestContext();
         Assert.assertNull(context.getParent());
-        Assert.assertNotNull(context.getCreationTime());
     }
     
     /**
@@ -209,4 +208,13 @@ public class BaseContextTest {
         Assert.assertNull(parent1.getSubcontext(TestContext.class, false));
     }
 
+    public void testStringAccess() throws ClassNotFoundException {
+        TestContext parent = new TestContext();
+        parent.addSubcontext(new TestContext());
+        
+        BaseContext child = parent.getSubcontext("org.opensaml.messaging.context.TestContext");
+        Assert.assertNotNull(child);
+        Assert.assertTrue(child instanceof TestContext);
+    }
+    
 }
