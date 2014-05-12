@@ -45,7 +45,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,8 +75,8 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
     @NonnullAfterInit
     private Function<ProfileRequestContext,List<SignatureSigningConfiguration>> configurationLookupStrategy;
 
-    /** Strategy used to look up a SAML peer context. */
-    @Nullable private Function<ProfileRequestContext,SAMLPeerEntityContext> peerContextLookupStrategy;
+    /** Strategy used to look up a SAML metadata context. */
+    @Nullable private Function<ProfileRequestContext,SAMLMetadataContext> metadataContextLookupStrategy;
     
     /** Resolver for parameters to store into context. */
     @NonnullAfterInit private SignatureSigningParametersResolver resolver;
@@ -92,10 +91,11 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
         securityParametersContextLookupStrategy = Functions.compose(
                 new ChildContextLookup<>(SecurityParametersContext.class, true), new OutboundMessageContextLookup());
 
-        // Default: outbound msg context -> SAMLPeerEntityContext
-        peerContextLookupStrategy =
+        // Default: outbound msg context -> SAMLPeerEntityContext -> SAMLMetadataContext
+        metadataContextLookupStrategy = Functions.compose(
+                new ChildContextLookup<>(SAMLMetadataContext.class),
                 Functions.compose(new ChildContextLookup<>(SAMLPeerEntityContext.class),
-                        new OutboundMessageContextLookup());
+                        new OutboundMessageContextLookup()));
     }
 
     /**
@@ -123,17 +123,17 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
 
         existingParametersContextLookupStrategy = strategy;
     }
-
+    
     /**
-     * Set lookup strategy for {@link SAMLPeerEntityContext} for input to resolution.
+     * Set lookup strategy for {@link SAMLMetadataContext} for input to resolution.
      * 
      * @param strategy  lookup strategy
      */
-    public void setPeerContextLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,SAMLPeerEntityContext> strategy) {
+    public void setMetadataContextLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,SAMLMetadataContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        peerContextLookupStrategy = strategy;
+        metadataContextLookupStrategy = strategy;
     }
 
     /**
@@ -225,20 +225,11 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
         
         final CriteriaSet criteria = new CriteriaSet(new SignatureSigningConfigurationCriterion(configs));
         
-        if (peerContextLookupStrategy != null) {
-            final SAMLPeerEntityContext peerCtx = peerContextLookupStrategy.apply(profileRequestContext);
-            if (peerCtx != null) {
-                if (peerCtx.getEntityId() != null) {
-                    log.debug("{} Adding entityID to resolution criteria for signing/digest algorithms",
-                            getLogPrefix());
-                    criteria.add(new EntityIdCriterion(peerCtx.getEntityId()));
-                }
-                final SAMLMetadataContext metadataCtx = peerCtx.getSubcontext(SAMLMetadataContext.class);
-                if (metadataCtx != null && metadataCtx.getRoleDescriptor() != null) {
-                    log.debug("{} Adding role metadata to resolution criteria for signing/digest algorithms",
-                            getLogPrefix());
-                    criteria.add(new RoleDescriptorCriterion(metadataCtx.getRoleDescriptor()));
-                }
+        if (metadataContextLookupStrategy != null) {
+            final SAMLMetadataContext metadataCtx = metadataContextLookupStrategy.apply(profileRequestContext);
+            if (metadataCtx != null && metadataCtx.getRoleDescriptor() != null) {
+                log.debug("{} Adding metadata to resolution criteria for signing/digest algorithms", getLogPrefix());
+                criteria.add(new RoleDescriptorCriterion(metadataCtx.getRoleDescriptor()));
             }
         }
         
