@@ -53,6 +53,7 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     }
     
     /** {@inheritDoc} */
+    @Override
     public Boolean getWantAssertionsSigned() {
         if (wantAssertionsSigned != null) {
             return wantAssertionsSigned.getValue();
@@ -61,6 +62,7 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setWantAssertionsSigned(Boolean newWantAssertionsSigned) {
         if (newWantAssertionsSigned != null) {
             wantAssertionsSigned = prepareForAssignment(wantAssertionsSigned, 
@@ -71,21 +73,25 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     }
 
     /** {@inheritDoc} */
+    @Override
     public XSBooleanValue getWantAssertionsSignedXSBoolean(){
         return wantAssertionsSigned;
     }
     
     /** {@inheritDoc} */
+    @Override
     public void setWantAssertionsSigned(XSBooleanValue wantAssertionSigned){
         this.wantAssertionsSigned = prepareForAssignment(this.wantAssertionsSigned, wantAssertionSigned);
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<NameIDFormat> getNameIDFormat(){
         return nameIDFormats;
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         

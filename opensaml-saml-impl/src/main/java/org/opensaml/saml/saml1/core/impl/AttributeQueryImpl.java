@@ -27,18 +27,18 @@ import org.opensaml.saml.saml1.core.AttributeDesignator;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeQuery} interface
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeQuery} interface.
  */
 public class AttributeQueryImpl extends SubjectQueryImpl implements AttributeQuery {
 
-    /** Contains the resource attribute */
+    /** Contains the resource attribute. */
     private String resource;
 
-    /** Contains all the child AttributeDesignators */
+    /** Contains all the child AttributeDesignators. */
     private final XMLObjectChildrenList<AttributeDesignator> attributeDesignators;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -55,8 +55,8 @@ public class AttributeQueryImpl extends SubjectQueryImpl implements AttributeQue
     }
 
     /** {@inheritDoc} */
-    public void setResource(String resource) {
-        this.resource = prepareForAssignment(this.resource, resource);
+    public void setResource(String res) {
+        resource = prepareForAssignment(resource, res);
     }
 
     /** {@inheritDoc} */

@@ -28,11 +28,11 @@ import org.opensaml.saml.saml1.core.Audience;
 import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 
 /**
- * Concrete implementation of the org.opensaml.saml.saml1.core.AudienceRestrictionCondition
+ * Concrete implementation of the org.opensaml.saml.saml1.core.AudienceRestrictionCondition.
  */
 public class AudienceRestrictionConditionImpl extends AbstractSAMLObject implements AudienceRestrictionCondition {
 
-    /** Audiences */
+    /** Audiences. */
     private final XMLObjectChildrenList<Audience> audiences;
 
     /**

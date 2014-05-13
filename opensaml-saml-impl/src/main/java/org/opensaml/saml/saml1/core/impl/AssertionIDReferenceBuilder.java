@@ -27,18 +27,21 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 public class AssertionIDReferenceBuilder extends AbstractSAMLObjectBuilder<AssertionIDReference> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AssertionIDReferenceBuilder() {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     public AssertionIDReference buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, AssertionIDReference.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, AssertionIDReference.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
+    @Override
     public AssertionIDReference buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AssertionIDReferenceImpl(namespaceURI, localName, namespacePrefix);
     }

@@ -25,15 +25,15 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml1.core.Attribute;
 
 /**
- * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.Attribute} Interface
+ * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.Attribute} Interface.
  */
 public class AttributeImpl extends AttributeDesignatorImpl implements Attribute {
 
-    /** Contains the AttributeValues */
+    /** Contains the AttributeValues. */
     private final XMLObjectChildrenList<XMLObject> attributeValues;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

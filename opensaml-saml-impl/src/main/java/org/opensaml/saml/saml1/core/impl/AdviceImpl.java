@@ -32,18 +32,18 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Concrete Implementation of the {@link org.opensaml.saml.saml1.core.Advice} Object
+ * Concrete implementation of {@link org.opensaml.saml.saml1.core.Advice}.
  */
 public class AdviceImpl extends AbstractSAMLObject implements Advice {
 
-    /** Contains all the SAML objects we have added */
+    /** Contains all the SAML objects we have added. */
     private final IndexedXMLObjectChildrenList<XMLObject> assertionChildren;
     
-    /** "any" children */
+    /** "any" children. */
     private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -56,6 +56,7 @@ public class AdviceImpl extends AbstractSAMLObject implements Advice {
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<AssertionIDReference> getAssertionIDReferences() {
         //
         // The cast in the line below is unsafe. (it's checking against the erasure of l - which is List.
@@ -68,25 +69,27 @@ public class AdviceImpl extends AbstractSAMLObject implements Advice {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Assertion> getAssertions() {
         // See Comment for getAssertionIDReference as to why this unsafe casting is OK
         QName assertionQname = new QName(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<Assertion>) assertionChildren.subList(assertionQname);
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         

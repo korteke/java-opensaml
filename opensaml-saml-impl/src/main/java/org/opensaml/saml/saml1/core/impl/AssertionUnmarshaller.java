@@ -80,7 +80,7 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
                 && !Strings.isNullOrEmpty(attribute.getValue())) {
             assertion.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (Assertion.MINORVERSION_ATTRIB_NAME.equals(attribute.getLocalName())) {
-            if (attribute.getValue().equals("0")) {
+            if ("0".equals(attribute.getValue())) {
                 assertion.setVersion(SAMLVersion.VERSION_10);
             } else {
                 assertion.setVersion(SAMLVersion.VERSION_11);

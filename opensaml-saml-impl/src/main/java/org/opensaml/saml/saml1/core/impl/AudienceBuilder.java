@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.Audience;
 public class AudienceBuilder extends AbstractSAMLObjectBuilder<Audience> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AudienceBuilder() {
 

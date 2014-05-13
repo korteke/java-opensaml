@@ -32,7 +32,8 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 /**
  * Concrete implementation of {@link AuthzDecisionQueryDescriptorType}.
  */
-public class AuthzDecisionQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl implements AuthzDecisionQueryDescriptorType{
+public class AuthzDecisionQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl
+        implements AuthzDecisionQueryDescriptorType{
 
     /** Supported action namespaces. */
     private XMLObjectChildrenList<ActionNamespace> actionNamespaces;
@@ -44,28 +45,33 @@ public class AuthzDecisionQueryDescriptorTypeImpl extends QueryDescriptorTypeImp
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthzDecisionQueryDescriptorTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+    protected AuthzDecisionQueryDescriptorTypeImpl(String namespaceURI, String elementLocalName,
+            String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
         actionNamespaces = new XMLObjectChildrenList<ActionNamespace>(this);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ActionNamespace> getActionNamespaces() {
         return actionNamespaces;
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<Endpoint> getEndpoints() {
         return new ArrayList<Endpoint>();
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<Endpoint> getEndpoints(QName type) {
         return null;
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
         

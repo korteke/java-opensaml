@@ -24,15 +24,15 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * Concrete class implementation of {@link org.opensaml.saml.saml1.core.Audience}
+ * Concrete class implementation of {@link org.opensaml.saml.saml1.core.Audience}.
  */
 public class AudienceImpl extends AbstractSAMLObject implements Audience {
 
-    /** String to hold the URI */
+    /** String to hold the URI. */
     private String uri;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -48,9 +48,9 @@ public class AudienceImpl extends AbstractSAMLObject implements Audience {
     }
 
     /** {@inheritDoc} */
-    public void setUri(String uri) {
+    public void setUri(String s) {
 
-        this.uri = prepareForAssignment(this.uri, uri);
+        uri = prepareForAssignment(uri, s);
     }
 
     /** {@inheritDoc} */

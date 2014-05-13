@@ -27,18 +27,20 @@ import org.opensaml.saml.saml1.core.Action;
 public class ActionBuilder extends AbstractSAMLObjectBuilder<Action> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ActionBuilder() {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     public Action buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Action buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ActionImpl(namespaceURI, localName, namespacePrefix);
     }

@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.Attribute;
 public class AttributeBuilder extends AbstractSAMLObjectBuilder<Attribute> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeBuilder() {
 

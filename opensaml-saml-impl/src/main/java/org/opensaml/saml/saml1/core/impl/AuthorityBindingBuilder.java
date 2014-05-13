@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.AuthorityBinding;
 public class AuthorityBindingBuilder extends AbstractSAMLObjectBuilder<AuthorityBinding> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthorityBindingBuilder() {
 
@@ -35,9 +35,11 @@ public class AuthorityBindingBuilder extends AbstractSAMLObjectBuilder<Authority
 
     /** {@inheritDoc} */
     public AuthorityBinding buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, AuthorityBinding.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, AuthorityBinding.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
+    /** {@inheritDoc} */
     public AuthorityBinding buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AuthorityBindingImpl(namespaceURI, localName, namespacePrefix);
     }

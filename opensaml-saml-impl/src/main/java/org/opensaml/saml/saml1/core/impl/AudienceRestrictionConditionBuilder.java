@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 public class AudienceRestrictionConditionBuilder extends AbstractSAMLObjectBuilder<AudienceRestrictionCondition> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AudienceRestrictionConditionBuilder() {
 
@@ -35,7 +35,8 @@ public class AudienceRestrictionConditionBuilder extends AbstractSAMLObjectBuild
 
     /** {@inheritDoc} */
     public AudienceRestrictionCondition buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, AudienceRestrictionCondition.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, AudienceRestrictionCondition.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

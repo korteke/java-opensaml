@@ -26,7 +26,7 @@ import org.opensaml.saml.saml2.core.impl.AbstractNameIDType;
 public class RespondToImpl extends AbstractNameIDType implements RespondTo {
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

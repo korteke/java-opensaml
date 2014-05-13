@@ -27,15 +27,15 @@ import org.opensaml.saml.saml1.core.Attribute;
 import org.opensaml.saml.saml1.core.AttributeStatement;
 
 /**
- * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeStatement} Interface
+ * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeStatement} Interface.
  */
 public class AttributeStatementImpl extends SubjectStatementImpl implements AttributeStatement {
 
-    /** Contains the Attributes (in order) */
+    /** Contains the Attributes (in order). */
     private final XMLObjectChildrenList<Attribute> attributes;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

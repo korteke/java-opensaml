@@ -24,15 +24,15 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Concrete Implementation of {@link org.opensaml.saml.saml1.core.AssertionIDReference} Object
+ * Concrete Implementation of {@link org.opensaml.saml.saml1.core.AssertionIDReference} Object.
  */
 public class AssertionIDReferenceImpl extends AbstractSAMLObject implements AssertionIDReference {
 
-    /** String to contain the NCName */
-    private String NCName;
+    /** String to contain the ncName. */
+    private String ncName;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -44,12 +44,13 @@ public class AssertionIDReferenceImpl extends AbstractSAMLObject implements Asse
 
     /** {@inheritDoc} */
     public String getReference() {
-        return NCName;
+        return ncName;
     }
 
     /** {@inheritDoc} */
-    public void setReference(String NCName) {
-        this.NCName = prepareForAssignment(this.NCName, NCName);
+    @Override
+    public void setReference(String name) {
+        ncName = prepareForAssignment(ncName, name);
     }
 
     /** {@inheritDoc} */

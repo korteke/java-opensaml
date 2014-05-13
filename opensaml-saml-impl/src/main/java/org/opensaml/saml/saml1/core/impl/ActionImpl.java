@@ -24,18 +24,18 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.Action;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml1.core.Action}
+ * Concrete implementation of {@link org.opensaml.saml.saml1.core.Action}.
  */
 public class ActionImpl extends AbstractSAMLObject implements Action {
 
-    /** Place to store the namespace */
+    /** Place to store the namespace. */
     private String namespace;
 
-    /** Where to store the contents */
+    /** Where to store the contents. */
     private String contents;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -46,26 +46,31 @@ public class ActionImpl extends AbstractSAMLObject implements Action {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getNamespace() {
         return namespace;
     }
 
     /** {@inheritDoc} */
-    public void setNamespace(String namespace) {
-        this.namespace = prepareForAssignment(this.namespace, namespace);
+    @Override
+    public void setNamespace(String ns) {
+        namespace = prepareForAssignment(namespace, ns);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getContents() {
         return contents;
     }
 
     /** {@inheritDoc} */
-    public void setContents(String contents) {
-        this.contents = prepareForAssignment(this.contents, contents);
+    @Override
+    public void setContents(String c) {
+        contents = prepareForAssignment(contents, c);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         // No elements
         return null;
