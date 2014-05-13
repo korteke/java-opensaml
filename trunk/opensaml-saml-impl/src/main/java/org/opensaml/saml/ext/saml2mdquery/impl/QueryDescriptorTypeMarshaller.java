@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 public abstract class QueryDescriptorTypeMarshaller extends RoleDescriptorMarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         QueryDescriptorType descriptor = (QueryDescriptorType) xmlObject;
 

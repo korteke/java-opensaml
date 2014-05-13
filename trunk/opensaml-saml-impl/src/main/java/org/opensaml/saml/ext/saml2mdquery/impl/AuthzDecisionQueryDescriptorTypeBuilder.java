@@ -24,15 +24,18 @@ import org.opensaml.saml.ext.saml2mdquery.AuthzDecisionQueryDescriptorType;
 /**
  * Builder of {@link AuthzDecisionQueryDescriptorType} objects.
  */
-public class AuthzDecisionQueryDescriptorTypeBuilder extends AbstractSAMLObjectBuilder<AuthzDecisionQueryDescriptorType> {
+public class AuthzDecisionQueryDescriptorTypeBuilder
+        extends AbstractSAMLObjectBuilder<AuthzDecisionQueryDescriptorType> {
 
     /** {@inheritDoc} */
+    @Override
     public AuthzDecisionQueryDescriptorType buildObject() {
         return buildObject(SAMLConstants.SAML20MDQUERY_NS, AuthzDecisionQueryDescriptorType.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDQUERY_PREFIX, AuthzDecisionQueryDescriptorType.TYPE_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public AuthzDecisionQueryDescriptorType buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AuthzDecisionQueryDescriptorTypeImpl(namespaceURI, localName, namespacePrefix);
     }

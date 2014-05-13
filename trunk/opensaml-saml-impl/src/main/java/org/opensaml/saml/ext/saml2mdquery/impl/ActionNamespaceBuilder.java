@@ -26,18 +26,20 @@ import org.opensaml.saml.ext.saml2mdquery.ActionNamespace;
  */
 public class ActionNamespaceBuilder extends AbstractSAMLObjectBuilder<ActionNamespace> {
 
-    /** Constructor */
+    /** Constructor. */
     public ActionNamespaceBuilder() {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionNamespace buildObject() {
         return buildObject(SAMLConstants.SAML20MDQUERY_NS, ActionNamespace.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDQUERY_PREFIX);
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionNamespace buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new ActionNamespaceImpl(namespaceURI, localName, namespacePrefix);
     }

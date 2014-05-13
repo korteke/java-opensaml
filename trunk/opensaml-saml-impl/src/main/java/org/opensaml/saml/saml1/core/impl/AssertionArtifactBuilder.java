@@ -27,18 +27,21 @@ import org.opensaml.saml.saml1.core.AssertionArtifact;
 public class AssertionArtifactBuilder extends AbstractSAMLObjectBuilder<AssertionArtifact> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AssertionArtifactBuilder() {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     public AssertionArtifact buildObject() {
-        return buildObject(SAMLConstants.SAML10P_NS, AssertionArtifact.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+        return buildObject(SAMLConstants.SAML10P_NS, AssertionArtifact.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
+    @Override
     public AssertionArtifact buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AssertionArtifactImpl(namespaceURI, localName, namespacePrefix);
     }

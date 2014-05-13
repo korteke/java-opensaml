@@ -27,18 +27,20 @@ import org.opensaml.saml.saml1.core.Advice;
 public class AdviceBuilder extends AbstractSAMLObjectBuilder<Advice> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AdviceBuilder() {
 
     }
     
     /** {@inheritDoc} */
+    @Override
     public Advice buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, Advice.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Advice buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AdviceImpl(namespaceURI, localName, namespacePrefix);
     }

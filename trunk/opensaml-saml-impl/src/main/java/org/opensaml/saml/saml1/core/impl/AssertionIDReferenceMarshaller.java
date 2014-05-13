@@ -26,7 +26,7 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AssertionIDReference} objects
+ * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AssertionIDReference} objects.
  */
 public class AssertionIDReferenceMarshaller extends AbstractSAMLObjectMarshaller {
 

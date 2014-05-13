@@ -43,10 +43,10 @@ import org.opensaml.saml.saml1.core.SubjectStatement;
  */
 public class AssertionImpl extends AbstractSignableSAMLObject implements Assertion {
 
-    /** The <code> AssertionID </code> attrribute */
+    /** The <code> AssertionID </code> attrribute. */
     private String id;
     
-    /** SAML version of this assertion */
+    /** SAML version of this assertion. */
     private SAMLVersion version;
     
     /** Object version of the <code> Issuer </code> attribute. */
@@ -61,11 +61,11 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     /** (Possibly null) Singleton object version of the <code> Advice </code> element. */
     private Advice advice;
 
-    /** Object representnation of all the <code> Statement <\code> elements. */
+    /** Object representation of all the <code>Statement</code> elements. */
     private final IndexedXMLObjectChildrenList<Statement> statements;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

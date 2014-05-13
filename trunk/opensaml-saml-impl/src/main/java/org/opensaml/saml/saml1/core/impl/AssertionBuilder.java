@@ -27,18 +27,21 @@ import org.opensaml.saml.saml1.core.Assertion;
 public class AssertionBuilder extends AbstractSAMLObjectBuilder<Assertion> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AssertionBuilder() {
 
     }
 
     /** {@inheritDoc} */
+    @Override
     public AssertionImpl buildObject() {
-        return new AssertionImpl(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return new AssertionImpl(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
+    @Override
     public AssertionImpl buildObject(String namespaceURI, String localName, String namespacePrefix) {
         return new AssertionImpl(namespaceURI, localName, namespacePrefix);
     }

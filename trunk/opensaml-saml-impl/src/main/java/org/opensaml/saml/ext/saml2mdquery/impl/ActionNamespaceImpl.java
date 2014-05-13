@@ -28,11 +28,11 @@ import org.opensaml.saml.ext.saml2mdquery.ActionNamespace;
  */
 public class ActionNamespaceImpl extends AbstractSAMLObject implements ActionNamespace {
 
-    /** Action namespace value */
+    /** Action namespace value. */
     private String value;
     
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -43,16 +43,19 @@ public class ActionNamespaceImpl extends AbstractSAMLObject implements ActionNam
     }
     
     /** {@inheritDoc} */
+    @Override
     public String getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setValue(String newValue) {
         value = prepareForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         // no children
         return null;

@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.NameIdentifier;
 public class NameIdentifierBuilder extends AbstractSAMLObjectBuilder<NameIdentifier> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public NameIdentifierBuilder() {
 
@@ -35,7 +35,8 @@ public class NameIdentifierBuilder extends AbstractSAMLObjectBuilder<NameIdentif
 
     /** {@inheritDoc} */
     public NameIdentifier buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, NameIdentifier.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, NameIdentifier.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.AuthenticationStatement;
 public class AuthenticationStatementBuilder extends AbstractSAMLObjectBuilder<AuthenticationStatement> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthenticationStatementBuilder() {
 
@@ -35,7 +35,8 @@ public class AuthenticationStatementBuilder extends AbstractSAMLObjectBuilder<Au
 
     /** {@inheritDoc} */
     public AuthenticationStatement buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, AuthenticationStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, AuthenticationStatement.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

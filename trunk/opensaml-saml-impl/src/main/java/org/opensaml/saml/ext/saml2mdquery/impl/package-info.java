@@ -15,13 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.ext.saml2delrestrict.impl;
-
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-
 /**
- * Marshaller for instances of {@link org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType}.
+ * Implementation for SAML v2.0 Metadata Extension for Stand-Alone Query Requesters.
  */
-public class DelegationRestrictionTypeMarshaller extends AbstractSAMLObjectMarshaller {
 
-}
+package org.opensaml.saml.ext.saml2mdquery.impl;

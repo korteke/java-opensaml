@@ -29,20 +29,20 @@ import org.opensaml.saml.saml1.core.AuthorityBinding;
 import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationStatement} Interface
+ * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationStatement} Interface.
  */
 public class AuthenticationStatementImpl extends SubjectStatementImpl implements AuthenticationStatement {
 
-    /** Contains the AuthenticationMethod attribute contents */
+    /** Contains the AuthenticationMethod attribute contents. */
     private String authenticationMethod;
 
-    /** Contains the AuthenticationMethod attribute contents */
+    /** Contains the AuthenticationMethod attribute contents. */
     private DateTime authenticationInstant;
 
-    /** Contains the SubjectLocality subelement */
+    /** Contains the SubjectLocality subelement. */
     private SubjectLocality subjectLocality;
 
-    /** Contains the AuthorityBinding subelements */
+    /** Contains the AuthorityBinding subelements. */
     private final XMLObjectChildrenList<AuthorityBinding> authorityBindings;
 
     /**
@@ -63,8 +63,8 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
     }
 
     /** {@inheritDoc} */
-    public void setAuthenticationMethod(String authenticationMethod) {
-        this.authenticationMethod = prepareForAssignment(this.authenticationMethod, authenticationMethod);
+    public void setAuthenticationMethod(String method) {
+        authenticationMethod = prepareForAssignment(authenticationMethod, method);
     }
 
     /** {@inheritDoc} */
@@ -73,8 +73,8 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
     }
 
     /** {@inheritDoc} */
-    public void setAuthenticationInstant(DateTime authenticationInstant) {
-        this.authenticationInstant = prepareForAssignment(this.authenticationInstant, authenticationInstant);
+    public void setAuthenticationInstant(DateTime instant) {
+        authenticationInstant = prepareForAssignment(authenticationInstant, instant);
     }
 
     //
@@ -87,8 +87,8 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
     }
 
     /** {@inheritDoc} */
-    public void setSubjectLocality(SubjectLocality subjectLocality) throws IllegalArgumentException {
-        this.subjectLocality = prepareForAssignment(this.subjectLocality, subjectLocality);
+    public void setSubjectLocality(SubjectLocality locality) {
+        subjectLocality = prepareForAssignment(subjectLocality, locality);
     }
 
     /** {@inheritDoc} */

@@ -24,15 +24,15 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
 
 /**
- * Concrete implementation if {@link org.opensaml.saml.saml1.core.AssertionArtifact}
+ * Concrete implementation if {@link org.opensaml.saml.saml1.core.AssertionArtifact}.
  */
 public class AssertionArtifactImpl extends AbstractSAMLObject implements AssertionArtifact {
 
-    /** The assertion artifact */
+    /** The assertion artifact. */
     private String assertionArtifact;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -43,16 +43,19 @@ public class AssertionArtifactImpl extends AbstractSAMLObject implements Asserti
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getAssertionArtifact() {
         return assertionArtifact;
     }
 
     /** {@inheritDoc} */
-    public void setAssertionArtifact(String assertionArtifact) {
-        this.assertionArtifact = prepareForAssignment(this.assertionArtifact, assertionArtifact);
+    @Override
+    public void setAssertionArtifact(String artifact) {
+        assertionArtifact = prepareForAssignment(assertionArtifact, artifact);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         return null;
     }

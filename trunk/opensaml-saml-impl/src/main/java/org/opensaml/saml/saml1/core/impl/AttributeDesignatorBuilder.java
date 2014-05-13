@@ -31,14 +31,15 @@ import org.opensaml.saml.saml1.core.AttributeDesignator;
 public class AttributeDesignatorBuilder extends AbstractSAMLObjectBuilder<AttributeDesignator> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeDesignatorBuilder() {
     }
 
     /** {@inheritDoc} */
     public AttributeDesignator buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, AttributeDesignator.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, AttributeDesignator.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

@@ -25,11 +25,11 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.AuthenticationQuery;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationQuery} interface
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationQuery} interface.
  */
 public class AuthenticationQueryImpl extends SubjectQueryImpl implements AuthenticationQuery {
 
-    /** The method used to do the authentication */
+    /** The method used to do the authentication. */
     private String authenticationMethod;
 
     /**
@@ -49,8 +49,8 @@ public class AuthenticationQueryImpl extends SubjectQueryImpl implements Authent
     }
 
     /** {@inheritDoc} */
-    public void setAuthenticationMethod(String authenticationMethod) {
-        this.authenticationMethod = prepareForAssignment(this.authenticationMethod, authenticationMethod);
+    public void setAuthenticationMethod(String method) {
+        authenticationMethod = prepareForAssignment(authenticationMethod, method);
     }
 
     /** {@inheritDoc} */

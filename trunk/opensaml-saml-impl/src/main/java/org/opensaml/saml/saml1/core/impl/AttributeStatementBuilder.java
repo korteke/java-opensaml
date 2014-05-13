@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.AttributeStatement;
 public class AttributeStatementBuilder extends AbstractSAMLObjectBuilder<AttributeStatement> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AttributeStatementBuilder() {
 
@@ -35,7 +35,8 @@ public class AttributeStatementBuilder extends AbstractSAMLObjectBuilder<Attribu
 
     /** {@inheritDoc} */
     public AttributeStatement buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

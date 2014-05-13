@@ -32,14 +32,14 @@ import org.opensaml.saml.saml1.core.AttributeDesignator;
  */
 public class AttributeDesignatorImpl extends AbstractSAMLObject implements AttributeDesignator {
 
-    /** Contains the AttributeName */
+    /** Contains the AttributeName. */
     private String attributeName;
 
-    /** Contains the AttributeNamespace */
+    /** Contains the AttributeNamespace. */
     private String attributeNamespace;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
