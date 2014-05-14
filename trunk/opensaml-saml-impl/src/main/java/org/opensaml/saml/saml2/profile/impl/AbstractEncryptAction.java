@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
@@ -59,6 +60,9 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     /** Strategy used to locate the encryption recipient. */
     @Nullable private Function<ProfileRequestContext,String> recipientLookupStrategy;
     
+    /** Strategy used to determine encrypted key placement. */
+    @Nonnull private Function<ProfileRequestContext,Encrypter.KeyPlacement> keyPlacementLookupStrategy;
+    
     /** The encryption object. */
     @Nullable private Encrypter encrypter;
     
@@ -66,6 +70,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     public AbstractEncryptAction() {
         encryptionCtxLookupStrategy = Functions.compose(new ChildContextLookup<>(EncryptionContext.class),
                 new OutboundMessageContextLookup());
+        keyPlacementLookupStrategy = FunctionSupport.<ProfileRequestContext,KeyPlacement>constant(KeyPlacement.INLINE);
     }
     
     /**
@@ -94,6 +99,17 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     }
     
     /**
+     * Set the strategy used to determine the encrypted key placement strategy.
+     * 
+     * @param strategy  lookup strategy
+     */
+    public void setKeyPlacementLookupStrategy(@Nonnull final Function<ProfileRequestContext,KeyPlacement> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        keyPlacementLookupStrategy = Constraint.isNotNull(strategy, "Key placement lookup strategy cannot be null");
+    }
+    
+    /**
      * Get the encrypter.
      * 
      * @return  the encrypter
@@ -119,7 +135,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
         final KeyEncryptionParameters keyParams = new KeyEncryptionParameters(params, recipient);
         
         encrypter = new Encrypter(dataParams, keyParams);
-        encrypter.setKeyPlacement(KeyPlacement.INLINE);
+        encrypter.setKeyPlacement(keyPlacementLookupStrategy.apply(profileRequestContext));
         
         return super.doPreExecute(profileRequestContext);
     }
