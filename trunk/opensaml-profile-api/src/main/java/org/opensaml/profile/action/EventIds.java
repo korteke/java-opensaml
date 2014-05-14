@@ -69,10 +69,11 @@ public final class EventIds {
      */
     @Nonnull @NotEmpty public static final String UNABLE_TO_ENCODE = "UnableToEncode";
     
-    /**
-     * ID of the event returned if a {@link org.opensaml.xmlsec.signature.support.Signer} is unable to sign a signature.
-     */
+    /** ID of the event returned if creation of a signature fails. */
     @Nonnull @NotEmpty public static final String UNABLE_TO_SIGN = "UnableToSign";
+
+    /** ID of the event returned if encryption of an object/data fails. */
+    @Nonnull @NotEmpty public static final String UNABLE_TO_ENCRYPT = "UnableToEncrypt";
     
     /**
      * ID of an Event indicating that an action completed successfully and processing should move on to the next step.
