@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.security.impl;
 
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -25,24 +26,24 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
+import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
-import org.opensaml.saml.security.impl.MetadataCredentialResolver;
-import org.opensaml.saml.security.impl.SAMLMDCredentialContext;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
@@ -50,11 +51,9 @@ import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.SecurityConfigurationSupport;
-import org.opensaml.xmlsec.config.BasicSecurityConfiguration;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -160,8 +159,6 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private CriteriaSet criteriaSet;
     
-    private SecurityConfiguration origGlobalSecurityConfig;
-    
 
     /** {@inheritDoc} */
     @BeforeMethod
@@ -179,13 +176,9 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         roleResolver = new BasicRoleDescriptorResolver(mdProvider);
         roleResolver.initialize();
         
-        //For testing, use default KeyInfo resolver from global security config, per metadata resolver constructor
-        origGlobalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
-        BasicSecurityConfiguration newSecConfig = new BasicSecurityConfiguration();
-        newSecConfig.setDefaultKeyInfoCredentialResolver( SAMLTestSupport.buildBasicInlineKeyInfoResolver() );
-        ConfigurationService.register(SecurityConfiguration.class, newSecConfig);
-        
-        mdCredResolver = new MetadataCredentialResolver(roleResolver);
+        mdCredResolver = new MetadataCredentialResolver();
+        mdCredResolver.setRoleDescriptorResolver(roleResolver);
+        mdCredResolver.setKeyInfoCredentialResolver(SAMLTestSupport.buildBasicInlineKeyInfoResolver());
         mdCredResolver.initialize();
         
         entityIdCriteria = new EntityIdCriterion(idpEntityID);
@@ -195,12 +188,6 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         criteriaSet = new CriteriaSet();
         criteriaSet.add(entityIdCriteria);
         criteriaSet.add(roleCriteria);
-    }
-    
-    /** {@inheritDoc} */
-    @AfterMethod
-    protected void tearDown() throws Exception {
-        ConfigurationService.register(SecurityConfiguration.class, origGlobalSecurityConfig);
     }
 
     /**
@@ -215,7 +202,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 3, "Incorrect number of credentials resolved");
@@ -255,7 +242,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
@@ -294,7 +281,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
@@ -332,7 +319,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
@@ -372,7 +359,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
@@ -410,7 +397,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
@@ -447,7 +434,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
@@ -485,7 +472,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
@@ -523,7 +510,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         List<Credential> resolved = new ArrayList<Credential>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
-           checkContextAndID(credential, idpEntityID, idpRole);
+           checkContextAndID(credential, idpEntityID, idpRole, true);
         }
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
@@ -575,13 +562,116 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     }
     
     /**
+     * Test resolving directly from a RoleDescriptor input.
+     * 
+     * @throws ComponentInitializationException 
+     * @throws ResolverException 
+     * @throws CertificateEncodingException 
+     */
+    @Test 
+    public void testDirectResolutionFromRoleDescriptor() throws ComponentInitializationException, ResolverException, CertificateEncodingException {
+        // Use a new instance that does not have a role descriptor resolver, just for good measure.
+        mdCredResolver = new MetadataCredentialResolver();
+        mdCredResolver.setKeyInfoCredentialResolver(SAMLTestSupport.buildBasicInlineKeyInfoResolver());
+        mdCredResolver.initialize();
+        
+        EntityDescriptor entityDesc = buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
+        entityDesc.setEntityID(idpEntityID);
+        
+        IDPSSODescriptor idpSSODesc = buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        idpSSODesc.setParent(entityDesc);
+        
+        KeyDescriptor keyDesc1 = buildXMLObject(KeyDescriptor.DEFAULT_ELEMENT_NAME);
+        KeyInfo keyInfo1 = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        KeyInfoSupport.addPublicKey(keyInfo1, idpRSAPubKey);
+        KeyInfoSupport.addKeyName(keyInfo1, idpRSAPubKeyName);
+        keyDesc1.setKeyInfo(keyInfo1);
+        keyDesc1.setUse(UsageType.ENCRYPTION);
+        idpSSODesc.getKeyDescriptors().add(keyDesc1);
+        
+        KeyDescriptor keyDesc2 = buildXMLObject(KeyDescriptor.DEFAULT_ELEMENT_NAME);
+        KeyInfo keyInfo2 = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        KeyInfoSupport.addCertificate(keyInfo2, idpRSACert);
+        keyDesc2.setKeyInfo(keyInfo2);
+        keyDesc2.setUse(UsageType.SIGNING);
+        idpSSODesc.getKeyDescriptors().add(keyDesc2);
+        
+        RoleDescriptorCriterion roleDescCriterion = new RoleDescriptorCriterion(idpSSODesc);
+        CriteriaSet criteria =  new CriteriaSet(roleDescCriterion);
+        
+        List<Credential> resolved = new ArrayList<Credential>();
+        for (Credential credential : mdCredResolver.resolve(criteria)) {
+            resolved.add(credential);
+            checkContextAndID(credential, idpEntityID, idpRole, false);
+        }
+        
+        Assert.assertEquals(resolved.size(), 2);
+        
+        for (Credential credential : resolved) {
+            X509Credential x509Cred;
+            switch(credential.getUsageType()) {
+                case SIGNING:
+                    x509Cred = (X509Credential) credential;
+                    Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
+                    break;
+                case ENCRYPTION:
+                    Assert.assertTrue(credential.getKeyNames().contains(idpRSAPubKeyName));
+                    Assert.assertEquals(credential.getPublicKey(), idpRSAPubKey, "Unexpected value for public key");
+                    break;
+                case UNSPECIFIED:
+                    Assert.fail("Credential was resolved with an invalid usage");
+                    break;
+                default:
+            }
+        }
+        
+    }
+    
+    /**
+     * Test fails correctly when required inputs are missing.
+     * 
+     * @throws ResolverException
+     */
+    @Test(expectedExceptions=ResolverException.class)
+    public void testMissingRequiredInputs() throws ResolverException {
+        mdCredResolver.resolve(new CriteriaSet());
+    }
+    
+    /**
+     * Test fails correctly when required KeyInfo credential resolver is not configured
+     * 
+     * @throws ComponentInitializationException 
+     */
+    @Test(expectedExceptions=ComponentInitializationException.class)
+    public void testMissingKeyInfoCredentialResolver() throws ComponentInitializationException {
+        mdCredResolver = new MetadataCredentialResolver();
+        mdCredResolver.initialize();
+    }
+    
+    /**
+     * Test that fails when entityID+role name are supplied, but no role descriptor resolver was configured.
+     * 
+     * @throws ComponentInitializationException
+     * @throws ResolverException
+     */
+    @Test(expectedExceptions=ResolverException.class)
+    public void testMissingRequiredRoleDescriptorResolver() throws ComponentInitializationException, ResolverException {
+        mdCredResolver = new MetadataCredentialResolver();
+        mdCredResolver.setKeyInfoCredentialResolver(SAMLTestSupport.buildBasicInlineKeyInfoResolver());
+        mdCredResolver.initialize();
+        
+        mdCredResolver.resolve(criteriaSet);
+    }
+    
+    /**
      * Check expected entity ID and also that expected data is available from the metadata context.
      * 
      * @param credential the credential to evaluate
      * @param entityID the expected entity ID value
      * @param role the expected type of role from the context role descriptor data
+     * @param checkEntitiesDesc whether to check for and validate an EntitiesDescriptor grandparent
      */
-    private void checkContextAndID(Credential credential, String entityID, QName role) {
+    private void checkContextAndID(Credential credential, String entityID, QName role, boolean checkEntitiesDesc) {
         Assert.assertEquals(credential.getEntityId(), entityID, "Unexpected value found for credential entityID");
         
         SAMLMDCredentialContext mdContext = credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
@@ -595,11 +685,13 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         EntityDescriptor entityDescriptor = (EntityDescriptor) mdContext.getRoleDescriptor().getParent();
         Assert.assertEquals(entityDescriptor.getEntityID(), entityID, "Unexpected value for entity descriptor entity ID");
         
-        Assert.assertTrue(entityDescriptor.getParent() instanceof EntitiesDescriptor);
-        EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) entityDescriptor.getParent();
-        
-        Assert.assertNotNull(entitiesDescriptor.getExtensions());
-        Assert.assertNotNull(entitiesDescriptor.getExtensions().getUnknownXMLObjects().get(0));
+        if (checkEntitiesDesc) {
+            Assert.assertTrue(entityDescriptor.getParent() instanceof EntitiesDescriptor);
+            EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) entityDescriptor.getParent();
+            
+            Assert.assertNotNull(entitiesDescriptor.getExtensions());
+            Assert.assertNotNull(entitiesDescriptor.getExtensions().getUnknownXMLObjects().get(0));
+        }
     }
 
 }
