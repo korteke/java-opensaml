@@ -44,13 +44,8 @@ import com.google.common.base.Predicate;
  * 
  * <p>
  * In addition to the {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs documented in 
- * {@link BasicEncryptionParametersResolver}, the following inputs are also supported:
- * <ul>
- * <li>{@link org.opensaml.core.criterion.EntityIdCriterion} - required</li> 
- * <li>{@link org.opensaml.core.criterion.EntityRoleCriterion} - required</li> 
- * <li>{@link org.opensaml.core.criterion.ProtocolCriterion} - optional</li> 
- * <li>{@link org.opensaml.security.criteria.UsageCriterion} - optional</li> 
- * </ul>
+ * {@link BasicEncryptionParametersResolver}, the inputs and associated modes of operation documented for 
+ * {@link MetadataCredentialResolver} are also supported and required.
  * </p>
  */
 public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionParametersResolver {
