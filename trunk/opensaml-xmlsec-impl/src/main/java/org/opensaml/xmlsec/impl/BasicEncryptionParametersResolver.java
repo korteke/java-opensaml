@@ -211,9 +211,12 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         // Pre-resolve these for efficiency
         List<Credential> keyTransportCredentials = getEffectiveKeyTransportCredentials(criteria);
         List<String> keyTransportAlgorithms = getEffectiveKeyTransportAlgorithms(criteria, whitelistBlacklistPredicate);
+        log.trace("Resolved effective key transport algorithms: {}", keyTransportAlgorithms);
+        
         List<Credential> dataEncryptionCredentials = getEffectiveDataEncryptionCredentials(criteria);
         List<String> dataEncryptionAlgorithms = getEffectiveDataEncryptionAlgorithms(criteria, 
                 whitelistBlacklistPredicate);
+        log.trace("Resolved effective data encryption algorithms: {}", dataEncryptionAlgorithms);
         
         // Select the data encryption algorithm, and credential if exists
         if (dataEncryptionCredentials.isEmpty()) {
@@ -227,6 +230,10 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                     params.setDataEncryptionCredential(dataEncryptionCredential);
                     params.setDataEncryptionAlgorithmURI(dataEncryptionAlgorithm);
                     break;
+                } else {
+                    log.debug("Unable to resolve data encryption algorithm for credential with key type '{}', " 
+                            + "considering other credentials", 
+                            CredentialSupport.extractEncryptionKey(dataEncryptionCredential).getAlgorithm());
                 }
             }
         }
@@ -249,6 +256,8 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             }
         }
         
+        log.debug("Resolved key transport algorithm URI: {}", params.getKeyTransportEncryptionAlgorithmURI());
+        
         // Auto-generate data encryption cred if configured and possible
         processDataEncryptionCredentialAutoGeneration(params);
     }
@@ -269,7 +278,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         //TODO strategy for considering data encryption algorithm URI
         
         if (log.isTraceEnabled()) {
-            Key key = CredentialSupport.extractSigningKey(keyTransportCredential);
+            Key key = CredentialSupport.extractEncryptionKey(keyTransportCredential);
             log.trace("Evaluating key transport encryption credential of type: {}", 
                     key != null ? key.getAlgorithm() : "n/a");
         }
@@ -316,7 +325,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             @Nonnull final List<String> dataEncryptionAlgorithms) {
         
         if (log.isTraceEnabled()) {
-            Key key = CredentialSupport.extractSigningKey(dataEncryptionCredential);
+            Key key = CredentialSupport.extractEncryptionKey(dataEncryptionCredential);
             log.trace("Evaluating data encryption credential of type: {}", 
                     key != null ? key.getAlgorithm() : "n/a");
         }
@@ -387,6 +396,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      */
     @Nonnull protected List<String> getEffectiveDataEncryptionAlgorithms(@Nonnull final CriteriaSet criteria, 
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
         ArrayList<String> accumulator = new ArrayList<>();
         for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
                 .getConfigurations()) {
@@ -427,6 +437,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      */
     @Nonnull protected List<String> getEffectiveKeyTransportAlgorithms(@Nonnull final CriteriaSet criteria, 
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
         ArrayList<String> accumulator = new ArrayList<>();
         for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
                 .getConfigurations()) {
@@ -554,7 +565,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         try {
             return AlgorithmSupport.generateSymmetricKeyAndCredential(dataEncryptionAlgorithm);
         } catch (NoSuchAlgorithmException | KeyException e) {
-            log.warn("Could not generate a symmetric key credential from algorithm URI '{}'", dataEncryptionAlgorithm);
+            log.warn("Error generating a symmetric key credential using algorithm URI: " + dataEncryptionAlgorithm, e);
             return null;
         }
     }
