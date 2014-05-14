@@ -437,7 +437,13 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
                         new Object[] {entityID, role, protocol});
             }
             
-            return getRoleDescriptorResolver().resolve(criteriaSet);
+            // Construct a new criteria set with just the specific criteria we want considered.
+            CriteriaSet criteria = new CriteriaSet(new EntityIdCriterion(entityID), new EntityRoleCriterion(role));
+            if (protocol != null) {
+                criteria.add(new ProtocolCriterion(protocol));
+            }
+            
+            return getRoleDescriptorResolver().resolve(criteria);
 
         } catch (ResolverException e) {
             log.error("Unable to resolve information from metadata", e);
