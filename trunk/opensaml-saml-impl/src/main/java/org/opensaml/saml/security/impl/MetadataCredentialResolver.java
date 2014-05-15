@@ -258,7 +258,8 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             entityID = ((EntityDescriptor)roleDescriptor.getParent()).getEntityID();
         }
         
-        log.debug("Resolving credentials from supplied RoleDescriptor using entityID: {}, usage: {}", entityID, usage);
+        log.debug("Resolving credentials from supplied RoleDescriptor using usage: {}.  Effective entityID was: {}", 
+                usage, entityID);
         HashSet<Credential> credentials = new HashSet<Credential>(3);
         
         processRoleDescriptor(credentials, roleDescriptor, entityID, usage);
