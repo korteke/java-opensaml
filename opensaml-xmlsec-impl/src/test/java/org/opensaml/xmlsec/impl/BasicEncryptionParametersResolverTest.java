@@ -362,31 +362,42 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         Assert.assertFalse(iterator.hasNext());
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoCredentials() throws ResolverException {
-        resolver.resolve(criteriaSet);
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoKeyTransportAlgorithms() throws ResolverException {
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
         config3.setKeyTransportEncryptionAlgorithms(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoDataEncryptionAlgorithmForResolvedDataCredential() throws ResolverException {
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
         config1.setDataEncryptionCredentials(Lists.newArrayList(aes128Cred1));
         config3.setDataEncryptionAlgorithms(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoDataEncryptionAlgorithmForEncrypterAutoGen() throws ResolverException {
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
         config3.setDataEncryptionAlgorithms(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

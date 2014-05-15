@@ -34,6 +34,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
+import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -75,6 +76,9 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     private Credential rsaCred1;
     private String rsaCred1KeyName = "RSACred1";
     
+    private Credential dsaCred1;
+    private String dsaCred1KeyName = "DSACred1";
+    
     private String defaultRSAKeyTransportAlgo = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP;
     private String defaultAES128DataAlgo = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
     private String defaultAES192DataAlgo = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192;
@@ -94,6 +98,10 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         KeyPair rsaKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null);
         rsaCred1 = CredentialSupport.getSimpleCredential(rsaKeyPair.getPublic(), null);
         rsaCred1.getKeyNames().add(rsaCred1KeyName);
+        
+        KeyPair dsaKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null);
+        dsaCred1 = CredentialSupport.getSimpleCredential(dsaKeyPair.getPublic(), null);
+        dsaCred1.getKeyNames().add(dsaCred1KeyName);
     }
     
     @BeforeMethod
@@ -241,19 +249,116 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
     }
     
-    @Test(enabled=false)
-    public void testEncryptionMethod() {
-        Assert.fail("TODO");
+    @Test
+    public void testEncryptionMethod() throws ResolverException {
+        KeyDescriptor keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
-    @Test(enabled=false)
-    public void testEncryptionMethodWithBlacklist() {
-        Assert.fail("TODO");
+    @Test
+    public void testEncryptionMethodWithBlacklist() throws ResolverException {
+        KeyDescriptor keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
+        
+        config1.setBlacklistedAlgorithmURIs(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), defaultRSAKeyTransportAlgo);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
-    @Test(enabled=false)
-    public void testEncryptionMethodWithWhitelist() {
-        Assert.fail("TODO");
+    @Test
+    public void testEncryptionMethodWithWhitelist() throws ResolverException {
+        KeyDescriptor keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
+        
+        config1.setWhitelistedAlgorithmURIs(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testMultipleKeyDescriptors() throws ResolverException {
+        roleDesc.getKeyDescriptors().add(buildKeyDescriptor(dsaCred1KeyName, UsageType.SIGNING, dsaCred1.getPublicKey()));
+        roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), defaultRSAKeyTransportAlgo);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testOnlySigningDescriptor() throws ResolverException {
+        roleDesc.getKeyDescriptors().add(buildKeyDescriptor(dsaCred1KeyName, UsageType.SIGNING, dsaCred1.getPublicKey()));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
+    }
+    
+    @Test
+    public void testDSACredWithUnspecifiedUse() throws ResolverException {
+        roleDesc.getKeyDescriptors().add(buildKeyDescriptor(dsaCred1KeyName, null, dsaCred1.getPublicKey()));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
+    }
+    
+    @Test
+    public void testRSACredWithUnspecifiedUse() throws ResolverException {
+        roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, null, rsaCred1.getPublicKey()));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), defaultRSAKeyTransportAlgo);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
     @Test
@@ -316,23 +421,31 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertFalse(iterator.hasNext());
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoCredentials() throws ResolverException {
-        resolver.resolve(criteriaSet);
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoKeyTransportAlgorithms() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey())); 
         config3.setKeyTransportEncryptionAlgorithms(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoDataEncryptionAlgorithmForEncrypterAutoGen() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey())); 
         config3.setDataEncryptionAlgorithms(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
@@ -389,6 +502,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         }
         
         return keyDesc;
+    }
+    
+    private EncryptionMethod buildEncryptionMethod(String algorithm) {
+       EncryptionMethod encMethod = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME); 
+       encMethod.setAlgorithm(algorithm);
+       return encMethod;
     }
 
 }

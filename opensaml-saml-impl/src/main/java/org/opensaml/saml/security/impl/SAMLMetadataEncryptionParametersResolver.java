@@ -97,6 +97,13 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         // it ought to be used for symmetric key wrap, not direct data encryption.
         try {
             for (Credential keyTransportCredential : getMetadataCredentialResolver().resolve(mdCredResolverCriteria)) {
+                
+                if (log.isTraceEnabled()) {
+                    Key key = CredentialSupport.extractEncryptionKey(keyTransportCredential);
+                    log.trace("Evaluating key transport encryption credential from SAML metadata of type: {}", 
+                            key != null ? key.getAlgorithm() : "n/a");
+                }
+                
                 SAMLMDCredentialContext metadataCredContext = 
                         keyTransportCredential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
                 
@@ -110,10 +117,6 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                             + "considering other credentials", 
                             CredentialSupport.extractEncryptionKey(keyTransportCredential).getAlgorithm());
                     continue;
-                }
-                
-                if (dataEncryptionAlgorithm == null) {
-                    log.debug("Unable to resolve data encryption algorithm URI, encryption will use internal defaults");
                 }
                 
                 params.setKeyTransportEncryptionCredential(keyTransportCredential);
@@ -156,8 +159,11 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         if (metadataCredContext != null) {
             for (EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
                 String algorithm = encryptionMethod.getAlgorithm();
+                log.trace("Evaluating SAML metadata EncryptionMethod algorithm for key transport: {}", algorithm);
                 if (isKeyTransportAlgorithm(algorithm) && whitelistBlacklistPredicate.apply(algorithm) 
                         && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)) {
+                    log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
+                            algorithm);
                     return algorithm;
                 }
             }
@@ -188,7 +194,10 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         if (metadataCredContext != null) {
             for (EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
                 String algorithm = encryptionMethod.getAlgorithm();
+                log.trace("Evaluating SAML metadata EncryptionMethod algorithm for data encryption: {}", algorithm);
                 if (isDataEncryptionAlgorithm(algorithm) && whitelistBlacklistPredicate.apply(algorithm)) {
+                    log.debug("Resolved data encryption algorithm URI from SAML metadata EncryptionMethod: {}",
+                            algorithm);
                     return algorithm;
                 }
             }

@@ -152,37 +152,83 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                     params.getKeyTransportEncryptionCredential()));
         }
         
-        validate(params);
+        if (validate(params)) {
+            logResult(params);
+            return params;
+        } else {
+            return null;
+        }
         
-        return params;
-        
+    }
+
+    /**
+     * Log the resolved parameters.
+     * 
+     * @param params the resolved param
+     */
+    protected void logResult(EncryptionParameters params) {
+        if (log.isDebugEnabled()) {
+            log.debug("Resolved EncryptionParameters:");
+            
+            Key keyTransportKey = CredentialSupport.extractEncryptionKey(params.getKeyTransportEncryptionCredential());
+            if (keyTransportKey != null) {
+                log.debug("\tKey transport credential with key algorithm: {}", keyTransportKey.getAlgorithm());
+            } else {
+                log.debug("\tKey transport credential: null"); 
+            }
+            
+            log.debug("\tKey transport algorithm URI: {}", params.getKeyTransportEncryptionAlgorithmURI()); 
+            
+            log.debug("\tKey transport KeyInfoGenerator: {}", 
+                    params.getKeyTransportKeyInfoGenerator() != null ? "present" : "null");
+            
+            Key dataKey = CredentialSupport.extractEncryptionKey(params.getDataEncryptionCredential());
+            if (dataKey != null) {
+                log.debug("\tData encryption credential with key algorithm: {}", dataKey.getAlgorithm());
+            } else {
+                log.debug("\tData encryption credential: null"); 
+            }
+            
+            log.debug("\tData encryption algorithm URI: {}", params.getDataEncryptionAlgorithmURI());
+            
+            log.debug("\tData encryption KeyInfoGenerator: {}", 
+                    params.getDataKeyInfoGenerator() != null ? "present" : "null");
+            
+        }
     }
 
     /**
      * Validate that the {@link EncryptionParameters} instance has all the required properties populated.
      * 
      * @param params the parameters instance to evaluate
-     * @throws ResolverException if params instance is not populated with all required data
+     * 
+     * @return true if parametesr passes validation, false otherwise
      */
-    protected void validate(@Nonnull final EncryptionParameters params) throws ResolverException {
+    protected boolean validate(@Nonnull final EncryptionParameters params) {
         if (params.getKeyTransportEncryptionCredential() == null 
                 && params.getDataEncryptionCredential() == null) {
-            throw new ResolverException("Failed to resolve both a data and a key encryption credential");
+            log.warn("Validation failure: Failed to resolve both a data and a key encryption credential");
+            return false;
         }
         if (params.getKeyTransportEncryptionCredential() != null 
                 && params.getKeyTransportEncryptionAlgorithmURI() == null) {
-            throw new ResolverException("Unable to resolve key encryption algorithm URI for credential");
+            log.warn("Validation failure: Unable to resolve key encryption algorithm URI for credential");
+            return false;
         }
         if (params.getDataEncryptionCredential() != null 
                 && params.getDataEncryptionAlgorithmURI() == null) {
-            throw new ResolverException("Unable to resolve data encryption algorithm URI for credential");
+            log.warn("Validation failure: Unable to resolve data encryption algorithm URI for credential");
+            return false;
         }
         if (params.getKeyTransportEncryptionCredential() != null 
                 && params.getDataEncryptionCredential() == null
                 && params.getDataEncryptionAlgorithmURI() == null) {
-            throw new ResolverException("Unable to resolve a data encryption algorithm URI " 
-                    + "for auto-generation of data encryption key");
+            log.warn("Validation failure: Unable to resolve a data encryption algorithm URI " 
+                + "for auto-generation of data encryption key");
+            return false;
         }
+        
+        return true;
     }
 
     /**
@@ -238,8 +284,6 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             }
         }
         
-        log.debug("Resolved data encryption algorithm URI: {}", params.getDataEncryptionAlgorithmURI());
-        
         // Select key encryption cred and algorithm
         for (Credential keyTransportCredential : keyTransportCredentials) {
             String keyTransportAlgorithm = resolveKeyTransportAlgorithm(keyTransportCredential, keyTransportAlgorithms, 
@@ -255,8 +299,6 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                         CredentialSupport.extractEncryptionKey(keyTransportCredential).getAlgorithm());
             }
         }
-        
-        log.debug("Resolved key transport algorithm URI: {}", params.getKeyTransportEncryptionAlgorithmURI());
         
         // Auto-generate data encryption cred if configured and possible
         processDataEncryptionCredentialAutoGeneration(params);
