@@ -202,7 +202,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param params the parameters instance to evaluate
      * 
-     * @return true if parametesr passes validation, false otherwise
+     * @return true if parameters instance passes validation, false otherwise
      */
     protected boolean validate(@Nonnull final EncryptionParameters params) {
         if (params.getKeyTransportEncryptionCredential() == null 
