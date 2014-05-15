@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 
@@ -27,12 +28,16 @@ import java.security.NoSuchProviderException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.saml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.AttributeStatement;
+import org.opensaml.saml.saml2.core.EncryptedAttribute;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.opensaml.saml.saml2.profile.context.EncryptionContext;
@@ -45,14 +50,23 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 import com.google.common.base.Strings;
 
-/** Unit test for {@link EncryptAssertions}. */
-public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
+/** Unit test for {@link EncryptAttributes}. */
+public class EncryptAttributesTest extends OpenSAMLInitBaseTestCase {
+    
+    private SAMLObjectBuilder<Attribute> builder;
     
     private EncryptionParameters encParams;
     
     private ProfileRequestContext<Object,Response> prc;
     
-    private EncryptAssertions action;
+    private EncryptAttributes action;
+    
+    @BeforeClass
+    public void setUpClass() {
+        builder = (SAMLObjectBuilder<Attribute>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>getBuilderOrThrow(
+                        Attribute.DEFAULT_ELEMENT_NAME);
+    }
     
     @BeforeMethod
     public void setUp() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -69,9 +83,9 @@ public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
         encParams.setKeyTransportKeyInfoGenerator(generator.newInstance());
         
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getOutboundMessageContext().getSubcontext(EncryptionContext.class, true).setAssertionEncryptionParameters(encParams);
+        prc.getOutboundMessageContext().getSubcontext(EncryptionContext.class, true).setAttributeEncryptionParameters(encParams);
         
-        action = new EncryptAssertions();
+        action = new EncryptAttributes();
     }
     
     @Test
@@ -87,20 +101,24 @@ public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
     }
         
     @Test
-    public void testEncryptedAssertion() throws EncryptionException, ComponentInitializationException, MarshallingException {
+    public void testEncryptedAttributes() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         prc.getOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
-        response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
+        final AttributeStatement statement = SAML2ActionTestingSupport.buildAttributeStatement();
+        response.getAssertions().get(0).getAttributeStatements().add(statement);
+        
+        statement.getAttributes().add(builder.buildObject());
+        statement.getAttributes().add(builder.buildObject());
+        
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertEquals(response.getAssertions().size(), 0);
-        Assert.assertEquals(response.getEncryptedAssertions().size(), 2);
+        Assert.assertEquals(statement.getEncryptedAttributes().size(), 2);
         
-        final EncryptedAssertion encTarget = response.getEncryptedAssertions().get(0);
+        final EncryptedAttribute encTarget = statement.getEncryptedAttributes().get(0);
 
         Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
         Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(),
@@ -117,7 +135,12 @@ public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         prc.getOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
-        response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
+        final AttributeStatement statement = SAML2ActionTestingSupport.buildAttributeStatement();
+        response.getAssertions().get(0).getAttributeStatements().add(statement);
+        
+        statement.getAttributes().add(builder.buildObject());
+        statement.getAttributes().add(builder.buildObject());
+
         action.initialize();
         
         encParams.setKeyTransportEncryptionCredential(null);
@@ -125,8 +148,8 @@ public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.UNABLE_TO_ENCRYPT);
         
-        Assert.assertEquals(response.getAssertions().size(), 2);
-        Assert.assertEquals(response.getEncryptedAssertions().size(), 0);
+        Assert.assertEquals(statement.getAttributes().size(), 2);
+        Assert.assertEquals(statement.getEncryptedAttributes().size(), 0);
     }
     
 }
