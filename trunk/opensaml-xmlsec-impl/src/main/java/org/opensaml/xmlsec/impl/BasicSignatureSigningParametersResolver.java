@@ -34,6 +34,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
@@ -133,30 +134,63 @@ public class BasicSignatureSigningParametersResolver
             params.setDSAParams(resolveDSAParams(criteria, params.getSigningCredential()));
         }
         
-        validate(params);
-        
-        return params;
+        if (validate(params)) {
+            logResult(params);
+            return params;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Log the resolved parameters.
+     * 
+     * @param params the resolved param
+     */
+    protected void logResult(SignatureSigningParameters params) {
+        if (log.isDebugEnabled()) {
+            log.debug("Resolved SignatureSigningParameters:");
+            
+            Key signingKey = CredentialSupport.extractSigningKey(params.getSigningCredential());
+            if (signingKey != null) {
+                log.debug("\tSigning credential with key algorithm: {}", signingKey.getAlgorithm());
+            } else {
+                log.debug("\tSigning credential: null"); 
+            }
+            
+            log.debug("\tSignature algorithm URI: {}", params.getSignatureAlgorithmURI()); 
+            
+            log.debug("\tSignature KeyInfoGenerator: {}", params.getKeyInfoGenerator() != null ? "present" : "null");
+            
+            log.debug("\tReference digest method algorithm URI: {}", params.getSignatureReferenceDigestMethod()); 
+            log.debug("\tCanonicalization algorithm URI: {}", params.getSignatureCanonicalizationAlgorithm()); 
+            log.debug("\tHMAC output length: {}", params.getSignatureHMACOutputLength()); 
+        }
     }
     
     /**
      * Validate that the {@link SignatureSigningParameters} instance has all the required properties populated.
      * 
      * @param params the parameters instance to evaluate
-     * @throws ResolverException if params instance is not populated with all required data
      */
-    protected void validate(@Nonnull final SignatureSigningParameters params) throws ResolverException {
+    protected boolean validate(@Nonnull final SignatureSigningParameters params) {
         if (params.getSigningCredential() == null) {
-            throw new ResolverException("Unable to resolve signing credential");
+            log.warn("Validation failure: Unable to resolve signing credential");
+            return false;
         }
         if (params.getSignatureAlgorithmURI() == null) {
-            throw new ResolverException("Unable to resolve signing algorithm URI");
+            log.warn("Validation failure: Unable to resolve signing algorithm URI");
+            return false;
         }
         if (params.getSignatureCanonicalizationAlgorithm() == null) {
-            throw new ResolverException("Unable to resolve signing canonicalization algorithm URI");
+            log.warn("Validation failure: Unable to resolve signing canonicalization algorithm URI");
+            return false;
         }
         if (params.getSignatureReferenceDigestMethod() == null) {
-            throw new ResolverException("Unable to resolve reference digest algorithm URI");
+            log.warn("Validation failure: Unable to resolve reference digest algorithm URI");
+            return false;
         }
+        return true;
     }
 
     /**

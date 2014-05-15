@@ -405,30 +405,41 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         Assert.assertFalse(iterator.hasNext());
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoCredentials() throws ResolverException {
-        resolver.resolve(criteriaSet);
+        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoAlgorithms() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
         config3.setSignatureAlgorithms(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoReferenceDigestMethods() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
         config3.setSignatureReferenceDigestMethods(new ArrayList<String>());
-        resolver.resolve(criteriaSet);
+        
+        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ResolverException.class)
+    @Test
     public void testNoC14NAlgorithm() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
         config3.setSignatureCanonicalizationAlgorithm(null);
-        resolver.resolve(criteriaSet);
+        
+        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
