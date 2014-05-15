@@ -30,6 +30,8 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.impl.BasicEncryptionParametersResolver;
@@ -47,6 +49,12 @@ import com.google.common.base.Predicate;
  * {@link BasicEncryptionParametersResolver}, the inputs and associated modes of operation documented for 
  * {@link MetadataCredentialResolver} are also supported and required.
  * </p>
+ * 
+ * <p>The {@link CriteriaSet} instance passed to the configured metadata credential resolver will be a copy 
+ * of the input criteria set, with the addition of a {@link UsageCriterion} containing the value
+ * {@link UsageType#ENCRYPTION}, which will replace any existing usage criterion instance.
+ * </p>
+ * 
  */
 public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionParametersResolver {
     
@@ -78,11 +86,17 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     protected void resolveAndPopulateCredentialsAndAlgorithms(@Nonnull final EncryptionParameters params,
             @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
         
+        // Create a new CriteriaSet for input to the metadata credential resolver, explicitly 
+        // setting/forcing an encryption usage criterion.
+        CriteriaSet mdCredResolverCriteria = new CriteriaSet();
+        mdCredResolverCriteria.addAll(criteria);
+        mdCredResolverCriteria.add(new UsageCriterion(UsageType.ENCRYPTION), true);
+        
         // Note: Here we assume that we will only ever resolve a key transport credential from metadata.
         // Even if it's a symmetric key credential (via a key agreement protocol, or resolved from a KeyName, etc),
         // it ought to be used for symmetric key wrap, not direct data encryption.
         try {
-            for (Credential keyTransportCredential : getMetadataCredentialResolver().resolve(criteria)) {
+            for (Credential keyTransportCredential : getMetadataCredentialResolver().resolve(mdCredResolverCriteria)) {
                 SAMLMDCredentialContext metadataCredContext = 
                         keyTransportCredential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
                 
