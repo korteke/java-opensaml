@@ -34,7 +34,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
@@ -172,6 +171,8 @@ public class BasicSignatureSigningParametersResolver
      * Validate that the {@link SignatureSigningParameters} instance has all the required properties populated.
      * 
      * @param params the parameters instance to evaluate
+     * 
+     * @return true if parameters instance passes validation, false otherwise
      */
     protected boolean validate(@Nonnull final SignatureSigningParameters params) {
         if (params.getSigningCredential() == null) {
