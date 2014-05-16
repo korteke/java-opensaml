@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Represents a versioned record in a {@link StorageService}.
@@ -96,6 +97,15 @@ public class StorageRecord<Type> {
     }
 
     /**
+     * Set the record version.
+     * 
+     * @param ver   the new record version, must be > 0
+     */
+    protected void setVersion(final int ver) {
+        version = (int) Constraint.isGreaterThan(0, ver, "Version must be greater than zero");
+    }
+    
+    /**
      * Set the record value.
      * 
      * @param val   the new record value
@@ -133,5 +143,4 @@ public class StorageRecord<Type> {
     protected int incrementVersion() {
         return ++version;
     }
-    
 }
