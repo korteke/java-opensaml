@@ -22,10 +22,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.xmlsec.DecryptionConfiguration;
-import org.opensaml.xmlsec.EncryptionConfiguration;
-import org.opensaml.xmlsec.SignatureSigningConfiguration;
-import org.opensaml.xmlsec.SignatureValidationConfiguration;
 import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -49,10 +45,14 @@ import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 
 /**
- * A utility class which programatically builds an instance of {@link BasicSecurityConfiguration}
- * which has reasonable default values for the various configuration parameters.
+ * A utility class which programmatically builds basic instances of various components 
+ * related to security configuration which have reasonable default values for their 
+ * various configuration parameters.
  */
 public class DefaultSecurityConfigurationBootstrap {
     
@@ -84,12 +84,30 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a new basic configuration with reasonable default values
      */
-    @Nonnull public static EncryptionConfiguration buildDefaultEncryptionConfiguration() {
+    @Nonnull public static BasicEncryptionConfiguration buildDefaultEncryptionConfiguration() {
         BasicEncryptionConfiguration config = new BasicEncryptionConfiguration();
         
-        //TODO blacklist anything by default?
-        //TODO various data and key transport algo URI prefs, when API is stabilized
-        //TODO auto-generated data enc URI prefs
+        config.setDataEncryptionAlgorithms(Lists.newArrayList(
+                // The order of these is significant.
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES
+                ));
+        
+        config.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(
+                // The order of the RSA algos is significant.
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP,
+                EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15,
+                
+                // The order of these is not significant.
+                // These aren't really "preferences" per se. They just need to be registered 
+                // so that they can be used if a credential with a key of that type and size is seen.
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES128,
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES192,
+                EncryptionConstants.ALGO_ID_KEYWRAP_AES256,
+                EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES
+                ));
         
         config.setDataKeyInfoGeneratorManager(buildDataEncryptionKeyInfoGeneratorManager());
         config.setKeyTransportKeyInfoGeneratorManager(buildKeyTransportEncryptionKeyInfoGeneratorManager());
@@ -102,10 +120,8 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a new basic configuration with reasonable default values
      */
-    @Nonnull public static DecryptionConfiguration buildDefaultDecryptionConfiguration() {
+    @Nonnull public static BasicDecryptionConfiguration buildDefaultDecryptionConfiguration() {
         BasicDecryptionConfiguration config = new BasicDecryptionConfiguration();
-        
-        //TODO blacklist anything by default?
         
         config.setDataKeyInfoCredentialResolver(buildEncryptionDataKeyInfoCredentialResolver());
         config.setKEKKeyInfoCredentialResolver(buildEncryptionKEKKeyInfoCredentialResolver());
@@ -119,15 +135,52 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a new basic configuration with reasonable default values
      */
-    @Nonnull public static SignatureSigningConfiguration buildDefaultSignatureSigningConfiguration() {
+    @Nonnull public static BasicSignatureSigningConfiguration buildDefaultSignatureSigningConfiguration() {
         BasicSignatureSigningConfiguration config = new BasicSignatureSigningConfiguration();
         
-        //TODO blacklist anything by default?
-        //TODO various signing method algo URI prefs, when API is stabilized
-        //TODO various digest method algo URI prefs, when API is stabilized
-        //TODO various C14N algo URI prefs, when API is stabilized
-        //TODO what to do about DSAParams?
-        //TODO default HMAC output length?
+        config.setBlacklistedAlgorithmURIs(Sets.newHashSet(
+                SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
+                SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
+                SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5
+                ));
+        
+        config.setSignatureAlgorithms(Lists.newArrayList(
+                // The order within each key group is significant.
+                // The order of the key groups themselves is not significant.
+                
+                // RSA
+                SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256,
+                SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384,
+                SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512,
+                SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1,
+                
+                // ECDSA
+                SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256,
+                SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384,
+                SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512,
+                SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1,
+                
+                // DSA
+                SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1,
+                
+                // HMAC (all symmetric keys)
+                SignatureConstants.ALGO_ID_MAC_HMAC_SHA256,
+                SignatureConstants.ALGO_ID_MAC_HMAC_SHA384,
+                SignatureConstants.ALGO_ID_MAC_HMAC_SHA512,
+                SignatureConstants.ALGO_ID_MAC_HMAC_SHA1,
+                SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160
+                ));
+        
+        config.setSignatureReferenceDigestMethods(Lists.newArrayList(
+                // The order of these is significant.
+                SignatureConstants.ALGO_ID_DIGEST_SHA256,
+                SignatureConstants.ALGO_ID_DIGEST_SHA384,
+                SignatureConstants.ALGO_ID_DIGEST_SHA512,
+                SignatureConstants.ALGO_ID_DIGEST_SHA1,
+                SignatureConstants.ALGO_ID_DIGEST_RIPEMD160
+                ));
+        
+        config.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         
         config.setKeyInfoGeneratorManager(buildSignatureKeyInfoGeneratorManager());
         
@@ -139,10 +192,14 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a new basic configuration with reasonable default values
      */
-    @Nonnull public static SignatureValidationConfiguration buildDefaultSignatureValidationConfiguration() {
+    @Nonnull public static BasicSignatureValidationConfiguration buildDefaultSignatureValidationConfiguration() {
         BasicSignatureValidationConfiguration config = new BasicSignatureValidationConfiguration();
         
-        //TODO blacklist anything by default?
+        config.setBlacklistedAlgorithmURIs(Sets.newHashSet(
+                SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
+                SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
+                SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5
+                ));
         
         return config;
     }
@@ -266,7 +323,7 @@ public class DefaultSecurityConfigurationBootstrap {
     
     /**
      * Build a basic {@link NamedKeyInfoGeneratorManager} for use when generating an
-     * {@link org.opensaml.xmlsec.encryption.EncryptedData}.
+     * {@link org.opensaml.xmlsec.encryption.EncryptedKey}.
      * 
      * @return a named KeyInfo generator manager instance
      */
