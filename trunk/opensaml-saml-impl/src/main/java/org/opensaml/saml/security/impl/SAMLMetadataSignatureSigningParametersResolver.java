@@ -82,18 +82,39 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         
         for (XMLObject xmlObject : signingMethods) {
             SigningMethod signingMethod = (SigningMethod) xmlObject;
+            
+            log.trace("Evaluating SAML metadata SigningMethod with algorithm: {}, minKeySize: {}, maxKeySize: {}", 
+                    signingMethod.getAlgorithm(), signingMethod.getMinKeySize(), signingMethod.getMaxKeySize());
+            
             if (signingMethod.getAlgorithm() == null 
                     || !whitelistBlacklistPredicate.apply(signingMethod.getAlgorithm())) {
                 continue;
             }
+            
             for (Credential credential : credentials) {
+                
+                if (log.isTraceEnabled()) {
+                    Key key = CredentialSupport.extractSigningKey(credential);
+                    log.trace("Evaluating credential of type: {}, with length: {}", 
+                            key != null ? key.getAlgorithm() : "n/a",
+                            KeySupport.getKeyLength(key));
+                }
+                
                 if (credentialSupportsSigningMethod(credential, signingMethod)) {
+                    log.trace("Credential passed eval against SigningMethod");
+                    log.debug("Resolved signature algorithm URI from SAML metadata SigningMethod: {}",
+                            signingMethod.getAlgorithm());
                     params.setSigningCredential(credential);
                     params.setSignatureAlgorithmURI(signingMethod.getAlgorithm());
                     return;
+                } else {
+                    log.trace("Credential failed eval against SigningMethod");
                 }
             }
         }
+        
+        log.debug("Could not resolve signing credential and algorithm based on SAML metadata, " 
+                + "falling back to locally configured algorithms");
         
         super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
     }
@@ -125,10 +146,12 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             }
             
             if (signingMethod.getMinKeySize() != null && keyLength < signingMethod.getMinKeySize()) {
+                log.trace("Candidate signing credential does not meet minKeySize requirement");
                 return false;
             }
             
             if (signingMethod.getMaxKeySize() != null && keyLength > signingMethod.getMaxKeySize()) {
+                log.trace("Candidate signing credential does not meet maxKeySize requirement");
                 return false;
             }
         }
@@ -152,10 +175,18 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         
         for (XMLObject xmlObject : digestMethods) {
             DigestMethod digestMethod = (DigestMethod) xmlObject;
+            
+            log.trace("Evaluating SAML metadata DigestMethod with algorithm: {}", digestMethod.getAlgorithm());
+            
             if (digestMethod.getAlgorithm() != null && whitelistBlacklistPredicate.apply(digestMethod.getAlgorithm())) {
+                log.debug("Resolved reference digest method algorithm URI from SAML metadata DigestMethod: {}",
+                        digestMethod.getAlgorithm());
                 return digestMethod.getAlgorithm();
             }
         }
+        
+        log.debug("Could not resolve signature reference digest method algorithm based on SAML metadata, " 
+                + "falling back to locally configured algorithms");
         
         return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
     }
@@ -177,6 +208,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         if (extensions != null) {
             result = extensions.getUnknownXMLObjects(extensionName);
             if (!result.isEmpty()) {
+                log.trace("Resolved extensions from RoleDescriptor: {}", extensionName);
                 return result;
             }
         }
@@ -186,6 +218,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             if (extensions != null) {
                 result = extensions.getUnknownXMLObjects(extensionName);
                 if (!result.isEmpty()) {
+                    log.trace("Resolved extensions from parent EntityDescriptor: {}", extensionName);
                     return result;
                 }
             }
