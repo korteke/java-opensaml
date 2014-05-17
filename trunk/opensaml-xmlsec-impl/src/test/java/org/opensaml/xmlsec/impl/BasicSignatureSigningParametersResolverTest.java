@@ -131,7 +131,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -148,7 +148,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -158,7 +158,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     @Test
     public void testRSAWithBlacklist() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA1));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA1));
         
         // Deliberately putting SHA-1 variants first here.  They should be filtered out.
         config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
@@ -168,7 +168,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -178,7 +178,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     @Test
     public void testRSAWithWhitelist() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred));
-        config1.setWhitelistedAlgorithmURIs(Sets.newHashSet(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, SignatureConstants.ALGO_ID_DIGEST_SHA256));
+        config1.setWhitelistedAlgorithms(Sets.newHashSet(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
         // Deliberately putting SHA-1 variants first here.  They should be filtered out.
         config2.setSignatureAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
@@ -188,7 +188,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -203,7 +203,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), dsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultDSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -220,7 +220,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
             
             Assert.assertNotNull(params);
             Assert.assertEquals(params.getSigningCredential(), ecCred);
-            Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultECAlgo);
+            Assert.assertEquals(params.getSignatureAlgorithm(), defaultECAlgo);
             Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
             Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
             Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -236,7 +236,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), hmacCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultHMACAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultHMACAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertEquals(params.getSignatureHMACOutputLength(), defaultHMACOutputLength);
@@ -255,7 +255,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), hmacCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertEquals(params.getSignatureHMACOutputLength(), new Integer(160));
@@ -272,7 +272,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), SignatureConstants.ALGO_ID_C14N11_WITH_COMMENTS);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -288,7 +288,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -300,7 +300,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), dsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultDSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -314,7 +314,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
             
             Assert.assertNotNull(params);
             Assert.assertEquals(params.getSigningCredential(), ecCred);
-            Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultECAlgo);
+            Assert.assertEquals(params.getSignatureAlgorithm(), defaultECAlgo);
             Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
             Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
             Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -327,7 +327,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), hmacCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultHMACAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultHMACAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertEquals(params.getSignatureHMACOutputLength(), defaultHMACOutputLength);
@@ -345,7 +345,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), dsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultDSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -394,7 +394,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());

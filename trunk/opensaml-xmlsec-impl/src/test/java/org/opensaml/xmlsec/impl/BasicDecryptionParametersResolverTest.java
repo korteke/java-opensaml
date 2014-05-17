@@ -157,7 +157,7 @@ public class BasicDecryptionParametersResolverTest {
     
     @Test
     public void testResolve() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
         config1.setDataKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);
@@ -176,17 +176,17 @@ public class BasicDecryptionParametersResolverTest {
         Assert.assertTrue(params.getDataKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getKEKKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getEncryptedKeyResolver() == controlEncKeyResolver1);
-        Assert.assertTrue(params.getWhitelistedAlgorithmURIs().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("bar"));
+        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
+        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
         
         Assert.assertFalse(iterator.hasNext());
     }
     
     @Test
     public void testResolveSingle() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
         config1.setDataKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);
@@ -197,10 +197,10 @@ public class BasicDecryptionParametersResolverTest {
         Assert.assertTrue(params.getDataKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getKEKKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getEncryptedKeyResolver() == controlEncKeyResolver1);
-        Assert.assertTrue(params.getWhitelistedAlgorithmURIs().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("bar"));
+        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
+        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

@@ -151,7 +151,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -168,7 +168,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -185,7 +185,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -202,7 +202,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -219,7 +219,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -230,7 +230,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     public void testRSAWithSigningMethodBlacklisted() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred2048));
         
-        config1.setBlacklistedAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
+        config1.setBlacklistedAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5, null, null));
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1, null, null));
@@ -240,7 +240,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -251,7 +251,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     public void testRSAWithDigestMethodBlacklisted() throws ResolverException {
         config1.setSigningCredentials(Lists.newArrayList(rsaCred2048));
         
-        config1.setBlacklistedAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
+        config1.setBlacklistedAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
         
         addRoleDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
         
@@ -259,7 +259,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultRSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -271,7 +271,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         if (ecCred != null) {
             config1.setSigningCredentials(Lists.newArrayList(rsaCred2048, dsaCred, ecCred));
             
-            config1.setWhitelistedAlgorithmURIs(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, defaultReferenceDigest));
+            config1.setWhitelistedAlgorithms(Lists.newArrayList(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, defaultReferenceDigest));
             
             addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512, null, null));
             addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
@@ -281,7 +281,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
             
             Assert.assertNotNull(params);
             Assert.assertEquals(params.getSigningCredential(), ecCred);
-            Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256);
+            Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256);
             Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
             Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
             Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -299,7 +299,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), dsaCred);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), defaultDSAAlgo);
+        Assert.assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -316,7 +316,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred4096);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());
@@ -333,7 +333,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getSigningCredential(), rsaCred1024);
-        Assert.assertEquals(params.getSignatureAlgorithmURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
         Assert.assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
         Assert.assertNull(params.getSignatureHMACOutputLength());

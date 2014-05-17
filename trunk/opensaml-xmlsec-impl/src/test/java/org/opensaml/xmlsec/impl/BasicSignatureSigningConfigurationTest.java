@@ -61,8 +61,8 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertTrue(config.getSigningCredentials().isEmpty());
         
-        Assert.assertNotNull(config.getSignatureAlgorithmURIs());
-        Assert.assertTrue(config.getSignatureAlgorithmURIs().isEmpty());
+        Assert.assertNotNull(config.getSignatureAlgorithms());
+        Assert.assertTrue(config.getSignatureAlgorithms().isEmpty());
         
         Assert.assertNotNull(config.getSignatureReferenceDigestMethods());
         Assert.assertTrue(config.getSignatureReferenceDigestMethods().isEmpty());
@@ -96,27 +96,27 @@ public class BasicSignatureSigningConfigurationTest {
 
     @Test
     public void testSignatureAlgorithmURIs() {
-        Assert.assertNotNull(config.getSignatureAlgorithmURIs());
-        Assert.assertEquals(config.getSignatureAlgorithmURIs().size(), 0);
+        Assert.assertNotNull(config.getSignatureAlgorithms());
+        Assert.assertEquals(config.getSignatureAlgorithms().size(), 0);
         
         config.setSignatureAlgorithms(Lists.newArrayList("  A   ", null, null, "  B   ", null, "  C   "));
         
-        Assert.assertNotNull(config.getSignatureAlgorithmURIs());
-        Assert.assertEquals(config.getSignatureAlgorithmURIs().size(), 3);
-        Assert.assertEquals(config.getSignatureAlgorithmURIs().get(0), "A");
-        Assert.assertEquals(config.getSignatureAlgorithmURIs().get(1), "B");
-        Assert.assertEquals(config.getSignatureAlgorithmURIs().get(2), "C");
+        Assert.assertNotNull(config.getSignatureAlgorithms());
+        Assert.assertEquals(config.getSignatureAlgorithms().size(), 3);
+        Assert.assertEquals(config.getSignatureAlgorithms().get(0), "A");
+        Assert.assertEquals(config.getSignatureAlgorithms().get(1), "B");
+        Assert.assertEquals(config.getSignatureAlgorithms().get(2), "C");
         
         config.setSignatureAlgorithms(null);
         
-        Assert.assertNotNull(config.getSignatureAlgorithmURIs());
-        Assert.assertEquals(config.getSignatureAlgorithmURIs().size(), 0);
+        Assert.assertNotNull(config.getSignatureAlgorithms());
+        Assert.assertEquals(config.getSignatureAlgorithms().size(), 0);
     }
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSignatureAlgorithmURIsImmutable() {
         config.setSignatureAlgorithms(Lists.newArrayList("A", "B", "C"));
-        config.getSignatureAlgorithmURIs().add("D");
+        config.getSignatureAlgorithms().add("D");
     }
 
     @Test

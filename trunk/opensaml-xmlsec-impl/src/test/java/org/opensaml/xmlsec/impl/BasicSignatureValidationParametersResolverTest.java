@@ -102,7 +102,7 @@ public class BasicSignatureValidationParametersResolverTest {
 
     @Test
     public void testResolve() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
         Iterable<SignatureValidationParameters> paramsIter = resolver.resolve(criteriaSet);
@@ -117,27 +117,27 @@ public class BasicSignatureValidationParametersResolverTest {
         
         Assert.assertNotNull(params);
         Assert.assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
-        Assert.assertTrue(params.getWhitelistedAlgorithmURIs().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("bar"));
+        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
+        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
         
         Assert.assertFalse(iterator.hasNext());
     }
 
     @Test
     public void testResolveSingle() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
         SignatureValidationParameters params = resolver.resolveSingle(criteriaSet);
         
         Assert.assertNotNull(params);
         Assert.assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
-        Assert.assertTrue(params.getWhitelistedAlgorithmURIs().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithmURIs().contains("bar"));
+        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
+        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
+        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

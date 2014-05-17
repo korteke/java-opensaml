@@ -22,37 +22,37 @@ public class BasicWhitelistBlacklistConfigurationTest {
     @Test
     public void testDefaults() {
         Assert.assertEquals(config.isWhitelistMerge(), false);
-        Assert.assertNotNull(config.getWhitelistedAlgorithmURIs());
-        Assert.assertTrue(config.getWhitelistedAlgorithmURIs().isEmpty());
+        Assert.assertNotNull(config.getWhitelistedAlgorithms());
+        Assert.assertTrue(config.getWhitelistedAlgorithms().isEmpty());
         
         Assert.assertEquals(config.isBlacklistMerge(), false);
-        Assert.assertNotNull(config.getBlacklistedAlgorithmURIs());
-        Assert.assertTrue(config.getBlacklistedAlgorithmURIs().isEmpty());
+        Assert.assertNotNull(config.getBlacklistedAlgorithms());
+        Assert.assertTrue(config.getBlacklistedAlgorithms().isEmpty());
         
         Assert.assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
     }
     
     @Test
     public void testValidWhitelist() {
-        config.setWhitelistedAlgorithmURIs(Sets.newHashSet("  A   ", null, "   B   ", null, "   C   "));
+        config.setWhitelistedAlgorithms(Sets.newHashSet("  A   ", null, "   B   ", null, "   C   "));
         
-        Assert.assertEquals(config.getWhitelistedAlgorithmURIs().size(), 3);
-        Assert.assertTrue(config.getWhitelistedAlgorithmURIs().contains("A"));
-        Assert.assertTrue(config.getWhitelistedAlgorithmURIs().contains("B"));
-        Assert.assertTrue(config.getWhitelistedAlgorithmURIs().contains("C"));
+        Assert.assertEquals(config.getWhitelistedAlgorithms().size(), 3);
+        Assert.assertTrue(config.getWhitelistedAlgorithms().contains("A"));
+        Assert.assertTrue(config.getWhitelistedAlgorithms().contains("B"));
+        Assert.assertTrue(config.getWhitelistedAlgorithms().contains("C"));
     }
 
     @Test
     public void testNullWhitelist() {
-        config.setWhitelistedAlgorithmURIs(null);
-        Assert.assertNotNull(config.getWhitelistedAlgorithmURIs());
-        Assert.assertTrue(config.getWhitelistedAlgorithmURIs().isEmpty());
+        config.setWhitelistedAlgorithms(null);
+        Assert.assertNotNull(config.getWhitelistedAlgorithms());
+        Assert.assertTrue(config.getWhitelistedAlgorithms().isEmpty());
     }
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testWhitelistImmutable() {
-        config.setWhitelistedAlgorithmURIs(Sets.newHashSet("A", "B", "C"));
-        config.getWhitelistedAlgorithmURIs().add("D");
+        config.setWhitelistedAlgorithms(Sets.newHashSet("A", "B", "C"));
+        config.getWhitelistedAlgorithms().add("D");
     }
 
     @Test
@@ -69,25 +69,25 @@ public class BasicWhitelistBlacklistConfigurationTest {
 
     @Test
     public void testValidBlacklist() {
-        config.setBlacklistedAlgorithmURIs(Sets.newHashSet("   A   ", null, "   B   ", null, "   C   "));
+        config.setBlacklistedAlgorithms(Sets.newHashSet("   A   ", null, "   B   ", null, "   C   "));
         
-        Assert.assertEquals(config.getBlacklistedAlgorithmURIs().size(), 3);
-        Assert.assertTrue(config.getBlacklistedAlgorithmURIs().contains("A"));
-        Assert.assertTrue(config.getBlacklistedAlgorithmURIs().contains("B"));
-        Assert.assertTrue(config.getBlacklistedAlgorithmURIs().contains("C"));
+        Assert.assertEquals(config.getBlacklistedAlgorithms().size(), 3);
+        Assert.assertTrue(config.getBlacklistedAlgorithms().contains("A"));
+        Assert.assertTrue(config.getBlacklistedAlgorithms().contains("B"));
+        Assert.assertTrue(config.getBlacklistedAlgorithms().contains("C"));
     }
     
     @Test
     public void testNullBlacklist() {
-        config.setBlacklistedAlgorithmURIs(null);
-        Assert.assertNotNull(config.getBlacklistedAlgorithmURIs());
-        Assert.assertTrue(config.getBlacklistedAlgorithmURIs().isEmpty());
+        config.setBlacklistedAlgorithms(null);
+        Assert.assertNotNull(config.getBlacklistedAlgorithms());
+        Assert.assertTrue(config.getBlacklistedAlgorithms().isEmpty());
     }
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testBlacklistImmutable() {
-        config.setBlacklistedAlgorithmURIs(Sets.newHashSet("A", "B", "C"));
-        config.getBlacklistedAlgorithmURIs().add("D");
+        config.setBlacklistedAlgorithms(Sets.newHashSet("A", "B", "C"));
+        config.getBlacklistedAlgorithms().add("D");
     }
     
     @Test

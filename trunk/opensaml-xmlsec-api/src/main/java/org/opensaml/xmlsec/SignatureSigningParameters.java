@@ -69,7 +69,7 @@ public class SignatureSigningParameters {
      * 
      * @return a signature algorithm URI mapping
      */
-    @Nullable public String getSignatureAlgorithmURI() {
+    @Nullable public String getSignatureAlgorithm() {
         return signatureAlgorithmURI;
     }
     
@@ -78,7 +78,7 @@ public class SignatureSigningParameters {
      * 
      * @param uri a signature algorithm URI mapping
      */
-    public void setSignatureAlgorithmURI(@Nullable final String uri) {
+    public void setSignatureAlgorithm(@Nullable final String uri) {
         signatureAlgorithmURI = uri;
     }
     

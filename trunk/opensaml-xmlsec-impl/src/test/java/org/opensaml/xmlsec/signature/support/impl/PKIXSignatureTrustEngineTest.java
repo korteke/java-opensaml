@@ -259,7 +259,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setWhitelistedAlgorithmURIs(algos);
+        validationParams.setWhitelistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
@@ -277,7 +277,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setBlacklistedAlgorithmURIs(algos);
+        validationParams.setBlacklistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
@@ -295,7 +295,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setBlacklistedAlgorithmURIs(algos);
+        validationParams.setBlacklistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         signature = getSignature("foo-1A1-good.crt", "foo-1A1-good.key");
@@ -459,7 +459,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(rawAlgorithmURI);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setWhitelistedAlgorithmURIs(algos);
+        validationParams.setWhitelistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
@@ -478,7 +478,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(rawAlgorithmURI);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setBlacklistedAlgorithmURIs(algos);
+        validationParams.setBlacklistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");

@@ -59,7 +59,7 @@ public class DataEncryptionParameters {
         this();
         Constraint.isNotNull(params, "EncryptionParameters instance was null");
         setEncryptionCredential(params.getDataEncryptionCredential());
-        setAlgorithm(params.getDataEncryptionAlgorithmURI());
+        setAlgorithm(params.getDataEncryptionAlgorithm());
         setKeyInfoGenerator(params.getDataKeyInfoGenerator());
     }
 

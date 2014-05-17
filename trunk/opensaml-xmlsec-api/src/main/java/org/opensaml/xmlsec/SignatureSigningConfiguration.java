@@ -47,7 +47,7 @@ public interface SignatureSigningConfiguration extends WhitelistBlacklistConfigu
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithmURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithms();
     
     /**
      * Get the list of digest method algorithm URIs suitable for use as a Signature Reference DigestMethod value,

@@ -113,13 +113,13 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         
         if (whitelist.isEmpty()) {
             log.trace("Whitelist empty, populating blacklist");
-            params.setBlacklistedAlgorithmURIs(blacklist);
+            params.setBlacklistedAlgorithms(blacklist);
             return;
         }
         
         if (blacklist.isEmpty()) {
             log.trace("Blacklist empty, populating whitelist");
-            params.setWhitelistedAlgorithmURIs(whitelist);
+            params.setWhitelistedAlgorithms(whitelist);
             return;
         }
         
@@ -128,11 +128,11 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         switch(precedence) {
             case WHITELIST:
                 log.trace("Based on precedence, populating whitelist");
-                params.setWhitelistedAlgorithmURIs(whitelist);
+                params.setWhitelistedAlgorithms(whitelist);
                 break;
             case BLACKLIST:
                 log.trace("Based on precedence, populating blacklist");
-                params.setBlacklistedAlgorithmURIs(blacklist);
+                params.setBlacklistedAlgorithms(blacklist);
                 break;
             default:
                 throw new IllegalArgumentException("WhitelistBlacklistPrecedence value is unknown: " + precedence);
@@ -202,7 +202,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         
         LazySet<String> accumulator = new LazySet<>();
         for (WhitelistBlacklistConfiguration config : configs) {
-            accumulator.addAll(config.getBlacklistedAlgorithmURIs());
+            accumulator.addAll(config.getBlacklistedAlgorithms());
             if (!config.isBlacklistMerge()) {
                 break;
             }
@@ -223,7 +223,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         
         LazySet<String> accumulator = new LazySet<>();
         for (WhitelistBlacklistConfiguration config : configs) {
-            accumulator.addAll(config.getWhitelistedAlgorithmURIs());
+            accumulator.addAll(config.getWhitelistedAlgorithms());
             if (!config.isWhitelistMerge()) {
                 break;
             }

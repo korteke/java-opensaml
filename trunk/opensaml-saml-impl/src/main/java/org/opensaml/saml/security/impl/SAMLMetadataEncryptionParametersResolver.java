@@ -120,8 +120,8 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 }
                 
                 params.setKeyTransportEncryptionCredential(keyTransportCredential);
-                params.setKeyTransportEncryptionAlgorithmURI(keyTransportAlgorithm);
-                params.setDataEncryptionAlgorithmURI(dataEncryptionAlgorithm);
+                params.setKeyTransportEncryptionAlgorithm(keyTransportAlgorithm);
+                params.setDataEncryptionAlgorithm(dataEncryptionAlgorithm);
                 
                 processDataEncryptionCredentialAutoGeneration(params);
                 

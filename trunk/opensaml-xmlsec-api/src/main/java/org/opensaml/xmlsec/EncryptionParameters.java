@@ -87,7 +87,7 @@ public class EncryptionParameters {
      * 
      * @return an encryption algorithm URI
      */
-    @Nullable public String getDataEncryptionAlgorithmURI() {
+    @Nullable public String getDataEncryptionAlgorithm() {
         return dataEncryptionAlgorithmURI;
     }
     
@@ -96,7 +96,7 @@ public class EncryptionParameters {
      * 
      * @param uri an encryption algorithm URI
      */
-    public void setDataEncryptionAlgorithmURI(@Nullable final String uri) {
+    public void setDataEncryptionAlgorithm(@Nullable final String uri) {
         dataEncryptionAlgorithmURI = uri;
     }
     
@@ -105,7 +105,7 @@ public class EncryptionParameters {
      * 
      * @return an encryption algorithm URI
      */
-    @Nullable public String getKeyTransportEncryptionAlgorithmURI() {
+    @Nullable public String getKeyTransportEncryptionAlgorithm() {
         return keyTransportEncryptionAlgorithmURI;
     }
 
@@ -114,7 +114,7 @@ public class EncryptionParameters {
      * 
      * @param uri an encryption algorithm URI
      */
-    public void setKeyTransportEncryptionAlgorithmURI(@Nullable final String uri) {
+    public void setKeyTransportEncryptionAlgorithm(@Nullable final String uri) {
         keyTransportEncryptionAlgorithmURI = uri;
     }
 

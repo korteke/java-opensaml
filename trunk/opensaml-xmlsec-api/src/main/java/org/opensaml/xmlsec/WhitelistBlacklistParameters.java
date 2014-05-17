@@ -53,7 +53,7 @@ public class WhitelistBlacklistParameters {
      * 
      * @return the list of algorithms
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithmURIs() {
+    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithms() {
         return ImmutableSet.copyOf(whiteListedAlgorithmURIs);
     }
     
@@ -62,7 +62,7 @@ public class WhitelistBlacklistParameters {
      * 
      * @param uris the list of algorithms
      */
-    public void setWhitelistedAlgorithmURIs(@Nullable final Collection<String> uris) {
+    public void setWhitelistedAlgorithms(@Nullable final Collection<String> uris) {
         if (uris == null) {
             whiteListedAlgorithmURIs = Collections.emptySet();
             return;
@@ -75,7 +75,7 @@ public class WhitelistBlacklistParameters {
      * 
      * @return the list of algorithms
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithmURIs() {
+    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithms() {
         return ImmutableSet.copyOf(blackListedAlgorithmURIs);
     }
     
@@ -84,7 +84,7 @@ public class WhitelistBlacklistParameters {
      * 
      * @param uris the list of algorithms
      */
-    public void setBlacklistedAlgorithmURIs(@Nonnull @NonnullElements final Collection<String> uris) {
+    public void setBlacklistedAlgorithms(@Nonnull @NonnullElements final Collection<String> uris) {
         if (uris == null) {
             blackListedAlgorithmURIs = Collections.emptySet();
             return;

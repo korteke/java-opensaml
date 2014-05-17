@@ -130,8 +130,8 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         if (validationCriterion != null) {
             log.debug("Performing signature algorithm whitelist/blacklist validation using params from CriteriaSet");
             SignatureValidationParameters params = validationCriterion.getSignatureValidationParameters();
-            if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, params.getWhitelistedAlgorithmURIs(), 
-                    params.getBlacklistedAlgorithmURIs())) {
+            if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, params.getWhitelistedAlgorithms(), 
+                    params.getBlacklistedAlgorithms())) {
                 log.warn("Simple/raw signature failed algorithm whitelist/blacklist validation");
                 return false;
             }

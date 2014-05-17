@@ -140,7 +140,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         response.setSignature(responseSignature);
         SignatureSigningParameters signingParams = new SignatureSigningParameters();
         signingParams.setSigningCredential(signingCred);
-        signingParams.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        signingParams.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signingParams.setSignatureReferenceDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256);
         signingParams.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_WITH_COMMENTS);
         

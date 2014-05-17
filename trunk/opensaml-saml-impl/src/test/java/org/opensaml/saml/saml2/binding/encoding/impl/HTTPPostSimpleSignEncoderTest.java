@@ -199,7 +199,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
-        signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        signingParameters.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         NamedKeyInfoGeneratorManager kiManager = DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager();
         signingParameters.setKeyInfoGenerator(KeyInfoSupport.getKeyInfoGenerator(signingParameters.getSigningCredential(), kiManager, null));
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);

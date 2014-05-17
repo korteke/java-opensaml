@@ -202,8 +202,8 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     protected String getSignatureAlgorithmURI(SignatureSigningParameters signingParameters)
             throws MessageEncodingException {
         
-        if (signingParameters.getSignatureAlgorithmURI() != null) {
-            return signingParameters.getSignatureAlgorithmURI();
+        if (signingParameters.getSignatureAlgorithm() != null) {
+            return signingParameters.getSignatureAlgorithm();
         }
 
         throw new MessageEncodingException("The signing algorithm URI could not be determined");

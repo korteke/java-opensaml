@@ -151,11 +151,11 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), rsaCred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), defaultRSAKeyTransportAlgo);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
@@ -170,45 +170,45 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), rsaCred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM);
         Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
     @Test
     public void testRSAWithBlacklist() throws ResolverException {
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
-        config1.setBlacklistedAlgorithmURIs(Lists.newArrayList(defaultRSAKeyTransportAlgo, defaultAES128DataAlgo, defaultAES192DataAlgo));
+        config1.setBlacklistedAlgorithms(Lists.newArrayList(defaultRSAKeyTransportAlgo, defaultAES128DataAlgo, defaultAES192DataAlgo));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), rsaCred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES256DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES256DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
     @Test
     public void testRSAWithWhitelist() throws ResolverException {
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
-        config1.setWhitelistedAlgorithmURIs(Lists.newArrayList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        config1.setWhitelistedAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), rsaCred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
         Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
@@ -222,13 +222,13 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), rsaCred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), defaultRSAKeyTransportAlgo);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNotNull(params.getDataEncryptionCredential());
         Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
         Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), new Integer(128));
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
     }
     
@@ -240,11 +240,11 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), aes128Cred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
@@ -256,11 +256,11 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         
         Assert.assertNotNull(params);
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
-        Assert.assertNull(params.getKeyTransportEncryptionAlgorithmURI());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertEquals(params.getDataEncryptionCredential(), aes256Cred1);
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES256DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES256DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
     }
     
@@ -269,17 +269,17 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1, aes256Cred1));
         
         // Blacklist all RSA algos so rsaCred1 is skipped in favor of aes256Cred1
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), aes256Cred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
     }
     
@@ -288,17 +288,17 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         config1.setDataEncryptionCredentials(Lists.newArrayList(aes128Cred1, aes256Cred1));
         
         // Blacklist both AES-128 variants so aes128Cred1 is skipped in favor of aes256Cred1
-        config1.setBlacklistedAlgorithmURIs(Sets.newHashSet(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+        config1.setBlacklistedAlgorithms(Sets.newHashSet(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
         Assert.assertNotNull(params);
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
-        Assert.assertNull(params.getKeyTransportEncryptionAlgorithmURI());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertEquals(params.getDataEncryptionCredential(), aes256Cred1);
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES256DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES256DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
     }
     
@@ -352,11 +352,11 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         
         Assert.assertNotNull(params);
         Assert.assertEquals(params.getKeyTransportEncryptionCredential(), rsaCred1);
-        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithmURI(), defaultRSAKeyTransportAlgo);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNull(params.getDataEncryptionCredential());
-        Assert.assertEquals(params.getDataEncryptionAlgorithmURI(), defaultAES128DataAlgo);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
         
         Assert.assertFalse(iterator.hasNext());
