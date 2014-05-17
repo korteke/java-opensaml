@@ -132,6 +132,7 @@ public class DefaultSecurityConfigurationBootstrap {
                 SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384,
                 SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512,
                 SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1,
+                SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160,
                 
                 // ECDSA
                 SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256,
