@@ -235,8 +235,8 @@ public class Decrypter {
         this(   params.getDataKeyInfoCredentialResolver(), 
                 params.getKEKKeyInfoCredentialResolver(),
                 params.getEncryptedKeyResolver(),
-                params.getWhitelistedAlgorithmURIs(),
-                params.getBlacklistedAlgorithmURIs()
+                params.getWhitelistedAlgorithms(),
+                params.getBlacklistedAlgorithms()
                 );
     }
     

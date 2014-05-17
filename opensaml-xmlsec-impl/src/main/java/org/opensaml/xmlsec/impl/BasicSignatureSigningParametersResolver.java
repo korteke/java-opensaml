@@ -127,7 +127,7 @@ public class BasicSignatureSigningParametersResolver
         if (params.getSigningCredential() != null) {
             params.setKeyInfoGenerator(resolveKeyInfoGenerator(criteria, params.getSigningCredential()));
             params.setSignatureHMACOutputLength(resolveHMACOutputLength(criteria, params.getSigningCredential(), 
-                    params.getSignatureAlgorithmURI()));
+                    params.getSignatureAlgorithm()));
         }
         
         if (validate(params)) {
@@ -154,7 +154,7 @@ public class BasicSignatureSigningParametersResolver
                 log.debug("\tSigning credential: null"); 
             }
             
-            log.debug("\tSignature algorithm URI: {}", params.getSignatureAlgorithmURI()); 
+            log.debug("\tSignature algorithm URI: {}", params.getSignatureAlgorithm()); 
             
             log.debug("\tSignature KeyInfoGenerator: {}", params.getKeyInfoGenerator() != null ? "present" : "null");
             
@@ -176,7 +176,7 @@ public class BasicSignatureSigningParametersResolver
             log.warn("Validation failure: Unable to resolve signing credential");
             return false;
         }
-        if (params.getSignatureAlgorithmURI() == null) {
+        if (params.getSignatureAlgorithm() == null) {
             log.warn("Validation failure: Unable to resolve signing algorithm URI");
             return false;
         }
@@ -229,7 +229,7 @@ public class BasicSignatureSigningParametersResolver
                 if (credentialSupportsAlgorithm(credential, algorithm)) {
                     log.trace("Credential passed eval against algorithm: {}", algorithm);
                     params.setSigningCredential(credential);
-                    params.setSignatureAlgorithmURI(algorithm);
+                    params.setSignatureAlgorithm(algorithm);
                     return;
                 } else {
                     log.trace("Credential failed eval against algorithm: {}", algorithm);
@@ -284,7 +284,7 @@ public class BasicSignatureSigningParametersResolver
         for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfigurationCriterion.class)
                 .getConfigurations()) {
             
-            accumulator.addAll(Collections2.filter(config.getSignatureAlgorithmURIs(), whitelistBlacklistPredicate));
+            accumulator.addAll(Collections2.filter(config.getSignatureAlgorithms(), whitelistBlacklistPredicate));
             
         }
         return accumulator;

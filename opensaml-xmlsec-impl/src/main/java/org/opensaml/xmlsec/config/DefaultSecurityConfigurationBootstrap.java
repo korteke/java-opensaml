@@ -117,7 +117,7 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicSignatureSigningConfiguration buildDefaultSignatureSigningConfiguration() {
         BasicSignatureSigningConfiguration config = new BasicSignatureSigningConfiguration();
         
-        config.setBlacklistedAlgorithmURIs(Sets.newHashSet(
+        config.setBlacklistedAlgorithms(Sets.newHashSet(
                 SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
                 SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
                 SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5
@@ -175,7 +175,7 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicSignatureValidationConfiguration buildDefaultSignatureValidationConfiguration() {
         BasicSignatureValidationConfiguration config = new BasicSignatureValidationConfiguration();
         
-        config.setBlacklistedAlgorithmURIs(Sets.newHashSet(
+        config.setBlacklistedAlgorithms(Sets.newHashSet(
                 SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
                 SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
                 SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5

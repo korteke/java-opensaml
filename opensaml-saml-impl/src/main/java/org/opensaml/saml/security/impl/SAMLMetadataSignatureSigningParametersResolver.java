@@ -105,7 +105,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
                     log.debug("Resolved signature algorithm URI from SAML metadata SigningMethod: {}",
                             signingMethod.getAlgorithm());
                     params.setSigningCredential(credential);
-                    params.setSignatureAlgorithmURI(signingMethod.getAlgorithm());
+                    params.setSignatureAlgorithm(signingMethod.getAlgorithm());
                     return;
                 } else {
                     log.trace("Credential failed eval against SigningMethod");

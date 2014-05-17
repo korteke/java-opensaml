@@ -242,7 +242,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setWhitelistedAlgorithmURIs(algos);
+        validationParams.setWhitelistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         SignableXMLObject signableXO = getValidSignedObject();
@@ -261,7 +261,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setBlacklistedAlgorithmURIs(algos);
+        validationParams.setBlacklistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         SignableXMLObject signableXO = getValidSignedObject();
@@ -280,7 +280,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setBlacklistedAlgorithmURIs(algos);
+        validationParams.setBlacklistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         SignableXMLObject signableXO = getValidSignedObject();
@@ -351,7 +351,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(rawAlgorithmURI);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setWhitelistedAlgorithmURIs(algos);
+        validationParams.setWhitelistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         Assert.assertTrue(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 
@@ -371,7 +371,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         HashSet<String> algos = new HashSet<>();
         algos.add(rawAlgorithmURI);
         SignatureValidationParameters validationParams = new SignatureValidationParameters();
-        validationParams.setBlacklistedAlgorithmURIs(algos);
+        validationParams.setBlacklistedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
         Assert.assertFalse(engine.validate(rawControlSignature, rawData.getBytes(), rawAlgorithmURI, 

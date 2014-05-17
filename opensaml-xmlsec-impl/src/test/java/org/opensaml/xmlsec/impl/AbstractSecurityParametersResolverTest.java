@@ -82,20 +82,20 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
     
     @Test
     public void testBlacklistOnlyDefaults() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(set1);
-        config2.setBlacklistedAlgorithmURIs(set2);
+        config1.setBlacklistedAlgorithms(set1);
+        config2.setBlacklistedAlgorithms(set2);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), set1);
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), set1);
     }
     
     @Test
     public void testBlacklistOnlyWithSimpleMerge() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(set1);
+        config1.setBlacklistedAlgorithms(set1);
         config1.setBlacklistMerge(true);
-        config2.setBlacklistedAlgorithmURIs(set2);
+        config2.setBlacklistedAlgorithms(set2);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -103,16 +103,16 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         control.addAll(set1);
         control.addAll(set2);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), control);
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), control);
     }
     
     @Test
     public void testBlacklistOnlyWithTransitiveMerge() throws ResolverException {
-        config1.setBlacklistedAlgorithmURIs(set1);
+        config1.setBlacklistedAlgorithms(set1);
         config1.setBlacklistMerge(true);
         config2.setBlacklistMerge(true);
-        config3.setBlacklistedAlgorithmURIs(set3);
+        config3.setBlacklistedAlgorithms(set3);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -120,26 +120,26 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         control.addAll(set1);
         control.addAll(set3);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), control);
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), control);
     }
     
     @Test
     public void testWhitelistOnlyDefaults() throws ResolverException {
-        config1.setWhitelistedAlgorithmURIs(set1);
-        config2.setWhitelistedAlgorithmURIs(set2);
+        config1.setWhitelistedAlgorithms(set1);
+        config2.setWhitelistedAlgorithms(set2);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), set1);
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), Collections.emptySet());
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), set1);
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
     }
     
     @Test
     public void testWhitelistOnlyWithSimpleMerge() throws ResolverException {
-        config1.setWhitelistedAlgorithmURIs(set1);
+        config1.setWhitelistedAlgorithms(set1);
         config1.setWhitelistMerge(true);
-        config2.setWhitelistedAlgorithmURIs(set2);
+        config2.setWhitelistedAlgorithms(set2);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -147,16 +147,16 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         control.addAll(set1);
         control.addAll(set2);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), control);
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), Collections.emptySet());
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), control);
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
     }
     
     @Test
     public void testWhitelistOnlyWithTransitiveMerge() throws ResolverException {
-        config1.setWhitelistedAlgorithmURIs(set1);
+        config1.setWhitelistedAlgorithms(set1);
         config1.setWhitelistMerge(true);
         config2.setWhitelistMerge(true);
-        config3.setWhitelistedAlgorithmURIs(set3);
+        config3.setWhitelistedAlgorithms(set3);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -164,28 +164,28 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         control.addAll(set1);
         control.addAll(set3);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), control);
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), Collections.emptySet());
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), control);
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
     }
     
     @Test
     public void testPrecedence() throws ResolverException {
-        config1.setWhitelistedAlgorithmURIs(set1);
-        config1.setBlacklistedAlgorithmURIs(set2);
+        config1.setWhitelistedAlgorithms(set1);
+        config1.setBlacklistedAlgorithms(set2);
         
         config1.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), set1);
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), Collections.emptySet());
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), set1);
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
         
         config1.setWhitelistBlacklistPrecedence(Precedence.BLACKLIST);
         
         params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithmURIs(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithmURIs(), set2);
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), set2);
     }
 
     
@@ -193,8 +193,8 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
     public void testResolvePredicate() {
         Predicate<String> predicate;
         
-        config1.setWhitelistedAlgorithmURIs(set1);
-        config1.setBlacklistedAlgorithmURIs(set2);
+        config1.setWhitelistedAlgorithms(set1);
+        config1.setBlacklistedAlgorithms(set2);
         
         config1.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
         
@@ -240,9 +240,9 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
         Assert.assertTrue(whitelist.isEmpty());
         
-        config1.setWhitelistedAlgorithmURIs(set1);
-        config2.setWhitelistedAlgorithmURIs(set2);
-        config3.setWhitelistedAlgorithmURIs(set3);   
+        config1.setWhitelistedAlgorithms(set1);
+        config2.setWhitelistedAlgorithms(set2);
+        config3.setWhitelistedAlgorithms(set3);   
         
         whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
         Assert.assertTrue(whitelist.containsAll(set1));
@@ -268,8 +268,8 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         
         // Set 1 and 2 empty
-        config1.setWhitelistedAlgorithmURIs(new HashSet<String>());
-        config2.setWhitelistedAlgorithmURIs(new HashSet<String>());
+        config1.setWhitelistedAlgorithms(new HashSet<String>());
+        config2.setWhitelistedAlgorithms(new HashSet<String>());
         
         config1.setWhitelistMerge(true);
         config2.setWhitelistMerge(true);
@@ -288,9 +288,9 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
         Assert.assertTrue(blacklist.isEmpty());
         
-        config1.setBlacklistedAlgorithmURIs(set1);
-        config2.setBlacklistedAlgorithmURIs(set2);
-        config3.setBlacklistedAlgorithmURIs(set3);   
+        config1.setBlacklistedAlgorithms(set1);
+        config2.setBlacklistedAlgorithms(set2);
+        config3.setBlacklistedAlgorithms(set3);   
         
         blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
         Assert.assertTrue(blacklist.containsAll(set1));
@@ -316,8 +316,8 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         
         // Set 1 and 2 empty
-        config1.setBlacklistedAlgorithmURIs(new HashSet<String>());
-        config2.setBlacklistedAlgorithmURIs(new HashSet<String>());
+        config1.setBlacklistedAlgorithms(new HashSet<String>());
+        config2.setBlacklistedAlgorithms(new HashSet<String>());
         
         config1.setBlacklistMerge(true);
         config2.setBlacklistMerge(true);

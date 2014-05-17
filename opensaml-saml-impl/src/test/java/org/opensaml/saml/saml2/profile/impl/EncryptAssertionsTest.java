@@ -61,9 +61,9 @@ public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
         generator.setEmitPublicKeyValue(true);
         
         encParams = new EncryptionParameters();
-        encParams.setDataEncryptionAlgorithmURI(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        encParams.setDataEncryptionAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
         encParams.setDataKeyInfoGenerator(generator.newInstance());
-        encParams.setKeyTransportEncryptionAlgorithmURI(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        encParams.setKeyTransportEncryptionAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         encParams.setKeyTransportEncryptionCredential(
                 AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, 1024, false));
         encParams.setKeyTransportKeyInfoGenerator(generator.newInstance());

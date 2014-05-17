@@ -44,7 +44,7 @@ public interface WhitelistBlacklistConfiguration {
      * 
      * @return the list of algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getWhitelistedAlgorithmURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getWhitelistedAlgorithms();
     
     /**
      * Flag indicating whether to merge this configuration's whitelist with one of a lower order of precedence,
@@ -59,7 +59,7 @@ public interface WhitelistBlacklistConfiguration {
      * 
      * @return the list of algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getBlacklistedAlgorithmURIs();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getBlacklistedAlgorithms();
     
     /**
      * Flag indicating whether to merge this configuration's blacklist with one of a lower order of precedence,

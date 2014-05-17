@@ -98,7 +98,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithmURIs() {
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithms() {
         return ImmutableList.copyOf(signatureAlgorithms);
     }
     

@@ -102,7 +102,7 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         final KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
-        signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        signingParameters.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signingParameters.setSignatureReferenceDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256);
         signingParameters.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 
@@ -121,7 +121,7 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         final KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
-        signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        signingParameters.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signingParameters.setSignatureReferenceDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256);
         signingParameters.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 

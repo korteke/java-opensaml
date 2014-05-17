@@ -54,7 +54,7 @@ public class KeyEncryptionParameters extends DataEncryptionParameters {
         this();
         Constraint.isNotNull(params, "EncryptionParameters instance was null");
         setEncryptionCredential(params.getKeyTransportEncryptionCredential());
-        setAlgorithm(params.getKeyTransportEncryptionAlgorithmURI());
+        setAlgorithm(params.getKeyTransportEncryptionAlgorithm());
         setKeyInfoGenerator(params.getKeyTransportKeyInfoGenerator());
         setRecipient(recipientId);
     }

@@ -110,7 +110,7 @@ public final class SignatureSupport {
     
         // Signing algorithm
         if (signature.getSignatureAlgorithm() == null) {
-            signature.setSignatureAlgorithm(parameters.getSignatureAlgorithmURI());
+            signature.setSignatureAlgorithm(parameters.getSignatureAlgorithm());
         }
         if (signature.getSignatureAlgorithm() == null) {
             throw new SecurityException("No signature algorithm was available on the signing parameters or Signature");
