@@ -77,8 +77,6 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
      
     private NamedKeyInfoGeneratorManager defaultKeyInfoGeneratorManager = new NamedKeyInfoGeneratorManager();
     
-    //TODO test DSAParams stuff if decide to keep that
-    
     @BeforeClass
     public void buildCredentials() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair rsaKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null);

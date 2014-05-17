@@ -17,8 +17,6 @@
 
 package org.opensaml.xmlsec;
 
-import java.security.interfaces.DSAParams;
-
 import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
@@ -44,9 +42,6 @@ public class SignatureSigningParameters {
     
     /** The signature HMAC output length value. */
     private Integer signatureHMACOutputLength;
-    
-    /** The DSA params instance, when signing with a DSA key. */
-    private DSAParams dsaParams;
     
     /** The KeyInfo generator. */
     private KeyInfoGenerator keyInfoGenerator;
@@ -141,26 +136,6 @@ public class SignatureSigningParameters {
      */
     public void setSignatureHMACOutputLength(@Nullable final Integer length) {
         signatureHMACOutputLength = length;
-    }
-    
-    /**
-     * Get a DSA parameters instance which defines the default DSA key information to be used 
-     * within a DSA "key family".
-     * 
-     * @return the default DSA parameters instance
-     */
-    @Nullable public DSAParams getDSAParams() {
-        return dsaParams;
-    }
-    
-    /**
-     * Set a DSA parameters instance which defines the default DSA key information to be used 
-     * within a DSA "key family".
-     * 
-     * @param params the default DSA parameters instance
-     */
-    public void setDSAParams(@Nullable final DSAParams params) {
-        dsaParams = params;
     }
     
     /**

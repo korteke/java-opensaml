@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.impl;
 
 import java.security.Key;
-import java.security.interfaces.DSAParams;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +32,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
@@ -130,7 +128,6 @@ public class BasicSignatureSigningParametersResolver
             params.setKeyInfoGenerator(resolveKeyInfoGenerator(criteria, params.getSigningCredential()));
             params.setSignatureHMACOutputLength(resolveHMACOutputLength(criteria, params.getSigningCredential(), 
                     params.getSignatureAlgorithmURI()));
-            params.setDSAParams(resolveDSAParams(criteria, params.getSigningCredential()));
         }
         
         if (validate(params)) {
@@ -380,30 +377,6 @@ public class BasicSignatureSigningParametersResolver
                     return config.getSignatureHMACOutputLength();
                 }
             }
-        }
-        return null;
-    }
-
-    /**
-     * Resolve and return the DSAParams instance to use, if applicable.  Only effective for DSA signing credentials.
-     * 
-     * @param criteria the input criteria being evaluated
-     * @param credential  the credential being evaluated
-     * @return the DSAParams instance, or null
-     */
-    @Nullable protected DSAParams resolveDSAParams(@Nonnull final CriteriaSet criteria, 
-            @Nonnull final Credential credential) {
-        if (credential.getPublicKey() != null && "DSA".equals(credential.getPublicKey().getAlgorithm())) {
-            Integer keyLength = KeySupport.getKeyLength(credential.getPublicKey());
-            if (keyLength != null) {
-                for (SignatureSigningConfiguration config : criteria.get(SignatureSigningConfigurationCriterion.class)
-                        .getConfigurations()) {
-                    if (config.getDSAParams(keyLength) != null) {
-                        return config.getDSAParams(keyLength);
-                    }
-                }
-            }
-            
         }
         return null;
     }
