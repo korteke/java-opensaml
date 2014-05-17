@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec;
 
-import java.security.interfaces.DSAParams;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -72,15 +71,6 @@ public interface SignatureSigningConfiguration extends WhitelistBlacklistConfigu
      * @return the configured HMAC output length value
      */
     @Nullable public Integer getSignatureHMACOutputLength();
-    
-    /**
-     * Get a DSA parameters instance which defines the default DSA key information to be used 
-     * within a DSA "key family".
-     * 
-     * @param keyLength length of the DSA key whose parameters are desired
-     * @return the default DSA parameters instance, or null if no default is available
-     */
-    @Nullable public DSAParams getDSAParams(int keyLength);
     
     /**
      * Get the manager for named KeyInfoGenerator instances.

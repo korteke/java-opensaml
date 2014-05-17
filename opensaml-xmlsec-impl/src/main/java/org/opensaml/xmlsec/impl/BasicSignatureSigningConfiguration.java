@@ -17,11 +17,8 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.security.interfaces.DSAParams;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,9 +66,6 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     /** Manager for named KeyInfoGenerator instances. */
     @Nullable private NamedKeyInfoGeneratorManager keyInfoGeneratorManager;
     
-    /** Default DSA key family parameters. */
-    @Nonnull @NonnullElements private final Map<Integer, DSAParams> dsaParams;
-    
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
     //TODO update for modern coding conventions, Guava, etc
@@ -81,7 +75,6 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
         signingCredentials = Collections.emptyList();
         signatureAlgorithms = Collections.emptyList();
         signatureReferenceDigestMethods = Collections.emptyList();
-        dsaParams = new HashMap<>();
     }
     
     /** {@inheritDoc} */
@@ -185,23 +178,6 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      */
     public void setKeyInfoGeneratorManager(@Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
         keyInfoGeneratorManager = keyInfoManager;
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    @Nullable public DSAParams getDSAParams(int keyLength) {
-        return dsaParams.get(keyLength);
-    }
-    
-    /**
-     * Set a DSA parameters instance which defines the default DSA key information to be used 
-     * within a DSA "key family".
-     * 
-     * @param keyLength the key length of the DSA parameters 
-     * @param params the default DSA parameters instance
-     */
-    public void setDSAParams(int keyLength, @Nonnull final DSAParams params) {
-        dsaParams.put(keyLength, params);
     }
 
 }
