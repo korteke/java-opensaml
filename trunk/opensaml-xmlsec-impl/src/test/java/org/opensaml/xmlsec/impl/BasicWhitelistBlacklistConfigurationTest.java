@@ -25,7 +25,7 @@ public class BasicWhitelistBlacklistConfigurationTest {
         Assert.assertNotNull(config.getWhitelistedAlgorithms());
         Assert.assertTrue(config.getWhitelistedAlgorithms().isEmpty());
         
-        Assert.assertEquals(config.isBlacklistMerge(), false);
+        Assert.assertEquals(config.isBlacklistMerge(), true);
         Assert.assertNotNull(config.getBlacklistedAlgorithms());
         Assert.assertTrue(config.getBlacklistedAlgorithms().isEmpty());
         
@@ -93,13 +93,13 @@ public class BasicWhitelistBlacklistConfigurationTest {
     @Test
     public void testBlacklistMerge() {
         // Test default
-        Assert.assertFalse(config.isBlacklistMerge());
-        
-        config.setBlacklistMerge(true);
         Assert.assertTrue(config.isBlacklistMerge());
         
         config.setBlacklistMerge(false);
         Assert.assertFalse(config.isBlacklistMerge());
+        
+        config.setBlacklistMerge(true);
+        Assert.assertTrue(config.isBlacklistMerge());
     }
 
     @Test

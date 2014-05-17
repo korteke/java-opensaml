@@ -66,6 +66,12 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
         whitelist = Collections.emptySet();
         blacklist = Collections.emptySet();
         precedence = DEFAULT_PRECEDENCE;
+        
+        // These merging defaults are intended to be the more secure/conservative approach:
+        // - do merge blacklists by default since don't want to unintentionally miss blacklist from lower level
+        // - do not merge whitelists by default since don't want to unintentionally include algos from lower level
+        blacklistMerge = true;
+        whitelistMerge = false;
     }
     
     /**
@@ -90,7 +96,11 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
         whitelist = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
     }
 
-    /** {@inheritDoc} */
+    /** 
+     * {@inheritDoc}
+     * 
+     * <p>Defaults to: <code>false</code>
+     */
     public boolean isWhitelistMerge() {
         return whitelistMerge;
     }
@@ -98,6 +108,8 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     /**
      * Set the flag indicating whether to merge this configuration's whitelist with one of a lower order of precedence,
      * or to treat this whitelist as authoritative.
+     * 
+     * <p>Defaults to: <code>false</code>
      * 
      * @param flag true if should merge, false otherwise
      */
@@ -127,7 +139,11 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
         blacklist = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
     }
 
-    /** {@inheritDoc} */
+    /** 
+     * {@inheritDoc}
+     * 
+     * <p>Defaults to: <code>true</code>
+     */
     public boolean isBlacklistMerge() {
         return blacklistMerge;
     }
@@ -135,6 +151,8 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     /**
      * Set the flag indicating whether to merge this configuration's blacklist with one of a lower order of precedence,
      * or to treat this blacklist as authoritative.
+     * 
+     * <p>Defaults to: <code>true</code>
      * 
      * @param flag true if should merge, false otherwise
      */

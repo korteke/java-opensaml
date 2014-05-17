@@ -87,6 +87,22 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
         
+        HashSet<String> control = new HashSet<>();
+        control.addAll(set1);
+        control.addAll(set2);
+        
+        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
+        Assert.assertEquals(params.getBlacklistedAlgorithms(), control);
+    }
+    
+    @Test
+    public void testBlacklistOnlyNoMerge() throws ResolverException {
+        config1.setBlacklistedAlgorithms(set1);
+        config1.setBlacklistMerge(false);
+        config2.setBlacklistedAlgorithms(set2);
+        
+        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        
         Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
         Assert.assertEquals(params.getBlacklistedAlgorithms(), set1);
     }
@@ -294,25 +310,25 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
         Assert.assertTrue(blacklist.containsAll(set1));
-        Assert.assertFalse(blacklist.containsAll(set2));
-        Assert.assertFalse(blacklist.containsAll(set3));
-        
-        config1.setBlacklistMerge(true);
-        
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
-        
-        Assert.assertTrue(blacklist.containsAll(set1));
-        Assert.assertTrue(blacklist.containsAll(set2));
-        Assert.assertFalse(blacklist.containsAll(set3));
-        
-        config1.setBlacklistMerge(true);
-        config2.setBlacklistMerge(true);
-        
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
-        
-        Assert.assertTrue(blacklist.containsAll(set1));
         Assert.assertTrue(blacklist.containsAll(set2));
         Assert.assertTrue(blacklist.containsAll(set3));
+        
+        config2.setBlacklistMerge(false);
+        
+        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
+        
+        Assert.assertTrue(blacklist.containsAll(set1));
+        Assert.assertTrue(blacklist.containsAll(set2));
+        Assert.assertFalse(blacklist.containsAll(set3));
+        
+        config1.setBlacklistMerge(false);
+        config2.setBlacklistMerge(false);
+        
+        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
+        
+        Assert.assertTrue(blacklist.containsAll(set1));
+        Assert.assertFalse(blacklist.containsAll(set2));
+        Assert.assertFalse(blacklist.containsAll(set3));
         
         
         // Set 1 and 2 empty
