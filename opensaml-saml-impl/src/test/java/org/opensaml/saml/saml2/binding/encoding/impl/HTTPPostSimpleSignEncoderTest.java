@@ -42,7 +42,11 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
+import org.opensaml.xmlsec.config.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -195,6 +199,9 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+        signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        NamedKeyInfoGeneratorManager kiManager = DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager();
+        signingParameters.setKeyInfoGenerator(KeyInfoSupport.getKeyInfoGenerator(signingParameters.getSigningCredential(), kiManager, null));
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
         MockHttpServletResponse response = new MockHttpServletResponse();

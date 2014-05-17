@@ -38,6 +38,7 @@ import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.opensaml.xmlsec.WhitelistBlacklistParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,22 +85,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
                     key != null ? key.getAlgorithm() : "n/a", credential.getClass().getName());
         }
         
-        KeyInfoGeneratorFactory factory = null;
-        if (keyInfoProfileName != null) {
-            log.trace("Resolving KeyInfoGeneratorFactory using profile name: {}", keyInfoProfileName);
-            factory = manager.getFactory(keyInfoProfileName, credential);
-        } else {
-            log.trace("Resolving KeyInfoGeneratorFactory using default manager: {}", keyInfoProfileName);
-            factory = manager.getDefaultManager().getFactory(credential);
-        }
-        
-        if (factory != null) {
-            log.trace("Found KeyInfoGeneratorFactory: {}", factory.getClass().getName());
-            return factory.newInstance();
-        }
-        
-        log.trace("Unable to resolve KeyInfoGeneratorFactory for credential");
-        return null;
+        return KeyInfoSupport.getKeyInfoGenerator(credential, manager, keyInfoProfileName);
     }
     
     /**

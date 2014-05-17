@@ -36,10 +36,8 @@ import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.transforms.params.InclusiveNamespaces;
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.signature.support.ConfigurableContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
@@ -51,9 +49,7 @@ import com.google.common.base.Strings;
  * A content reference for SAML objects that will be signed. The reference is created per the SAML specification. 
  * 
  * <p>
- * The default digest algorithm used is the value configured in the global security configuration's
- * {@link SecurityConfiguration#getSignatureReferenceDigestMethod()}, if available, otherwise
- * it will be {@link SignatureConstants#ALGO_ID_DIGEST_SHA1}.
+ * The default digest algorithm used is {@link SignatureConstants#ALGO_ID_DIGEST_SHA256}.
  * </p>
  * 
  * <p>
@@ -100,13 +96,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference 
         transforms = new LazyList<String>();
         
         // Set defaults
-        final SecurityConfiguration globalSecConfig = ConfigurationService.get(SecurityConfiguration.class);
-        if (globalSecConfig != null ) {
-            digestAlgorithm = globalSecConfig.getSignatureReferenceDigestMethod();
-        }
-        if (digestAlgorithm == null) {
-            digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA1;
-        }
+        digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA256;
         
         transforms.add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);

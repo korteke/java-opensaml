@@ -30,13 +30,15 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
-import org.opensaml.core.config.ConfigurationService;
-import org.opensaml.xmlsec.SecurityConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * A generic content reference that uses a URI to reference the content to be signed.
+ * 
+ * <p>
+ * The default digest algorithm used is {@link SignatureConstants#ALGO_ID_DIGEST_SHA256}.
+ * </p>
  */
 public class URIContentReference implements ConfigurableContentReference {
 
@@ -62,13 +64,7 @@ public class URIContentReference implements ConfigurableContentReference {
         transforms = new LinkedList<String>();
         
         // Set defaults
-        SecurityConfiguration globalSecConfig = ConfigurationService.get(SecurityConfiguration.class);
-        if (globalSecConfig != null ) {
-            digestAlgorithm = globalSecConfig.getSignatureReferenceDigestMethod();
-        }
-        if (digestAlgorithm == null) {
-            digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA1;
-        }
+        digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA256;
     }
 
     /**
