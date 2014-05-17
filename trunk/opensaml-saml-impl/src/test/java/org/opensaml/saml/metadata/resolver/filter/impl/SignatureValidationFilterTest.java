@@ -23,27 +23,27 @@ import java.util.Collections;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.impl.SignatureValidationFilter;
 import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.SignatureValidationParameters;
+import org.opensaml.xmlsec.config.DefaultSecurityConfigurationBootstrap;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -92,6 +92,13 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         "YT8js8O7gbLq4X/yuGCiuKHofQHFAE6pAWaxdTD+Bd2pu48GKICYAhFwHTqrG3bOqObfsILz4Pca" +
         "vCfzIS7/dk9oPnjeH7GqbxUZMsms4qDZzdNkNDUDWj82lJzIMfZyUKbn2waTsgg3mKja0dGw2UBy" +
         "urPV4NvVcNaIQZJunHI=";
+    
+    private KeyInfoCredentialResolver kiResolver;
+    
+    @BeforeClass
+    public void buildKeyInfoCredentialResolver() {
+        kiResolver = DefaultSecurityConfigurationBootstrap.buildBasicInlineKeyInfoCredentialResolver();
+    }
 
     /** {@inheritDoc} */
     @BeforeMethod
@@ -102,8 +109,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         X509Certificate switchCert = X509Support.decodeCertificate(switchMDCertBase64);
         X509Credential switchCred = CredentialSupport.getSimpleCredential(switchCert, null);
         StaticCredentialResolver switchCredResolver = new StaticCredentialResolver(switchCred);
-        switchSigTrustEngine = new ExplicitKeySignatureTrustEngine(switchCredResolver, 
-                SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+        switchSigTrustEngine = new ExplicitKeySignatureTrustEngine(switchCredResolver, kiResolver);
     }
 
     @Test
@@ -153,8 +159,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
         X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         XMLObject xmlObject = 
@@ -177,8 +182,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
         X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject = 
@@ -202,8 +206,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
         X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
         
@@ -226,8 +229,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
         X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, 
-                SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration().getDefaultKeyInfoCredentialResolver());
+        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
         

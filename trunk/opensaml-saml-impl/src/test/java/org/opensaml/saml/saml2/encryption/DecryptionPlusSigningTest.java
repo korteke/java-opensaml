@@ -43,6 +43,7 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -51,6 +52,7 @@ import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
@@ -135,9 +137,14 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         
         // Sign Response
         Signature responseSignature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
-        responseSignature.setSigningCredential(signingCred);
         response.setSignature(responseSignature);
-        SignatureSupport.prepareSignatureParams(responseSignature, signingCred, null, null);
+        SignatureSigningParameters signingParams = new SignatureSigningParameters();
+        signingParams.setSigningCredential(signingCred);
+        signingParams.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        signingParams.setSignatureReferenceDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        signingParams.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_WITH_COMMENTS);
+        
+        SignatureSupport.prepareSignatureParams(responseSignature, signingParams);
         
         marshallerFactory.getMarshaller(response).marshall(response);
         

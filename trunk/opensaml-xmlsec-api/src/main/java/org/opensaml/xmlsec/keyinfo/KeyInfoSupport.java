@@ -52,8 +52,6 @@ import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
@@ -874,46 +872,39 @@ public class KeyInfoSupport {
      * Obtains a {@link KeyInfoGenerator} for the specified {@link Credential}.
      * 
      * <p>
-     * The KeyInfoGenerator returned is based on the {@link NamedKeyInfoGeneratorManager} defined by the specified
-     * security configuration via {@link SecurityConfiguration#getKeyInfoGeneratorManager()}, and is determined by the
-     * type of the signing credential and an optional KeyInfo generator manager name. If the latter is ommited, the
-     * default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) of the security configuration's
-     * named generator manager will be used.
-     * </p>
-     * 
-     * <p>
-     * The generator is determined by the specified {@link SecurityConfiguration}. If a security configuration is not
-     * supplied, the global security configuration 
-     * ({@link SecurityConfigurationSupport#getGlobalXMLSecurityConfiguration()}) will be used.
+     * The KeyInfoGenerator returned is resolved via the supplied {@link NamedKeyInfoGeneratorManager}
+     * and is determined by the type of the signing credential and an optional KeyInfo generator profile configuration 
+     * name. If the latter is ommited, the default manager ({@link NamedKeyInfoGeneratorManager#getDefaultManager()}) 
+     * of the security configuration's named generator manager will be used.
      * </p>
      * 
      * @param credential the credential for which a generator is desired
-     * @param config the SecurityConfiguration to use (may be null)
-     * @param keyInfoGenName the named KeyInfoGeneratorManager configuration to use (may be null)
+     * @param manager the NamedKeyInfoGeneratorManager instance to use
+     * @param keyInfoProfileName the named KeyInfoGeneratorManager configuration to use (may be null)
      * @return a KeyInfoGenerator appropriate for the specified credential
      */
     @Nullable public static KeyInfoGenerator getKeyInfoGenerator(@Nonnull final Credential credential,
-            @Nullable final SecurityConfiguration config, @Nullable final String keyInfoGenName) {
+            @Nonnull final NamedKeyInfoGeneratorManager manager, @Nullable final String keyInfoProfileName) {
+        Constraint.isNotNull(credential, "Credential may not be null");
+        Constraint.isNotNull(manager, "NamedKeyInfoGeneratorManager may not be null");
+        
+        Logger log = getLogger();
     
-        SecurityConfiguration secConfig;
-        if (config != null) {
-            secConfig = config;
+        KeyInfoGeneratorFactory factory = null;
+        if (keyInfoProfileName != null) {
+            log.trace("Resolving KeyInfoGeneratorFactory using profile name: {}", keyInfoProfileName);
+            factory = manager.getFactory(keyInfoProfileName, credential);
         } else {
-            secConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
+            log.trace("Resolving KeyInfoGeneratorFactory using default manager: {}", keyInfoProfileName);
+            factory = manager.getDefaultManager().getFactory(credential);
         }
-    
-        NamedKeyInfoGeneratorManager kiMgr = secConfig.getKeyInfoGeneratorManager();
-        if (kiMgr != null) {
-            KeyInfoGeneratorFactory kiFactory = null;
-            if (Strings.isNullOrEmpty(keyInfoGenName)) {
-                kiFactory = kiMgr.getDefaultManager().getFactory(credential);
-            } else {
-                kiFactory = kiMgr.getFactory(keyInfoGenName, credential);
-            }
-            if (kiFactory != null) {
-                return kiFactory.newInstance();
-            }
+        
+        if (factory != null) {
+            log.trace("Found KeyInfoGeneratorFactory: {}", factory.getClass().getName());
+            return factory.newInstance();
         }
+        
+        log.trace("Unable to resolve KeyInfoGeneratorFactory for credential");
         return null;
     }
     

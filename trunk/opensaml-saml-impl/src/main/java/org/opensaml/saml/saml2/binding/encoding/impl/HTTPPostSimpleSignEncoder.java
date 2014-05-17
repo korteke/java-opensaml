@@ -35,8 +35,6 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
@@ -100,9 +98,6 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
 
         
         KeyInfoGenerator kiGenerator = signingParameters.getKeyInfoGenerator();
-        if (kiGenerator == null) {
-            kiGenerator = KeyInfoSupport.getKeyInfoGenerator(signingParameters.getSigningCredential(), null, null);
-        }
         if (kiGenerator != null) {
             String kiBase64 = buildKeyInfo(signingParameters.getSigningCredential(), kiGenerator);
             if (!Strings.isNullOrEmpty(kiBase64)) {
@@ -209,14 +204,6 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         
         if (signingParameters.getSignatureAlgorithmURI() != null) {
             return signingParameters.getSignatureAlgorithmURI();
-        }
-        
-        SecurityConfiguration globalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
-        if (globalSecurityConfig != null) {
-            String signAlgo = globalSecurityConfig.getSignatureAlgorithmURI(signingParameters.getSigningCredential());
-            if (signAlgo != null) {
-                return signAlgo;
-            }
         }
 
         throw new MessageEncodingException("The signing algorithm URI could not be determined");

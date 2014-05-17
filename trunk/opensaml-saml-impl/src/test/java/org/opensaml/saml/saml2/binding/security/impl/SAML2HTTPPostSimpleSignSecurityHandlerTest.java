@@ -345,6 +345,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(signingX509Cred);
+        signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();

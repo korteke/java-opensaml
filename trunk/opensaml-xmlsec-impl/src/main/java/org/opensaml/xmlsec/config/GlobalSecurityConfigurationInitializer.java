@@ -22,7 +22,6 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionConfiguration;
-import org.opensaml.xmlsec.SecurityConfiguration;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureValidationConfiguration;
 
@@ -33,10 +32,6 @@ public class GlobalSecurityConfigurationInitializer implements Initializer {
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
-        //TODO remove when refactoring done
-        ConfigurationService.register(SecurityConfiguration.class, 
-                DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
-        
         ConfigurationService.register(EncryptionConfiguration.class, 
                 DefaultSecurityConfigurationBootstrap.buildDefaultEncryptionConfiguration());
         

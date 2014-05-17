@@ -45,8 +45,6 @@ import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.xmlsec.SecurityConfiguration;
-import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.slf4j.Logger;
@@ -220,14 +218,6 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         
         if (signingParameters.getSignatureAlgorithmURI() != null) {
             return signingParameters.getSignatureAlgorithmURI();
-        }
-        
-        SecurityConfiguration globalSecurityConfig = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration();
-        if (globalSecurityConfig != null) {
-            String signAlgo = globalSecurityConfig.getSignatureAlgorithmURI(signingParameters.getSigningCredential());
-            if (signAlgo != null) {
-                return signAlgo;
-            }
         }
 
         throw new MessageEncodingException("The signing algorithm URI could not be determined");

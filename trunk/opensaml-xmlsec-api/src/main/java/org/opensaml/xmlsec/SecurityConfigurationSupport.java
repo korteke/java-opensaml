@@ -26,16 +26,6 @@ public final class SecurityConfigurationSupport {
     
     /** Constructor. */
     private SecurityConfigurationSupport() { }
-
-    /**
-     * Get the global XML security configuration instance.
-     * 
-     * @return the global XML security configuration
-     */
-    public static SecurityConfiguration getGlobalXMLSecurityConfiguration() {
-        //TODO remove when refactoring complete
-        return ConfigurationService.get(SecurityConfiguration.class);
-    }
     
     /**
      * Get the global {@link DecryptionConfiguration}  instance.

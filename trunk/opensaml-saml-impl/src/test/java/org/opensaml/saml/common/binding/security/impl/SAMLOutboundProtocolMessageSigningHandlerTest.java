@@ -26,7 +26,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.security.impl.SAMLOutboundProtocolMessageSigningHandler;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
@@ -34,11 +33,8 @@ import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
-import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
-import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -58,16 +54,11 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         KeyPair kp = KeySupport.generateKeyPair("RSA", 2048, null);
         Credential cred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         
-        KeyInfoGeneratorManager kiGeneratorManager = SecurityConfigurationSupport.getGlobalXMLSecurityConfiguration()
-                .getKeyInfoGeneratorManager().getDefaultManager();
-        KeyInfoGenerator kiGenerator = kiGeneratorManager.getFactory(cred).newInstance();
-        
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(cred);
         signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signingParameters.setSignatureReferenceDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256);
         signingParameters.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
-        signingParameters.setKeyInfoGenerator(kiGenerator);
         
         messageContext = new MessageContext<>();
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);

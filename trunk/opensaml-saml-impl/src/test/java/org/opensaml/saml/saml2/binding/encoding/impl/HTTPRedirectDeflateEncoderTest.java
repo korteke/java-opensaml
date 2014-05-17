@@ -42,6 +42,7 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -149,6 +150,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
+        signingParameters.setSignatureAlgorithmURI(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
         SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
