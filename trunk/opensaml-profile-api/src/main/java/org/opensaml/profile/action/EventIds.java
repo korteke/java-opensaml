@@ -24,6 +24,9 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /** Constants to use for {@link ProfileAction} {@link org.opensaml.profile.context.EventContext}s. */
 public final class EventIds {
 
+    /** ID of event returned if an authorization failure occurs. */
+    @Nonnull @NotEmpty public static final String ACCESS_DENIED = "AccessDenied";
+    
     /**
      * ID of event returned if the {@link org.opensaml.profile.context.ProfileRequestContext} associated with the
      * current request is missing or corrupt in some way.
