@@ -87,6 +87,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
                     signingMethod.getAlgorithm(), signingMethod.getMinKeySize(), signingMethod.getMaxKeySize());
             
             if (signingMethod.getAlgorithm() == null 
+                    || !getAlgorithmRuntimeSupportedPredicate().apply(signingMethod.getAlgorithm())
                     || !whitelistBlacklistPredicate.apply(signingMethod.getAlgorithm())) {
                 continue;
             }
@@ -178,7 +179,9 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             
             log.trace("Evaluating SAML metadata DigestMethod with algorithm: {}", digestMethod.getAlgorithm());
             
-            if (digestMethod.getAlgorithm() != null && whitelistBlacklistPredicate.apply(digestMethod.getAlgorithm())) {
+            if (digestMethod.getAlgorithm() != null 
+                    && getAlgorithmRuntimeSupportedPredicate().apply(digestMethod.getAlgorithm())
+                    && whitelistBlacklistPredicate.apply(digestMethod.getAlgorithm())) {
                 log.debug("Resolved reference digest method algorithm URI from SAML metadata DigestMethod: {}",
                         digestMethod.getAlgorithm());
                 return digestMethod.getAlgorithm();
