@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 /**
@@ -444,7 +445,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                 .getConfigurations()) {
             
             accumulator.addAll(Collections2.filter(config.getDataEncryptionAlgorithms(), 
-                    whitelistBlacklistPredicate));
+                    Predicates.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate)));
             
         }
         return accumulator;
@@ -485,7 +486,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                 .getConfigurations()) {
             
             accumulator.addAll(Collections2.filter(config.getKeyTransportEncryptionAlgorithms(), 
-                    whitelistBlacklistPredicate));
+                    Predicates.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate)));
             
         }
         return accumulator;
@@ -555,6 +556,16 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         }
         
         return null;
+    }
+    
+    /**
+     * Get a predicate which evaluates whether a cryptographic algorithm is supported
+     * by the runtime environment.
+     * 
+     * @return the predicate
+     */
+    @Nonnull protected Predicate<String> getAlgorithmRuntimeSupportedPredicate() {
+        return new AlgorithmRuntimeSupportedPredicate(getAlgorithmRegistry());
     }
     
     /**
