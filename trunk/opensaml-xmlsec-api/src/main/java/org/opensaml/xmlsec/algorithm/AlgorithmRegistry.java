@@ -17,20 +17,29 @@
 
 package org.opensaml.xmlsec.algorithm;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.NoSuchPaddingException;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
-
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * A registry of {@link AlgorithmDescriptor} instances, to support various use cases for working with algorithm URIs.
@@ -43,6 +52,9 @@ public class AlgorithmRegistry {
     /** Map of registered algorithm descriptors. */
     private Map<String, AlgorithmDescriptor> descriptors;
     
+    /** Set containing algorithms which are supported by the runtime environment. */
+    private Set<String> runtimeSupported;
+    
     /** Index of digest type to AlgorithmDescriptor. */
     private Map<String, DigestAlgorithm> digestAlgorithms;
     
@@ -52,6 +64,7 @@ public class AlgorithmRegistry {
     /** Constructor. */
     public  AlgorithmRegistry() {
         descriptors = new HashMap<>();
+        runtimeSupported = new HashSet<>();
         digestAlgorithms = new HashMap<>();
         signatureAlgorithms = new HashMap<>();
     }
@@ -72,10 +85,31 @@ public class AlgorithmRegistry {
     }
     
     /**
+     * Retrieve indication of whether the runtime environment supports the algorithm. 
+     * 
+     * <p>
+     * This evaluation is performed dynamically when the algorithm is registered.
+     * </p> 
+     * 
+     * @param algorithmURI the algorithm URI to evaluate
+     * 
+     * @return true if the algorithm is supported by the current runtime environment, false otherwise
+     */
+    public boolean isRuntimeSupported(@Nullable final String algorithmURI) {
+        String trimmed = StringSupport.trimOrNull(algorithmURI);
+        if (trimmed == null) {
+            return false;
+        }
+        
+        return runtimeSupported.contains(trimmed);
+    }
+    
+    /**
      * Clear all registered algorithms.
      */
     public void clear() {
         descriptors.clear();
+        runtimeSupported.clear();
         digestAlgorithms.clear();
         signatureAlgorithms.clear();
     }
@@ -87,17 +121,20 @@ public class AlgorithmRegistry {
      */
     public void register(@Nonnull final AlgorithmDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "AlgorithmDescriptor was null");
-        if (descriptors.containsKey(descriptor.getURI())) {
+        
+        log.info("Registering algorithm descriptor with URI: {}", descriptor.getURI());
+        
+        AlgorithmDescriptor old = descriptors.get(descriptor.getURI());
+        if (old != null) {
             log.debug("Registry contained existing descriptor with URI, removing old instance and re-registering: {}",
                     descriptor.getURI());
-            AlgorithmDescriptor old = descriptors.get(descriptor.getURI());
             deindex(old);
             deregister(old);
         }
         descriptors.put(descriptor.getURI(), descriptor);
         index(descriptor);
     }
-    
+
     /**
      * Deregister an algorithm.
      * 
@@ -160,6 +197,15 @@ public class AlgorithmRegistry {
      * @param descriptor the algorithm
      */
     private void index(AlgorithmDescriptor descriptor) {
+        if (checkRuntimeSupports(descriptor)) {
+            runtimeSupported.add(descriptor.getURI());
+        } else {
+            log.warn("Algorithm failed runtime support check, will not be usable: {}", descriptor.getURI());
+            // Just for good measure, for case where environment has changed 
+            // and algorithm is being re-registered.
+            runtimeSupported.remove(descriptor.getURI());
+        }
+        
         if (descriptor instanceof DigestAlgorithm) {
             DigestAlgorithm digestAlgorithm = (DigestAlgorithm) descriptor;
             digestAlgorithms.put(digestAlgorithm.getJCAAlgorithmID(), digestAlgorithm);
@@ -177,6 +223,8 @@ public class AlgorithmRegistry {
      * @param descriptor the algorithm
      */
     private void deindex(AlgorithmDescriptor descriptor) {
+        runtimeSupported.remove(descriptor.getURI());
+        
         if (descriptor instanceof DigestAlgorithm) {
             DigestAlgorithm digestAlgorithm = (DigestAlgorithm) descriptor;
             digestAlgorithms.remove(digestAlgorithm.getJCAAlgorithmID());
@@ -187,6 +235,80 @@ public class AlgorithmRegistry {
         }
     }
     
+    /**
+     * Evaluate whether the algorithm is supported by the current runtime environment.
+     * 
+     * @param descriptor the algorithm
+     * 
+     * @return true if runtime supports the algorithm, false otherwise
+     */
+    private boolean checkRuntimeSupports(AlgorithmDescriptor descriptor) {
+        
+        try {
+            switch(descriptor.getType()) {
+                case BlockEncryption:
+                case KeyTransport:
+                case SymmetricKeyWrap:
+                    Cipher.getInstance(descriptor.getJCAAlgorithmID());
+                    break;
+                    
+                case Signature:
+                    Signature.getInstance(descriptor.getJCAAlgorithmID());
+                    break;
+                    
+                case Mac:
+                    Mac.getInstance(descriptor.getJCAAlgorithmID());
+                    break;
+                    
+                case MessageDigest:
+                    MessageDigest.getInstance(descriptor.getJCAAlgorithmID());
+                    break;
+                    
+                default:
+                    log.warn("Saw unknown AlgorithmDescriptor type, failing runtime support check: {}",
+                            descriptor.getClass().getName());
+                
+            }
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            if (!checkSpecialCasesRuntimeSupport(descriptor)) {
+                log.debug(String.format("AlgorithmDescriptor failed runtime support check: %s", 
+                        descriptor.getURI()), e);
+                return false;
+            }
+        } catch (Throwable t) {
+            log.error("Fatal error evaluating algorithm runtime support", t);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Check for special cases of runtime support which failed the initial simple service class load check.
+     * 
+     * @param descriptor the algorithm
+     * 
+     * @return true if algorithm is supported by the runtime environment, false otherwise
+     */
+    private boolean checkSpecialCasesRuntimeSupport(AlgorithmDescriptor descriptor) {
+        log.trace("Checking runtime support failure for special cases: {}", descriptor.getURI());
+        try {
+            // Per Santuario XMLCipher: Some JDKs don't support RSA/ECB/OAEPPadding.
+            // So check specifically for OAEPPadding with explicit SHA-1 digest and MGF1.
+            if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(descriptor.getURI())) {
+                Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+                log.trace("RSA OAEP algorithm passed as special case with OAEPWithSHA1AndMGF1Padding");
+                return true;
+            }
+            
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            log.trace("Special case eval for algorithm failed with exception", e);
+        }
+        
+        log.trace("Algorithm was not supported by any special cases: {}", descriptor.getURI());
+        return false;
+    }
+
     /**
      * Class used as index key for signature algorithm lookup.
      */

@@ -17,8 +17,44 @@
 
 package org.opensaml.xmlsec.algorithm;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128CBC;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128GCM;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES192CBC;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES192GCM;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES256CBC;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES256GCM;
+import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionDESede;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestMD5;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestRIPEMD160;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACMD5;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACRIPEMD160;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSA15;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEP;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEPMGF1P;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureDSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSAMD5;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSARIPEMD160;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA384;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES128;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES192;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapAES256;
+import org.opensaml.xmlsec.algorithm.descriptors.SymmetricKeyWrapDESede;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
@@ -27,17 +63,14 @@ import org.testng.annotations.Test;
 /**
  *
  */
-public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
+public class AlgorithmDescriptorsTest {
    
     // BlockEncryption
     @Test
     public void testBlockEncryption() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
-        
         BlockEncryptionAlgorithm descriptor;
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        descriptor = new BlockEncryptionAES128CBC();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_CBC);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "AES/CBC/ISO10126Padding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
@@ -46,7 +79,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(128));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.BlockEncryption);
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM);
+        descriptor = new BlockEncryptionAES128GCM();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_GCM);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "AES/GCM/NoPadding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
@@ -55,7 +88,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(128));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.BlockEncryption);
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192);
+        descriptor = new BlockEncryptionAES192CBC();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_CBC);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "AES/CBC/ISO10126Padding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
@@ -64,7 +97,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(192));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.BlockEncryption);
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM);
+        descriptor = new BlockEncryptionAES192GCM();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_GCM);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "AES/GCM/NoPadding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
@@ -73,7 +106,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(192));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.BlockEncryption);
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+        descriptor = new BlockEncryptionAES256CBC();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_CBC);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "AES/CBC/ISO10126Padding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
@@ -82,7 +115,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(256));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.BlockEncryption);
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        descriptor = new BlockEncryptionAES256GCM();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_GCM);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "AES/GCM/NoPadding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
@@ -91,7 +124,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(256));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.BlockEncryption);
         
-        descriptor = (BlockEncryptionAlgorithm) registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES);
+        descriptor = new BlockEncryptionDESede();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_CBC);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "DESede/CBC/ISO10126Padding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_DESEDE);
@@ -104,37 +137,34 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
     // Digest
     @Test
     public void testDigest() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
-        
         DigestAlgorithm descriptor;
         
-        descriptor = (DigestAlgorithm) registry.get(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5);
+        descriptor = new DigestMD5();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_MD5); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
         
-        descriptor = (DigestAlgorithm) registry.get(SignatureConstants.ALGO_ID_DIGEST_RIPEMD160);
+        descriptor = new DigestRIPEMD160();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_RIPEMD160); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_RIPEMD160); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
         
-        descriptor = (DigestAlgorithm) registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        descriptor = new DigestSHA1();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA1); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA1); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
         
-        descriptor = (DigestAlgorithm) registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        descriptor = new DigestSHA256();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA256); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA256); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
         
-        descriptor = (DigestAlgorithm) registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA384);
+        descriptor = new DigestSHA384();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA384); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA384); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
         
-        descriptor = (DigestAlgorithm) registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        descriptor = new DigestSHA512();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.DIGEST_SHA512); 
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_DIGEST_SHA512); 
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.MessageDigest); 
@@ -143,42 +173,39 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
     // HMAC
     @Test
     public void testHMAC() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
-        
         MACAlgorithm descriptor;
         
-        descriptor = (MACAlgorithm) registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5);
+        descriptor = new HMACMD5();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_MD5);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_MD5);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Mac);
         
-        descriptor = (MACAlgorithm) registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160);
+        descriptor = new HMACRIPEMD160();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_RIPEMD160);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_RIPEMD160);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Mac);
         
-        descriptor = (MACAlgorithm) registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1);
+        descriptor = new HMACSHA1();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA1);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_SHA1);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA1);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Mac);
         
-        descriptor = (MACAlgorithm) registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
+        descriptor = new HMACSHA256();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA256);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_SHA256);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Mac);
         
-        descriptor = (MACAlgorithm) registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384);
+        descriptor = new HMACSHA384();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA384);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_SHA384);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA384);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Mac);
         
-        descriptor = (MACAlgorithm) registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
+        descriptor = new HMACSHA512();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA512);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_SHA512);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
@@ -188,12 +215,9 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
     // KeyTransport
     @Test
     public void testKeyTransport() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
-        
         KeyTransportAlgorithm descriptor;
         
-        descriptor = (KeyTransportAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        descriptor = new KeyTransportRSA15();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_ECB);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "RSA/ECB/PKCS1Padding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
@@ -202,7 +226,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.KeyTransport);
         
         
-        descriptor = (KeyTransportAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        descriptor = new KeyTransportRSAOAEPMGF1P();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_ECB);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "RSA/ECB/OAEPPadding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
@@ -210,7 +234,7 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.KeyTransport);
         
-        descriptor = (KeyTransportAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+        descriptor = new KeyTransportRSAOAEP();
         Assert.assertEquals(descriptor.getCipherMode(), JCAConstants.CIPHER_MODE_ECB);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), "RSA/ECB/OAEPPadding");
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
@@ -222,82 +246,79 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
     // Signature
     @Test
     public void testSignature() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
-        
         SignatureAlgorithm descriptor;
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1);
+        descriptor = new SignatureDSASHA1();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA1);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_DSA_SHA1);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_DSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1);
+        descriptor = new SignatureECDSASHA1();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA1);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_ECDSA_SHA1);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_EC);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256);
+        descriptor = new SignatureECDSASHA256();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA256);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_ECDSA_SHA256);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_EC);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384);
+        descriptor = new SignatureECDSASHA384();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA384);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_ECDSA_SHA384);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_EC);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512);
+        descriptor = new SignatureECDSASHA512();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA512);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_ECDSA_SHA512);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_EC);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5);
+        descriptor = new SignatureRSAMD5();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_MD5);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_MD5);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160);
+        descriptor = new SignatureRSARIPEMD160();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_RIPEMD160);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_RIPEMD160);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
+        descriptor = new SignatureRSASHA1();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA1);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA1);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        descriptor = new SignatureRSASHA256();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA256);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA256);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384);
+        descriptor = new SignatureRSASHA384();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA384);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA384);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Signature);
         
-        descriptor = (SignatureAlgorithm) registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
+        descriptor = new SignatureRSASHA512();
         Assert.assertEquals(descriptor.getDigest(), JCAConstants.DIGEST_SHA512);
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.SIGNATURE_RSA_SHA512);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_RSA);
@@ -308,33 +329,30 @@ public class AlgorithmDescriptorsTest extends OpenSAMLInitBaseTestCase {
     // SymmetricKeyWrap
     @Test
     public void testSymmetricKeyWrap() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
-        
         SymmetricKeyWrapAlgorithm descriptor;
         
-        descriptor = (SymmetricKeyWrapAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        descriptor = new SymmetricKeyWrapAES128();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEYWRAP_ALGO_AES);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
         Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(128));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.SymmetricKeyWrap);
         
-        descriptor = (SymmetricKeyWrapAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_AES192);
+        descriptor = new SymmetricKeyWrapAES192();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEYWRAP_ALGO_AES);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
         Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYWRAP_AES192);
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(192));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.SymmetricKeyWrap);
         
-        descriptor = (SymmetricKeyWrapAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        descriptor = new SymmetricKeyWrapAES256();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEYWRAP_ALGO_AES);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_AES);
         Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         Assert.assertEquals(descriptor.getKeyLength(), new Integer(256));
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.SymmetricKeyWrap);
         
-        descriptor = (SymmetricKeyWrapAlgorithm) registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES);
+        descriptor = new SymmetricKeyWrapDESede();
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEYWRAP_ALGO_DESEDE);
         Assert.assertEquals(descriptor.getKey(), JCAConstants.KEY_ALGO_DESEDE);
         Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES);
