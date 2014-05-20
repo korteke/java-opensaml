@@ -309,10 +309,9 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_KEYWRAP_AES256), "AES");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES), "DESede");
         
-        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128), "AES");
-        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192), "AES");
-        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256), "AES");
-        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES), "DESede");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM), "AES");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM), "AES");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM), "AES");
         
         //Signature related.
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA), "RSA");
@@ -324,6 +323,9 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_DSA), "DSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1), "EC");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256), "EC");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384), "EC");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512), "EC");
         
         // Mac related.  No specific key algorithm is indicated, any symmetric key will do. Should always return null;
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
