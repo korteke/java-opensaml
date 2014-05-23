@@ -209,6 +209,9 @@ public final class SignatureConstants {
     /** Signature - Required RSAwithSHA256. */
     public static final String ALGO_ID_SIGNATURE_RSA_SHA256 = MORE_ALGO_NS + "rsa-sha256";
 
+    /** Signature - Optional RSAwithSHA224. */
+    public static final String ALGO_ID_SIGNATURE_RSA_SHA224 = MORE_ALGO_NS + "rsa-sha224";
+
     /** Signature - Required RSAwithSHA384. */
     public static final String ALGO_ID_SIGNATURE_RSA_SHA384 = MORE_ALGO_NS + "rsa-sha384";
 
@@ -221,6 +224,9 @@ public final class SignatureConstants {
     /** HMAC - Optional HMAC-RIPEMD160. */
     public static final String ALGO_ID_MAC_HMAC_RIPEMD160 = MORE_ALGO_NS + "hmac-ripemd160";
 
+    /** HMAC - Optional HMAC-SHA224. */
+    public static final String ALGO_ID_MAC_HMAC_SHA224 = MORE_ALGO_NS + "hmac-sha224";
+    
     /** HMAC - Optional HMAC-SHA256. */
     public static final String ALGO_ID_MAC_HMAC_SHA256 = MORE_ALGO_NS + "hmac-sha256";
 
@@ -232,6 +238,9 @@ public final class SignatureConstants {
 
     /** Signature - Optional ECDSAwithSHA1. */
     public static final String ALGO_ID_SIGNATURE_ECDSA_SHA1 = MORE_ALGO_NS + "ecdsa-sha1";
+
+    /** Signature - Optional ECDSAwithSHA224. */
+    public static final String ALGO_ID_SIGNATURE_ECDSA_SHA224 = MORE_ALGO_NS + "ecdsa-sha224";
 
     /** Signature - Optional ECDSAwithSHA256. */
     public static final String ALGO_ID_SIGNATURE_ECDSA_SHA256 = MORE_ALGO_NS + "ecdsa-sha256";
@@ -246,8 +255,7 @@ public final class SignatureConstants {
     public static final String ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5 = MORE_ALGO_NS + "md5";
 
     /** Digest - Optional SHA224. */
-    // Apache XML-Security doesn't support this
-    // public static final String ALGO_ID_DIGEST_SHA224 = MORE_ALGO_NS + "sha224";
+    public static final String ALGO_ID_DIGEST_SHA224 = MORE_ALGO_NS + "sha224";
 
     /** Digest - Optional SHA384. */
     public static final String ALGO_ID_DIGEST_SHA384 = MORE_ALGO_NS + "sha384";
@@ -256,8 +264,7 @@ public final class SignatureConstants {
     // Some additional algorithm URIs from XML Signature 1.1
     // *********************************************************
     /** Signature - Optional DSAwithSHA256 (DSS). */
-    // Apache XML-Security doesn't support this
-    // public static final String ALGO_ID_SIGNATURE_DSA_SHA256 = XMLSIG11_NS + "dsa-sha256";
+    public static final String ALGO_ID_SIGNATURE_DSA_SHA256 = XMLSIG11_NS + "dsa-sha256";
     
     // *********************************************************
     // Alias in some additional algorithm URI's used in XML 

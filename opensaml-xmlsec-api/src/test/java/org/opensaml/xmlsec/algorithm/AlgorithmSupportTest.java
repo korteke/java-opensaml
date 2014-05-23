@@ -38,6 +38,7 @@ import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES256GCM;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionDESede;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA224;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA384;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA512;
@@ -45,11 +46,14 @@ import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSA15;
 import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEP;
 import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEPMGF1P;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureDSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureDSASHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA224;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA384;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureECDSASHA512;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA1;
+import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA224;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA384;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA512;
@@ -107,24 +111,28 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         
         credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_DESEDE, 168, null));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
         
         credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 128, null));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
         
         credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 192, null));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
         
         credential = CredentialSupport.getSimpleCredential(KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new HMACSHA512()));
@@ -132,6 +140,7 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null);
         credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA224()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA256()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA384()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA512()));
@@ -139,6 +148,7 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 4096, null);
         credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA224()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA256()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA384()));
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureRSASHA512()));
@@ -146,11 +156,13 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null);
         credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureDSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureDSASHA256()));
         
         try {
             kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, 256, null);
             credential = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
             Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA1()));
+            Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA224()));
             Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA256()));
             Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA384()));
             Assert.assertTrue(AlgorithmSupport.credentialSupportsAlgorithmForSigning(credential, new SignatureECDSASHA512()));
@@ -228,6 +240,7 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionDESede()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapDESede()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
@@ -237,6 +250,7 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES128GCM()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES128()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
@@ -246,6 +260,7 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES192GCM()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES192()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
@@ -255,6 +270,7 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new BlockEncryptionAES256GCM()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SymmetricKeyWrapAES256()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA224()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA256()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA384()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new HMACSHA512()));
@@ -264,16 +280,19 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new KeyTransportRSAOAEP()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new KeyTransportRSAOAEPMGF1P()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA224()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA256()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA384()));
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureRSASHA512()));
         
         key = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null).getPrivate();
         Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureDSASHA1()));
+        Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureDSASHA256()));
         
         try {
             key = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, 256, null).getPrivate();
             Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA1()));
+            Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA224()));
             Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA256()));
             Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA384()));
             Assert.assertTrue(AlgorithmSupport.checkKeyAlgorithmAndLength(key, new SignatureECDSASHA512()));
@@ -316,19 +335,23 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         //Signature related.
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1), "RSA");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5), "RSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160), "RSA");
-        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_DSA), "DSA");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1), "DSA");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256), "DSA");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1), "EC");
+        Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224), "EC");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256), "EC");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384), "EC");
         Assert.assertEquals(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512), "EC");
         
         // Mac related.  No specific key algorithm is indicated, any symmetric key will do. Should always return null;
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
+        Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
         Assert.assertNull(AlgorithmSupport.getKeyAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));

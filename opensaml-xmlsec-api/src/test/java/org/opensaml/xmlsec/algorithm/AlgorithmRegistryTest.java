@@ -105,6 +105,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_RIPEMD160));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA224));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA512));
@@ -113,6 +114,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
@@ -124,13 +126,16 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         
         // Signature
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));

@@ -123,6 +123,21 @@ public final class EncryptionConstants {
 
     /** Block Encryption - OPTIONAL AES256-GCM. */
     public static final String ALGO_ID_BLOCKCIPHER_AES256_GCM = XMLENC11_NS + "aes256-gcm";
+    
+    /** Mask Generation Function - MGF1 with SHA-1. */
+    public static final String ALGO_ID_MGF1_SHA1 = XMLENC11_NS + "mgf1sha1";
+
+    /** Mask Generation Function - MGF1 with SHA-224. */
+    public static final String ALGO_ID_MGF1_SHA224 = XMLENC11_NS + "mgf1sha224";
+
+    /** Mask Generation Function - MGF1 with SHA-256. */
+    public static final String ALGO_ID_MGF1_SHA256 = XMLENC11_NS + "mgf1sha256";
+
+    /** Mask Generation Function - MGF1 with SHA-384. */
+    public static final String ALGO_ID_MGF1_SHA384 = XMLENC11_NS + "mgf1sha384";
+
+    /** Mask Generation Function - MGF1 with SHA-512. */
+    public static final String ALGO_ID_MGF1_SHA512 = XMLENC11_NS + "mgf1sha512";
 
     /** URI for DerivedKey. */
     public static final String TYPE_DERIVED_KEY = XMLENC11_NS + "DerivedKey";
