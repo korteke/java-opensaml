@@ -101,6 +101,9 @@ public final class JCAConstants {
     /** Digest algorithm: "SHA-1". */
     public static final String DIGEST_SHA1 = "SHA-1";
     
+    /** Digest algorithm: "SHA-224". */
+    public static final String DIGEST_SHA224 = "SHA-224";
+    
     /** Digest algorithm: "SHA-256". */
     public static final String DIGEST_SHA256 = "SHA-256";
     
@@ -117,6 +120,12 @@ public final class JCAConstants {
     /** Signature algorithm: "SHA1withDSA". */
     public static final String SIGNATURE_DSA_SHA1 = "SHA1withDSA";
     
+    /** Signature algorithm: "SHA224withDSA". */
+    public static final String SIGNATURE_DSA_SHA224 = "SHA224withDSA";
+    
+    /** Signature algorithm: "SHA256withDSA". */
+    public static final String SIGNATURE_DSA_SHA256 = "SHA256withDSA";
+    
     /** Signature algorithm: "MD5withRSA". */
     public static final String SIGNATURE_RSA_MD5 = "MD5withRSA";
     
@@ -125,6 +134,9 @@ public final class JCAConstants {
     
     /** Signature algorithm: "SHA1withRSA". */
     public static final String SIGNATURE_RSA_SHA1 = "SHA1withRSA";
+    
+    /** Signature algorithm: "SHA224withRSA". */
+    public static final String SIGNATURE_RSA_SHA224 = "SHA224withRSA";
     
     /** Signature algorithm: "SHA256withRSA". */
     public static final String SIGNATURE_RSA_SHA256 = "SHA256withRSA";
@@ -137,6 +149,9 @@ public final class JCAConstants {
     
     /** Signature algorithm: "SHA1withECDSA". */
     public static final String SIGNATURE_ECDSA_SHA1 = "SHA1withECDSA";
+    
+    /** Signature algorithm: "SHA224withECDSA". */
+    public static final String SIGNATURE_ECDSA_SHA224 = "SHA224withECDSA";
     
     /** Signature algorithm: "SHA256withECDSA". */
     public static final String SIGNATURE_ECDSA_SHA256 = "SHA256withECDSA";
@@ -159,6 +174,9 @@ public final class JCAConstants {
     
     /** MAC algorithm: "HmacSHA1". */
     public static final String HMAC_SHA1 = "HmacSHA1";
+    
+    /** MAC algorithm: "HmacSHA224". */
+    public static final String HMAC_SHA224 = "HmacSHA224";
     
     /** MAC algorithm: "HmacSHA256". */
     public static final String HMAC_SHA256 = "HmacSHA256";
