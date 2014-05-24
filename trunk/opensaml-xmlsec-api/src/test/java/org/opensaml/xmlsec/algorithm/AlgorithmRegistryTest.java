@@ -182,10 +182,6 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         
         // Signature
         Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1));
-        Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
-        Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
-        Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
-        Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
         Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
         Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
@@ -212,12 +208,34 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         */
         
         // Conditional environment tests
+        
+        if (haveSunEC() || haveBouncyCastle() || getJavaVersion() >= 8) {
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
+            
+            if (haveBouncyCastle() || getJavaVersion() >= 8) {
+                Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
+            }
+        }
+        
         if (haveBouncyCastle() || getJavaVersion() >= 8) {
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+            Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+            
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
         } else {
+            Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+            Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+            Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+            Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+            
             Assert.assertFalse(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
             Assert.assertFalse(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
             Assert.assertFalse(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
@@ -233,6 +251,10 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
             Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
         }
+    }
+    
+    private boolean haveSunEC() {
+       return Security.getProvider("SunEC") != null; 
     }
     
     private boolean haveBouncyCastle() {
