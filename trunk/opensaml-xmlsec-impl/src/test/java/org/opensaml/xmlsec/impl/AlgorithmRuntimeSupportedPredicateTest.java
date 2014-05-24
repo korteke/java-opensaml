@@ -52,11 +52,6 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
         Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
         Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));
         
-        Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
-        Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
-        Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
-        Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
-        
         Assert.assertTrue(predicate.apply(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
         Assert.assertTrue(predicate.apply(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
         
@@ -79,12 +74,41 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
         predicate = new AlgorithmRuntimeSupportedPredicate(AlgorithmSupport.getGlobalAlgorithmRegistry());
         */
         
+        if (haveSunEC() || haveBouncyCastle() || getJavaVersion() >= 8) {
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
+            
+            if (haveBouncyCastle() || getJavaVersion() >= 8) {
+                Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
+            }
+        } else {
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
+        }
+        
         if (haveBouncyCastle() || getJavaVersion() >= 8) {
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+            
+            Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+            
             Assert.assertTrue(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
             Assert.assertTrue(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
             Assert.assertTrue(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
             Assert.assertTrue(predicate.apply(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
         } else {
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+            
+            Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+            
             Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
             Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
             Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
@@ -102,6 +126,9 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
         }
     }
     
+    private boolean haveSunEC() {
+        return Security.getProvider("SunEC") != null; 
+     }
     
     private boolean haveBouncyCastle() {
         return Security.getProvider("BC") != null; 
