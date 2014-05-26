@@ -37,7 +37,7 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
         InOutOperationContext<InboundMessageType, OutboundMessageType> {
 
     /** ID under which this context is stored, for example, within maps or sessions. */
-    public static final String BINDING_KEY = ProfileRequestContext.class.getName();
+    public static final String BINDING_KEY = "opensamlProfileRequestContext";
 
     /** Profile ID if not overridden. */
     public static final String ANONYMOUS_PROFILE_ID = "anonymous";
