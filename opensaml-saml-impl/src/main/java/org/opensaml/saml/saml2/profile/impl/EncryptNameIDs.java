@@ -28,7 +28,10 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -56,6 +59,7 @@ import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
@@ -185,7 +189,18 @@ public class EncryptNameIDs extends AbstractEncryptAction {
             if (format == null) {
                 format = NameID.UNSPECIFIED;
             }
-            return !excludedFormats.contains(format);
+            if (!excludedFormats.contains(format)) {
+                if (log.isDebugEnabled()) {
+                    try {
+                        final Element dom = XMLObjectSupport.marshall(name);
+                        log.debug("{} NameID before encryption:\n{}", getLogPrefix(),
+                                SerializeSupport.prettyPrintXML(dom));
+                    } catch (final MarshallingException e) {
+                        log.error(getLogPrefix() + " Unable to marshall NameID for logging purposes", e);
+                    }
+                }
+                return true;
+            }
         }
         return false;
     }
