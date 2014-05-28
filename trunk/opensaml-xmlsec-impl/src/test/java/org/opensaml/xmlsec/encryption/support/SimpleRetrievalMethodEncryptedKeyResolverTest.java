@@ -31,6 +31,8 @@ import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 
+import com.google.common.collect.Sets;
+
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
  */
@@ -38,12 +40,6 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     
     /** The resolver instance to be tested. */
     private SimpleRetrievalMethodEncryptedKeyResolver resolver;
-    
-    
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        resolver = new SimpleRetrievalMethodEncryptedKeyResolver();
-    }
     
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     @Test
@@ -62,7 +58,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().clear();
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -87,7 +83,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Sets.newHashSet("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -113,7 +109,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Sets.newHashSet("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
@@ -137,7 +133,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Sets.newHashSet("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -163,8 +159,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
-        resolver.getRecipients().add("baz");
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Sets.newHashSet("foo", "baz"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");

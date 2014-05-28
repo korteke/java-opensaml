@@ -19,8 +19,10 @@ package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -32,6 +34,19 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
  * within the {@link org.opensaml.xmlsec.signature.KeyInfo} of the {@link EncryptedData} context.
  */
 public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
+    
+    /** Constructor. */
+    public InlineEncryptedKeyResolver() {
+        super();
+    }
+
+    /** Constructor. 
+     * 
+     * @param recipients the set of recipients
+     */
+    public InlineEncryptedKeyResolver(@Nullable final Set<String> recipients) {
+        super(recipients);
+    }
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {

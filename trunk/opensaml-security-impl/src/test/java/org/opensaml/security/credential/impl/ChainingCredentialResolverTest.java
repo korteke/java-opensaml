@@ -27,10 +27,13 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.google.common.collect.Lists;
 
 /**
  * Testing the chaining credential resolver.
@@ -40,7 +43,7 @@ public class ChainingCredentialResolverTest {
     private ChainingCredentialResolver chainingResolver;
     private CriteriaSet criteriaSet;
     
-    private StaticCredentialResolver staticResolver12, staticResolver3, staticResolver45, staticResolverEmpty;
+    private CredentialResolver staticResolver12, staticResolver3, staticResolver45, staticResolverEmpty;
     private Credential cred1, cred2, cred3, cred4, cred5;
     
     
@@ -57,8 +60,6 @@ public class ChainingCredentialResolverTest {
         cred5 = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         
         criteriaSet = new CriteriaSet();
-        
-        chainingResolver = new ChainingCredentialResolver();
         
         ArrayList<Credential> temp;
         
@@ -86,7 +87,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testOneEmptyMember() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
+        chainingResolver = new ChainingCredentialResolver(Lists.newArrayList(staticResolverEmpty));
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 0);
@@ -98,9 +99,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testMultipleEmptyMember() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
+        chainingResolver = new ChainingCredentialResolver(Lists.newArrayList(staticResolverEmpty, staticResolverEmpty, staticResolverEmpty));
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 0);
@@ -112,7 +111,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testOneMember() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolver12);
+        chainingResolver = new ChainingCredentialResolver(Lists.newArrayList(staticResolver12));
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 2, cred1, cred2);
@@ -124,10 +123,8 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testMultipleMembers() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolver12);
-        chainingResolver.getResolverChain().add(staticResolver3);
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
-        chainingResolver.getResolverChain().add(staticResolver45);
+        chainingResolver = new ChainingCredentialResolver(
+                Lists.newArrayList(staticResolver12, staticResolver3, staticResolverEmpty, staticResolver45));
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 5, cred1, cred2, cred3, cred4, cred5);
@@ -140,11 +137,8 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testOrderingMultipleMembers() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
-        chainingResolver.getResolverChain().add(staticResolver45);
-        chainingResolver.getResolverChain().add(staticResolverEmpty);
-        chainingResolver.getResolverChain().add(staticResolver3);
-        chainingResolver.getResolverChain().add(staticResolver12);
+        chainingResolver = new ChainingCredentialResolver(
+                Lists.newArrayList(staticResolverEmpty, staticResolver45, staticResolverEmpty, staticResolver3, staticResolver12));
         
         List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 5, cred1, cred2, cred3, cred4, cred5);
@@ -160,44 +154,33 @@ public class ChainingCredentialResolverTest {
      * Test empty resolver chain, i.e. no underlying resolver members.
      * @throws ResolverException 
      */
-    @Test
+    @Test(expectedExceptions=IllegalStateException.class)
     public void testEmptyResolverChain() throws ResolverException {
-        try {
-            chainingResolver.resolve(criteriaSet);
-            Assert.fail("Should have thrown an illegal state exception due to no chain members");
-        } catch (IllegalStateException e) {
-            // do nothing, expected to fail
-        }
+        chainingResolver = new ChainingCredentialResolver(new ArrayList<CredentialResolver>());
+        chainingResolver.resolve(criteriaSet);
     }
     
     /**
      * Test exception on attempt to call remove() on iterator.
      * @throws ResolverException 
      */
-    @Test
+    @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testRemove() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolver12);
+        chainingResolver = new ChainingCredentialResolver(Lists.newArrayList(staticResolver12));
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
         Assert.assertTrue(iter.hasNext(), "Iterator was empty");
         iter.next();
-        try {
-            iter.remove();
-            Assert.fail("Remove from iterator is unsupported, should have thrown exception");
-        } catch (UnsupportedOperationException e) {
-            // do nothing, expected to fail
-        }
-        
+        iter.remove();
     }
     
     /**
      * Test exception on attempt to call next() on iterator when no more members.
      * @throws ResolverException 
      */
-    @Test
+    @Test(expectedExceptions=NoSuchElementException.class)
     public void testNoMoreMembers() throws ResolverException {
-        chainingResolver.getResolverChain().add(staticResolver12);
-        chainingResolver.getResolverChain().add(staticResolver3);
+        chainingResolver = new ChainingCredentialResolver(Lists.newArrayList(staticResolver12, staticResolver3));
         
         Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
         Assert.assertTrue(iter.hasNext(), "Should have next member");
@@ -208,13 +191,13 @@ public class ChainingCredentialResolverTest {
         iter.next();
         
         Assert.assertFalse(iter.hasNext(), "Should NOT have next member");
-        try {
-            iter.next();
-            Assert.fail("Should have thrown exception due to next() call with no more members");
-        } catch (NoSuchElementException e) {
-            // do nothing, expected to fail
-        }
-        
+        iter.next();
+    }
+    
+    @Test(expectedExceptions=UnsupportedOperationException.class)
+    public void testChainUnmodifiable() {
+        chainingResolver = new ChainingCredentialResolver(Lists.newArrayList(staticResolver12));
+        chainingResolver.getResolverChain().add(staticResolver3);
     }
     
     /**

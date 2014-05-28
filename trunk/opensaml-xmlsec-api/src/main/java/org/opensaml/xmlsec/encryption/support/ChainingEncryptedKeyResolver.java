@@ -17,18 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.collections.Lists;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 
 /**
  * An implementation of {@link EncryptedKeyResolver} which chains multiple other resolver implementations together,
@@ -42,18 +52,35 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.class);
 
-    /** Constructor. */
-    public ChainingEncryptedKeyResolver() {
-        resolvers = new ArrayList<EncryptedKeyResolver>();
+    /** Constructor. 
+     * 
+     * @param encKeyResolvers the chain of encrypted key resolvers
+     */
+    public ChainingEncryptedKeyResolver(@Nonnull final List<EncryptedKeyResolver> encKeyResolvers) {
+        super();
+        Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers may not be null");
+        resolvers = Lists.newArrayList(Collections2.filter(encKeyResolvers, Predicates.notNull()));
+    }
+
+    /** Constructor. 
+     * 
+     * @param encKeyResolvers the chain of encrypted key resolvers
+     * @param recipients the set of recipients
+     */
+    public ChainingEncryptedKeyResolver(@Nonnull final List<EncryptedKeyResolver> encKeyResolvers,
+            @Nullable final Set<String> recipients) {
+        super(recipients);
+        Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers may not be null");
+        resolvers = Lists.newArrayList(Collections2.filter(encKeyResolvers, Predicates.notNull()));
     }
 
     /**
-     * Get the list of resolvers which form the resolution chain.
+     * Get the unmodifiable list of resolvers which form the resolution chain.
      * 
      * @return a list of EncryptedKeyResolver instances
      */
-    @Nonnull public List<EncryptedKeyResolver> getResolverChain() {
-        return resolvers;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<EncryptedKeyResolver> getResolverChain() {
+        return ImmutableList.copyOf(resolvers);
     }
 
     /** {@inheritDoc} */

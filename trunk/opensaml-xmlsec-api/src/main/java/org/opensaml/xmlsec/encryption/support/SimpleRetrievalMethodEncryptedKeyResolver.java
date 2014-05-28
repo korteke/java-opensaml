@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,6 +50,19 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(SimpleRetrievalMethodEncryptedKeyResolver.class);
+    
+    /** Constructor. */
+    public SimpleRetrievalMethodEncryptedKeyResolver() {
+        super();
+    }
+
+    /** Constructor. 
+     * 
+     * @param recipients the set of recipients
+     */
+    public SimpleRetrievalMethodEncryptedKeyResolver(@Nullable final Set<String> recipients) {
+        super(recipients);
+    }
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {

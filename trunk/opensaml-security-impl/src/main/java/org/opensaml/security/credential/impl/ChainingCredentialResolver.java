@@ -17,7 +17,6 @@
 
 package org.opensaml.security.credential.impl;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,6 +24,9 @@ import java.util.NoSuchElementException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -33,6 +35,11 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * An implementation of {@link CredentialResolver} which chains together one or more underlying credential resolver
@@ -49,18 +56,21 @@ public class ChainingCredentialResolver extends AbstractCredentialResolver {
 
     /**
      * Constructor.
+     * 
+     * @param credResolvers the list of chained credential resolvers
      */
-    public ChainingCredentialResolver() {
-        resolvers = new ArrayList<CredentialResolver>();
+    public ChainingCredentialResolver(@Nonnull final List<CredentialResolver> credResolvers) {
+        Constraint.isNotNull(credResolvers, "CredentialResolver list may not be null");
+        resolvers = Lists.newArrayList(Collections2.filter(credResolvers, Predicates.notNull()));
     }
 
     /**
-     * Get the (modifiable) list of credential resolvers which comprise the resolver chain.
+     * Get the unmodifiable list of credential resolvers which comprise the resolver chain.
      * 
      * @return the list of credential resolvers in the chain
      */
-    @Nonnull public List<CredentialResolver> getResolverChain() {
-        return resolvers;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<CredentialResolver> getResolverChain() {
+        return ImmutableList.copyOf(resolvers);
     }
 
     /** {@inheritDoc} */
