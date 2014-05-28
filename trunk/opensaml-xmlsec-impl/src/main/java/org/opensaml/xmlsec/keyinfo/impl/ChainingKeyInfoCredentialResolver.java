@@ -15,27 +15,29 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.credential.impl;
+package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.opensaml.security.credential.CredentialResolver;
+import org.opensaml.security.credential.impl.AbstractChainingCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
 /**
  * A concrete implementation of {@link AbstractChainingCredentialResolver} which is scoped to 
- * the simple {@link CredentialResolver} type.
+ * the {@link KeyInfoCredentialResolver} type.
  */
-public class ChainingCredentialResolver extends AbstractChainingCredentialResolver<CredentialResolver> {
+public class ChainingKeyInfoCredentialResolver extends AbstractChainingCredentialResolver<KeyInfoCredentialResolver>
+        implements KeyInfoCredentialResolver {
 
     /**
      * Constructor.
      *
-     * @param resolverChain the credential resolver chain
+     * @param resolverChain the chain of KeyInfo credential resolvers
      */
-    public ChainingCredentialResolver(@Nonnull final List<CredentialResolver> resolverChain) {
+    public ChainingKeyInfoCredentialResolver(@Nonnull final List<KeyInfoCredentialResolver> resolverChain) {
         super(resolverChain);
     }
-
+    
 }
