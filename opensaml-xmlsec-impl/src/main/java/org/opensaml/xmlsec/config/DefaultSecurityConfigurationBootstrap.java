@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.config;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -194,11 +195,12 @@ public class DefaultSecurityConfigurationBootstrap {
      * @return an EncryptedKey resolver instance
      */
     protected static EncryptedKeyResolver buildBasicEncryptedKeyResolver() {
-        ChainingEncryptedKeyResolver resolver = new ChainingEncryptedKeyResolver();
-        resolver.getResolverChain().add(new InlineEncryptedKeyResolver());
-        resolver.getResolverChain().add(new SimpleRetrievalMethodEncryptedKeyResolver());
-        resolver.getResolverChain().add(new SimpleKeyInfoReferenceEncryptedKeyResolver());
-        return resolver;
+        List<EncryptedKeyResolver> resolverChain = new ArrayList<>();
+        resolverChain.add(new InlineEncryptedKeyResolver()); 
+        resolverChain.add(new SimpleRetrievalMethodEncryptedKeyResolver());
+        resolverChain.add(new SimpleKeyInfoReferenceEncryptedKeyResolver());
+        
+        return new ChainingEncryptedKeyResolver(resolverChain);
     }
 
     /**

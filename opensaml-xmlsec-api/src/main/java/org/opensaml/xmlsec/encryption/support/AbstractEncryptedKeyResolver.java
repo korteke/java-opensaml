@@ -17,12 +17,17 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -30,8 +35,10 @@ import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.testng.collections.Sets;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Abstract class implementation for {@link EncryptedKeyResolver}.
@@ -39,16 +46,24 @@ import com.google.common.base.Strings;
 public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolver {
     
     /** Recipient attribute criteria against which to match.*/
-    private final List<String> recipients;
+    private final Collection<String> recipients;
     
     /** Constructor. */
     public AbstractEncryptedKeyResolver() {
-        recipients = new ArrayList<String>();
+        recipients = Collections.emptySet();
+    }
+
+    /** Constructor. 
+     * 
+     * @param newRecipents set of recipients
+     * */
+    public AbstractEncryptedKeyResolver(@Nullable final Set<String> newRecipents) {
+        recipients = Sets.newHashSet(StringSupport.normalizeStringCollection(newRecipents));
     }
 
     /** {@inheritDoc} */
-    @Nonnull public List<String> getRecipients() {
-        return recipients;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getRecipients() {
+        return ImmutableSet.copyOf(recipients);
     }
     
     /**

@@ -17,21 +17,21 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.testng.internal.annotations.Sets;
+
+import com.google.common.collect.Lists;
 
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
@@ -41,16 +41,23 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** The resolver instance to be tested. */
     private ChainingEncryptedKeyResolver resolver;
     
+    private List<EncryptedKeyResolver> resolverChain;
+    
+    private Set<String> recipients;
+    
     
     @BeforeMethod
     protected void setUp() throws Exception {
-        resolver = new ChainingEncryptedKeyResolver();
-        resolver.getResolverChain().add(new InlineEncryptedKeyResolver());
-        resolver.getResolverChain().add(new SimpleRetrievalMethodEncryptedKeyResolver());
+        EncryptedKeyResolver inline = new InlineEncryptedKeyResolver();
+        EncryptedKeyResolver rm = new SimpleRetrievalMethodEncryptedKeyResolver();
+        resolverChain = Lists.newArrayList(inline, rm);
+        //resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
+        
+        recipients = Sets.newHashSet();
     }
     
     /** Test error case of empty resolver chain. */
-    @Test
+    @Test(expectedExceptions=IllegalStateException.class)
     public void testEmptyChain() {
         String filename =  "/data/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
@@ -67,17 +74,9 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        resolver = new ChainingEncryptedKeyResolver(new ArrayList<EncryptedKeyResolver>());
         
-        //Make the resolver chain empty before resolving
-        resolver.getResolverChain().clear();
-        
-        try {
-            generateList(encData, resolver);
-            Assert.fail("Resolver called with empty chain, should have thrown IllegalStateException");
-        } catch (IllegalStateException e) {
-            // do nothing, error expected
-        }        
+        generateList(encData, resolver);
     }
     
     /** One recipient specified to resolver, EncryptedKey in instance inline. */
@@ -98,7 +97,9 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        recipients.add("foo");
+        
+        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -124,7 +125,9 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        recipients.add("foo");
+        
+        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -150,7 +153,9 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        recipients.add("foo");
+        
+        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
@@ -177,8 +182,10 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
-        resolver.getRecipients().add("baz");
+        recipients.add("foo");
+        recipients.add("baz");
+        
+        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 4, "Incorrect number of resolved EncryptedKeys found");

@@ -17,9 +17,13 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -43,11 +47,11 @@ public interface EncryptedKeyResolver {
     @Nonnull Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData);
     
     /**
-     * Get the list of recipient criteria used by this resolver, and against which a candidate 
+     * Get the set of recipient criteria used by this resolver, and against which a candidate 
      * EncryptedKey's Recipient attribute is evaluated.
      * 
-     * @return the list of  recipient criteria
+     * @return the collection of  recipient criteria
      */
-    @Nonnull List<String> getRecipients();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive Set<String> getRecipients();
 
 }

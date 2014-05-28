@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -53,6 +54,15 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
 
     /** Constructor. */
     public SimpleKeyInfoReferenceEncryptedKeyResolver() {
+        this(null);
+    }
+
+    /** Constructor. 
+     * 
+     * @param recipients the set of recipients
+     */
+    public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final Set<String> recipients) {
+        super(recipients);
         depthLimit = 5;
     }
     

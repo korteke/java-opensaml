@@ -30,6 +30,8 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 
+import com.google.common.collect.Sets;
+
 /**
  * Test the SAML EncryptedElementType encrypted key resolver, with keys as peers.
  */
@@ -37,12 +39,6 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     
     /** The resolver instance to be tested. */
     private EncryptedElementTypeEncryptedKeyResolver resolver;
-    
-    /** {@inheritDoc} */
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        resolver = new EncryptedElementTypeEncryptedKeyResolver();
-    }
 
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     @Test
@@ -57,7 +53,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().clear();
+        resolver = new EncryptedElementTypeEncryptedKeyResolver();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -78,9 +74,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
-        resolver.getRecipients().add("bar");
-        resolver.getRecipients().add("baz");
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo", "bar", "baz"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -101,7 +95,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -122,7 +116,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("bar");
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("bar"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
@@ -140,7 +134,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().clear();
+        resolver = new EncryptedElementTypeEncryptedKeyResolver();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 4, "Incorrect number of resolved EncryptedKeys found");
@@ -164,9 +158,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().clear();
-        
-        resolver.getRecipients().add("foo");
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
@@ -187,8 +179,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver.getRecipients().add("foo");
-        resolver.getRecipients().add("baz");
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo", "baz"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 3, "Incorrect number of resolved EncryptedKeys found");

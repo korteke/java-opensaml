@@ -19,6 +19,9 @@ package org.opensaml.saml.saml2.encryption;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -32,6 +35,19 @@ import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
  * is the parent of the {@link EncryptedData} context.
  */
 public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
+    
+    /** Constructor. */
+    public EncryptedElementTypeEncryptedKeyResolver() {
+        super();
+    }
+
+    /** Constructor. 
+     * 
+     * @param recipients the set of recipients
+     */
+    public EncryptedElementTypeEncryptedKeyResolver(@Nullable final Set<String> recipients) {
+        super(recipients);
+    }
 
     /** {@inheritDoc} */
     public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
