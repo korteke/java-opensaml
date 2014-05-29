@@ -39,6 +39,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * An implementation of {@link EncryptedKeyResolver} which chains multiple other resolver implementations together,
@@ -52,7 +53,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.class);
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param encKeyResolvers the chain of encrypted key resolvers
      */
@@ -62,7 +64,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         resolvers = Lists.newArrayList(Collections2.filter(encKeyResolvers, Predicates.notNull()));
     }
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param encKeyResolvers the chain of encrypted key resolvers
      * @param recipients the set of recipients
@@ -72,6 +75,17 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         super(recipients);
         Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers may not be null");
         resolvers = Lists.newArrayList(Collections2.filter(encKeyResolvers, Predicates.notNull()));
+    }
+    
+    /** 
+     * Constructor. 
+     * 
+     * @param encKeyResolvers the chain of encrypted key resolvers
+     * @param recipient the recipient
+     */
+    public ChainingEncryptedKeyResolver(@Nonnull final List<EncryptedKeyResolver> encKeyResolvers,
+            @Nullable final String recipient) {
+        this(encKeyResolvers, Sets.newHashSet(recipient));
     }
 
     /**

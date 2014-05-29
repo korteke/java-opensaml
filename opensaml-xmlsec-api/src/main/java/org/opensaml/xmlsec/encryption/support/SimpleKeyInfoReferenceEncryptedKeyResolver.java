@@ -34,6 +34,8 @@ import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Sets;
+
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
  * {@link KeyInfoReference} children of the {@link org.opensaml.xmlsec.signature.KeyInfo} of the {@link EncryptedData}
@@ -54,16 +56,26 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
 
     /** Constructor. */
     public SimpleKeyInfoReferenceEncryptedKeyResolver() {
-        this(null);
+        this((Set<String>)null);
     }
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param recipients the set of recipients
      */
     public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
         depthLimit = 5;
+    }
+    
+    /** 
+     * Constructor. 
+     * 
+     * @param recipient the recipient
+     */
+    public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final String recipient) {
+        this(Sets.newHashSet(recipient));
     }
     
     /**

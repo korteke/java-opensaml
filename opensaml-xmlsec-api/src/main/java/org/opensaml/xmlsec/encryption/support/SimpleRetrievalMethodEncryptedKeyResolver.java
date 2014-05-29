@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
@@ -56,12 +57,22 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
         super();
     }
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param recipients the set of recipients
      */
     public SimpleRetrievalMethodEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
+    }
+
+    /** 
+     * Constructor. 
+     * 
+     * @param recipient the recipient
+     */
+    public SimpleRetrievalMethodEncryptedKeyResolver(@Nullable final String recipient) {
+        this(Sets.newHashSet(recipient));
     }
 
     /** {@inheritDoc} */
