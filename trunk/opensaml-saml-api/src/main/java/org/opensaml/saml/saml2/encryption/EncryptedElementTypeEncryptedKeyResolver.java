@@ -29,6 +29,8 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.AbstractEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 
+import com.google.common.collect.Sets;
+
 /**
  * An implementation of {@link EncryptedKeyResolver} which resolves {@link EncryptedKey}
  * elements which appear as immediate children of the {@link EncryptedElementType} which 
@@ -41,12 +43,22 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
         super();
     }
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param recipients the set of recipients
      */
     public EncryptedElementTypeEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
+    }
+
+    /** 
+     * Constructor. 
+     * 
+     * @param recipient the recipient
+     */
+    public EncryptedElementTypeEncryptedKeyResolver(@Nullable final String recipient) {
+        this(Sets.newHashSet(recipient));
     }
 
     /** {@inheritDoc} */

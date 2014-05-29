@@ -53,12 +53,27 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
         recipients = Collections.emptySet();
     }
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param newRecipents set of recipients
-     * */
+     */
     public AbstractEncryptedKeyResolver(@Nullable final Set<String> newRecipents) {
         recipients = Sets.newHashSet(StringSupport.normalizeStringCollection(newRecipents));
+    }
+
+    /** 
+     * Constructor. 
+     * 
+     * @param recipient the recipient
+     */
+    public AbstractEncryptedKeyResolver(@Nullable final String recipient) {
+        String trimmed = StringSupport.trimOrNull(recipient);
+        if (trimmed != null) {
+            recipients = Sets.newHashSet(trimmed);
+        } else {
+            recipients = Collections.emptySet();
+        }
     }
 
     /** {@inheritDoc} */

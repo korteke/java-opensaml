@@ -29,6 +29,8 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
+import com.google.common.collect.Sets;
+
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements
  * within the {@link org.opensaml.xmlsec.signature.KeyInfo} of the {@link EncryptedData} context.
@@ -40,12 +42,22 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         super();
     }
 
-    /** Constructor. 
+    /** 
+     * Constructor. 
      * 
      * @param recipients the set of recipients
      */
     public InlineEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
+    }
+
+    /** 
+     * Constructor. 
+     * 
+     * @param recipient the recipient
+     */
+    public InlineEncryptedKeyResolver(@Nullable final String recipient) {
+        this(Sets.newHashSet(recipient));
     }
 
     /** {@inheritDoc} */
