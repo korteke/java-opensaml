@@ -110,8 +110,6 @@ public class DefaultSecurityConfigurationBootstrap {
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15
                 ));
         
-        config.setDataKeyInfoCredentialResolver(buildEncryptionDataKeyInfoCredentialResolver());
-        config.setKEKKeyInfoCredentialResolver(buildEncryptionKEKKeyInfoCredentialResolver());
         config.setEncryptedKeyResolver(buildBasicEncryptedKeyResolver());
         
         return config;
@@ -203,28 +201,6 @@ public class DefaultSecurityConfigurationBootstrap {
         return new ChainingEncryptedKeyResolver(resolverChain);
     }
 
-    /**
-     * Build a basic instance of {@link KeyInfoCredentialResolver} for handling
-     * {@link org.opensaml.xmlsec.signature.KeyInfo} instances located within an
-     * {@link org.opensaml.xmlsec.encryption.EncryptedData}.
-     * 
-     * @return a KeyInfo credential resolver instance
-     */
-    protected static KeyInfoCredentialResolver buildEncryptionDataKeyInfoCredentialResolver() {
-        return buildBasicInlineKeyInfoCredentialResolver();
-    }
-    
-    /**
-     * Build a basic instance of {@link KeyInfoCredentialResolver} for handling
-     * {@link org.opensaml.xmlsec.signature.KeyInfo} instances located within an
-     * {@link org.opensaml.xmlsec.encryption.EncryptedKey}.
-     * 
-     * @return a KeyInfo credential resolver instance
-     */
-    protected static KeyInfoCredentialResolver buildEncryptionKEKKeyInfoCredentialResolver() {
-        return buildBasicInlineKeyInfoCredentialResolver();
-    }
-    
     /**
      * Build a basic instance of {@link KeyInfoCredentialResolver}.
      * 
