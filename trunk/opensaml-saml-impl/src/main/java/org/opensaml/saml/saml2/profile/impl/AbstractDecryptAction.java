@@ -69,7 +69,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
     /** Strategy used to locate the SAML message to operate on. */
     @Nonnull private Function<ProfileRequestContext, Object> messageLookupStrategy;
     
-    /** Predicate dertermining whether to attempt decryption. */
+    /** Predicate determining whether to attempt decryption. */
     @Nonnull private Predicate<Pair<ProfileRequestContext,EncryptedElementType>> decryptionPredicate;
     
     /** The decryption object. */
