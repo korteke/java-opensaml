@@ -104,7 +104,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
 
     /** {@inheritDoc} */
     @Override public void setMetadataFilter(MetadataFilter newFilter) {
-        throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
+        throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataResolver");
     }
 
     /** {@inheritDoc} */
