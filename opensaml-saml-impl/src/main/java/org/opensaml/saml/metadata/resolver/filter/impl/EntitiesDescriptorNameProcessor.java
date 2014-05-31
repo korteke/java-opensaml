@@ -20,7 +20,7 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.metadata.EntitiesDescriptorGroupName;
+import org.opensaml.saml.metadata.EntityGroupName;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A metadata node processor implementation which attaches an instance of
- * {@link EntitiesDescriptorGroupName} to an {@link EntityDescriptor} for
+ * {@link EntityGroupName} to an {@link EntityDescriptor} for
  * each ancestor {@link EntitiesDescriptor} in the metadata tree.
  */
 public class EntitiesDescriptorNameProcessor implements MetadataNodeProcessor {
@@ -47,10 +47,10 @@ public class EntitiesDescriptorNameProcessor implements MetadataNodeProcessor {
                     String name = StringSupport.trimOrNull(((EntitiesDescriptor)currentParent).getName());
                     if (name != null) {
                         if (log.isDebugEnabled()) {
-                            log.debug("Attaching EntitiesDescriptor group name '{}' to EntityDescriptor: {}", 
+                            log.debug("Attaching EntityGroupName '{}' to EntityDescriptor: {}", 
                                     name, ((EntityDescriptor)metadataNode).getEntityID());
                         }
-                        metadataNode.getObjectMetadata().put(new EntitiesDescriptorGroupName(name));
+                        metadataNode.getObjectMetadata().put(new EntityGroupName(name));
                     }
                 }
                 currentParent = currentParent.getParent();
