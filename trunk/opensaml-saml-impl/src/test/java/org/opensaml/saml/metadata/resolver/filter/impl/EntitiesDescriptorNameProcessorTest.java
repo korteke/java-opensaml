@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.saml.metadata.EntitiesDescriptorGroupName;
+import org.opensaml.saml.metadata.EntityGroupName;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolverTest;
@@ -67,33 +67,33 @@ public class EntitiesDescriptorNameProcessorTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testGroupHierarchy() throws ResolverException {
-        EntitiesDescriptorGroupName groupTop = new EntitiesDescriptorGroupName("GroupTop");
-        EntitiesDescriptorGroupName groupSub1 = new EntitiesDescriptorGroupName("GroupSub1");
-        EntitiesDescriptorGroupName groupSub2 = new EntitiesDescriptorGroupName("GroupSub2");
-        EntitiesDescriptorGroupName groupSub2A = new EntitiesDescriptorGroupName("GroupSub2A");
+        EntityGroupName groupTop = new EntityGroupName("GroupTop");
+        EntityGroupName groupSub1 = new EntityGroupName("GroupSub1");
+        EntityGroupName groupSub2 = new EntityGroupName("GroupSub2");
+        EntityGroupName groupSub2A = new EntityGroupName("GroupSub2A");
         
         EntityDescriptor entityDescriptor = null;
-        List<EntitiesDescriptorGroupName> groups = null;
+        List<EntityGroupName> groups = null;
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
-        groups = entityDescriptor.getObjectMetadata().get(EntitiesDescriptorGroupName.class);
+        groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 1);
         Assert.assertTrue(groups.contains(groupTop));
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub1.example.org")));
-        groups = entityDescriptor.getObjectMetadata().get(EntitiesDescriptorGroupName.class);
+        groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 2);
         Assert.assertTrue(groups.contains(groupTop));
         Assert.assertTrue(groups.contains(groupSub1));
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub2.example.org")));
-        groups = entityDescriptor.getObjectMetadata().get(EntitiesDescriptorGroupName.class);
+        groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 2);
         Assert.assertTrue(groups.contains(groupTop));
         Assert.assertTrue(groups.contains(groupSub2));
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub2a.example.org")));
-        groups = entityDescriptor.getObjectMetadata().get(EntitiesDescriptorGroupName.class);
+        groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 3);
         Assert.assertTrue(groups.contains(groupTop));
         Assert.assertTrue(groups.contains(groupSub2));

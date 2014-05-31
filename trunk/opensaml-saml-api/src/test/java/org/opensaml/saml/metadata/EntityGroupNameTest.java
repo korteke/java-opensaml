@@ -24,32 +24,32 @@ import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class EntitiesDescriptorGroupNameTest {
+public class EntityGroupNameTest {
     
     @Test
     public void testConstructor() {
-        EntitiesDescriptorGroupName groupName = new EntitiesDescriptorGroupName("foo");
+        EntityGroupName groupName = new EntityGroupName("foo");
         Assert.assertEquals(groupName.getName(), "foo");
         
-        groupName = new EntitiesDescriptorGroupName("    foo    ");
+        groupName = new EntityGroupName("    foo    ");
         Assert.assertEquals(groupName.getName(), "foo");
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testConstructorOnNull() {
-        new EntitiesDescriptorGroupName(null);
+        new EntityGroupName(null);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testConstructorOnEmpty() {
-        new EntitiesDescriptorGroupName("            ");
+        new EntityGroupName("            ");
     }
     
     @Test
     public void testHashCodeAndEquals() {
-        EntitiesDescriptorGroupName foo1 = new EntitiesDescriptorGroupName("foo");
-        EntitiesDescriptorGroupName foo2 = new EntitiesDescriptorGroupName("foo");
-        EntitiesDescriptorGroupName bar = new EntitiesDescriptorGroupName("bar");
+        EntityGroupName foo1 = new EntityGroupName("foo");
+        EntityGroupName foo2 = new EntityGroupName("foo");
+        EntityGroupName bar = new EntityGroupName("bar");
         
         Assert.assertTrue(foo1.equals(foo1));
         Assert.assertTrue(foo1.equals(foo2));

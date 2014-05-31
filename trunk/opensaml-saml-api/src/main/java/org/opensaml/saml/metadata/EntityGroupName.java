@@ -27,11 +27,11 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
- * A bean class which is used to represent an entities descriptor group to which an 
+ * A bean class which is used to represent an entity group to which an 
  * {@link EntityDescriptor} belongs.  It will typically be attached to an entity descriptor
  * via its {@link XMLObject#getObjectMetadata()}.
  */
-public class EntitiesDescriptorGroupName {
+public class EntityGroupName {
     
     /** The entities descriptor group name. */
     private String name;
@@ -39,17 +39,17 @@ public class EntitiesDescriptorGroupName {
     /**
      * Constructor.
      *
-     * @param newName the entities descriptor group name
+     * @param newName the entity group name
      */
-    public EntitiesDescriptorGroupName(@Nonnull @NotEmpty final String newName) {
+    public EntityGroupName(@Nonnull @NotEmpty final String newName) {
         name = Constraint.isNotNull(StringSupport.trimOrNull(newName), 
-                "EntitiesDescriptor group name may not be null or empty");
+                "Entity group name may not be null or empty");
     }
     
     /**
-     * Get the entities descriptor group name.
+     * Get the entity group name.
      * 
-     * @return the entities descriptor group name
+     * @return the entity group name
      */
     @Nonnull @NotEmpty public String getName() {
         return name;
@@ -66,8 +66,8 @@ public class EntitiesDescriptorGroupName {
             return true;
         }
         
-        if (obj instanceof EntitiesDescriptorGroupName) {
-            return name.equals(((EntitiesDescriptorGroupName)obj).getName());
+        if (obj instanceof EntityGroupName) {
+            return name.equals(((EntityGroupName)obj).getName());
         } else {
             return false;
         }
