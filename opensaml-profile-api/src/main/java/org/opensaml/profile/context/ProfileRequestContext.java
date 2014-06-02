@@ -51,7 +51,6 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
     /** Constructor. */
     public ProfileRequestContext() {
         profileId = ANONYMOUS_PROFILE_ID;
-        browserProfile = true;
     }
 
     /**
@@ -78,7 +77,7 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
     }
 
     /**
-     * Get whether the current profile request is browser-based (defaults to true).
+     * Get whether the current profile request is browser-based (defaults to false).
      * 
      * @return whether the current profile request is browser-based
      */
