@@ -27,16 +27,19 @@ import javax.annotation.Nullable;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookupFunction;
+import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
+import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -158,6 +161,13 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
             return true;
         }
 
+        final AuthnRequest authnRequest = new MessageLookup<AuthnRequest>(AuthnRequest.class).apply(
+                new InboundMessageContextLookup().apply(input));
+        if (authnRequest != null && authnRequest.isPassive()) {
+            log.debug("Request was a SAML 2 AuthnRequest with IsPassive set, handling error with response");
+            return false;
+        }
+        
         final EventContext eventCtx = eventContextLookupStrategy.apply(input);
         if (eventCtx == null || eventCtx.getEvent() == null) {
             log.debug("No event found, assuming error handled with response");
