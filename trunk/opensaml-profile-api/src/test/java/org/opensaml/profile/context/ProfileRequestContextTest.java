@@ -26,10 +26,10 @@ public class ProfileRequestContextTest {
 
     @Test public void testBrowserProfile() {
         final ProfileRequestContext context = new ProfileRequestContext();
-        Assert.assertTrue(context.isBrowserProfile());
-
-        context.setBrowserProfile(false);
         Assert.assertFalse(context.isBrowserProfile());
+
+        context.setBrowserProfile(true);
+        Assert.assertTrue(context.isBrowserProfile());
     }
 
     @Test public void testProfileId() {
