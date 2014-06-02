@@ -45,19 +45,17 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
     /** Unique identifier for the profile/operation/function of the current request. */
     private String profileId;
 
-    /**
-     * Indicates whether the current profile request is passive. Passive requests are not capable of showing a UI to a
-     * user.
-     */
-    private boolean passiveProfile;
+    /** Whether the current profile request is browser-based. */
+    private boolean browserProfile;
 
     /** Constructor. */
     public ProfileRequestContext() {
         profileId = ANONYMOUS_PROFILE_ID;
+        browserProfile = true;
     }
 
     /**
-     * Gets the ID of the profile used by the current request.
+     * Get the ID of the profile used by the current request.
      * 
      * @return ID of the profile used by the current request
      */
@@ -66,7 +64,7 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
     }
 
     /**
-     * Sets the ID of the profile used by the current request.
+     * Set the ID of the profile used by the current request.
      * 
      * @param id ID of the profile used by the current request
      */
@@ -80,21 +78,21 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
     }
 
     /**
-     * Gets whether the current profile request is passive.
+     * Get whether the current profile request is browser-based (defaults to true).
      * 
-     * @return whether the current profile request is passive
+     * @return whether the current profile request is browser-based
      */
-    public boolean isPassiveProfile() {
-        return passiveProfile;
+    public boolean isBrowserProfile() {
+        return browserProfile;
     }
 
     /**
-     * Sets whether the current profile request is passive.
+     * Set whether the current profile request is browser-based.
      * 
-     * @param isPassive whether the current profile request is passive
+     * @param browser whether the current profile request is browser-based
      */
-    public void setPassiveProfile(final boolean isPassive) {
-        passiveProfile = isPassive;
+    public void setBrowserProfile(final boolean browser) {
+        browserProfile = browser;
     }
 
 }
