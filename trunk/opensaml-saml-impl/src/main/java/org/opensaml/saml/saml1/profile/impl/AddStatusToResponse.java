@@ -29,8 +29,9 @@ import javax.xml.namespace.QName;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.context.PreviousEventContext;
+import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookupFunction;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -297,6 +298,9 @@ public class AddStatusToResponse extends AbstractProfileAction {
         /** Code mappings. */
         @Nonnull @NonnullElements private Map<String,List<QName>> codeMappings;
         
+        /** Strategy function for access to {@link EventContext} to check. */
+        @Nonnull private Function<ProfileRequestContext,EventContext> eventContextLookupStrategy;
+        
         /**
          * Constructor.
          *
@@ -313,16 +317,26 @@ public class AddStatusToResponse extends AbstractProfileAction {
                             Lists.newArrayList(Collections2.filter(entry.getValue(), Predicates.notNull())));
                 }
             }
+            
+            eventContextLookupStrategy = new CurrentOrPreviousEventLookupFunction();
+        }
+        
+        /**
+         * Set lookup strategy for {@link EventContext} to check.
+         * 
+         * @param strategy  lookup strategy
+         */
+        public void setEventContextLookupStrategy(
+                @Nonnull final Function<ProfileRequestContext,EventContext> strategy) {
+            eventContextLookupStrategy = Constraint.isNotNull(strategy, "EventContext lookup strategy cannot be null");
         }
         
         /** {@inheritDoc} */
         @Override
         @Nullable public List<QName> apply(@Nullable final ProfileRequestContext input) {
-            if (input != null) {
-                final PreviousEventContext error = input.getSubcontext(PreviousEventContext.class);
-                if (error != null && error.getEvent() != null) {
-                    return codeMappings.get(error.getEvent().toString());
-                }
+            final EventContext eventCtx = eventContextLookupStrategy.apply(input);
+            if (eventCtx != null && eventCtx.getEvent() != null) {
+                return codeMappings.get(eventCtx.getEvent().toString());
             }
             return Collections.emptyList();
         }

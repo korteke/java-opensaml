@@ -25,8 +25,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.profile.context.EventContext;
-import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookupFunction;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
@@ -174,24 +174,5 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
         }
     }
 // Checkstyle: CyclomaticComplexity ON
-    
-    /** Access either current or previous event from context tree. */
-    private class CurrentOrPreviousEventLookupFunction implements Function<ProfileRequestContext,EventContext> {
 
-        /** {@inheritDoc} */
-        @Override
-        @Nullable public EventContext apply(@Nullable final ProfileRequestContext input) {
-            if (input != null) {
-                final EventContext eventCtx = input.getSubcontext(EventContext.class);
-                if (eventCtx != null) {
-                    return eventCtx;
-                } else {
-                    return input.getSubcontext(PreviousEventContext.class);
-                }
-            } else {
-                return null;
-            }
-        }
-        
-    }
 }
