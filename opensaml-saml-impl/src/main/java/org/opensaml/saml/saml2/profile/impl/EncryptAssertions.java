@@ -33,9 +33,11 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
@@ -62,7 +64,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EncryptAssertions.class);
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,StatusResponseType> responseLookupStrategy;
     
     /** The message to operate on. */
     @Nullable private Response response;
@@ -71,7 +73,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
 
     public EncryptAssertions() {
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+                Functions.compose(new MessageLookup<>(StatusResponseType.class), new OutboundMessageContextLookup());
     }
 
     /**
@@ -79,7 +81,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,StatusResponseType> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -98,7 +100,16 @@ public class EncryptAssertions extends AbstractEncryptAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        response = responseLookupStrategy.apply(profileRequestContext);
+        final StatusResponseType message = responseLookupStrategy.apply(profileRequestContext);
+        if (message != null) {
+            if (message instanceof Response) {
+                response = (Response) message;
+            } else if (message instanceof ArtifactResponse
+                    && ((ArtifactResponse) message).getMessage() instanceof Response) {
+                response = (Response) ((ArtifactResponse) message).getMessage();
+            }
+        }
+        
         if (response == null || response.getAssertions().isEmpty()) {
             log.debug("{} Response was not present or contained no assertions, nothing to do", getLogPrefix());
             return false;
