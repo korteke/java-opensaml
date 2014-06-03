@@ -70,14 +70,19 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
     protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         final SignatureSigningParameters signingParameters = 
                 SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
-        if (signingParameters != null && (signErrorResponses || !isErrorResponse(messageContext.getMessage()))) {
-            try {
-                SAMLMessageSecuritySupport.signMessage(messageContext);
-            } catch (SecurityException | MarshallingException | SignatureException e) {
-                throw new MessageHandlerException("Error signing outbound protocol message", e);
+        if (signingParameters != null) {
+            if (!signErrorResponses && isErrorResponse(messageContext.getMessage())) {
+                log.debug("{} Message context contained signing parameters, but error response signatures are disabled",
+                        getLogPrefix());
+            } else {
+                try {
+                    SAMLMessageSecuritySupport.signMessage(messageContext);
+                } catch (SecurityException | MarshallingException | SignatureException e) {
+                    throw new MessageHandlerException("Error signing outbound protocol message", e);
+                }
             }
         } else {
-            log.info("{} Message context did not contain signing parameters, outbound message will not be signed",
+            log.debug("{} Message context did not contain signing parameters, outbound message will not be signed",
                     getLogPrefix());
         }
     }
