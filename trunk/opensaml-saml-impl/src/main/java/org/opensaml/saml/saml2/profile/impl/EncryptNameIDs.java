@@ -40,6 +40,7 @@ import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Condition;
@@ -133,6 +134,11 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         message = messageLookupStrategy.apply(profileRequestContext);
+
+        if (message != null && message instanceof ArtifactResponse) {
+            message = ((ArtifactResponse) message).getMessage();
+        }
+        
         if (message == null) {
             log.debug("{} Message was not present, nothing to do", getLogPrefix());
             return false;
@@ -146,6 +152,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         try {
+            
             if (message instanceof AuthnRequest) {
                 processSubject(((AuthnRequest) message).getSubject());
             } else if (message instanceof SubjectQuery) {

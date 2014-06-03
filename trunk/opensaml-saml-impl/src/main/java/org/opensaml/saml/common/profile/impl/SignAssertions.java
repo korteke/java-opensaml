@@ -34,6 +34,7 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
@@ -114,6 +115,11 @@ public class SignAssertions extends AbstractProfileAction {
             log.debug("{} No SAML Response located in current profile request context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
+        }
+
+        // Step down into ArtifactResponses.
+        if (response instanceof ArtifactResponse) {
+            response = ((ArtifactResponse) response).getMessage();
         }
         
         if (response instanceof org.opensaml.saml.saml1.core.Response) {
