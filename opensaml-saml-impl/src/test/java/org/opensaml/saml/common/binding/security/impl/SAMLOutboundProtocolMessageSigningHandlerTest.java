@@ -21,6 +21,8 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -50,7 +52,7 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
     private SAMLOutboundProtocolMessageSigningHandler handler;
     
     @BeforeMethod
-    public void setUp() throws NoSuchAlgorithmException, NoSuchProviderException {
+    public void setUp() throws NoSuchAlgorithmException, NoSuchProviderException, ComponentInitializationException {
         KeyPair kp = KeySupport.generateKeyPair("RSA", 2048, null);
         Credential cred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         
@@ -64,6 +66,8 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
         handler = new SAMLOutboundProtocolMessageSigningHandler();
+        handler.setSignErrorResponses(false);
+        handler.initialize();
     }
     
     @Test
@@ -87,6 +91,29 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         handler.invoke(messageContext);
         
         Assert.assertNotNull(response.getSignature(), "Signature was null");
+    }
+
+    @Test
+    public void testSAML2ErrorResponse() throws MessageHandlerException {
+        Response response = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+        response.setID("abc123");
+        response.setIssueInstant(new DateTime());
+        
+        Issuer issuer = buildXMLObject(Issuer.DEFAULT_ELEMENT_NAME);
+        issuer.setValue("http://idp.example.org");
+        response.setIssuer(issuer);
+        
+        StatusCode sc = buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
+        sc.setValue(StatusCode.RESPONDER_URI);
+        Status status = buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
+        status.setStatusCode(sc);
+        response.setStatus(status);
+        
+        messageContext.setMessage(response);
+        
+        handler.invoke(messageContext);
+        
+        Assert.assertNull(response.getSignature(), "Signature was not null");
     }
 
 }
