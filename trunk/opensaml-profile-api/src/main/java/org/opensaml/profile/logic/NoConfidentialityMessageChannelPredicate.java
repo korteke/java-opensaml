@@ -25,7 +25,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import com.google.common.base.Predicate;
 
 /**
- * A predicate implementation that indicates whether the outbound message channel does
+ * A predicate implementation that indicates whether the message channel does
  * <strong>NOT</strong> support confidentiality end-to-end.
  * 
  * <p>Typically but not exclusively used as a predicate for whether to encrypt something.</p>
@@ -35,10 +35,8 @@ public class NoConfidentialityMessageChannelPredicate implements Predicate<Profi
     /** {@inheritDoc} */
     @Override
     public boolean apply(@Nullable final ProfileRequestContext input) {
-        return input == null || input.getOutboundMessageContext() == null
-                || !input.getOutboundMessageContext().getSubcontext(
-                        MessageChannelSecurityContext.class, true).isConfidentialityActive();
-
+        return input == null
+                || !input.getSubcontext(MessageChannelSecurityContext.class, true).isConfidentialityActive();
     }
     
 }
