@@ -64,14 +64,10 @@ import com.google.common.collect.Maps;
  * <p>If the message already contains status information, this action will overwrite it.</p>
  * 
  * <p>Options allows for the creation of a {@link StatusMessage} either explicitly,
- * or through the mapping of the previous event ID. The action is Spring-aware in order
- * to obtain the previous Event to map, to do message lookup, and to obtain the active
- * {@link java.util.Locale}.</p>
+ * or via lookup strategy.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
- * @event {@link IdPEventIds#INVALID_RELYING_PARTY_CTX}
- * @event {@link IdPEventIds#INVALID_RELYING_PARTY_CONFIG}
  */
 public class AddStatusToResponse extends AbstractProfileAction {
 
