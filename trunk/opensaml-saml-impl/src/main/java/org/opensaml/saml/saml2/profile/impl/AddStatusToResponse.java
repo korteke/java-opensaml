@@ -112,8 +112,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext, Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -125,7 +124,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * 
      * @param condition predicate for detailed errors condition
      */
-    public synchronized void setDetailedErrorsCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
+    public void setDetailedErrorsCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         detailedErrorsCondition =
@@ -137,8 +136,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * 
      * @param strategy strategy used to obtain status codes
      */
-    public synchronized void setStatusCodesLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,List<String>> strategy) {
+    public void setStatusCodesLookupStrategy(@Nullable final Function<ProfileRequestContext,List<String>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         statusCodesLookupStrategy = strategy;
@@ -149,8 +147,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * 
      * @param strategy strategy used to obtain a status message
      */
-    public synchronized void setStatusMessageLookupStrategy(
-            @Nullable final Function<ProfileRequestContext, String> strategy) {
+    public void setStatusMessageLookupStrategy(@Nullable final Function<ProfileRequestContext, String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         statusMessageLookupStrategy = strategy;
@@ -162,7 +159,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * 
      * @param codes list of status code values to insert
      */
-    public synchronized void setStatusCodes(@Nonnull @NonnullElements List<String> codes) {
+    public void setStatusCodes(@Nonnull @NonnullElements List<String> codes) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         Constraint.isNotNull(codes, "Status code list cannot be null");
@@ -170,15 +167,12 @@ public class AddStatusToResponse extends AbstractProfileAction {
     }
     
     /**
-     * Set a default status message to use.
-     * 
-     * <p>If set, the {@link StatusMessage} element will be set to this value, unless
-     * {@link #statusMessageFromEvent} is true, the event exists and is mappable to a
-     * message, and {@link RelyingPartyConfiguration#isDetailedErrors()} is also true. 
+     * Set a default status message to use in the event that error detail is off,
+     * or no specific message is obtained.
      * 
      * @param message default status message
      */
-    public synchronized void setStatusMessage(@Nullable final String message) {
+    public void setStatusMessage(@Nullable final String message) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         statusMessage = StringSupport.trimOrNull(message);
