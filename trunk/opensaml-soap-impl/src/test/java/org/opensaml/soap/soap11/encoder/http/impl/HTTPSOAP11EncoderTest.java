@@ -19,6 +19,7 @@ package org.opensaml.soap.soap11.encoder.http.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
@@ -36,6 +37,9 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.soap11.encoder.http.impl.HTTPSOAP11Encoder;
 import org.opensaml.soap.util.SOAPSupport;
@@ -87,6 +91,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "");
+        Assert.assertEquals(response.getStatus(), 200);
         
         Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
@@ -138,6 +143,8 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "");
+        Assert.assertEquals(response.getStatus(), 200);
+        
         
         Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
@@ -195,6 +202,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "");
+        Assert.assertEquals(response.getStatus(), 200);
         
         Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
@@ -253,8 +261,51 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
+        Assert.assertEquals(response.getStatus(), 200);
         
         Assert.assertEquals(response.getHeader("SOAPAction"), "urn:test:soap:action");
+    }
+    
+    @Test
+    public void testFault() throws ComponentInitializationException, MessageEncodingException, XMLParserException, UnmarshallingException {
+        Fault fault = buildXMLObject(Fault.DEFAULT_ELEMENT_NAME);
+        
+        FaultCode faultCode = buildXMLObject(FaultCode.DEFAULT_ELEMENT_NAME);
+        faultCode.setValue(FaultCode.SERVER);
+        fault.setCode(faultCode);
+        
+        FaultString faultString = buildXMLObject(FaultString.DEFAULT_ELEMENT_NAME);
+        faultString.setValue("Something bad happened");
+        fault.setMessage(faultString);
+       
+        MessageContext<XMLObject> messageContext = new MessageContext<XMLObject>();
+        messageContext.setMessage(fault);
+        
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        
+        HTTPSOAP11Encoder<XMLObject> encoder = new HTTPSOAP11Encoder<XMLObject>();
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
+        
+        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
+        Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
+        Assert.assertEquals(response.getStatus(), 500);
+        
+        Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
+        
+        Assert.assertNotNull(encodedEnv);
+        Assert.assertNotNull(encodedEnv.getBody());
+        Body encodedBody = encodedEnv.getBody();
+        List<XMLObject> faults = encodedBody.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+        Assert.assertEquals(faults.size(), 1);
+        Fault encodedFault = (Fault) faults.get(0);
+        Assert.assertEquals(encodedFault.getCode().getValue(), FaultCode.SERVER);
+        Assert.assertEquals(encodedFault.getMessage().getValue(), "Something bad happened");
     }
     
     //
