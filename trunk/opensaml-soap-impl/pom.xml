@@ -23,6 +23,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-profile-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Provided Dependencies -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -35,6 +41,14 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-profile-api</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
