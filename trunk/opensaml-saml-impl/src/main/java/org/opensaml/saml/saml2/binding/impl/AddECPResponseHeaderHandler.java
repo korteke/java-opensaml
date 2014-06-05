@@ -64,7 +64,7 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
         try {
             assertionConsumerURL = SAMLBindingSupport.getEndpointURL(messageContext);
         } catch (final BindingException e) {
-            log.warn(getLogPrefix() + " Error extracting ACS location from message context", e);
+            log.debug(getLogPrefix() + " No ACS location available in message context");
             return false;
         }
         
