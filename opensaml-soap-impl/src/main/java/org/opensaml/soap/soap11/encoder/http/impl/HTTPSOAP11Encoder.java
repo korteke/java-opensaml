@@ -37,6 +37,7 @@ import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.wsaddressing.Action;
 import org.slf4j.Logger;
@@ -177,8 +178,10 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
         } else {
             response.setHeader("SOAPAction", "");
         }
+        
+        response.setStatus(getHTTPResponseStatusCode());
     }
- 
+
     /**
      * Determine the value of the SOAPAction HTTP header to send.
      * 
@@ -201,6 +204,26 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
         } else {
             return ((Action)objList.get(0)).getValue();
         }
+    }
+    
+    /**
+     * Get the HTTP response status code to return.
+     * 
+     * @return the HTTP response status code
+     */
+    protected int getHTTPResponseStatusCode() {
+        //TODO support explicit arbitrary code and message via SOAP context
+        
+        Envelope envelope = getSOAPEnvelope();
+        if (envelope != null && envelope.getBody() != null) {
+            Body body = envelope.getBody();
+            List<XMLObject> faults = body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+            if (!faults.isEmpty()) {
+                return 500;
+            }
+        }
+        
+        return 200;
     }
     
     /** {@inheritDoc} */
