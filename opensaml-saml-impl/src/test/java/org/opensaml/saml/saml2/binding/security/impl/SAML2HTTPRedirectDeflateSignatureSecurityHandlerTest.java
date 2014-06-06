@@ -28,7 +28,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.net.UrlBuilder;
+import net.shibboleth.utilities.java.support.net.URLBuilder;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -330,9 +330,9 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         
         // The Spring mock object doesn't convert between the query params and the getParameter apparently,
         // so have to set them both ways.
-        UrlBuilder urlBuilder = null;
+        URLBuilder urlBuilder = null;
         try {
-            urlBuilder = new UrlBuilder(response.getRedirectedUrl());
+            urlBuilder = new URLBuilder(response.getRedirectedUrl());
         } catch (MalformedURLException e) {
             Assert.fail("Could not parse redirect url: " + response.getRedirectedUrl());
         }

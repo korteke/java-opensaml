@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.net.UrlBuilder;
+import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -160,9 +160,9 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             throws MessageEncodingException {
         log.debug("Building URL to redirect client to");
         
-        UrlBuilder urlBuilder = null;
+        URLBuilder urlBuilder = null;
         try {
-            urlBuilder = new UrlBuilder(endpoint);
+            urlBuilder = new URLBuilder(endpoint);
         } catch (MalformedURLException e) {
             throw new MessageEncodingException("Endpoint URL " + endpoint + " is not a valid URL", e);
         }

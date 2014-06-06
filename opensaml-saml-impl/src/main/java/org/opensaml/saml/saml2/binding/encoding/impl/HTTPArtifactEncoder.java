@@ -33,7 +33,7 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.UrlBuilder;
+import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.velocity.VelocityContext;
@@ -272,9 +272,9 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         
         final String endpointUrl = getEndpointURL(messageContext).toString();
         
-        final UrlBuilder urlBuilder;
+        final URLBuilder urlBuilder;
         try {
-            urlBuilder = new UrlBuilder(endpointUrl);
+            urlBuilder = new URLBuilder(endpointUrl);
         } catch (final MalformedURLException e) {
             throw new MessageEncodingException("Endpoint URL " + endpointUrl + " is not a valid URL", e);
         }

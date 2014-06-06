@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 import java.net.URI;
 import java.security.KeyPair;
 
-import net.shibboleth.utilities.java.support.net.UriSupport;
+import net.shibboleth.utilities.java.support.net.URISupport;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -168,9 +168,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         String queryString = new URI(response.getRedirectedUrl()).getRawQuery();
         
-        Assert.assertNotNull(UriSupport.getRawQueryStringParameter(queryString, "Signature"), 
+        Assert.assertNotNull(URISupport.getRawQueryStringParameter(queryString, "Signature"), 
                 "Signature parameter was not found");
-        Assert.assertNotNull(UriSupport.getRawQueryStringParameter(queryString, "SigAlg"), 
+        Assert.assertNotNull(URISupport.getRawQueryStringParameter(queryString, "SigAlg"), 
                 "SigAlg parameter was not found");
         
         // Note: to test that actual signature is cryptographically correct, really need a known good test vector.
