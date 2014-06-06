@@ -97,7 +97,7 @@ public final class SAMLConfigurationSupport {
      * 
      * @return the list of allowed URL schemes
      */
-    public static List<String> getAllowedBindingUrlSchemes() {
+    public static List<String> getAllowedBindingURLSchemes() {
         return ConfigurationService.get(SAMLConfiguration.class).getAllowedBindingURLSchemes();
     }
     
@@ -106,7 +106,7 @@ public final class SAMLConfigurationSupport {
      * 
      * @param schemes the new list of allowed URL schemes
      */
-    public static void setAllowedBindingUrlSchemes(List<String>schemes) {
+    public static void setAllowedBindingURLSchemes(List<String>schemes) {
         ConfigurationService.get(SAMLConfiguration.class).setAllowedBindingURLSchemes(schemes);
     }
 }

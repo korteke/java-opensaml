@@ -91,8 +91,8 @@ public final class SAMLMessageSecuritySupport {
      * 
      * @return true if allowed, otherwise false
      */
-    public static boolean checkUrlScheme(@Nonnull @NotEmpty String scheme) {
-        return SAMLConfigurationSupport.getAllowedBindingUrlSchemes().contains(scheme);
+    public static boolean checkURLScheme(@Nonnull @NotEmpty String scheme) {
+        return SAMLConfigurationSupport.getAllowedBindingURLSchemes().contains(scheme);
     }
 
 }

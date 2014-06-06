@@ -249,7 +249,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             return cert;
         }
 
-        // Check against any subject key identifiers
+        // Check against any subject X509 digests
         cert = findCertFromDigest(certs, x509Data.getX509Digests());
         if (cert != null) {
             log.debug("End-entity certificate resolved by matching X509Digest");
