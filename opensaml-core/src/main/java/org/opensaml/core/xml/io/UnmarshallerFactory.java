@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.slf4j.Logger;
@@ -80,7 +80,7 @@ public class UnmarshallerFactory {
     @Nullable public Unmarshaller getUnmarshaller(@Nullable final Element domElement) {
         Unmarshaller unmarshaller;
 
-        unmarshaller = getUnmarshaller(DomTypeSupport.getXSIType(domElement));
+        unmarshaller = getUnmarshaller(DOMTypeSupport.getXSIType(domElement));
 
         if (unmarshaller == null) {
             unmarshaller = getUnmarshaller(QNameSupport.getNodeQName(domElement));

@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
@@ -44,7 +44,7 @@ public class LogoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         Logo logo = (Logo) samlObject;
 
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
-                && XmlConstants.XML_NS.equals(attribute.getNamespaceURI())) {
+                && XMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
             logo.setXMLLang(attribute.getValue());
         } else if (attribute.getLocalName().equals(Logo.HEIGHT_ATTR_NAME)) {
             logo.setHeight(Integer.valueOf(attribute.getValue()));

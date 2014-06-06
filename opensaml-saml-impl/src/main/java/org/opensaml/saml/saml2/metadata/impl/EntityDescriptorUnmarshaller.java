@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -80,7 +80,7 @@ public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller
                 && !Strings.isNullOrEmpty(attribute.getValue())) {
             entityDescriptor.setValidUntil(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
         } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
-            entityDescriptor.setCacheDuration(DomTypeSupport.durationToLong(attribute.getValue()));
+            entityDescriptor.setCacheDuration(DOMTypeSupport.durationToLong(attribute.getValue()));
         } else {
             processUnknownAttribute(entityDescriptor, attribute);
         }

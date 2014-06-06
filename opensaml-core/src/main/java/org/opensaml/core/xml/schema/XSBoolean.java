@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 /**
  * XSBoolean is the <code>xs:boolean</code> schema type.
@@ -33,7 +33,7 @@ public abstract interface XSBoolean extends XMLObject {
     public static final String TYPE_LOCAL_NAME = "boolean"; 
             
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
+    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
     
     /**
      * Returns the XSBooleanValue value.

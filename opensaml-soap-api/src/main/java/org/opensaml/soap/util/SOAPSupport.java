@@ -30,7 +30,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -222,7 +222,7 @@ public final class SOAPSupport {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(EncodingStyleBearing.SOAP11_ENCODING_STYLE_ATTR_NAME));
             if (value != null) {
-                StringSupport.stringToList(value, XmlConstants.LIST_DELIMITERS);
+                StringSupport.stringToList(value, XMLConstants.LIST_DELIMITERS);
             }
         }
         return null;

@@ -20,7 +20,7 @@ package org.opensaml.core.xml.schema;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
@@ -34,7 +34,7 @@ public interface XSAny extends ElementExtensibleXMLObject, AttributeExtensibleXM
     public static final String TYPE_LOCAL_NAME = "anyType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
+    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
     
     /**
      * Gets the text content for the DOM Element.

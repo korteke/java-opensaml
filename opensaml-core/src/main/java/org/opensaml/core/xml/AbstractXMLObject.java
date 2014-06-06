@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceM
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
@@ -474,7 +474,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void setNoNamespaceSchemaLocation(@Nullable final String location) {
         noNamespaceSchemaLocation = StringSupport.trimOrNull(location);
-        manageQualifiedAttributeNamespace(XmlConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME,
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_NO_NAMESPACE_SCHEMA_LOCATION_ATTRIB_NAME,
                 noNamespaceSchemaLocation != null);
     }
 
@@ -486,7 +486,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     public void setSchemaLocation(@Nullable final String location) {
         schemaLocation = StringSupport.trimOrNull(location);
-        manageQualifiedAttributeNamespace(XmlConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_SCHEMA_LOCATION_ATTRIB_NAME, schemaLocation != null);
     }
 
     /**
@@ -499,7 +499,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void setSchemaType(@Nullable final QName type) {
         typeQname = type;
         getNamespaceManager().registerElementType(typeQname);
-        manageQualifiedAttributeNamespace(XmlConstants.XSI_TYPE_ATTRIB_NAME, typeQname != null);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_TYPE_ATTRIB_NAME, typeQname != null);
     }
     
     /** {@inheritDoc} */
@@ -523,13 +523,13 @@ public abstract class AbstractXMLObject implements XMLObject {
         } else {
             nil = prepareForAssignment(nil, null);
         }
-        manageQualifiedAttributeNamespace(XmlConstants.XSI_NIL_ATTRIB_NAME, nil != null);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }
 
     /** {@inheritDoc} */
     public void setNil(@Nullable XSBooleanValue newNil) {
         nil = prepareForAssignment(nil, newNil);
-        manageQualifiedAttributeNamespace(XmlConstants.XSI_NIL_ATTRIB_NAME, nil != null);
+        manageQualifiedAttributeNamespace(XMLConstants.XSI_NIL_ATTRIB_NAME, nil != null);
     }
 
     /** {@inheritDoc} */

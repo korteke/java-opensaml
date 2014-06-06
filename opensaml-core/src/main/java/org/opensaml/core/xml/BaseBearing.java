@@ -20,7 +20,7 @@ package org.opensaml.core.xml;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 /**
  * Interface for element having a <code>@xml:base</code> attribute.
@@ -33,7 +33,7 @@ public interface BaseBearing {
 
     /** The <code>xml:base</code> qualified attribute name. */
     public static final QName XML_BASE_ATTR_NAME =
-        new QName(XmlConstants.XML_NS, XML_BASE_ATTR_LOCAL_NAME, XmlConstants.XML_PREFIX);
+        new QName(XMLConstants.XML_NS, XML_BASE_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**
      * Returns the <code>@xml:base</code> attribute value.

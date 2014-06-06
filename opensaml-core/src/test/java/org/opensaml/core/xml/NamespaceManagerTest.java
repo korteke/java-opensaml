@@ -25,7 +25,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
@@ -58,7 +58,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     private static QName elementName = new QName(ns1uri, "TestElementName", ns1Prefix);
     private static QName typeName = new QName(ns2uri, "TestTypeName", ns2Prefix);
     
-    private static QName xsiTypeName = new QName(XmlConstants.XSI_NS, "type", XmlConstants.XSI_PREFIX);
+    private static QName xsiTypeName = new QName(XMLConstants.XSI_NS, "type", XMLConstants.XSI_PREFIX);
     
     private XMLObjectBuilder<XSAny> xsAnyBuilder;
     

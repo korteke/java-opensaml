@@ -21,7 +21,7 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -67,7 +67,7 @@ public class AffiliationDescriptorMarshaller extends AbstractSAMLObjectMarshalle
         // Set the cacheDuration attribute
         if (descriptor.getCacheDuration() != null) {
             log.debug("Writting cacheDuration attribute to AffiliationDescriptor DOM element");
-            String cacheDuration = DomTypeSupport.longToDuration(descriptor.getCacheDuration());
+            String cacheDuration = DOMTypeSupport.longToDuration(descriptor.getCacheDuration());
             domElement.setAttributeNS(null, CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME, cacheDuration);
         }
 

@@ -28,7 +28,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.slf4j.Logger;
@@ -77,7 +77,7 @@ public class XMLObjectBuilderFactory {
      */
     @Nullable public XMLObjectBuilder<?> getBuilder(@Nullable final Element domElement) {
     
-        XMLObjectBuilder<?> builder = getBuilder(DomTypeSupport.getXSIType(domElement));
+        XMLObjectBuilder<?> builder = getBuilder(DOMTypeSupport.getXSIType(domElement));
     
         if (builder == null) {
             builder = getBuilder(QNameSupport.getNodeQName(domElement));
