@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.binding.security.impl;
 
 import java.io.UnsupportedEncodingException;
 
-import net.shibboleth.utilities.java.support.net.UriSupport;
+import net.shibboleth.utilities.java.support.net.URISupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -105,7 +105,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
      * @return true if parameter was found, false otherwise
      */
     private boolean appendParameter(StringBuilder builder, String queryString, String paramName) {
-        String rawParam = UriSupport.getRawQueryStringParameter(queryString, paramName);
+        String rawParam = URISupport.getRawQueryStringParameter(queryString, paramName);
         if (rawParam == null) {
             return false;
         }
