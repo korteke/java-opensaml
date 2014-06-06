@@ -31,6 +31,9 @@ public class SOAP11Context extends BaseContext {
 
     /** The SAML protocol in use. */
     private Envelope envelope;
+    
+    /** The HTTP response status code to return. */
+    private Integer httpResponseStatus;
 
     /**
      * Gets the current SOAP 1.1 Envelope.
@@ -49,5 +52,25 @@ public class SOAP11Context extends BaseContext {
     public void setEnvelope(@Nullable final Envelope newEnvelope) {
         envelope = newEnvelope;
     }
+
+    /**
+     * Get the optional HTTP response status code to return.
+     * 
+     * @return HTTP response status code, may be null
+     */
+    @Nullable public Integer getHTTPResponseStatus() {
+        return httpResponseStatus;
+    }
+
+    /**
+     * Set the optional HTTP response status code to return.
+     * 
+     * @param status the HTTP response status code, may be null
+     */
+    public void setHTTPResponseStatus(@Nullable final Integer status) {
+        httpResponseStatus = status;
+    }
+    
+    
     
 }

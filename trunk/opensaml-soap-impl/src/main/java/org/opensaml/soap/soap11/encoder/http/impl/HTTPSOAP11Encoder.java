@@ -212,18 +212,21 @@ public class HTTPSOAP11Encoder<MessageType extends XMLObject>
      * @return the HTTP response status code
      */
     protected int getHTTPResponseStatusCode() {
-        //TODO support explicit arbitrary code and message via SOAP context
+        Integer contextStatus = getMessageContext().getSubcontext(SOAP11Context.class, true).getHTTPResponseStatus();
+        if (contextStatus != null) {
+            return contextStatus;
+        }
         
         Envelope envelope = getSOAPEnvelope();
         if (envelope != null && envelope.getBody() != null) {
             Body body = envelope.getBody();
             List<XMLObject> faults = body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
             if (!faults.isEmpty()) {
-                return 500;
+                return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             }
         }
         
-        return 200;
+        return HttpServletResponse.SC_OK;
     }
     
     /** {@inheritDoc} */

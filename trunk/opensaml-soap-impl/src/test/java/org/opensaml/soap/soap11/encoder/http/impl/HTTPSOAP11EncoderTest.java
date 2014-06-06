@@ -21,6 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
@@ -306,6 +308,28 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Fault encodedFault = (Fault) faults.get(0);
         Assert.assertEquals(encodedFault.getCode().getValue(), FaultCode.SERVER);
         Assert.assertEquals(encodedFault.getMessage().getValue(), "Something bad happened");
+    }
+    
+    @Test
+    public void testContextReturnStatus() throws ComponentInitializationException, MessageEncodingException, XMLParserException, UnmarshallingException {
+        XMLObject payload = buildXMLObject(simpleXMLObjectQName);
+        
+        MessageContext<XMLObject> messageContext = new MessageContext<XMLObject>();
+        messageContext.setMessage(payload);
+        
+        messageContext.getSubcontext(SOAP11Context.class, true).setHTTPResponseStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+        
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        
+        HTTPSOAP11Encoder<XMLObject> encoder = new HTTPSOAP11Encoder<XMLObject>();
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
+        
+        Assert.assertEquals(response.getStatus(), HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }
     
     //
