@@ -34,10 +34,10 @@ import org.slf4j.LoggerFactory;
  * Class which verifies that the {@link org.opensaml.saml.saml2.metadata.Endpoint}
  * to which a message will be delivered contains a valid URL scheme.
  */
-public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
+public class EndpointURLSchemeSecurityHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    @Nonnull private Logger log = LoggerFactory.getLogger(EndpointUrlSchemeSecurityHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(EndpointURLSchemeSecurityHandler.class);
 
     /** {@inheritDoc} */
     @Override
@@ -51,7 +51,7 @@ public class EndpointUrlSchemeSecurityHandler extends AbstractMessageHandler {
         
         log.debug("{} Checking outbound endpoint for allowed URL scheme: {}", getLogPrefix(), endpointUrl);
         
-        if (!SAMLMessageSecuritySupport.checkUrlScheme(endpointUrl.getScheme())) {
+        if (!SAMLMessageSecuritySupport.checkURLScheme(endpointUrl.getScheme())) {
             throw new MessageHandlerException("Relying party endpoint used the untrusted URL scheme "
                     + endpointUrl.getScheme());
         }

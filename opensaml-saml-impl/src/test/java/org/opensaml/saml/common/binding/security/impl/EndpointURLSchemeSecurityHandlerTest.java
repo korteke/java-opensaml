@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.security.impl.EndpointUrlSchemeSecurityHandler;
+import org.opensaml.saml.common.binding.security.impl.EndpointURLSchemeSecurityHandler;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 /**
  * Test the security handler which evaluates message context endpoint URL schemes.
  */
-public class EndpointUrlSchemeSecurityHandlerTest extends XMLObjectBaseTestCase {
+public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     
     @Test
@@ -45,7 +45,7 @@ public class EndpointUrlSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
         
-        EndpointUrlSchemeSecurityHandler handler = new EndpointUrlSchemeSecurityHandler();
+        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
     
@@ -59,7 +59,7 @@ public class EndpointUrlSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
         
-        EndpointUrlSchemeSecurityHandler handler = new EndpointUrlSchemeSecurityHandler();
+        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
     
@@ -73,7 +73,7 @@ public class EndpointUrlSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
         
-        EndpointUrlSchemeSecurityHandler handler = new EndpointUrlSchemeSecurityHandler();
+        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
     
@@ -87,7 +87,7 @@ public class EndpointUrlSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
         
-        EndpointUrlSchemeSecurityHandler handler = new EndpointUrlSchemeSecurityHandler();
+        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
 

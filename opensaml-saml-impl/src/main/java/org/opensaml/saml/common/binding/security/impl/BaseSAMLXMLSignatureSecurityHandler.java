@@ -63,7 +63,7 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler
             Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
             criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
 
-            SAMLProtocolContext protocolContext = getSamlProtocolContext(messageContext);
+            SAMLProtocolContext protocolContext = getSAMLProtocolContext(messageContext);
             Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
             Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
             criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
@@ -88,7 +88,7 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler
      * @param messageContext the current message context
      * @return the current SAML protocol context
      */
-    protected SAMLProtocolContext getSamlProtocolContext(@Nonnull final MessageContext<SAMLObject> messageContext) {
+    protected SAMLProtocolContext getSAMLProtocolContext(@Nonnull final MessageContext<SAMLObject> messageContext) {
         //TODO is this the final resting place?
         return messageContext.getSubcontext(SAMLProtocolContext.class, false);
     }

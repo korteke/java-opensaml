@@ -211,8 +211,8 @@ public class HttpSOAPClient implements SOAPClient {
 
         HttpPost post = new HttpPost(endpoint);
         post.setEntity(createRequestEntity(message, Charset.forName("UTF-8")));
-        if (requestParams != null && requestParams.getSoapAction() != null) {
-            post.setHeader(HttpSOAPRequestParameters.SOAP_ACTION_HEADER, requestParams.getSoapAction());
+        if (requestParams != null && requestParams.getSOAPAction() != null) {
+            post.setHeader(HttpSOAPRequestParameters.SOAP_ACTION_HEADER, requestParams.getSOAPAction());
         }
 
         return post;

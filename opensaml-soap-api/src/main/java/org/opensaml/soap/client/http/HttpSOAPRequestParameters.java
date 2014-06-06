@@ -48,7 +48,7 @@ public class HttpSOAPRequestParameters implements SOAPRequestParameters {
      * 
      * @return HTTP SOAPAction header
      */
-    @Nullable public String getSoapAction() {
+    @Nullable public String getSOAPAction() {
         return soapAction;
     }
 }

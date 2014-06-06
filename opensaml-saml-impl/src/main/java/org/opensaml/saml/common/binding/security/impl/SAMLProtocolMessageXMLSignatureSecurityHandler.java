@@ -105,7 +105,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
         }
         final Signature signature = signableObject.getSignature();
 
-        performPreValidation(signature);
+        performPrevalidation(signature);
 
         doEvaluate(signature, signableObject, messageContext);
     }
@@ -158,7 +158,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * @param signature the signature to evaluate
      * @throws MessageHandlerException thrown if the signature element fails pre-validation
      */
-    protected void performPreValidation(@Nonnull final Signature signature) throws MessageHandlerException {
+    protected void performPrevalidation(@Nonnull final Signature signature) throws MessageHandlerException {
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
