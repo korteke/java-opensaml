@@ -288,7 +288,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         }
         
         try {
-            String decrypted = dataSealer.unwrap(URISupport.urlDecode(cookie.get().getValue()));
+            String decrypted = dataSealer.unwrap(URISupport.doURLDecode(cookie.get().getValue()));
             
             log.trace("Data after decryption: {}", decrypted);
             
@@ -395,7 +395,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             try {
                 String wrapped = dataSealer.wrap(toEncrypt, exp > 0 ? exp : now + 24 * 60 * 60 * 1000);
                 log.trace("Size of data after encryption is {}", wrapped.length());
-                cookieManager.addCookie(cookieName, URISupport.urlEncode(wrapped));
+                cookieManager.addCookie(cookieName, URISupport.doURLEncode(wrapped));
                 setDirty(false);
             } catch (DataSealerException e) {
                 throw new IOException(e);
