@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
@@ -291,8 +291,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             if (!xmlObject.getNamespaceManager().getNamespaceDeclarations().contains(namespace)) {
                 log.trace("NamespaceManager getNamespaceDeclarations() did NOT contain namespace: {}",
                         namespace.toString());
-                if(Objects.equal(namespace.getNamespacePrefix(), XmlConstants.XML_PREFIX)
-                        || Objects.equal(namespace.getNamespaceURI(), XmlConstants.XML_NS)) {
+                if(Objects.equal(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)
+                        || Objects.equal(namespace.getNamespaceURI(), XMLConstants.XML_NS)) {
                     //the "xml" namespace never needs to be declared
                     continue;
                 }
@@ -328,20 +328,20 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         if (!Strings.isNullOrEmpty(xmlObject.getSchemaLocation())) {
             log.trace("Setting xsi:schemaLocation for XMLObject {} to {}", xmlObject.getElementQName(), xmlObject
                     .getSchemaLocation());
-            domElement.setAttributeNS(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX + ":schemaLocation", xmlObject
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":schemaLocation", xmlObject
                     .getSchemaLocation());
         }
 
         if (!Strings.isNullOrEmpty(xmlObject.getNoNamespaceSchemaLocation())) {
             log.trace("Setting xsi:noNamespaceSchemaLocation for XMLObject {} to {}", xmlObject.getElementQName(),
                     xmlObject.getNoNamespaceSchemaLocation());
-            domElement.setAttributeNS(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":noNamespaceSchemaLocation",
                     xmlObject.getNoNamespaceSchemaLocation());
         }
         
         if (xmlObject.isNilXSBoolean() != null && xmlObject.isNil()) {
             log.trace("Setting xsi:nil for XMLObject {} to true", xmlObject.getElementQName());
-            domElement.setAttributeNS(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX + ":nil",
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":nil",
                     xmlObject.isNilXSBoolean().toString());
         }
 
@@ -371,7 +371,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             attributeValue = typePrefix + ":" + typeLocalName;
         }
 
-        domElement.setAttributeNS(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX + ":type", attributeValue);
+        domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":type", attributeValue);
     }
 
     /**

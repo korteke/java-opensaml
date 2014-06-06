@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -36,7 +36,7 @@ public interface XSDateTime extends XMLObject {
     public static final String TYPE_LOCAL_NAME = "dateTime"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
+    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
     
     /**
      * Gets the dateTime value.

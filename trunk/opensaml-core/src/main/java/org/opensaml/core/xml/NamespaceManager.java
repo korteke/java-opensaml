@@ -32,7 +32,7 @@ import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import com.google.common.base.Strings;
 
@@ -51,11 +51,11 @@ public class NamespaceManager {
     
     /** The 'xml' namespace. */
     private static final Namespace XML_NAMESPACE = 
-        new Namespace(XmlConstants.XML_NS, XmlConstants.XML_PREFIX);
+        new Namespace(XMLConstants.XML_NS, XMLConstants.XML_PREFIX);
     
     /** The 'xsi' namespace. */
     private static final Namespace XSI_NAMESPACE = 
-        new Namespace(XmlConstants.XSI_NS, XmlConstants.XSI_PREFIX);
+        new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX);
     
     /** The owning XMLObject. */
     @Nonnull private final XMLObject owner;

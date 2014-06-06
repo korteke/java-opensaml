@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
@@ -41,8 +41,8 @@ public class LocalizedNameMarshaller extends AbstractSAMLObjectMarshaller {
         LocalizedName name = (LocalizedName) samlObject;
 
         if (name.getXMLLang() != null) {
-            Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), XmlConstants.XML_NS,
-                    LangBearing.XML_LANG_ATTR_LOCAL_NAME, XmlConstants.XML_PREFIX);
+            Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), XMLConstants.XML_NS,
+                    LangBearing.XML_LANG_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
             attribute.setValue(name.getXMLLang());
             domElement.setAttributeNodeNS(attribute);
         }

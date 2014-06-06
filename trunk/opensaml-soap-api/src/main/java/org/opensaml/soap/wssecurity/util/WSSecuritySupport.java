@@ -21,7 +21,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -187,7 +187,7 @@ public final class WSSecuritySupport {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(UsageBearing.WSSE_USAGE_ATTR_NAME));
             if (value != null) {
-                StringSupport.stringToList(value, XmlConstants.LIST_DELIMITERS);
+                StringSupport.stringToList(value, XMLConstants.LIST_DELIMITERS);
             }
         }
         return null;

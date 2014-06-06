@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
@@ -36,7 +36,7 @@ public class LocalizedNameUnmarshaller extends AbstractSAMLObjectUnmarshaller {
      */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
-                && XmlConstants.XML_NS.equals(attribute.getNamespaceURI())) {
+                && XMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
             LocalizedName name = (LocalizedName) samlObject;
 
             name.setXMLLang(attribute.getValue());

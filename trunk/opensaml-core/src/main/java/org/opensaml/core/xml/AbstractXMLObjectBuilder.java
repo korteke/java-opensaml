@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.xml.DomTypeSupport;
+import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 
 import org.w3c.dom.Element;
 
@@ -68,7 +68,7 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
         String localName = element.getLocalName();
         String nsURI = element.getNamespaceURI();
         String nsPrefix = element.getPrefix();
-        QName schemaType = DomTypeSupport.getXSIType(element);
+        QName schemaType = DOMTypeSupport.getXSIType(element);
 
         xmlObject = buildObject(nsURI, localName, nsPrefix, schemaType);
 

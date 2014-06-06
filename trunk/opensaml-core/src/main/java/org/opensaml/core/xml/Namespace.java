@@ -20,7 +20,7 @@ package org.opensaml.core.xml;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import com.google.common.base.Objects;
 
@@ -118,7 +118,7 @@ public class Namespace {
     protected void constructStringRepresentation() {
         StringBuffer stringRep = new StringBuffer();
 
-        stringRep.append(XmlConstants.XMLNS_PREFIX);
+        stringRep.append(XMLConstants.XMLNS_PREFIX);
 
         if (namespacePrefix != null) {
             stringRep.append(":");

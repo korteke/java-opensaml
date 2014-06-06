@@ -19,7 +19,7 @@ package org.opensaml.soap.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XmlConstants;
+import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.schema.XSInteger;
 
@@ -43,6 +43,6 @@ public interface Iteration extends XSInteger, WSSecurityObject {
     public static final String TYPE_LOCAL_NAME = "unsignedInt"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XmlConstants.XSD_NS, TYPE_LOCAL_NAME, XmlConstants.XSD_PREFIX);
+    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
 
 }
