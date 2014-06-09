@@ -107,6 +107,7 @@ public final class CheckClientAddress extends AbstractProfileAction {
         }
         
         log.warn("{} Denied request from client address '{}'", getLogPrefix(), addr);
+        ActionSupport.buildEvent(profileRequestContext, EventIds.ACCESS_DENIED);
     }
 
 }
