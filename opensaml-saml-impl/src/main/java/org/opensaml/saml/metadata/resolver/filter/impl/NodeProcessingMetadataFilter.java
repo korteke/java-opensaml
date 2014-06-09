@@ -33,17 +33,17 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 
 /**
- * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor}
- * to each element node in the metadata document tree. The node processors will be applied in 
+ * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor} to each element node in the
+ * metadata document tree. The node processors will be applied in the order of {@link List} provided by
+ * {@link #setNodeProcessors(List)}. The metadata document tree is traversed depth-first.
  */
-public class NodeProcessingMetadataFilter extends AbstractInitializableComponent  
-        implements MetadataFilter {
-    
+public class NodeProcessingMetadataFilter extends AbstractInitializableComponent implements MetadataFilter {
+
     /** The ordered list of metadata node processors. */
     private List<MetadataNodeProcessor> processors;
 
     /**
-     * Get the list of metadata node processors. 
+     * Get the list of metadata node processors.
      * 
      * @return the list of metadata node processors.
      */
@@ -52,39 +52,37 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
     }
 
     /**
-     * Set the list of metadata node processors. 
+     * Set the list of metadata node processors.
      * 
      * @param newProcessors the new list of processors to set.
      */
     public void setNodeProcessors(@Nullable List<MetadataNodeProcessor> newProcessors) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+
         if (newProcessors == null || newProcessors.isEmpty()) {
             processors = Collections.emptyList();
             return;
         }
-        
+
         processors = Collections.unmodifiableList(newProcessors);
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nullable public XMLObject filter(@Nullable XMLObject metadata) throws FilterException {
+    @Override @Nullable public XMLObject filter(@Nullable XMLObject metadata) throws FilterException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+
         if (metadata == null) {
             return null;
         }
-        
+
         processNode(metadata);
-        
+
         return metadata;
     }
-    
+
     /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
+    @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         if (processors == null) {
             processors = Collections.emptyList();
@@ -92,8 +90,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
     }
 
     /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
+    @Override protected void doDestroy() {
         processors = null;
         super.doDestroy();
     }
@@ -109,7 +106,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
         for (MetadataNodeProcessor processor : getNodeProcessors()) {
             processor.process(node);
         }
-        
+
         List<XMLObject> children = node.getOrderedChildren();
         if (children != null) {
             for (XMLObject child : node.getOrderedChildren()) {
