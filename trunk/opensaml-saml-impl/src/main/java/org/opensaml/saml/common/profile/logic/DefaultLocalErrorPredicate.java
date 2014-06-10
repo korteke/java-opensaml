@@ -127,13 +127,15 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
      * @param events locally handled events
      */
     public void setLocalEvents(@Nonnull @NonnullElements Collection<String> events) {
-        Constraint.isNotNull(events, "Event collection cannot be null");
-        
-        localEvents = Sets.newHashSetWithExpectedSize(events.size());
-        for (final String e : events) {
-            final String trimmed = StringSupport.trimOrNull(e);
-            if (trimmed != null) {
-                localEvents.add(trimmed);
+        if (events == null) {
+            localEvents = Collections.emptySet();
+        } else {
+            localEvents = Sets.newHashSetWithExpectedSize(events.size());
+            for (final String e : events) {
+                final String trimmed = StringSupport.trimOrNull(e);
+                if (trimmed != null) {
+                    localEvents.add(trimmed);
+                }
             }
         }
     }
