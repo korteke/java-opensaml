@@ -48,6 +48,7 @@
     <properties>
         <svn.relative.location>java-opensaml</svn.relative.location>
         <java-support.version>3.0-SNAPSHOT</java-support.version>
+        <spring-extensions.version>1.2-SNAPSHOT</spring-extensions.version>
     </properties>
 
     <repositories>
@@ -121,6 +122,13 @@
               <groupId>org.hsqldb</groupId>
               <artifactId>hsqldb</artifactId>
               <version>2.2.9</version>
+              <scope>test</scope>
+          </dependency>
+
+          <dependency>
+              <groupId>net.shibboleth.ext</groupId>
+              <artifactId>spring-extensions</artifactId>
+              <version>${spring-extensions.version}</version>
               <scope>test</scope>
           </dependency>
 
