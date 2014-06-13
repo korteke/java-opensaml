@@ -120,7 +120,7 @@ public class JPAStorageService extends AbstractStorageService {
             }
             return false;
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -138,7 +138,7 @@ public class JPAStorageService extends AbstractStorageService {
             manager = entityManagerFactory.createEntityManager();
             return executeNamedQuery(manager, "JPAStorageRecord.findAll", null, StorageRecord.class);
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -160,7 +160,7 @@ public class JPAStorageService extends AbstractStorageService {
             params.put("context", context);
             return executeNamedQuery(manager, "JPAStorageRecord.findByContext", params, StorageRecord.class);
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -178,7 +178,7 @@ public class JPAStorageService extends AbstractStorageService {
             manager = entityManagerFactory.createEntityManager();
             return executeNamedQuery(manager, "JPAStorageRecord.findAllContexts", null, String.class);
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -233,7 +233,7 @@ public class JPAStorageService extends AbstractStorageService {
             log.error("Error reading record '{}' in context '{}'", key, context, e);
             return new Pair<>();
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -327,7 +327,7 @@ public class JPAStorageService extends AbstractStorageService {
             }
             return null;
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -390,7 +390,7 @@ public class JPAStorageService extends AbstractStorageService {
             }
             return false;
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -423,7 +423,7 @@ public class JPAStorageService extends AbstractStorageService {
                 transaction.rollback();
             }
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
@@ -478,7 +478,7 @@ public class JPAStorageService extends AbstractStorageService {
                 transaction.rollback();
             }
         } finally {
-            if (manager != null) {
+            if (manager != null && manager.isOpen()) {
                 manager.close();
             }
         }
