@@ -19,17 +19,23 @@ package org.opensaml.storage.impl;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
+import net.shibboleth.ext.spring.util.SpringSupport;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.StorageServiceTest;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -59,17 +65,32 @@ public class JPAStorageServiceTest extends StorageServiceTest {
     }
 
     /**
+     * Creates the shared instance of the entity manager factory.
+     */
+    @BeforeTest public void setupEntityManagerFactory() throws ComponentInitializationException {
+        factory = createEntityManagerFactory();
+    }
+
+    /**
      * Creates an entity manager factory instance.
      */
-    @BeforeTest public void setupEntityManagerFactory() {
-        factory = Persistence.createEntityManagerFactory("JPAStorageService");
+    private EntityManagerFactory createEntityManagerFactory() throws ComponentInitializationException
+    {
+        final Resource resource = new ClassPathResource("/org/opensaml/storage/impl/jpa-spring-context.xml");
+        final GenericApplicationContext context = SpringSupport.newContext("JPAStorageService", Collections.singletonList(resource), Collections.<BeanPostProcessor>emptyList(), null);
+        FactoryBean<EntityManagerFactory> factoryBean = context.getBean(org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.class);
+        try {
+            return factoryBean.getObject();
+        } catch (Exception e) {
+            throw new ComponentInitializationException(e);
+        }
     }
 
     /**
      * Removes all test data from the database.
      */
     @AfterTest public void clearDatabase() throws ComponentInitializationException, IOException {
-        JPAStorageService ss = new JPAStorageService(Persistence.createEntityManagerFactory("JPAStorageService"));
+        JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
         ss.initialize();
         List<String> contexts = ss.readContexts();
         for (String ctx : contexts) {
@@ -87,7 +108,7 @@ public class JPAStorageServiceTest extends StorageServiceTest {
 
     @Test
     public void validConfig() throws ComponentInitializationException {
-        JPAStorageService ss = new JPAStorageService(Persistence.createEntityManagerFactory("JPAStorageService"));
+        JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
         
         ss.initialize();
         ss.destroy();
@@ -95,7 +116,7 @@ public class JPAStorageServiceTest extends StorageServiceTest {
 
     @Test
     public void cleanup() throws ComponentInitializationException, IOException {
-        JPAStorageService ss = new JPAStorageService(Persistence.createEntityManagerFactory("JPAStorageService"));
+        JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
         ss.setCleanupInterval(5);
         ss.initialize();
 
