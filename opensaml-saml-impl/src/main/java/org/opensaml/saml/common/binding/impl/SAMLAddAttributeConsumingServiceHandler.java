@@ -18,6 +18,7 @@
 package org.opensaml.saml.common.binding.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -25,29 +26,32 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.AttributeConsumingServiceContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
-import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
  * SAML {@link org.opensaml.messaging.handler.MessageHandler} that attaches an {@link AttributeConsumingServiceContext}
- * to the {@link SAMLMetadataContext}.
+ * to the {@link SAMLMetadataContext} based on the content of an {@link AuthnRequest} in the message context.
  */
-public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHandler {
+    
+    /** Logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLAddAttributeConsumingServiceHandler.class);
 
     /** How to get the {@link SAMLMetadataContext} from the message. */
-    @Nonnull private Function<MessageContext<SAMLObject>, SAMLMetadataContext> metadataContextStrategy;
-
-    /** How to get the {@link SAMLProtocolContext} from the message. */
-    @Nonnull private Function<MessageContext<SAMLObject>, SAMLProtocolContext> protocolContextStrategy;
+    @Nonnull private Function<MessageContext,SAMLMetadataContext> metadataContextStrategy;
+    
+    /** Request to read from. */
+    @Nullable private AuthnRequest authnRequest;
 
     /**
      * Constructor.
@@ -55,11 +59,8 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
     public SAMLAddAttributeConsumingServiceHandler() {
         metadataContextStrategy =
                 Functions.compose(
-                        new ChildContextLookup<SAMLPeerEntityContext, SAMLMetadataContext>(
-                                SAMLMetadataContext.class),
-                        new ChildContextLookup<MessageContext<SAMLObject>, SAMLPeerEntityContext>(
-                                SAMLPeerEntityContext.class));
-        protocolContextStrategy = new ChildContextLookup<>(SAMLProtocolContext.class);
+                        new ChildContextLookup<SAMLPeerEntityContext,SAMLMetadataContext>(SAMLMetadataContext.class),
+                        new ChildContextLookup<MessageContext,SAMLPeerEntityContext>(SAMLPeerEntityContext.class));
     }
 
     /**
@@ -67,7 +68,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
      * 
      * @return Returns strategy.
      */
-    public Function<MessageContext<SAMLObject>, SAMLMetadataContext> getMetadataContextStrategy() {
+    @Nonnull public Function<MessageContext,SAMLMetadataContext> getMetadataContextStrategy() {
         return metadataContextStrategy;
     }
 
@@ -76,44 +77,44 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
      * 
      * @param strategy what to set
      */
-    public void setMetadataContextStrategy(@Nonnull Function<MessageContext<SAMLObject>,
-            SAMLMetadataContext> strategy) {
-        metadataContextStrategy = Constraint.isNotNull(strategy, "Metadata Strategy must not be null");
+    public void setMetadataContextStrategy(@Nonnull final Function<MessageContext,SAMLMetadataContext> strategy) {
+        metadataContextStrategy = Constraint.isNotNull(strategy, "Metadata Strategy cannot be null");
     }
-
-    /**
-     * Get the strategy which find the {@link SAMLProtocolContext} from the message.
-     * 
-     * @return Returns strategy.
-     */
-    public Function<MessageContext<SAMLObject>, SAMLProtocolContext> getProtocolContextStrategy() {
-        return protocolContextStrategy;
-    }
-
-    /**
-     * Set the strategy which find the {@link SAMLProtocolContext} from the message.
-     * 
-     * @param strategy what to set
-     */
-    public void setProtocolContextStrategy(@Nonnull Function<MessageContext<SAMLObject>,
-            SAMLProtocolContext> strategy) {
-        protocolContextStrategy = Constraint.isNotNull(strategy, "Metadata Strategy must not be null");
+    
+    /** {@inheritDoc} */
+    @Override protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) {
+        final Object message = messageContext.getMessage();
+        if (message instanceof AuthnRequest) {
+            authnRequest = (AuthnRequest) message;
+        }
+        
+        return true;
     }
 
     /** {@inheritDoc}*/
-    @Override protected void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        final Object message = messageContext.getMessage();
-        if (!(message instanceof AuthnRequest)) {
+    @Override protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        final SAMLMetadataContext metadataContext = metadataContextStrategy.apply(messageContext);
+        if (metadataContext == null) {
+            log.debug("{} No metadata context found, nothing to do", getLogPrefix());
+            return;
+        } else if (!(metadataContext.getRoleDescriptor() instanceof SPSSODescriptor)) {
+            log.debug("{} Metadata context did not contain an SPSSODescriptor, nothing to do", getLogPrefix());
             return;
         }
-        final AuthnRequest authnRequest = (AuthnRequest) message;
-        final SAMLMetadataContext metadataContext = metadataContextStrategy.apply(messageContext);
-        final String protocol = protocolContextStrategy.apply(messageContext).getProtocol();
-        final SPSSODescriptor ssoDescriptor = metadataContext.getEntityDescriptor().getSPSSODescriptor(protocol);
-        final Integer acsIndex = authnRequest.getAttributeConsumingServiceIndex();
+        
+        final SPSSODescriptor ssoDescriptor = (SPSSODescriptor) metadataContext.getRoleDescriptor();
+        
+        final Integer acsIndex;
+        if (authnRequest != null) {
+            acsIndex = authnRequest.getAttributeConsumingServiceIndex();
+        } else {
+            acsIndex = null;
+        }
+        
         AttributeConsumingService acs = null;
         if (null != acsIndex) {
-            for (AttributeConsumingService acsEntry : ssoDescriptor.getAttributeConsumingServices()) {
+            log.debug("{} AuthnRequest specified AttributeConsumingServiceIndex {}", getLogPrefix(), acsIndex);
+            for (final AttributeConsumingService acsEntry : ssoDescriptor.getAttributeConsumingServices()) {
                 if (acsIndex.intValue() == acsEntry.getIndex()) {
                     acs = acsEntry;
                     break;
@@ -121,11 +122,15 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
             }
         }
         if (null == acs) {
+            log.debug("{} Selecting default AttributeConsumingService, if any", getLogPrefix());
             acs = ssoDescriptor.getDefaultAttributeConsumingService();
         }
         if (null != acs) {
-            metadataContext.getSubcontext(AttributeConsumingServiceContext.class, true).
-                setAttributeConsumingService(acs);
+            log.debug("{} Selected AttributeConsumingService with index {}", getLogPrefix(), acs.getIndex());
+            metadataContext.getSubcontext(
+                    AttributeConsumingServiceContext.class, true).setAttributeConsumingService(acs);
+        } else {
+            log.debug("{} No AttributeConsumingService selected", getLogPrefix());
         }
     }
 
