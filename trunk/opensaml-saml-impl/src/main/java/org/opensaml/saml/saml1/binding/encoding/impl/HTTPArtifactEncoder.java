@@ -164,7 +164,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
             final AbstractSAML1Artifact artifact = artifactBuilder.buildArtifact(messageContext, assertion);
             if (artifact == null) {
                 log.error("Unable to build artifact for message to relying party {}", requester);
-                throw new MessageEncodingException("Unable to builder artifact for message to relying party");
+                throw new MessageEncodingException("Unable to build artifact for message to relying party");
             }
 
             try {
