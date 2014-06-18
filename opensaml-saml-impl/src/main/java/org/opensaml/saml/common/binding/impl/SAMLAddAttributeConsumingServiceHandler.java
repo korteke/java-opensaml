@@ -102,7 +102,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
 
     /** {@inheritDoc}*/
     @Override protected void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        final SAMLObject message = messageContext.getMessage();
+        final Object message = messageContext.getMessage();
         if (!(message instanceof AuthnRequest)) {
             return;
         }
