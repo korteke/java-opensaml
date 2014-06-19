@@ -48,6 +48,15 @@ public abstract class AbstractConditionalProfileAction<InboundMessageType, Outbo
     public AbstractConditionalProfileAction() {
         activationCondition = Predicates.alwaysTrue();
     }
+    
+    /**
+     * Get activation condition indicating whether action should execute.
+     * 
+     * @return  activation condition
+     */
+    @Nonnull public Predicate<ProfileRequestContext> getActivationCondition() {
+        return activationCondition;
+    }
 
     /**
      * Set activation condition indicating whether action should execute.
