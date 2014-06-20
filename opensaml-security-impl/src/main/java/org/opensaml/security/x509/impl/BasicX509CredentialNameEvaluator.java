@@ -18,7 +18,7 @@
 package org.opensaml.security.x509.impl;
 
 import java.security.cert.X509Certificate;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +26,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.SecurityException;
@@ -36,7 +39,11 @@ import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 /**
  * A basic implementaion of {@link X509CredentialNameEvaluator} which evaluates various identifiers 
@@ -80,7 +87,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
     private boolean checkSubjectDN;
 
     /** The set of types of subject alternative names to process. */
-    private final Set<Integer> subjectAltNameTypes;
+    private Set<Integer> subjectAltNameTypes;
 
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
     private X500DNHandler x500DNHandler;
@@ -89,14 +96,12 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
     public BasicX509CredentialNameEvaluator() {
 
         x500DNHandler = new InternalX500DNHandler();
-        subjectAltNameTypes = new HashSet<Integer>(5);
 
         // Add some defaults
         setCheckSubjectAltNames(true);
         setCheckSubjectDNCommonName(true);
         setCheckSubjectDN(true);
-        subjectAltNameTypes.add(X509Support.DNS_ALT_NAME);
-        subjectAltNameTypes.add(X509Support.URI_ALT_NAME);
+        setSubjectAltNameTypes(Sets.newHashSet(X509Support.DNS_ALT_NAME, X509Support.URI_ALT_NAME));
     }
 
     /**
@@ -109,15 +114,31 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
     }
 
     /**
-     * The set of types of subject alternative names to process.
+     * Get the set of types of subject alternative names to process.
      * 
      * Name types are represented using the constant OID tag name values defined in {@link X509Support}.
      * 
      * 
-     * @return the modifiable set of alt name identifiers
+     * @return the immutable set of alt name identifiers
      */
-    @Nonnull public Set<Integer> getSubjectAltNameTypes() {
-        return subjectAltNameTypes;
+    @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<Integer> getSubjectAltNameTypes() {
+        return ImmutableSet.copyOf(subjectAltNameTypes);
+    }
+
+    /**
+     * Set the set of types of subject alternative names to process.
+     * 
+     * Name types are represented using the constant OID tag name values defined in {@link X509Support}.
+     * 
+     * 
+     * @param nameTypes the new set of alt name identifiers
+     */
+    public void setSubjectAltNameTypes(@Nullable final Set<Integer> nameTypes) {
+        if (nameTypes == null) {
+            subjectAltNameTypes = Collections.emptySet();
+        } else {
+            subjectAltNameTypes = Sets.newHashSet(Collections2.filter(nameTypes, Predicates.notNull()));
+        }
     }
 
     /**
