@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -171,6 +172,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
      * @throws IOException 
      * @throws InterruptedException 
      */
+    @Test
     public void testRecoveryFromNoFailFast() throws IOException, InterruptedException {
         File targetFile = new File(System.getProperty("java.io.tmpdir"), "filesystem-md-provider-test.xml");
         if (targetFile.exists()) {
@@ -197,7 +199,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         // Filesystem timestamp may only have 1-second precision, so need to sleep for a couple of seconds just 
         // to make sure that the new copied file's timestamp is later than the Jodatime lastRefresh time
         // in the metadata provider.
-        //Thread.sleep(2000);
+        Thread.sleep(2000);
         
         Files.copy(mdFile, targetFile);
         Assert.assertTrue(targetFile.exists());
@@ -210,5 +212,25 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         } catch (ResolverException e) {
             Assert.fail("Filesystem metadata provider refresh failed recovery from initial init failure");
         }
+    }
+    
+    @Test
+    public void testExpiredMetadataWithValidRequiredAndNoFailFast() throws URISyntaxException, ResolverException {
+        URL mdURL = FilesystemMetadataResolverTest.class
+                .getResource("/data/org/opensaml/saml/saml2/metadata/simple-metadata-expired.xml");
+        File targetFile = new File(mdURL.toURI());
+        
+        try {
+            metadataProvider = new FilesystemMetadataResolver(targetFile);
+            metadataProvider.setFailFastInitialization(false);
+            metadataProvider.setRequireValidMetadata(true);
+            metadataProvider.setParserPool(parserPool);
+            metadataProvider.initialize();
+        } catch (ComponentInitializationException | ResolverException e) {
+            Assert.fail("Filesystem metadata provider init failed with non-existent file and fail fast = false");
+        }
+        
+        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp.example.org")));
+        Assert.assertNull(entity);
     }
 }

@@ -69,7 +69,7 @@ public final class SAML2Support {
      * 
      * @return the earliest expiration time
      */
-    @Nullable public static DateTime getEarliestExpiration(@Nonnull final XMLObject xmlObject) {
+    @Nullable public static DateTime getEarliestExpiration(@Nullable final XMLObject xmlObject) {
         DateTime now = new DateTime();
         return getEarliestExpiration(xmlObject, null, now);
     }
@@ -84,7 +84,7 @@ public final class SAML2Support {
      * @return the earliest expiration instant within a metadata tree. May be null if the input candiateTime 
      *          was null, otherwise will always be non-null.
      */
-    @Nullable public static DateTime getEarliestExpiration(@Nonnull final XMLObject xmlObject, 
+    @Nullable public static DateTime getEarliestExpiration(@Nullable final XMLObject xmlObject, 
             @Nullable DateTime candidateTime, @Nonnull DateTime now) {
         
         DateTime earliestExpiration = candidateTime;
@@ -101,11 +101,13 @@ public final class SAML2Support {
         }
 
         // Inspect children
-        List<XMLObject> children = xmlObject.getOrderedChildren();
-        if (children != null) {
-            for (XMLObject child : xmlObject.getOrderedChildren()) {
-                if (child != null) {
-                    earliestExpiration = getEarliestExpiration(child, earliestExpiration, now);
+        if (xmlObject != null) {
+            List<XMLObject> children = xmlObject.getOrderedChildren();
+            if (children != null) {
+                for (XMLObject child : xmlObject.getOrderedChildren()) {
+                    if (child != null) {
+                        earliestExpiration = getEarliestExpiration(child, earliestExpiration, now);
+                    }
                 }
             }
         }

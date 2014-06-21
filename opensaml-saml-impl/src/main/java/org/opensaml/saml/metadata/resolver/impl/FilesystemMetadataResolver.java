@@ -65,6 +65,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * @throws ResolverException  this exception is no longer thrown
      */
     public FilesystemMetadataResolver(@Nonnull final File metadata) throws ResolverException {
+        super();
         setMetadataFile(metadata);
     }
 
