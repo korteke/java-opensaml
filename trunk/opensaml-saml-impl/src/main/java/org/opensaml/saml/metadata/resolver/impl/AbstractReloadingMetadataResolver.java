@@ -108,6 +108,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param backgroundTaskTimer time used to schedule background refresh tasks
      */
     protected AbstractReloadingMetadataResolver(@Nullable final Timer backgroundTaskTimer) {
+        super();
+        
         setCacheSourceMetadata(true);
         
         if (backgroundTaskTimer == null) {
@@ -262,6 +264,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /** {@inheritDoc} */
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
+        super.initMetadataResolver();
+        
         try {
             refresh();
         } catch (ResolverException e) {
@@ -443,6 +447,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 newBackingStore.getCachedFilteredMetadata());
 
         log.debug("Computing expiration time for metadata from '{}'", metadataIdentifier);
+        // Note: As noted in its Javadocs, technically this method can sometimes return null, but won't in this case
+        // since the candidate time (2nd arg) is not null.
         DateTime metadataExpirationTime = SAML2Support.getEarliestExpiration(
                 newBackingStore.getCachedOriginalMetadata(), refreshStart.plus(getMaxRefreshDelay()), refreshStart);
         log.debug("Expiration of metadata from '{}' will occur at {}", metadataIdentifier, metadataExpirationTime
@@ -464,8 +470,6 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         }
         nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(nextRefreshDelay);
 
-        //TODO
-        //emitChangeEvent();
         log.info("New metadata succesfully loaded for '{}'", getMetadataIdentifier());
     }
 

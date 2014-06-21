@@ -23,6 +23,7 @@ import java.util.Iterator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -52,6 +53,8 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     
     /** Constructor. */
     public AbstractBatchMetadataResolver() {
+        super();
+        
         setCacheSourceMetadata(true);
     }
     
@@ -110,6 +113,16 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     @Override
     @Nonnull protected BatchEntityBackingStore getBackingStore() {
         return (BatchEntityBackingStore) super.getBackingStore();
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    protected void initMetadataResolver() throws ComponentInitializationException {
+        super.initMetadataResolver();
+        // Init this to an empty instance to ensure we always have a non-null instance,
+        // even if initialization in the subclass fails for whatever reason.
+        // Most subclasses will replace this with a new populated instance.
+        setBackingStore(createNewBackingStore());
     }
 
     /**

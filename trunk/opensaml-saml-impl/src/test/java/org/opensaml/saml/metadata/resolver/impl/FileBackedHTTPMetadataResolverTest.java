@@ -118,6 +118,9 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         } catch (ComponentInitializationException e) {
             Assert.fail("Provider failed init with fail-fast=false");
         }
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor);
     }
     
     /**
