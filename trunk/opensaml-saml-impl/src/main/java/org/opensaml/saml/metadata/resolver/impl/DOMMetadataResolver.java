@@ -61,6 +61,8 @@ public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
     
     /** {@inheritDoc} */
     protected void initMetadataResolver() throws ComponentInitializationException {
+        super.initMetadataResolver();
+        
         try {
             Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(metadataElement);
             XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
