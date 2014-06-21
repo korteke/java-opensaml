@@ -227,7 +227,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
         } catch (ComponentInitializationException | ResolverException e) {
-            Assert.fail("Filesystem metadata provider init failed with non-existent file and fail fast = false");
+            Assert.fail("Filesystem metadata provider init failed with expired file and fail fast = false");
         }
         
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp.example.org")));

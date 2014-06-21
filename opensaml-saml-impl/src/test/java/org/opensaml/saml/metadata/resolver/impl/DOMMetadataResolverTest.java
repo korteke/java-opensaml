@@ -19,10 +19,15 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -67,5 +72,27 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
+    
+    @Test
+    public void testFilterFailureAndNoFailFast() throws URISyntaxException, XMLParserException, IOException, ResolverException {
+        FileInputStream fis = new FileInputStream(mdFile);
+        Document document = parserPool.parse(fis);
+        fis.close();
+        
+        try {
+            metadataProvider = new DOMMetadataResolver(document.getDocumentElement());
+            metadataProvider.setMetadataFilter(new MockFailureFilter());
+            metadataProvider.setFailFastInitialization(false);
+            metadataProvider.setRequireValidMetadata(true);
+            metadataProvider.setParserPool(parserPool);
+            metadataProvider.initialize();
+        } catch (ComponentInitializationException e) {
+            Assert.fail("DOM metadata provider init failed due to filter exception and fail fast = false");
+        }
+        
+        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp.example.org")));
+        Assert.assertNull(entity);
+    }
+    
     
 }
