@@ -17,11 +17,7 @@
 
 package org.opensaml.storage.impl;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.annotation.Nonnull;
 
@@ -30,12 +26,14 @@ import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
+import net.shibboleth.utilities.java.support.resource.Resource;
+import net.shibboleth.utilities.java.support.resource.TestResourceConverter;
 import net.shibboleth.utilities.java.support.security.DataSealer;
-import net.shibboleth.utilities.java.support.security.DataSealerTest;
 
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.StorageServiceTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
@@ -47,33 +45,17 @@ import org.testng.annotations.Test;
  */
 public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
 
-    String keyStorePath;
+    private Resource keystoreResource;
 
     /**
-     * Copy the JKS from the classpath into the filesystem and get the name.
-     * @throws ComponentInitializationException 
+     * Convert the Spring resource to a java-support resource.
      * 
-     * @throws IOException
+     * @throws ComponentInitializationException
      */
     @BeforeClass public void setUp() throws ComponentInitializationException {
-        try {
-            File out = File.createTempFile("testDataSeal", "file");
-
-            final InputStream inStream = DataSealerTest.class.getResourceAsStream(
-                    "/org/opensaml/storage/impl/SealerKeyStore.jks");
-    
-            keyStorePath = out.getAbsolutePath();
-    
-            final OutputStream outStream = new FileOutputStream(out, false);
-    
-            final byte buffer[] = new byte[1024];
-    
-            final int bytesRead = inStream.read(buffer);
-            outStream.write(buffer, 0, bytesRead);
-            outStream.close();
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
+        final ClassPathResource resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.jks");
+        Assert.assertTrue(resource.exists());
+        keystoreResource = TestResourceConverter.of(resource);
 
         super.setUp();
     }
@@ -88,7 +70,7 @@ public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
         sealer.setCipherKeyPassword("kpassword");
 
         sealer.setKeystorePassword("password");
-        sealer.setKeystorePath(keyStorePath);
+        sealer.setKeystoreResource(keystoreResource);
 
         CookieManager cookieManager = new CookieManager();
         cookieManager.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
