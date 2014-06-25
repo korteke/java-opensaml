@@ -127,7 +127,7 @@
             <groupId>net.shibboleth.ext</groupId>
             <artifactId>spring-extensions</artifactId>
             <scope>test</scope>
-            <version>1.2-SNAPSHOT</version>
+            <version>${spring-extensions.version}</version>
         </dependency>
         
     </dependencies>
