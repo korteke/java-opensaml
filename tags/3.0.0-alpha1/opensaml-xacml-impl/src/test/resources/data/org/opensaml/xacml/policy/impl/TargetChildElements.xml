@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:Target xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+	<xacml:Subjects  />
+	<xacml:Resources  />
+	<xacml:Actions />
+	<xacml:Environments />
+</xacml:Target>

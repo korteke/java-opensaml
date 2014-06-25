@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:Obligation xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" ObligationId="http://example.org/Obligation/Id" FulfillOn="Deny">
+	<xacml:AttributeAssignment DataType="https://example.org/Obligation/Id/Data/Type" AttributeId="https://example.org/Obligation/Id/Attribute/Id" />
+	<xacml:AttributeAssignment DataType="https://example.org/Obligation/Id/Data/Type" AttributeId="https://example.org/Obligation/Id/Attribute/Id" />
+</xacml:Obligation>

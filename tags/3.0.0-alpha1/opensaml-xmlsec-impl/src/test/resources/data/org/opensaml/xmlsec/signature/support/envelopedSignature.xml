@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:SignableSimpleElement xmlns:test="http://www.example.org/testObjects" Id="FOO">
+    <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            <ds:Reference URI="#FOO">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+                <ds:DigestValue>
+                    bogusvalue
+                </ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue>
+                bogusvalue
+        </ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:KeyValue>
+                <ds:RSAKeyValue>
+                    <ds:Modulus>
+                        r9v6Gpj+mi37enovlJH7QCrgiUm9TT2j6atvW9Z4gkAtcu8rmGdtC+ZHd5V3CeH4krtb6eN0Gbe4
+                        LyTq657meQcq9azoRj+R6xHpY7mjiEiZwRo9s6R/MrDKqQFyTxgsNnjMd3PQxi1rA5L+GPVg+PgF
+                        KYaUqqacxHoDjf+4bAM=
+                    </ds:Modulus>
+                    <ds:Exponent>AQAB</ds:Exponent>
+                </ds:RSAKeyValue>
+            </ds:KeyValue>
+        </ds:KeyInfo>
+    </ds:Signature>
+</test:SignableSimpleElement>

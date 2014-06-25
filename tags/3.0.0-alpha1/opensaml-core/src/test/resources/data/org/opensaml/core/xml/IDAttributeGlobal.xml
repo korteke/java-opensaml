@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:Foo xmlns:test="http://www.example.org" test:id="GlobalID1">
+    <test:Bar test:id="GlobalID2"/>
+</test:Foo>

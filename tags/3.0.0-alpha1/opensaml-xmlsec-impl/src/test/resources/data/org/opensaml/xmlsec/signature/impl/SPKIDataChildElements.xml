@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:SPKIData xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:SPKISexp/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <ds:SPKISexp/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+</ds:SPKIData>

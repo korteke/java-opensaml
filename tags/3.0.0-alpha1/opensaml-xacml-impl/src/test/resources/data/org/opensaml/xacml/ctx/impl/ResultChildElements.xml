@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:Result xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+	<xacml-context:Decision xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">NotApplicable</xacml-context:Decision>
+	<xacml-context:Status/>
+	<xacml:Obligations xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os"/>
+</xacml-context:Result>
+	
+	
+

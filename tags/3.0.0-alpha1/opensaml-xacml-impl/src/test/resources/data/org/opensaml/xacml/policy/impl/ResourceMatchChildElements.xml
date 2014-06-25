@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:ResourceMatch xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" MatchId="http://example.org/Resource/Match/Match/Id">
+	<xacml:AttributeValue DataType="https://example.org/Resource/Match/Data/Type"/>
+	<xacml:ResourceAttributeDesignator DataType="https://example.org/Resource/Match/Data/Type" AttributeId="https://example.org/Resource/Match/Attribute/Id" />
+	<xacml:AttributeSelector RequestContextPath="ResourceMatchAttrSelectConextPath" DataType="https://example.org/Resource/Match/Data/Type" />
+</xacml:ResourceMatch>

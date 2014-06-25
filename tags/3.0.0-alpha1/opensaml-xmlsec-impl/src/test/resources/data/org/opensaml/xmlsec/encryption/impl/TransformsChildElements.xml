@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:Transforms xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+    <ds:Transform xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+    <ds:Transform xmlns:ds="http://www.w3.org/2000/09/xmldsig#"/>
+</xenc:Transforms>
