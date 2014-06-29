@@ -18,6 +18,7 @@
 /**
  * 
  */
+
 package org.opensaml.saml.saml1.core;
 
 import javax.xml.namespace.QName;
@@ -26,34 +27,40 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * Interface describing how a SAML1.1 <code> Action </code> element behaves
+ * Interface describing how a SAML1.1 <code> Action </code> element behaves.
  */
 public interface Action extends SAMLObject {
 
     /** Default element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "ActionType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
 
-    /** Name for the Namespace attribute */
-    public final static String NAMESPACEATTRIB_NAME = "Namespace";
-    
-    /** Return the value of Namespace */
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML1_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ActionType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+
+    /** Name for the Namespace attribute. */
+    public static final String NAMESPACEATTRIB_NAME = "Namespace";
+
+    /** Return the value of Namespace.
+     * @return the namespace*/
     public String getNamespace();
-    
-    /** Set the value of Namespace */
+
+    /** Set the value of Namespace.
+     * @param namespace what to set */
     public void setNamespace(String namespace);
-    
-    /** Return the contents */
+
+    /** Return the contents.
+     * @return the action contents. */
     public String getContents();
-    
-    /** Set the contents */
+
+    /** Set the contents.
+     * @param contents what to set. */
     public void setContents(String contents);
 }
