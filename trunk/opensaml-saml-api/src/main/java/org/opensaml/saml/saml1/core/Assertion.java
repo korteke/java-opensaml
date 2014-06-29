@@ -32,34 +32,36 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Assertion extends SignableSAMLObject, Evidentiary {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Assertion";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "AssertionType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Assertion";
 
-    /** Name for the attribute which defines Major Version (attribute's value must be 1) */
-    public final static String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML1_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AssertionType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+
+    /** Name for the attribute which defines Major Version (attribute's value must be 1). */
+    public static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines Minor Version. */
-    public final static String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    public static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
-    /** Name for the attribute which defines Assertion ID */
-    public final static String ASSERTIONID_ATTRIB_NAME = "AssertionID";
+    /** Name for the attribute which defines Assertion ID. */
+    public static final String ASSERTIONID_ATTRIB_NAME = "AssertionID";
 
-    /** Name for the attribute which defines Issuer */
-    public final static String ISSUER_ATTRIB_NAME = "Issuer";
+    /** Name for the attribute which defines Issuer. */
+    public static final String ISSUER_ATTRIB_NAME = "Issuer";
 
-    /** Name for the attribute which defines the issue instant */
-    public final static String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    /** Name for the attribute which defines the issue instant. */
+    public static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** Name for the attribute which defines the Issue Instant. */
-    public final static String ID_ATTRIB_NAME = "AssertionID";
+    public static final String ID_ATTRIB_NAME = "AssertionID";
 
     /* attributes */
 
@@ -69,14 +71,14 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * @return The stored MajorVersion
      */
     public int getMajorVersion();
-    
+
     /**
      * Get the MinorVersion attribute.
      * 
      * @return The stored MinorVersion
      */
     public int getMinorVersion();
-    
+
     /**
      * Sets the SAML version of this assertion.
      * 
@@ -94,9 +96,9 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
     /**
      * Set the Issuer (attribute).
      * 
-     * @param Issuer the value to set
+     * @param issuer the value to set
      */
-    public void setIssuer(String Issuer);
+    public void setIssuer(String issuer);
 
     /**
      * Get the IssueInstant (attribute).
@@ -105,12 +107,14 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      */
     public DateTime getIssueInstant();
 
-    /** Set the ID */
+    /** Set the ID.
+     * @return the ID. */
     public String getID();
-    
-    /** Get the ID */
+
+    /** Get the ID.
+     * @param id what to set */
     public void setID(String id);
-    
+
     /**
      * Set the IssueInstance (attribute).
      * 
@@ -137,7 +141,7 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
     public void setConditions(Conditions conditions) throws IllegalArgumentException;
 
     /**
-     * advice is a (singleton) Object, representing the <code> Advice </code> sub element
+     * advice is a (singleton) Object, representing the <code> Advice </code> sub element.
      * 
      * @return the advice object in this assertion
      */
@@ -162,7 +166,8 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
     public List<Statement> getStatements();
 
     /**
-     * Return the List representing all the <code> Statement </code> sub elements with a given schema type or element name.
+     * Return the List representing all the <code> Statement </code> sub elements with a given schema type or element
+     * name.
      * 
      * @param typeOrName the schema type or element name
      * 
@@ -192,7 +197,7 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
     public List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements();
 
     /**
-     * Return all the <code> AttributeStatement </code> elements
+     * Return all the <code> AttributeStatement </code> elements.
      * 
      * @return all the attributeStatements
      */
