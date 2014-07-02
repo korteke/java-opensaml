@@ -36,15 +36,14 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
-import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 /**
- * An implementation of {@link SignatureTrustEngine} which evaluates the validity and trustworthiness of XML and raw
- * signatures.
+ * An implementation of {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine} which evaluates the validity
+ * and trustworthiness of XML and raw signatures.
  * 
  * <p>
  * Processing is first performed as described in {@link BaseSignatureTrustEngine}. If based on this processing, it is
@@ -75,19 +74,19 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     public ExplicitKeySignatureTrustEngine(@Nonnull final CredentialResolver resolver,
             @Nonnull final KeyInfoCredentialResolver keyInfoResolver) {
         super(keyInfoResolver);
-        
+
         credentialResolver = Constraint.isNotNull(resolver, "Credential resolver cannot be null");
         keyTrust = new ExplicitKeyTrustEvaluator();
     }
 
     /** {@inheritDoc} */
-    @Nonnull public CredentialResolver getCredentialResolver() {
+    @Override @Nonnull public CredentialResolver getCredentialResolver() {
         return credentialResolver;
     }
 
     /** {@inheritDoc} */
-    protected boolean doValidate(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
-            throws SecurityException {
+    @Override protected boolean doValidate(@Nonnull final Signature signature,
+            @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException {
 
         CriteriaSet criteriaSet = new CriteriaSet();
         criteriaSet.addAll(trustBasisCriteria);
@@ -126,7 +125,8 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    protected boolean doValidate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
+    // CheckStyle: CyclomaticComplexity OFF
+    @Override protected boolean doValidate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
             @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
             @Nullable final Credential candidateCredential) throws SecurityException {
 
@@ -160,10 +160,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                         log.debug("Failed to establish trust of supplied candidate credential");
                     }
                 }
+            // CheckStyle: EmptyBlock OFF
             } catch (SecurityException e) {
                 // Java 7 now throws this exception under conditions such as mismatched key sizes.
                 // Swallow this, it's logged by the verifyWithURI method already.
             }
+            // CheckStyle: EmptyBlock ON
         }
 
         // If the candidate verification credential did not verify the
@@ -177,18 +179,22 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                     log.debug("Successfully verified signature using resolved trusted credential");
                     return true;
                 }
+            // CheckStyle: EmptyBlock OFF
             } catch (SecurityException e) {
                 // Java 7 now throws this exception under conditions such as mismatched key sizes.
                 // Swallow this, it's logged by the verifyWithURI method already.
             }
+            // CheckStyle: EmptyBlock ON
         }
         log.debug("Failed to verify signature using either supplied candidate credential"
                 + " or directly trusted credentials");
         return false;
     }
 
+    // CheckStyle: CyclomaticComplexity ON
+
     /** {@inheritDoc} */
-    protected boolean evaluateTrust(@Nonnull final Credential untrustedCredential,
+    @Override protected boolean evaluateTrust(@Nonnull final Credential untrustedCredential,
             @Nullable final Iterable<Credential> trustedCredentials) throws SecurityException {
 
         return keyTrust.validate(untrustedCredential, trustedCredentials);
