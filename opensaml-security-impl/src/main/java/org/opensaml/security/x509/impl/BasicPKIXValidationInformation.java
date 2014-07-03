@@ -24,8 +24,6 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.x509.PKIXValidationInformation;
 
 /**
@@ -50,24 +48,31 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
      * @param depth max verification path depth
      */
     public BasicPKIXValidationInformation(@Nullable final Collection<X509Certificate> anchors,
-            @Nullable final Collection<X509CRL> crls, @Nonnull final Integer depth) {
+            @Nullable final Collection<X509CRL> crls, @Nullable final Integer depth) {
 
-        verificationDepth = Constraint.isNotNull(depth, "Verification depth cannot be null");
+        if (null == depth) {
+            verificationDepth = 1; 
+        } else {
+            verificationDepth = depth;
+        }
         trustAnchors = anchors;
         trustedCRLs = crls;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public Collection<X509CRL> getCRLs() {
         return trustedCRLs;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public Collection<X509Certificate> getCertificates() {
         return trustAnchors;
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull public Integer getVerificationDepth() {
         return verificationDepth;
     }
