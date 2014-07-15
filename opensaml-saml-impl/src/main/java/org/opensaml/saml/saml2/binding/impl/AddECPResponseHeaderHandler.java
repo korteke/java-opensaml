@@ -64,7 +64,7 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
         try {
             assertionConsumerURL = SAMLBindingSupport.getEndpointURL(messageContext);
         } catch (final BindingException e) {
-            log.debug(getLogPrefix() + " No ACS location available in message context");
+            log.debug("{} No ACS location available in message context", getLogPrefix());
             return false;
         }
         
@@ -81,7 +81,11 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
         SOAPSupport.addSOAP11MustUnderstandAttribute(header, true);
         SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
         
-        SOAPSupport.addHeaderBlock(messageContext, header);
+        try {
+            SOAPSupport.addHeaderBlock(messageContext, header);
+        } catch (final Exception e) {
+            throw new MessageHandlerException(e);
+        }
     }
     
 }
