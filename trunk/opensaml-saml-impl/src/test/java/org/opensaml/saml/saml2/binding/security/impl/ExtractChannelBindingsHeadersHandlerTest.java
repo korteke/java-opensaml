@@ -103,4 +103,38 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
         Assert.assertTrue("foo".equals(array[1].getValue()) || "bar".equals(array[1].getValue()));
     }
 
+    /** Test that the handler works with non-default actor flags. */
+    @Test public void testActor() throws MessageHandlerException, ComponentInitializationException {
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+                Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
+
+        final MessageContext<AuthnRequest> messageCtx = new MessageContext<>();
+        messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
+        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
+        cb.setValue("foo");
+        SOAPSupport.addSOAP11ActorAttribute(cb, ActorBearing.SOAP11_ACTOR_NEXT);
+        SOAPSupport.addHeaderBlock(messageCtx, cb);
+
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
+        cb2.setValue("bar");
+        SOAPSupport.addHeaderBlock(messageCtx, cb2);
+
+        final ExtractChannelBindingsHeadersHandler handler = new ExtractChannelBindingsHeadersHandler();
+        handler.setNextDestination(false);
+        handler.setFinalDestination(true);
+        handler.initialize();
+        
+        handler.invoke(messageCtx);
+        final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(SOAP11Context.class).getSubcontext(
+                ChannelBindingsContext.class);
+        Assert.assertNotNull(cbCtx);
+        Assert.assertEquals(cbCtx.getChannelBindings().size(), 1);
+        
+        final ChannelBindings[] array = cbCtx.getChannelBindings().toArray(new ChannelBindings[2]);
+        Assert.assertTrue("bar".equals(array[0].getValue()));
+    }
 }
