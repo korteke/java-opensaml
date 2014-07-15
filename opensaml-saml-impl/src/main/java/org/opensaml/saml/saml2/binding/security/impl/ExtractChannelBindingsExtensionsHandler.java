@@ -27,6 +27,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 import org.opensaml.saml.saml2.common.Extensions;
@@ -48,6 +49,9 @@ public class ExtractChannelBindingsExtensionsHandler extends AbstractMessageHand
     @Override
     protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         if (!super.doPreInvoke(messageContext) || messageContext.getMessage() == null) {
+            return false;
+        } else if (!SAMLBindingSupport.isMessageSigned(messageContext)) {
+            log.debug("Message was not signed, cannot extract ChannelBindings from it");
             return false;
         }
         
