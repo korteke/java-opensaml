@@ -26,6 +26,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
+import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
@@ -33,18 +34,27 @@ import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** {@link ExtractChannelBindingsExtensionsHandler} unit test. */
 public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBaseTestCase {
     
-    /** Test that the handler returns nothing on a missing message. */
-    @Test public void testMissingMessage() throws MessageHandlerException, ComponentInitializationException {
-        final MessageContext messageCtx = new MessageContext();
-        
-        final ExtractChannelBindingsExtensionsHandler handler = new ExtractChannelBindingsExtensionsHandler();
+    private MessageContext messageCtx;
+    
+    private ExtractChannelBindingsExtensionsHandler handler;
+    
+    @BeforeMethod public void setUp() throws ComponentInitializationException {
+        handler = new ExtractChannelBindingsExtensionsHandler();
         handler.initialize();
         
+        messageCtx = new MessageContext();
+        messageCtx.getSubcontext(SAMLBindingContext.class, true).setHasBindingSignature(true);
+    }
+    
+    /** Test that the handler returns nothing on a missing message. */
+    @Test public void testMissingMessage() throws MessageHandlerException {
+
         handler.invoke(messageCtx);
         Assert.assertNull(messageCtx.getSubcontext(ChannelBindingsContext.class));
         
@@ -54,26 +64,21 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
     }
 
     /** Test that the handler does nothing when no extensions exist. */
-    @Test public void testNoExtensions() throws MessageHandlerException, ComponentInitializationException {
-        final MessageContext<AuthnRequest> messageCtx = new MessageContext<>();
+    @Test public void testNoExtensions() throws MessageHandlerException {
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        
-        final ExtractChannelBindingsExtensionsHandler handler = new ExtractChannelBindingsExtensionsHandler();
-        handler.initialize();
         
         handler.invoke(messageCtx);
         Assert.assertNull(messageCtx.getSubcontext(ChannelBindingsContext.class));
     }
     
-    /** Test that the handler works. */
-    @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
+    /** Test that the handler ignores unsigned bindings. */
+    @Test public void testUnsigned() throws MessageHandlerException {
         final QName extQName = new QName(SAMLConstants.SAML20P_NS, Extensions.LOCAL_NAME);
         final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
                 extQName).buildObject(extQName);
 
-        final MessageContext<AuthnRequest> messageCtx = new MessageContext<>();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        messageCtx.getMessage().setExtensions(ext);
+        ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
         
         final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
@@ -84,9 +89,32 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
         ext.getUnknownXMLObjects().add(cb2);
+        
+        messageCtx.getSubcontext(SAMLBindingContext.class).setHasBindingSignature(false);
+        
+        handler.invoke(messageCtx);
+        final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(ChannelBindingsContext.class);
+        Assert.assertNull(cbCtx);
+    }
+    
+    /** Test that the handler works. */
+    @Test public void testSuccess() throws MessageHandlerException {
+        final QName extQName = new QName(SAMLConstants.SAML20P_NS, Extensions.LOCAL_NAME);
+        final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
+                extQName).buildObject(extQName);
 
-        final ExtractChannelBindingsExtensionsHandler handler = new ExtractChannelBindingsExtensionsHandler();
-        handler.initialize();
+        messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
+        ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
+        
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
+        cb.setValue("foo");
+        ext.getUnknownXMLObjects().add(cb);
+
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
+        cb2.setValue("bar");
+        ext.getUnknownXMLObjects().add(cb2);
         
         handler.invoke(messageCtx);
         final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(ChannelBindingsContext.class);
