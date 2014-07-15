@@ -410,8 +410,8 @@ public final class SOAPSupport {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
         // SOAP 1.1 Envelope
-        SOAP11Context soap11 = messageContext.getSubcontext(SOAP11Context.class, false);
-        if (soap11 != null) {
+        final SOAP11Context soap11 = messageContext.getSubcontext(SOAP11Context.class);
+        if (soap11 != null && soap11.getEnvelope() != null) {
             addSOAP11HeaderBlock(soap11.getEnvelope(), headerBlock);
         } else {
             //TODO SOAP 1.2 support when object providers are implemented
@@ -455,10 +455,10 @@ public final class SOAPSupport {
             @Nullable Set<String> targetNodes, boolean isFinalDestination) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        SOAP11Context soap11 = messageContext.getSubcontext(SOAP11Context.class, false);
+        final SOAP11Context soap11 = messageContext.getSubcontext(SOAP11Context.class);
         
         // SOAP 1.1 Envelope
-        if (soap11 != null) {
+        if (soap11 != null && soap11.getEnvelope() != null) {
             return getSOAP11HeaderBlock(soap11.getEnvelope(), headerName, targetNodes, isFinalDestination);
         }
         
