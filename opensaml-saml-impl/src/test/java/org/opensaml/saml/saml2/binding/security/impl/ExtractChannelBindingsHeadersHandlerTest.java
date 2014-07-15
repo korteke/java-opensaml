@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.binding.impl;
+package org.opensaml.saml.saml2.binding.security.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
@@ -25,6 +25,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
+import org.opensaml.saml.saml2.binding.security.impl.ExtractChannelBindingsHeadersHandler;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
