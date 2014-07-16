@@ -103,7 +103,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
      * 
      * @param type  message type
      */
-    public synchronized void setMessageType(@Nonnull final QName type) {
+    public void setMessageType(@Nonnull final QName type) {
         messageType = Constraint.isNotNull(type, "Message type cannot be null");
     }
     
@@ -112,7 +112,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
      * 
      * @param flag flag to set
      */
-    public synchronized void setOverwriteExisting(final boolean flag) {
+    public void setOverwriteExisting(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         overwriteExisting = flag;
@@ -123,8 +123,8 @@ public class AddStatusResponseShell extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setIdentifierGeneratorLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, IdentifierGenerationStrategy> strategy) {
+    public void setIdentifierGeneratorLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,IdentifierGenerationStrategy> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         idGeneratorLookupStrategy =
@@ -136,8 +136,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setIssuerLookupStrategy(
-            @Nullable final Function<ProfileRequestContext, String> strategy) {
+    public void setIssuerLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         issuerLookupStrategy = strategy;

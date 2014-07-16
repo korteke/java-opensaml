@@ -106,8 +106,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setRequestLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,ArtifactResolve> strategy) {
+    public void setRequestLookupStrategy(@Nonnull final Function<ProfileRequestContext,ArtifactResolve> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         requestLookupStrategy = Constraint.isNotNull(strategy, "Request lookup strategy cannot be null");
@@ -118,8 +117,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,ArtifactResponse> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,ArtifactResponse> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -130,8 +128,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setIssuerLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+    public void setIssuerLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
     
         issuerLookupStrategy = Constraint.isNotNull(strategy, "Issuer lookup strategy cannot be null");
@@ -142,8 +139,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setRequesterLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,String> strategy) {
+    public void setRequesterLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         requesterLookupStrategy = Constraint.isNotNull(strategy, "Requester lookup strategy cannot be null");
@@ -154,7 +150,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * 
      * @param map   artifact map
      */
-    public synchronized void setArtifactMap(@Nonnull final SAMLArtifactMap map) {
+    public void setArtifactMap(@Nonnull final SAMLArtifactMap map) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         artifactMap = Constraint.isNotNull(map, "SAMLArtifactMap cannot be null");

@@ -158,7 +158,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @param flag  true iff the action should overwrite any existing objects
      */
-    public synchronized void setOverwriteExisting(final boolean flag) {
+    public void setOverwriteExisting(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         overwriteExisting = flag;
@@ -169,8 +169,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link AuthnRequest}
      */
-    public synchronized void setRequestLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
+    public void setRequestLookupStrategy(@Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
@@ -181,8 +180,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -193,7 +191,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @param predicate predicate used to evaluate the {@link NameIDPolicy}
      */
-    public synchronized void setNameIDPolicyPredicate(@Nonnull final Predicate<ProfileRequestContext> predicate) {
+    public void setNameIDPolicyPredicate(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         nameIDPolicyPredicate = Constraint.isNotNull(predicate, "NameIDPolicy predicate cannot be null");
@@ -204,8 +202,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @param strategy  format lookup strategy
      */
-    public synchronized void setFormatLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,List<String>> strategy) {
+    public void setFormatLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<String>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         formatLookupStrategy = Constraint.isNotNull(strategy, "Format lookup strategy cannot be null");
@@ -216,7 +213,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * 
      * @param theGenerator the generator to use
      */
-    public synchronized void setNameIDGenerator(@Nullable final SAML2NameIDGenerator theGenerator) {
+    public void setNameIDGenerator(@Nullable final SAML2NameIDGenerator theGenerator) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         generator = Constraint.isNotNull(theGenerator, "SAML2NameIDGenerator cannot be null");

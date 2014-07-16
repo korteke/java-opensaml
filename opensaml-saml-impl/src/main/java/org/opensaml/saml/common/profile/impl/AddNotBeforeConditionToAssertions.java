@@ -67,8 +67,7 @@ public class AddNotBeforeConditionToAssertions extends AbstractConditionalProfil
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");

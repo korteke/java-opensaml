@@ -79,8 +79,7 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -91,8 +90,7 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
      * 
      * @param strategy strategy function
      */
-    public synchronized void setAssertionLifetimeStrategy(
-            @Nullable final Function<ProfileRequestContext,Long> strategy) {
+    public void setAssertionLifetimeStrategy(@Nullable final Function<ProfileRequestContext,Long> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         assertionLifetimeStrategy = strategy;
@@ -103,7 +101,7 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
      * 
      * @param lifetime  default lifetime in milliseconds
      */
-    public synchronized void setDefaultAssertionLifetime(@Duration @NonNegative long lifetime) {
+    public void setDefaultAssertionLifetime(@Duration @NonNegative final long lifetime) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         defaultAssertionLifetime = Constraint.isGreaterThanOrEqual(0, lifetime,

@@ -100,7 +100,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
      * 
      * @param flag flag to set
      */
-    public synchronized void setOverwriteExisting(final boolean flag) {
+    public void setOverwriteExisting(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         overwriteExisting = flag;
@@ -111,8 +111,8 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setIdentifierGeneratorLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, IdentifierGenerationStrategy> strategy) {
+    public void setIdentifierGeneratorLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,IdentifierGenerationStrategy> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         idGeneratorLookupStrategy =
@@ -124,8 +124,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setIssuerLookupStrategy(
-            @Nullable final Function<ProfileRequestContext, String> strategy) {
+    public void setIssuerLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         issuerLookupStrategy = strategy;

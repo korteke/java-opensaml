@@ -73,8 +73,7 @@ public class AddDoNotCacheConditionToAssertions extends AbstractConditionalProfi
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext, Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
