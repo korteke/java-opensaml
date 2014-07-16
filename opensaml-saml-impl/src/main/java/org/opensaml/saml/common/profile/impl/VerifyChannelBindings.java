@@ -172,6 +172,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
         return true;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
@@ -195,6 +196,9 @@ public class VerifyChannelBindings extends AbstractProfileAction {
                     }
                 }
             }
+            if (matched != null) {
+                break;
+            }
         }
         
         if (matched == null) {
@@ -212,5 +216,6 @@ public class VerifyChannelBindings extends AbstractProfileAction {
             }
         }
     }
-
+// Checkstyle: CyclomaticComplexity ON
+    
 }
