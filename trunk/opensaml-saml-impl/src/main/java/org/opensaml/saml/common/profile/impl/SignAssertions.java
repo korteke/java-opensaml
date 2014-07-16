@@ -86,8 +86,7 @@ public class SignAssertions extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -98,8 +97,8 @@ public class SignAssertions extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setSecurityParametersLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, SecurityParametersContext> strategy) {
+    public void setSecurityParametersLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         securityParametersLookupStrategy = Constraint.isNotNull(strategy,

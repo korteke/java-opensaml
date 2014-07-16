@@ -64,10 +64,10 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
     private boolean errorFatal;
 
     /** Strategy used to locate the {@link SecurityParametersContext}. */
-    @Nonnull private Function<ProfileRequestContext, SecurityParametersContext> securityParamsLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,SecurityParametersContext> securityParamsLookupStrategy;
 
     /** Strategy used to locate the SAML message to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Object> messageLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,Object> messageLookupStrategy;
     
     /** Predicate determining whether to attempt decryption. */
     @Nonnull private Predicate<Pair<ProfileRequestContext,EncryptedElementType>> decryptionPredicate;
@@ -101,7 +101,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * 
      * @param flag  true iff decryption failure should be fatal
      */
-    public synchronized void setErrorFatal(final boolean flag) {
+    public void setErrorFatal(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         errorFatal = flag;
@@ -114,8 +114,8 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link SecurityParametersContext} associated with a given
      *            {@link ProfileRequestContext}
      */
-    public synchronized void setSecurityParametersContextLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, SecurityParametersContext> strategy) {
+    public void setSecurityParametersContextLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         securityParamsLookupStrategy =
@@ -127,8 +127,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link SAMLObject} to operate on
      */
-    public synchronized void setMessageLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Object> strategy) {
+    public void setMessageLookupStrategy(@Nonnull final Function<ProfileRequestContext,Object> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
@@ -148,7 +147,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * 
      * @param predicate predicate to use
      */
-    public synchronized void setDecryptionPredicate(
+    public void setDecryptionPredicate(
             @Nonnull final Predicate<Pair<ProfileRequestContext,EncryptedElementType>> predicate) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         

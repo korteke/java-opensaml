@@ -177,7 +177,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param flag  true iff the action should overwrite any existing objects
      */
-    public synchronized void setOverwriteExisting(final boolean flag) {
+    public void setOverwriteExisting(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         overwriteExisting = flag;
@@ -188,7 +188,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public synchronized void setResponseLookupStrategy(
+    public void setResponseLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
@@ -200,7 +200,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setAddressLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
+    public void setAddressLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         addressLookupStrategy = strategy;
@@ -211,8 +211,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setInResponseToLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,String> strategy) {
+    public void setInResponseToLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         inResponseToLookupStrategy = strategy;
@@ -223,8 +222,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setRecipientLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,String> strategy) {
+    public void setRecipientLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         recipientLookupStrategy = strategy;
@@ -235,7 +233,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setLifetimeLookupStrategy(@Nullable final Function<ProfileRequestContext,Long> strategy) {
+    public void setLifetimeLookupStrategy(@Nullable final Function<ProfileRequestContext,Long> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         lifetimeLookupStrategy = strategy;
@@ -246,7 +244,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param method   confirmation method to use
      */
-    public synchronized void setMethod(@Nonnull @NotEmpty final String method) {
+    public void setMethod(@Nonnull @NotEmpty final String method) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         confirmationMethod = Constraint.isNotNull(StringSupport.trimOrNull(method),

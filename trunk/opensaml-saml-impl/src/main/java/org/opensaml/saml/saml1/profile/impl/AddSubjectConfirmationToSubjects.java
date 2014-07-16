@@ -85,7 +85,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
     
     /** Methods to add. */
     @Nonnull @NonnullElements private Collection<String> confirmationMethods;
@@ -120,7 +120,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param flag  true iff the action should overwrite any existing objects
      */
-    public synchronized void setOverwriteExisting(final boolean flag) {
+    public void setOverwriteExisting(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         overwriteExisting = flag;
@@ -131,8 +131,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -143,7 +142,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * 
      * @param methods   confirmation methods to use
      */
-    public synchronized void setMethods(@Nonnull @NonnullElements final Collection<String> methods) {
+    public void setMethods(@Nonnull @NonnullElements final Collection<String> methods) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         Constraint.isNotEmpty(methods, "Confirmation method collection cannot be null or empty");
         

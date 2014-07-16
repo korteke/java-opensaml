@@ -83,10 +83,10 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     private boolean overwriteExisting;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
     /** Strategy used to determine the formats to try. */
-    @Nonnull private Function<ProfileRequestContext, List<String>> formatLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,List<String>> formatLookupStrategy;
 
     /** Generator to use. */
     @NonnullAfterInit private SAML1NameIdentifierGenerator generator;
@@ -119,7 +119,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * 
      * @param flag  true iff the action should overwrite any existing objects
      */
-    public synchronized void setOverwriteExisting(final boolean flag) {
+    public void setOverwriteExisting(final boolean flag) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         overwriteExisting = flag;
@@ -130,8 +130,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * 
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
-    public synchronized void setResponseLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
@@ -142,8 +141,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * 
      * @param strategy  format lookup strategy
      */
-    public synchronized void setFormatLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, List<String>> strategy) {
+    public void setFormatLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<String>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         formatLookupStrategy = Constraint.isNotNull(strategy, "Format lookup strategy cannot be null");
@@ -154,7 +152,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * 
      * @param theGenerator the generator to use
      */
-    public synchronized void setNameIdentifierGenerator(@Nonnull final SAML1NameIdentifierGenerator theGenerator) {
+    public void setNameIdentifierGenerator(@Nonnull final SAML1NameIdentifierGenerator theGenerator) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         generator = Constraint.isNotNull(theGenerator, "SAML1NameIdentifierGenerator cannot be null");
