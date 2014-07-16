@@ -26,6 +26,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -98,14 +99,42 @@ public final class SAML2ActionSupport {
                             Conditions.DEFAULT_ELEMENT_NAME);
             conditions = conditionsBuilder.buildObject();
             assertion.setConditions(conditions);
-            getLogger().debug("Profile Action {}: Assertion {} did not already contain a Conditions, one was added",
+            getLogger().debug("Profile Action {}: Assertion {} did not already contain Conditions, one was added",
                     action.getClass().getSimpleName(), assertion.getID());
         } else {
-            getLogger().debug("Profile Action {}: Assertion {} already contain a Conditions, nothing was done",
+            getLogger().debug("Profile Action {}: Assertion {} already contained Conditions, nothing was done",
                     action.getClass().getSimpleName(), assertion.getID());
         }
 
         return conditions;
+    }
+
+    /**
+     * Creates and adds a {@link Advice} to a given {@link Assertion}. If the {@link Assertion} already contains an
+     * {@link Advice} this method just returns.
+     * 
+     * @param action current action
+     * @param assertion assertion to which the advice will be added
+     * 
+     * @return the {@link Advice} that already existed on, or the one that was added to, the {@link Assertion}
+     */
+    @Nonnull public static Advice addAdviceToAssertion(@Nonnull final AbstractProfileAction action,
+            @Nonnull final Assertion assertion) {
+        Advice advice = assertion.getAdvice();
+        if (advice == null) {
+            final SAMLObjectBuilder<Advice> adviceBuilder = (SAMLObjectBuilder<Advice>)
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Advice>getBuilderOrThrow(
+                            Advice.DEFAULT_ELEMENT_NAME);
+            advice = adviceBuilder.buildObject();
+            assertion.setAdvice(advice);
+            getLogger().debug("Profile Action {}: Assertion {} did not already contain Advice, one was added",
+                    action.getClass().getSimpleName(), assertion.getID());
+        } else {
+            getLogger().debug("Profile Action {}: Assertion {} already contained Advice, nothing was done",
+                    action.getClass().getSimpleName(), assertion.getID());
+        }
+
+        return advice;
     }
 
     /**
