@@ -191,6 +191,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
                     final String cb2Data = StringSupport.trimOrNull(cb2.getValue());
                     if (Objects.equal(cb1Data, cb2Data)) {
                         matched = cb1;
+                        break;
                     }
                 }
             }
