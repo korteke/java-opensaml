@@ -56,8 +56,8 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
     /** Strategy used to locate the {@link ECPContext} to populate. */
     @Nonnull private Function<ProfileRequestContext,ECPContext> ecpContextCreationStrategy;
     
-    /** Strategy used to determine whether assertions are going to be encrypted. */
-    @Nonnull private Function<ProfileRequestContext,Boolean> encryptionLookupStrategy;
+    /** Strategy used to locate the {@link EncryptionContext}. */
+    @Nonnull private Function<ProfileRequestContext,EncryptionContext> encryptionContextLookupStrategy;
     
     /** Random number generator. */
     @Nullable private SecureRandom randomGenerator;
@@ -74,18 +74,8 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
         ecpContextCreationStrategy = Functions.compose(new ChildContextLookup<>(ECPContext.class, true),
                 new OutboundMessageContextLookup());
         
-        encryptionLookupStrategy = new Function<ProfileRequestContext,Boolean>() {
-            public Boolean apply(ProfileRequestContext input) {
-                if (input != null && input.getOutboundMessageContext() != null) {
-                    final EncryptionContext ec =
-                            input.getOutboundMessageContext().getSubcontext(EncryptionContext.class);
-                    if (ec != null && ec.getAssertionEncryptionParameters() != null) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
+        encryptionContextLookupStrategy = Functions.compose(new ChildContextLookup<>(EncryptionContext.class),
+                new OutboundMessageContextLookup());
         
         try {
             randomGenerator = SecureRandom.getInstance("SHA1PRNG");
@@ -109,14 +99,15 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
     }
     
     /**
-     * Set the strategy used to determine whether assertions are going to be encrypted.
+     * Set the strategy used to locate the {@link EncryptionContext}.
      * 
      * @param strategy  lookup strategy
      */
-    public void setEncryptionLookupStrategy(@Nonnull final Function<ProfileRequestContext,Boolean> strategy) {
+    public void setEncryptionLookupStrategy(@Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        encryptionLookupStrategy = Constraint.isNotNull(strategy, "Encryption lookup strategy cannot be null");
+        encryptionContextLookupStrategy = Constraint.isNotNull(strategy,
+                "EncryptionContext lookup strategy cannot be null");
     }
     
     /**
@@ -155,8 +146,18 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
         ecpContext.setRequestAuthenticated(
                 SAMLBindingSupport.isMessageSigned(profileRequestContext.getInboundMessageContext()));
         log.debug("{} RequestAuthenticated: {}", getLogPrefix(), ecpContext.isRequestAuthenticated());
+        
+        boolean generateKey = true;
+        
+        if (requireEncryption) {
+            generateKey = false;
+            final EncryptionContext encryptionCtx = encryptionContextLookupStrategy.apply(profileRequestContext);
+            if (encryptionCtx != null) {
+                generateKey = encryptionCtx.getAssertionEncryptionParameters() != null;
+            }
+        }
      
-        if (!requireEncryption || encryptionLookupStrategy.apply(profileRequestContext)) {
+        if (generateKey) {
             log.debug("{} Generating session key for use by ECP peers", getLogPrefix());
             final byte[] key = new byte[32];
             randomGenerator.nextBytes(key);
