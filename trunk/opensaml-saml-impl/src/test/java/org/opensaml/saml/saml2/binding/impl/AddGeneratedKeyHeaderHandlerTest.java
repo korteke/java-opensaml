@@ -84,8 +84,8 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
      * @throws NoSuchAlgorithmException */
     @Test public void testSuccess() throws MessageHandlerException, NoSuchAlgorithmException {
 
-        byte[] key = SecureRandom.getInstance("SHA1prng").generateSeed(16);
-        
+        final byte[] key = new byte[32];
+        SecureRandom.getInstance("SHA1prng").nextBytes(key);
         messageCtx.getSubcontext(ECPContext.class, true).setSessionKey(key);
 
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
