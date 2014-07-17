@@ -17,34 +17,22 @@
 
 package org.opensaml.saml.saml2.binding.impl;
 
-import java.net.URI;
-
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.common.binding.BindingException;
-import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.saml2.ecp.Response;
+import org.opensaml.saml.common.messaging.context.ECPContext;
+import org.opensaml.saml.saml2.ecp.RequestAuthenticated;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * MessageHandler to add the ECP {@link Response} header to an outgoing SOAP envelope.
+ * MessageHandler to add the ECP {@link RequestAuthenticated} header to an outgoing SOAP envelope.
  */
-public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
-   
-    /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(AddECPResponseHeaderHandler.class);
-    
-    /** The location to record in the header. */
-    @Nullable private URI assertionConsumerURL;
+public class AddRequestAuthenticatedHeaderHandler extends AbstractMessageHandler {
 
     /** {@inheritDoc} */
     @Override
@@ -54,10 +42,8 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
             return false;
         }
         
-        try {
-            assertionConsumerURL = SAMLBindingSupport.getEndpointURL(messageContext);
-        } catch (final BindingException e) {
-            log.debug("{} No ACS location available in message context", getLogPrefix());
+        final ECPContext ctx = messageContext.getSubcontext(ECPContext.class);
+        if (ctx == null || !ctx.isRequestAuthenticated()) {
             return false;
         }
         
@@ -67,14 +53,13 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>getBuilderOrThrow(
-                        Response.DEFAULT_ELEMENT_NAME);
         
-        final Response header = responseBuilder.buildObject();
-        header.setAssertionConsumerServiceURL(assertionConsumerURL.toString());
+        final SAMLObjectBuilder<RequestAuthenticated> builder = (SAMLObjectBuilder<RequestAuthenticated>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<RequestAuthenticated>getBuilderOrThrow(
+                        RequestAuthenticated.DEFAULT_ELEMENT_NAME);
         
-        SOAPSupport.addSOAP11MustUnderstandAttribute(header, true);
+        final RequestAuthenticated header = builder.buildObject();
+        
         SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
         
         try {
