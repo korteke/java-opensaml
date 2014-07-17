@@ -35,7 +35,7 @@ import com.google.common.collect.Lists;
  */
 public class ChannelBindingsContext extends BaseContext {
 
-    /** The AttributeConsumingService. */
+    /** The set of ChannelBindings. */
     @Nonnull @NonnullElements private Collection<ChannelBindings> channelBindings;
     
     /** Constructor. */
@@ -44,9 +44,9 @@ public class ChannelBindingsContext extends BaseContext {
     }
 
     /**
-     * Gets the assertion to be validated.
+     * Get the channel bindings.
      * 
-     * @return the assertion to be validated
+     * @return the channel bindings
      */
     @Nonnull @NonnullElements @Live public Collection<ChannelBindings> getChannelBindings() {
         return channelBindings;
