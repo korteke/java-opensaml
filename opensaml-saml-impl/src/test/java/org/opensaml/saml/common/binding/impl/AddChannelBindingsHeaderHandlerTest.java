@@ -74,17 +74,18 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
     /** Test that the handler errors on a missing SOAP context. */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, ComponentInitializationException {
-        messageCtx.getSubcontext(SOAP11Context.class, true).addSubcontext(cbc);
+        messageCtx.addSubcontext(cbc);
 
         handler.invoke(messageCtx);
     }
 
     /** Test that the handler works. */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
+        messageCtx.addSubcontext(cbc);
+
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
         messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
-        messageCtx.getSubcontext(SOAP11Context.class).addSubcontext(cbc);
         
         handler.invoke(messageCtx);
         

@@ -31,14 +31,12 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
-import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 
 /**
  * MessageHandler to add {@link ChannelBindings} headers to an outgoing SOAP envelope.
@@ -47,9 +45,6 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
    
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddChannelBindingsHeaderHandler.class);
-
-    /** Builder for ChannelBindings header. */
-    @Nonnull private final SAMLObjectBuilder<ChannelBindings> cbBuilder;
     
     /** Strategy used to locate the {@link ChannelBindingsContext} to operate on. */
     @Nonnull private Function<MessageContext,ChannelBindingsContext> channelBindingsContextLookupStrategy;
@@ -59,12 +54,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
     
     /** Constructor. */
     public AddChannelBindingsHeaderHandler() {
-        cbBuilder = (SAMLObjectBuilder<ChannelBindings>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
-                        ChannelBindings.DEFAULT_ELEMENT_NAME);
-        channelBindingsContextLookupStrategy =
-                Functions.compose(new ChildContextLookup<>(ChannelBindingsContext.class),
-                        new ChildContextLookup<MessageContext,SOAP11Context>(SOAP11Context.class));
+        channelBindingsContextLookupStrategy = new ChildContextLookup<>(ChannelBindingsContext.class);
     }
     
     /**
@@ -101,6 +91,10 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
+        final SAMLObjectBuilder<ChannelBindings> cbBuilder = (SAMLObjectBuilder<ChannelBindings>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                        ChannelBindings.DEFAULT_ELEMENT_NAME);
+        
         for (final ChannelBindings cb : channelBindingsContext.getChannelBindings()) {
             final ChannelBindings header = cbBuilder.buildObject();
             header.setType(cb.getType());

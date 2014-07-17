@@ -17,17 +17,13 @@
 
 package org.opensaml.saml.common.profile.impl;
 
-import java.util.Collection;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -44,9 +40,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Objects;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 /**
  * Action that verifies two sets of {@link ChannelBindings} from two different {@link ChannelBindingsContext}
@@ -57,15 +50,14 @@ import com.google.common.collect.Lists;
  * required, but if either one supplies a non-empty context, then a match must be achieved or an error event
  * is signaled.</p>
  * 
- * <p>If verification is successful, then the resulting match is stored in new {@link ChannelBindingsContext}
- * objects created from one or more lookup/creation functions. By default these are created below the profile
- * request context and below a {@link SOAP11Context} below the outbound message context.</p>
+ * <p>If verification is successful, then the resulting match is stored in a new {@link ChannelBindingsContext}
+ * object created from a lookup/creation function, by default below the outbound message context.</p>
  * 
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  * @event {@link SAMLEventIds#CHANNEL_BINDINGS_ERROR}
  * 
  * @pre {@link ChannelBindingContext} objects to be returned from lookup functions must be populated.
- * @post Upon successful verification, one or more {@link ChannelBindingContext} objects will be created as described.
+ * @post Upon successful verification, a {@link ChannelBindingContext} object will be created as described.
  */
 public class VerifyChannelBindings extends AbstractProfileAction {
 
@@ -78,9 +70,8 @@ public class VerifyChannelBindings extends AbstractProfileAction {
     /** Strategy used to locate the second set of bindings to operate on. */
     @Nonnull private Function<ProfileRequestContext,ChannelBindingsContext> channelBindingsLookupStrategy2;
     
-    /** Strategy used to locate the first set of bindings to operate on. */
-    @Nonnull @NonnullElements
-    private Collection<Function<ProfileRequestContext,ChannelBindingsContext>> channelBindingsCreationStrategies;
+    /** Strategy used to locate or create the context to save the verified result in. */
+    @Nonnull private Function<ProfileRequestContext,ChannelBindingsContext> channelBindingsCreationStrategy;
     
     /** The first set of bindings. */
     @Nullable private ChannelBindingsContext channelBindingsContext1;
@@ -95,15 +86,9 @@ public class VerifyChannelBindings extends AbstractProfileAction {
         channelBindingsLookupStrategy2 = Functions.compose(new ChildContextLookup<>(ChannelBindingsContext.class),
                 Functions.compose(new ChildContextLookup<>(SOAP11Context.class), new InboundMessageContextLookup()));
                 
-        // Default locations to create are ECP-centric, beneath PRC, and outbound MC -> SOAP
-        channelBindingsCreationStrategies = Lists.newArrayListWithExpectedSize(2);
-        channelBindingsCreationStrategies.add(new ChildContextLookup<ProfileRequestContext,ChannelBindingsContext>(
-                ChannelBindingsContext.class, true));
-        channelBindingsCreationStrategies.add(
+        channelBindingsCreationStrategy =
                 Functions.compose(new ChildContextLookup<>(ChannelBindingsContext.class, true),
-                        Functions.compose(
-                                new ChildContextLookup<MessageContext,SOAP11Context>(SOAP11Context.class, true),
-                                new OutboundMessageContextLookup())));
+                                new OutboundMessageContextLookup());
     }
     
     /**
@@ -133,16 +118,16 @@ public class VerifyChannelBindings extends AbstractProfileAction {
     }
 
     /**
-     * Set the strategy used to creare or locate the {@link ChannelBindingsContext}s to save matching results in.
+     * Set the strategy used to create or locate the {@link ChannelBindingsContext} to save verified results in.
      * 
-     * @param strategies lookup/creation strategies
+     * @param strategy lookup/creation strategy
      */
-    public void setChannelBindingsCreationStrategies(@Nonnull @NonnullElements
-            final Collection<Function<ProfileRequestContext,ChannelBindingsContext>> strategies) {
+    public void setChannelBindingsCreationStrategy(
+            @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        Constraint.isNotNull(strategies, "ChannelBindingsContext creation strategies cannot be null");
-
-        channelBindingsCreationStrategies = Lists.newArrayList(Collections2.filter(strategies, Predicates.notNull()));
+        
+        channelBindingsCreationStrategy = Constraint.isNotNull(strategy,
+                "ChannelBindingsContext creation strategy cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -172,7 +157,6 @@ public class VerifyChannelBindings extends AbstractProfileAction {
         return true;
     }
 
-// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
@@ -209,13 +193,13 @@ public class VerifyChannelBindings extends AbstractProfileAction {
         
         log.debug("{} Saving matched channel bindings for later use", getLogPrefix());
         
-        for (final Function<ProfileRequestContext,ChannelBindingsContext> fn : channelBindingsCreationStrategies) {
-            final ChannelBindingsContext cbCtx = fn.apply(profileRequestContext);
-            if (cbCtx != null) {
-                cbCtx.getChannelBindings().add(matched);
-            }
+        final ChannelBindingsContext cbCtx = channelBindingsCreationStrategy.apply(profileRequestContext);
+        if (cbCtx != null) {
+            cbCtx.getChannelBindings().add(matched);
+        } else {
+            log.error("{} Unable to create ChannelBindingContext to store result", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
         }
     }
-// Checkstyle: CyclomaticComplexity ON
     
 }
