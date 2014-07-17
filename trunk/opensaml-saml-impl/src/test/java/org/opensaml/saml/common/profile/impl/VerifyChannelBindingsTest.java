@@ -69,7 +69,7 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final ChannelBindingsContext cbCtx = prc.getSubcontext(ChannelBindingsContext.class);
+        final ChannelBindingsContext cbCtx = prc.getOutboundMessageContext().getSubcontext(ChannelBindingsContext.class);
         Assert.assertNotNull(cbCtx);
         Assert.assertEquals(cbCtx.getChannelBindings().size(), 1);
         
@@ -95,7 +95,7 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
-        Assert.assertNull(prc.getSubcontext(ChannelBindingsContext.class));
+        Assert.assertNull(prc.getOutboundMessageContext().getSubcontext(ChannelBindingsContext.class));
     }
     
     @Test public void testNoMatch2() throws MessageHandlerException {
@@ -109,7 +109,7 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
-        Assert.assertNull(prc.getSubcontext(ChannelBindingsContext.class));
+        Assert.assertNull(prc.getOutboundMessageContext().getSubcontext(ChannelBindingsContext.class));
     }
 
 }

@@ -62,7 +62,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
     @Test
     public void testNoResponse() {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.addSubcontext(cbc);
+        prc.getOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -82,7 +82,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
     public void testNoAssertion() {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
-        prc.addSubcontext(cbc);
+        prc.getOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -101,7 +101,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.addSubcontext(cbc);
+        prc.getOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -129,7 +129,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.addSubcontext(cbc);
+        prc.getOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -149,7 +149,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.addSubcontext(cbc);
+        prc.getOutboundMessageContext().addSubcontext(cbc);
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);

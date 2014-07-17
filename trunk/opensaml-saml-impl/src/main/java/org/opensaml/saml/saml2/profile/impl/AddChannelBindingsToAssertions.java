@@ -45,8 +45,12 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action to add {@link ChannelBindings} extensions to every {@link Assertion} in a {@link Response} message.
- * If the containing {@link Advice} is not present, it will be created.
+ * Action to add {@link ChannelBindings} extension(s) to every {@link Assertion} in a {@link Response} message.
+ * 
+ * <p>If the containing {@link Advice} is not present, it will be created.</p>
+ * 
+ * <p>The {@link ChannelBindingsContext} to read from is located via lookup strategy, by default beneath the
+ * outbound message context.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
@@ -70,7 +74,8 @@ public class AddChannelBindingsToAssertions extends AbstractConditionalProfileAc
 
     /** Constructor. */
     public AddChannelBindingsToAssertions() {
-        channelBindingsContextLookupStrategy = new ChildContextLookup<>(ChannelBindingsContext.class);
+        channelBindingsContextLookupStrategy = Functions.compose(new ChildContextLookup<>(ChannelBindingsContext.class),
+                new OutboundMessageContextLookup());
         responseLookupStrategy =
                 Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
     }
