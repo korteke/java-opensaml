@@ -18,23 +18,25 @@
 package org.opensaml.saml.saml2.binding.impl;
 
 import javax.annotation.Nonnull;
-
-import net.shibboleth.utilities.java.support.codec.Base64Support;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.common.messaging.context.ECPContext;
-import org.opensaml.saml.ext.samlec.GeneratedKey;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.saml2.ecp.RelayState;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 
 /**
- * MessageHandler to add the ECP {@link GeneratedKey} header to an outgoing SOAP envelope.
+ * MessageHandler to add the ECP {@link RelayState} header to an outgoing SOAP envelope.
  */
-public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
+public class AddRelayStateHeaderHandler extends AbstractMessageHandler {
+    
+    /** The state to record in the header. */
+    @Nullable private String relayState;
 
     /** {@inheritDoc} */
     @Override
@@ -43,9 +45,9 @@ public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
         if (!super.doPreInvoke(messageContext)) {
             return false;
         }
-
-        final ECPContext ctx = messageContext.getSubcontext(ECPContext.class);
-        if (ctx == null || ctx.getSessionKey() == null) {
+        
+        relayState = SAMLBindingSupport.getRelayState(messageContext);
+        if (relayState == null) {
             return false;
         }
         
@@ -55,13 +57,16 @@ public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final SAMLObjectBuilder<GeneratedKey> builder = (SAMLObjectBuilder<GeneratedKey>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>getBuilderOrThrow(
-                        GeneratedKey.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<RelayState> builder = (SAMLObjectBuilder<RelayState>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<RelayState>getBuilderOrThrow(
+                        RelayState.DEFAULT_ELEMENT_NAME);
         
-        final GeneratedKey header = builder.buildObject();
-        header.setValue(Base64Support.encode(messageContext.getSubcontext(ECPContext.class).getSessionKey(), false));
+        final RelayState header = builder.buildObject();
+        if (SAMLBindingSupport.checkRelayState(relayState)) {
+            header.setValue(relayState);
+        }
         
+        SOAPSupport.addSOAP11MustUnderstandAttribute(header, true);
         SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
         
         try {
