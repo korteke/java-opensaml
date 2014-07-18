@@ -103,7 +103,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      * 
      * @param strategy  lookup strategy
      */
-    public void setEncryptionLookupStrategy(@Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
+    public void setEncryptionContextLookupStrategy(@Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         encryptionContextLookupStrategy = Constraint.isNotNull(strategy,
