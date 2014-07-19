@@ -61,6 +61,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.net.URISupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.security.DataExpiredException;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerException;
 
@@ -251,6 +252,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         chain.doFilter(request, new OutputInterceptingHttpServletResponseProxy((HttpServletResponse) response));
     }
 
+// Checkstyle: CyclomaticComplexity|MethodLength OFF
     /**
      * Reconstitute stored data.
      * 
@@ -258,7 +260,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
      */
     protected void load() throws IOException {
         
-        Map<String,Map<String,MutableStorageRecord>> contextMap = getContextMap();
+        final Map<String,Map<String,MutableStorageRecord>> contextMap = getContextMap();
         
         // Check for recursion. If load() is called directly, the above getter will
         // call us, which means we need to short-circuit the "outer" load call by
@@ -272,12 +274,12 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         setDirty(false);
         
         // Search for our cookie.
-        Cookie[] cookies = httpServletRequest.getCookies();
+        final Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies == null) {
             return;
         }
 
-        Optional<Cookie> cookie = Iterables.tryFind(Arrays.asList(cookies), new Predicate<Cookie>() {
+        final Optional<Cookie> cookie = Iterables.tryFind(Arrays.asList(cookies), new Predicate<Cookie>() {
             public boolean apply(@Nullable final Cookie c) {
                 return c != null && c.getName().equals(cookieName);
             }
@@ -288,7 +290,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         }
         
         try {
-            String decrypted = dataSealer.unwrap(URISupport.doURLDecode(cookie.get().getValue()));
+            final String decrypted = dataSealer.unwrap(URISupport.doURLDecode(cookie.get().getValue()));
             
             log.trace("Data after decryption: {}", decrypted);
             
@@ -299,13 +301,13 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             }
             final JsonObject obj = (JsonObject) st;
             
-            for (Map.Entry<String,JsonValue> context : obj.entrySet()) {
+            for (final Map.Entry<String,JsonValue> context : obj.entrySet()) {
                 if (context.getValue().getValueType() != JsonValue.ValueType.OBJECT) {
                     contextMap.clear();
                     throw new IOException("Found invalid data structure while parsing context map");
                 }
                 
-                JsonObject contextRecords = (JsonObject) context.getValue();
+                final JsonObject contextRecords = (JsonObject) context.getValue();
                 for (Map.Entry<String,JsonValue> record : contextRecords.entrySet()) {
                 
                     final JsonObject fields = (JsonObject) record.getValue();
@@ -318,18 +320,24 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
                 }
             }
             setDirty(false);
-        } catch (NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
+        } catch (final NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
             contextMap.clear();
             setDirty(true);
             log.error("Exception while parsing context map", e);
             throw new IOException("Found invalid data structure while parsing context map", e);
-        } catch (DataSealerException e) {
+        } catch (final DataExpiredException e) {
+            setDirty(true);
+            log.debug("Secured data expired");
+            return;
+        } catch (final DataSealerException e) {
             setDirty(true);
             log.error("Exception unwrapping secured data", e);
             throw new IOException("Exception unwrapping secured data", e);
         }
     }
-
+// Checkstyle: CyclomaticComplexity|MethodLength ON
+    
+// Checkstyle: CyclomaticComplexity OFF    
     /**
      * Write/preserve stored data for subsequent requests.
      * 
@@ -343,7 +351,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
 
         log.trace("Saving updated storage data to cookie");
         
-        Map<String, Map<String, MutableStorageRecord>> contextMap = getContextMap();
+        final Map<String, Map<String, MutableStorageRecord>> contextMap = getContextMap();
         if (contextMap.isEmpty()) {
             log.trace("Context map was empty, unsetting storage cookie");
             cookieManager.unsetCookie(cookieName);
@@ -360,7 +368,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             final JsonGenerator gen = Json.createGenerator(sink);
             
             gen.writeStartObject();
-            for (Map.Entry<String,Map<String, MutableStorageRecord>> context : contextMap.entrySet()) {
+            for (final Map.Entry<String,Map<String, MutableStorageRecord>> context : contextMap.entrySet()) {
                 
                 gen.writeStartObject(context.getKey());
                 for (Map.Entry<String,MutableStorageRecord> entry : context.getValue().entrySet()) {
@@ -388,30 +396,31 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
                 return;
             }
             
-            String toEncrypt = sink.toString();
+            final String toEncrypt = sink.toString();
             log.trace("Size of data before encryption is {}", toEncrypt.length());
             log.trace("Data before encryption is {}", toEncrypt);
             
             try {
-                String wrapped = dataSealer.wrap(toEncrypt, exp > 0 ? exp : now + 24 * 60 * 60 * 1000);
+                final String wrapped = dataSealer.wrap(toEncrypt, exp > 0 ? exp : now + 24 * 60 * 60 * 1000);
                 log.trace("Size of data after encryption is {}", wrapped.length());
                 cookieManager.addCookie(cookieName, URISupport.doURLEncode(wrapped));
                 setDirty(false);
-            } catch (DataSealerException e) {
+            } catch (final DataSealerException e) {
                 throw new IOException(e);
             }
-        } catch (JsonException e) {
+        } catch (final JsonException e) {
             log.error("JsonException while serializing context map", e);
             throw new IOException(e);
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     @Override
     @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
-        Integer i = super.updateImpl(version, context, key, value, expiration);
+        final Integer i = super.updateImpl(version, context, key, value, expiration);
         if (i != null) {
             setDirty(true);
         }
@@ -440,19 +449,19 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     @Override
     @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord>> getContextMap() {
         
-        Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
+        final Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
         if (contextMap != null) {
             return (Map<String, Map<String, MutableStorageRecord>>) contextMap;
         }
 
-        Map<String, Map<String, MutableStorageRecord>> newMap = Maps.newHashMap();
+        final Map<String, Map<String, MutableStorageRecord>> newMap = Maps.newHashMap();
         httpServletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE, newMap);
         
         // The first time through, do a load from the cookie.
         // Any subsequent calls to get the context map will return the previously set map.
         try {
             load();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             setDirty(true);
             log.error("Error loading data from cookie, starting fresh", e);
         }
@@ -485,7 +494,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
      * @return  status of dirty bit
      */
     private boolean isDirty() {
-        Object dirty = httpServletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE);
+        final Object dirty = httpServletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE);
         if (dirty != null && dirty instanceof Boolean) {
             return (Boolean) dirty;
         } else {
