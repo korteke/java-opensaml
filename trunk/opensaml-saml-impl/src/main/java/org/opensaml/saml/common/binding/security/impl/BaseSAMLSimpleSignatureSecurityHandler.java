@@ -210,9 +210,10 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
                     getLogPrefix(), contextEntityID);
             final CriteriaSet criteriaSet = buildCriteriaSet(contextEntityID, messageContext);
             if (validateSignature(signature, signedContent, algorithmURI, criteriaSet, candidateCredentials)) {
-                log.info("{} Validation of request simple signature succeeded", getLogPrefix());
+                log.debug("{} Validation of request simple signature succeeded", getLogPrefix());
                 if (!peerContext.isAuthenticated()) {
-                    log.info("{} Authentication via request simple signature succeeded for context issuer entity ID {}",
+                    log.debug(
+                            "{} Authentication via request simple signature succeeded for context issuer entity ID {}",
                             getLogPrefix(), contextEntityID);
                     peerContext.setAuthenticated(true);
                 }
@@ -230,9 +231,9 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
                     getLogPrefix(), derivedEntityID);
             final CriteriaSet criteriaSet = buildCriteriaSet(derivedEntityID, messageContext);
             if (validateSignature(signature, signedContent, algorithmURI, criteriaSet, candidateCredentials)) {
-                log.info("{} Validation of request simple signature succeeded", getLogPrefix());
+                log.debug("{} Validation of request simple signature succeeded", getLogPrefix());
                 if (!peerContext.isAuthenticated()) {
-                    log.info("{} Authentication via request simple signature succeeded for derived issuer {}",
+                    log.debug("{} Authentication via request simple signature succeeded for derived issuer {}",
                             getLogPrefix(), derivedEntityID);
                     peerContext.setEntityId(derivedEntityID);
                     peerContext.setAuthenticated(true);
