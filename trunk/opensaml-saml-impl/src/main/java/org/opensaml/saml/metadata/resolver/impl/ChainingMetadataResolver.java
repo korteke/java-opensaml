@@ -31,6 +31,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
+import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
@@ -43,7 +44,8 @@ import org.slf4j.LoggerFactory;
  * the registered resolvers in resolver list order.
  * 
  */
-public class ChainingMetadataResolver extends AbstractIdentifiableInitializableComponent implements MetadataResolver {
+public class ChainingMetadataResolver extends AbstractIdentifiableInitializableComponent implements MetadataResolver,
+        RefreshableMetadataResolver {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(ChainingMetadataResolver.class);
@@ -139,6 +141,15 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
 
         return Collections.emptyList();
+    }
+
+    /** {@inheritDoc} */
+    @Override public void refresh() throws ResolverException {
+        for (MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                ((RefreshableMetadataResolver) resolver).refresh();
+            }
+        }
     }
 
     /** {@inheritDoc} */
