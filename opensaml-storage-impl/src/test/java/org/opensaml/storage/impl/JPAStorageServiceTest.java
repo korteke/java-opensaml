@@ -33,6 +33,7 @@ import org.opensaml.storage.StorageService;
 import org.opensaml.storage.StorageServiceTest;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -77,7 +78,9 @@ public class JPAStorageServiceTest extends StorageServiceTest {
     private EntityManagerFactory createEntityManagerFactory() throws ComponentInitializationException
     {
         final Resource resource = new ClassPathResource("/org/opensaml/storage/impl/jpa-spring-context.xml");
-        final GenericApplicationContext context = SpringSupport.newContext("JPAStorageService", Collections.singletonList(resource), Collections.<BeanPostProcessor>emptyList(), null);
+        final GenericApplicationContext context = SpringSupport.newContext("JPAStorageService",
+                Collections.singletonList(resource), Collections.<BeanPostProcessor>emptyList(),
+                Collections.<ApplicationContextInitializer>emptyList(), null);
         FactoryBean<EntityManagerFactory> factoryBean = context.getBean(org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.class);
         try {
             return factoryBean.getObject();
