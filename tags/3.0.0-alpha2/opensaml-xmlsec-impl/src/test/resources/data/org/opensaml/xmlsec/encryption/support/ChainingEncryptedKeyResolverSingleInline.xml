@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:SignableSimpleElement xmlns:test="http://www.example.org/testObjects">
+    
+    <test:SignableSimpleElement>
+        <xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <xenc:EncryptedKey Recipient="foo"/> 
+            </ds:KeyInfo>
+        </xenc:EncryptedData>
+    </test:SignableSimpleElement>
+    
+</test:SignableSimpleElement>

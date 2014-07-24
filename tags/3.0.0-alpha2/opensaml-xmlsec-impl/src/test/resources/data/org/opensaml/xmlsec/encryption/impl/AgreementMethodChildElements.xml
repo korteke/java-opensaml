@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:AgreementMethod xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Algorithm="urn:string:foo">
+    <xenc:KA-Nonce/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <xenc:OriginatorKeyInfo/>
+    <xenc:RecipientKeyInfo/>
+</xenc:AgreementMethod>

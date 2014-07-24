@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:SignableSimpleElement xmlns:test="http://www.example.org/testObjects">
+    
+    <test:SignableSimpleElement>
+        <xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:RetrievalMethod URI="#encKeyID1" Type="http://www.w3.org/2001/04/xmlenc#EncryptedKey"/>
+                <ds:RetrievalMethod URI="#encKeyID3" Type="http://www.w3.org/2001/04/xmlenc#EncryptedKey"/>
+            </ds:KeyInfo>
+        </xenc:EncryptedData>
+    </test:SignableSimpleElement>
+    
+    <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Id="encKeyID1" Recipient="foo"/>
+    <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Id="encKeyID2" Recipient="bar"/>
+    <xenc:EncryptedKey xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Id="encKeyID3" Recipient="baz"/>
+</test:SignableSimpleElement>

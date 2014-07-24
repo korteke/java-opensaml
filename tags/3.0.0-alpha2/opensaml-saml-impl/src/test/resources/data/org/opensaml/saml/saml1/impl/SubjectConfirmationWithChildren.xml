@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml1:SubjectConfirmation xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion">
+	<saml1:ConfirmationMethod/>
+	<saml1:ConfirmationMethod/>
+	<saml1:SubjectConfirmationData/>
+</saml1:SubjectConfirmation>
