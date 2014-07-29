@@ -183,7 +183,7 @@ public class LDAPStorageServiceTest {
 
     @Test public void invalidConfig() {
         LDAPStorageService ss = new LDAPStorageService(getPooledConnectionFactory());
-        ss.setCleanupInterval(1);
+        ss.setCleanupInterval(1000);
 
         try {
             ss.initialize();

@@ -77,24 +77,24 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     }
 
     /**
-     * Gets the number of seconds between one cleanup and another. A value of 0 indicates that no cleanup will be
+     * Gets the number of milliseconds between one cleanup and another. A value of 0 indicates that no cleanup will be
      * performed.
      * 
-     * @return number of seconds between one cleanup and another
+     * @return number of milliseconds between one cleanup and another
      */
     @NonNegative public long getCleanupInterval() {
         return cleanupInterval;
     }
 
     /**
-     * Sets the number of seconds between one cleanup and another. A value of 0 indicates that no cleanup will be
+     * Sets the number of milliseconds between one cleanup and another. A value of 0 indicates that no cleanup will be
      * performed.
      * 
      * This setting cannot be changed after the service has been initialized.
      * 
-     * @param interval number of seconds between one cleanup and another
+     * @param interval number of milliseconds between one cleanup and another
      */
-    public synchronized void setCleanupInterval(@Duration @NonNegative final long interval) {
+    public void setCleanupInterval(@Duration @NonNegative final long interval) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         cleanupInterval =
@@ -117,7 +117,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * 
      * @param timer timer used to schedule configuration reload tasks
      */
-    public synchronized void setCleanupTaskTimer(@Nullable final Timer timer) {
+    public void setCleanupTaskTimer(@Nullable final Timer timer) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         cleanupTaskTimer = timer;
@@ -182,7 +182,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
             } else {
                 internalTaskTimer = cleanupTaskTimer;
             }
-            internalTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
+            internalTaskTimer.schedule(cleanupTask, cleanupInterval, cleanupInterval);
         }
     }
 

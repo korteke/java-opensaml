@@ -32,9 +32,10 @@ import org.testng.annotations.Test;
 public class MemoryStorageServiceTest extends StorageServiceTest {
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected StorageService getStorageService() {
         MemoryStorageService ss = new MemoryStorageService();
-        ss.setCleanupInterval(1);
+        ss.setCleanupInterval(1000);
         return ss;
     }
         

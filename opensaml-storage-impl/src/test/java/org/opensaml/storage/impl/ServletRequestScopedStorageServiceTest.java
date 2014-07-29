@@ -28,6 +28,7 @@ import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestPr
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.resource.TestResourceConverter;
+import net.shibboleth.utilities.java.support.security.BasicKeystoreKeyStrategy;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 
 import org.opensaml.storage.StorageRecord;
@@ -46,6 +47,7 @@ import org.testng.annotations.Test;
 public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
 
     private Resource keystoreResource;
+    private Resource versionResource;
 
     /**
      * Convert the Spring resource to a java-support resource.
@@ -53,30 +55,40 @@ public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
      * @throws ComponentInitializationException
      */
     @BeforeClass public void setUp() throws ComponentInitializationException {
-        final ClassPathResource resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.jks");
+        ClassPathResource resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.jks");
         Assert.assertTrue(resource.exists());
         keystoreResource = TestResourceConverter.of(resource);
 
+        resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.kver");
+        Assert.assertTrue(resource.exists());
+        versionResource = TestResourceConverter.of(resource);
+        
         super.setUp();
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected StorageService getStorageService() {
-        ServletRequestScopedStorageService ss = new ServletRequestScopedStorageService();
+        final ServletRequestScopedStorageService ss = new ServletRequestScopedStorageService();
         ss.setCleanupInterval(0);
 
-        DataSealer sealer = new DataSealer();
-        sealer.setCipherKeyAlias("secret");
-        sealer.setCipherKeyPassword("kpassword");
+        final BasicKeystoreKeyStrategy strategy = new BasicKeystoreKeyStrategy();
+        
+        strategy.setKeyAlias("secret");
+        strategy.setKeyPassword("kpassword");
+        strategy.setKeystorePassword("password");
+        strategy.setKeystoreResource(keystoreResource);
+        strategy.setKeyVersionResource(versionResource);
 
-        sealer.setKeystorePassword("password");
-        sealer.setKeystoreResource(keystoreResource);
+        final DataSealer sealer = new DataSealer();
+        sealer.setKeyStrategy(strategy);
 
-        CookieManager cookieManager = new CookieManager();
+        final CookieManager cookieManager = new CookieManager();
         cookieManager.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
         cookieManager.setHttpServletResponse(new ThreadLocalHttpServletResponseProxy());
 
         try {
+            strategy.initialize();
             sealer.initialize();
             cookieManager.initialize();
         } catch (ComponentInitializationException e) {
@@ -93,6 +105,7 @@ public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void threadInit() {
         super.threadInit();
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
