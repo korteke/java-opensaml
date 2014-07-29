@@ -47,8 +47,8 @@
 
     <properties>
         <svn.relative.location>java-opensaml</svn.relative.location>
-        <java-support.version>3.0-SNAPSHOT</java-support.version>
-        <spring-extensions.version>1.2-SNAPSHOT</spring-extensions.version>
+        <java-support.version>4.0-SNAPSHOT</java-support.version>
+        <spring-extensions.version>2.0-SNAPSHOT</spring-extensions.version>
     </properties>
 
     <repositories>
