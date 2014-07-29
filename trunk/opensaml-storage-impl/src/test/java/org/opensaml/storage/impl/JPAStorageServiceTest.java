@@ -120,7 +120,7 @@ public class JPAStorageServiceTest extends StorageServiceTest {
     @Test
     public void cleanup() throws ComponentInitializationException, IOException {
         JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
-        ss.setCleanupInterval(5);
+        ss.setCleanupInterval(5000);
         ss.initialize();
 
         String context = Long.toString(random.nextLong());
