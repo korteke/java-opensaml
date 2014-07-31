@@ -81,7 +81,8 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
     }
     
     /**
-     * Get the parent context on which the {@link MessageChannelSecurityContext} will be populated.
+     * Get the parent context on which the {@link org.opensaml.messaging.context.MessageChannelSecurityContext}
+     * will be populated.
      * 
      * @return the parent context
      */

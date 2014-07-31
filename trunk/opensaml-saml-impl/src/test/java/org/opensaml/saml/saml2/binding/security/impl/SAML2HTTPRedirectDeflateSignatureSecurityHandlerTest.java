@@ -182,7 +182,6 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         otherCred1.setEntityId("other-1");
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         // Trust engine setup
@@ -277,12 +276,10 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     }
     
 
-    /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
         return unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
     }
     
-    /** {@inheritDoc} */
     protected MockHttpServletRequest buildServletRequest() {
         //
         // Encode the "outbound" message context, with simple signature

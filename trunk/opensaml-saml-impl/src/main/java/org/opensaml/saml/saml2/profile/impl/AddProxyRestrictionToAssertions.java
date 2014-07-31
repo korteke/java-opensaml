@@ -48,7 +48,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action adds an {@link ProxyRestrictionCondition} to every {@link Assertion} contained in a SAML 2
+ * Action adds an {@link ProxyRestriction} to every {@link Assertion} contained in a SAML 2
  * response, with the audiences and count obtained from a lookup function. If the containing
  * {@link Conditions} is not present, it will be created.
  * 

@@ -113,7 +113,7 @@ public class ResolveArtifact extends AbstractProfileAction {
     }
 
     /**
-     * Set the strategy used to locate the {@link Response} to operate on.
+     * Set the strategy used to locate the {@link ArtifactResponse} to operate on.
      * 
      * @param strategy lookup strategy
      */

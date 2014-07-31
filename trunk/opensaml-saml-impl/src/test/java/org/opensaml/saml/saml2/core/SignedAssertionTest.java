@@ -78,7 +78,6 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
     /** Generator of element IDs. */
     private RandomIdentifierGenerationStrategy idGenerator;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);

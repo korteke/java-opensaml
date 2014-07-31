@@ -51,17 +51,12 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/IDPEntryOptionalAttributes.xml";
     }
     
-
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedProviderID = "urn:string:providerid";
         expectedName = "Example IdP";
         expectedLocation = "http://idp.example.org/endpoint";
     }
-
-
-
 
     /** {@inheritDoc} */
     @Test
@@ -72,8 +67,6 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
 
         assertXMLEquals(expectedDOM, entry);
     }
-    
-    
     
     /** {@inheritDoc} */
     @Test

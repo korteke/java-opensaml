@@ -123,7 +123,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
     }
     
     /**
-     * Set the strategy used to locate the {@link SAMLObect} to operate on.
+     * Set the strategy used to locate the {@link SAMLObject} to operate on.
      * 
      * @param strategy strategy used to locate the {@link SAMLObject} to operate on
      */

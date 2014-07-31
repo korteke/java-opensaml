@@ -44,7 +44,6 @@ public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     
     
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedSessionIndex = "Session1234";

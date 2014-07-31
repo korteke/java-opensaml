@@ -34,7 +34,6 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
     
     private SAMLSignatureProfileValidator validator;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         validator = new SAMLSignatureProfileValidator();

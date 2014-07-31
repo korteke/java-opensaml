@@ -48,7 +48,6 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/idpdisco/DiscoveryResponseOptionalAttributes.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBinding = "urn:binding:foo";

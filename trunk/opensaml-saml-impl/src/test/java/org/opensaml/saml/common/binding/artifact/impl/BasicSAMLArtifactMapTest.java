@@ -47,7 +47,6 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     private SAMLObject samlObject;
     private Document origDocument;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");

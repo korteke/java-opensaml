@@ -40,7 +40,6 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
         childElementsFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/DelegationRestrictionTypeChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedDelegateChildren = 3;

@@ -44,7 +44,6 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/GetComplete.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedGetComplete = "http://sp.example.org/idplist.xml";

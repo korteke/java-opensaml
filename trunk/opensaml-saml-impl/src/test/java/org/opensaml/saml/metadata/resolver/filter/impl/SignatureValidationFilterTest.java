@@ -100,7 +100,6 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         kiResolver = DefaultSecurityConfigurationBootstrap.buildBasicInlineKeyInfoCredentialResolver();
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         switchMDDocumentValid = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(switchMDFileValid));

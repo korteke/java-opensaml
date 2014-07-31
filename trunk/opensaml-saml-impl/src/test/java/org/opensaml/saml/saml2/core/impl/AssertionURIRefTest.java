@@ -39,7 +39,6 @@ public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionURIRef.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAssertionURI = "assertion URI";

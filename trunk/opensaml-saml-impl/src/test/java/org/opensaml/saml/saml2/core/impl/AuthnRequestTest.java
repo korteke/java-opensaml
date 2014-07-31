@@ -66,15 +66,11 @@ public class AuthnRequestTest extends RequestTestBase {
      *
      */
     public AuthnRequestTest() {
-        super();
-        
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnRequest.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnRequestOptionalAttributes.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnRequestChildElements.xml";
     }
     
-
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();

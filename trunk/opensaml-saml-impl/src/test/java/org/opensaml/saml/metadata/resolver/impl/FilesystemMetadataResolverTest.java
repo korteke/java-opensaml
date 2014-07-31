@@ -47,7 +47,6 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private CriteriaSet criteriaSet;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";

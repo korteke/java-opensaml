@@ -105,7 +105,7 @@ public class EncodeMessageTest {
      */
     private class MockMessageEncoder extends AbstractMessageEncoder<MockMessage> {
 
-        /** Whether a {@link MessageDecodingException} should be thrown by {@link #doDecode()}. */
+        /** Whether a {@link MessageEncodingException} should be thrown by {@link #doEncode()}. */
         private boolean throwException = false;
         
         /** Mock encoded message. */
@@ -121,7 +121,7 @@ public class EncodeMessageTest {
         }
 
         /**
-         * Sets whether a {@link MessageDecodingException} should be thrown by {@link #doDecode()}.
+         * Sets whether a {@link MessageEncodingException} should be thrown by {@link #doEncode()}.
          * 
          * @param shouldThrowDecodeException true if an exception should be thrown, false if not
          */

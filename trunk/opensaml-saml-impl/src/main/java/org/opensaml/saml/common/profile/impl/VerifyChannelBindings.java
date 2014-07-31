@@ -56,8 +56,8 @@ import com.google.common.base.Objects;
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  * @event {@link SAMLEventIds#CHANNEL_BINDINGS_ERROR}
  * 
- * @pre {@link ChannelBindingContext} objects to be returned from lookup functions must be populated.
- * @post Upon successful verification, a {@link ChannelBindingContext} object will be created as described.
+ * @pre {@link ChannelBindingsContext} objects to be returned from lookup functions must be populated.
+ * @post Upon successful verification, a {@link ChannelBindingsContext} object will be created as described.
  */
 public class VerifyChannelBindings extends AbstractProfileAction {
 

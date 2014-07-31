@@ -43,7 +43,6 @@ public class LogoutResponseTest extends StatusResponseTestBase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutResponseChildElements.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();

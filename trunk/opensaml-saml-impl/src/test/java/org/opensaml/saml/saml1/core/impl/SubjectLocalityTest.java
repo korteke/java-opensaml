@@ -29,7 +29,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * Test for {@link org.opensaml.saml.saml1.core.impl.SubjectLocalityImpl}
+ * Test for {@link org.opensaml.saml.saml1.core.SubjectLocality}
  */
 public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
@@ -46,7 +46,6 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectLocalityTest() {
-        super();
         expectedIPAddress = "207.75.164.30";
         expectedDNSAddress = "shibboleth.internet2.edu";
         singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectLocality.xml";

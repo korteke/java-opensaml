@@ -25,7 +25,7 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import com.google.common.base.Function;
 
 /**
- * Function that returns the authenticated state of a {@link SAMLPeerEntityContext} or {@link SAMLSelfEntityContext}.
+ * Function that returns the authenticated state of a {@link SAMLPeerEntityContext}.
  */
 public class SAMLMessageContextAuthenticationFunction implements Function<MessageContext,Boolean> {
 

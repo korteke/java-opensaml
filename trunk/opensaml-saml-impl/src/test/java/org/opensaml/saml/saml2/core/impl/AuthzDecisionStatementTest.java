@@ -51,7 +51,6 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedResource = "resource name";

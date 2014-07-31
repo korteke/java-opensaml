@@ -39,7 +39,6 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
     private File metadataFile;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         URL mdURL = FilesystemMetadataResolverTest.class

@@ -48,7 +48,6 @@ public class StorageServiceSAMLArtifactMapEntryFactoryTest extends XMLObjectBase
     private StorageServiceSAMLArtifactMapEntryFactory factory;
     private SAMLObject samlObject;
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         factory = new StorageServiceSAMLArtifactMapEntryFactory();

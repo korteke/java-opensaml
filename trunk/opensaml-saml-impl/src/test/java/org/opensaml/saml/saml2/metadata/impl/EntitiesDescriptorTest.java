@@ -65,7 +65,6 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/EntitiesDescriptorChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedID = "id";

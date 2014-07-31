@@ -44,7 +44,6 @@ public class OrganizationDisplayNameTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationDisplayName.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectValue = "MyOrg";

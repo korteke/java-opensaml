@@ -62,7 +62,6 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
 
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedID = "abc123";

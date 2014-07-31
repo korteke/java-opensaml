@@ -46,7 +46,6 @@ public class NameIDMappingResponseTest extends StatusResponseTestBase {
     }
     
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();

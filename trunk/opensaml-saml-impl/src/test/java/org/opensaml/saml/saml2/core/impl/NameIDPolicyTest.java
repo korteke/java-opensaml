@@ -50,7 +50,6 @@ public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDPolicyOptionalAttributes.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedFormat = "urn:string:format";

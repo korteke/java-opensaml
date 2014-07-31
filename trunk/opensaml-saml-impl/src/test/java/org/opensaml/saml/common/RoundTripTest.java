@@ -54,8 +54,6 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
     /** Organization Unmarshaller */
     private Unmarshaller orgUnmarshaller;
     
-    /** {@inheritDoc} 
-     * @throws Exception */
     @BeforeMethod
     protected void setUp() throws Exception {
         OrganizationBuilder orgBuilder = (OrganizationBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(Organization.TYPE_NAME);

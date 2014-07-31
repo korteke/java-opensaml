@@ -72,7 +72,6 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
         
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedID = "def456";

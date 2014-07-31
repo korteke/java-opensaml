@@ -50,7 +50,6 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         childElementsWithEncryptedIDFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmationChildElementsWithEncryptedID.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedMethod = "conf method";
@@ -111,7 +110,6 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         assertXMLEquals(expectedChildElementsDOM, subjectConfirmation);
     }
     
-    /** {@inheritDoc} */
     @Test
     public void testChildElementsWithEncryptedIDUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(childElementsWithEncryptedIDFile);
@@ -122,8 +120,6 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(subjectConfirmation.getSubjectConfirmationData(), "SubjectConfirmationData element not present");
     }
 
-    /** {@inheritDoc} 
-     * @throws XMLParserException */
     @Test
     public void testChildElementsWithEncryptedIDMarshall() throws XMLParserException {
         QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);

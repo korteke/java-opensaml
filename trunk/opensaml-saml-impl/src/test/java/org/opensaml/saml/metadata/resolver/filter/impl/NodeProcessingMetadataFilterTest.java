@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
@@ -44,10 +42,6 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
     private FilesystemMetadataResolver metadataProvider;
     
     private File mdFile;
-
-    private String entityID;
-
-    private CriteriaSet criteriaSet;
     
     private NodeProcessingMetadataFilter metadataFilter;
     
@@ -55,7 +49,6 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception {
-        entityID = "urn:mace:incommon:washington.edu";
 
         URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
@@ -67,8 +60,6 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
         metadataFilter = new NodeProcessingMetadataFilter();
         
         processors = new ArrayList<>();
-        
-        criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
     
     @Test

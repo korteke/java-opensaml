@@ -74,7 +74,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     }
     
     /**
-     * Set the strategy used to locate the {@link SecurityParametersContext} associated with a given
+     * Set the strategy used to locate the {@link EncryptionContext} associated with a given
      * {@link ProfileRequestContext}.
      * 
      * @param strategy lookup strategy

@@ -39,7 +39,6 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionIDRef.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAssertionID = "assertion ID";

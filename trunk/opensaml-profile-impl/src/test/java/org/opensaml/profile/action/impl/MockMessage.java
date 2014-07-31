@@ -42,7 +42,7 @@ public class MockMessage {
     /**
      * Get the mock message properties.
      * 
-     * @return
+     * @return properties
      */
     public Map<String, String> getProperties() {
         return properties;

@@ -114,13 +114,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     private String issuer;
     
-    
-    /** Constructor. */
-    public SAMLProtocolMessageXMLSignatureSecurityHandlerTest() {
-        
-    }
-
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         issuer = "SomeCoolIssuer";
@@ -226,7 +219,6 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     }
     
 
-    /** {@inheritDoc} */
     protected AuthnRequest buildInboundSAMLMessage() {
         AuthnRequest request = 
             (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");

@@ -47,7 +47,6 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ArtifactResolutionServiceOptionalAttributes.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBinding = "urn:binding:foo";

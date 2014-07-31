@@ -34,7 +34,6 @@ public class AsynchronousTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public AsynchronousTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/ext/saml2aslo/impl/Asynchronous.xml";
     }
 

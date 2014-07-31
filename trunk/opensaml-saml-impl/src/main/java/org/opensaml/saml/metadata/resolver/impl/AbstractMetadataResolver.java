@@ -30,6 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -310,8 +312,15 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         return SAML2Support.isValid(descriptor);
     }
 
-    /** {@inheritDoc} */
-    @Nonnull protected List<EntityDescriptor> lookupEntityID(@Nonnull final String entityID) throws ResolverException {
+    /**
+     * Get list of descriptors matching an entityID.
+     * 
+     * @param entityID  entityID to lookup
+     * @return  a list of descriptors
+     * @throws ResolverException if an error occurs
+     */
+    @Nonnull @NonnullElements protected List<EntityDescriptor> lookupEntityID(@Nonnull @NotEmpty final String entityID)
+            throws ResolverException {
         if (!isInitialized()) {
             throw new ResolverException("Metadata provider has not been initialized");
         }
@@ -348,7 +357,8 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @return list copy of indexed entityID's, may be empty, will never be null
      */
-    @Nonnull protected List<EntityDescriptor> lookupIndexedEntityID(@Nonnull final String entityID) {
+    @Nonnull @NonnullElements protected List<EntityDescriptor> lookupIndexedEntityID(
+            @Nonnull @NotEmpty final String entityID) {
         List<EntityDescriptor> descriptors = getBackingStore().getIndexedDescriptors().get(entityID);
         if (descriptors != null) {
             return new ArrayList<EntityDescriptor>(descriptors);

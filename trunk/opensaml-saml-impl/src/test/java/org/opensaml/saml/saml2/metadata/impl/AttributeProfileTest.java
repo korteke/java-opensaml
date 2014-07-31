@@ -39,7 +39,6 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeProfile.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedProfileURI = "http://example.org";

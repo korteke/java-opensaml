@@ -41,7 +41,6 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private DateTime now;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         now = new DateTime();

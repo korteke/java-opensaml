@@ -36,7 +36,7 @@ import org.opensaml.saml.saml1.core.impl.SubjectConfirmationImpl;
 import org.w3c.dom.Document;
 
 /**
- * Test for {@link org.opensaml.saml.saml1.core.impl.Subject}
+ * Test for {@link org.opensaml.saml.saml1.core.SubjectConfirmation}
  */
 public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
 
@@ -51,15 +51,12 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectConfirmationTest() {
-        super();
-
         singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectConfirmation.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectConfirmation.xml";
         fullElementsFile = "/data/org/opensaml/saml/saml1/impl/SubjectConfirmationWithChildren.xml";
         qname = new QName(SAMLConstants.SAML1_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedFullDOM = parserPool.parse(this.getClass().getResourceAsStream(fullElementsFile));

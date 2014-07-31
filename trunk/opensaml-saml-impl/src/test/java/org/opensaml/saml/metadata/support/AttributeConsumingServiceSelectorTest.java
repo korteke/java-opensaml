@@ -52,7 +52,6 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     private AttributeConsumingServiceSelector acsSelector;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         mdFileName = "/data/org/opensaml/saml/saml2/metadata/support/metadata-AttributeConsumingService.xml";

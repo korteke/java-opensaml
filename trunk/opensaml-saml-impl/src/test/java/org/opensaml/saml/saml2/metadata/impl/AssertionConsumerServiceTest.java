@@ -47,7 +47,6 @@ public class AssertionConsumerServiceTest extends XMLObjectProviderBaseTestCase 
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AssertionConsumerServiceOptionalAttributes.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBinding = "urn:binding:foo";

@@ -65,7 +65,6 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedNotBefore = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());
@@ -155,7 +154,6 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
         assertXMLEquals(expectedChildElementsDOM, kicd);
     }
     
-    /** {@inheritDoc} */
     public KeyInfoConfirmationDataType buildXMLObject() {
         SAMLObjectBuilder builder = 
             (SAMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(KeyInfoConfirmationDataType.TYPE_NAME);

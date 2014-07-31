@@ -43,7 +43,6 @@ public class IPHintTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/IPHint.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedHint = "10.0.0.0/23";

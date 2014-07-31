@@ -29,7 +29,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;
 
 /**
- * test for {@link org.opensaml.saml.saml1.core.impl.ConfirmationMethod}
+ * test for {@link org.opensaml.saml.saml1.core.ConfirmationMethod}
  */
 public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
 
@@ -43,7 +43,6 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ConfirmationMethodTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleConfirmationMethod.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleConfirmationMethodAttributes.xml";
         expectedConfirmationMethod = "confirmation";

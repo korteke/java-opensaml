@@ -66,7 +66,6 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod protected void setUp() throws Exception {
         expectedSupportedProtocol = new ArrayList<String>();
         expectedSupportedProtocol.add("urn:foo:bar");

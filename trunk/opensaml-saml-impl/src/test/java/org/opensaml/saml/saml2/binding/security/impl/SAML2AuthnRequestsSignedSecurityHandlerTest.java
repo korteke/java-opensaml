@@ -44,7 +44,6 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     
     private SPSSODescriptor spssoDescriptor;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         handler = new SAML2AuthnRequestsSignedSecurityHandler();

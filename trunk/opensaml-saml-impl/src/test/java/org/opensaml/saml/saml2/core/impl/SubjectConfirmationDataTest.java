@@ -55,7 +55,6 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmationDataOptionalAttributes.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedNotBefore = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());

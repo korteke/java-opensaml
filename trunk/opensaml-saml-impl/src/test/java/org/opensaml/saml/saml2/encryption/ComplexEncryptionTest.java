@@ -77,7 +77,6 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         kekURIAES = EncryptionConstants.ALGO_ID_KEYWRAP_AES128;
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI);

@@ -81,7 +81,6 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptorChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod protected void setUp() throws Exception {
         expectedSupportedProtocols = new ArrayList<String>();
         expectedSupportedProtocols.add(SAMLConstants.SAML20P_NS);

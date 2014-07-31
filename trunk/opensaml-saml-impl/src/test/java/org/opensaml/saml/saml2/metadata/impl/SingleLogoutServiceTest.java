@@ -56,7 +56,6 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
         singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceUnknownAttributes.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBinding = "urn:binding:foo";

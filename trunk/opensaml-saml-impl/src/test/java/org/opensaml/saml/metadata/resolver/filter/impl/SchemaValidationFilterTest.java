@@ -40,7 +40,6 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     /** URL to InCommon metadata. */
     private String inCommonMDURL;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         httpClient = new DefaultHttpClient();

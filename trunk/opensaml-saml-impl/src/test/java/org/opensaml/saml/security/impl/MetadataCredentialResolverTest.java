@@ -160,7 +160,6 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     private CriteriaSet criteriaSet;
     
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         idpRSAPubKey = KeySupport.buildJavaRSAPublicKey(idpRSAPubKeyBase64);

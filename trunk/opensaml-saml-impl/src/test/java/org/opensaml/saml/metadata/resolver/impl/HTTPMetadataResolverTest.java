@@ -43,7 +43,6 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     private HTTPMetadataResolver metadataProvider;
     private CriteriaSet criteriaSet;
     
-    /**{@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         httpClient = new DefaultHttpClient();

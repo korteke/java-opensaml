@@ -43,7 +43,6 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private String entityID2;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";

@@ -46,13 +46,10 @@ public class ManageNameIDRequestTest extends RequestTestBase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ManageNameIDRequestChildElements.xml";
     }
     
-    
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();
     }
-
 
     /** {@inheritDoc} */
     @Test

@@ -43,7 +43,6 @@ public class DomainHintTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/DomainHint.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedHint = ".ed.ac.uk";

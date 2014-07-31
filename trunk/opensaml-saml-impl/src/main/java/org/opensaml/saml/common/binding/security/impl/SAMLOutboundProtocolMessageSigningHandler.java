@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A message handler implementation that signs an outbound SAML protocol message if the message context
- * contains an instance of {@link org.opensaml.xmlsec.context.SignatureSigningParameters} as determined by
+ * contains an instance of {@link SignatureSigningParameters} as determined by
  * {@link SAMLMessageSecuritySupport#getContextSigningParameters(MessageContext)}.
  */
 public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHandler<SAMLObject> {

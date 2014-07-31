@@ -80,11 +80,6 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
     }
     
     /** {@inheritDoc} */
-    public ArtifactResolutionService getDefaultArtificateResolutionService(){
-        return getDefaultArtifactResolutionService();
-    }
-
-    /** {@inheritDoc} */
     public List<SingleLogoutService> getSingleLogoutServices() {
         return singleLogoutServices;
     }

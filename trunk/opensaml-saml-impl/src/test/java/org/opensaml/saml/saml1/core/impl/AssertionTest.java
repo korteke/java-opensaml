@@ -40,7 +40,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Test for {@link org.opensaml.saml.saml1.core.impl.Assertion}
+ * Test for {@link org.opensaml.saml.saml1.core.Assertion}
  */
 public class AssertionTest extends XMLObjectProviderBaseTestCase {
 
@@ -54,11 +54,11 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     private final DateTime expectedIssueInstant;
 
     private final String expectedID;
+    
     /**
      * Constructor
      */
     public AssertionTest() {
-        super();
         expectedID = "ident";
         expectedMinorVersion = 1;
         expectedIssuer = "issuer";
@@ -74,7 +74,6 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementUnmarshall() {
 
@@ -96,7 +95,6 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
@@ -120,7 +118,6 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /**
      * Test an XML file with children
      */
-
     @Test
     public void testChildElementsUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
@@ -145,14 +142,12 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
         Assertion assertion = (Assertion) buildXMLObject(qname);
@@ -167,7 +162,6 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
      * Test an XML file with Children
      * @throws MarshallingException 
      */
-
     @Test
     public void testChildElementsMarshall() {
         Assertion assertion = (Assertion) buildXMLObject(qname);

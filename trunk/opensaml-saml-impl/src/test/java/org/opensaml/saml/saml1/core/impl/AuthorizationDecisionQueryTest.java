@@ -67,7 +67,6 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
         qname =new QName(SAMLConstants.SAML10P_NS, AuthorizationDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedFullDOM = parserPool.parse(this.getClass().getResourceAsStream(fullElementsFile));

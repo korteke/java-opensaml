@@ -28,7 +28,7 @@ import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceServiceImpl}.
+ * {@link org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceImpl}.
  */
 public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     
@@ -44,7 +44,6 @@ public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/NameIDMappingServiceOptionalAttributes.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBinding = "urn:binding:foo";

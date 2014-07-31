@@ -32,7 +32,7 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Test for {@link org.opensaml.saml.saml1.core.impl.Advice}
+ * Test for {@link org.opensaml.saml.saml1.core.Advice}
  */
 public class AdviceTest extends XMLObjectProviderBaseTestCase {
 
@@ -43,8 +43,6 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AdviceTest() {
-        super();
-
         singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAdvice.xml";
         childElementsFile = "/data/org/opensaml/saml/saml1/impl/AdviceWithChildren.xml";
         qname = new QName(SAMLConstants.SAML1_NS, Advice.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);

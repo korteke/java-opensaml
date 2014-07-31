@@ -37,12 +37,10 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     private Boolean expectedSOAP11MustUnderstand;
     
     public SessionKeyTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/ext/samlec/impl/SessionKey.xml";
         childElementsFile = "/data/org/opensaml/saml/ext/samlec/impl/SessionKeyChildElements.xml";
     }
  
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAlg = "http://myalgorithm.example.com";

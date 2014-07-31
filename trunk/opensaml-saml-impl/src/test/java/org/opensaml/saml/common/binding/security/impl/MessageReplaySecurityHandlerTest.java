@@ -48,7 +48,6 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
 
     private ReplayCache replayCache;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         messageContext = new MessageContext<>();

@@ -57,7 +57,6 @@ public class LogoutRequestTest extends RequestTestBase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutRequestChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();

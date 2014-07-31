@@ -48,7 +48,6 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/IDPListChildElements.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedNumIDPEntryChildren = 3;
