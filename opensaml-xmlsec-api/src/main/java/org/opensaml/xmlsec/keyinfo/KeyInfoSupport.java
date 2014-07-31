@@ -803,14 +803,15 @@ public class KeyInfoSupport {
      */
     @Nonnull protected static PublicKey buildKey(@Nonnull final KeySpec keySpec, @Nonnull final String keyAlgorithm)
             throws KeyException {
-        Logger log = getLogger();
+        final Logger log = getLogger();
         try {
-            KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
+            final KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
             return keyFactory.generatePublic(keySpec);
-        } catch (NoSuchAlgorithmException e) {
-            log.error(keyAlgorithm + " algorithm is not supported by this VM", e);
-            throw new KeyException(keyAlgorithm + "algorithm is not supported by the JCE", e);
-        } catch (InvalidKeySpecException e) {
+        } catch (final NoSuchAlgorithmException e) {
+            final String msg = keyAlgorithm + " algorithm is not supported by this JCE"; 
+            log.error(msg, e);
+            throw new KeyException(msg, e);
+        } catch (final InvalidKeySpecException e) {
             log.error("Invalid key information", e);
             throw new KeyException("Invalid key information", e);
         }
@@ -826,13 +827,13 @@ public class KeyInfoSupport {
      * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
      */
     @Nonnull public static PublicKey getKey(@Nonnull final DEREncodedKeyValue keyValue) throws KeyException{
-        String[] supportedKeyTypes = { "RSA", "DSA", "EC"};
+        final String[] supportedKeyTypes = { "RSA", "DSA", "EC"};
         
         Constraint.isNotNull(keyValue, "DEREncodedKeyValue cannot be null");
         if (keyValue.getValue() == null) {
             throw new KeyException("No data found in key value element");
         }
-        byte[] encodedKey = Base64Support.decode(keyValue.getValue());
+        final byte[] encodedKey = Base64Support.decode(keyValue.getValue());
 
         // Iterate over the supported key types until one produces a public key.
         for (String keyType : supportedKeyTypes) {
@@ -843,9 +844,7 @@ public class KeyInfoSupport {
                 if (publicKey != null) {
                     return publicKey;
                 }
-            } catch (NoSuchAlgorithmException e) {
-                // Do nothing, try the next type
-            } catch (InvalidKeySpecException e) {
+            } catch (final NoSuchAlgorithmException | InvalidKeySpecException e) {
                 // Do nothing, try the next type
             }
         }

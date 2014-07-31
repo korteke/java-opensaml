@@ -83,8 +83,8 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
     @Nonnull public X509Certificate getEntityCertificate() {
         try {
             return (X509Certificate) keyStore.getCertificate(credentialAlias);
-        } catch (KeyStoreException e) {
-            log.error("Error accessing {" + credentialAlias + "} certificates in keystore", e);
+        } catch (final KeyStoreException e) {
+            log.error("Error accessing {} certificates in keystore", credentialAlias, e);
             return null;
         }
     }
@@ -94,15 +94,15 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
         List<X509Certificate> certsCollection = Collections.EMPTY_LIST;
 
         try {
-            Certificate[] certs = keyStore.getCertificateChain(credentialAlias);
+            final Certificate[] certs = keyStore.getCertificateChain(credentialAlias);
             if (certs != null) {
                 certsCollection = new ArrayList<X509Certificate>(certs.length);
-                for (Certificate cert : certs) {
+                for (final Certificate cert : certs) {
                     certsCollection.add((X509Certificate) cert);
                 }
             }
-        } catch (KeyStoreException e) {
-            log.error("Error accessing {" + credentialAlias + "} certificates in keystore", e);
+        } catch (final KeyStoreException e) {
+            log.error("Error accessing {} certificates in keystore", credentialAlias, e);
         }
         return certsCollection;
     }
@@ -111,12 +111,8 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
     @Nullable public PrivateKey getPrivateKey() {
         try {
             return (PrivateKey) keyStore.getKey(credentialAlias, keyPassword);
-        } catch (KeyStoreException e) {
-            log.error("Error accessing {" + credentialAlias + "} private key in keystore", e);
-        } catch (UnrecoverableKeyException e) {
-            log.error("Error accessing {" + credentialAlias + "} private key in keystore", e);
-        } catch (NoSuchAlgorithmException e) {
-            log.error("Error accessing {" + credentialAlias + "} private key in keystore", e);
+        } catch (final KeyStoreException|UnrecoverableKeyException|NoSuchAlgorithmException e) {
+            log.error("Error accessing {} private key in keystore", credentialAlias, e);
         }
         return null;
     }

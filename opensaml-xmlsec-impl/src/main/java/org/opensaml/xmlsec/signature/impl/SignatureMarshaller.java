@@ -130,9 +130,10 @@ public class SignatureMarshaller implements Marshaller {
             signature.releaseParentDOM(true);
             return signatureElement;
 
-        } catch (XMLSecurityException e) {
-            log.error("Unable to construct signature Element " + signature.getElementQName(), e);
-            throw new MarshallingException("Unable to construct signature Element " + signature.getElementQName(), e);
+        } catch (final XMLSecurityException e) {
+            final String msg = "Unable to construct signature Element " + signature.getElementQName(); 
+            log.error(msg, e);
+            throw new MarshallingException(msg, e);
         }
     }
 

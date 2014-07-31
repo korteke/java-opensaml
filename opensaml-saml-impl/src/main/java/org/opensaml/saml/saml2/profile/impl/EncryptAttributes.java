@@ -139,7 +139,7 @@ public class EncryptAttributes extends AbstractEncryptAction {
                                 log.debug("{} Attribute before encryption:\n{}", getLogPrefix(),
                                         SerializeSupport.prettyPrintXML(dom));
                             } catch (final MarshallingException e) {
-                                log.error(getLogPrefix() + " Unable to marshall Attribute for logging purposes", e);
+                                log.error("{} Unable to marshall Attribute for logging purposes", getLogPrefix(), e);
                             }
                         }
                         accumulator.add(getEncrypter().encrypt(attribute));

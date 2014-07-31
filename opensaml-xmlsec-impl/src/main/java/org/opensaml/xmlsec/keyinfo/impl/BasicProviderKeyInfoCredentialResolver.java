@@ -432,11 +432,11 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
                 } else {
                     log.error("Failed to derive public key from private key");
                 }
-            } catch (KeyException e) {
+            } catch (final KeyException e) {
                 log.error("Could not derive public key from private key", e);
             }
         } else {
-            log.error(String.format("Key was of an unsupported type '%s'", key.getClass().getName()));
+            log.error("Key was of an unsupported type '{}'", key.getClass().getName());
         }
 
         if (basicCred != null) {

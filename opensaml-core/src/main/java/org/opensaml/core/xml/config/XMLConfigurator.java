@@ -91,8 +91,9 @@ public class XMLConfigurator {
      */
     public XMLConfigurator() throws XMLConfigurationException {
         parserPool = new BasicParserPool();
-        SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Source schemaSource = new StreamSource(XMLConfigurator.class.getResourceAsStream(XMLTOOLING_SCHEMA_LOCATION));
+        final SchemaFactory factory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        final Source schemaSource =
+                new StreamSource(XMLConfigurator.class.getResourceAsStream(XMLTOOLING_SCHEMA_LOCATION));
         try {
             configurationSchema = factory.newSchema(schemaSource);
 
@@ -100,9 +101,9 @@ public class XMLConfigurator {
             parserPool.setIgnoreElementContentWhitespace(true);
             parserPool.setSchema(configurationSchema);
             parserPool.initialize();
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             throw new XMLConfigurationException("Unable to read XMLTooling configuration schema", e);
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             throw new XMLConfigurationException("Unable to initialize parser pool", e);
         }
 
@@ -133,7 +134,7 @@ public class XMLConfigurator {
 
         try {
             if (configurationFile.isDirectory()) {
-                File[] configurations = configurationFile.listFiles();
+                final File[] configurations = configurationFile.listFiles();
                 for (int i = 0; i < configurations.length; i++) {
                     log.debug("Parsing configuration file {}", configurations[i].getAbsolutePath());
                     load(new FileInputStream(configurations[i]));
@@ -143,7 +144,7 @@ public class XMLConfigurator {
                 log.debug("Parsing configuration file {}", configurationFile.getAbsolutePath());
                 load(new FileInputStream(configurationFile));
             }
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             // ignore, we already have the files
         }
     }
@@ -159,7 +160,7 @@ public class XMLConfigurator {
         try {
             Document configuration = parserPool.parse(configurationStream);
             load(configuration);
-        } catch (XMLParserException e) {
+        } catch (final XMLParserException e) {
             log.error("Invalid configuration file", e);
             throw new XMLConfigurationException("Unable to create DocumentBuilder", e);
         }
@@ -221,36 +222,36 @@ public class XMLConfigurator {
      */
     protected void initializeObjectProviders(Element objectProviders) throws XMLConfigurationException {
 
-        NodeList providerList = objectProviders.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProvider");
+        final NodeList providerList = objectProviders.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProvider");
         for (int i = 0; i < providerList.getLength(); i++) {
-            Element objectProvider = (Element) providerList.item(i);
+            final Element objectProvider = (Element) providerList.item(i);
 
             // Get the element name of type this object provider is for
-            Attr qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
-            QName objectProviderName = AttributeSupport.getAttributeValueAsQName(qNameAttrib);
+            final Attr qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
+            final QName objectProviderName = AttributeSupport.getAttributeValueAsQName(qNameAttrib);
 
             log.debug("Initializing object provider {}", objectProviderName);
 
             try {
                 Element configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
-                XMLObjectBuilder<?> builder = (XMLObjectBuilder<?>) createClassInstance(configuration);
+                final XMLObjectBuilder<?> builder = (XMLObjectBuilder<?>) createClassInstance(configuration);
 
                 configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "MarshallingClass").item(
                                 0);
-                Marshaller marshaller = (Marshaller) createClassInstance(configuration);
+                final Marshaller marshaller = (Marshaller) createClassInstance(configuration);
 
                 configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "UnmarshallingClass")
                                 .item(0);
-                Unmarshaller unmarshaller = (Unmarshaller) createClassInstance(configuration);
+                final Unmarshaller unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
                 getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
 
                 log.debug("{} intialized and configuration cached", objectProviderName);
-            } catch (XMLConfigurationException e) {
-                log.error("Error initializing object provier " + objectProvider, e);
+            } catch (final XMLConfigurationException e) {
+                log.error("Error initializing object provier {}", objectProvider, e);
                 // clean up any parts of the object provider that might have been registered before the failure
                 getRegistry().deregisterObjectProvider(objectProviderName);
                 throw e;
@@ -294,8 +295,7 @@ public class XMLConfigurator {
      * @throws XMLConfigurationException thrown if the class can not be instaniated
      */
     protected Object createClassInstance(Element configuration) throws XMLConfigurationException {
-        String className = configuration.getAttributeNS(null, "className");
-        className = StringSupport.trimOrNull(className);
+        final String className = StringSupport.trimOrNull(configuration.getAttributeNS(null, "className"));
 
         if (className == null) {
             return null;
@@ -312,9 +312,10 @@ public class XMLConfigurator {
             final Class<?> clazz = classLoader.loadClass(className);
             final Constructor<?> constructor = clazz.getConstructor();
             return constructor.newInstance();
-        } catch (Exception e) {
-            log.error("Can not create instance of " + className, e);
-            throw new XMLConfigurationException("Can not create instance of " + className, e);
+        } catch (final Exception e) {
+            final String errorMsg = "Cannot create instance of " + className;
+            log.error(errorMsg, e);
+            throw new XMLConfigurationException(errorMsg, e);
         }
     }
 
@@ -329,12 +330,12 @@ public class XMLConfigurator {
         try {
             javax.xml.validation.Validator schemaValidator = configurationSchema.newValidator();
             schemaValidator.validate(new DOMSource(configuration));
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // Should never get here as the DOM is already in memory
             String errorMsg = "Unable to read configuration file DOM";
             log.error(errorMsg, e);
             throw new XMLConfigurationException(errorMsg, e);
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             String errorMsg = "Configuration file does not validate against schema";
             log.error(errorMsg, e);
             throw new XMLConfigurationException(errorMsg, e);

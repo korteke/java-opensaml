@@ -98,7 +98,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
         
         CriteriaSet criteriaSet = buildCriteriaSet(entityID, messageContext);
         if (criteriaSet == null) {
-            log.error("Returned criteria set was null, can not perform trust engine evaluation of token");
+            log.error("{} Returned criteria set was null, can not perform trust engine evaluation of token",
+                    getLogPrefix());
             throw new MessageHandlerException("Returned criteria set was null");
         }
         
@@ -117,7 +118,7 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
         try {
             return getTrustEngine().validate(token, criteriaSet);
         } catch (SecurityException e) {
-            log.error("There was an error evaluating the request's token using the trust engine", e);
+            log.error("{} There was an error evaluating the request's token using the trust engine", getLogPrefix(), e);
             throw new MessageHandlerException("Error during trust engine evaluation of the token", e);
         }
     }

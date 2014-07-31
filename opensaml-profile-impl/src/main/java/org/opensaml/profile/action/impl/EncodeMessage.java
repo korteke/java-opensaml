@@ -151,7 +151,7 @@ public class EncodeMessage extends AbstractProfileAction {
                     msgContext.getMessage().getClass().getName());
             
         } catch (final MessageEncodingException | ComponentInitializationException | MessageHandlerException e) {
-            log.error(getLogPrefix() + " Unable to encode outbound response", e);
+            log.error("{} Unable to encode outbound response", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCODE);
         } finally {
             // TODO: do we want to destroy the encoder here?

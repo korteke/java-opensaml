@@ -109,7 +109,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
                 log.warn("No metadata found for affiliation {}", spNameQualifier);
             }
         } catch (final ResolverException e) {
-            log.error("Error resolving metadata for affiliation " + spNameQualifier, e);
+            log.error("Error resolving metadata for affiliation {}", spNameQualifier, e);
         }
         
         return false;

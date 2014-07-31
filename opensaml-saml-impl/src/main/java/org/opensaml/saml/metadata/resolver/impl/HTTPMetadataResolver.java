@@ -192,14 +192,14 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @throws ResolverException thrown if there is a problem retrieving the metadata from the remote server
      */
     protected byte[] fetchMetadata() throws ResolverException {
-        HttpGet httpGet = buildHttpGet();
-        HttpClientContext context = buildHttpClientContext();
+        final HttpGet httpGet = buildHttpGet();
+        final HttpClientContext context = buildHttpClientContext();
         HttpResponse response = null;
         
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
             response = httpClient.execute(httpGet, context);
-            int httpStatusCode = response.getStatusLine().getStatusCode();
+            final int httpStatusCode = response.getStatusLine().getStatusCode();
 
             if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
                 log.debug("Metadata document from '{}' has not changed since last retrieval", getMetadataURI());
@@ -207,7 +207,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             }
 
             if (httpStatusCode != HttpStatus.SC_OK) {
-                String errMsg = "Non-ok status code " + httpStatusCode
+                final String errMsg = "Non-ok status code " + httpStatusCode
                         + " returned from remote metadata source " + metadataURI;
                 log.error(errMsg);
                 throw new ResolverException(errMsg);
@@ -215,12 +215,12 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
             processConditionalRetrievalHeaders(response);
 
-            byte[] rawMetadata = getMetadataBytesFromResponse(response);
+            final byte[] rawMetadata = getMetadataBytesFromResponse(response);
             log.debug("Successfully fetched {} bytes of metadata from {}", rawMetadata.length, getMetadataURI());
 
             return rawMetadata;
-        } catch (IOException e) {
-            String errMsg = "Error retrieving metadata from " + metadataURI;
+        } catch (final IOException e) {
+            final String errMsg = "Error retrieving metadata from " + metadataURI;
             log.error(errMsg, e);
             throw new ResolverException(errMsg, e);
         } finally {
@@ -228,8 +228,8 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
                 if (response != null && response instanceof CloseableHttpResponse) {
                     ((CloseableHttpResponse)response).close();
                 }
-            } catch (IOException e) {
-                log.error("Error closing HTTP response from " + metadataURI, e);
+            } catch (final IOException e) {
+                log.error("Error closing HTTP response from {}", metadataURI, e);
             }
         }
     }
@@ -243,7 +243,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @return the constructed HttpGet instance
      */
     protected HttpGet buildHttpGet() {
-        HttpGet getMethod = new HttpGet(getMetadataURI());
+        final HttpGet getMethod = new HttpGet(getMetadataURI());
         
         if (cachedMetadataETag != null) {
             getMethod.setHeader("If-None-Match", cachedMetadataETag);
@@ -262,7 +262,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @return a new instance of {@link HttpClientContext}
      */
     protected HttpClientContext buildHttpClientContext() {
-        HttpClientContext context = HttpClientContext.create();
+        final HttpClientContext context = HttpClientContext.create();
         if (credentialsProvider != null) {
             context.setCredentialsProvider(credentialsProvider);
         }
@@ -298,9 +298,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     protected byte[] getMetadataBytesFromResponse(HttpResponse response) throws ResolverException {
         log.debug("Attempting to extract metadata from response to request for metadata from '{}'", getMetadataURI());
         try {
-            InputStream ins = response.getEntity().getContent();
+            final InputStream ins = response.getEntity().getContent();
             return inputstreamToByteArray(ins);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             log.error("Unable to read response", e);
             throw new ResolverException("Unable to read response", e);
         } finally {

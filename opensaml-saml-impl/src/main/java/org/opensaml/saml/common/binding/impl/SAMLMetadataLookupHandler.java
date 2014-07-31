@@ -123,8 +123,8 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler<SAMLObject
             peerCtx.addSubcontext(metadataCtx);
 
             log.debug("{} {} added to MessageContext", getLogPrefix(), SAMLMetadataContext.class.getName());
-        } catch (ResolverException e) {
-            log.error(getLogPrefix() + " ResolverException thrown during metadata lookup", e);
+        } catch (final ResolverException e) {
+            log.error("{} ResolverException thrown during metadata lookup", getLogPrefix(), e);
         }
     }
 

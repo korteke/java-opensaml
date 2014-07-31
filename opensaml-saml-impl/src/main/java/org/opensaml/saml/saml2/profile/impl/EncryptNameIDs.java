@@ -203,7 +203,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
                         log.debug("{} NameID before encryption:\n{}", getLogPrefix(),
                                 SerializeSupport.prettyPrintXML(dom));
                     } catch (final MarshallingException e) {
-                        log.error(getLogPrefix() + " Unable to marshall NameID for logging purposes", e);
+                        log.error("{} Unable to marshall NameID for logging purposes", getLogPrefix(), e);
                     }
                 }
                 return true;
