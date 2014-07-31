@@ -46,14 +46,6 @@ import com.google.common.base.Strings;
 
 /**
  * SAML 2.0 HTTP-POST-SimpleSign binding message encoder.
- * 
- * <p>
- * The spec does not preclude the SAML 2 protocol message from being signed using the XML Signature method, in addition
- * to the SimpleSign method specified by this binding. Signing via XML Signature over the SAML request and response
- * payload may be toggled by the <code>signXMLProtocolMessage</code> parameter to the constructor
- * {@link HTTPPostSimpleSignEncoder#HTTPPostSimpleSignEncoder(VelocityEngine, String, boolean)}. If this constructor
- * variant is not used, the flag defaults to <code>false</code>.
- * </p>
  */
 public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     
@@ -65,7 +57,6 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     
     /** Constructor. */
     public HTTPPostSimpleSignEncoder() {
-        super();
         setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
     }
 

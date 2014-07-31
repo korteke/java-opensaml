@@ -185,7 +185,7 @@ public class SignAssertions extends AbstractProfileAction {
     }
 
     /**
-     * Log the {@link Response} with the given message at trace level.
+     * Log the Response with the given message at trace level.
      * 
      * @param message the log message
      */

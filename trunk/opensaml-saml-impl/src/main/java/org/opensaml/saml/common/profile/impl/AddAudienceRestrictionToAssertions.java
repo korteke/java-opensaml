@@ -47,8 +47,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action adds an {@link AudienceRestrictionCondition} to every assertion contained in a SAML 1/2
- * response, with the audiences obtained from a lookup function. If the containing {@link Conditions} is not present,
+ * Action adds an audience restriction condition to every assertion contained in a SAML 1/2
+ * response, with the audiences obtained from a lookup function. If the containing Conditions is not present,
  * it will be created.
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
@@ -78,8 +78,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     @Nullable private Collection<String> audiences; 
 
     /**
-     * Constructor. Initializes {@link #addingAudiencesToExistingRestriction} to <code>true</code>. Initializes
-     * {@link #relyingPartyContextLookupStrategy} to {@link ChildContextLookup}.
+     * Constructor.
      */
     public AddAudienceRestrictionToAssertions() {
         addingAudiencesToExistingRestriction = true;
