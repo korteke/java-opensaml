@@ -133,7 +133,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
                         log.debug("{} Assertion before encryption:\n{}", getLogPrefix(),
                                 SerializeSupport.prettyPrintXML(dom));
                     } catch (final MarshallingException e) {
-                        log.error(getLogPrefix() + " Unable to marshall message for logging purposes", e);
+                        log.error("{} Unable to marshall message for logging purposes", getLogPrefix(), e);
                     }
                 }
                 accumulator.add(getEncrypter().encrypt(assertion));

@@ -239,7 +239,7 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
             log.debug("{} {} SignatureSigningParameters", getLogPrefix(),
                     params != null ? "Resolved" : "Failed to resolve");
         } catch (final ResolverException e) {
-            log.error(getLogPrefix() + " Error resolving SignatureSigningParameters", e);
+            log.error("{} Error resolving SignatureSigningParameters", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
         }
     }

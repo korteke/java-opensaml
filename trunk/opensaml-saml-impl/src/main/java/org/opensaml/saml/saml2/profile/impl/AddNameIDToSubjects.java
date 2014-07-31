@@ -343,7 +343,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
                     return nameId;
                 }
             } catch (final SAMLException e) {
-                log.error(getLogPrefix() + " Error while generating NameID", e);
+                log.error("{} Error while generating NameID", getLogPrefix(), e);
             }
         }
         

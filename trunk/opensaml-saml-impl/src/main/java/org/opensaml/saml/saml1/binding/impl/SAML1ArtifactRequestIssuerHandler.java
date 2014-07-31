@@ -76,13 +76,13 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler<SA
     protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
         
         if (messageContext.getMessage() == null || !(messageContext.getMessage() instanceof Request)) {
-            log.trace("Request message not set, or not of an applicable type");
+            log.trace("{} Request message not set, or not of an applicable type", getLogPrefix());
             return;
         }
         
         final Request request = (Request) messageContext.getMessage();
         if (request.getAssertionArtifacts().isEmpty()) {
-            log.trace("Request did not contain any artifacts");
+            log.trace("{} Request did not contain any artifacts", getLogPrefix());
             return;
         }
         
@@ -90,14 +90,15 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler<SA
         try {
             final SAMLArtifactMapEntry entry = artifactMap.get(artifact);
             if (entry == null) {
-                log.warn("Unable to resolve first artifact in request: {}", artifact);
+                log.warn("{} Unable to resolve first artifact in request: {}", getLogPrefix(), artifact);
                 return;
             }
             
-            log.debug("Derived issuer of aritfact resolution request as {}", entry.getRelyingPartyId());
+            log.debug("{} Derived issuer of aritfact resolution request as {}", getLogPrefix(),
+                    entry.getRelyingPartyId());
             messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(entry.getRelyingPartyId());
         } catch (final IOException e) {
-            log.error("Error resolving first artifact in request: " + artifact, e);
+            log.error("{} Error resolving first artifact in request: {}", getLogPrefix(), artifact, e);
         }
     }
     

@@ -244,8 +244,8 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
                             format);
                     return nameIdentifier;
                 }
-            } catch (SAMLException e) {
-                log.error(getLogPrefix() + " Error while generating NameIdentifier", e);
+            } catch (final SAMLException e) {
+                log.error("{} Error while generating NameIdentifier", getLogPrefix(), e);
             }
         }
         

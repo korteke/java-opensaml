@@ -294,8 +294,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         if (response instanceof CloseableHttpResponse) {
             try {
                 ((CloseableHttpResponse)response).close();
-            } catch (IOException e) {
-                log.error("Error closing HTTP response from " + requestURI, e);
+            } catch (final IOException e) {
+                log.error("Error closing HTTP response from {}", requestURI, e);
             }
         }
     }

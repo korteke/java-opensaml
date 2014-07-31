@@ -250,7 +250,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
                 response.getAssertions().add((Assertion) entry.getSamlMessage());
             }
         } catch (final IOException e) {
-            log.error(getLogPrefix() + " Error resolving artifact", e);
+            log.error("{} Error resolving artifact", getLogPrefix(), e);
             success = false;
         }
 

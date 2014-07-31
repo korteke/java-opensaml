@@ -165,7 +165,7 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
             log.debug("{} {} SignatureValidationParameters", getLogPrefix(),
                     params != null ? "Resolved" : "Failed to resolve");
         } catch (final ResolverException e) {
-            log.error(getLogPrefix() + " Error resolving SignatureValidationParameters", e);
+            log.error("{} Error resolving SignatureValidationParameters", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
         }
     }

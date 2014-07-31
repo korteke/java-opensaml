@@ -218,7 +218,7 @@ public class ResolveArtifact extends AbstractProfileAction {
         try {
             entry = artifactMap.get(artifact);
         } catch (final IOException e) {
-            log.error(getLogPrefix() + " Error resolving artifact", e);
+            log.error("{} Error resolving artifact", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
             return;
         }
@@ -233,7 +233,7 @@ public class ResolveArtifact extends AbstractProfileAction {
         try {
             artifactMap.remove(artifact);
         } catch (final IOException e) {
-            log.error(getLogPrefix() + " Error removing artifact from map", e);
+            log.error("{} Error removing artifact from map", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
             return;
         }

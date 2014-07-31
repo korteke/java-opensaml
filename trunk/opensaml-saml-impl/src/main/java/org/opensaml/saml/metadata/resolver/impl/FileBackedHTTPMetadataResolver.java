@@ -22,6 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Timer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -45,10 +48,10 @@ import com.google.common.io.Files;
 public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(FileBackedHTTPMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(FileBackedHTTPMetadataResolver.class);
 
     /** File containing the backup of the metadata. */
-    private File metadataBackupFile;
+    @Nullable private File metadataBackupFile;
     
     /**
      * Constructor.
@@ -93,7 +96,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     protected void initMetadataResolver() throws ComponentInitializationException {
         try {
             validateBackupFile(metadataBackupFile);
-        } catch (ResolverException e) {
+        } catch (final ResolverException e) {
             if (isFailFastInitialization()) {
                 log.error("Metadata backup file path was invalid, initialization is fatal");
                 throw new ComponentInitializationException("Metadata backup file path was invalid", e);
@@ -117,7 +120,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
-        File backingFile = new File(backupFilePath);
+        final File backingFile = new File(backupFilePath);
         metadataBackupFile = backingFile;
     }
 
@@ -132,9 +135,10 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
         if (!backupFile.exists()) {
             try {
                 backupFile.createNewFile();
-            } catch (IOException e) {
-                log.error("Unable to create backing file " + backupFile, e);
-                throw new ResolverException("Unable to create backing file " + backupFile.getAbsolutePath(), e);
+            } catch (final IOException e) {
+                final String msg = "Unable to create backing file " + backupFile.getAbsolutePath();
+                log.error(msg, e);
+                throw new ResolverException(msg, e);
             }
         }
 
@@ -164,16 +168,15 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
                         metadataBackupFile.getAbsolutePath());
                 try {
                     return Files.toByteArray(metadataBackupFile);
-                } catch (IOException ioe) {
-                    String errMsg = "Unable to retrieve metadata from backup file "
+                } catch (final IOException ioe) {
+                    final String errMsg = "Unable to retrieve metadata from backup file "
                             + metadataBackupFile.getAbsolutePath();
                     log.error(errMsg, ioe);
                     throw new ResolverException(errMsg, ioe);
                 }
             } else {
                 log.error("Unable to read metadata from remote server and backup does not exist");
-                throw new ResolverException(
-                        "Unable to read metadata from remote server and backup does not exist");
+                throw new ResolverException("Unable to read metadata from remote server and backup does not exist");
             }
         }
     }
@@ -183,14 +186,14 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
             XMLObject filteredMetadata) throws ResolverException {
         try {
             validateBackupFile(metadataBackupFile);
-            FileOutputStream out = new FileOutputStream(metadataBackupFile);
-            out.write(metadataBytes);
-            out.flush();
-            out.close();
-        } catch (ResolverException e) {
-            log.error("Unable to write metadata to backup file: " + metadataBackupFile.getAbsoluteFile(), e);
-        } catch (IOException e) {
-            log.error("Unable to write metadata to backup file: " + metadataBackupFile.getAbsoluteFile(), e);
+            try (final FileOutputStream out = new FileOutputStream(metadataBackupFile)) {
+                out.write(metadataBytes);
+                out.flush();
+            }
+        } catch (final ResolverException e) {
+            log.error("Unable to write metadata to backup file: {}", metadataBackupFile.getAbsoluteFile(), e);
+        } catch (final IOException e) {
+            log.error("Unable to write metadata to backup file: {}", metadataBackupFile.getAbsoluteFile(), e);
         } finally {
             super.postProcessMetadata(metadataBytes, metadataDom, originalMetadata, filteredMetadata);
         }
