@@ -19,7 +19,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -47,7 +46,6 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private CriteriaSet criteriaSet;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";

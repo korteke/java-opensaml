@@ -29,7 +29,7 @@ import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
- * {@link org.opensaml.saml2.samlext.saml2mdui.GeolocationHint}.
+ * {@link org.opensaml.saml.ext.saml2mdui.GeolocationHint}.
  */
 public class GeolocationHintTest extends XMLObjectProviderBaseTestCase {
     
@@ -43,7 +43,6 @@ public class GeolocationHintTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/GeolocationHint.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedHint = "geo:lat,long";

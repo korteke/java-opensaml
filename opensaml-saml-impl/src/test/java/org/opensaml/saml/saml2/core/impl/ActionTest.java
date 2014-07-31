@@ -43,7 +43,6 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ActionOptionalAttributes.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAction = "action name";

@@ -37,11 +37,9 @@ public class GeneratedKeyTest extends XMLObjectProviderBaseTestCase {
     
     /** Constructor */
     public GeneratedKeyTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/ext/samlec/impl/GeneratedKey.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedValue = "AGeneratedKey";

@@ -48,7 +48,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action that signs {@link Assertion}s in a SAML 1/2 Response returned by a lookup strategy,
+ * Action that signs assertions in a SAML 1/2 Response returned by a lookup strategy,
  * by default the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
  * <p>The {@link SecurityParametersContext} governing the signing process is located by a lookup
@@ -82,7 +82,7 @@ public class SignAssertions extends AbstractProfileAction {
     }
     
     /**
-     * Set the strategy used to locate the {@link Response} to operate on.
+     * Set the strategy used to locate the response to operate on.
      * 
      * @param strategy lookup strategy
      */

@@ -39,7 +39,6 @@ public class AuthnContextDeclTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnContextDecl.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedDeclartion = "declaration";

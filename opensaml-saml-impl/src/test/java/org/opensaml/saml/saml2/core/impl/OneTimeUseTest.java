@@ -26,7 +26,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 
 /**
- * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.Impl}.
+ * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.OneTimeUseImpl}.
  */
 public class OneTimeUseTest extends XMLObjectProviderBaseTestCase {
 

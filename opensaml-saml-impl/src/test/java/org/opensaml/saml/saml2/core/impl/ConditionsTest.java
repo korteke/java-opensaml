@@ -56,7 +56,6 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ConditionsChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedNotBefore = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());

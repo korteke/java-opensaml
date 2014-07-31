@@ -43,7 +43,6 @@ public class NewIDTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NewID.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedNewID = "SomeSAMLNameID";

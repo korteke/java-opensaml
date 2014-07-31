@@ -48,7 +48,6 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingServiceChildElements.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedIndex = 1;

@@ -42,7 +42,6 @@ public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/NameIDFormat.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectFormat = "urn:name:format";

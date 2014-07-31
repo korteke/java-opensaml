@@ -51,7 +51,6 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedUse = UsageType.ENCRYPTION;

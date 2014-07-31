@@ -48,7 +48,6 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeOptionalAttributes.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedName = "attribName";

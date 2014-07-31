@@ -282,7 +282,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         status.setStatusMessage(sm);
     }
     
-    /** A default method to map event IDs to SAML 2 StatusCode URIs based on {@link PreviousEventContext}. */
+    /** A default method to map event IDs to SAML 2 StatusCode URIs based on {@link EventContext}. */
     public static class StatusCodeMappingFunction implements Function<ProfileRequestContext,List<String>> {
 
         /** Code mappings. */

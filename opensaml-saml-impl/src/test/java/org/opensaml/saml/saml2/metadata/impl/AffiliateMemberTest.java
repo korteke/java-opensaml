@@ -38,7 +38,6 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliateMember.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedMemberID = "urn:example.org:members:foo";

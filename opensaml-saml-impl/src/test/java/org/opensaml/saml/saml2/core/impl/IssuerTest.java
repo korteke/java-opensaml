@@ -39,7 +39,6 @@ public class IssuerTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Issuer.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedIssuer = "issuer name";

@@ -44,7 +44,6 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/ecp/impl/RequestChildElements.xml";
     }
  
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedProviderName = "https://provider.example.org";

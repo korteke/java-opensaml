@@ -34,7 +34,6 @@ public abstract class BaseComplexSAMLObjectTestCase extends XMLObjectBaseTestCas
     /** The expected result of a marshalled single element with no optional attributes. */
     protected Document expectedDOM;
 
-    /** {@inheritDoc} */
     @BeforeClass
     protected void initSAMLObjectTestSupport() throws Exception {
         if (elementFile != null) {

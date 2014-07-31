@@ -44,7 +44,6 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ManageNameIDServiceOptionalAttributes.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedBinding = "urn:binding:foo";

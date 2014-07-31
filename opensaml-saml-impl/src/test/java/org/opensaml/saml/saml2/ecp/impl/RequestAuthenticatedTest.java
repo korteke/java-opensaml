@@ -38,7 +38,6 @@ public class RequestAuthenticatedTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/RequestAuthenticated.xml";
     }
  
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedSOAP11Actor = "https://soap11actor.example.org";

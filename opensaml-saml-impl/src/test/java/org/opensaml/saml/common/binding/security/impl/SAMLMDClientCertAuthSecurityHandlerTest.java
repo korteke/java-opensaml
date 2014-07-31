@@ -116,7 +116,6 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     private String issuer;
     
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         validCert = X509Support.decodeCertificate(validCertBase64);

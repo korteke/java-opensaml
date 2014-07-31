@@ -35,11 +35,9 @@ public class ChannelBindingsTest extends XMLObjectProviderBaseTestCase {
     private Boolean expectedSOAP11MustUnderstand;
     
     public ChannelBindingsTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/ext/saml2cb/impl/ChannelBindings.xml";
     }
  
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedContent = "YourChannelIsBound";

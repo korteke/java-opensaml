@@ -47,7 +47,6 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     private String entityID;
     private CriteriaSet criteriaSet;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         httpClient = new DefaultHttpClient();
@@ -62,7 +61,6 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
-    /** {@inheritDoc} */
     @AfterMethod
     protected void tearDown() {
         File backupFile = new File(backupFilePath);

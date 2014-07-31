@@ -39,7 +39,6 @@ public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnContextDeclRef.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedDeclRef = "declaration reference";

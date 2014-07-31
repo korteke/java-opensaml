@@ -72,8 +72,6 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
     
     /**
      * Constructor.
-     * 
-     * Initializes {@link #messageMetadataContextLookupStrategy} to {@link ChildContextLookup}.
      */
     public PopulateDecryptionParameters() {
         // Create context by default.

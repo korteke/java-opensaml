@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -137,9 +138,17 @@ public class BasicRoleDescriptorResolver extends AbstractIdentifiedInitializable
         }
         
     }
-    
-    /** {@inheritDoc} */
-    @Nonnull protected List<RoleDescriptor> getRole(String entityID, QName roleName) throws ResolverException {
+
+    /**
+     * Get role descriptors for a given entityID and role.
+     * 
+     * @param entityID  entityID to lookup
+     * @param roleName  role to lookup
+     * @return  list of roles
+     * @throws ResolverException if an error occurs
+     */
+    @Nonnull @NonnullElements protected List<RoleDescriptor> getRole(
+            @Nullable final String entityID, @Nullable final QName roleName) throws ResolverException {
         if (Strings.isNullOrEmpty(entityID)) {
             log.debug("EntityDescriptor entityID was null or empty, skipping search for roles");
             return Collections.emptyList();

@@ -43,8 +43,6 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public StatusMessageTest() {
-        super();
-
         contents = "Nibble a Happy Warthog";
         singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleStatusMessage.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/FullStatusMessage.xml";

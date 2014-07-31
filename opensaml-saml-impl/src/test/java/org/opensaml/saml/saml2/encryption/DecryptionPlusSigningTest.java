@@ -83,7 +83,6 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);

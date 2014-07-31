@@ -60,8 +60,6 @@ import com.google.common.base.Function;
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
- * @event {@link IdPEventIds#INVALID_RELYING_PARTY_CTX}
- * @event {@link IdPEventIds#INVALID_PROFILE_CONFIG}
  * 
  * @post ProfileRequestContext.getOutboundMessageContext().getMessage() != null
  */

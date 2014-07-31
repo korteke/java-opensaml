@@ -47,7 +47,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action adds an {@link AudienceRestrictionCondition} to every {@link Assertion} contained in a SAML 1/2
+ * Action adds an {@link AudienceRestrictionCondition} to every assertion contained in a SAML 1/2
  * response, with the audiences obtained from a lookup function. If the containing {@link Conditions} is not present,
  * it will be created.
  * 

@@ -41,7 +41,6 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/ecp/impl/SubjectConfirmationChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedMethod = "conf method";

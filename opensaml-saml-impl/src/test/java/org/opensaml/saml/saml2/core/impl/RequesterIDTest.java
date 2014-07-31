@@ -44,7 +44,6 @@ public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/RequesterID.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedRequesterID = "urn:string:requester";

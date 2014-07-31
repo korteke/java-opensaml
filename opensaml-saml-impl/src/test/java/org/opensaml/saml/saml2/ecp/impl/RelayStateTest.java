@@ -38,7 +38,6 @@ public class RelayStateTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/RelayState.xml";
     }
  
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedContent = "ThisIsSomeRelayState";

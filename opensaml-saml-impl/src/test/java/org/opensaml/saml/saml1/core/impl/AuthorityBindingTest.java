@@ -30,7 +30,7 @@ import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
 
 /**
- *  Test for {@link org.opensaml.saml.saml1.core.impl.AuthorityBinding}
+ *  Test for {@link org.opensaml.saml.saml1.core.AuthorityBinding}
  */
 public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
 
@@ -50,7 +50,6 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AuthorityBindingTest() {
-        super(); 
         //this attribute is a Schema QName type, e.g. AuthorityKind="samlp:AttributeQuery"
         expectedAuthorityKind = new QName(SAMLConstants.SAML10P_NS, AttributeQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
         expectedLocation = "here";
@@ -61,7 +60,6 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementUnmarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementFile);
@@ -71,7 +69,6 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementOptionalAttributesFile);
@@ -81,14 +78,12 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
     }
 
     /** {@inheritDoc} */
-
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AuthorityBinding authorityBinding = (AuthorityBinding) buildXMLObject(qname);

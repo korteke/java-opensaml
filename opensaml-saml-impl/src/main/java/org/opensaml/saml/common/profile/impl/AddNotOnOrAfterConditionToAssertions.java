@@ -43,7 +43,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 
 /**
- * Action that adds the <code>NotBefore</code> attribute to every {@link Assertion} in a SAML 1/2
+ * Action that adds the <code>NotBefore</code> attribute to every assertion in a SAML 1/2
  * response message. If the containing Conditions is not present, it will be created.
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}

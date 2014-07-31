@@ -40,7 +40,6 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     
     private MockHttpServletRequest httpRequest;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         httpRequest = new MockHttpServletRequest();

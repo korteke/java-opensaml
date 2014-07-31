@@ -73,8 +73,6 @@ public class PopulateSignatureValidationParameters extends AbstractProfileAction
     
     /**
      * Constructor.
-     * 
-     * Initializes {@link #messageMetadataContextLookupStrategy} to {@link ChildContextLookup}.
      */
     public PopulateSignatureValidationParameters() {
         // Create context by default.

@@ -42,7 +42,6 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
         singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AdditionalMetadataLocation.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedNamespace = "http://example.org/xmlns";

@@ -35,11 +35,9 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public SourceIDTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/ext/saml1md/impl/SourceID.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedValue = "9392kjc98";

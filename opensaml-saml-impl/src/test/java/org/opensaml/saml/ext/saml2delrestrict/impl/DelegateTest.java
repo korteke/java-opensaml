@@ -43,7 +43,6 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/ext/saml2delrestrict/impl/DelegateChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedDelegationInstant = new DateTime(1984, 8, 26, 10, 01, 30, 43, ISOChronology.getInstanceUTC());

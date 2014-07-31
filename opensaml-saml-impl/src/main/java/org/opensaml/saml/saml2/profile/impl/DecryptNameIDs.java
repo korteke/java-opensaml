@@ -56,10 +56,7 @@ import org.slf4j.LoggerFactory;
  * handled, but the actual message to handle is obtained via strategy function, by default the inbound
  * message.</p> 
  * 
- * <p>The {@link SecurityParametersContext} governing the decryption process is located by a lookup
- * strategy, by default a child of the inbound message context.</p>
- * 
- * @event {@link EventIds#PROCEED_EVENT_ID}
+ * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  * @event {@link SAMLEventIds#DECRYPT_NAMEID_FAILED}
  */
 public class DecryptNameIDs extends AbstractDecryptAction {

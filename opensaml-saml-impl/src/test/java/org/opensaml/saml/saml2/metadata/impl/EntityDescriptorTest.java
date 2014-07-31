@@ -79,7 +79,6 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod protected void setUp() throws Exception {
         expectedID = "id";
         expectedEntityID = "99ff33";

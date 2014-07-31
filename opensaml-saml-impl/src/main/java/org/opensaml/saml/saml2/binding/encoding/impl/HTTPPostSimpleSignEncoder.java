@@ -38,7 +38,6 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
-import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,10 +130,10 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
             } else {
                 return null;
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             log.error("Error generating KeyInfo from signing credential", e);
             throw new MessageEncodingException("Error generating KeyInfo from signing credential", e);
-        } catch (MarshallingException e) {
+        } catch (final MarshallingException e) {
             log.error("Error marshalling KeyInfo based on signing credential", e);
             throw new MessageEncodingException("Error marshalling KeyInfo based on signing credential", e);
         }
@@ -169,7 +168,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         String msg = null;
         try {
             msg = new String(Base64Support.decode(msgB64), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             // All JVM's required to support UTF-8
         }
 

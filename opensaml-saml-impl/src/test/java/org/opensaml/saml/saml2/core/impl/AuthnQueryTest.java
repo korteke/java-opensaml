@@ -42,14 +42,12 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
      *
      */
     public AuthnQueryTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnQuery.xml";
         singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnQueryOptionalAttributes.xml";
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnQueryChildElements.xml";
     }
     
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();

@@ -114,16 +114,6 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         velocityTemplateId = newVelocityTemplateId;
     }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException {
-        return false;
-    }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException {
-        return false;
-    }
     
     /** {@inheritDoc} */
     protected void doDestroy() {

@@ -60,7 +60,6 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
     /** Velocity template engine. */
     private VelocityEngine velocityEngine;
 
-    /** {@inheritDoc} */
     @BeforeMethod
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {

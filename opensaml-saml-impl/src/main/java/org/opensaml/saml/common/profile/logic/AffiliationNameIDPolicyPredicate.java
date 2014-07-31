@@ -38,10 +38,9 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Objects;
 
 /**
- * Evaluates a {@link NameIDPolicy} inside an {@link AuthnRequest} located via a lookup strategy,
- * by default the incoming message context, and enforces a default policy over its content.
+ * Evaluates name identifier data and enforces a default policy over its content.
  * 
- * <p>If {@link NameIDPolicy#getSPNameQualifier()} is non-null, the value must match the
+ * <p>If an SPNameQualifier value is non-null, the value must match the
  * request issuer, or must be an identifier for a SAML {@link AffiliationDescriptor} that
  * contains the issuer.</p>
  */

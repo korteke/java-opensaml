@@ -62,22 +62,12 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
     /** Constructor. */
     public HTTPRedirectDeflateEncoder() {
-        super();
+        
     }
 
     /** {@inheritDoc} */
     public String getBindingURI() {
         return SAMLConstants.SAML2_REDIRECT_BINDING_URI;
-    }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageConfidentiality(MessageContext messageContext) throws MessageEncodingException {
-        return false;
-    }
-
-    /** {@inheritDoc} */
-    public boolean providesMessageIntegrity(MessageContext messageContext) throws MessageEncodingException {
-        return false;
     }
 
     /** {@inheritDoc} */
@@ -246,10 +236,10 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
                     XMLSigningUtil.signWithURI(signingCredential, algorithmURI, queryString.getBytes("UTF-8"));
             b64Signature = Base64Support.encode(rawSignature, Base64Support.UNCHUNKED);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             log.error("Error during URL signing process", e);
             throw new MessageEncodingException("Unable to sign URL query string", e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             // UTF-8 encoding is required to be supported by all JVMs
         }
 

@@ -72,7 +72,6 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         kekURIRSA = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15;
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         encParams = new DataEncryptionParameters();

@@ -43,8 +43,6 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public StatusTest() {
-        super();
-
         childElementsFile = "/data/org/opensaml/saml/saml1/impl/FullStatus.xml";
         singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleStatus.xml";
 

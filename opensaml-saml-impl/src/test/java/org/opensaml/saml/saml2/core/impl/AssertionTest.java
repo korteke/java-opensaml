@@ -69,7 +69,6 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedVersion = SAMLVersion.VERSION_20;

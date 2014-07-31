@@ -38,7 +38,6 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/Response.xml";
     }
  
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedACSURL = "https://sp.example.org/acs";

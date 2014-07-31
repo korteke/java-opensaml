@@ -63,7 +63,6 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
         singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPersonUnknownAttributes.xml";
     }
     
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedPersonType = ContactPersonTypeEnumeration.TECHNICAL;

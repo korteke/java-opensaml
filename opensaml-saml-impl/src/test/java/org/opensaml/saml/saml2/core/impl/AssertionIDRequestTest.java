@@ -48,7 +48,6 @@ public class AssertionIDRequestTest extends RequestTestBase {
         childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionIDRequestChildElements.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         super.setUp();

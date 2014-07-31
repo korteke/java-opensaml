@@ -34,11 +34,9 @@ public class EncTypeTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public EncTypeTest() {
-        super();
         singleElementFile = "/data/org/opensaml/saml/ext/samlec/impl/EncType.xml";
     }
 
-    /** {@inheritDoc} */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedValue = "des-cbc-crc";
