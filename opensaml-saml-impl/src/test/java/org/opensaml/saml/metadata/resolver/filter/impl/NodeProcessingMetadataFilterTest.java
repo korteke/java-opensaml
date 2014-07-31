@@ -89,9 +89,6 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
         
     }
     
-    /**
-     * @param ed
-     */
     private void checkNode(XMLObject node) {
         List<TestData> objectTestData = node.getObjectMetadata().get(TestData.class);
         if (node instanceof EntityDescriptor) {

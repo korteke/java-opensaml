@@ -62,7 +62,6 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
     
     /** Constructor. */
     public HTTPPostEncoder() {
-        super();
         setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
     }
 

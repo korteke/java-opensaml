@@ -28,19 +28,19 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml2.common.Extensions;
 
 /**
- * Implementation of {@link org.opensaml.saml.saml2.common.Extensions}
+ * Implementation of {@link org.opensaml.saml.saml2.common.Extensions}.
  */
 public class ExtensionsImpl extends AbstractSAMLObject implements Extensions {
 
-    /** "any" children */
+    /** "any" children. */
     private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI namespace URI
+     * @param elementLocalName local name
+     * @param namespacePrefix prefix
      */
     protected ExtensionsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

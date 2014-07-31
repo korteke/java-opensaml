@@ -83,8 +83,6 @@ public class PopulateSignatureSigningParameters extends AbstractConditionalProfi
     
     /**
      * Constructor.
-     * 
-     * Initializes {@link #messageMetadataContextLookupStrategy} to {@link ChildContextLookup}.
      */
     public PopulateSignatureSigningParameters() {
         // Create context by default.

@@ -25,6 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
+/**
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
+ */
 public class ExtensionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** Logger. */

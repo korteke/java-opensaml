@@ -191,7 +191,8 @@ public class BasicRoleDescriptorResolver extends AbstractIdentifiedInitializable
      * 
      * @throws ResolverException thrown if there is a problem searching for the roles
      */
-    @Nonnull protected List<RoleDescriptor> doGetRole(String entityID, QName roleName) throws ResolverException {
+    @Nonnull @NonnullElements protected List<RoleDescriptor> doGetRole(@Nullable final String entityID,
+            @Nullable final QName roleName) throws ResolverException {
         EntityDescriptor entity = doGetEntityDescriptor(entityID);
         if (entity == null) {
             log.debug("Metadata document did not contain a descriptor for entity {}", entityID);
@@ -218,8 +219,18 @@ public class BasicRoleDescriptorResolver extends AbstractIdentifiedInitializable
         return entityDescriptorResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
     }
 
-    /** {@inheritDoc} */
-    protected RoleDescriptor getRole(String entityID, QName roleName, String supportedProtocol) 
+    /**
+     * Get role descriptor for a given entityID and role and protocol.
+     * 
+     * @param entityID  entityID to lookup
+     * @param roleName  role to lookup
+     * @param supportedProtocol protocol to lookup
+     * 
+     * @return  list of roles
+     * @throws ResolverException if an error occurs
+     */
+    @Nullable protected RoleDescriptor getRole(@Nullable final String entityID, @Nullable final QName roleName,
+            @Nullable final String supportedProtocol) 
             throws ResolverException {
         if (Strings.isNullOrEmpty(entityID)) {
             log.debug("EntityDescriptor entityID was null or empty, skipping search for role");
