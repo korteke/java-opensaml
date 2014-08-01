@@ -196,7 +196,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
 
     /**
      * Add the audiences obtained from a lookup function to the {@link AudienceRestrictionCondition}. If no
-     * {@link AudienceRestrictionCondition} exists on the given {@link Conditions} one is created and added.
+     * {@link AudienceRestrictionCondition} exists on the given Conditions one is created and added.
      * 
      * @param profileRequestContext current profile request context
      * @param conditions condition that has, or will receive the created, {@link AudienceRestrictionCondition}
@@ -219,11 +219,11 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     }
 
     /**
-     * Add the audiences obtained from a lookup function to the {@link AudienceRestrictionCondition}. If no
-     * {@link AudienceRestrictionCondition} exists on the given {@link Conditions} one is created and added.
+     * Add the audiences obtained from a lookup function to the {@link AudienceRestriction}. If no
+     * {@link AudienceRestriction} exists on the given Conditions one is created and added.
      * 
      * @param profileRequestContext current profile request context
-     * @param conditions condition that has, or will receive the created, {@link AudienceRestrictionCondition}
+     * @param conditions condition that has, or will receive the created, {@link AudienceRestriction}
      */
     private void addAudienceRestriction(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final org.opensaml.saml.saml2.core.Conditions conditions) {

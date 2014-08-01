@@ -38,7 +38,8 @@ import com.google.common.collect.Sets;
  * Basic implementation of {@link WhitelistBlacklistConfiguration}.
  * 
  * <p>
- * The value returned by {@link #getWhitelistBlacklistPrecedence()} defaults to {@link Precedence#WHITELIST}.
+ * The value returned by {@link #getWhitelistBlacklistPrecedence()} defaults to
+ * {@link org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence#WHITELIST}.
  * </p>
  */
 public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistConfiguration {
