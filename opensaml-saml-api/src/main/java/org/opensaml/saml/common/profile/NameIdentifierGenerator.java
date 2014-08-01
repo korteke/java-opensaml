@@ -28,7 +28,7 @@ import org.opensaml.saml.common.SAMLObject;
 
 /**
  * Interface for a component that produces SAML {@link org.opensaml.saml.saml1.core.NameIdentifier}
- * and/or {@link org.opensaml.saml.saml2.NameID} objects for inclusion in assertion subjects.
+ * and/or {@link org.opensaml.saml.saml2.core.NameID} objects for inclusion in assertion subjects.
  * 
  * <p>Such a component typically consumes attribute information produced about the subject and
  * transforms it (possibly via identity function) into use as a subject identifier. This operation

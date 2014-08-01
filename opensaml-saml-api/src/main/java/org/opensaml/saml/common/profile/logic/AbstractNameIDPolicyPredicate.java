@@ -44,8 +44,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 
 /**
- * Base class for implementations of {@link NameIDPolicyPredicate} that handles all the basic lookup
- * functions and calls the {@link #doApply(String, String, String, String)} method to do actual work.
+ * Base class for implementations of {@link Predicate} that handle evaluation of name identifier content in various
+ * scenarios.
  */
 public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializableComponent
         implements Predicate<ProfileRequestContext> {
@@ -75,8 +75,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setRequesterIdLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,String> strategy) {
+    public void setRequesterIdLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         requesterIdLookupStrategy = strategy;
@@ -87,8 +86,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setResponderIdLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,String> strategy) {
+    public void setResponderIdLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         responderIdLookupStrategy = strategy;
@@ -99,8 +97,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * 
      * @param strategy lookup function
      */
-    public synchronized void setObjectLookupStrategy(
-            @Nullable final Function<ProfileRequestContext,SAMLObject> strategy) {
+    public void setObjectLookupStrategy(@Nullable final Function<ProfileRequestContext,SAMLObject> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         objectLookupStrategy = Constraint.isNotNull(strategy, "Object lookup strategy cannot be null");
@@ -111,7 +108,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * 
      * @param newFormats    formats to apply predicate to
      */
-    public synchronized void setFormats(@Nonnull @NonnullElements final Collection<String> newFormats) {
+    public void setFormats(@Nonnull @NonnullElements final Collection<String> newFormats) {
         Constraint.isNotNull(formats, "Format collection cannot be null");
         
         for (final String s : newFormats) {

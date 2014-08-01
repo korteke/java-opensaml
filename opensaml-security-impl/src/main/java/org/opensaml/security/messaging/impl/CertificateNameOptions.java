@@ -100,7 +100,7 @@ public class CertificateNameOptions implements Cloneable {
 
     /**
      * Get the handler responsible for serializing X.500 names to strings from certificate-derived
-     * {@link X500Principal} instances.
+     * {@link javax.security.auth.x500.X500Principal} instances.
      * 
      * @return Returns the x500DNHandler.
      */
@@ -110,7 +110,7 @@ public class CertificateNameOptions implements Cloneable {
 
     /**
      * Set the handler responsible for serializing X.500 names to strings from certificate-derived
-     * {@link X500Principal} instances.
+     * {@link javax.security.auth.x500.X500Principal} instances.
      * 
      * @param handler the new x500DNHandler value.
      */

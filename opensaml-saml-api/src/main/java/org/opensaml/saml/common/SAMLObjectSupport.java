@@ -45,7 +45,7 @@ public final class SAMLObjectSupport {
      * {@link SignatureConstants#TRANSFORM_C14N_EXCL_OMIT_COMMENTS}
      * or {@link SignatureConstants#TRANSFORM_C14N_EXCL_WITH_COMMENTS}, 
      * it declares on the object all non-visible namespaces
-     * as determined by {@link NamespaceManager#getNonVisibleNamespaces()}.
+     * as determined by {@link org.opensaml.core.xml.XMLObject.NamespaceManager#getNonVisibleNamespaces()}.
      * </p>
      * 
      * @param signableObject the signable SAML object to evaluate
@@ -55,9 +55,9 @@ public final class SAMLObjectSupport {
         if (signableObject.getDOM() == null && signableObject.getSignature() != null) {
             log.debug("Examing signed object for content references with exclusive canonicalization transform");
             boolean sawExclusive = false;
-            for (ContentReference cr : signableObject.getSignature().getContentReferences()) {
+            for (final ContentReference cr : signableObject.getSignature().getContentReferences()) {
                 if (cr instanceof SAMLObjectContentReference) {
-                    List<String> transforms = ((SAMLObjectContentReference)cr).getTransforms();
+                    final List<String> transforms = ((SAMLObjectContentReference)cr).getTransforms();
                     if (transforms.contains(SignatureConstants.TRANSFORM_C14N_EXCL_WITH_COMMENTS) 
                             || transforms.contains(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS)) {
                         sawExclusive = true;
@@ -68,7 +68,7 @@ public final class SAMLObjectSupport {
             
             if (sawExclusive) {
                 log.debug("Saw exclusive transform, declaring non-visible namespaces on signed object");
-                for (Namespace ns : signableObject.getNamespaceManager().getNonVisibleNamespaces()) {
+                for (final Namespace ns : signableObject.getNamespaceManager().getNonVisibleNamespaces()) {
                     signableObject.getNamespaceManager().registerNamespaceDeclaration(ns);
                 }
             }

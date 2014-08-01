@@ -25,7 +25,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.messaging.context.MessageContext;
 
 /**
- * A {@link Function} that returns the message from a {@link MessageContext}.
+ * A {@link ContextDataLookupFunction} that returns the message from a {@link MessageContext}.
  * 
  * @param <T> type of message
  */

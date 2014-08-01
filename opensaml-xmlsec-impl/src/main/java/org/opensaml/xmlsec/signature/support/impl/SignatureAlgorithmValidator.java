@@ -97,8 +97,14 @@ public class SignatureAlgorithmValidator {
         whitelistedAlgorithmURIs = whitelistAlgos;
         blacklistedAlgorithmURIs = blacklistAlgos;
     }
-    
-    /** {@inheritDoc}. */
+
+    /**
+     * Validate the algorithms in the signature.
+     * 
+     * @param signature signature to validate
+     * 
+     * @throws SignatureException   if validation fails
+     */
     public void validate(@Nonnull final Signature signature) throws SignatureException {
         Constraint.isNotNull(signature, "Signature was null");
         checkDOM(signature);

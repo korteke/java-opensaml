@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Unmarshaller for the &lt;wsa:ProblemHeaderQName&gt; element.
  * 
- * @see MessageID
+ * @see org.opensaml.soap.wsaddressing.ProblemHeaderQName
  * 
  */
 public class ProblemHeaderQNameUnmarshaller extends AttributedQNameUnmarshaller {

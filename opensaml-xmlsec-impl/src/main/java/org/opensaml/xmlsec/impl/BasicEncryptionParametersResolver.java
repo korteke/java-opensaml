@@ -55,7 +55,7 @@ import com.google.common.collect.Collections2;
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
  * <ul>
- * <li>{@link EncryptionConfiguratonCriterion} - required</li> 
+ * <li>{@link EncryptionConfigurationCriterion} - required</li> 
  * <li>{@link KeyInfoGenerationProfileCriterion} - optional</li> 
  * </ul>
  * </p>

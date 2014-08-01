@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Marshaller for the &lt;wsa:ProblemHeaderQName&gt; element.
  * 
- * @see ProblemHeaderQName
+ * @see org.opensaml.soap.wsaddressing.ProblemHeaderQName
  * 
  */
 public class ProblemHeaderQNameMarshaller extends AttributedQNameMarshaller {

@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Unmarshaller for the &lt;wsa:ProblemIRI&gt; element.
  * 
- * @see ProblemIRI
+ * @see org.opensaml.soap.wsaddressing.ProblemIRI
  * 
  */
 public class ProblemIRIUnmarshaller extends AttributedURIUnmarshaller {

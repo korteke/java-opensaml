@@ -39,7 +39,7 @@ import com.google.common.collect.Iterables;
 
 /**
  * An abstract implementation of {@link org.opensaml.security.credential.CredentialResolver} that
- * filters the returned Credentials based on the instances of {@link Predicate<Credential>}
+ * filters the returned Credentials based on the instances of {@link Predicate}
  * which are present in the set of criteria as instances of {@link EvaluableCredentialCriterion}, 
  * or which are obtained via lookup in the {@link EvaluableCredentialCriteriaRegistry}.
  */
