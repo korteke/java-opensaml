@@ -129,7 +129,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiableInitializ
      * Set the map entry factory.
      * 
      * <p>
-     * In addition to implementing the {@link SAMLArtifactMap.SAMLArtifactMapEntryFactory} interface, the injected
+     * In addition to implementing the {@link SAMLArtifactMapEntryFactory} interface, the injected
      * object must support the {@link StorageSerializer} interface to enable entries to be stored via the injected
      * {@link StorageService} instance.
      * </p>
