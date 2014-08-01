@@ -199,7 +199,6 @@ public class RequestContextBuilder {
      * The default implementation builds a {@link MessageContext} that contains:
      * <ul>
      * <li>the message provided by {@link #setInboundMessage(Object)}</li>
-     * <li>a {@link BasicMessageMetadataContext} created by {@link #buildInboudMessageMetadataContext(MessageContext)}</li>
      * </ul>
      * 
      * @return the constructed {@link MessageContext}
@@ -216,7 +215,6 @@ public class RequestContextBuilder {
      * The default implementation builds a {@link MessageContext} that contains:
      * <ul>
      * <li>the message provided by {@link #setOutboundMessage(Object)}</li>
-     * <li>a {@link BasicMessageMetadataContext} created by {@link #buildOutboundMessageMetadataContext()}</li>
      * </ul>
      * 
      * @return the constructed {@link MessageContext}

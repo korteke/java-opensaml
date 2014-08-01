@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Unmarshaller for the &lt;wsa:EndpointReference&gt; element.
  * 
- * @see EndpointReference
+ * @see org.opensaml.soap.wsaddressing.EndpointReference
  * 
  */
 public class EndpointReferenceUnmarshaller extends EndpointReferenceTypeUnmarshaller {

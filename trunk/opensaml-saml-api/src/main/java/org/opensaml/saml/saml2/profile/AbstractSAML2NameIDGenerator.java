@@ -71,11 +71,11 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
     
     /**
      * Set the strategy used to locate the {@link AuthnRequest} to check for a
-     * {@org.opensaml.saml.saml2.core.NameIDPolicy}.
+     * {@link org.opensaml.saml.saml2.core.NameIDPolicy}.
      * 
      * @param strategy lookup strategy
      */
-    public synchronized void setRequestLookupStrategy(
+    public void setRequestLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
     

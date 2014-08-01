@@ -223,7 +223,7 @@ public class AddSOAPFault extends AbstractProfileAction {
         fault.setMessage(fs);
     }
     
-    /** A default method to map event IDs to faultcode QName based on {@link PreviousEventContext}. */
+    /** A default method to map event IDs to faultcode QName based on {@link EventContext}. */
     public static class FaultCodeMappingFunction implements Function<ProfileRequestContext,QName> {
 
         /** Code mappings. */

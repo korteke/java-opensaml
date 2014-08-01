@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Marshaller for the &lt;wsa:To&gt; element.
  * 
- * @see To
+ * @see org.opensaml.soap.wsaddressing.To
  * 
  */
 public class ToMarshaller extends AttributedURIMarshaller {

@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Unmarshaller for the &lt;wsa:MessageID&gt; element.
  * 
- * @see MessageID
+ * @see org.opensaml.soap.wsaddressing.MessageID
  * 
  */
 public class MessageIDUnmarshaller extends AttributedURIUnmarshaller {

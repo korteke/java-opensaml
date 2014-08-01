@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Marshaller for the &lt;wsa:EndpointReference&gt; element.
  * 
- * @see EndpointReference
+ * @see org.opensaml.soap.wsaddressing.EndpointReference
  * 
  */
 public class EndpointReferenceMarshaller extends EndpointReferenceTypeMarshaller {

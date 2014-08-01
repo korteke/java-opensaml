@@ -99,7 +99,7 @@ public final class SAMLBindingSupport {
     
     /**
      * Get the response URL from the relying party endpoint. If the SAML message is a 
-     * {@link StatusResponseType} and the relying party endpoint contains a response location 
+     * response and the relying party endpoint contains a response location 
      * then that location is returned otherwise the normal endpoint location is returned.
      * 
      * @param messageContext current message context

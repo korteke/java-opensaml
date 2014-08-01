@@ -20,7 +20,7 @@ package org.opensaml.soap.wsaddressing.impl;
 /**
  * Unmarshaller for the &lt;wsa:Action&gt; element.
  * 
- * @see Action
+ * @see org.opensaml.soap.wsaddressing.Action
  * 
  */
 public class ActionUnmarshaller extends AttributedURIUnmarshaller {
