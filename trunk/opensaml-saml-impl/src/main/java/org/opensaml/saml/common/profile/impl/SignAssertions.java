@@ -179,7 +179,7 @@ public class SignAssertions extends AbstractProfileAction {
                 logResponse("Response after signing:");
             }
         } catch (final SecurityException | MarshallingException | SignatureException e) {
-            log.warn(getLogPrefix() + " Error encountered while signing assertions", e);
+            log.warn("{} Error encountered while signing assertions", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_SIGN);
         }
     }

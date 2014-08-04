@@ -155,7 +155,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
                             return url;
                         }
                     } catch (BindingException e) {
-                        log.debug(getLogPrefix() + " Error getting response endpoint", e);
+                        log.debug("{} Error getting response endpoint", getLogPrefix(), e);
                     }
                 }
                 log.debug("{} Setting confirmation data Recipient to (none)", getLogPrefix());

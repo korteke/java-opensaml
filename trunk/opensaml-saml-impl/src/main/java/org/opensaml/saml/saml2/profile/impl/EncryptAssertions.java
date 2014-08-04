@@ -138,7 +138,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
                 }
                 accumulator.add(getEncrypter().encrypt(assertion));
             } catch (final EncryptionException e) {
-                log.warn(getLogPrefix() + " Error encrypting assertion", e);
+                log.warn("{} Error encrypting assertion", getLogPrefix(), e);
                 ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCRYPT);
                 return;
             }
