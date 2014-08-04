@@ -298,7 +298,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
                 return false;
             }
         } catch (SecurityException e) {
-            log.warn(getLogPrefix() + " Error evaluating the request's simple signature using the trust engine", e);
+            log.warn("{} Error evaluating the request's simple signature using the trust engine", getLogPrefix(), e);
             throw new MessageHandlerException("Error during trust engine evaluation of the simple signature", e);
         }
     }

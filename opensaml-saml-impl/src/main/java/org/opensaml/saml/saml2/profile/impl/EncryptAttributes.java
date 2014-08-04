@@ -144,7 +144,7 @@ public class EncryptAttributes extends AbstractEncryptAction {
                         }
                         accumulator.add(getEncrypter().encrypt(attribute));
                     } catch (final EncryptionException e) {
-                        log.warn(getLogPrefix() + " Error encrypting attribute", e);
+                        log.warn("{} Error encrypting attribute", getLogPrefix(), e);
                         ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCRYPT);
                         return;
                     }

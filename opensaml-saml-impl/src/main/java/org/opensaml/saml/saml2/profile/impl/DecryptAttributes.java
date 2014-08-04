@@ -76,7 +76,7 @@ public class DecryptAttributes extends AbstractDecryptAction {
                 return;
             }
         } catch (final DecryptionException e) {
-            log.warn(getLogPrefix() + "Failure performing decryption", e);
+            log.warn("{} Failure performing decryption", getLogPrefix(), e);
             if (isErrorFatal()) {
                 ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.DECRYPT_ATTRIBUTE_FAILED);
             }
@@ -134,7 +134,8 @@ public class DecryptAttributes extends AbstractDecryptAction {
                     if (isErrorFatal()) {
                         throw e;
                     }
-                    log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedAttribute in AttributeStatement", e);
+                    log.warn("{} Trapped failure decrypting EncryptedAttribute in AttributeStatement", getLogPrefix(),
+                            e);
                 }
             }
             

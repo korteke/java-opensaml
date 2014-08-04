@@ -96,7 +96,7 @@ public class DecryptNameIDs extends AbstractDecryptAction {
                 return;
             }
         } catch (final DecryptionException e) {
-            log.warn(getLogPrefix() + "Failure performing decryption", e);
+            log.warn("{} Failure performing decryption", getLogPrefix(), e);
             if (isErrorFatal()) {
                 ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.DECRYPT_NAMEID_FAILED);
             }
@@ -183,7 +183,7 @@ public class DecryptNameIDs extends AbstractDecryptAction {
                     if (isErrorFatal()) {
                         throw e;
                     }
-                    log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in Subject", e);
+                    log.warn("{} Trapped failure decrypting EncryptedID in Subject", getLogPrefix(), e);
                 }
             }
             
@@ -200,7 +200,7 @@ public class DecryptNameIDs extends AbstractDecryptAction {
                         if (isErrorFatal()) {
                             throw e;
                         }
-                        log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in SubjectConfirmation", e);
+                        log.warn("{} Trapped failure decrypting EncryptedID in SubjectConfirmation", getLogPrefix(), e);
                     }
                 }
             }
@@ -319,7 +319,7 @@ public class DecryptNameIDs extends AbstractDecryptAction {
             if (isErrorFatal()) {
                 throw e;
             }
-            log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedIDs in Subjectn", e);
+            log.warn("{} Trapped failure decrypting EncryptedIDs in Subject", getLogPrefix(), e);
         }
             
         
@@ -341,7 +341,7 @@ public class DecryptNameIDs extends AbstractDecryptAction {
                             if (isErrorFatal()) {
                                 throw e;
                             }
-                            log.warn(getLogPrefix() + "Trapped failure decrypting EncryptedID in Delegate", e);
+                            log.warn("{} Trapped failure decrypting EncryptedID in Delegate", getLogPrefix(), e);
                         }
                     }
                 }

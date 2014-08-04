@@ -177,7 +177,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
                 return;
             }
         } catch (final EncryptionException e) {
-            log.warn(getLogPrefix() + "Error encrypting NameID", e);
+            log.warn("{} Error encrypting NameID", getLogPrefix(), e);
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCRYPT);
         }
     }
