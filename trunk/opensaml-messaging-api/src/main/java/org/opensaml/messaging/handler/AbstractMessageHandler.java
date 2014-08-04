@@ -54,8 +54,8 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractInitia
                     doPostInvoke(messageContext, e);
                 } catch (Throwable t) {
                     LoggerFactory.getLogger(AbstractMessageHandler.class).warn(
-                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
-                                    + "superseding a MessageHandlerException ", e);
+                            "{} Unchecked exception/error thrown by doPostInvoke, "
+                                    + "superseding a MessageHandlerException ", getLogPrefix(), e);
                     t.addSuppressed(e);
                     throw t;
                 }
@@ -65,8 +65,8 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractInitia
                     doPostInvoke(messageContext);
                 } catch (Throwable t2) {
                     LoggerFactory.getLogger(AbstractMessageHandler.class).warn(
-                            getLogPrefix() + " Unchecked exception/error thrown by doPostInvoke, "
-                                    + "superseding an unchecked exception/error ", t);
+                            "{} Unchecked exception/error thrown by doPostInvoke, "
+                                    + "superseding an unchecked exception/error ", getLogPrefix(), t);
                     t2.addSuppressed(t);
                     throw t2;
                 }
