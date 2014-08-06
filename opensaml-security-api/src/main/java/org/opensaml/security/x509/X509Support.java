@@ -46,11 +46,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.bouncycastle.asn1.ASN1Primitive;
-import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
-import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.cryptacular.util.CertUtil;
 import org.cryptacular.util.CodecUtil;
