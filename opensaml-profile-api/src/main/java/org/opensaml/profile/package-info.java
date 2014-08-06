@@ -16,6 +16,6 @@
  */
 
 /**
- * Genercal classes related to profile behavior.
+ * General classes related to profile behavior.
  */
 package org.opensaml.profile;
