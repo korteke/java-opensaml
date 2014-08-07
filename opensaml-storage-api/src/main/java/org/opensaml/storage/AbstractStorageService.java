@@ -73,6 +73,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * 
      */
     public AbstractStorageService() {
+        // TODO(RDW) Implict setID.
         setId(getClass().getName());
     }
 
