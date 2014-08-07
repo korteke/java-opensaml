@@ -62,16 +62,16 @@ public interface Organization extends SAMLObject, AttributeExtensibleXMLObject {
     public void setExtensions(Extensions extensions) throws IllegalArgumentException;
 
     /**
-     * Gets the list of names for this organization.
+     * Gets a list of names for this organization.
      * 
-     * @return names for this organization
+     * @return list of names for this organization
      */
     public List<OrganizationName> getOrganizationNames();
 
     /**
-     * Gets a list of diaplay names for this organization.
+     * Gets a list of display names for this organization.
      * 
-     * @return list of names
+     * @return list of display names for this organization
      */
     public List<OrganizationDisplayName> getDisplayNames();
 
