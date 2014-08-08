@@ -83,7 +83,7 @@ public class JPAStorageService extends AbstractStorageService {
 
     /** {@inheritDoc} */
     @Override public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable @Positive Long expiration) throws IOException {
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException {
         EntityManager manager = null;
         EntityTransaction transaction = null;
         try {
