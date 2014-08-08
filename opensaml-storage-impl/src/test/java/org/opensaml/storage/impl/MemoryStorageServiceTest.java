@@ -35,6 +35,7 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
     @Override
     @Nonnull protected StorageService getStorageService() {
         MemoryStorageService ss = new MemoryStorageService();
+        ss.setId("test");
         ss.setCleanupInterval(1000);
         return ss;
     }
@@ -42,7 +43,7 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
     @Test
     public void validConfig() throws ComponentInitializationException {
         MemoryStorageService ss = new MemoryStorageService();
-        
+        ss.setId("test");
         ss.initialize();
         ss.destroy();
     }

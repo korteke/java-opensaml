@@ -27,7 +27,6 @@ import org.opensaml.saml.common.binding.security.impl.MessageReplaySecurityHandl
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.storage.ReplayCache;
-import org.opensaml.storage.StorageService;
 import org.opensaml.storage.impl.MemoryStorageService;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -44,7 +43,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
 
     private String messageID;
 
-    private StorageService storageService;
+    private MemoryStorageService storageService;
 
     private ReplayCache replayCache;
 
@@ -58,6 +57,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
         messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageId(messageID);
 
         storageService = new MemoryStorageService();
+        storageService.setId("test");
         storageService.initialize();
         
         replayCache = new ReplayCache();

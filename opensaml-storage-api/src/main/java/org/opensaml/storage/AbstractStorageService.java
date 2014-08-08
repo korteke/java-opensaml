@@ -69,15 +69,6 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     @Positive private int valueSize;
 
     /**
-     * Constructor.
-     * 
-     */
-    public AbstractStorageService() {
-        // TODO(RDW) Implict setID.
-        setId(getClass().getName());
-    }
-
-    /**
      * Gets the number of milliseconds between one cleanup and another. A value of 0 indicates that no cleanup will be
      * performed.
      * 

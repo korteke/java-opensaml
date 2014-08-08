@@ -94,6 +94,7 @@ public class JPAStorageServiceTest extends StorageServiceTest {
      */
     @AfterTest public void clearDatabase() throws ComponentInitializationException, IOException {
         JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
+        ss.setId("test");
         ss.initialize();
         List<String> contexts = ss.readContexts();
         for (String ctx : contexts) {
@@ -106,13 +107,14 @@ public class JPAStorageServiceTest extends StorageServiceTest {
 
     @Nonnull protected StorageService getStorageService() {
         JPAStorageService ss = new JPAStorageService(factory);
+        ss.setId("test");
         return ss;
     }
 
     @Test
     public void validConfig() throws ComponentInitializationException {
         JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
-        
+        ss.setId("test");
         ss.initialize();
         ss.destroy();
     }
@@ -120,6 +122,7 @@ public class JPAStorageServiceTest extends StorageServiceTest {
     @Test
     public void cleanup() throws ComponentInitializationException, IOException {
         JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
+        ss.setId("test");
         ss.setCleanupInterval(5000);
         ss.initialize();
 

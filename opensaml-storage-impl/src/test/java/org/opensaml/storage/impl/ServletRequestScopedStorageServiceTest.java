@@ -70,6 +70,7 @@ public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
     @Override
     @Nonnull protected StorageService getStorageService() {
         final ServletRequestScopedStorageService ss = new ServletRequestScopedStorageService();
+        ss.setId("test");
         ss.setCleanupInterval(0);
 
         final BasicKeystoreKeyStrategy strategy = new BasicKeystoreKeyStrategy();
