@@ -27,7 +27,6 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.saml.common.binding.artifact.impl.StorageServiceSAMLArtifactMap;
-import org.opensaml.storage.StorageService;
 import org.opensaml.storage.impl.MemoryStorageService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -39,7 +38,7 @@ import org.w3c.dom.Document;
  */
 public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
-    private StorageService storageService;
+    private MemoryStorageService storageService;
     private StorageServiceSAMLArtifactMap artifactMap;
 
     private String artifact = "the-artifact";
@@ -59,6 +58,7 @@ public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         samlObject.releaseDOM();
 
         storageService = new MemoryStorageService();
+        storageService.setId("test");
         storageService.initialize();
 
         artifactMap = new StorageServiceSAMLArtifactMap();

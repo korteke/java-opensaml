@@ -18,7 +18,6 @@
 package org.opensaml.storage.impl;
 
 import org.opensaml.storage.ReplayCache;
-import org.opensaml.storage.StorageService;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
@@ -35,7 +34,7 @@ public class ReplayCacheTest {
     
     private long expiration;
 
-    private StorageService storageService;
+    private MemoryStorageService storageService;
     
     private ReplayCache replayCache;
 
@@ -46,6 +45,7 @@ public class ReplayCacheTest {
         expiration = System.currentTimeMillis() + 180000;
 
         storageService = new MemoryStorageService();
+        storageService.setId("test");
         storageService.initialize();
         
         replayCache = new ReplayCache();

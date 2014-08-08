@@ -100,6 +100,7 @@ public class LDAPStorageServiceTest {
                 new LdapAttribute("objectClass", "inetOrgPerson", "organizationalPerson", "person", "top"),
                 new LdapAttribute("cn", "Principal"),
                 new LdapAttribute("sn", "Lastname"));
+        ss.setId("test");
         return ss;
     }
 
@@ -197,7 +198,7 @@ public class LDAPStorageServiceTest {
 
     @Test public void validConfig() throws ComponentInitializationException {
         LDAPStorageService ss = new LDAPStorageService(getPooledConnectionFactory());
-
+        ss.setId("test");
         ss.initialize();
         ss.destroy();
     }
