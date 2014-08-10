@@ -57,6 +57,8 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         File mdFile = new File(mdURL.toURI());
         FilesystemMetadataResolver fileProvider = new FilesystemMetadataResolver(mdFile);
         fileProvider.setParserPool(parserPool);
+        fileProvider.setId("test");
+
         fileProvider.initialize();
         resolvers.add(fileProvider);
 
@@ -67,11 +69,13 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         fileProvider2.setParserPool(parserPool);
         // For this test, need to set this because metadata.switchaai_signed.xml has an expired validUntil
         fileProvider2.setRequireValidMetadata(false);
+        fileProvider2.setId("fp2");
         fileProvider2.initialize();
         resolvers.add(fileProvider2);
         
         metadataProvider.setResolvers(resolvers);
-        
+        metadataProvider.setId("test");
+
         metadataProvider.initialize();
     }
 

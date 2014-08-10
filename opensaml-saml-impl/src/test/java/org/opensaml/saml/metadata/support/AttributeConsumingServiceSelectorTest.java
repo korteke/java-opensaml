@@ -17,14 +17,11 @@
 
 package org.opensaml.saml.metadata.support;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.File;
 import java.net.URL;
+
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -34,10 +31,12 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
-import org.opensaml.saml.metadata.support.AttributeConsumingServiceSelector;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Tests of AttributeConsumingServiceSelector.
@@ -61,6 +60,7 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
         
         mdProvider = new FilesystemMetadataResolver(mdFile);
         mdProvider.setParserPool(parserPool);
+        mdProvider.setId("test");
         mdProvider.initialize();
         
         roleResolver = new BasicRoleDescriptorResolver(mdProvider);

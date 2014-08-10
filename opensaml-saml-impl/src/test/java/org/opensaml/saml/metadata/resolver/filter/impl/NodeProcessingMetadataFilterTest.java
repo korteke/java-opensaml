@@ -65,6 +65,7 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
     @Test
     public void testBasicVisit() throws ComponentInitializationException {
         MetadataNodeProcessor processor = new MetadataNodeProcessor() {
+            @Override
             public void process(XMLObject metadataNode) throws FilterException {
                 if (metadataNode instanceof EntityDescriptor) {
                     metadataNode.getObjectMetadata().put(new TestData("EntityDescriptor"));
@@ -81,6 +82,7 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
         metadataFilter.initialize();
         
         metadataProvider.setMetadataFilter(metadataFilter);
+        metadataProvider.setId("test");
         metadataProvider.initialize();
         
         for (EntityDescriptor ed : metadataProvider) {

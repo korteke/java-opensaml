@@ -211,6 +211,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         
         DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
+        mdProvider.setId("test");
         mdProvider.setRequireValidMetadata(false);
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
@@ -237,6 +238,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         mdProvider.setRequireValidMetadata(false);
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        mdProvider.setId("test");
         mdProvider.setMetadataFilter(filter);
         
         try {

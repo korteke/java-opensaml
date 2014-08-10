@@ -170,6 +170,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         Document mdDoc = parserPool.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
         
         DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
+        mdProvider.setId("test");
         mdProvider.initialize();
         
         roleResolver = new BasicRoleDescriptorResolver(mdProvider);
