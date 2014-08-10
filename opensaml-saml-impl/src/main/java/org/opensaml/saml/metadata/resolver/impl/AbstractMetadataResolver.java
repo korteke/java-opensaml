@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
@@ -60,7 +59,7 @@ import org.w3c.dom.Document;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements
+public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements // TODO(RDW)
         MetadataResolver {
 
     /** Class logger. */
@@ -92,7 +91,6 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         failFastInitialization = true;
         requireValidMetadata = true;
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
-        setId(UUID.randomUUID().toString());
     }
 
     /** {@inheritDoc} */
