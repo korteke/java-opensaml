@@ -29,7 +29,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.impl.SAMLMetadataLookupHandler;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
@@ -64,6 +63,7 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
 
         final FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(mdFile);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
         metadataProvider.initialize();
         
         roleResolver = new BasicRoleDescriptorResolver(metadataProvider);

@@ -28,7 +28,6 @@ import net.shibboleth.utilities.java.support.resource.Resource;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.springframework.core.io.FileSystemResource;
 import org.testng.Assert;
@@ -55,6 +54,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new ResourceBackedMetadataResolver(new Timer(), mdResource);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMaxRefreshDelay(500000);
+        metadataProvider.setId("test");
         metadataProvider.initialize();
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));

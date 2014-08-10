@@ -81,6 +81,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
 
         metadataResolver = new FilesystemMetadataResolver(mdFile);
         metadataResolver.setParserPool(parserPool);
+        metadataResolver.setId("md");
         metadataResolver.initialize();
     }
     
@@ -323,6 +324,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         public MockSAML2NameIDGenerator(@Nonnull final String id) {
             setId("test");
             setDefaultIdPNameQualifierLookupStrategy(new Function<ProfileRequestContext,String>() {
+                @Override
                 public String apply(ProfileRequestContext input) {
                     return NAME_QUALIFIER;
                 }

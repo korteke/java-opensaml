@@ -76,6 +76,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testGetEntityDescriptor() throws ComponentInitializationException, ResolverException {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, backupFilePath);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
         metadataProvider.initialize();
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
@@ -109,6 +110,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, badMDURL, backupFilePath);
         
         metadataProvider.setFailFastInitialization(false);
+        metadataProvider.setId("test");
         metadataProvider.setParserPool(parserPool);
         
         try {
@@ -160,6 +162,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         }
         metadataProvider.setFailFastInitialization(false);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
         
         try {
             metadataProvider.initialize();
@@ -181,6 +184,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         // Do a setup here to get a good backup file
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClient, mdUrl, backupFilePath);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");        
         metadataProvider.initialize();
         
         Assert.assertNotNull(metadataProvider.resolveSingle(criteriaSet), "Retrieved metadata was null");
@@ -194,6 +198,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         FileBackedHTTPMetadataResolver badProvider = new FileBackedHTTPMetadataResolver(httpClient, badMDURL, backupFilePath);
         badProvider.setParserPool(parserPool);
         badProvider.setFailFastInitialization(false);
+        badProvider.setId("bad");
         badProvider.initialize();
         
         Assert.assertNotNull(metadataProvider.resolveSingle(criteriaSet), "Metadata retrieved from backing file was null");

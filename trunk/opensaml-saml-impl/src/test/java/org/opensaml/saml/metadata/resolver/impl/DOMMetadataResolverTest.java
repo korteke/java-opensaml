@@ -59,6 +59,7 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
         
 
         metadataProvider = new DOMMetadataResolver(document.getDocumentElement());
+        metadataProvider.setId("test");
         metadataProvider.initialize();
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
@@ -83,6 +84,7 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setFailFastInitialization(false);
             metadataProvider.setRequireValidMetadata(true);
             metadataProvider.setParserPool(parserPool);
+            metadataProvider.setId("test");
             metadataProvider.initialize();
         } catch (ComponentInitializationException e) {
             Assert.fail("DOM metadata provider init failed due to filter exception and fail fast = false");

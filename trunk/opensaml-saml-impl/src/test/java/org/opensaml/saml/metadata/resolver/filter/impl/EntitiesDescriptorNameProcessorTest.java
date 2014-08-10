@@ -62,6 +62,7 @@ public class EntitiesDescriptorNameProcessorTest extends XMLObjectBaseTestCase {
         metadataProvider = new FilesystemMetadataResolver(mdFile);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(metadataFilter);
+        metadataProvider.setId("Test");
         metadataProvider.initialize();
     }
     

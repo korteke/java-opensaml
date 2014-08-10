@@ -54,6 +54,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
         metadataProvider.initialize();
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
@@ -77,6 +78,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new HTTPMetadataResolver(httpClient, badMDURL);
         
         metadataProvider.setFailFastInitialization(true);
+        metadataProvider.setId("test");
         metadataProvider.setParserPool(parserPool);
         
         try {
@@ -95,6 +97,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new HTTPMetadataResolver(httpClient, badMDURL);
         
         metadataProvider.setFailFastInitialization(false);
+        metadataProvider.setId("test");
         metadataProvider.setParserPool(parserPool);
         
         try {

@@ -59,7 +59,7 @@ import org.w3c.dom.Document;
 import com.google.common.base.Strings;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements // TODO(RDW)
+public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements
         MetadataResolver {
 
     /** Class logger. */

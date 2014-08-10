@@ -57,6 +57,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
+        metadataProvider.setId("test");
         metadataProvider.initialize();
     }
     
@@ -69,6 +70,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
+        metadataProvider.setId("test");
         metadataProvider.initialize();
     }
     
@@ -79,6 +81,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
         HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
+        metadataProvider.setId("test");
         metadataProvider.initialize();
     }
 }
