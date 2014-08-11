@@ -23,31 +23,45 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-
 /**
  * This interface defines how the object representing a SAML1 <code> Response </code> element behaves.
  */
 public interface Response extends ResponseAbstractType {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
-    
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
-    
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "ResponseAbstractType"; 
-        
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
 
-    /** Return the object representing the <code> Status <code> (element). */
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML1P_PREFIX);
+
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ResponseAbstractType";
+
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML1P_PREFIX);
+
+    /**
+     * Return the object representing the <code> Status </code> (element).
+     * 
+     * @return the Status
+     */
     Status getStatus();
 
-    /** Set the object representing the <code> Status <code> (element). */
+    /**
+     * Set the object representing the <code> Status </code> (element).
+     * 
+     * @param status what to set
+     * @throws IllegalArgumentException if status is invalid.
+     */
     void setStatus(Status status) throws IllegalArgumentException;
 
-    /** Return the object representing the <code>Assertion<code> (element). */
+    /**
+     * Return the objects representing the <code>Assertion</code> (element).
+     * 
+     * @return the Assertion objects
+     */
     public List<Assertion> getAssertions();
 
 }

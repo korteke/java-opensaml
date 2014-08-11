@@ -18,6 +18,7 @@
 /**
  * 
  */
+
 package org.opensaml.saml.saml1.core;
 
 import java.util.List;
@@ -27,49 +28,68 @@ import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.SignableSAMLObject;
 
 /**
- * This interface describes the base class for types derived from
- * <code> RequestAbstractType </code>
+ * This interface describes the base class for types derived from <code> RequestAbstractType </code>.
  */
 public interface RequestAbstractType extends SignableSAMLObject {
 
     /** Name for the attribute which defines the Major Version (which must be "1". */
-    public final static String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    public static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines the Minor Version. */
-    public final static String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    public static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
     /** Name for the attribute which defines the Issue Instant. */
-    public final static String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    public static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** Name for the attribute which defines the Issue Instant. */
-    public final static String ID_ATTRIB_NAME = "RequestID";
+    public static final String ID_ATTRIB_NAME = "RequestID";
 
-    /** 
-     * Gets the SAML version of this message. 
+    /**
+     * Gets the SAML version of this message.
      * 
      * @return the SAML version of this message
      */
     public SAMLVersion getVersion();
-    
+
     /**
      * Sets the SAML version of this message.
      * 
      * @param version SAML version of this message
      */
     public void setVersion(SAMLVersion version);
-      
-    /** Get the issue instant */
+
+    /**
+     * Get the issue instant.
+     * 
+     * @return the issue instant
+     */
     public DateTime getIssueInstant();
- 
-    /** Get the ID */
-    public String getID();
-    
-    /** Set the ID */
-    public void setID(String id);
-    
-    /** Set the issue instant */
+
+    /**
+     * Set the issue instant.
+     * 
+     * @param date what to set
+     */
     public void setIssueInstant(DateTime date);
- 
-    /** Return the list of RespondWith elements */
-    public List <RespondWith> getRespondWiths();
+
+    /**
+     * Get the ID.
+     * 
+     * @return the ID
+     */
+    public String getID();
+
+    /**
+     * Set the ID.
+     * 
+     * @param id what to set
+     */
+    public void setID(String id);
+
+    /**
+     * Return the list of RespondWith elements.
+     * 
+     * @return the list of RespondWith elements
+     */
+    public List<RespondWith> getRespondWiths();
 }
