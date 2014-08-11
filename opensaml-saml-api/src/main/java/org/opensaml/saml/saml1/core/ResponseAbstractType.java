@@ -27,42 +27,58 @@ import org.opensaml.saml.common.SignableSAMLObject;
 public interface ResponseAbstractType extends SignableSAMLObject {
 
     /** Name for the attribute which defines InResponseTo. */
-    public final static String INRESPONSETO_ATTRIB_NAME = "InResponseTo";
+    public static final String INRESPONSETO_ATTRIB_NAME = "InResponseTo";
 
     /** Name for the attribute which defines the Major Version (which must be "1". */
-    public final static String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    public static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines the Minor Version. */
-    public final static String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    public static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
     /** Name for the attribute which defines the Issue Instant. */
-    public final static String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    public static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** Name for the attribute which defines the Recipient. */
-    public final static String RECIPIENT_ATTRIB_NAME = "Recipient";
+    public static final String RECIPIENT_ATTRIB_NAME = "Recipient";
 
     /** Name for the attribute which defines the Issue Instant. */
-    public final static String ID_ATTRIB_NAME = "ResponseID";
+    public static final String ID_ATTRIB_NAME = "ResponseID";
 
-   /** Return the InResponseTo (attribute). */
+    /**
+     * Return the InResponseTo (attribute).
+     * 
+     * @return the InResponseTo (attribute).
+     */
     String getInResponseTo();
 
-    /** Set the InResponseTo (attribute). */
+    /**
+     * Set the InResponseTo (attribute).
+     * 
+     * @param who what to set
+     */
     void setInResponseTo(String who);
 
-    /** Get the ID */
+    /**
+     * Get the ID.
+     * 
+     * @return the ID
+     */
     public String getID();
-    
-    /** Set the ID */
+
+    /**
+     * Set the ID.
+     * 
+     * @param id what to set
+     */
     public void setID(String id);
-    
+
     /**
      * Sets the SAML version for this message.
      * 
      * @return SAML version for this message
      */
     public SAMLVersion getVersion();
-    
+
     /**
      * Sets the SAML version for this message.
      * 
@@ -70,15 +86,27 @@ public interface ResponseAbstractType extends SignableSAMLObject {
      */
     public void setVersion(SAMLVersion version);
 
-    /** Return the Issue Instant (attribute). */
+    /**
+     * Return the Issue Instant (attribute).
+     * 
+     * @return the IssueInstant
+     */
     public DateTime getIssueInstant();
 
-    /** Set the Issue Instant (attribute). */
+    /** Set the Issue Instant (attribute).     * 
+     * @param date what to set
+     */
     public void setIssueInstant(DateTime date);
 
-    /** Return the Recipient (attribute). */
+    /**
+     * Return the Recipient (attribute). .
+     * 
+     * @return the Recipient
+     */
     public String getRecipient();
 
-    /** Set the Recipient (attribute). */
+    /** Set the Recipient (attribute).     * 
+     * @param recipient what to set
+     */
     public void setRecipient(String recipient);
 }
