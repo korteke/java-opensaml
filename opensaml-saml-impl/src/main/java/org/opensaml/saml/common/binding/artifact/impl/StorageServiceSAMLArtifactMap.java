@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.annotation.Duration;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -39,8 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Artifact map implementation backed by {@link StorageService}. */
-public class StorageServiceSAMLArtifactMap extends AbstractIdentifiableInitializableComponent implements
-        SAMLArtifactMap {
+public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponent implements SAMLArtifactMap {
 
     /** Storage context label. */
     @Nonnull @NotEmpty public static final String STORAGE_CONTEXT = StorageServiceSAMLArtifactMap.class.getName();
@@ -62,7 +61,6 @@ public class StorageServiceSAMLArtifactMap extends AbstractIdentifiableInitializ
 
     /** Constructor. */
     public StorageServiceSAMLArtifactMap() {
-        setId(getClass().getName());
         entryFactory = new StorageServiceSAMLArtifactMapEntryFactory();
         artifactLifetime = 60000L;
     }
