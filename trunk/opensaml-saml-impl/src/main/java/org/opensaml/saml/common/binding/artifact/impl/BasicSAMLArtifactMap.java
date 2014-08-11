@@ -32,7 +32,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -44,7 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Basic artifact map implementation. */
-public class BasicSAMLArtifactMap extends AbstractIdentifiableInitializableComponent implements
+public class BasicSAMLArtifactMap extends AbstractInitializableComponent implements
         SAMLArtifactMap {
 
     /** Class Logger. */
@@ -70,7 +70,6 @@ public class BasicSAMLArtifactMap extends AbstractIdentifiableInitializableCompo
 
     /** Constructor. */
     public BasicSAMLArtifactMap() {
-        setId(getClass().getName());
         artifactLifetime = 60000L;
         cleanupInterval = 300;
         entryFactory = new ExpiringSAMLArtifactMapEntryFactory();
