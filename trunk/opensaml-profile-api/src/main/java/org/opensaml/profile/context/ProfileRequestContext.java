@@ -45,12 +45,16 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
     /** Unique identifier for the profile/operation/function of the current request. */
     private String profileId;
 
+    /** Logging label for the profile/operation/function . */
+    private String loggingId;
+    
     /** Whether the current profile request is browser-based. */
     private boolean browserProfile;
 
     /** Constructor. */
     public ProfileRequestContext() {
         profileId = ANONYMOUS_PROFILE_ID;
+        loggingId = ANONYMOUS_PROFILE_ID;
     }
 
     /**
@@ -72,10 +76,39 @@ public final class ProfileRequestContext<InboundMessageType, OutboundMessageType
         if (trimmedId == null) {
             profileId = ANONYMOUS_PROFILE_ID;
         } else {
-            profileId = id;
+            profileId = trimmedId;
         }
     }
 
+    /**
+     * Get the logging ID of the profile used by the current request.
+     * 
+     * <p>The logging ID is used for audit logging and may be used for other
+     * logging-related functions such as in diagnostic contexts.</p>
+     * 
+     * @return ID of the profile used for logging
+     */
+    @Nonnull @NotEmpty public String getLoggingId() {
+        return loggingId;
+    }
+
+    /**
+     * Set the logging ID of the profile used by the current request.
+     * 
+     * <p>The logging ID is used for audit logging and may be used for other
+     * logging-related functions such as in diagnostic contexts.</p>
+     * 
+     * @param id ID of the profile used for logging
+     */
+    public void setLoggingId(@Nullable final String id) {
+        final String trimmedId = StringSupport.trimOrNull(id);
+        if (trimmedId == null) {
+            loggingId = ANONYMOUS_PROFILE_ID;
+        } else {
+            loggingId = trimmedId;
+        }
+    }
+    
     /**
      * Get whether the current profile request is browser-based (defaults to false).
      * 
