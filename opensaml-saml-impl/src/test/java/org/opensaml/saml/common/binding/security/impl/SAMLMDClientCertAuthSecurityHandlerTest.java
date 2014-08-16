@@ -19,13 +19,13 @@ package org.opensaml.saml.common.binding.security.impl;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.security.impl.SAMLMDClientCertAuthSecurityHandler;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -35,12 +35,14 @@ import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
+import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
-import org.opensaml.security.messaging.impl.CertificateNameOptions;
+import org.opensaml.security.messaging.X509CredentialSecurityParametersContext;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509CredentialValidationParameters;
 import org.opensaml.security.x509.X509Support;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
@@ -115,6 +117,9 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     private String issuer;
     
+    private TrustEngine<X509Credential> trustEngine;
+    private CertificateNameOptions nameOptions;
+    
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -135,21 +140,23 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
         
-        final TrustEngine<X509Credential> engine = new ExplicitX509CertificateTrustEngine(credResolver);
+        trustEngine = new ExplicitX509CertificateTrustEngine(credResolver);
         
         request = new MockHttpServletRequest();
         request.setAttribute(ServletRequestX509CredentialAdapter.X509_CERT_REQUEST_ATTRIBUTE, 
                 new X509Certificate[] {validCert});
         
-        final CertificateNameOptions nameOptions = new CertificateNameOptions();
+        nameOptions = new CertificateNameOptions();
         nameOptions.setEvaluateSubjectCommonName(true);
         nameOptions.setEvaluateSubjectDN(false);
-        nameOptions.getSubjectAltNames().clear();
+        nameOptions.setSubjectAltNames(new HashSet<Integer>());
+        
+        X509CredentialValidationParameters params = new X509CredentialValidationParameters();
+        params.setX509TrustEngine(trustEngine);
+        params.setCertificateNameOptions(nameOptions);
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
-        handler.setTrustEngine(engine);
         handler.setHttpServletRequest(request);
-        handler.setCertificateNameOptions(nameOptions);
         handler.initialize();
         
         messageContext = new MessageContext<SAMLObject>();
@@ -157,6 +164,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.getSubcontext(X509CredentialSecurityParametersContext.class, true).setValidationParameters(params);
     }
     
     /**
@@ -236,6 +244,34 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         //TODO this may change
         Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
+    }
+    
+    /**
+     * Test case of no trust engine supplied.
+     * @throws MessageHandlerException
+     */
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNoTrustEngine() throws MessageHandlerException {
+        messageContext.getSubcontext(X509CredentialSecurityParametersContext.class).getValidationParameters()
+            .setX509TrustEngine(null);
+        
+        trustedCredentials.add(validX509Cred);
+        
+        handler.invoke(messageContext);
+    }
+
+    /**
+     * Test case of no cert name options supplied.
+     * @throws MessageHandlerException
+     */
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNoNameOptions() throws MessageHandlerException {
+        messageContext.getSubcontext(X509CredentialSecurityParametersContext.class).getValidationParameters()
+            .setCertificateNameOptions(null);
+        
+        trustedCredentials.add(validX509Cred);
+        
+        handler.invoke(messageContext);
     }
 
     protected AuthnRequest buildInboundSAMLMessage() {
