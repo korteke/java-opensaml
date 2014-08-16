@@ -35,6 +35,7 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.impl.BaseTrustEngineSecurityHandler;
+import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
@@ -47,6 +48,16 @@ import com.google.common.base.Strings;
 public abstract class BaseSAMLXMLSignatureSecurityHandler
         extends BaseTrustEngineSecurityHandler<Signature, SAMLObject> {
     
+    /** {@inheritDoc} */
+    protected TrustEngine<Signature> resolveTrustEngine(MessageContext<SAMLObject> messageContext) {
+        SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class, false);
+        if (secParams == null || secParams.getSignatureValidationParameters() == null) {
+            return null;
+        } else {
+            return secParams.getSignatureValidationParameters().getSignatureTrustEngine();
+        }
+    }
+
     /** {@inheritDoc} */
     @Override
     @Nonnull protected CriteriaSet buildCriteriaSet(@Nullable final String entityID,

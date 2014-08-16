@@ -22,6 +22,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
@@ -36,7 +37,10 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
+import org.opensaml.security.messaging.X509CredentialSecurityParametersContext;
+import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
@@ -120,18 +124,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * 
      * @return Returns the certNameOptions.
      */
-    public CertificateNameOptions getCertificateNameOptions() {
+    @Nullable protected CertificateNameOptions getCertificateNameOptions() {
         return certNameOptions;
-    }
-
-    /**
-     * Set the certificate name options in use.
-     * 
-     * @param options The certNameOptions to set.
-     */
-    public void setCertificateNameOptions(CertificateNameOptions options) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        certNameOptions = Constraint.isNotNull(options, "CertificateNameOptions may not be null");
     }
     
     /** {@inheritDoc} */
@@ -139,7 +133,31 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
         super.doInitialize();
         
         Constraint.isNotNull(httpServletRequest, "HttpServletRequest must be supplied");
-        Constraint.isNotNull(certNameOptions, "CertificateNameOptions must be supplied");
+    }
+    
+    /** {@inheritDoc} */
+    @Nullable protected TrustEngine<X509Credential> resolveTrustEngine(MessageContext<MessageType> messageContext) {
+        X509CredentialSecurityParametersContext secContext = 
+                messageContext.getSubcontext(X509CredentialSecurityParametersContext.class);
+        if (secContext == null || secContext.getValidationParameters() == null)  {
+            return null;
+        } else {
+            return secContext.getValidationParameters().getX509TrustEngine();
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected boolean doPreInvoke(MessageContext<MessageType> messageContext) throws MessageHandlerException {
+        X509CredentialSecurityParametersContext secContext = 
+                messageContext.getSubcontext(X509CredentialSecurityParametersContext.class);
+        if (secContext == null || secContext.getValidationParameters() == null 
+                || secContext.getValidationParameters().getCertificateNameOptions() == null)  {
+            throw new MessageHandlerException("CertificateNameOptions was not available from the MessageContext");
+        } else {
+            certNameOptions = secContext.getValidationParameters().getCertificateNameOptions();
+        }
+        
+        return super.doPreInvoke(messageContext);
     }
 
     /** {@inheritDoc} */
@@ -166,7 +184,7 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
         }
         doEvaluate(requestCredential, messageContext);
     }
-
+    
     /**
      * Evaluate the request credential.
      * 
@@ -498,5 +516,6 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
         log.debug("Extracted alt names from certificate: {}", names.toString());
         return names;
     }
+
 
 }

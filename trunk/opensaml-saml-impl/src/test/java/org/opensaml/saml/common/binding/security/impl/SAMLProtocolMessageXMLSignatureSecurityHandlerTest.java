@@ -27,7 +27,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLTestSupport;
-import org.opensaml.saml.common.binding.security.impl.SAMLProtocolMessageXMLSignatureSecurityHandler;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -35,14 +34,13 @@ import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
-import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -114,6 +112,10 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     private String issuer;
     
+    private SignatureTrustEngine signatureTrustEngine;
+    
+    private SignatureValidationParameters sigValParams;
+    
     @BeforeMethod
     protected void setUp() throws Exception {
         issuer = "SomeCoolIssuer";
@@ -137,10 +139,12 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         //KeyInfoCredentialResolver kiResolver = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
         //Testing with inline cert
         final KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
-        final TrustEngine<Signature> engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        signatureTrustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        
+        sigValParams = new SignatureValidationParameters();
+        sigValParams.setSignatureTrustEngine(signatureTrustEngine);
         
         handler = new SAMLProtocolMessageXMLSignatureSecurityHandler();
-        handler.setTrustEngine(engine);
         handler.initialize();
         
         messageContext = new MessageContext<SAMLObject>();
@@ -148,6 +152,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigValParams);
     }
     
     /**
@@ -174,9 +179,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSigntureAlgorithm() throws MessageHandlerException {
-        SignatureValidationParameters sigParams = new SignatureValidationParameters();
-        sigParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigParams);
+        sigValParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         
         trustedCredentials.add(signingX509Cred);
         
@@ -218,6 +221,16 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         handler.invoke(messageContext);
     }
     
+    /**
+     * Test no trust engine supplied.
+     * @throws MessageHandlerException 
+     */
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNoTrustEngine() throws MessageHandlerException {
+        messageContext.removeSubcontext(SecurityParametersContext.class);
+        
+        handler.invoke(messageContext);
+    }
 
     protected AuthnRequest buildInboundSAMLMessage() {
         AuthnRequest request = 

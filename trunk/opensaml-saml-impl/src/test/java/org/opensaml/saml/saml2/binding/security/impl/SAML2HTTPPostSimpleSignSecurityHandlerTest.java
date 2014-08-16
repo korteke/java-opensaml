@@ -44,7 +44,6 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.binding.encoding.impl.HTTPPostSimpleSignEncoder;
-import org.opensaml.saml.saml2.binding.security.impl.SAML2HTTPPostSimpleSignSecurityHandler;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
@@ -165,6 +164,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     private String issuer;
 
     private String expectedRelayValue = "cookieMonster";
+    
+    private SignatureTrustEngine signatureTrustEngine;
+    
+    private SignatureValidationParameters sigValParams;
 
     /** Velocity template engine. */
     private VelocityEngine velocityEngine;
@@ -207,11 +210,13 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         credResolver = new CollectionCredentialResolver(trustedCredentials);
 
         final KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
-        final SignatureTrustEngine engine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        signatureTrustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        
+        sigValParams = new SignatureValidationParameters();
+        sigValParams.setSignatureTrustEngine(signatureTrustEngine);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
         handler.setHttpServletRequest(buildServletRequest());
-        handler.setTrustEngine(engine);
         handler.setParser(parserPool);
         handler.setKeyInfoResolver(kiResolver);
         handler.initialize();
@@ -221,6 +226,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigValParams);
     }
 
     /**
@@ -246,9 +252,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
-        final SignatureValidationParameters sigParams = new SignatureValidationParameters();
-        sigParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigParams);
+        sigValParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         
         trustedCredentials.add(signingX509Cred);
 
@@ -317,6 +321,17 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
         request.removeParameter("KeyInfo");
 
+        handler.invoke(messageContext);
+    }
+    
+    /**
+     * Test no trust engine supplied.
+     * @throws MessageHandlerException 
+     */
+    @Test(expectedExceptions=MessageHandlerException.class)
+    public void testNoTrustEngine() throws MessageHandlerException {
+        messageContext.removeSubcontext(SecurityParametersContext.class);
+        
         handler.invoke(messageContext);
     }
 

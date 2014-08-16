@@ -17,9 +17,10 @@
 
 package org.opensaml.security.messaging.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -46,30 +47,37 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
     private TrustEngine<TokenType> trustEngine;
 
     /**
-     * Gets the engine used to validate the untrusted token.
+     * Gets the trust engine used to validate the untrusted token.
      * 
-     * @return engine engine used to validate the untrusted token
+     * @return trust engine used to validate the untrusted token
      */
-    public TrustEngine<TokenType> getTrustEngine() {
+    protected TrustEngine<TokenType> getTrustEngine() {
         return trustEngine;
     }
     
-    /**
-     * Sets the engine used to validate the untrusted token.
-     * 
-     * @param engine engine used to validate the untrusted token
-     */
-    public void setTrustEngine(TrustEngine<TokenType> engine) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        trustEngine = Constraint.isNotNull(engine, "TrustEngine may not be null");
-    }
-
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        
-        Constraint.isNotNull(trustEngine, "TrustEngine was not supplied");
     }
+
+    /** {@inheritDoc} */
+    protected boolean doPreInvoke(MessageContext<MessageType> messageContext) throws MessageHandlerException {
+        TrustEngine<TokenType> engine = resolveTrustEngine(messageContext);
+        if (engine == null) {
+            throw new MessageHandlerException("TrustEngine could not be resolved from MessageContext");
+        } else {
+            trustEngine = engine;
+        }
+        return super.doPreInvoke(messageContext);
+    }
+
+    /**
+     * Resolve a TrustEngine instance of the appropriate type from the message context.
+     * 
+     * @param messageContext the message context which is being evaluated
+     * @return the resolved TrustEngine, may be null
+     */
+    @Nullable protected abstract TrustEngine<TokenType> resolveTrustEngine(MessageContext<MessageType> messageContext);
 
     /**
      * Subclasses are required to implement this method to build a criteria set for the trust engine
@@ -80,8 +88,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
      * @return a newly constructly set of criteria suitable for the configured trust engine
      * @throws MessageHandlerException thrown if criteria set can not be constructed
      */
-    protected abstract CriteriaSet buildCriteriaSet(String entityID, MessageContext<MessageType> messageContext)
-        throws MessageHandlerException;
+    @Nonnull protected abstract CriteriaSet buildCriteriaSet(String entityID, 
+            MessageContext<MessageType> messageContext) throws MessageHandlerException;
 
     /**
      * Evaluate the token using the configured trust engine against criteria built using

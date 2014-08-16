@@ -64,9 +64,6 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseSAMLSimpleSignatureSecurityHandler.class);
 
-    /** Signature trust engine used to validate raw signatures. */
-    @NonnullAfterInit private SignatureTrustEngine trustEngine;
-    
     /** The HttpServletRequest being processed. */
     @NonnullAfterInit private HttpServletRequest httpServletRequest;
     
@@ -75,25 +72,17 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     
     /** The SAML protocol context in operation. */
     @Nullable private SAMLProtocolContext samlProtocolContext;
+    
+    /** Signature trust engine used to validate raw signatures. */
+    @Nullable private SignatureTrustEngine trustEngine;
 
     /**
      * Gets the engine used to validate the signature.
      * 
      * @return engine engine used to validate the signature
      */
-    @NonnullAfterInit public SignatureTrustEngine getTrustEngine() {
+    @Nullable protected SignatureTrustEngine getTrustEngine() {
         return trustEngine;
-    }
-    
-    /**
-     * Sets the engine used to validate the signature.
-     * 
-     * @param engine engine used to validate the signature
-     */
-    public void setTrustEngine(@Nonnull final SignatureTrustEngine engine) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        trustEngine = Constraint.isNotNull(engine, "SignatureTrustEngine cannot be null");
     }
 
     /**
@@ -133,9 +122,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (trustEngine == null) {
-            throw new ComponentInitializationException("SignatureTrustEngine cannot be null");
-        } else if (httpServletRequest == null) {
+        if (httpServletRequest == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
@@ -149,6 +136,15 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         if (samlProtocolContext == null || samlProtocolContext.getProtocol() == null) {
             throw new MessageHandlerException("SAMLProtocolContext was missing or unpopulated");
         }
+        
+        SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class, false);
+        if (secParams == null || secParams.getSignatureValidationParameters() == null 
+                || secParams.getSignatureValidationParameters().getSignatureTrustEngine() == null) {
+            throw new MessageHandlerException("No SignatureTrustEngine was available from the MessageContext");
+        } else {
+            trustEngine = secParams.getSignatureValidationParameters().getSignatureTrustEngine();
+        }
+        
         return super.doPreInvoke(messageContext);
     }
 

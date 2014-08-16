@@ -15,16 +15,29 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.messaging.impl;
+package org.opensaml.security.messaging;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+
 /**
  * Options for deriving message context issuer names from an X.509 certificate.
- * Used by {@link BaseClientCertAuthSecurityHandler}.
  */
 public class CertificateNameOptions implements Cloneable {
 
@@ -35,7 +48,7 @@ public class CertificateNameOptions implements Cloneable {
     private boolean evaluateSubjectCommonName;
 
     /** The set of types of subject alternative names evaluate as derived issuer entity ID names. */
-    private LinkedHashSet<Integer> subjectAltNames;
+    private Set<Integer> subjectAltNames;
 
     /**
      * Responsible for serializing X.500 names to strings from certificate-derived
@@ -48,7 +61,7 @@ public class CertificateNameOptions implements Cloneable {
 
     /** Constructor. */
     public CertificateNameOptions() {
-        subjectAltNames = new LinkedHashSet<Integer>();
+        subjectAltNames = Collections.emptySet();
         x500DNHandler = new InternalX500DNHandler();
         x500SubjectDNFormat = X500DNHandler.FORMAT_RFC2253;
     }
@@ -90,12 +103,28 @@ public class CertificateNameOptions implements Cloneable {
     }
     
     /**
-     * Get the set of types of subject alternative names evaluate as derived issuer entity ID names.
+     * Get the set of types of subject alternative names evaluate as derived issuer entity ID names,
+     * using integer constants defined in {@link org.opensaml.security.X509Support}.
      * 
      * @return Returns the subjectAltNames.
      */
-    public LinkedHashSet<Integer> getSubjectAltNames() {
-        return subjectAltNames;
+    @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<Integer> getSubjectAltNames() {
+        return ImmutableSet.copyOf(subjectAltNames);
+    }
+    
+    /**
+     * Set the set of types of subject alternative names evaluate as derived issuer entity ID names,
+     * using integer constants defined in {@link org.opensaml.security.X509Support}.
+     * 
+     * @param names the set of types of subject alternative names
+     */
+    public void setSubjectAltNames(@Nullable final Set<Integer> names) {
+        if (names == null) {
+            subjectAltNames = Collections.emptySet();
+            return;
+        }
+        
+        subjectAltNames = Sets.newHashSet(Collections2.filter(names, Predicates.notNull()));
     }
 
     /**
