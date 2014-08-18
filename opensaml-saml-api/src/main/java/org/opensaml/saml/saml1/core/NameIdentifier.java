@@ -91,6 +91,7 @@ public interface NameIdentifier extends SAMLObject {
      * 
      * @return the identifier
      */
+    @Deprecated
     public String getNameIdentifier();
 
     /**
@@ -98,6 +99,21 @@ public interface NameIdentifier extends SAMLObject {
      * 
      * @param nameIdentifier the identifier.
      */
+    @Deprecated
     public void setNameIdentifier(String nameIdentifier);
-    
+
+    /**
+     * Gets the identifier.
+     * 
+     * @return the identifier
+     */
+    public String getValue();
+
+    /**
+     * Sets the identifier.
+     * 
+     * @param nameIdentifier the identifier.
+     */
+    public void setValue(String nameIdentifier);
+
 }
