@@ -24,21 +24,21 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 
 /**
- * Complete implementation of {@link org.opensaml.saml.saml1.core.impl.NameIdentifierImpl}
+ * Complete implementation of {@link org.opensaml.saml.saml1.core.NameIdentifier}.
  */
 public class NameIdentifierImpl extends AbstractSAMLObject implements NameIdentifier {
 
-    /** Contents of the NameQualifierAttribute */
-    String nameQualifier;
+    /** Contents of the NameQualifierAttribute. */
+    private String nameQualifier;
 
-    /** Contents of the Format */
-    String format;
+    /** Contents of the Format. */
+    private String format;
 
-    /** Contents of the elemen body */
-    String nameIdentifier;
+    /** Contents of the element body. */
+    private String nameIdentifier;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -59,21 +59,35 @@ public class NameIdentifierImpl extends AbstractSAMLObject implements NameIdenti
     }
 
     /** {@inheritDoc} */
+    @Deprecated
     public String getNameIdentifier() {
-        return nameIdentifier;
+        return getValue();
     }
 
     /** {@inheritDoc} */
-    public void setNameQualifier(String nameQualifier) {
-        this.nameQualifier = prepareForAssignment(this.nameQualifier, nameQualifier);
+    public String getValue() {
+        return nameIdentifier;
+    }
+    
+    /** {@inheritDoc} */
+    public void setNameQualifier(String qualifier) {
+        nameQualifier = prepareForAssignment(nameQualifier, qualifier);
     }
 
-    public void setFormat(String format) {
-        this.format = prepareForAssignment(this.format, format);
+    /** {@inheritDoc} */
+    public void setFormat(String fmt) {
+        format = prepareForAssignment(format, fmt);
     }
 
-    public void setNameIdentifier(String nameIdentifier) {
-        this.nameIdentifier = prepareForAssignment(this.nameIdentifier, nameIdentifier);
+    /** {@inheritDoc} */
+    @Deprecated
+    public void setNameIdentifier(String id) {
+        setValue(id);
+    }
+
+    /** {@inheritDoc} */
+    public void setValue(String id) {
+        nameIdentifier = prepareForAssignment(nameIdentifier, id);
     }
 
     /** {@inheritDoc} */

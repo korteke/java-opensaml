@@ -44,6 +44,6 @@ public class NameIdentifierUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject samlObject, String elementContent) {
         NameIdentifier nameIdentifier = (NameIdentifier) samlObject;
-        nameIdentifier.setNameIdentifier(elementContent);
+        nameIdentifier.setValue(elementContent);
     }
 }
