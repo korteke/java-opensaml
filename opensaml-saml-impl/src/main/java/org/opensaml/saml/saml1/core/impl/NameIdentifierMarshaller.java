@@ -48,8 +48,8 @@ public class NameIdentifierMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
         NameIdentifier nameIdentifier = (NameIdentifier) samlObject;
 
-        if (nameIdentifier.getNameIdentifier() != null) {
-            ElementSupport.appendTextContent(domElement, nameIdentifier.getNameIdentifier());
+        if (nameIdentifier.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, nameIdentifier.getValue());
         }
     }
 }

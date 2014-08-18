@@ -59,7 +59,7 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementFile);
         
-        Assert.assertNull(nameIdentifier.getNameIdentifier(), "Name Identifer contents present");
+        Assert.assertNull(nameIdentifier.getValue(), "Name Identifer contents present");
         Assert.assertNull(nameIdentifier.getNameQualifier(), "NameQualifier present");
         Assert.assertNull(nameIdentifier.getFormat(), "Format present");
     }
@@ -70,7 +70,7 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertEquals(nameIdentifier.getNameIdentifier(), expectedNameIdentifier, "Name Identifier contents");
+        Assert.assertEquals(nameIdentifier.getValue(), expectedNameIdentifier, "Name Identifier contents");
         Assert.assertEquals(nameIdentifier.getNameQualifier(), expectedNameQualifier, "NameQualfier attribute");
         Assert.assertEquals(nameIdentifier.getFormat(), expectedFormat, "Format attribute");
     }
@@ -89,7 +89,7 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
         NameIdentifier nameIdentifier = (NameIdentifier) buildXMLObject(qname);
         
         nameIdentifier.setFormat(expectedFormat);
-        nameIdentifier.setNameIdentifier(expectedNameIdentifier);
+        nameIdentifier.setValue(expectedNameIdentifier);
         nameIdentifier.setNameQualifier(expectedNameQualifier);
         
         assertXMLEquals(expectedOptionalAttributesDOM, nameIdentifier);
