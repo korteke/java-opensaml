@@ -92,6 +92,7 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         return true;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Verify the candidate's attributes match any attributes supplied in the criterion.
      * 
@@ -103,6 +104,12 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
             @Nonnull final EndpointType endpoint) {
 
         final EndpointType comparisonEndpoint = comparison.getEndpoint();
+
+        // Are we comparing ourselves, as in a signed request case?
+        if (comparisonEndpoint == endpoint) {
+            log.debug("{} Candidate endpoint was supplied by the criterion, skipping check", getLogPrefix());
+            return true;
+        }
         
         // Check binding.
         if (comparisonEndpoint.getBinding() != null &&
@@ -138,5 +145,6 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         
         return true;
     }
+// Checkstyle: CyclomaticComplexity ON
     
 }
