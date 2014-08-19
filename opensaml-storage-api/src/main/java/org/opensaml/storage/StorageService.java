@@ -69,7 +69,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if fatal errors occur in the insertion process
      */
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable @Positive Long expiration) throws IOException;
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException;
 
     /**
      * Creates a new record in the store with an expiration, using a custom serialization
