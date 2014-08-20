@@ -33,7 +33,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
-import org.opensaml.saml.criterion.SignedRequestCriterion;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
@@ -55,11 +54,8 @@ import com.google.common.collect.Lists;
  *  <dt>{@link EndpointCriterion} (required)
  *  <dd>Contains a "template" for the eventual {@link Endpoint}(s) to resolve that identifies at minimum the
  *  type of endpoint object (via schema type or element name) to resolve. It MAY contain other attributes that
- *  will be used in matching candidate endpoints for suitability, such as index, binding, location, etc.
- *  
- *  <dt>{@link SignedRequestCriterion}
- *  <dd>If present, and if the supplied {@link EndpointCriterion} contains a fully usable {@link Endpoint},
- *  that endpoint is returned as the sole resolution result, unless a subclass overrides its validation.
+ *  will be used in matching candidate endpoints for suitability, such as index, binding, location, etc. If so
+ *  marked, it may also be resolved as a trusted endpoint without additional verification required.
  *  
  *  <dt>{@link RoleDescriptorCriterion}
  *  <dd>If present, provides access to the candidate endpoint(s) to attempt resolution against. Strictly optional,
@@ -177,8 +173,9 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * @return true iff the supplied endpoint via {@link EndpointCriterion} should be returned
      */
     private boolean canUseRequestedEndpoint(@Nonnull final CriteriaSet criteria) {
-        final EndpointType requestedEndpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
-        if (criteria.contains(SignedRequestCriterion.class)) {
+        final EndpointCriterion epc = criteria.get(EndpointCriterion.class);
+        if (epc.isTrusted()) {
+            final EndpointType requestedEndpoint = (EndpointType) epc.getEndpoint();
             if (requestedEndpoint.getBinding() != null && (requestedEndpoint.getLocation() != null
                     || requestedEndpoint.getResponseLocation() != null)) {
                 return true;
