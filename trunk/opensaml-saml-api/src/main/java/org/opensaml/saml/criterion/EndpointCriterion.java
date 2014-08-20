@@ -33,6 +33,9 @@ import net.shibboleth.utilities.java.support.resolver.Criterion;
  */
 public final class EndpointCriterion<EndpointType extends Endpoint> implements Criterion {
 
+    /** Is this endpoint implicitly trusted? */
+    private final boolean trusted;
+    
     /** The endpoint. */
     @Nonnull private final EndpointType endpoint;
 
@@ -40,9 +43,11 @@ public final class EndpointCriterion<EndpointType extends Endpoint> implements C
      * Constructor.
      * 
      * @param ep the endpoint
+     * @param trust if true, the endpoint should be implicitly trusted regardless of verification by other criteria
      */
-    public EndpointCriterion(@Nonnull final EndpointType ep) {
+    public EndpointCriterion(@Nonnull final EndpointType ep, final boolean trust) {
         endpoint = Constraint.isNotNull(ep, "Endpoint cannot be null");
+        trusted = trust;
     }
 
     /**
@@ -53,25 +58,36 @@ public final class EndpointCriterion<EndpointType extends Endpoint> implements C
     @Nonnull public EndpointType getEndpoint() {
         return endpoint;
     }
+    
+    /**
+     * Get the trust indicator for the endpoint.
+     * 
+     * @return true iff the endpoint does not require independent verification against a trusted source of endpoints
+     */
+    public boolean isTrusted() {
+        return trusted;
+    }
 
     /** {@inheritDoc} */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("EndpointCriterion [type=");
-        builder.append(endpoint.getElementQName());
+        builder.append("EndpointCriterion [type=")
+            .append(endpoint.getElementQName());
         if (endpoint.getBinding() != null) {
-            builder.append(", Binding=");
-            builder.append(endpoint.getBinding());
+            builder.append(", Binding=")
+                .append(endpoint.getBinding());
         }
         if (endpoint.getLocation() != null) {
-            builder.append(", Location=");
-            builder.append(endpoint.getLocation());
+            builder.append(", Location=")
+                .append(endpoint.getLocation());
         }
         if (endpoint.getResponseLocation() != null) {
-            builder.append(", ResponseLocation=");
+            builder.append(", ResponseLocation=")
+                .append(endpoint.getResponseLocation());
         }
-        builder.append(']');
+        builder.append("trusted=").append(trusted)
+            .append(']');
         return builder.toString();
     }
 

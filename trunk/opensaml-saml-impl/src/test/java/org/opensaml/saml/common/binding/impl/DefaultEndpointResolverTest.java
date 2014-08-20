@@ -42,7 +42,6 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
-import org.opensaml.saml.criterion.SignedRequestCriterion;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.Assert;
@@ -77,7 +76,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
                         AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         ep.setBinding(SAMLConstants.SAML2_POST_BINDING_URI);
         ep.setLocation(LOCATION);
-        endpointCrit = new EndpointCriterion(ep);
+        endpointCrit = new EndpointCriterion(ep, false);
     }
 
     @Test(expectedExceptions = ResolverException.class)
@@ -93,7 +92,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testSignedRequest() throws ResolverException {
-        final CriteriaSet crits = new CriteriaSet(new SignedRequestCriterion(), endpointCrit);
+        final CriteriaSet crits = new CriteriaSet(new EndpointCriterion(endpointCrit.getEndpoint(), true));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNotNull(ep);
         Assert.assertSame(ep, endpointCrit.getEndpoint());
@@ -102,7 +101,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     /** SP requests an endpoint but we don't support the binding. */
     @Test
     public void testSignedRequestBadBinding() throws ResolverException {
-        final CriteriaSet crits = new CriteriaSet(new SignedRequestCriterion(), endpointCrit,
+        final CriteriaSet crits = new CriteriaSet(new EndpointCriterion(endpointCrit.getEndpoint(), true),
                 new BindingCriterion(Collections.<String>emptyList()));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
