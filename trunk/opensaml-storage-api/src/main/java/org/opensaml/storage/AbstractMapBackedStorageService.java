@@ -89,7 +89,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             }
             
             dataMap.put(key, new MutableStorageRecord(value, expiration));
-            log.debug("Inserted record '{}' in context '{}' with expiration '{}'",
+            log.trace("Inserted record '{}' in context '{}' with expiration '{}'",
                     new Object[] { key, context, expiration });
             
             return true;
@@ -336,7 +336,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     
             record.setExpiration(expiration);
     
-            log.debug("Updated record '{}' in context '{}' with expiration '{}'",
+            log.trace("Updated record '{}' in context '{}' with expiration '{}'",
                     new Object[] { key, context, expiration });
 
             return record.getVersion();
@@ -381,7 +381,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 throw new VersionMismatchException();
             } else {
                 dataMap.remove(key);
-                log.debug("Deleted record '{}' in context '{}'", key, context);
+                log.trace("Deleted record '{}' in context '{}'", key, context);
                 return true;
             }
         } finally {
