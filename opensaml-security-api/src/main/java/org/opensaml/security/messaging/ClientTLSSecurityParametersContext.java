@@ -21,31 +21,32 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509CredentialValidationParameters;
+import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
 
 /**
- * Messaging context implementation for holding parameters related to validating {@link X509Credential} instances.
+ * Messaging context implementation for holding parameters related to validating client TLS 
+ * {@link X509Credential} instances.
  */
-public class X509CredentialSecurityParametersContext extends BaseContext {
+public class ClientTLSSecurityParametersContext extends BaseContext {
     
-    /** A {@link X509CredentialValidationParameters} instance. */
-    @Nullable private X509CredentialValidationParameters validationParameters;
+    /** A {@link ClientTLSValidationParameters} instance. */
+    @Nullable private ClientTLSValidationParameters validationParameters;
 
     /**
-     * Get an instance of {@link X509CredentialValidationParameters}.
+     * Get an instance of {@link ClientTLSValidationParameters}.
      * 
      * @return return the parameters instance, may be null
      */
-    @Nullable public X509CredentialValidationParameters getValidationParameters() {
+    @Nullable public ClientTLSValidationParameters getValidationParameters() {
         return validationParameters;
     }
 
     /**
-     * Set an instance of {@link X509CredentialValidationParameters}.
+     * Set an instance of {@link ClientTLSValidationParameters}.
      * 
      * @param params the parameters instance to set, may be null
      */
-    public void setValidationParameters(@Nullable final X509CredentialValidationParameters params) {
+    public void setValidationParameters(@Nullable final ClientTLSValidationParameters params) {
         this.validationParameters = params;
     }
 

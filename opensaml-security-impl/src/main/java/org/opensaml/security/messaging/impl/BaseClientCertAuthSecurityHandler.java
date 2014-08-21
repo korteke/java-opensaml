@@ -37,12 +37,12 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
-import org.opensaml.security.messaging.X509CredentialSecurityParametersContext;
+import org.opensaml.security.messaging.ClientTLSSecurityParametersContext;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.security.x509.tls.CertificateNameOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,8 +137,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
     
     /** {@inheritDoc} */
     @Nullable protected TrustEngine<X509Credential> resolveTrustEngine(MessageContext<MessageType> messageContext) {
-        X509CredentialSecurityParametersContext secContext = 
-                messageContext.getSubcontext(X509CredentialSecurityParametersContext.class);
+        ClientTLSSecurityParametersContext secContext = 
+                messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
         if (secContext == null || secContext.getValidationParameters() == null)  {
             return null;
         } else {
@@ -148,8 +148,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
 
     /** {@inheritDoc} */
     protected boolean doPreInvoke(MessageContext<MessageType> messageContext) throws MessageHandlerException {
-        X509CredentialSecurityParametersContext secContext = 
-                messageContext.getSubcontext(X509CredentialSecurityParametersContext.class);
+        ClientTLSSecurityParametersContext secContext = 
+                messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
         if (secContext == null || secContext.getValidationParameters() == null 
                 || secContext.getValidationParameters().getCertificateNameOptions() == null)  {
             throw new MessageHandlerException("CertificateNameOptions was not available from the MessageContext");

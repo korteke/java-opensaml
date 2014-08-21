@@ -35,15 +35,15 @@ import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
-import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
-import org.opensaml.security.messaging.X509CredentialSecurityParametersContext;
+import org.opensaml.security.messaging.ClientTLSSecurityParametersContext;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509CredentialValidationParameters;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.security.x509.tls.CertificateNameOptions;
+import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -151,7 +151,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         nameOptions.setEvaluateSubjectDN(false);
         nameOptions.setSubjectAltNames(new HashSet<Integer>());
         
-        X509CredentialValidationParameters params = new X509CredentialValidationParameters();
+        ClientTLSValidationParameters params = new ClientTLSValidationParameters();
         params.setX509TrustEngine(trustEngine);
         params.setCertificateNameOptions(nameOptions);
         
@@ -164,7 +164,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
-        messageContext.getSubcontext(X509CredentialSecurityParametersContext.class, true).setValidationParameters(params);
+        messageContext.getSubcontext(ClientTLSSecurityParametersContext.class, true).setValidationParameters(params);
     }
     
     /**
@@ -252,7 +252,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoTrustEngine() throws MessageHandlerException {
-        messageContext.getSubcontext(X509CredentialSecurityParametersContext.class).getValidationParameters()
+        messageContext.getSubcontext(ClientTLSSecurityParametersContext.class).getValidationParameters()
             .setX509TrustEngine(null);
         
         trustedCredentials.add(validX509Cred);
@@ -266,7 +266,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoNameOptions() throws MessageHandlerException {
-        messageContext.getSubcontext(X509CredentialSecurityParametersContext.class).getValidationParameters()
+        messageContext.getSubcontext(ClientTLSSecurityParametersContext.class).getValidationParameters()
             .setCertificateNameOptions(null);
         
         trustedCredentials.add(validX509Cred);

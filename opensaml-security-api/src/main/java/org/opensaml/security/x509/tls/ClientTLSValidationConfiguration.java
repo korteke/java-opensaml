@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.x509;
+package org.opensaml.security.x509.tls;
 
 import javax.annotation.Nullable;
 
-import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.security.x509.X509Credential;
 
 /**
- * Configuration used in validating an {@link X509Credential}.
+ * Configuration used in validating a client TLS {@link X509Credential}.
  */
-public interface X509CredentialValidationConfiguration {
+public interface ClientTLSValidationConfiguration {
 
     /**
-     * Get a {@link TrustEngine} instance used to validate an {@link X509Credential}.
+     * Get a {@link TrustEngine} instance used to validate a client TLS {@link X509Credential}.
      * 
      * @return a trust engine instance, may be null
      */
     @Nullable public TrustEngine<X509Credential> getX509TrustEngine();
 
     /**
-     * Get a {@link CertificateNameOptions} instance to use when evaluating an {@link X509Credential}.
+     * Get a {@link CertificateNameOptions} instance to use when evaluating a client TLS {@link X509Credential}.
      * 
      * @return an options instance, may be null
      */

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.x509.impl;
+package org.opensaml.security.x509.tls.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,26 +27,28 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
-import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509CredentialValidationConfigurationCriterion;
-import org.opensaml.security.x509.X509CredentialValidationParameters;
+import org.opensaml.security.x509.tls.CertificateNameOptions;
+import org.opensaml.security.x509.tls.ClientTLSValidationConfigurationCriterion;
+import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
+import org.opensaml.security.x509.tls.impl.BasicClientTLSCredentialValidationConfiguration;
+import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationParametersResolver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class BasicX509CredentialValidationParametersResolverTest {
+public class BasicClientTLSValidationParametersResolverTest {
 
-    private BasicX509CredentialValidationParametersResolver resolver;
+    private BasicClientTLSValidationParametersResolver resolver;
 
     private CriteriaSet criteriaSet;
 
-    private X509CredentialValidationConfigurationCriterion criterion;
+    private ClientTLSValidationConfigurationCriterion criterion;
 
-    private BasicX509CredentialValidationConfiguration config1, config2, config3;
+    private BasicClientTLSCredentialValidationConfiguration config1, config2, config3;
 
     private TrustEngine<X509Credential> controlTrustEngine1, controlTrustEngine2, controlTrustEngine3;
     
@@ -65,13 +67,13 @@ public class BasicX509CredentialValidationParametersResolverTest {
     }
 
     @BeforeMethod public void setUp() {
-        resolver = new BasicX509CredentialValidationParametersResolver();
+        resolver = new BasicClientTLSValidationParametersResolver();
 
-        config1 = new BasicX509CredentialValidationConfiguration();
-        config2 = new BasicX509CredentialValidationConfiguration();
-        config3 = new BasicX509CredentialValidationConfiguration();
+        config1 = new BasicClientTLSCredentialValidationConfiguration();
+        config2 = new BasicClientTLSCredentialValidationConfiguration();
+        config3 = new BasicClientTLSCredentialValidationConfiguration();
 
-        criterion = new X509CredentialValidationConfigurationCriterion(config1, config2, config3);
+        criterion = new ClientTLSValidationConfigurationCriterion(config1, config2, config3);
 
         criteriaSet = new CriteriaSet(criterion);
     }
@@ -128,15 +130,15 @@ public class BasicX509CredentialValidationParametersResolverTest {
         config1.setX509TrustEngine(controlTrustEngine1);
         config1.setCertificateNameOptions(controlNameOpts1);
 
-        Iterable<X509CredentialValidationParameters> paramsIter = resolver.resolve(criteriaSet);
+        Iterable<ClientTLSValidationParameters> paramsIter = resolver.resolve(criteriaSet);
         Assert.assertNotNull(paramsIter);
 
-        Iterator<X509CredentialValidationParameters> iterator = paramsIter.iterator();
+        Iterator<ClientTLSValidationParameters> iterator = paramsIter.iterator();
         Assert.assertNotNull(iterator);
 
         Assert.assertTrue(iterator.hasNext());
 
-        X509CredentialValidationParameters params = iterator.next();
+        ClientTLSValidationParameters params = iterator.next();
 
         Assert.assertNotNull(params);
         Assert.assertTrue(params.getX509TrustEngine() == controlTrustEngine1);
@@ -149,7 +151,7 @@ public class BasicX509CredentialValidationParametersResolverTest {
         config1.setX509TrustEngine(controlTrustEngine1);
         config1.setCertificateNameOptions(controlNameOpts1);
 
-        X509CredentialValidationParameters params = resolver.resolveSingle(criteriaSet);
+        ClientTLSValidationParameters params = resolver.resolveSingle(criteriaSet);
 
         Assert.assertNotNull(params);
         Assert.assertTrue(params.getX509TrustEngine() == controlTrustEngine1);

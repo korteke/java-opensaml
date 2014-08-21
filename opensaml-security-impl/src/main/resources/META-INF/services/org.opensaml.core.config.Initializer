@@ -1,1 +1,1 @@
-org.opensaml.security.config.X509CredentialValidationConfiguratonInitializer
+org.opensaml.security.config.ClientTLSValidationConfiguratonInitializer

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.messaging;
+package org.opensaml.security.x509.tls;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -37,7 +37,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 /**
- * Options for deriving message context issuer names from an X.509 certificate.
+ * Options for deriving message context issuer names from an client TLS X.509 certificate.
  */
 public class CertificateNameOptions implements Cloneable {
 

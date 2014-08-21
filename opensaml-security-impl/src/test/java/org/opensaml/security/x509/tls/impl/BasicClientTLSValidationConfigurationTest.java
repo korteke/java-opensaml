@@ -15,26 +15,27 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.x509.impl;
+package org.opensaml.security.x509.tls.impl;
 
 import java.util.ArrayList;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
-import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
+import org.opensaml.security.x509.tls.CertificateNameOptions;
+import org.opensaml.security.x509.tls.impl.BasicClientTLSCredentialValidationConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class BasicX509CredentialValidationConfigurationTest {
+public class BasicClientTLSValidationConfigurationTest {
     
-    private BasicX509CredentialValidationConfiguration config;
+    private BasicClientTLSCredentialValidationConfiguration config;
     
     @BeforeMethod
     public void setUp() {
-        config = new BasicX509CredentialValidationConfiguration();
+        config = new BasicClientTLSCredentialValidationConfiguration();
     }
     
     @Test
