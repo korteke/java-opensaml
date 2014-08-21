@@ -27,7 +27,7 @@ import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
 /**
  * Basic implementation of {@link ClientTLSValidationConfiguration}.
  */
-public class BasicClientTLSCredentialValidationConfiguration implements ClientTLSValidationConfiguration {
+public class BasicClientTLSValidationConfiguration implements ClientTLSValidationConfiguration {
     
     /** A {@link TrustEngine} instance used to validate a client TLS {@link X509Credential}. **/
     @Nullable private TrustEngine<X509Credential> x509TrustEngine;
