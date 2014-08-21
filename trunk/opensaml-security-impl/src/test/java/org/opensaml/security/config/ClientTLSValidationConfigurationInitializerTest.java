@@ -20,21 +20,21 @@ package org.opensaml.security.config;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializerBaseTestCase;
-import org.opensaml.security.x509.X509CredentialValidationConfiguration;
+import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class X509CredentialValidationConfigurationInitializerTest extends InitializerBaseTestCase {
+public class ClientTLSValidationConfigurationInitializerTest extends InitializerBaseTestCase {
     
     @Test
     public void testInit() throws InitializationException {
-        X509CredentialValidationConfiguration config = ConfigurationService.get(X509CredentialValidationConfiguration.class);
+        ClientTLSValidationConfiguration config = ConfigurationService.get(ClientTLSValidationConfiguration.class);
         Assert.assertNull(config, "Config was non-null");
         
-        X509CredentialValidationConfiguratonInitializer initializer = new X509CredentialValidationConfiguratonInitializer();
+        ClientTLSValidationConfiguratonInitializer initializer = new ClientTLSValidationConfiguratonInitializer();
         initializer.init();
         
-        config = ConfigurationService.get(X509CredentialValidationConfiguration.class);
+        config = ConfigurationService.get(ClientTLSValidationConfiguration.class);
         Assert.assertNotNull(config, "Config was null");
         
         Assert.assertNotNull(config.getCertificateNameOptions());

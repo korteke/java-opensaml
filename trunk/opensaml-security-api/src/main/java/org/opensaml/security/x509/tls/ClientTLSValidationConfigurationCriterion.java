@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.x509;
+package org.opensaml.security.x509.tls;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,20 +35,20 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * Criterion which holds one or more instances of {@link X509CredentialValidationConfiguration}.
+ * Criterion which holds one or more instances of {@link ClientTLSValidationConfiguration}.
  */
-public class X509CredentialValidationConfigurationCriterion implements Criterion {
+public class ClientTLSValidationConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    private List<X509CredentialValidationConfiguration> configs;
+    private List<ClientTLSValidationConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public X509CredentialValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
-            List<X509CredentialValidationConfiguration> configurations) {
+    public ClientTLSValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
+            List<ClientTLSValidationConfiguration> configurations) {
         Constraint.isNotNull(configurations, "List of configurations may not be null");
         configs = Lists.newArrayList(Collections2.filter(configurations, Predicates.notNull()));
         Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
@@ -60,8 +60,8 @@ public class X509CredentialValidationConfigurationCriterion implements Criterion
      *
      * @param configurations varargs array of configuration instances
      */
-    public X509CredentialValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
-            X509CredentialValidationConfiguration... configurations) {
+    public ClientTLSValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
+            ClientTLSValidationConfiguration... configurations) {
         Constraint.isNotNull(configurations, "List of configurations may not be null");
         configs = Lists.newArrayList(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
         Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
@@ -72,7 +72,7 @@ public class X509CredentialValidationConfigurationCriterion implements Criterion
      * @return the list of configuration instances
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<X509CredentialValidationConfiguration> getConfigurations() {
+    public List<ClientTLSValidationConfiguration> getConfigurations() {
         return ImmutableList.copyOf(configs);
     }
     
@@ -80,7 +80,7 @@ public class X509CredentialValidationConfigurationCriterion implements Criterion
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("X509CredentialValidationConfigurationCriterion [configs=");
+        builder.append("ClientTLSValidationConfigurationCriterion [configs=");
         builder.append(configs);
         builder.append("]");
         return builder.toString();
@@ -103,8 +103,8 @@ public class X509CredentialValidationConfigurationCriterion implements Criterion
             return false;
         }
 
-        if (obj instanceof X509CredentialValidationConfigurationCriterion) {
-            return configs.equals(((X509CredentialValidationConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof ClientTLSValidationConfigurationCriterion) {
+            return configs.equals(((ClientTLSValidationConfigurationCriterion) obj).getConfigurations());
         }
 
         return false;

@@ -20,18 +20,18 @@ package org.opensaml.security.config;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
-import org.opensaml.security.messaging.CertificateNameOptions;
-import org.opensaml.security.x509.X509CredentialValidationConfiguration;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.security.x509.impl.BasicX509CredentialValidationConfiguration;
+import org.opensaml.security.x509.tls.CertificateNameOptions;
+import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
+import org.opensaml.security.x509.tls.impl.BasicClientTLSCredentialValidationConfiguration;
 
 import com.google.common.collect.Sets;
 
 /**
  * An initializer which initializes the global configuration instance of 
- * {@link X509CredentialValidationConfiguration}.
+ * {@link ClientTLSValidationConfiguration}.
  */
-public class X509CredentialValidationConfiguratonInitializer implements Initializer {
+public class ClientTLSValidationConfiguratonInitializer implements Initializer {
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {
@@ -39,10 +39,10 @@ public class X509CredentialValidationConfiguratonInitializer implements Initiali
         nameOptions.setEvaluateSubjectCommonName(true);
         nameOptions.setSubjectAltNames(Sets.newHashSet(X509Support.DNS_ALT_NAME, X509Support.URI_ALT_NAME));
         
-        BasicX509CredentialValidationConfiguration config = new BasicX509CredentialValidationConfiguration();
+        BasicClientTLSCredentialValidationConfiguration config = new BasicClientTLSCredentialValidationConfiguration();
         config.setCertificateNameOptions(nameOptions);
         
-        ConfigurationService.register(X509CredentialValidationConfiguration.class, config);
+        ConfigurationService.register(ClientTLSValidationConfiguration.class, config);
     }
 
 }

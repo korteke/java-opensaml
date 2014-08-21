@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package org.opensaml.security.x509.impl;
+package org.opensaml.security.x509.tls.impl;
 
 import javax.annotation.Nullable;
 
-import org.opensaml.security.messaging.CertificateNameOptions;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
-import org.opensaml.security.x509.X509CredentialValidationConfiguration;
+import org.opensaml.security.x509.tls.CertificateNameOptions;
+import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
 
 /**
- * Basic implementation of {@link X509CredentialValidationConfiguration}.
+ * Basic implementation of {@link ClientTLSValidationConfiguration}.
  */
-public class BasicX509CredentialValidationConfiguration implements X509CredentialValidationConfiguration {
+public class BasicClientTLSCredentialValidationConfiguration implements ClientTLSValidationConfiguration {
     
-    /** A {@link TrustEngine} instance used to validate an {@link X509Credential}. **/
+    /** A {@link TrustEngine} instance used to validate a client TLS {@link X509Credential}. **/
     @Nullable private TrustEngine<X509Credential> x509TrustEngine;
     
-    /** A {@link CertificateNameOptions} instance used to validate an {@link X509Credential}. **/
+    /** A {@link CertificateNameOptions} instance used to validate a client TLS {@link X509Credential}. **/
     @Nullable private CertificateNameOptions certificateNameOptions;
 
     /** {@inheritDoc} */
@@ -42,7 +42,7 @@ public class BasicX509CredentialValidationConfiguration implements X509Credentia
     }
 
     /**
-     * Set a {@link TrustEngine} instance used to validate an {@link X509Credential}.
+     * Set a {@link TrustEngine} instance used to validate a client TLS {@link X509Credential}.
      * 
      * @param engine a trust engine instance, may be null
      */
@@ -57,7 +57,7 @@ public class BasicX509CredentialValidationConfiguration implements X509Credentia
     }
 
     /**
-     * Set a {@link CertificateNameOptions} instance to use when evaluating an {@link X509Credential}.
+     * Set a {@link CertificateNameOptions} instance to use when evaluating a client TLS {@link X509Credential}.
      * 
      * @param options an options instance, may be null
      */
