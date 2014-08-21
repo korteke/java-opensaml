@@ -24,18 +24,18 @@ import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.tls.CertificateNameOptions;
-import org.opensaml.security.x509.tls.impl.BasicClientTLSCredentialValidationConfiguration;
+import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class BasicClientTLSValidationConfigurationTest {
     
-    private BasicClientTLSCredentialValidationConfiguration config;
+    private BasicClientTLSValidationConfiguration config;
     
     @BeforeMethod
     public void setUp() {
-        config = new BasicClientTLSCredentialValidationConfiguration();
+        config = new BasicClientTLSValidationConfiguration();
     }
     
     @Test

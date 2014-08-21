@@ -33,7 +33,7 @@ import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.tls.CertificateNameOptions;
 import org.opensaml.security.x509.tls.ClientTLSValidationConfigurationCriterion;
 import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
-import org.opensaml.security.x509.tls.impl.BasicClientTLSCredentialValidationConfiguration;
+import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationConfiguration;
 import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationParametersResolver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -48,7 +48,7 @@ public class BasicClientTLSValidationParametersResolverTest {
 
     private ClientTLSValidationConfigurationCriterion criterion;
 
-    private BasicClientTLSCredentialValidationConfiguration config1, config2, config3;
+    private BasicClientTLSValidationConfiguration config1, config2, config3;
 
     private TrustEngine<X509Credential> controlTrustEngine1, controlTrustEngine2, controlTrustEngine3;
     
@@ -69,9 +69,9 @@ public class BasicClientTLSValidationParametersResolverTest {
     @BeforeMethod public void setUp() {
         resolver = new BasicClientTLSValidationParametersResolver();
 
-        config1 = new BasicClientTLSCredentialValidationConfiguration();
-        config2 = new BasicClientTLSCredentialValidationConfiguration();
-        config3 = new BasicClientTLSCredentialValidationConfiguration();
+        config1 = new BasicClientTLSValidationConfiguration();
+        config2 = new BasicClientTLSValidationConfiguration();
+        config3 = new BasicClientTLSValidationConfiguration();
 
         criterion = new ClientTLSValidationConfigurationCriterion(config1, config2, config3);
 
