@@ -27,6 +27,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
 
@@ -76,5 +77,12 @@ public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration
      * @return the KeyInfoGenerator manager instance
      */
     @Nullable public NamedKeyInfoGeneratorManager getKeyTransportKeyInfoGeneratorManager();
+    
+    /**
+     * Get the instance of {@link RSAOAEPParameters}.
+     * 
+     * @return the parameters instance
+     */
+    @Nullable public RSAOAEPParameters getRSAOAEPParameters();
     
 }

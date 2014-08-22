@@ -30,6 +30,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.EncryptionConfiguration;
+import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,9 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     
     /** Manager for named KeyInfoGenerator instances for encrypting keys. */
     @Nullable private NamedKeyInfoGeneratorManager keyTransportKeyInfoGeneratorManager;
+    
+    /** RSA OAEP parameters. */
+    @Nullable private RSAOAEPParameters rsaOAEPParameters;
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
@@ -184,6 +188,24 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      */
     public void setKeyTransportKeyInfoGeneratorManager(@Nullable final NamedKeyInfoGeneratorManager keyInfoManager) {
         keyTransportKeyInfoGeneratorManager = keyInfoManager;
+    }
+    
+    /**
+     * Get the instance of {@link RSAOAEPParameters}.
+     * 
+     * @return the parameters instance
+     */
+    @Nullable public RSAOAEPParameters getRSAOAEPParameters() {
+        return rsaOAEPParameters;
+    }
+
+    /**
+     * Set the instance of {@link RSAOAEPParameters}.
+     * 
+     * @param params the new parameters instance
+     */
+    public void setRSAOAEPParameters(@Nullable final RSAOAEPParameters params) {
+        rsaOAEPParameters = params;
     }
 
 }

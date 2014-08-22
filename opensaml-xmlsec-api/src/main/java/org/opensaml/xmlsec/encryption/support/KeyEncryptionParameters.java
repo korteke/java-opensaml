@@ -31,6 +31,9 @@ public class KeyEncryptionParameters extends DataEncryptionParameters {
 
     /** Recipient of the key. */
     private String recipient;
+    
+    /** RSA OAEP parameters. */
+    private RSAOAEPParameters rsaOAEPParameters;
 
     /**
      * Constructor.
@@ -57,6 +60,7 @@ public class KeyEncryptionParameters extends DataEncryptionParameters {
         setAlgorithm(params.getKeyTransportEncryptionAlgorithm());
         setKeyInfoGenerator(params.getKeyTransportKeyInfoGenerator());
         setRecipient(recipientId);
+        setRSAOAEPParameters(params.getRSAOAEPParameters());
     }
 
     /**
@@ -80,4 +84,23 @@ public class KeyEncryptionParameters extends DataEncryptionParameters {
     public void setRecipient(@Nullable final String newRecipient) {
         recipient = newRecipient;
     }
+
+    /**
+     * Get the instance of {@link RSAOAEPParameters}.
+     * 
+     * @return the parameters instance
+     */
+    @Nullable public RSAOAEPParameters getRSAOAEPParameters() {
+        return rsaOAEPParameters;
+    }
+
+    /**
+     * Set the instance of {@link RSAOAEPParameters}.
+     * 
+     * @param params the new parameters instance
+     */
+    public void setRSAOAEPParameters(@Nullable final RSAOAEPParameters params) {
+        rsaOAEPParameters = params;
+    }
+    
 }
