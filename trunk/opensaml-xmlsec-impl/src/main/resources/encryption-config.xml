@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns="http://www.opensaml.org/xmltooling-config">
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:xenc11="http://www.w3.org/2009/xmlenc11#" xmlns="http://www.opensaml.org/xmltooling-config">
     
     <ObjectProviders>
         
@@ -183,6 +183,15 @@
             <BuilderClass className="org.opensaml.xmlsec.encryption.impl.TransformsBuilder"/>
             <MarshallingClass className="org.opensaml.xmlsec.encryption.impl.TransformsMarshaller"/>
             <UnmarshallingClass className="org.opensaml.xmlsec.encryption.impl.TransformsUnmarshaller"/>
+        </ObjectProvider>
+        
+        <!-- 1.1 stuff -->
+        
+        <!-- MGF -->
+        <ObjectProvider qualifiedName="xenc11:MGF">
+            <BuilderClass className="org.opensaml.xmlsec.encryption.impl.MGFBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.encryption.impl.MGFMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.encryption.impl.MGFUnmarshaller"/>
         </ObjectProvider>
  
     </ObjectProviders>
