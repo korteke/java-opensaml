@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
@@ -297,9 +298,9 @@ public class Encrypter {
         checkParams(kekParams, false);
 
         Key encryptionKey = CredentialSupport.extractEncryptionKey(kekParams.getEncryptionCredential());
-        String encryptionAlgorithmURI = kekParams.getAlgorithm();
 
-        EncryptedKey encryptedKey = encryptKey(key, encryptionKey, encryptionAlgorithmURI, containingDocument);
+        EncryptedKey encryptedKey = encryptKey(key, encryptionKey, kekParams.getAlgorithm(),
+                kekParams.getRSAOAEPParameters(), containingDocument);
 
         if (kekParams.getKeyInfoGenerator() != null) {
             KeyInfoGenerator generator = kekParams.getKeyInfoGenerator();
@@ -326,13 +327,15 @@ public class Encrypter {
      * @param targetKey the key to encrypt
      * @param encryptionKey the key with which to encrypt the target key
      * @param encryptionAlgorithmURI the XML Encryption algorithm URI corresponding to the encryption key
+     * @param rsaOAEPParams the RSA-OAEP params instance (may be null)
      * @param containingDocument the document that will own the resulting element
      * @return the new EncryptedKey object
      * @throws EncryptionException exception thrown on encryption errors
      */
     @Nonnull protected EncryptedKey encryptKey(@Nonnull final Key targetKey, @Nonnull final Key encryptionKey,
-            @Nonnull final String encryptionAlgorithmURI, @Nonnull final Document containingDocument)
-                    throws EncryptionException {
+            @Nonnull final String encryptionAlgorithmURI, @Nullable final RSAOAEPParameters rsaOAEPParams,
+            @Nonnull final Document containingDocument) throws EncryptionException {
+        
         Constraint.isNotNull(encryptionAlgorithmURI, "Encryption algorithm URI cannot be null");
         Constraint.isNotNull(containingDocument, "Containing document cannot be null");
 
@@ -345,14 +348,10 @@ public class Encrypter {
         }
 
         log.debug("Encrypting encryption key with algorithm: {}", encryptionAlgorithmURI);
+        
         XMLCipher xmlCipher;
         try {
-            if (getJCAProviderName() != null) {
-                xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName());
-            } else {
-                xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
-            }
-            xmlCipher.init(XMLCipher.WRAP_MODE, encryptionKey);
+            xmlCipher = buildXMLCipher(encryptionKey, encryptionAlgorithmURI, rsaOAEPParams);
         } catch (XMLEncryptionException e) {
             log.error("Error initializing cipher instance on key encryption", e);
             throw new EncryptionException("Error initializing cipher instance on key encryption", e);
@@ -360,7 +359,13 @@ public class Encrypter {
 
         org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey;
         try {
-            apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey);
+            if (isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null) {
+                apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey, 
+                        getEffectiveMGF(encryptionAlgorithmURI, rsaOAEPParams), 
+                        decodeOAEPParams(rsaOAEPParams.getOAEPParams()));
+            } else {
+                apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey);
+            }
             postProcessApacheEncryptedKey(apacheEncryptedKey, targetKey, encryptionKey, encryptionAlgorithmURI,
                     containingDocument);
         } catch (XMLEncryptionException e) {
@@ -374,6 +379,94 @@ public class Encrypter {
         } catch (UnmarshallingException e) {
             log.error("Error unmarshalling EncryptedKey element", e);
             throw new EncryptionException("Error unmarshalling EncryptedKey element");
+        }
+    }
+
+    /**
+     * Construct and return an instance of {@link XMLCipher} based on the given inputs.
+     * 
+     * @param encryptionKey the key transport encryption key with which to initialize the XMLCipher
+     * @param encryptionAlgorithmURI the key transport encryption algorithm URI
+     * @param rsaOAEPParams the optional RSA OAEP parameters instance
+     * @return new XMLCipher instance
+     * @throws XMLEncryptionException if there is a problem constructing the XMLCipher instance
+     */
+    @Nonnull protected XMLCipher buildXMLCipher(@Nonnull final Key encryptionKey, 
+            @Nonnull final String encryptionAlgorithmURI, @Nullable final RSAOAEPParameters rsaOAEPParams) 
+                    throws XMLEncryptionException { 
+        
+        XMLCipher xmlCipher;
+        
+        if (getJCAProviderName() != null) {
+            if (isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null && rsaOAEPParams.getDigestMethod() != null) {
+                xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName(), 
+                        null, rsaOAEPParams.getDigestMethod());
+            } else {
+                xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName());
+            }
+        } else {
+            if (isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null && rsaOAEPParams.getDigestMethod() != null) {
+                xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI, null, rsaOAEPParams.getDigestMethod());
+            } else {
+                xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
+            }
+        }
+        
+        xmlCipher.init(XMLCipher.WRAP_MODE, encryptionKey);
+        
+        return xmlCipher;
+    }
+
+    /**
+     * Determine whether key encryption algorithm URI is an RSA OAEP variant.
+     * 
+     * @param encryptionAlgorithmURI the algorithm URI
+     * @return true if is RSA OAEP, false otherwise
+     */
+    protected boolean isRSAOAEP(String encryptionAlgorithmURI) {
+        return EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(encryptionAlgorithmURI) 
+                || EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11.equals(encryptionAlgorithmURI);
+    }
+    
+    /**
+     * Get the effective RSA OAEP mask generation function (MGF) to use.
+     * 
+     * @param encryptionAlgorithmURI the key transport encryption algorithm URI
+     * @param rsaOAEPParams the optional RSA OAEP params instance
+     * @return the effective MGF algorithm URI to use, may be null
+     */
+    @Nullable protected String getEffectiveMGF(@Nonnull final String encryptionAlgorithmURI, 
+            @Nullable final RSAOAEPParameters rsaOAEPParams) {
+        
+        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11.equals(encryptionAlgorithmURI) 
+                && rsaOAEPParams != null) {
+            return rsaOAEPParams.getMaskGenerationFunction();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Safely decode and normalize base64-encoded OAEPParams data.
+     * 
+     * @param base64Params the base64-encoded parameters
+     * @return the decoded parameters or null
+     * @throws EncryptionException if there is a problem base64-decoding the OAEPParams data
+     */
+    @Nullable protected byte[] decodeOAEPParams(@Nullable final String base64Params) throws EncryptionException {
+        try {
+            if (base64Params != null) {
+                byte[] oaepParams = Base64Support.decode(base64Params);
+                if (oaepParams.length == 0) {
+                    return null;
+                } else {
+                    return oaepParams;
+                }
+            } else {
+                return null;
+            }
+        } catch (RuntimeException e) {
+            throw new EncryptionException(String.format("Error decoding OAEPParams data '%s'", base64Params), e);
         }
     }
 
@@ -398,7 +491,7 @@ public class Encrypter {
         // Workaround for XML-Security library issue. To maximize interop, explicitly express the library
         // default of SHA-1 digest method input parameter to RSA-OAEP key transport algorithm.
         // Check and only add if the library hasn't already done so, which it currently doesn't.
-        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(encryptionAlgorithmURI)) {
+        if (isRSAOAEP(encryptionAlgorithmURI)) {
             boolean sawDigestMethod = false;
             Iterator childIter = apacheEncryptedKey.getEncryptionMethod().getEncryptionMethodInformation();
             while (childIter.hasNext()) {
