@@ -17,36 +17,36 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.support.Encrypter;
-import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
-import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
-import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
+import org.opensaml.xmlsec.encryption.MGF;
+import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /**
@@ -513,6 +513,97 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
+     *  Test encryption of a symmetric key into an EncryptedKey,
+     *  using various RSAOAEPParameters options.
+     * @throws NoSuchProviderException bad JCA provider
+     * @throws NoSuchAlgorithmException  bad JCA algorithm
+     * @throws XMLParserException error creating new Document from pool
+     * @throws KeyException 
+     * @throws EncryptionException 
+     */
+    @Test
+    public void testRSAOAEPParameters() throws NoSuchAlgorithmException, NoSuchProviderException, 
+            XMLParserException, KeyException, EncryptionException {
+        
+        // Need to do this to make tests work on Java 7 if no appropriate security provider is installed.  We'll remove at the end.
+        boolean hadBC = Security.getProvider("BC") != null;
+        if (!hadBC) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+        
+        Document ownerDocument = parserPool.newDocument();
+        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
+        String controlOAEPParams = "9lWu3Q==";
+        EncryptedKey encKey;
+        
+        KeyEncryptionParameters kekParams = new KeyEncryptionParameters();
+        kekParams.setEncryptionCredential(AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 1024, false));
+        
+        //
+        // Encryption 1.0 variant, MGF is hard-coded as SHA-1 in algo spec, not expressed in the XML
+        //
+        kekParams.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        
+        // Defaults via null params
+        kekParams.setRSAOAEPParameters(null);
+        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+        Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
+        Assert.assertNull(getOAEPParams(encKey));
+        
+        // Defaults via empty params
+        kekParams.setRSAOAEPParameters(new RSAOAEPParameters());
+        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+        Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
+        Assert.assertNull(getOAEPParams(encKey));
+        
+        // Set everything
+        kekParams.setRSAOAEPParameters(new RSAOAEPParameters(
+                EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
+                EncryptionConstants.ALGO_ID_MGF1_SHA256, 
+                controlOAEPParams));
+        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+        Assert.assertEquals(getDigestMethod(encKey), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
+        Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
+        
+        //
+        // Encryption 1.1 variant, MGF is free to vary
+        //
+        kekParams.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+        
+        // Defaults via null params
+        kekParams.setRSAOAEPParameters(null);
+        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+        Assert.assertNull(getMGF(encKey));
+        Assert.assertNull(getOAEPParams(encKey));
+        
+        // Defaults via empty params
+        kekParams.setRSAOAEPParameters(new RSAOAEPParameters());
+        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+        Assert.assertNull(getMGF(encKey));
+        Assert.assertNull(getOAEPParams(encKey));
+        
+        // Set everything
+        kekParams.setRSAOAEPParameters(new RSAOAEPParameters(
+                EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
+                EncryptionConstants.ALGO_ID_MGF1_SHA256, 
+                controlOAEPParams));
+        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+        Assert.assertEquals(getDigestMethod(encKey), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        Assert.assertEquals(getMGF(encKey), EncryptionConstants.ALGO_ID_MGF1_SHA256);
+        Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
+        
+        // Remove BC if we didn't have it when the test started
+        if (!hadBC) {
+            Security.removeProvider("BC");
+        }
+    }
+    
+    /**
      * Helper method to test AES KEK.
      * 
      * @param encKey EncryptedKey to test
@@ -551,6 +642,33 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.assertNotNull(encKey.getKeyInfo().getKeyNames().get(0), "KeyName was not present");
             Assert.assertEquals(encKey.getKeyInfo().getKeyNames().get(0).getValue(), expectedKEKKeyNameRSA, 
                     "Unexpected KEK KeyName");
+        }
+    }
+    
+    private String getDigestMethod(EncryptedKey encryptedKey) {
+        List<XMLObject> digestMethods = encryptedKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
+        if (digestMethods != null && digestMethods.size() > 0) { 
+            return ((DigestMethod)digestMethods.get(0)).getAlgorithm();
+        } else {
+            return null;
+        }
+    }
+    
+    private String getMGF(EncryptedKey encryptedKey) {
+        List<XMLObject> mgfs = encryptedKey.getEncryptionMethod().getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+        if (mgfs != null && mgfs.size() > 0) {
+            return ((MGF)mgfs.get(0)).getAlgorithm();
+        } else {
+            return null;
+        }
+    }
+    
+    private String getOAEPParams(EncryptedKey encryptedKey) {
+        OAEPparams params = encryptedKey.getEncryptionMethod().getOAEPparams();
+        if (params != null) {
+            return params.getValue();
+        } else {
+            return null;
         }
     }
     
