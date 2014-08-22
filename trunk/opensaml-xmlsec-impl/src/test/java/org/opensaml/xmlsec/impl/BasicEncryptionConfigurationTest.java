@@ -25,6 +25,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -72,6 +73,8 @@ public class BasicEncryptionConfigurationTest {
         
         Assert.assertNull(config.getDataKeyInfoGeneratorManager());
         Assert.assertNull(config.getKeyTransportKeyInfoGeneratorManager());
+        
+        Assert.assertNull(config.getRSAOAEPParameters());
     }
 
     @Test
@@ -192,5 +195,18 @@ public class BasicEncryptionConfigurationTest {
         config.setKeyTransportKeyInfoGeneratorManager(null);
         
         Assert.assertNull(config.getKeyTransportKeyInfoGeneratorManager());
+    }
+    
+    @Test
+    public void testRSAOAEPParameters() {
+        Assert.assertNull(config.getRSAOAEPParameters());
+        
+        config.setRSAOAEPParameters(new RSAOAEPParameters());
+        
+        Assert.assertNotNull(config.getRSAOAEPParameters());
+        
+        config.setRSAOAEPParameters(null);
+        
+        Assert.assertNull(config.getRSAOAEPParameters());
     }
 }
