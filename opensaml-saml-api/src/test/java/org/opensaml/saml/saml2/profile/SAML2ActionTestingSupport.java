@@ -20,6 +20,8 @@ package org.opensaml.saml.saml2.profile;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.ActionTestingSupport;
@@ -34,6 +36,7 @@ import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
@@ -90,6 +93,39 @@ public class SAML2ActionTestingSupport {
         response.setVersion(SAMLVersion.VERSION_20);
 
         return response;
+    }
+    
+    /**
+     * Builds an {@link LogoutRequest}. If a {@link NameID} is given, it will be added to the constructed
+     * {@link LogoutRequest}.
+     * 
+     * @param name the NameID to add to the request
+     * 
+     * @return the built request
+     */
+    @Nonnull public static LogoutRequest buildLogoutRequest(final @Nullable NameID name) {
+        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                        Issuer.DEFAULT_ELEMENT_NAME);
+
+        final SAMLObjectBuilder<LogoutRequest> reqBuilder = (SAMLObjectBuilder<LogoutRequest>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<LogoutRequest>getBuilderOrThrow(
+                        LogoutRequest.DEFAULT_ELEMENT_NAME);
+
+        final Issuer issuer = issuerBuilder.buildObject();
+        issuer.setValue(ActionTestingSupport.INBOUND_MSG_ISSUER);
+
+        final LogoutRequest req = reqBuilder.buildObject();
+        req.setID(REQUEST_ID);
+        req.setIssueInstant(new DateTime(0));
+        req.setIssuer(issuer);
+        req.setVersion(SAMLVersion.VERSION_20);
+
+        if (name != null) {
+            req.setNameID(name);
+        }
+
+        return req;
     }
     
     /**
@@ -176,17 +212,28 @@ public class SAML2ActionTestingSupport {
         final Subject subject = subjectBuilder.buildObject();
 
         if (principalName != null) {
-            final SAMLObjectBuilder<NameID> nameIdBuilder = (SAMLObjectBuilder<NameID>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
-                            NameID.DEFAULT_ELEMENT_NAME);
-            final NameID nameId = nameIdBuilder.buildObject();
-            nameId.setValue(principalName);
-            subject.setNameID(nameId);
+            subject.setNameID(buildNameID(principalName));
         }
 
         return subject;
     }
 
+    /**
+     * Builds a {@link NameID}.
+     * 
+     * @param principalName the principal name to use in the NameID
+     * 
+     * @return the built NameID
+     */
+    @Nonnull public static NameID buildNameID(final @Nonnull @NotEmpty String principalName) {
+        final SAMLObjectBuilder<NameID> nameIdBuilder = (SAMLObjectBuilder<NameID>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
+                        NameID.DEFAULT_ELEMENT_NAME);
+        final NameID nameId = nameIdBuilder.buildObject();
+        nameId.setValue(principalName);
+        return nameId;
+    }
+    
     /**
      * Builds an {@link AttributeQuery}. If a {@link Subject} is given, it will be added to the constructed
      * {@link AttributeQuery}.
