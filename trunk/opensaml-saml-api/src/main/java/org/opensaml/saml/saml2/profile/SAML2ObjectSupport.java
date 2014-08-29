@@ -44,13 +44,28 @@ public final class SAML2ObjectSupport {
      * @param format2   second format to check
      * @return  true iff the two format values should be viewed as equivalent
      */
-    public static boolean areNameIdentifierFormatsEquivalent(@Nullable final String format1,
+    public static boolean areNameIDFormatsEquivalent(@Nullable final String format1,
             @Nullable final String format2) {
         
         return Objects.equal(
                 format1 != null ? format1 : NameID.UNSPECIFIED,
                 format2 != null ? format2 : NameID.UNSPECIFIED);
     }
+
+    /**
+     * Return true iff the two input {@link NameID} objects are equivalent for SAML 2.0 purposes.
+     * 
+     * @param name1   first NameID to check
+     * @param name2   second NameID to check
+     * @return  true iff the two values should be viewed as equivalent
+     */
+    public static boolean areNameIDsEquivalent(@Nonnull final NameID name1, @Nonnull final NameID name2) {
+        return areNameIDFormatsEquivalent(name1.getFormat(), name2.getFormat())
+                && Objects.equal(name1.getValue(), name2.getValue())
+                && Objects.equal(name1.getNameQualifier(), name2.getNameQualifier())
+                && Objects.equal(name1.getSPNameQualifier(), name2.getSPNameQualifier());
+    }
+
     
     /**
      * Get an SLF4J Logger.

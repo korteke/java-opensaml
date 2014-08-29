@@ -53,6 +53,20 @@ public final class SAML1ObjectSupport {
     }
     
     /**
+     * Return true iff the two input {@link NameIdentifier} objects are equivalent for SAML 1.x purposes.
+     * 
+     * @param name1   first NameIdentifier to check
+     * @param name2   second NameIdentifier to check
+     * @return  true iff the two values should be viewed as equivalent
+     */
+    public static boolean areNameIdentifiersEquivalent(@Nonnull final NameIdentifier name1,
+            @Nonnull final NameIdentifier name2) {
+        return areNameIdentifierFormatsEquivalent(name1.getFormat(), name2.getFormat())
+                && Objects.equal(name1.getValue(), name2.getValue())
+                && Objects.equal(name1.getNameQualifier(), name2.getNameQualifier());
+    }
+    
+    /**
      * Get an SLF4J Logger.
      * 
      * @return a Logger instance
