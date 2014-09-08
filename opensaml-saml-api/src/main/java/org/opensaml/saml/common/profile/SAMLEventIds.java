@@ -27,27 +27,28 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
  */
 public final class SAMLEventIds {
 
-    /** ID of the event returned upon failure to verify {@link org.opensaml.saml.ext.saml2cb.ChannelBindings}. */
+    /** ID of event returned upon detection of the {@link org.opensaml.saml.ext.saml2aslo.Asynchronous} extension. */
+    @Nonnull @NotEmpty public static final String ASYNC_LOGOUT = "AsyncLogout";
+
+    /** ID of event returned upon failure to verify {@link org.opensaml.saml.ext.saml2cb.ChannelBindings}. */
     @Nonnull @NotEmpty public static final String CHANNEL_BINDINGS_ERROR = "ChannelBindingsError";
     
-    /** ID of the event returned upon failure to decrypt an {@link org.opensaml.saml.saml2.core.EncryptedAssertion}. */
+    /** ID of event returned upon failure to decrypt an {@link org.opensaml.saml.saml2.core.EncryptedAssertion}. */
     @Nonnull @NotEmpty public static final String DECRYPT_ASSERTION_FAILED = "DecryptAssertionFailed";
 
-    /** ID of the event returned upon failure to decrypt an {@link org.opensaml.saml.saml2.core.EncryptedAttribute}. */
+    /** ID of event returned upon failure to decrypt an {@link org.opensaml.saml.saml2.core.EncryptedAttribute}. */
     @Nonnull @NotEmpty public static final String DECRYPT_ATTRIBUTE_FAILED = "DecryptAttributeFailed";
     
-    /** ID of the event returned upon failure to decrypt an {@link org.opensaml.saml.saml2.core.EncryptedID}. */
+    /** ID of event returned upon failure to decrypt an {@link org.opensaml.saml.saml2.core.EncryptedID}. */
     @Nonnull @NotEmpty public static final String DECRYPT_NAMEID_FAILED = "DecryptNameIDFailed";
 
-    /** ID of the event returned upon failure to resolve an outgoing message endpoint to use. */
+    /** ID of event returned upon failure to resolve an outgoing message endpoint to use. */
     @Nonnull @NotEmpty public static final String ENDPOINT_RESOLUTION_FAILED = "EndpointResolutionFailed";
 
-    /**
-     * ID of the event returned if the requested {@link org.opensaml.saml.saml2.core.NameIDPolicy} can't be satisfied.
-     */
+    /** ID of event returned if the requested {@link org.opensaml.saml.saml2.core.NameIDPolicy} can't be satisfied. */
     @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
     
-    /** ID of the event returned if a SAML artifact cannot be resolved. */
+    /** ID of event returned if a SAML artifact cannot be resolved. */
     @Nonnull @NotEmpty public static final String UNABLE_RESOLVE_ARTIFACT = "UnableToResolveArtifact";
     
     /** Constructor. */

@@ -42,10 +42,10 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.StatusMessage;
+import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,8 +74,8 @@ public class AddStatusToResponse extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AddStatusToResponse.class);
 
-    /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext, Response> responseLookupStrategy;
+    /** Strategy used to locate the {@link StatusResponseType} to operate on. */
+    @Nonnull private Function<ProfileRequestContext,StatusResponseType> responseLookupStrategy;
 
     /** Predicate determining whether detailed error information is permitted. */
     @Nonnull private Predicate<ProfileRequestContext> detailedErrorsCondition;
@@ -96,23 +96,23 @@ public class AddStatusToResponse extends AbstractProfileAction {
     private boolean detailedErrors;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @Nullable private StatusResponseType response;
     
     /** Constructor. */
     public AddStatusToResponse() {
         responseLookupStrategy =
-                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+                Functions.compose(new MessageLookup<>(StatusResponseType.class), new OutboundMessageContextLookup());
         detailedErrorsCondition = Predicates.alwaysFalse();
         defaultStatusCodes = Collections.emptyList();
         detailedErrors = false;
     }
 
     /**
-     * Set the strategy used to locate the {@link Response} to operate on.
+     * Set the strategy used to locate the {@link StatusResponseType} to operate on.
      * 
-     * @param strategy strategy used to locate the {@link Response} to operate on
+     * @param strategy strategy used to locate the {@link StatusResponseType} to operate on
      */
-    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext, Response> strategy) {
+    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,StatusResponseType> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
