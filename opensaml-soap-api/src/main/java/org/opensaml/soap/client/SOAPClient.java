@@ -17,7 +17,10 @@
 
 package org.opensaml.soap.client;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.security.SecurityException;
@@ -44,8 +47,9 @@ public interface SOAPClient {
      * @throws SecurityException thrown if the response does not meet any security policy associated with the message
      *             context
      */
-    public void send(String endpoint, InOutOperationContext context) throws SOAPException, SecurityException;
+    void send(@Nonnull @NotEmpty final String endpoint, @Nonnull final InOutOperationContext context)
+            throws SOAPException, SecurityException;
 
     /** Marker interface for binding/transport request parameters. */
-    public interface SOAPRequestParameters {};
+    interface SOAPRequestParameters {};
 }
