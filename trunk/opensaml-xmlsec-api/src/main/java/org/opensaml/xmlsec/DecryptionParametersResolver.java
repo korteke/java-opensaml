@@ -21,7 +21,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 /**
- * An interface for components which which resolve {@link DecryptionParameters} based on a {@link CriteriaSet}.
+ * An interface for components which resolve {@link DecryptionParameters} based on a {@link CriteriaSet}.
  */
 public interface DecryptionParametersResolver extends Resolver<DecryptionParameters, CriteriaSet> {
 

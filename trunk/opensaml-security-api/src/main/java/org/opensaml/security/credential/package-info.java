@@ -19,7 +19,7 @@
  * Interfaces and classes related to credentials and ways to represent them.
  * Developers will generally create and populate CredentialResolvers
  * during application initialization time. CredentialCriteria can then be
- * constructued to model the information the application has about a
+ * constructed to model the information the application has about a
  * particular credential and then provided to the CredentialResolver in
  * order to retrieve the previously loaded credential information. Here are a
  * couple of use cases where this approach might be used:
