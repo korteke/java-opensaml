@@ -22,13 +22,14 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Metadata ManageNameIDService
+ * SAML 2.0 Metadata ManageNameIDService.
  */
 public interface ManageNameIDService extends Endpoint {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "ManageNameIDService";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ManageNameIDService";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 }

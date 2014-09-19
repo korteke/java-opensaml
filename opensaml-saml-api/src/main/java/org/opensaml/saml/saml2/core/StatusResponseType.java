@@ -110,14 +110,14 @@ public interface StatusResponseType extends SignableSAMLObject {
     public void setID(String newID);
 
     /**
-     * Gets the unique request identifier for which this is a response
+     * Gets the unique request identifier for which this is a response.
      * 
      * @return the unique identifier of the originating request
      */
     public String getInResponseTo();
 
     /**
-     * Sets the unique request identifier for which this is a response
+     * Sets the unique request identifier for which this is a response.
      * 
      * @param newInResponseTo the unique identifier of the originating request
      */
@@ -134,7 +134,7 @@ public interface StatusResponseType extends SignableSAMLObject {
     /**
      * Sets the date/time the response was issued.
      * 
-     * param newIssueInstant the date/time the response was issued
+     * @param newIssueInstant the date/time the response was issued
      */
     public void setIssueInstant(DateTime newIssueInstant);
 

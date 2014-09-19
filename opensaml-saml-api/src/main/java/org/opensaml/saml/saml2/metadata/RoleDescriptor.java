@@ -140,10 +140,8 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
-     * 
-     * @throws IllegalArgumentException thrown if the given extensions Object is already a child of another SAMLObject
      */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException;
+    public void setExtensions(Extensions extensions);
 
     /**
      * Gets the key descriptors for this role.
@@ -163,10 +161,8 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
      * Sets the organization responsible for this role.
      * 
      * @param organization the organization responsible for this role
-     * 
-     * @throws IllegalArgumentException thrown if the given organization is owned by another element
      */
-    public void setOrganization(Organization organization) throws IllegalArgumentException;
+    public void setOrganization(Organization organization);
 
     /**
      * Gets an immutable list of {@link ContactPerson}s for this role.

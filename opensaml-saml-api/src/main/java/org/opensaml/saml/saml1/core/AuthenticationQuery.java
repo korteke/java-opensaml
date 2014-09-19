@@ -25,28 +25,30 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * Description of the behaviour of the <code> AuthenticationQuery </code> element
+ * Description of the behaviour of the <code> AuthenticationQuery </code> element.
  */
 public interface AuthenticationQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationQuery";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationQuery";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "AuthenticationQueryType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AuthenticationQueryType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** AuthenticationMethod attribute name */
-    public final static String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
+    /** AuthenticationMethod attribute name. */
+    public static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
 
-    /** Get AuthenticationMethod attribute */
+    /** Get AuthenticationMethod attribute .*/
     public String getAuthenticationMethod();
     
-    /** Set AuthenticationMethod attribute */
+    /** Set AuthenticationMethod attribute. */
     public void setAuthenticationMethod(String authenticationMethod);
 }

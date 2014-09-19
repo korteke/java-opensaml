@@ -28,33 +28,35 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Status extends SAMLObject {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Status";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Status";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "StatusType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "StatusType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
-    /** Return the object representing the <code>StatusMessage<code> (element). */
+    /** Return the object representing the <code>StatusMessage</code> (element). */
     public StatusMessage getStatusMessage();
 
-    /** Set the object representing the <code>StatusMessage<code> (element). */
-    public void setStatusMessage(StatusMessage statusMessage) throws IllegalArgumentException;
+    /** Set the object representing the <code>StatusMessage</code> (element). */
+    public void setStatusMessage(StatusMessage statusMessage);
 
-    /** Return the object representing the <code>StatusCode<code> (element). */
+    /** Return the object representing the <code>StatusCode</code> (element). */
     public StatusCode getStatusCode();
 
-    /** Set the object representing the <code>StatusCode<code> (element). */
-    public void setStatusCode(StatusCode statusCode) throws IllegalArgumentException;
+    /** Set the object representing the <code>StatusCode</code> (element). */
+    public void setStatusCode(StatusCode statusCode);
 
-    /** Return the object representing the <code>StatusDetail<code> (element). */
+    /** Return the object representing the <code>StatusDetail</code> (element). */
 
     public StatusDetail getStatusDetail();
 
-    /** Set the object representing the <code>StatusDetail<code> (element). */
-    public void setStatusDetail(StatusDetail statusDetail) throws IllegalArgumentException;
+    /** Set the object representing the <code>StatusDetail</code> (element). */
+    public void setStatusDetail(StatusDetail statusDetail);
 }

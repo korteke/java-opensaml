@@ -99,7 +99,7 @@ public interface AuthenticationStatement extends SAMLObject, SubjectStatement {
     public SubjectLocality getSubjectLocality();
 
     /** Get the (single) SubjectLocality child element. */
-    public void setSubjectLocality(SubjectLocality subjectLocality) throws IllegalArgumentException;
+    public void setSubjectLocality(SubjectLocality subjectLocality);
 
     /** return all the AuthorityBinding subelement. */
     public List<AuthorityBinding> getAuthorityBindings();

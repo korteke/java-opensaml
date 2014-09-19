@@ -15,24 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-package org.opensaml.saml.saml1.core;
+/** Classes in support of SAML metadata. */
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.xml.SAMLConstants;
-
-/**
- * This interface defines how the object representing a SAML1 <code>SubjectConfirmationData</code> element behaves.
- */
-public interface SubjectConfirmationData extends SAMLObject {
-    /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmationData";
-    
-    /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
-            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-}
+package org.opensaml.saml.metadata.support;

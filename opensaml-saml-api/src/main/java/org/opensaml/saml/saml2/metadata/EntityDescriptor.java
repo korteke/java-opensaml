@@ -96,10 +96,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
-     * 
-     * @throws IllegalArgumentException thrown if the given extensions Object is already a child of another SAMLObject
      */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException;
+    public void setExtensions(Extensions extensions);
 
     /**
      * Gets all the role descriptors for this entity descriptor.
@@ -130,6 +128,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
     /**
      * Gets the first {@link IDPSSODescriptor} role descriptor for this entity that supports the given protocol.
      * 
+     * @param supportedProtocol protocol that must be supported
+     * 
      * @return the {@link IDPSSODescriptor} role descriptor
      */
     public IDPSSODescriptor getIDPSSODescriptor(String supportedProtocol);
@@ -137,12 +137,16 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
     /**
      * Gets the first {@link SPSSODescriptor} role descriptor for this entity that supports the given protocol.
      * 
+     * @param supportedProtocol protocol that must be supported
+
      * @return the {@link SPSSODescriptor} role descriptor
      */
     public SPSSODescriptor getSPSSODescriptor(String supportedProtocol);
 
     /**
      * Gets the first {@link AuthnAuthorityDescriptor} role descriptor for this entity that supports the given protocol.
+     * 
+     * @param supportedProtocol protocol that must be supported
      * 
      * @return the {@link AuthnAuthorityDescriptor} role descriptor
      */
@@ -152,12 +156,16 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * Gets the first {@link AttributeAuthorityDescriptor} role descriptor for this entity that supports the given
      * protocol.
      * 
+     * @param supportedProtocol protocol that must be supported
+     * 
      * @return the {@link AttributeAuthorityDescriptor} role descriptor
      */
     public AttributeAuthorityDescriptor getAttributeAuthorityDescriptor(String supportedProtocol);
 
     /**
      * Gets the first {@link PDPDescriptor} role descriptor for this entity that supports the given protocol.
+     * 
+     * @param supportedProtocol protocol that must be supported
      * 
      * @return the {@link PDPDescriptor} role descriptor
      */
@@ -174,11 +182,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * Sets the affiliation descriptor for this entity.
      * 
      * @param descriptor the affiliation descriptor for this entity
-     * 
-     * @throws IllegalArgumentException thrown if the descriptor is owned by another entity or if this entity already
-     *             has one or more role descriptors associated with it
      */
-    public void setAffiliationDescriptor(AffiliationDescriptor descriptor) throws IllegalArgumentException;
+    public void setAffiliationDescriptor(AffiliationDescriptor descriptor);
 
     /**
      * Gets the organization for this entity.
@@ -191,10 +196,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * Sets the organization for this entity.
      * 
      * @param organization the organization for this entity
-     * 
-     * @throws IllegalArgumentException thrown if this organization belongs to another entity
      */
-    public void setOrganization(Organization organization) throws IllegalArgumentException;
+    public void setOrganization(Organization organization);
 
     /**
      * Get the contact people for this entity.

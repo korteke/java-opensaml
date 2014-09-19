@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
-/** SAML Identity Provider Discovery Protocol DiscoveryResponse */
+/** SAML Identity Provider Discovery Protocol DiscoveryResponse. */
 public interface DiscoveryResponse extends IndexedEndpoint {
 
     /** Namespace for Discovery Service metadata extensions. */

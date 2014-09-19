@@ -23,18 +23,16 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-
 /**
- * A bean class which is used to represent an entity group to which an 
- * {@link EntityDescriptor} belongs.  It will typically be attached to an entity descriptor
- * via its {@link XMLObject#getObjectMetadata()}.
+ * A bean class which is used to represent an entity group to which an
+ * {@link org.opensaml.saml.saml2.metadata.EntityDescriptor} belongs.
+ * It will typically be attached to an entity descriptor via its
+ * {@link org.opensaml.core.xml.XMLObject#getObjectMetadata()}.
  */
 public class EntityGroupName {
     
     /** The entities descriptor group name. */
-    private String name;
+    @Nonnull @NotEmpty private String name;
     
     /**
      * Constructor.
@@ -56,11 +54,13 @@ public class EntityGroupName {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return name.hashCode();
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;

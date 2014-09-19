@@ -24,14 +24,14 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameIDType;
 
 /**
- * SAML 2.0 Protocol Third-party extension RespondTo
+ * SAML 2.0 Protocol Third-party extension RespondTo.
  */
 public interface RespondTo extends NameIDType, SAMLObject {
 
-    /** Element local name */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "RespondTo";
+    /** Element local name. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RespondTo";
 
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PTHRPTY_NS,
-            DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20PTHRPTY_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20PTHRPTY_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20PTHRPTY_PREFIX);
 }

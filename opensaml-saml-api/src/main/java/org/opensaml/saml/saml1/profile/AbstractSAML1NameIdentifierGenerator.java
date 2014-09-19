@@ -68,7 +68,7 @@ public abstract class AbstractSAML1NameIdentifierGenerator extends AbstractNameI
         log.debug("Generating NameIdentifier {} with Format {}", identifier, getFormat());
         
         final NameIdentifier nameIdentifier = nameBuilder.buildObject();
-        nameIdentifier.setNameIdentifier(identifier);
+        nameIdentifier.setValue(identifier);
         nameIdentifier.setFormat(getFormat());
         nameIdentifier.setNameQualifier(getEffectiveIdPNameQualifier(profileRequestContext));
         

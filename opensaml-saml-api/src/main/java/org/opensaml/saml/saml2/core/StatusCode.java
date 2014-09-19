@@ -64,7 +64,7 @@ public interface StatusCode extends SAMLObject {
     public static final String AUTHN_FAILED_URI = "urn:oasis:names:tc:SAML:2.0:status:AuthnFailed";
 
     /** URI for InvalidAttrNameOrValue status code. */
-    public static final String INVALID_ATTR_NAME_VALUE_URI = "urn:oasis:names:tc:SAML:2.0:status:InvalidAttrNameOrValue";
+    public static final String INVALID_ATTR_NAME_VALUE_URI= "urn:oasis:names:tc:SAML:2.0:status:InvalidAttrNameOrValue";
 
     /** URI for InvalidNameIDPolicy status code. */
     public static final String INVALID_NAMEID_POLICY_URI = "urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy";
@@ -94,10 +94,11 @@ public interface StatusCode extends SAMLObject {
     public static final String REQUEST_UNSUPPORTED_URI = "urn:oasis:names:tc:SAML:2.0:status:RequestUnsupported";
 
     /** URI for RequestVersionDeprecated status code. */
-    public static final String REQUEST_VERSION_DEPRECATED_URI = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionDeprecated";
+    public static final String REQUEST_VERSION_DEPRECATED_URI =
+            "urn:oasis:names:tc:SAML:2.0:status:RequestVersionDeprecated";
 
     /** URI for RequestVersionTooHigh status code. */
-    public static final String REQUEST_VERSION_TOO_HIGH_URI = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooHigh";
+    public static final String REQUEST_VERSION_TOO_HIGH_URI= "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooHigh";
     
     /** URI for RequestVersionTooLow status code. */
     public static final String REQUEST_VERSION_TOO_LOW_URI = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooLow";

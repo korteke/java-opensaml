@@ -21,10 +21,10 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.saml.common.SAMLObject;
 
 /**
- * SAML 2.0 Extensions
+ * SAML 2.0 Extensions.
  */
 public interface Extensions extends SAMLObject, ElementExtensibleXMLObject {
 
-	/** Local name, no namespace */
-	public final static String LOCAL_NAME = "Extensions";
+    /** Local name, no namespace. */
+    public static final String LOCAL_NAME = "Extensions";
 }

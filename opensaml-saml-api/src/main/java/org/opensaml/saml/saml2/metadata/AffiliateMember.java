@@ -52,8 +52,6 @@ public interface AffiliateMember extends SAMLObject {
      * Sets the member's entity ID.
      * 
      * @param memberID the member's ID
-     * 
-     * @throws IllegalArgumentException thrown if the ID is over 1024 characters long
      */
-    public void setID(String memberID) throws IllegalArgumentException;
+    public void setID(String memberID);
 }

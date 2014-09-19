@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.component.InitializableComponent;
@@ -52,27 +54,27 @@ public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet
      * 
      * @return whether the metadata returned by queries must be valid
      */
-    public boolean isRequireValidMetadata();
+    boolean isRequireValidMetadata();
 
     /**
      * Sets whether the metadata returned by queries must be valid.
      * 
      * @param requireValidMetadata whether the metadata returned by queries must be valid
      */
-    public void setRequireValidMetadata(boolean requireValidMetadata);
+    void setRequireValidMetadata(final boolean requireValidMetadata);
 
     /**
      * Gets the metadata filter applied to the metadata.
      * 
      * @return the metadata filter applied to the metadata
      */
-    public MetadataFilter getMetadataFilter();
+    @Nullable MetadataFilter getMetadataFilter();
 
     /**
      * Sets the metadata filter applied to the metadata.
      * 
      * @param newFilter the metadata filter applied to the metadata
      */
-    public void setMetadataFilter(MetadataFilter newFilter);
+    void setMetadataFilter(@Nullable final MetadataFilter newFilter);
 
 }

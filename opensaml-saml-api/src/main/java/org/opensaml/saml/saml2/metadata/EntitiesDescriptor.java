@@ -96,10 +96,8 @@ public interface EntitiesDescriptor extends SignableSAMLObject, TimeBoundSAMLObj
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
-     * 
-     * @throws IllegalArgumentException thrown if the given extensions Object is already a child of another SAMLObject
      */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException;
+    public void setExtensions(Extensions extensions);
 
     /**
      * Gets a list of child {@link EntitiesDescriptor}s.

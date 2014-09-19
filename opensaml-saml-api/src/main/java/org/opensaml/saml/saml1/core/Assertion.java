@@ -135,10 +135,8 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * Set the Object representing the <code> Conditions </code> Sub element.
      * 
      * @param conditions the condition to List
-     * 
-     * @throws IllegalArgumentException if the condition has already been set into another object
      */
-    public void setConditions(Conditions conditions) throws IllegalArgumentException;
+    public void setConditions(Conditions conditions);
 
     /**
      * advice is a (singleton) Object, representing the <code> Advice </code> sub element.
@@ -151,10 +149,8 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * Set the Object representing the <code> Advice </code> sub element.
      * 
      * @param advice the object to set
-     * 
-     * @throws IllegalArgumentException if the object has already been put into another SAMLObject
      */
-    public void setAdvice(Advice advice) throws IllegalArgumentException;
+    public void setAdvice(Advice advice);
 
     /* Multiple Elements */
 

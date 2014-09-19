@@ -34,6 +34,6 @@ public interface RefreshableMetadataResolver extends MetadataResolver {
      * 
      * @throws ResolverException if the refresh operation was unsuccessful
      */
-    public void refresh() throws ResolverException;
+    void refresh() throws ResolverException;
 
 }
