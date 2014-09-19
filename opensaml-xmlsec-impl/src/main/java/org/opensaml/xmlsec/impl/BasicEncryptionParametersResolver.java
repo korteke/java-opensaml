@@ -347,9 +347,12 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
+    // Checkstyle: CyclomaticComplexity -- more readable not split up
     protected void populateRSAOAEPParams(@Nonnull final RSAOAEPParameters rsaParams, 
             @Nonnull final CriteriaSet criteria,
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
+        Predicate<String> algoSupportPredicate = getAlgorithmRuntimeSupportedPredicate();
         
         for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
                 .getConfigurations()) {
@@ -358,7 +361,8 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             if (rsaConfig != null) {
                 if (rsaParams.getDigestMethod() == null) {
                     if (rsaConfig.getDigestMethod() != null 
-                            && whitelistBlacklistPredicate.apply(rsaConfig.getDigestMethod())) {
+                            && whitelistBlacklistPredicate.apply(rsaConfig.getDigestMethod())
+                            && algoSupportPredicate.apply(rsaConfig.getDigestMethod())) {
                         rsaParams.setDigestMethod(rsaConfig.getDigestMethod());
                     }
                 }
@@ -377,6 +381,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             
         }
     }
+    // Checkstyle:CyclomaticComplexity ON
 
     /**
      * Determine the key transport encryption algorithm URI to use with the specified key transport credential
