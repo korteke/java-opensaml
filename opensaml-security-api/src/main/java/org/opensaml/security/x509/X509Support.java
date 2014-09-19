@@ -34,6 +34,7 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,6 +63,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
 
@@ -143,12 +145,17 @@ public class X509Support {
     }
 
     /**
-     * Gets the commons names that appear within the given distinguished name. The returned list provides the names in
-     * the order they appeared in the DN.
+     * Gets the commons names that appear within the given distinguished name. 
+     * 
+     * <p>
+     * The returned list provides the names in the order they appeared in the DN, according to 
+     * RFC 1779/2253 encoding. In this encoding the "most specific" name would typically appear
+     * in the left-most position, and would appear first in the returned list.
+     * </p>
      * 
      * @param dn the DN to extract the common names from
      * 
-     * @return the common names that appear in the DN in the order they appear or null if the given DN is null
+     * @return the common names that appear in the DN in the order they appear, or null if the given DN is null
      */
     @Nullable public static List<String> getCommonNames(@Nullable final X500Principal dn) {
         if (dn == null) {
@@ -158,7 +165,14 @@ public class X509Support {
         Logger log = getLogger();
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
         final Attributes attrs = NameReader.readX500Principal(dn);
-        return attrs.getValues(AttributeType.CommonName);
+        // Have to copy because list returned from Attributes is unmodifiable, so can't reverse it.
+        List<String> values = Lists.newArrayList(attrs.getValues(AttributeType.CommonName));
+        
+        // Reverse the order so that the most-specific CN is first in the list, 
+        // consistent with RFC 1779/2253 RDN ordering.
+        Collections.reverse(values);
+        
+        return values;
     }
 
     /**
