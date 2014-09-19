@@ -48,6 +48,24 @@ public class RSAOAEPParameters {
         setMaskGenerationFunction(mgf);
         setOAEPparams(params);
     }
+    
+    /**
+     * Determine whether the parameters instance is empty, meaning it has no values populated for any data properties.
+     * 
+     * @return true if all property values are null, false otherwise
+     */
+    public boolean isEmpty() {
+        return getDigestMethod() == null && getMaskGenerationFunction() == null && getOAEPParams() == null;
+    }
+
+    /**
+     * Determine whether the parameters instance is complete, meaning values are populated for all data properties.
+     * 
+     * @return true if all property values are populated, false otherwise
+     */
+    public boolean isComplete() {
+        return getDigestMethod() != null && getMaskGenerationFunction() != null && getOAEPParams() != null;
+    }
 
     /**
      * Get the digest method algorithm URI.

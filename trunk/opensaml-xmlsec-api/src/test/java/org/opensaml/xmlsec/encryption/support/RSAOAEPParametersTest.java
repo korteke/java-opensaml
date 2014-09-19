@@ -51,5 +51,57 @@ public class RSAOAEPParametersTest {
         Assert.assertEquals(params.getMaskGenerationFunction(), "MGF");
         Assert.assertEquals(params.getOAEPParams(), "OAEPParams");
     }
+    
+    @Test
+    public void testIsEmpty() {
+        RSAOAEPParameters params;
+        
+        params = new RSAOAEPParameters();
+        Assert.assertTrue(params.isEmpty());
+        
+        params = new RSAOAEPParameters(null, null, null);
+        Assert.assertTrue(params.isEmpty());
+        
+        params = new RSAOAEPParameters("digest", null, null);
+        Assert.assertFalse(params.isEmpty());
+        
+        params = new RSAOAEPParameters(null, "MGF", null);
+        Assert.assertFalse(params.isEmpty());
+        
+        params = new RSAOAEPParameters(null, null, "OAEPParams");
+        Assert.assertFalse(params.isEmpty());
+    }
+    
+    @Test
+    public void testIsComplete() {
+        RSAOAEPParameters params;
+        
+        params = new RSAOAEPParameters();
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters(null, null, null);
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters("digest", null, null);
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters("digest", "MGF", null);
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters("digest", null, "OAEPParams");
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters(null, "MGF", null);
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters(null, "MGF", "OAEPParams");
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters(null, null, "OAEPParams");
+        Assert.assertFalse(params.isComplete());
+        
+        params = new RSAOAEPParameters("digest", "MGF", "OAEPParams");
+        Assert.assertTrue(params.isComplete());
+    }
 
 }
