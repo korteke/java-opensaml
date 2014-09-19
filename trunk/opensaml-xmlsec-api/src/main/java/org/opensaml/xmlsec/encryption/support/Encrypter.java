@@ -359,7 +359,7 @@ public class Encrypter {
 
         org.apache.xml.security.encryption.EncryptedKey apacheEncryptedKey;
         try {
-            if (isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null) {
+            if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null) {
                 apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey, 
                         getEffectiveMGF(encryptionAlgorithmURI, rsaOAEPParams), 
                         decodeOAEPParams(rsaOAEPParams.getOAEPParams()));
@@ -398,14 +398,16 @@ public class Encrypter {
         XMLCipher xmlCipher;
         
         if (getJCAProviderName() != null) {
-            if (isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null && rsaOAEPParams.getDigestMethod() != null) {
+            if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null 
+                    && rsaOAEPParams.getDigestMethod() != null) {
                 xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName(), 
                         null, rsaOAEPParams.getDigestMethod());
             } else {
                 xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName());
             }
         } else {
-            if (isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null && rsaOAEPParams.getDigestMethod() != null) {
+            if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null 
+                    && rsaOAEPParams.getDigestMethod() != null) {
                 xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI, null, rsaOAEPParams.getDigestMethod());
             } else {
                 xmlCipher = XMLCipher.getInstance(encryptionAlgorithmURI);
