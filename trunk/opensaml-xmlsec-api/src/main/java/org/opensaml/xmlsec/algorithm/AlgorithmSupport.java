@@ -36,6 +36,7 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -235,6 +236,17 @@ public final class AlgorithmSupport {
         return null;
     }
 
+    /**
+     * Check whether the key transport encryption algorithm URI indicates RSA-OAEP.
+     * 
+     * @param keyTransportAlgorithm the key transport encryption algorithm URI
+     * @return true if URI indicates RSA-OAEP, false otherwise
+     */
+    public static boolean isRSAOAEP(@Nonnull final String keyTransportAlgorithm) {
+        return EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(keyTransportAlgorithm)
+                || EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11.equals(keyTransportAlgorithm);
+    }
+    
     /**
      * Check whether the signature method algorithm URI indicates HMAC.
      * 

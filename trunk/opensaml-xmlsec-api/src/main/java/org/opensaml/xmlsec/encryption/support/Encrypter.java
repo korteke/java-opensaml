@@ -416,17 +416,6 @@ public class Encrypter {
         
         return xmlCipher;
     }
-
-    /**
-     * Determine whether key encryption algorithm URI is an RSA OAEP variant.
-     * 
-     * @param encryptionAlgorithmURI the algorithm URI
-     * @return true if is RSA OAEP, false otherwise
-     */
-    protected boolean isRSAOAEP(String encryptionAlgorithmURI) {
-        return EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(encryptionAlgorithmURI) 
-                || EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11.equals(encryptionAlgorithmURI);
-    }
     
     /**
      * Get the effective RSA OAEP mask generation function (MGF) to use.
@@ -491,7 +480,7 @@ public class Encrypter {
         // Workaround for XML-Security library issue. To maximize interop, explicitly express the library
         // default of SHA-1 digest method input parameter to RSA-OAEP key transport algorithm.
         // Check and only add if the library hasn't already done so, which it currently doesn't.
-        if (isRSAOAEP(encryptionAlgorithmURI)) {
+        if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI)) {
             boolean sawDigestMethod = false;
             Iterator childIter = apacheEncryptedKey.getEncryptionMethod().getEncryptionMethodInformation();
             while (childIter.hasNext()) {
