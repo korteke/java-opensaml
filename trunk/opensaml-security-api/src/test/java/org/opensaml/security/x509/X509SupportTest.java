@@ -296,22 +296,38 @@ public class X509SupportTest {
         commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org"));
         Assert.assertNotNull(commonNames);
         Assert.assertEquals(commonNames.size(), 1);
-        Assert.assertTrue(commonNames.contains("foo.example.org"));
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
         
         // 2 components, 1 cn
         commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org, o=MyOrg"));
         Assert.assertNotNull(commonNames);
         Assert.assertEquals(commonNames.size(), 1);
-        Assert.assertTrue(commonNames.contains("foo.example.org"));
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
         
         // 2 components each with cn
         commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org, cn=MyOrg"));
         Assert.assertNotNull(commonNames);
         Assert.assertEquals(commonNames.size(), 2);
-        Assert.assertTrue(commonNames.contains("foo.example.org"));
-        Assert.assertTrue(commonNames.contains("MyOrg"));
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
+        Assert.assertEquals(commonNames.get(1), "MyOrg");
+        
+        // 4 components, 3 cn
+        commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org, cn=WebServers, cn=Hosts, o=MyOrg"));
+        Assert.assertNotNull(commonNames);
+        Assert.assertEquals(commonNames.size(), 3);
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
+        Assert.assertEquals(commonNames.get(1), "WebServers");
+        Assert.assertEquals(commonNames.get(2), "Hosts");
+        
+        // 4 components, 2 cn, a cn is not first nor last
+        commonNames = X509Support.getCommonNames(new X500Principal("uid=foo, cn=Admins, cn=People, o=MyOrg"));
+        Assert.assertNotNull(commonNames);
+        Assert.assertEquals(commonNames.size(), 2);
+        Assert.assertEquals(commonNames.get(0), "Admins");
+        Assert.assertEquals(commonNames.get(1), "People");
         
         // 2 components, one of them with multiple cn AVAs
+        // Note: The set of AVAs in a DN component is unordered, so can't test returned ordering.
         commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org+cn=bar.example.org+cn=baz.example.org, o=MyOrg"));
         Assert.assertNotNull(commonNames);
         Assert.assertEquals(commonNames.size(), 3);
@@ -320,6 +336,7 @@ public class X509SupportTest {
         Assert.assertTrue(commonNames.contains("baz.example.org"));
         
         // 2 components, both with multiple cn AVAs
+        // Note: The set of AVAs in a DN component is unordered, so can't test returned ordering.
         commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org+cn=bar.example.org+cn=baz.example.org, cn=Org1+cn=Org2"));
         Assert.assertNotNull(commonNames);
         Assert.assertEquals(commonNames.size(), 5);
@@ -333,6 +350,25 @@ public class X509SupportTest {
         commonNames = X509Support.getCommonNames(new X500Principal("uid=foo, o=MyOrg"));
         Assert.assertNotNull(commonNames);
         Assert.assertEquals(commonNames.size(), 0);
+        
+        // Test input of raw OID
+        commonNames = X509Support.getCommonNames(new X500Principal("2.5.4.3=foo.example.org"));
+        Assert.assertNotNull(commonNames);
+        Assert.assertEquals(commonNames.size(), 1);
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
+        
+        // Test attack DNs per CVE-2014-3577
+        commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org, o=foo \\,cn=www.apache.org"));
+        Assert.assertNotNull(commonNames);
+        Assert.assertEquals(commonNames.size(), 1);
+        Assert.assertFalse(commonNames.contains("www.apache.org"));
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
+        
+        commonNames = X509Support.getCommonNames(new X500Principal("cn=foo.example.org, o=cn=www.apache.org\\, foo"));
+        Assert.assertNotNull(commonNames);
+        Assert.assertEquals(commonNames.size(), 1);
+        Assert.assertFalse(commonNames.contains("www.apache.org"));
+        Assert.assertEquals(commonNames.get(0), "foo.example.org");
     }
     
     /**
@@ -355,10 +391,6 @@ public class X509SupportTest {
      */
     @Test
     public void testDetermineEntityCertificate() throws Exception {
-        // TODO comment out probably causes failure until X509Support matchKey method is refactored.
-        // org.opensaml.xml.Configuration.setGlobalSecurityConfiguration(
-        // DefaultSecurityConfigurationBootstrap.buildDefaultConfig());
-
         ArrayList<X509Certificate> certs = new ArrayList<X509Certificate>();
         certs.add(entityCert3AltNamesDNS_URL_IP);
         certs.add(entityCert1AltNameDNS);
