@@ -53,9 +53,8 @@ public interface Response extends ResponseAbstractType {
      * Set the object representing the <code> Status </code> (element).
      * 
      * @param status what to set
-     * @throws IllegalArgumentException if status is invalid.
      */
-    void setStatus(Status status) throws IllegalArgumentException;
+    void setStatus(Status status);
 
     /**
      * Return the objects representing the <code>Assertion</code> (element).

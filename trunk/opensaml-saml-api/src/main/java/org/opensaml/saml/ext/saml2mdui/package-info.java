@@ -16,7 +16,7 @@
  */
 
 /**
- * Interfaces for SAML 2 Metadata Extensions for Login UI and Discovery
+ * Interfaces for SAML 2 Metadata Extensions for Login UI and Discovery.
  */
 
 package org.opensaml.saml.ext.saml2mdui;

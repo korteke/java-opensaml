@@ -51,13 +51,13 @@ public interface RoleDescriptorResolver extends Resolver<RoleDescriptor, Criteri
      * 
      * @return whether the metadata returned by queries must be valid
      */
-    public boolean isRequireValidMetadata();
+    boolean isRequireValidMetadata();
 
     /**
      * Sets whether the metadata returned by queries must be valid.
      * 
      * @param requireValidMetadata whether the metadata returned by queries must be valid
      */
-    public void setRequireValidMetadata(boolean requireValidMetadata);
+    void setRequireValidMetadata(final boolean requireValidMetadata);
 
 }

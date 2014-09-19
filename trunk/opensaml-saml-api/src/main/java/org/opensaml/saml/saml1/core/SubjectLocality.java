@@ -42,7 +42,8 @@ public interface SubjectLocality extends SAMLObject {
     public static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the IPAddress attribute. */
     public static final String IPADDRESS_ATTRIB_NAME = "IPAddress";

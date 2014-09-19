@@ -44,7 +44,8 @@ public interface NameIDType {
     public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
-    public static final String WIN_DOMAIN_QUALIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
+    public static final String WIN_DOMAIN_QUALIFIED =
+            "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
 
     /** URI for kerberos name format. */
     public static final String KERBEROS = "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos";

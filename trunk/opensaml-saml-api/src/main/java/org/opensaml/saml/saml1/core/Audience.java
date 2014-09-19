@@ -32,14 +32,15 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Audience extends SAMLObject {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
-    /** Return the URI which makes up the Body */
+    /** Return the URI which makes up the Body. */
     public String getUri();
 
-    /** Set the Uri which makes up the body text */
+    /** Set the Uri which makes up the body text. */
     public void setUri(String uri);
 }

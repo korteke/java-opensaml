@@ -32,27 +32,29 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AttributeQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeQuery";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeQuery";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "AttributeQueryType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AttributeQueryType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** AuthenticationMethod attribute name */
-    public final static String RESOURCE_ATTRIB_NAME = "Resource"; 
+    /** AuthenticationMethod attribute name. */
+    public static final String RESOURCE_ATTRIB_NAME = "Resource"; 
 
-    /** Get list of AttributeDesignators */
+    /** Get list of AttributeDesignators. */
     public List<AttributeDesignator> getAttributeDesignators();
     
-    /** Get Resource attribute */
+    /** Get Resource attribute. */
     public String getResource();
     
-    /** Set Resource attribute */
+    /** Set Resource attribute. */
     public void setResource(String resource);
 
 }

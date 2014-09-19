@@ -27,7 +27,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * SAML 2.0 Core Terminate
+ * SAML 2.0 Core Terminate.
  */
 public interface Terminate extends SAMLObject {
 

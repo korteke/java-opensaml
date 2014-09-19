@@ -20,12 +20,11 @@ package org.opensaml.saml.metadata.resolver.filter;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
  * A metadata filter is used to process a metadata document after it has been unmarshalled into an 
- * instance of {@link XMLObject}, either an {@link EntityDescriptor} or an {@link EntitiesDescriptor}.
+ * instance of {@link XMLObject}, either an {@link org.opensaml.saml.saml2.metadata.EntityDescriptor}
+ * or an {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor}.
  * 
  * <p>
  * Some example filters might remove everything but identity providers roles, decreasing the data a service provider
@@ -52,5 +51,5 @@ public interface MetadataFilter {
      * 
      * @throws FilterException thrown if an error occurs during the filtering process
      */
-    @Nullable public XMLObject filter(@Nullable XMLObject metadata) throws FilterException;
+    @Nullable XMLObject filter(@Nullable final XMLObject metadata) throws FilterException;
 }

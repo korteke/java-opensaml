@@ -184,6 +184,7 @@ public class SAMLSchemaBuilder {
         return cachedSchema.get();
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Configure the appropriate {@link SchemaBuilder} with the right set of schemas.
      */
@@ -226,5 +227,6 @@ public class SAMLSchemaBuilder {
             }
         }
     }
-    
+// Checkstyle: CyclomaticComplexity ON
+
 }

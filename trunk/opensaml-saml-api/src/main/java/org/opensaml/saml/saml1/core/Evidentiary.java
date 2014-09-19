@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core;
 import org.opensaml.saml.common.SAMLObject;
 
 /**
- * Marker interface for element types that can constitute evidence within a @{org.opensaml.saml.saml1.core.Evidence} object.
+ * Marker interface for element types that can constitute evidence within a {@link Evidence} object.
  */
 public interface Evidentiary extends SAMLObject {
 

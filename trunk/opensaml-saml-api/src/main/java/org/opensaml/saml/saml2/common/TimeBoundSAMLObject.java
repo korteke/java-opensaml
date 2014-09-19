@@ -29,31 +29,32 @@ import org.opensaml.saml.common.xml.SAMLConstants;
  */
 public interface TimeBoundSAMLObject extends SAMLObject{
 
-	/** "validUntil" attribute's local name */
-	public final static String VALID_UNTIL_ATTRIB_NAME = "validUntil";
-	
-	/** "validUntil" attribute's QName */
-	public final static QName VALID_UNTIL_ATTRIB_QNAME = new QName(SAMLConstants.SAML20MD_NS, VALID_UNTIL_ATTRIB_NAME, SAMLConstants.SAML20MD_PREFIX);
-	
-	/**
-	 * Checks to see if the current time is past the validUntil time.
-	 * 
-	 * @return true of this descriptor is still valid otherwise false
-	 */
-	public boolean isValid();
+    /** "validUntil" attribute's local name. */
+    public static final String VALID_UNTIL_ATTRIB_NAME = "validUntil";
 
-	/**
-	 * Gets the date until which this descriptor is valid.
-	 * 
-	 * @return the date until which this descriptor is valid
-	 */
-	public DateTime getValidUntil();
+    /** "validUntil" attribute's QName. */
+    public static final QName VALID_UNTIL_ATTRIB_QNAME =
+            new QName(SAMLConstants.SAML20MD_NS, VALID_UNTIL_ATTRIB_NAME, SAMLConstants.SAML20MD_PREFIX);
 
-	/**
-	 * Sets the date until which this descriptor is valid.
-	 * 
-	 * @param validUntil the date until which this descriptor is valid
-	 */
-	public void setValidUntil(DateTime validUntil);
+    /**
+     * Checks to see if the current time is past the validUntil time.
+     * 
+     * @return true of this descriptor is still valid otherwise false
+     */
+    public boolean isValid();
+
+    /**
+     * Gets the date until which this descriptor is valid.
+     * 
+     * @return the date until which this descriptor is valid
+     */
+    public DateTime getValidUntil();
+
+    /**
+     * Sets the date until which this descriptor is valid.
+     * 
+     * @param validUntil the date until which this descriptor is valid
+     */
+    public void setValidUntil(DateTime validUntil);
 
 }

@@ -27,20 +27,22 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface SubjectQuery extends Query {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "SubjectQueryAbstractType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
-    /** Get Subject child element */
+    /** Get Subject child element. */
     public Subject getSubject();
     
-    /** Set Subject child element */
+    /** Set Subject child element. */
     public void setSubject(Subject subject);
 }

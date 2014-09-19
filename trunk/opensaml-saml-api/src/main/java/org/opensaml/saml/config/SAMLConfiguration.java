@@ -24,7 +24,6 @@ import java.util.List;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
@@ -32,7 +31,8 @@ import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
  * SAML-related configuration information.
  * 
  * <p>
- * The configuration instance to use would typically be retrieved from the {@link ConfigurationService}.
+ * The configuration instance to use would typically be retrieved from the
+ * {@link org.opensaml.core.config.ConfigurationService}.
  * </p>
  * 
  */

@@ -28,8 +28,9 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AttributeValue extends SAMLObject  {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeValue";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeValue";
  
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 }

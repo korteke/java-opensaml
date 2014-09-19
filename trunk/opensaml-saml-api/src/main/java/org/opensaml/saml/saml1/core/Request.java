@@ -29,43 +29,44 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Request extends RequestAbstractType {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "RequestType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "RequestType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /* 
      * A bit odd this, it s a choice so only one of these will return any value
      */
     
-    /** Get the request Query, SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery */ 
+    /** Get the request Query, SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery. */ 
     public Query getQuery();
     
-    /** Get the request SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery */ 
+    /** Get the request SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery. */ 
     public SubjectQuery getSubjectQuery();
     
-    /** Get the query AuthenticationQuery */ 
+    /** Get the query AuthenticationQuery. */ 
     public AuthenticationQuery getAuthenticationQuery();
     
-    /** Get the request AttributeQuery */ 
+    /** Get the request AttributeQuery. */ 
     public AttributeQuery getAttributeQuery();
     
-    /** Get the request AuthorizationDecisionQuery */ 
+    /** Get the request AuthorizationDecisionQuery. */ 
     public AuthorizationDecisionQuery getAuthorizationDecisionQuery();
     
-    /** Set the query (Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisioonQuery 
-     */ 
-    public void setQuery(Query query) throws IllegalArgumentException;
+    /** Set the query (Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisioonQuery. */ 
+    public void setQuery(Query query);
     
-    /** Get the lists of AssertionIDReferences */
+    /** Get the list of AssertionIDReferences. */
     public List <AssertionIDReference> getAssertionIDReferences();
     
-    /** Get the lists of */
+    /** Get the list of artifacts. */
     public List <AssertionArtifact> getAssertionArtifacts();
 }

@@ -59,7 +59,7 @@ public interface NameIDPolicy extends SAMLObject {
     public String getFormat();
 
     /**
-     * Sets the format of the NameIDPolicy
+     * Sets the format of the NameIDPolicy.
      * 
      * @param newFormat the format of the NameIDPolicy
      */

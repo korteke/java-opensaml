@@ -17,13 +17,15 @@
 
 package org.opensaml.saml.metadata.resolver.filter;
 
+import javax.annotation.Nullable;
+
 /**
  * An exception thrown during the evaluation of a {@link org.opensaml.saml.metadata.resolver.filter.MetadataFilter}.
  */
 public class FilterException extends Exception {
 
     /**
-     * Serial version UID
+     * Serial version UID.
      */
     private static final long serialVersionUID = 6214474330141026496L;
 
@@ -39,7 +41,7 @@ public class FilterException extends Exception {
      * 
      * @param message exception message
      */
-    public FilterException(String message) {
+    public FilterException(@Nullable final String message) {
         super(message);
     }
     
@@ -48,7 +50,7 @@ public class FilterException extends Exception {
      * 
      * @param wrappedException exception to be wrapped by this one
      */
-    public FilterException(Exception wrappedException) {
+    public FilterException(@Nullable final Exception wrappedException) {
         super(wrappedException);
     }
     
@@ -58,7 +60,7 @@ public class FilterException extends Exception {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public FilterException(String message, Exception wrappedException) {
+    public FilterException(@Nullable final String message, @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 }

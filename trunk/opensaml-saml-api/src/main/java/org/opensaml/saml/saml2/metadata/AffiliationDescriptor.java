@@ -79,10 +79,8 @@ public interface AffiliationDescriptor extends SignableSAMLObject, TimeBoundSAML
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
-     * 
-     * @throws IllegalArgumentException thrown if the given extensions Object is already a child of another SAMLObject
      */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException;
+    public void setExtensions(Extensions extensions);
 
     /**
      * Sets the ID of the owner of this affiliation.

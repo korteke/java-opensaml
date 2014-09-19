@@ -27,14 +27,13 @@ import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.AbstractEncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 
 import com.google.common.collect.Sets;
 
 /**
- * An implementation of {@link EncryptedKeyResolver} which resolves {@link EncryptedKey}
- * elements which appear as immediate children of the {@link EncryptedElementType} which 
- * is the parent of the {@link EncryptedData} context.
+ * An implementation of {@link org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver}
+ * which resolves {@link EncryptedKey} elements which appear as immediate children of the
+ * {@link EncryptedElementType} which is the parent of the {@link EncryptedData} context.
  */
 public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     

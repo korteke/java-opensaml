@@ -22,22 +22,22 @@ package org.opensaml.saml.saml1.core;
  */
 public final class DecisionTypeEnumeration {
     
-    /** "Permit" decision type */
-    public final static DecisionTypeEnumeration PERMIT = new DecisionTypeEnumeration("Permit");
+    /** "Permit" decision type. */
+    public static final DecisionTypeEnumeration PERMIT = new DecisionTypeEnumeration("Permit");
     
-    /** "Deny" decision type */
-    public final static DecisionTypeEnumeration DENY = new DecisionTypeEnumeration("Deny");
+    /** "Deny" decision type. */
+    public static final DecisionTypeEnumeration DENY = new DecisionTypeEnumeration("Deny");
     
-    /** "Indeterminate" decision type */
-    public final static DecisionTypeEnumeration INDETERMINATE = new DecisionTypeEnumeration("Indeterminate");
+    /** "Indeterminate" decision type. */
+    public static final DecisionTypeEnumeration INDETERMINATE = new DecisionTypeEnumeration("Indeterminate");
     
-    /** The decision type sting */
+    /** The decision type string. */
     private String decisionType;
     
     /**
-     *  Constructor
+     *  Constructor.
      *  
-     *  @param newDecisionType
+     *  @param newDecisionType the decision type
      */
     protected DecisionTypeEnumeration(String newDecisionType) {
         this.decisionType = newDecisionType;

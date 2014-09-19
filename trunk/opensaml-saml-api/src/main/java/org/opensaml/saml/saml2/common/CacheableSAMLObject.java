@@ -28,24 +28,25 @@ import org.opensaml.saml.common.xml.SAMLConstants;
  */
 public interface CacheableSAMLObject extends SAMLObject{
 
-	/** "cacheDuration" attribute name */
-	public final static String CACHE_DURATION_ATTRIB_NAME = "cacheDuration";
-	
-	/** "cacheDuration" attribute's QName */
-	public final static QName CACHE_DURATION_ATTRIB_QNAME = new QName(SAMLConstants.SAML20MD_NS, CACHE_DURATION_ATTRIB_NAME, SAMLConstants.SAML20MD_PREFIX);
-	
-	/**
-	 * Gets the maximum time, in milliseconds, that this descriptor should be cached.
-	 *  
-	 * @return the maximum time that this descriptor should be cached
-	 */
-	public Long getCacheDuration();
+    /** "cacheDuration" attribute name. */
+    public static final String CACHE_DURATION_ATTRIB_NAME = "cacheDuration";
 
-	/**
-	 * Sets the maximum time, in milliseconds, that this descriptor should be cached.
-	 * 
-	 * @param duration the maximum time that this descriptor should be cached
-	 */
-	public void setCacheDuration(Long duration);
+    /** "cacheDuration" attribute's QName. */
+    public static final QName CACHE_DURATION_ATTRIB_QNAME =
+            new QName(SAMLConstants.SAML20MD_NS, CACHE_DURATION_ATTRIB_NAME, SAMLConstants.SAML20MD_PREFIX);
+
+    /**
+     * Gets the maximum time, in milliseconds, that this descriptor should be cached.
+     *  
+     * @return the maximum time that this descriptor should be cached
+     */
+    public Long getCacheDuration();
+
+    /**
+     * Sets the maximum time, in milliseconds, that this descriptor should be cached.
+     * 
+     * @param duration the maximum time that this descriptor should be cached
+     */
+    public void setCacheDuration(Long duration);
 
 }
