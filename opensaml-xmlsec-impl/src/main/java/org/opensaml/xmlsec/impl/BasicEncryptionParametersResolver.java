@@ -347,10 +347,14 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
-    // Checkstyle: CyclomaticComplexity -- more readable not split up
+    // Checkstyle: CyclomaticComplexity OFF -- more readable not split up
     protected void populateRSAOAEPParams(@Nonnull final RSAOAEPParameters rsaParams, 
             @Nonnull final CriteriaSet criteria,
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
+        if (rsaParams.isComplete()) {
+            return;
+        }
         
         Predicate<String> algoSupportPredicate = getAlgorithmRuntimeSupportedPredicate();
         
@@ -379,6 +383,9 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                 }
             }
             
+            if (rsaParams.isComplete()) {
+                return;
+            }
         }
     }
     // Checkstyle:CyclomaticComplexity ON
