@@ -41,6 +41,7 @@ import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
+import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -301,10 +302,82 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             }
         }
         
+        resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
+        
         // Auto-generate data encryption cred if configured and possible
         processDataEncryptionCredentialAutoGeneration(params);
     }
     
+    /**
+     * Resolve and populate an instance of {@link RSAOAEPParameters}, if appropriate for the selected
+     * key transport encryption algorithm.
+     * 
+     * @param params the params instance being populated
+     * @param criteria the input criteria being evaluated
+     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     *          candidate data encryption and key transport algorithm URIs
+     */
+    protected void resolveAndPopulateRSAOAEPParams(@Nonnull final EncryptionParameters params, 
+            @Nonnull final CriteriaSet criteria,
+            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
+        if (!AlgorithmSupport.isRSAOAEP(params.getKeyTransportEncryptionAlgorithm())) {
+            return;
+        }
+        
+        if (params.getRSAOAEPParameters() == null) {
+            params.setRSAOAEPParameters(new RSAOAEPParameters());
+        }
+        
+        RSAOAEPParameters rsaParams = params.getRSAOAEPParameters();
+        
+        if (rsaParams.isComplete()) {
+            return;
+        }
+        
+        populateRSAOAEPParams(rsaParams, criteria, whitelistBlacklistPredicate);
+    }
+
+    /**
+     * Populate an instance of {@link RSAOAEPParameters} based on data from the supplied instances 
+     * of {@link EncryptionConfiguration}.
+     * 
+     * @param rsaParams the existing RSAOAEPParameters instance being populated
+     * @param criteria the input criteria being evaluated
+     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     *          candidate data encryption and key transport algorithm URIs
+     */
+    protected void populateRSAOAEPParams(@Nonnull final RSAOAEPParameters rsaParams, 
+            @Nonnull final CriteriaSet criteria,
+            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
+        for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
+                .getConfigurations()) {
+            
+            RSAOAEPParameters rsaConfig = config.getRSAOAEPParameters();
+            if (rsaConfig != null) {
+                if (rsaParams.getDigestMethod() == null) {
+                    if (rsaConfig.getDigestMethod() != null 
+                            && whitelistBlacklistPredicate.apply(rsaConfig.getDigestMethod())) {
+                        rsaParams.setDigestMethod(rsaConfig.getDigestMethod());
+                    }
+                }
+                if (rsaParams.getMaskGenerationFunction() == null) {
+                    if (rsaConfig.getMaskGenerationFunction() != null 
+                            && whitelistBlacklistPredicate.apply(rsaConfig.getMaskGenerationFunction())) {
+                        rsaParams.setMaskGenerationFunction(rsaConfig.getMaskGenerationFunction());
+                    }
+                }
+                if (rsaParams.getOAEPParams() == null) {
+                    if (rsaConfig.getOAEPParams() != null) {
+                        rsaParams.setOAEPparams(rsaConfig.getOAEPParams());
+                    }
+                }
+            }
+            
+        }
+    }
+
     /**
      * Determine the key transport encryption algorithm URI to use with the specified key transport credential
      * and optional data encryption algorithm URI.
