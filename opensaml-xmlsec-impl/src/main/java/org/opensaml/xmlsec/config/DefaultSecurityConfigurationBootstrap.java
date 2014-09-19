@@ -26,6 +26,7 @@ import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.encryption.support.SimpleKeyInfoReferenceEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 import org.opensaml.xmlsec.impl.BasicDecryptionConfiguration;
@@ -90,6 +91,12 @@ public class DefaultSecurityConfigurationBootstrap {
                 EncryptionConstants.ALGO_ID_KEYWRAP_AES192,
                 EncryptionConstants.ALGO_ID_KEYWRAP_AES256,
                 EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES
+                ));
+        
+        config.setRSAOAEPParameters(new RSAOAEPParameters(
+                EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
+                EncryptionConstants.ALGO_ID_MGF1_SHA256, 
+                null
                 ));
         
         config.setDataKeyInfoGeneratorManager(buildDataEncryptionKeyInfoGeneratorManager());
