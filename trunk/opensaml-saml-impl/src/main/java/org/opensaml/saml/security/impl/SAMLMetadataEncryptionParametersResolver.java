@@ -243,11 +243,14 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             @Nonnull final EncryptionMethod encryptionMethod, 
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
         
+        Predicate<String> algoSupportPredicate = getAlgorithmRuntimeSupportedPredicate();
+        
         List<XMLObject> digestMethods = encryptionMethod.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
         if (digestMethods.size() > 0) {
             DigestMethod digestMethod = (DigestMethod) digestMethods.get(0);
             String digestAlgorithm = StringSupport.trimOrNull(digestMethod.getAlgorithm());
-            if (digestAlgorithm != null && whitelistBlacklistPredicate.apply(digestAlgorithm)) {
+            if (digestAlgorithm != null && whitelistBlacklistPredicate.apply(digestAlgorithm)
+                    && algoSupportPredicate.apply(digestAlgorithm)) {
                 params.setDigestMethod(digestAlgorithm);
             }
         }
