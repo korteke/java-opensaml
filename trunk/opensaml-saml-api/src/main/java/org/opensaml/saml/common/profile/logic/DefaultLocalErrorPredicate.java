@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookupFunction;
+import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
 import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
@@ -85,7 +85,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
                 Functions.compose(new ChildContextLookup<>(SAMLPeerEntityContext.class),
                         new OutboundMessageContextLookup()));
         
-        eventContextLookupStrategy = new CurrentOrPreviousEventLookupFunction();
+        eventContextLookupStrategy = new CurrentOrPreviousEventLookup();
         
         localEvents = Collections.emptySet();
     }

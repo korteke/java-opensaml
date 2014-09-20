@@ -31,22 +31,24 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Conditions extends SAMLObject {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "Conditions";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Conditions";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "ConditionsType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "ConditionsType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the NotBefore attribute. */
-    public final static String NOTBEFORE_ATTRIB_NAME = "NotBefore";
+    public static final String NOTBEFORE_ATTRIB_NAME = "NotBefore";
 
     /** Name for the NotBefore attribute. */
-    public final static String NOTONORAFTER_ATTRIB_NAME = "NotOnOrAfter";
+    public static final String NOTONORAFTER_ATTRIB_NAME = "NotOnOrAfter";
 
     /** Return the value of the NotBefore attribute. */
     public DateTime getNotBefore();

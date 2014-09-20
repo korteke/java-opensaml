@@ -41,13 +41,13 @@ import com.google.common.collect.Lists;
  * Function to return a set of candidate NameIdentifier/NameID Format values derived from an entity's
  * SAML metadata. 
  */
-public class MetadataNameIdentifierFormatStrategy implements Function<ProfileRequestContext, List<String>> {
+public class MetadataNameIdentifierFormatStrategy implements Function<ProfileRequestContext,List<String>> {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(MetadataNameIdentifierFormatStrategy.class);
     
     /** Strategy function to lookup the {@link SSODescriptor} to read from. */
-    @Nonnull private Function<ProfileRequestContext, SSODescriptor> ssoDescriptorLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,SSODescriptor> ssoDescriptorLookupStrategy;
     
     /** Constructor. */
     public MetadataNameIdentifierFormatStrategy() {
@@ -59,8 +59,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
      * 
      * @param strategy  lookup strategy
      */
-    public synchronized void setSSODescriptorLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext, SSODescriptor> strategy) {
+    public void setSSODescriptorLookupStrategy(@Nonnull final Function<ProfileRequestContext,SSODescriptor> strategy) {
         ssoDescriptorLookupStrategy = Constraint.isNotNull(strategy, "SSODescriptor lookup strategy cannot be null");
     }
     
@@ -90,16 +89,16 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
     /**
      * Default lookup strategy for metadata, relies on the inbound message context.
      */
-    private class MetadataLookupStrategy implements Function<ProfileRequestContext, SSODescriptor> {
+    private class MetadataLookupStrategy implements Function<ProfileRequestContext,SSODescriptor> {
 
         /** {@inheritDoc} */
         @Override
         @Nullable public SSODescriptor apply(@Nullable final ProfileRequestContext input) {
             if (input != null && input.getInboundMessageContext() != null) {
                 final SAMLPeerEntityContext peerCtx =
-                        input.getInboundMessageContext().getSubcontext(SAMLPeerEntityContext.class, false);
+                        input.getInboundMessageContext().getSubcontext(SAMLPeerEntityContext.class);
                 if (peerCtx != null) {
-                    SAMLMetadataContext mdCtx = peerCtx.getSubcontext(SAMLMetadataContext.class, false);
+                    SAMLMetadataContext mdCtx = peerCtx.getSubcontext(SAMLMetadataContext.class);
                     if (mdCtx != null && mdCtx.getRoleDescriptor() != null
                             && mdCtx.getRoleDescriptor() instanceof SSODescriptor) {
                         return (SSODescriptor) mdCtx.getRoleDescriptor();

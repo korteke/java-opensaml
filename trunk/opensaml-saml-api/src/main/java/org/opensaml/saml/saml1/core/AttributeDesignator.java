@@ -31,13 +31,15 @@ public interface AttributeDesignator extends SAMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeDesignator";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "AttributeDesignatorType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Name for the AttributeName attribute. */
     public static final String ATTRIBUTENAME_ATTRIB_NAME = "AttributeName";

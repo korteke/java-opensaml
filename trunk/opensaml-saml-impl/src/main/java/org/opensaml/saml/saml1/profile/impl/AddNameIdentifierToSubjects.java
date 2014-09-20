@@ -281,7 +281,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         clone.setFormat(nameIdentifier.getFormat());
         clone.setNameQualifier(nameIdentifier.getNameQualifier());
-        clone.setNameIdentifier(nameIdentifier.getNameIdentifier());
+        clone.setValue(nameIdentifier.getValue());
         
         return clone;
     }

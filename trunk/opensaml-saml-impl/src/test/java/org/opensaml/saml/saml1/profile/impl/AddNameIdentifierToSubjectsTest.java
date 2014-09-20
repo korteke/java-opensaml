@@ -138,14 +138,14 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "foo");
+        Assert.assertEquals(subject.getNameIdentifier().getValue(), "foo");
         Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.X509_SUBJECT);
 
         assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
         subject = assertion.getAttributeStatements().get(0).getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "foo");
+        Assert.assertEquals(subject.getNameIdentifier().getValue(), "foo");
         Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.X509_SUBJECT);
     }
 
@@ -162,14 +162,14 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
         Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "baz");
+        Assert.assertEquals(subject.getNameIdentifier().getValue(), "baz");
         Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.EMAIL);
 
         assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
         subject = assertion.getAttributeStatements().get(0).getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "baz");
+        Assert.assertEquals(subject.getNameIdentifier().getValue(), "baz");
         Assert.assertEquals(subject.getNameIdentifier().getFormat(), NameIdentifier.EMAIL);
     }
     
