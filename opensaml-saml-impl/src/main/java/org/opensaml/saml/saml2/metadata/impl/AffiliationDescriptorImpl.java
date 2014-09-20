@@ -79,11 +79,13 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getOwnerID() {
         return ownerID;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setOwnerID(String newOwnerID) {
         if (newOwnerID != null && newOwnerID.length() > 1024) {
             throw new IllegalArgumentException("Owner ID can not exceed 1024 characters in length");
@@ -92,11 +94,13 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
     
     /** {@inheritDoc} */
+    @Override
     public String getID() {
         return id;
     }
     
     /** {@inheritDoc} */
+    @Override
     public void setID(String newID) {
         String oldID = this.id;
         this.id = prepareForAssignment(this.id, newID);
@@ -104,6 +108,7 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isValid() {
         if (null == validUntil) {
             return true;
@@ -114,58 +119,67 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
+    @Override
     public DateTime getValidUntil() {
         return validUntil;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setValidUntil(DateTime theValidUntil) {
         this.validUntil = prepareForAssignment(this.validUntil, theValidUntil);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Long getCacheDuration() {
         return cacheDuration;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCacheDuration(Long duration) {
         cacheDuration = prepareForAssignment(cacheDuration, duration);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions theExtensions) throws IllegalArgumentException {
+    @Override
+    public void setExtensions(Extensions theExtensions) {
         this.extensions = prepareForAssignment(this.extensions, theExtensions);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<AffiliateMember> getMembers() {
         return members;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<KeyDescriptor> getKeyDescriptors() {
         return keyDescriptors;
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
     
     /** {@inheritDoc} */
+    @Override
     public String getSignatureReferenceID(){
         return id;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 
@@ -181,4 +195,5 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
 
         return Collections.unmodifiableList(children);
     }
+
 }

@@ -35,7 +35,7 @@ import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.Organization}
+ * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.Organization}.
  */
 public class OrganizationImpl extends AbstractSAMLObject implements Organization {
 
@@ -70,38 +70,43 @@ public class OrganizationImpl extends AbstractSAMLObject implements Organization
     }
 
     /** {@inheritDoc} */
+    @Override
     public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions newExtensions) throws IllegalArgumentException {
+    @Override
+    public void setExtensions(Extensions newExtensions) {
         this.extensions = prepareForAssignment(this.extensions, newExtensions);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<OrganizationName> getOrganizationNames() {
         return names;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<OrganizationDisplayName> getDisplayNames() {
         return displayNames;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<OrganizationURL> getURLs() {
         return urls;
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 

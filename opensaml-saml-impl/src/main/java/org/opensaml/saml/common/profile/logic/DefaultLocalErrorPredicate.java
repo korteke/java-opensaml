@@ -126,7 +126,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
      * 
      * @param events locally handled events
      */
-    public void setLocalEvents(@Nonnull @NonnullElements Collection<String> events) {
+    public void setLocalEvents(@Nonnull @NonnullElements final Collection<String> events) {
         if (events == null) {
             localEvents = Collections.emptySet();
         } else {
