@@ -85,4 +85,11 @@ public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration
      */
     @Nullable public RSAOAEPParameters getRSAOAEPParameters();
     
+    /**
+     * Get the instance of {@link KeyTransportAlgorithmPredicate}.
+     * 
+     * @return the predicate instance
+     */
+    @Nullable public KeyTransportAlgorithmPredicate getKeyTransportAlgorithmPredicate();
+    
 }

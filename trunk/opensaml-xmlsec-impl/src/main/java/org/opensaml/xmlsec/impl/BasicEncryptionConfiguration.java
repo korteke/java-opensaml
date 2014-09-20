@@ -30,6 +30,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.EncryptionConfiguration;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
@@ -70,6 +71,9 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     
     /** RSA OAEP parameters. */
     @Nullable private RSAOAEPParameters rsaOAEPParameters;
+    
+    /** Key transport algorithm predicate. */
+    @Nullable private KeyTransportAlgorithmPredicate keyTransportPredicate;
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
@@ -190,11 +194,8 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
         keyTransportKeyInfoGeneratorManager = keyInfoManager;
     }
     
-    /**
-     * Get the instance of {@link RSAOAEPParameters}.
-     * 
-     * @return the parameters instance
-     */
+    /** {@inheritDoc} */
+    @Override
     @Nullable public RSAOAEPParameters getRSAOAEPParameters() {
         return rsaOAEPParameters;
     }
@@ -206,6 +207,21 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      */
     public void setRSAOAEPParameters(@Nullable final RSAOAEPParameters params) {
         rsaOAEPParameters = params;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public KeyTransportAlgorithmPredicate getKeyTransportAlgorithmPredicate() {
+        return keyTransportPredicate;
+    }
+    
+    /**
+     * Set the instance of {@link KeyTransportAlgorithmPredicate}.
+     * 
+     * @param predicate the new predicate instance
+     */
+    public void setKeyTransportAlgorithmPredicate(KeyTransportAlgorithmPredicate predicate) {
+        keyTransportPredicate = predicate;
     }
 
 }

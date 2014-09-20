@@ -38,6 +38,7 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.EncryptionParameters;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.OAEPparams;
@@ -299,15 +300,27 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             @Nullable final SAMLMDCredentialContext metadataCredContext) {
         
         if (metadataCredContext != null) {
+            KeyTransportAlgorithmPredicate keyTransportPredicate = resolveKeyTransportAlgorithmPredicate(criteria);
             for (EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
                 String algorithm = encryptionMethod.getAlgorithm();
                 log.trace("Evaluating SAML metadata EncryptionMethod algorithm for key transport: {}", algorithm);
                 if (isKeyTransportAlgorithm(algorithm) && whitelistBlacklistPredicate.apply(algorithm) 
                         && getAlgorithmRuntimeSupportedPredicate().apply(algorithm)
                         && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)) {
-                    log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
-                            algorithm);
-                    return new Pair<>(algorithm, encryptionMethod);
+                    
+                    if (keyTransportPredicate != null) {
+                        if (keyTransportPredicate.apply(new KeyTransportAlgorithmPredicate.SelectionInput(
+                                algorithm, dataEncryptionAlgorithm, keyTransportCredential))) {
+                            log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
+                                    algorithm);
+                            return new Pair<>(algorithm, encryptionMethod);
+                        }
+                    } else {
+                        log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
+                                algorithm);
+                        return new Pair<>(algorithm, encryptionMethod);
+                    }
+                    
                 }
             }
         }
