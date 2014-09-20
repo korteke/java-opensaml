@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * Description of the behaviour of the <code> AttributeQuery </code> element
+ * Description of the behaviour of the <code> AttributeQuery </code> element.
  */
 public interface AttributeQuery extends SubjectQuery {
 

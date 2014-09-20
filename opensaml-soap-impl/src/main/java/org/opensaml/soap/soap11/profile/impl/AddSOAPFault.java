@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookupFunction;
+import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
 import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
@@ -248,7 +248,7 @@ public class AddSOAPFault extends AbstractProfileAction {
                 }
             }
             
-            eventContextLookupStrategy = new CurrentOrPreviousEventLookupFunction();
+            eventContextLookupStrategy = new CurrentOrPreviousEventLookup();
         }
         
         /**

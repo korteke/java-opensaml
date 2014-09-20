@@ -30,7 +30,7 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookupFunction;
+import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -308,7 +308,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
                 }
             }
             
-            eventContextLookupStrategy = new CurrentOrPreviousEventLookupFunction();
+            eventContextLookupStrategy = new CurrentOrPreviousEventLookup();
         }
         
         /**

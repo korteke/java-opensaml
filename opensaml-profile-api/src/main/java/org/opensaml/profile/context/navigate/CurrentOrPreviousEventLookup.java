@@ -26,7 +26,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import com.google.common.base.Function;
 
 /** Access either current or previous event from context tree. */
-public class CurrentOrPreviousEventLookupFunction implements Function<ProfileRequestContext,EventContext> {
+public class CurrentOrPreviousEventLookup implements Function<ProfileRequestContext,EventContext> {
 
     /** {@inheritDoc} */
     @Override

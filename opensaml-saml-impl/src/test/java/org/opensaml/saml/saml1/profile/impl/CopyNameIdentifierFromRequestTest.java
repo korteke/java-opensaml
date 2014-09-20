@@ -102,7 +102,7 @@ public class CopyNameIdentifierFromRequestTest extends OpenSAMLInitBaseTestCase 
         subject = assertion.getAttributeStatements().get(0).getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameIdentifier());
-        Assert.assertEquals(subject.getNameIdentifier().getNameIdentifier(), "jdoe");
+        Assert.assertEquals(subject.getNameIdentifier().getValue(), "jdoe");
         Assert.assertEquals(subject.getNameIdentifier().getNameQualifier(), NAME_QUALIFIER);
     }
 
