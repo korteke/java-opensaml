@@ -42,7 +42,7 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityIdPredicate.class);
     
-    /** Error events to handle locally, even if possible to do so with a response. */
+    /** Set of entityIDs to check for. */
     @Nonnull @NonnullElements private Set<String> entityIds;
     
     /** Constructor. */
