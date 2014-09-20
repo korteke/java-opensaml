@@ -21,10 +21,13 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.testng.Assert;
@@ -75,6 +78,8 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNull(config.getKeyTransportKeyInfoGeneratorManager());
         
         Assert.assertNull(config.getRSAOAEPParameters());
+        
+        Assert.assertNull(config.getKeyTransportAlgorithmPredicate());
     }
 
     @Test
@@ -208,5 +213,24 @@ public class BasicEncryptionConfigurationTest {
         config.setRSAOAEPParameters(null);
         
         Assert.assertNull(config.getRSAOAEPParameters());
+    }
+    
+    @Test
+    public void testKeyTransportAlgorithmPredicate() {
+        Assert.assertNull(config.getKeyTransportAlgorithmPredicate());
+        
+        KeyTransportAlgorithmPredicate predicate = new KeyTransportAlgorithmPredicate() {
+            public boolean apply(@Nullable SelectionInput input) {
+                return true;
+            }
+        };
+        
+        config.setKeyTransportAlgorithmPredicate(predicate);
+        
+        Assert.assertNotNull(config.getKeyTransportAlgorithmPredicate());
+        
+        config.setKeyTransportAlgorithmPredicate(null);
+        
+        Assert.assertNull(config.getKeyTransportAlgorithmPredicate());
     }
 }

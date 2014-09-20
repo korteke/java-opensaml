@@ -23,6 +23,7 @@ import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
@@ -35,6 +36,8 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.EncryptionParameters;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate.SelectionInput;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -398,6 +401,21 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
         Assert.assertNull(params);
+    }
+    
+    @Test
+    public void testResolveKeyTransportAlgorithmPredicate() {
+        Assert.assertNull(resolver.resolveKeyTransportAlgorithmPredicate(criteriaSet));
+        
+        KeyTransportAlgorithmPredicate predicate = new KeyTransportAlgorithmPredicate() {
+            public boolean apply(@Nullable SelectionInput input) {
+                return true;
+            }
+        };
+        
+        config2.setKeyTransportAlgorithmPredicate(predicate);
+        
+        Assert.assertTrue(resolver.resolveKeyTransportAlgorithmPredicate(criteriaSet) == predicate);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

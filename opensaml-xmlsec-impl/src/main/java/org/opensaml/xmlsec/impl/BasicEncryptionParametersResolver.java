@@ -37,6 +37,8 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.EncryptionParametersResolver;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate.SelectionInput;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
@@ -286,10 +288,12 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             }
         }
         
+        KeyTransportAlgorithmPredicate keyTransportPredicate = resolveKeyTransportAlgorithmPredicate(criteria);
+        
         // Select key encryption cred and algorithm
         for (Credential keyTransportCredential : keyTransportCredentials) {
             String keyTransportAlgorithm = resolveKeyTransportAlgorithm(keyTransportCredential, keyTransportAlgorithms, 
-                    params.getDataEncryptionAlgorithm());
+                    params.getDataEncryptionAlgorithm(), keyTransportPredicate);
             
             if (keyTransportAlgorithm != null) {
                 params.setKeyTransportEncryptionCredential(keyTransportCredential);
@@ -389,6 +393,24 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         }
     }
     // Checkstyle:CyclomaticComplexity ON
+    
+    /**
+     * Resolve the optional effectively configured instance of {@link KeyTransportAlgorithmPredicate} to use.
+     * 
+     * @param criteria the input criteria being evaluated
+     * 
+     * @return the resolved predicate instance, may be null
+     */
+    @Nullable protected KeyTransportAlgorithmPredicate resolveKeyTransportAlgorithmPredicate(
+            @Nonnull final CriteriaSet criteria) {
+        for (EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
+                .getConfigurations()) {
+            if (config.getKeyTransportAlgorithmPredicate() != null) {
+                return config.getKeyTransportAlgorithmPredicate();
+            }
+        }
+        return null;
+    }
 
     /**
      * Determine the key transport encryption algorithm URI to use with the specified key transport credential
@@ -397,13 +419,13 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * @param keyTransportCredential the key transport credential being evaluated
      * @param keyTransportAlgorithms the list of effective key transport algorithms to evaluate
      * @param dataEncryptionAlgorithm the optional data encryption algorithm URI to consider
+     * @param keyTransportPredicate the optional key transport algorithm predicate to evaluate
      * 
      * @return the resolved algorithm URI, may be null
      */
     @Nullable protected String resolveKeyTransportAlgorithm(@Nonnull final Credential keyTransportCredential, 
-            @Nonnull final List<String> keyTransportAlgorithms, @Nullable final String dataEncryptionAlgorithm) {
-        
-        //TODO strategy for considering data encryption algorithm URI
+            @Nonnull final List<String> keyTransportAlgorithms, @Nullable final String dataEncryptionAlgorithm,
+            @Nullable final KeyTransportAlgorithmPredicate keyTransportPredicate) {
         
         if (log.isTraceEnabled()) {
             Key key = CredentialSupport.extractEncryptionKey(keyTransportCredential);
@@ -413,9 +435,15 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         
         for (String algorithm : keyTransportAlgorithms) {
             log.trace("Evaluating key transport credential against algorithm: {}", algorithm);
-            if (credentialSupportsAlgorithm(keyTransportCredential, algorithm) 
-                    && isKeyTransportAlgorithm(algorithm))  {
-                return algorithm;
+            if (credentialSupportsAlgorithm(keyTransportCredential, algorithm) && isKeyTransportAlgorithm(algorithm))  {
+                if (keyTransportPredicate != null) {
+                    if (keyTransportPredicate.apply(new KeyTransportAlgorithmPredicate.SelectionInput(
+                            algorithm, dataEncryptionAlgorithm, keyTransportCredential))) {
+                        return algorithm;
+                    }
+                } else {
+                    return algorithm;
+                }
             }
         }
         
@@ -438,7 +466,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             @Nullable final String dataEncryptionAlgorithm) {
         
         return resolveKeyTransportAlgorithm(keyTransportCredential, getEffectiveKeyTransportAlgorithms(criteria, 
-                whitelistBlacklistPredicate), dataEncryptionAlgorithm);
+                whitelistBlacklistPredicate), dataEncryptionAlgorithm, resolveKeyTransportAlgorithmPredicate(criteria));
     }
     
     /**
