@@ -18,13 +18,13 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.saml.metadata.EntityGroupName;
@@ -40,28 +40,21 @@ import com.google.common.collect.Sets;
 public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
     
     /** Error events to handle locally, even if possible to do so with a response. */
-    @Nonnull @NonnullElements private Set<String> groupNames;
-    
-    /** Constructor. */
-    public EntityGroupNamePredicate() {
-        groupNames = Collections.emptySet();
-    }
+    @Nonnull @NonnullElements private final Set<String> groupNames;
     
     /**
-     * Set the group names to look for.
+     * Constructor.
      * 
-     * @param names the group names to look for
+     * @param names the group names to test for
      */
-    public void setGroupNames(@Nonnull @NonnullElements final Collection<String> names) {
-        if (names == null) {
-            groupNames = Collections.emptySet();
-        } else {
-            groupNames = Sets.newHashSetWithExpectedSize(names.size());
-            for (final String name : names) {
-                final String trimmed = StringSupport.trimOrNull(name);
-                if (trimmed != null) {
-                    groupNames.add(trimmed);
-                }
+    public EntityGroupNamePredicate(@Nonnull @NonnullElements final Collection<String> names) {
+        
+        Constraint.isNotNull(names, "Group name collection cannot be null");
+        groupNames = Sets.newHashSetWithExpectedSize(names.size());
+        for (final String name : names) {
+            final String trimmed = StringSupport.trimOrNull(name);
+            if (trimmed != null) {
+                groupNames.add(trimmed);
             }
         }
     }
