@@ -85,11 +85,13 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setID(String newID) {
         String oldID = this.id;
         this.id = prepareForAssignment(this.id, newID);
@@ -97,6 +99,7 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isValid() {
         if (null == validUntil) {
             return true;
@@ -107,54 +110,63 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
+    @Override
     public DateTime getValidUntil() {
         return validUntil;
     }
 
     /** {@inheritDoc} */
-    public void setValidUntil(DateTime validUntil) {
-        this.validUntil = prepareForAssignment(this.validUntil, validUntil);
+    @Override
+    public void setValidUntil(DateTime dt) {
+        validUntil = prepareForAssignment(validUntil, dt);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Long getCacheDuration() {
         return cacheDuration;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCacheDuration(Long duration) {
         cacheDuration = prepareForAssignment(cacheDuration, duration);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<String> getSupportedProtocols() {
         return Collections.unmodifiableList(supportedProtocols);
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isSupportedProtocol(String protocol) {
         return supportedProtocols.contains(protocol);
     }
 
     /** {@inheritDoc} */
-    public void addSupportedProtocol(String protocol) {
-        protocol = StringSupport.trimOrNull(protocol);
-        if (protocol != null && !supportedProtocols.contains(protocol)) {
+    @Override
+    public void addSupportedProtocol(final String protocol) {
+        final String trimmed = StringSupport.trimOrNull(protocol);
+        if (trimmed != null && !supportedProtocols.contains(trimmed)) {
             releaseThisandParentDOM();
-            supportedProtocols.add(protocol);
+            supportedProtocols.add(trimmed);
         }
     }
 
     /** {@inheritDoc} */
-    public void removeSupportedProtocol(String protocol) {
-        protocol = StringSupport.trimOrNull(protocol);
-        if (protocol != null && supportedProtocols.contains(protocol)) {
+    @Override
+    public void removeSupportedProtocol(final String protocol) {
+        final String trimmed = StringSupport.trimOrNull(protocol);
+        if (trimmed != null && supportedProtocols.contains(trimmed)) {
             releaseThisandParentDOM();
-            supportedProtocols.remove(protocol);
+            supportedProtocols.remove(trimmed);
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     public void removeSupportedProtocols(Collection<String> protocols) {
         for (String protocol : protocols) {
             removeSupportedProtocol(protocol);
@@ -162,64 +174,74 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
+    @Override
     public void removeAllSupportedProtocols() {
         supportedProtocols.clear();
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getErrorURL() {
         return errorURL;
     }
 
     /** {@inheritDoc} */
-    public void setErrorURL(String errorURL) {
+    @Override
+    public void setErrorURL(String url) {
 
-        this.errorURL = prepareForAssignment(this.errorURL, errorURL);
+        errorURL = prepareForAssignment(errorURL, url);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions extensions) throws IllegalArgumentException {
-        this.extensions = prepareForAssignment(this.extensions, extensions);
+    @Override
+    public void setExtensions(Extensions ext) {
+        extensions = prepareForAssignment(extensions, ext);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Organization getOrganization() {
         return organization;
     }
 
     /** {@inheritDoc} */
-    public void setOrganization(Organization organization) throws IllegalArgumentException {
-        this.organization = prepareForAssignment(this.organization, organization);
+    @Override
+    public void setOrganization(Organization org) {
+        organization = prepareForAssignment(organization, org);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ContactPerson> getContactPersons() {
         return contactPersons;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<KeyDescriptor> getKeyDescriptors() {
         return keyDescriptors;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getSignatureReferenceID() {
         return id;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 

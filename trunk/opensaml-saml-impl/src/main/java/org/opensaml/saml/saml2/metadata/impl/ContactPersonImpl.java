@@ -81,73 +81,85 @@ public class ContactPersonImpl extends AbstractSAMLObject implements ContactPers
     }
 
     /** {@inheritDoc} */
+    @Override
     public ContactPersonTypeEnumeration getType() {
         return type;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setType(ContactPersonTypeEnumeration theType) {
         this.type = prepareForAssignment(this.type, theType);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(Extensions theExtensions) throws IllegalArgumentException {
+    @Override
+    public void setExtensions(Extensions theExtensions) {
         this.extensions = prepareForAssignment(this.extensions, theExtensions);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Company getCompany() {
         return company;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCompany(Company theCompany) {
         this.company = prepareForAssignment(this.company, theCompany);
     }
 
     /** {@inheritDoc} */
+    @Override
     public GivenName getGivenName() {
         return givenName;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setGivenName(GivenName name) {
         givenName = prepareForAssignment(givenName, name);
     }
 
     /** {@inheritDoc} */
+    @Override
     public SurName getSurName() {
         return surName;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setSurName(SurName name) {
         surName = prepareForAssignment(surName, name);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<EmailAddress> getEmailAddresses() {
         return emailAddresses;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<TelephoneNumber> getTelephoneNumbers() {
         return telephoneNumbers;
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         ArrayList<XMLObject> children = new ArrayList<XMLObject>();
 

@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A filter the removes roles, from an entity descriptor. For those roles specified within the SAML metadata
+ * A filter that removes roles from an entity descriptor. For those roles specified within the SAML metadata
  * specification the role element QName is used to identify the role. For other roles, those that appear as
  * &lt;RoleDescriptor xsi:type="someRoleType"&gt; the role schema type is used to identify the role.
  * 
@@ -131,6 +131,7 @@ public class EntityRoleFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
+    @Override
     public XMLObject filter(XMLObject metadata) throws FilterException {
         if (metadata == null) {
             return null;
@@ -145,8 +146,9 @@ public class EntityRoleFilter implements MetadataFilter {
         return metadata;
     }
 
+// Checkstyle: CyclomaticComplexity OFF    
     /**
-     * Filters entities descriptor.
+     * Filters {@link EntitiesDescriptor}.
      * 
      * @param descriptor entities descriptor to filter
      * 
@@ -199,6 +201,7 @@ public class EntityRoleFilter implements MetadataFilter {
             entitiesDescriptors.removeAll(emptyEntitiesDescriptors);
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Filters entity descriptor roles.

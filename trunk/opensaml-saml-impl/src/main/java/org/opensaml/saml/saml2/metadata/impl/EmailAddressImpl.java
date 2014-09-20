@@ -47,16 +47,19 @@ public class EmailAddressImpl extends AbstractSAMLObject implements EmailAddress
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getAddress() {
         return address;
     }
 
     /** {@inheritDoc} */
-    public void setAddress(String address) {
-        this.address = prepareForAssignment(this.address, address);
+    @Override
+    public void setAddress(String addr) {
+        address = prepareForAssignment(address, addr);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         return null;
     }

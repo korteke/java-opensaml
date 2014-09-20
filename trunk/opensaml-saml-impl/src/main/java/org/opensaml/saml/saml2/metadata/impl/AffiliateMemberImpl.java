@@ -43,12 +43,14 @@ public class AffiliateMemberImpl extends AbstractSAMLObject implements Affiliate
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(String newID) throws IllegalArgumentException {
+    @Override
+    public void setID(String newID) {
         if (newID != null && newID.length() > 1024) {
             throw new IllegalArgumentException("Member ID can not exceed 1024 characters in length");
         }
@@ -57,6 +59,7 @@ public class AffiliateMemberImpl extends AbstractSAMLObject implements Affiliate
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
         // No children
         return null;
