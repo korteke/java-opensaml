@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -45,7 +44,6 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
-import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509SKI;
 import org.opensaml.xmlsec.signature.impl.KeyInfoBuilder;
 import org.opensaml.xmlsec.signature.impl.X509DataBuilder;
@@ -778,7 +776,10 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        /** The set of types of subject alternative names to process. */
        private Set<Integer> subjectAltNames;
        
-       /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
+       /**
+        * Responsible for parsing and serializing X.500 names to/from
+        * {@link javax.security.auth.x500.X500Principal} instances.
+        */
        private X500DNHandler x500DNHandler;
        
        /** The format specifier for outputting X.500 subject names. */

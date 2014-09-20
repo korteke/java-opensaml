@@ -37,7 +37,6 @@ import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.opensaml.xmlsec.WhitelistBlacklistParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
-import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;

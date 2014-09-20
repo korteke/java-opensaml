@@ -34,7 +34,6 @@ import javax.security.auth.x500.X500Principal;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -44,14 +43,11 @@ import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
-import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
-import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
-import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
@@ -63,17 +59,17 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 /**
- * Implementation of {@link KeyInfoProvider} which provides basic support for extracting a {@link X509Credential} from
- * an {@link X509Data} child of KeyInfo.
+ * Implementation of {@link org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider} which provides basic support for
+ * extracting a {@link org.opensaml.security.x509.X509Credential} from an {@link X509Data} child of KeyInfo.
  * 
  * This provider supports only inline {@link X509Certificate}'s and {@link org.opensaml.xmlsec.signature.X509CRL}s.
  * If only one certificate is present, it is assumed to be the end-entity certificate containing the public key
  * represented by this KeyInfo. If multiple certificates are present, and any instances of {@link X509SubjectName},
  * {@link X509IssuerSerial}, {@link X509SKI}, or {@link X509Digest} are also present, they will be used to identify
  * the end-entity certificate, in accordance with the XML Signature specification. If a public key from a previously
- * resolved {@link KeyValue} is available in the resolution context, it will also be used to identify the end-entity
- * certificate. If the end-entity certificate can not otherwise be identified, the cert contained in the first
- * X509Certificate element will be treated as the end-entity certificate.
+ * resolved {@link org.opensaml.xmlsec.signature.KeyValue} is available in the resolution context, it will also be
+ * used to identify the end-entity certificate. If the end-entity certificate can not otherwise be identified, the
+ * cert contained in the first X509Certificate element will be treated as the end-entity certificate.
  */
 public class InlineX509DataProvider extends AbstractKeyInfoProvider {
 

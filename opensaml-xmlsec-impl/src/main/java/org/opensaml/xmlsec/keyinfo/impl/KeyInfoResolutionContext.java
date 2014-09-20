@@ -30,7 +30,6 @@ import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 
@@ -41,9 +40,9 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  *  <p>
  *  The extensible properties map available from {@link #getProperties()} may for example used to communicate
  *  state between two or more providers, or between a provider and custom logic in a particular implementation
- *  of {@link KeyInfoCredentialResolver}. It is recommended that providers and/or resolvers define
- *  and use property names in such a way as to avoid collisions with those used by other providers and resolvers,
- *  and to also clearly define the data type stored for each propery name.
+ *  of {@link org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver}. It is recommended that providers and/or
+ *  resolvers define and use property names in such a way as to avoid collisions with those used by other providers
+ *  and resolvers, and to also clearly define the data type stored for each propery name.
  *  </p>
  *  
  */

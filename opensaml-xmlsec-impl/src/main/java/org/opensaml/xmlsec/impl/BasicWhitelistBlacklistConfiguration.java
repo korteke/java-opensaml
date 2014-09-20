@@ -100,7 +100,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     /** 
      * {@inheritDoc}
      * 
-     * <p>Defaults to: <code>false</code>
+     * <p>Defaults to: <code>false</code>.</p>
      */
     public boolean isWhitelistMerge() {
         return whitelistMerge;
@@ -143,7 +143,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
     /** 
      * {@inheritDoc}
      * 
-     * <p>Defaults to: <code>true</code>
+     * <p>Defaults to: <code>true</code>.</p>
      */
     public boolean isBlacklistMerge() {
         return blacklistMerge;

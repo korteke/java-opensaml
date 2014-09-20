@@ -23,13 +23,8 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
-import org.opensaml.xmlsec.signature.KeyName;
-import org.opensaml.xmlsec.signature.X509SubjectName;
 
 /**
  * An implementation of {@link KeyInfoCredentialResolver} which uses a {@link Collection} as the
@@ -38,8 +33,9 @@ import org.opensaml.xmlsec.signature.X509SubjectName;
  * <p>
  * Like the
  * {@link CollectionCredentialResolver}, credentials returned are filtered based on any
- * {@link EvaluableCredentialCriterion} which may have been present in the specified criteria set, or
- * which are resolved by lookup in the {@link EvaluableCredentialCriteriaRegistry}.
+ * {@link org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion}
+ * which may have been present in the specified criteria set, or which are resolved by lookup in the
+ * {@link org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry}.
  * </p>
  * 
  * <p>
@@ -54,12 +50,13 @@ import org.opensaml.xmlsec.signature.X509SubjectName;
  * 
  * <p>
  * Note that a KeyInfo element
- * passed in a {@link KeyInfoCriterion} in the criteria set is <code>NOT</code> directly processed by this
- * implementation in any way as a source for extracting keys or other key-related material.
+ * passed in a {@link org.opensaml.xmlsec.keyinfo.KeyInfoCriterion} in the criteria set is <code>NOT</code>
+ * directly processed by this implementation in any way as a source for extracting keys or other key-related material.
  * However, if the evaluable credential criteria registry described above were
  * for example to contain a mapping from KeyInfoCriterion to some type of EvaluableCredentialCriterion,
- * where the latter used KeyInfo-derived information as its basis for evaluation of a credential (e.g.
- * based on contents of a {@link KeyName} or {@link X509SubjectName}), then such KeyInfo-derived 
+ * where the latter used KeyInfo-derived information as its basis for evaluation of a credential (e.g. based on
+ * contents of a {@link org.opensaml.xmlsec.signature.KeyName} or
+ * {@link org.opensaml.xmlsec.signature.X509SubjectName}), then such KeyInfo-derived 
  * evaluable criteria would be used to filter or select the specific credentials that would be returned
  * from the underlying credential collection of this resolver.  Such KeyInfo-derived evaluable criteria
  * may also be specified directly in the criteria set, per the above.
