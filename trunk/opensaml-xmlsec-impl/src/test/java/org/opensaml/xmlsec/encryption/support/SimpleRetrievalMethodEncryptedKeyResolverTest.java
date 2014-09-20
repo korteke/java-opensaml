@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.List;
