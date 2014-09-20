@@ -20,12 +20,11 @@ package org.opensaml.security.messaging;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
-import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
 
 /**
  * Messaging context implementation for holding parameters related to validating client TLS 
- * {@link X509Credential} instances.
+ * {@link org.opensaml.security.x509.X509Credential} instances.
  */
 public class ClientTLSSecurityParametersContext extends BaseContext {
     

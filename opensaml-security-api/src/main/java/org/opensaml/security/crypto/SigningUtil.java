@@ -25,7 +25,6 @@ import java.security.Signature;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.crypto.Mac;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
