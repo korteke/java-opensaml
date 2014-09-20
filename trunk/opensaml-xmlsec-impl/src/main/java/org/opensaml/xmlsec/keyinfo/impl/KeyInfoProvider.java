@@ -28,11 +28,10 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
-import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Interface for providers used in conjunction with a {@link KeyInfoCredentialResolver} which 
- * support resolving {@link Credential}s based on a child element of {@link KeyInfo}.
+ * support resolving {@link Credential}s based on a child element of {@link org.opensaml.xmlsec.signature.KeyInfo}.
  */
 public interface KeyInfoProvider {
     

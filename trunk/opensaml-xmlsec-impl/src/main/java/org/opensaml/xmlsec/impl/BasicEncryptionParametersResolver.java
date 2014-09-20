@@ -38,7 +38,6 @@ import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.EncryptionParametersResolver;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
-import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate.SelectionInput;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;

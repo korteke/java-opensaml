@@ -35,7 +35,6 @@ import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.security.criteria.KeyAlgorithmCriterion;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
-import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
@@ -43,7 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Implementation of {@link KeyInfoProvider} which supports {@link RSAKeyValue}.
+ * Implementation of {@link org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider} which supports {@link RSAKeyValue}.
  */
 public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
 

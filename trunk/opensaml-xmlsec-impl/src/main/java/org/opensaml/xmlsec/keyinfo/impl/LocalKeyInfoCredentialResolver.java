@@ -33,12 +33,10 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.criteria.KeyNameCriterion;
 import org.opensaml.security.criteria.PublicKeyCriterion;
-import org.opensaml.xmlsec.encryption.support.Decrypter;
-import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * A simple specialization of {@link BasicProviderKeyInfoCredentialResolver}
- * which is capable of using information from a {@link KeyInfo} to resolve
+ * which is capable of using information from a {@link org.opensaml.xmlsec.signature.KeyInfo} to resolve
  * local credentials from a supplied {@link CredentialResolver} which manages local credentials.
  * 
  * <p>
@@ -49,7 +47,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * 
  * <p>
  * A typical use case for this class would be as a resolver of decryption keys,
- * such as is needed by {@link Decrypter}.
+ * such as is needed by {@link org.opensaml.xmlsec.encryption.support.Decrypter}.
  * </p>
  * 
  * <p>
