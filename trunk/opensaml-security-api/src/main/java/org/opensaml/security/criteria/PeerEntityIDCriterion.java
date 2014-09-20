@@ -23,12 +23,10 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import org.opensaml.core.criterion.EntityIdCriterion;
-
 /**
  * An implementation of {@link Criterion} which specifies criteria pertaining 
  * to peer entity IDs.  This is typically used only in conjunction with a
- * {@link EntityIdCriterion}, where the peer is interpreted to be relative
+ * {@link org.opensaml.core.criterion.EntityIdCriterion}, where the peer is interpreted to be relative
  * to that primary entity ID. In this sense it serves to scope the primary entity ID.
  * 
  * Note that the peer entity ID may be either local or remote,

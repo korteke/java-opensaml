@@ -216,38 +216,10 @@ public class X509SupportTest {
             + "7jPQj8U2kkWUEWXkOv5FsyiB2KdxYGbJSpGwGLRWZNDbuVUjnuzQ29EWWbNwHxTb"
             + "GMRjrI9Q4WynZ2IOcnG1hMjCU6L4uk4JfryIw4IBHGa8uUtskHqJ7TFJ/4taWyV/" + "UB0djqOPjMACQpMBhEVRSBU=";
 
-    private String caCertBase64 = "MIIDXTCCAkWgAwIBAgIBATANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl"
-            + "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDQwOTA1NDcxMloX"
-            + "DTE3MDQwNjA1NDcxMlowLTESMBAGA1UEChMJSW50ZXJuZXQyMRcwFQYDVQQDEw5j"
-            + "YS5leGFtcGxlLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANxM"
-            + "5/6mBCcX+S7HApcKtfqdFRZzi6Ra91nkEzXOUcO+BPUdYqSxKGnCCso25ZOZP3gn"
-            + "JVkY8Pi7VWrCM6wRgIMyQDvNYqCpNjkZGFkrMoa6fm8BSaDHJ1fz6l/eEl0CVU3U"
-            + "uUAf0mXQLGm6Jannq8aMolRujlhE5iRaOJ2qp6wqsvyatK+vTgDngnwYVa4Cqu0j"
-            + "UeNF28quST5D3gIuZ0OeFHSM2Z1WUKkwwsHqVkxBBcH1QE1JOGIoSnrxxl/o4VlL"
-            + "WGEI8zq5qixE8VYtBBmijBwIL5ETy2fwiqcsvimQaQAtAfbtpO3kBSs8n7nnzMUH"
-            + "fRlcebGkwwcNfYcD5hcCAwEAAaOBhzCBhDAdBgNVHQ4EFgQU1e5lU95R2oetQupB"
-            + "bvKv1u5GlAswVQYDVR0jBE4wTIAU1e5lU95R2oetQupBbvKv1u5GlAuhMaQvMC0x"
-            + "EjAQBgNVBAoTCUludGVybmV0MjEXMBUGA1UEAxMOY2EuZXhhbXBsZS5vcmeCAQEw"
-            + "DAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOCAQEAbqrozetM/iBVIUir9k14"
-            + "HbLEP0lZ6jOPWFIUFXMOn0t8+Ul7PMp9Rdn+7OGQIoJw97/mam3kpQ/HmjJMFYv6"
-            + "MGsDQ4vAOiQiaTKzgMhrnCdVpVH9uz4ARHiysCujnjH9sehTWgybY8pXzzSG5BAj"
-            + "EGowHq01nXxq2K4yAJSdAUBYLfuSKW1uRU6cmEa9uzl9EvoZfAF3BLnGlPqu4Zaj"
-            + "H2NC9ZY0y19LX4yeJLHL1sY4fyxb3x8QhcCXiI16awBTr/VnUpJjSe9vh+OudWGe"
-            + "yCL/KhjlrDkjJ3hIxBF5mP/Y27cFpRnC2gECkieURvh52OyuqkzpbOrTN5rD9fNi" + "nA==";
 
     private String altNameDNS, altNameURN, altNameURL, altNameIP;
 
     private Integer altNameTypeDNS, altNameTypeURI, altNameTypeIP;
-
-    private String caCRLBase64 = "MIIBmjCBgwIBATANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRlcm5ldDIx"
-            + "FzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnFw0wNzA1MjEwNTAwMzNaFw0wNzA2MjAw"
-            + "NTAwMzNaMCIwIAIBKxcNMDcwNTIxMDQ1ODI5WjAMMAoGA1UdFQQDCgEBMA0GCSqG"
-            + "SIb3DQEBBQUAA4IBAQAghL5eW9NsMRCk84mAZ+QMjoCuy7zZJr5vPHk7WrOffL7B"
-            + "GWZ6u6D1cSCzZNvrBolip1yb8KSdB9PJqEV1kInXnZegeqjENq+9j8nGdyoYuofh"
-            + "A5AU8L9n9fjwYTUkfNfAMWeVVuplJN4yAp03JSJULVqmC63EEP7u7kFS94Mze9sa"
-            + "+VqBu7tGyZ55XX8AO39d1c3DoHIPfS1wHHLyuWxnys8GjANJxQiZmFtUfPztp3qH"
-            + "/XlfFLgY5EBTanyOk5yycU/l+6P1RBhJZDPicp3iWVsjYHYWS+ovdyWuL7RrLRMb"
-            + "zecnCa5eIhSevoMYUkg4h9ckAZUQeHsK08gB/dFh";
 
     private static String subjectAltNameExtensionOID = "2.5.29.17";
 
