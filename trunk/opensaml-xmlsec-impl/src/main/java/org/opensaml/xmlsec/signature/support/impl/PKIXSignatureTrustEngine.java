@@ -189,12 +189,10 @@ public class PKIXSignatureTrustEngine extends
             } else {
                 log.debug("Cryptographic verification of raw signature failed with candidate credential");
             }
-        // CheckStyle: EmptyBlock OFF
         } catch (SecurityException e) {
             // Java 7 now throws this exception under conditions such as mismatched key sizes.
             // Swallow this, it's logged by the verifyWithURI method already.
         }
-        // CheckStyle: EmptyBlock ON
 
         log.debug("PKIX validation of raw signature failed, "
                 + "unable to establish trust of supplied verification credential");

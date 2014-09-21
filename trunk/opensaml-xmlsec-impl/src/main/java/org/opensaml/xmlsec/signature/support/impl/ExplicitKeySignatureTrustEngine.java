@@ -160,12 +160,10 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                         log.debug("Failed to establish trust of supplied candidate credential");
                     }
                 }
-            // CheckStyle: EmptyBlock OFF
             } catch (SecurityException e) {
                 // Java 7 now throws this exception under conditions such as mismatched key sizes.
                 // Swallow this, it's logged by the verifyWithURI method already.
             }
-            // CheckStyle: EmptyBlock ON
         }
 
         // If the candidate verification credential did not verify the
@@ -179,12 +177,10 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                     log.debug("Successfully verified signature using resolved trusted credential");
                     return true;
                 }
-            // CheckStyle: EmptyBlock OFF
             } catch (SecurityException e) {
                 // Java 7 now throws this exception under conditions such as mismatched key sizes.
                 // Swallow this, it's logged by the verifyWithURI method already.
             }
-            // CheckStyle: EmptyBlock ON
         }
         log.debug("Failed to verify signature using either supplied candidate credential"
                 + " or directly trusted credentials");
