@@ -18,19 +18,21 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.joda.time.DateTime;
-import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.common.Extensions;
@@ -40,7 +42,6 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.core.xml.schema.XSBoolean;
-import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.XSDateTime;
 import org.opensaml.core.xml.schema.XSInteger;
 import org.opensaml.core.xml.schema.XSString;
@@ -60,34 +61,28 @@ import com.google.common.collect.Lists;
  */
 public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
 
-    /** QName of attribute used to signal regex evaluation. */
-    private static final QName REGEX_ATTR_NAME = new QName(null, "regex");
-
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityAttributesPredicate.class);
 
     /** Whether to trim the values in the metadata before comparison. */
     private final boolean trimTags;
     
-    /** Set of {@link Attribute} criteria to check for. */
-    @Nonnull @NonnullElements private final Collection<Attribute> tagCriteria;
+    /** Candidates to check for. */
+    @Nonnull @NonnullElements private final Collection<Candidate> candidateSet;
     
     /**
      * Constructor.
      * 
-     * @param tags the {@link Attribute} criteria to check for
+     * @param candidates the {@link Candidate} criteria to check for
      * @param trim true iff the values found in the metadata should be trimmed before comparison
      */
-    public EntityAttributesPredicate(@Nonnull @NonnullElements final Collection<Attribute> tags, final boolean trim) {
+    public EntityAttributesPredicate(@Nonnull @NonnullElements final Collection<Candidate> candidates,
+            final boolean trim) {
         
-        Constraint.isNotNull(tags, "Attribute collection cannot be null");
+        Constraint.isNotNull(candidates, "Attribute collection cannot be null");
         
-        tagCriteria = Lists.newArrayListWithExpectedSize(tags.size());
-        for (final Attribute tag : Collections2.filter(tags, Predicates.notNull())) {
-            if (!tag.getAttributeValues().isEmpty()) {
-                tagCriteria.add(tag);
-            }
-        }
+        candidateSet = Lists.newArrayListWithExpectedSize(candidates.size());
+        candidateSet.addAll(Collections2.filter(candidates, Predicates.notNull()));
         
         trimTags = trim;
     }
@@ -100,21 +95,17 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             return false;
         }
         
-        boolean extFound = false;
+        Collection<Attribute> entityAttributes = null;
 
         // Check for a tag match in the EntityAttributes extension of the entity and its parent(s).
         Extensions exts = input.getExtensions();
         if (exts != null) {
             final List<XMLObject> children = exts.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME);
-            if (!children.isEmpty() && children.get(0) instanceof EntityAttributes
-                    && !((EntityAttributes) children.get(0)).getAttributes().isEmpty()) {
-                extFound = true;
-                
-                // If we find a matching tag, we win. Each tag is treated in OR fashion.
-                final EntityAttributesMatcher matcher = new EntityAttributesMatcher((EntityAttributes) children.get(0));
-                if (Iterables.tryFind(tagCriteria, matcher).isPresent()) {
-                    return true;
+            if (!children.isEmpty() && children.get(0) instanceof EntityAttributes) {
+                if (entityAttributes == null) {
+                    entityAttributes = Lists.newArrayList();
                 }
+                entityAttributes.addAll(((EntityAttributes) children.get(0)).getAttributes());
             }
         }
 
@@ -123,102 +114,197 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             exts = group.getExtensions();
             if (exts != null) {
                 final List<XMLObject> children = exts.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME);
-                if (!children.isEmpty() && children.get(0) instanceof EntityAttributes
-                        && !((EntityAttributes) children.get(0)).getAttributes().isEmpty()) {
-                    extFound = true;
-                    
-                    // If we find a matching tag, we win. Each tag is treated in OR fashion.
-                    final EntityAttributesMatcher matcher =
-                            new EntityAttributesMatcher((EntityAttributes) children.get(0));
-                    if (Iterables.tryFind(tagCriteria, matcher).isPresent()) {
-                        return true;
+                if (!children.isEmpty() && children.get(0) instanceof EntityAttributes) {
+                    if (entityAttributes == null) {
+                        entityAttributes = Lists.newArrayList();
                     }
+                    entityAttributes.addAll(((EntityAttributes) children.get(0)).getAttributes());
                 }
             }
             group = (EntitiesDescriptor) group.getParent();
         }
 
-        if (!extFound) {
+        if (entityAttributes == null || entityAttributes.isEmpty()) {
             log.debug("no EntityAttributes extension found for {}", input.getEntityID());
+            return false;
+        }
+        
+        // If we find a matching tag, we win. Each tag is treated in OR fashion.
+        final EntityAttributesMatcher matcher = new EntityAttributesMatcher(entityAttributes);
+        if (Iterables.tryFind(candidateSet, matcher).isPresent()) {
+            return true;
         }
 
         return false;
     }
     
     /**
-     * Determines whether an {@link Attribute} criterion is satisfied by at least one {@link Attribute}
-     * in an {@link EntityAttributes} extension.
+     * An object to encapsulate the set of criteria that must be satisfied by an {@link EntityAttributes}
+     * extension to satisfy the enclosing predicate.
      */
-    private class EntityAttributesMatcher implements Predicate<Attribute> {
+    public static class Candidate {
         
-        /** Class logger. */
-        @Nonnull private final Logger log = LoggerFactory.getLogger(EntityAttributesPredicate.class);
+        /** Attribute Name. */
+        @Nonnull @NotEmpty private final String name;
         
-        /** Candidate to evaluate for a match. */
-        private final EntityAttributes candidate;
+        /** Attribute NameFormat. */
+        @Nullable private final String nameFormat;
+        
+        /** Values that must match exactly. */
+        @Nonnull @NonnullElements private List<String> values;
+        
+        /** Regular expressions that must be satisfied. */
+        @Nonnull @NonnullElements private List<Pattern> regexps;
         
         /**
          * Constructor.
          *
-         * @param ext candidate to evaluate for a match
+         * @param nam   Attribute Name to match
+         * @param format Attribute NameFormat to match
          */
-        public EntityAttributesMatcher(@Nonnull final EntityAttributes ext) {
-            candidate = Constraint.isNotNull(ext, "Candidate extension cannot be null");
+        public Candidate(@Nonnull @NotEmpty final String nam, @Nullable final String format) {
+            name = Constraint.isNotNull(StringSupport.trimOrNull(nam), "Attribute Name cannot be null or empty");
+            if (Attribute.UNSPECIFIED.equals(format)) {
+                nameFormat = null;
+            } else {
+                nameFormat = StringSupport.trimOrNull(format);
+            }
+            
+            values = Collections.emptyList();
+            regexps = Collections.emptyList(); 
+        }
+
+        /**
+         * Get the Attribute Name to match.
+         * 
+         * @return Attribute Name to match
+         */
+        @Nonnull @NotEmpty public String getName() {
+            return name;
+        }
+
+        /**
+         * Get the Attribute NameFormat to match.
+         * 
+         * @return Attribute NameFormat to match
+         */
+        @Nullable public String getNameFormat() {
+            return nameFormat;
+        }
+
+        /**
+         * Get the exact values to match.
+         * 
+         * @return the exact values to match
+         */
+        @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getValues() {
+            return values;
+        }
+
+        /**
+         * Set the exact values to match.
+         * 
+         * @param vals the exact values to match
+         */
+        public void setValues(@Nonnull @NonnullElements final Collection<String> vals) {
+            Constraint.isNotNull(vals, "Values collection cannoe be null");
+            values = Lists.newArrayListWithExpectedSize(vals.size());
+            for (final String value : vals) {
+                if (value != null) {
+                    values.add(value);
+                }
+            }
+        }
+
+        /**
+         * Get the regular expressions to match.
+         * 
+         * @return the regular expressions to match.
+         */
+        @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Pattern> getRegexps() {
+            return regexps;
+        }
+
+        /**
+         * Set the regular expressions to match.
+         * 
+         * @param exps the regular expressions to match
+         */
+        public void setRegexes(@Nonnull @NonnullElements Collection<Pattern> exps) {
+            Constraint.isNotNull(exps, "Regular expressions collection cannoe be null");
+            regexps = Lists.newArrayListWithExpectedSize(exps.size());
+            regexps.addAll(Collections2.filter(exps, Predicates.notNull()));
+        }
+    }
+    
+    /**
+     * Determines whether an {@link Candidate} criterion is satisfied by the {@link Attribute}s
+     * in an {@link EntityAttributes} extension.
+     */
+    private class EntityAttributesMatcher implements Predicate<Candidate> {
+        
+        /** Class logger. */
+        @Nonnull private final Logger log = LoggerFactory.getLogger(EntityAttributesPredicate.class);
+        
+        /** Population to evaluate for a match. */
+        private final Collection<Attribute> attributes;
+        
+        /**
+         * Constructor.
+         *
+         * @param attrs population to evaluate for a match
+         */
+        public EntityAttributesMatcher(@Nonnull @NonnullElements final Collection<Attribute> attrs) {
+            attributes = Constraint.isNotNull(attrs, "Extension attributes cannot be null");
         }
                 
         /** {@inheritDoc} */
         @Override
-        public boolean apply(@Nonnull final Attribute input) {
-            final List<Attribute> attrs = candidate.getAttributes();
-            final List<XMLObject> tagvals = input.getAttributeValues();
+        public boolean apply(@Nonnull final Candidate input) {
+            final List<String> tagvals = input.getValues();
+            final List<Pattern> tagexps = input.getRegexps();
 
-            // Track whether we've found every tag value.
-            final boolean[] flags = new boolean[tagvals.size()];
+            // Track whether we've found every match we need (possibly with arrays of 0 size).
+            final boolean[] valflags = new boolean[tagvals.size()];
+            final boolean[] expflags = new boolean[tagexps.size()];
 
-            // Check each attribute/tag in the candidate.
-            for (final Attribute a : attrs) {
+            // Check each attribute/tag in the populated set.
+            for (final Attribute a : attributes) {
                 // Compare Name and NameFormat for a matching tag.
                 if (a.getName() != null && a.getName().equals(input.getName())
-                        && (input.getNameFormat() == null || Attribute.UNSPECIFIED.equals(input.getNameFormat())
-                            || input.getNameFormat().equals(a.getNameFormat()))) {
+                        && (input.getNameFormat() == null || input.getNameFormat().equals(a.getNameFormat()))) {
 
-                    // Check each tag value's simple content for a match.
+                    // Check each tag value's simple content for a value match.
                     for (int tagindex = 0; tagindex < tagvals.size(); ++tagindex) {
-                        final XMLObject tagval = tagvals.get(tagindex);
-                        final String tagvalstr = xmlObjectToString(tagval);
+                        final String tagvalstr = tagvals.get(tagindex);
 
-                        Pattern regexp = null;
-                        
-                        // Check for a regex flag.
-                        if (tagval instanceof AttributeExtensibleXMLObject) {
-                            final String reflag =
-                                    ((AttributeExtensibleXMLObject) tagval).getUnknownAttributes().get(REGEX_ATTR_NAME);
-                            if (reflag != null && XSBooleanValue.valueOf(reflag).getValue()) {
-                                try {
-                                    regexp = Pattern.compile(tagvalstr);
-                                } catch (final PatternSyntaxException e) {
-                                    log.error("Exception compiling expression {}", tagvalstr, e);
-                                }
-                            }
-                        }
-                        
                         final List<XMLObject> cvals = a.getAttributeValues();
                         for (final XMLObject cval : cvals) {
                             final String cvalstr = xmlObjectToString(cval);
                             if (tagvalstr != null && cvalstr != null) {
-                                if (regexp != null) {
-                                    if (regexp.matcher(cvalstr).matches()) {
-                                        flags[tagindex] = true;
-                                        break;
-                                    }
-                                } else if (tagvalstr.equals(cvalstr)) {
-                                    flags[tagindex] = true;
+                                if (tagvalstr.equals(cvalstr)) {
+                                    valflags[tagindex] = true;
                                     break;
                                 } else if (trimTags) {
                                     if (tagvalstr.equals(cvalstr.trim())) {
-                                        flags[tagindex] = true;
+                                        valflags[tagindex] = true;
                                         break;
                                     }
+                                }
+                            }
+                        }
+                    }
+
+                    // Check each tag regular expression for a match.
+                    for (int tagindex = 0; tagindex < tagexps.size(); ++tagindex) {
+
+                        final List<XMLObject> cvals = a.getAttributeValues();
+                        for (final XMLObject cval : cvals) {
+                            final String cvalstr = xmlObjectToString(cval);
+                            if (tagexps.get(tagindex) != null && cvalstr != null) {
+                                if (tagexps.get(tagindex).matcher(cvalstr).matches()) {
+                                    expflags[tagindex] = true;
+                                    break;
                                 }
                             }
                         }
@@ -226,12 +312,18 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
                 }
             }
 
-            for (final boolean flag : flags) {
+            for (final boolean flag : valflags) {
                 if (!flag) {
                     return false;
                 }
             }
-            
+
+            for (final boolean flag : expflags) {
+                if (!flag) {
+                    return false;
+                }
+            }
+
             return true;
         }
      

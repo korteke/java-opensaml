@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<EntitiesDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" Name="GroupTop" validUntil="2100-01-01T00:00:00Z">
+<EntitiesDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+        xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+        xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
+        Name="GroupTop" validUntil="2100-01-01T00:00:00Z">
+
+    <Extensions>
+        <mdattr:EntityAttributes>
+            <saml2:Attribute Name="urn:foo" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue>bar</saml2:AttributeValue>
+            </saml2:Attribute>
+        </mdattr:EntityAttributes>
+    </Extensions>
 
     <EntityDescriptor entityID="https://idp-top.example.org">
         <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
@@ -9,6 +20,13 @@
 
     <EntitiesDescriptor Name="GroupSub1" validUntil="2100-01-01T00:00:00Z">
         <EntityDescriptor entityID="https://idp-sub1.example.org">
+            <Extensions>
+                <mdattr:EntityAttributes>
+                    <saml2:Attribute Name="urn:foo" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                        <saml2:AttributeValue>baz</saml2:AttributeValue>
+                    </saml2:Attribute>
+                </mdattr:EntityAttributes>
+            </Extensions>
             <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
                 <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idp.example.org/idp/Shibboleth/SSO"/>
             </IDPSSODescriptor>
