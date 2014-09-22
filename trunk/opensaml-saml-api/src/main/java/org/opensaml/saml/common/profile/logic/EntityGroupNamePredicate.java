@@ -39,7 +39,7 @@ import com.google.common.collect.Sets;
  */
 public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
     
-    /** Error events to handle locally, even if possible to do so with a response. */
+    /** Groups to match on. */
     @Nonnull @NonnullElements private final Set<String> groupNames;
     
     /**
