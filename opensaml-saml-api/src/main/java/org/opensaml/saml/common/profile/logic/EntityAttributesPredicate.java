@@ -145,7 +145,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     public static class Candidate {
         
         /** Attribute Name. */
-        @Nonnull @NotEmpty private final String name;
+        @Nonnull @NotEmpty private final String nam;
         
         /** Attribute NameFormat. */
         @Nullable private final String nameFormat;
@@ -159,11 +159,11 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         /**
          * Constructor.
          *
-         * @param nam   Attribute Name to match
+         * @param name   Attribute Name to match
          * @param format Attribute NameFormat to match
          */
-        public Candidate(@Nonnull @NotEmpty final String nam, @Nullable final String format) {
-            name = Constraint.isNotNull(StringSupport.trimOrNull(nam), "Attribute Name cannot be null or empty");
+        public Candidate(@Nonnull @NotEmpty final String name, @Nullable final String format) {
+            nam = Constraint.isNotNull(StringSupport.trimOrNull(name), "Attribute Name cannot be null or empty");
             if (Attribute.UNSPECIFIED.equals(format)) {
                 nameFormat = null;
             } else {
@@ -180,7 +180,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @return Attribute Name to match
          */
         @Nonnull @NotEmpty public String getName() {
-            return name;
+            return nam;
         }
 
         /**
