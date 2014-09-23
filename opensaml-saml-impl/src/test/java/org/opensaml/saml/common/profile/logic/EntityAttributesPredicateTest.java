@@ -118,7 +118,7 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
 
         final Candidate candidate = new Candidate("urn:foo", Attribute.URI_REFERENCE);
         candidate.setValues(Collections.singletonList("bar"));
-        candidate.setRegexes(Collections.singletonList(Pattern.compile("baz")));
+        candidate.setRegexps(Collections.singletonList(Pattern.compile("baz")));
         final EntityAttributesPredicate condition =
                 new EntityAttributesPredicate(Collections.singletonList(candidate), false);
                 
