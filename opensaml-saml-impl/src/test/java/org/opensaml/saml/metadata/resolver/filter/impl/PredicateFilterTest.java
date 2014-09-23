@@ -56,8 +56,7 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         final String whitelisted = "urn:mace:incommon:dartmouth.edu";
         final String blacklisted = "urn:mace:incommon:osu.edu";
 
-        final EntityIdPredicate condition = new EntityIdPredicate();
-        condition.setEntityIDs(Collections.singletonList(blacklisted));
+        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(blacklisted));
         
         metadataProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
         metadataProvider.initialize();
@@ -75,8 +74,7 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         final String whitelisted = "urn:mace:incommon:dartmouth.edu";
         final String blacklisted = "urn:mace:incommon:osu.edu";
 
-        final EntityIdPredicate condition = new EntityIdPredicate();
-        condition.setEntityIDs(Collections.singletonList(whitelisted));
+        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(whitelisted));
         
         metadataProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE, condition));
         metadataProvider.initialize();
