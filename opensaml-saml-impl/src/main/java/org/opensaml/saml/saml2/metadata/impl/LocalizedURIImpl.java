@@ -21,15 +21,15 @@ import java.util.List;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.schema.impl.XSStringImpl;
-import org.opensaml.saml.saml2.metadata.LocalizedName;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
+import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 import com.google.common.base.Strings;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.LocalizedName}.
+ * Concrete implementation of {@link LocalizedURI}.
  */
-public class LocalizedURIImpl extends XSStringImpl implements LocalizedName {
+public class LocalizedURIImpl extends XSURIImpl implements LocalizedURI {
 
     /** Language. */
     private String language;

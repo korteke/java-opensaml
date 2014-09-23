@@ -18,15 +18,15 @@
 package org.opensaml.saml.saml2.metadata;
 
 import org.opensaml.core.xml.LangBearing;
-import org.opensaml.core.xml.schema.XSString;
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 
 /**
- * LocalizedName.
+ * LocalizedURI.
  */
-public interface LocalizedURI extends XSString, LangBearing, SAMLObject {
+public interface LocalizedURI extends XSURI, LangBearing, SAMLObject {
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "localizedNameType"; 
+    public static final String TYPE_LOCAL_NAME = "localizedURIType"; 
         
 }

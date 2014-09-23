@@ -25,12 +25,12 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.saml2.metadata.LocalizedURI;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.LocalizedName} objects.
+ * A thread safe Marshaller for {@link LocalizedURI} objects.
  */
 public class LocalizedURIMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -38,7 +38,7 @@ public class LocalizedURIMarshaller extends AbstractSAMLObjectMarshaller {
      * {@inheritDoc}
      */
     protected void marshallAttributes(XMLObject samlObject, Element domElement) throws MarshallingException {
-        LocalizedName name = (LocalizedName) samlObject;
+        LocalizedURI name = (LocalizedURI) samlObject;
 
         if (name.getXMLLang() != null) {
             Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), XMLConstants.XML_NS,
@@ -50,7 +50,7 @@ public class LocalizedURIMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(XMLObject samlObject, Element domElement) throws MarshallingException {
-        LocalizedName name = (LocalizedName) samlObject;
+        LocalizedURI name = (LocalizedURI) samlObject;
 
         if (name.getValue() != null) {
             ElementSupport.appendTextContent(domElement, name.getValue());
