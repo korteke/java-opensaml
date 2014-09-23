@@ -24,6 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -31,6 +33,7 @@ import org.opensaml.saml.metadata.EntityGroupName;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 /**
@@ -59,6 +62,15 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
         }
     }
 
+    /**
+     * Get the group name criteria.
+     * 
+     * @return  the group name criteria
+     */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getGroupNames() {
+        return ImmutableSet.copyOf(groupNames);
+    }
+    
     /** {@inheritDoc} */
     @Override
     public boolean apply(@Nullable final EntityDescriptor input) {

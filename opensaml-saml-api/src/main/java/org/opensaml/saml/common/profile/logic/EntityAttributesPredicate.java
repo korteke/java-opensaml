@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -85,6 +86,24 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         candidateSet.addAll(Collections2.filter(candidates, Predicates.notNull()));
         
         trimTags = trim;
+    }
+    
+    /**
+     * Get whether to trim tags for comparison.
+     * 
+     * @return  true iff tags are to be trimmed for comparison
+     */
+    public boolean getTrimTags() {
+        return trimTags;
+    }
+    
+    /**
+     * Get the candidate criteria.
+     * 
+     * @return  the candidate criteria
+     */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<Candidate> getCandidates() {
+        return ImmutableList.copyOf(candidateSet);
     }
 
 // Checkstyle: CyclomaticComplexity OFF
@@ -198,7 +217,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @return the exact values to match
          */
         @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getValues() {
-            return values;
+            return ImmutableList.copyOf(values);
         }
 
         /**
@@ -222,7 +241,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @return the regular expressions to match.
          */
         @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Pattern> getRegexps() {
-            return regexps;
+            return ImmutableList.copyOf(regexps);
         }
 
         /**
@@ -261,8 +280,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         /** {@inheritDoc} */
         @Override
         public boolean apply(@Nonnull final Candidate input) {
-            final List<String> tagvals = input.getValues();
-            final List<Pattern> tagexps = input.getRegexps();
+            final List<String> tagvals = input.values;
+            final List<Pattern> tagexps = input.regexps;
 
             // Track whether we've found every match we need (possibly with arrays of 0 size).
             final boolean[] valflags = new boolean[tagvals.size()];
