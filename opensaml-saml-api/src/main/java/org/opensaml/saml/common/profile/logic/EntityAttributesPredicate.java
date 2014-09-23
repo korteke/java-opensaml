@@ -230,7 +230,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * 
          * @param exps the regular expressions to match
          */
-        public void setRegexps(@Nonnull @NonnullElements Collection<Pattern> exps) {
+        public void setRegexps(@Nonnull @NonnullElements final Collection<Pattern> exps) {
             Constraint.isNotNull(exps, "Regular expressions collection cannot be null");
             regexps = Lists.newArrayListWithExpectedSize(exps.size());
             regexps.addAll(Collections2.filter(exps, Predicates.notNull()));
