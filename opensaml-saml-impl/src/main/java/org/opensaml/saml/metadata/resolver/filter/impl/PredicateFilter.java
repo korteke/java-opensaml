@@ -73,6 +73,24 @@ public class PredicateFilter implements MetadataFilter {
         direction = Constraint.isNotNull(dir, "Direction cannot be null");
         removeEmptyEntitiesDescriptors = true;
     }
+    
+    /**
+     * Get the direction of filtering.
+     * 
+     * @return filtering direction
+     */
+    @Nonnull public Direction getDirection() {
+        return direction;
+    }
+    
+    /**
+     * Get the predicate to be applied.
+     * 
+     * @return the predicate to be applied
+     */
+    @Nonnull public Predicate<EntityDescriptor> getCondition() {
+        return condition;
+    }
 
     /**
      * Get whether to remove an entities descriptor if it does not contain any entity descriptor or entities
