@@ -265,9 +265,8 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             }
         }
         
-        List<XMLObject> oaepParamsList = encryptionMethod.getUnknownXMLObjects(OAEPparams.DEFAULT_ELEMENT_NAME);
-        if (oaepParamsList.size() > 0) {
-            OAEPparams oaepParams = (OAEPparams) oaepParamsList.get(0);
+        OAEPparams oaepParams = encryptionMethod.getOAEPparams();
+        if (oaepParams != null) {
             String value = StringSupport.trimOrNull(oaepParams.getValue());
             if (value != null) {
                 params.setOAEPparams(value);
