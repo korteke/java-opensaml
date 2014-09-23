@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -27,7 +26,9 @@ import javax.annotation.Nullable;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,28 +44,21 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityIdPredicate.class);
     
     /** Set of entityIDs to check for. */
-    @Nonnull @NonnullElements private Set<String> entityIds;
-    
-    /** Constructor. */
-    public EntityIdPredicate() {
-        entityIds = Collections.emptySet();
-    }
+    @Nonnull @NonnullElements private final Set<String> entityIds;
     
     /**
-     * Set the entityIDs to look for.
+     * Constructor.
      * 
-     * @param ids the entityIDs to look for
+     * @param ids the entityIDs to check for
      */
-    public void setEntityIDs(@Nonnull @NonnullElements final Collection<String> ids) {
-        if (ids == null) {
-            entityIds = Collections.emptySet();
-        } else {
-            entityIds = Sets.newHashSetWithExpectedSize(ids.size());
-            for (final String id : ids) {
-                final String trimmed = StringSupport.trimOrNull(id);
-                if (trimmed != null) {
-                    entityIds.add(trimmed);
-                }
+    public EntityIdPredicate(@Nonnull @NonnullElements final Collection<String> ids) {
+        Constraint.isNotNull(ids, "EntityID collection cannot be null");
+        
+        entityIds = Sets.newHashSetWithExpectedSize(ids.size());
+        for (final String id : ids) {
+            final String trimmed = StringSupport.trimOrNull(id);
+            if (trimmed != null) {
+                entityIds.add(trimmed);
             }
         }
     }
