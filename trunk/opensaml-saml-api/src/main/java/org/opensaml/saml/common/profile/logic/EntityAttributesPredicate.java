@@ -207,7 +207,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @param vals the exact values to match
          */
         public void setValues(@Nonnull @NonnullElements final Collection<String> vals) {
-            Constraint.isNotNull(vals, "Values collection cannoe be null");
+            Constraint.isNotNull(vals, "Values collection cannot be null");
             values = Lists.newArrayListWithExpectedSize(vals.size());
             for (final String value : vals) {
                 if (value != null) {
