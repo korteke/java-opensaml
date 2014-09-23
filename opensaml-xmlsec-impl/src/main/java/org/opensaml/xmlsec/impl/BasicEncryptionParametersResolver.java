@@ -182,6 +182,14 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             
             log.debug("\tKey transport algorithm URI: {}", params.getKeyTransportEncryptionAlgorithm()); 
             
+            if (params.getRSAOAEPParameters() != null) {
+                log.debug("\t\tKey transport RSA OAEP digest method URI: {}", 
+                        params.getRSAOAEPParameters().getDigestMethod()); 
+                log.debug("\t\tKey transport RSA OAEP MGF URI: {}", 
+                        params.getRSAOAEPParameters().getMaskGenerationFunction()); 
+                log.debug("\t\tKey transport RSA OAEP OAEPparams: {}", params.getRSAOAEPParameters().getOAEPParams()); 
+            }
+            
             log.debug("\tKey transport KeyInfoGenerator: {}", 
                     params.getKeyTransportKeyInfoGenerator() != null ? "present" : "null");
             
