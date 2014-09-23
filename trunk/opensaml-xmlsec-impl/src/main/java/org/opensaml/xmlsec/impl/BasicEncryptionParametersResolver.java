@@ -332,13 +332,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             params.setRSAOAEPParameters(new RSAOAEPParameters());
         }
         
-        RSAOAEPParameters rsaParams = params.getRSAOAEPParameters();
-        
-        if (rsaParams.isComplete()) {
-            return;
-        }
-        
-        populateRSAOAEPParams(rsaParams, criteria, whitelistBlacklistPredicate);
+        populateRSAOAEPParams(params.getRSAOAEPParameters(), criteria, whitelistBlacklistPredicate);
     }
 
     /**
@@ -386,7 +380,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                 }
             }
             
-            if (rsaParams.isComplete()) {
+            if (rsaParams.isComplete() || !config.isRSAOAEPParametersMerge()) {
                 return;
             }
         }

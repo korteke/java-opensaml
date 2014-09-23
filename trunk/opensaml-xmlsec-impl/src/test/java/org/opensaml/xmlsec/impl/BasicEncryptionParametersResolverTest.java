@@ -37,13 +37,14 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
-import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate.SelectionInput;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -233,6 +234,63 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), new Integer(128));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testRSAOAEPParameters() throws ResolverException {
+        EncryptionParameters params;
+        config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
+        
+        // Shouldn't resolve since not RSA OAEP
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(params.getRSAOAEPParameters());
+        
+        // Should resolve an empty instance
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(params.getRSAOAEPParameters());
+        Assert.assertTrue(params.getRSAOAEPParameters().isEmpty());
+        
+        // Should resolve full set of values from config3
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1, "dummy-oaep-params-3"));
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(params.getRSAOAEPParameters());
+        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        Assert.assertEquals(params.getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA1);
+        Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "dummy-oaep-params-3");
+        
+        // Should resolve digest and mgf from config2, OAEPParams from config3 (merged)
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        config2.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+        config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1, "dummy-oaep-params-3"));
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(params.getRSAOAEPParameters());
+        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        Assert.assertEquals(params.getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
+        Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "dummy-oaep-params-3");
+        
+        // Should resolve digest from config1, and mgf from config2 (merged), but with no merging from config3 
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        config1.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA512, null, null));
+        config2.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+        config2.setRSAOAEPParametersMerge(false);
+        config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1, "dummy-oaep-params-3"));
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(params.getRSAOAEPParameters());
+        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        Assert.assertEquals(params.getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
+        Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+        
+        // Should resolve empty instance based on config1 only, with no merging
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        config1.setRSAOAEPParameters(null);
+        config1.setRSAOAEPParametersMerge(false);
+        config2.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, "dummy-oaep-params2"));
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(params.getRSAOAEPParameters());
+        Assert.assertTrue(params.getRSAOAEPParameters().isEmpty());
     }
     
     @Test
