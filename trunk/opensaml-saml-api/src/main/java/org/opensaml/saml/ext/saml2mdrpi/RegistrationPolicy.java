@@ -20,7 +20,7 @@ package org.opensaml.saml.ext.saml2mdrpi;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 /**
  * Representation of the <code>&lt;mdrpi:RegistrationPolicy&gt</code> element. <br/>
@@ -29,7 +29,7 @@ import org.opensaml.saml.saml2.metadata.LocalizedName;
  * /saml/Post2.0/saml-metadata-rpi/v1.0/</a>
  */
 // Checkstyle: InterfaceIsType OFF
-public interface RegistrationPolicy extends LocalizedName {
+public interface RegistrationPolicy extends LocalizedURI {
 
     /** Name of the element inside the Extensions. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationPolicy";

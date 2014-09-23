@@ -23,11 +23,11 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml.saml2.metadata.LocalizedName;
+import org.opensaml.saml.saml2.metadata.LocalizedURI;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.LocalizedName} objects.
+ * A thread-safe unmarshaller for {@link LocalizedURI} objects.
  */
 public class LocalizedURIUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -37,7 +37,7 @@ public class LocalizedURIUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
                 && XMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
-            LocalizedName name = (LocalizedName) samlObject;
+            LocalizedURI name = (LocalizedURI) samlObject;
 
             name.setXMLLang(attribute.getValue());
         }
@@ -45,7 +45,7 @@ public class LocalizedURIUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processElementContent(XMLObject samlObject, String elementContent) {
-        LocalizedName name = (LocalizedName) samlObject;
+        LocalizedURI name = (LocalizedURI) samlObject;
 
         name.setValue(elementContent);
     }
