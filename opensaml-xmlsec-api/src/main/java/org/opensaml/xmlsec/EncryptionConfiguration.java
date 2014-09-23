@@ -86,6 +86,14 @@ public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration
     @Nullable public RSAOAEPParameters getRSAOAEPParameters();
     
     /**
+     * Flag indicating whether to merge this configuration's {@link RSAOAEPParameters} values with those of 
+     * a lower order of precedence, or to treat this configuration's parameters set as authoritative.
+     * 
+     * @return true if should merge, false otherwise
+     */
+    public boolean isRSAOAEPParametersMerge();
+    
+    /**
      * Get the instance of {@link KeyTransportAlgorithmPredicate}.
      * 
      * @return the predicate instance

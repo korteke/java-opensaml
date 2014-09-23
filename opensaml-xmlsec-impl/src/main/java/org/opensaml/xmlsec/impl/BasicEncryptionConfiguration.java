@@ -72,6 +72,9 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     /** RSA OAEP parameters. */
     @Nullable private RSAOAEPParameters rsaOAEPParameters;
     
+    /** Flag whether to merge RSA OAEP parameters. */
+    private boolean rsaOAEPParametersMerge;
+    
     /** Key transport algorithm predicate. */
     @Nullable private KeyTransportAlgorithmPredicate keyTransportPredicate;
     
@@ -86,6 +89,8 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
         dataEncryptionAlgorithms = Collections.emptyList();
         keyTransportEncryptionCredentials = Collections.emptyList();
         keyTransportEncryptionAlgorithms = Collections.emptyList();
+        
+        rsaOAEPParametersMerge = true;
     }
     
     /** {@inheritDoc} */
@@ -207,6 +212,27 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      */
     public void setRSAOAEPParameters(@Nullable final RSAOAEPParameters params) {
         rsaOAEPParameters = params;
+    }
+    
+    /** {@inheritDoc}.
+     * 
+     * <p>Defaults to: <code>true</code>
+     * 
+     * */
+    public boolean isRSAOAEPParametersMerge() {
+        return rsaOAEPParametersMerge;
+    }
+    
+    /**
+     * Set the flag indicating whether to merge this configuration's {@link RSAOAEPParameters} values with those of 
+     * a lower order of precedence, or to treat this configuration's parameters set as authoritative.
+     * 
+     * <p>Defaults to: <code>true</code>
+     * 
+     * @param flag true if should merge, false otherwise
+     */
+    public void setRSAOAEPParametersMerge(boolean flag) {
+        rsaOAEPParametersMerge = flag;
     }
     
     /** {@inheritDoc} */

@@ -216,6 +216,19 @@ public class BasicEncryptionConfigurationTest {
     }
     
     @Test
+    public void testRSAOAEPParametersMerge() {
+        Assert.assertTrue(config.isRSAOAEPParametersMerge());
+        
+        config.setRSAOAEPParametersMerge(false);
+        
+        Assert.assertFalse(config.isRSAOAEPParametersMerge());
+        
+        config.setRSAOAEPParametersMerge(true);
+        
+        Assert.assertTrue(config.isRSAOAEPParametersMerge());
+    }
+    
+    @Test
     public void testKeyTransportAlgorithmPredicate() {
         Assert.assertNull(config.getKeyTransportAlgorithmPredicate());
         
