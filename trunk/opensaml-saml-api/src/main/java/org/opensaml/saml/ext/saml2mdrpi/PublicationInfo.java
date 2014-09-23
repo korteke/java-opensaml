@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * * Representation of the <code>&lt;mdrpi:PublicationInfo&gt</code> element. <br/>
@@ -36,14 +37,15 @@ public interface PublicationInfo extends SAMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationInfo";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(MDRPI.MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            MDRPI.MDRPI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "PublicationInfoType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(MDRPI.MDRPI_NS, TYPE_LOCAL_NAME, MDRPI.MDRPI_PREFIX);
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** publisher attribute name. */
     public String PUBLISHER_ATTRIB_NAME = "publisher";

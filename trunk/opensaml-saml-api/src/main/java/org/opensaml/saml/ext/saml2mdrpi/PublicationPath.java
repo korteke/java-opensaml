@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * * Representation of the <code>&lt;mdrpi:PublicationPath&gt</code> element. <br/>
@@ -35,14 +36,15 @@ public interface PublicationPath extends SAMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationPath";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(MDRPI.MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            MDRPI.MDRPI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "PublicationPathType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(MDRPI.MDRPI_NS, TYPE_LOCAL_NAME, MDRPI.MDRPI_PREFIX);
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /**
      * Get the {@link Publication}s.

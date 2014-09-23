@@ -44,37 +44,37 @@ public class SAMLSchemaBuilder {
 
     /** Classpath relative location of basic XML schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] baseXMLSchemas = {
-        "/schema/xml.xsd",
-        "/schema/XMLSchema.xsd",
-        "/schema/xmldsig-core-schema.xsd",
-        "/schema/xenc-schema.xsd",
-        "/schema/xmldsig11-schema.xsd",
-        "/schema/xenc11-schema.xsd",
+        SAMLConstants.XML_SCHEMA_LOCATION,
+        SAMLConstants.XSD_SCHEMA_LOCATION,
+        SAMLConstants.XMLSIG_SCHEMA_LOCATION,
+        SAMLConstants.XMLENC_SCHEMA_LOCATION,
+        SAMLConstants.XMLSIG11_SCHEMA_LOCATION,
+        SAMLConstants.XMLENC11_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SOAP 1_1 schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] soapSchemas = {
-        "/schema/soap-envelope.xsd",
+        SAMLConstants.SOAP11ENV_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SAML 1_0 schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] saml10Schemas = {
-        "/schema/cs-sstc-schema-assertion-01.xsd",
-        "/schema/cs-sstc-schema-protocol-01.xsd",
+        SAMLConstants.SAML10_SCHEMA_LOCATION,
+        SAMLConstants.SAML10P_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SAML 1_1 schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] saml11Schemas = {
-        "/schema/cs-sstc-schema-assertion-1.1.xsd",
-        "/schema/cs-sstc-schema-protocol-1.1.xsd",
+        SAMLConstants.SAML11_SCHEMA_LOCATION,
+        SAMLConstants.SAML11P_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SAML 2_0 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = { 
-        "/schema/saml-schema-assertion-2.0.xsd",
-        "/schema/saml-schema-protocol-2.0.xsd",
-        "/schema/saml-schema-metadata-2.0.xsd",
-        "/schema/saml-schema-authn-context-2.0.xsd",
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = {
+        SAMLConstants.SAML20_SCHEMA_LOCATION,
+        SAMLConstants.SAML20P_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MD_SCHEMA_LOCATION,
+        SAMLConstants.SAML20AC_SCHEMA_LOCATION,
         "/schema/saml-schema-authn-context-auth-telephony-2.0.xsd",
         "/schema/saml-schema-authn-context-ip-2.0.xsd",
         "/schema/saml-schema-authn-context-ippword-2.0.xsd",
@@ -99,25 +99,25 @@ public class SAMLSchemaBuilder {
         "/schema/saml-schema-authn-context-timesync-2.0.xsd",
         "/schema/saml-schema-authn-context-x509-2.0.xsd",
         "/schema/saml-schema-authn-context-xmldsig-2.0.xsd",
-        "/schema/saml-schema-dce-2.0.xsd",
-        "/schema/saml-schema-ecp-2.0.xsd",
-        "/schema/saml-schema-x500-2.0.xsd",
-        "/schema/saml-schema-xacml-2.0.xsd",
+        SAMLConstants.SAML20DCE_SCHEMA_LOCATION,
+        SAMLConstants.SAML20ECP_SCHEMA_LOCATION,
+        SAMLConstants.SAML20X500_SCHEMA_LOCATION,
+        SAMLConstants.SAML20XACML_SCHEMA_LOCATION,
         };
 
     /** Classpath relative location of SAML extension schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] baseExtSchemas = {
-        "/schema/sstc-saml1x-metadata.xsd",
-        "/schema/sstc-saml-idp-discovery.xsd",
-        "/schema/sstc-saml-protocol-ext-thirdparty.xsd",
-        "/schema/sstc-saml-metadata-ext-query.xsd",
-        "/schema/sstc-saml-delegation.xsd",
-        "/schema/sstc-saml-metadata-ui-v1.0.xsd",
-        "/schema/sstc-metadata-attr.xsd",
-        "/schema/saml-metadata-rpi-v1.0.xsd",
-        "/schema/sstc-saml-channel-binding-ext-v1.0.xsd",
-        "/schema/saml-async-slo-v1.0.xsd",
-        "/schema/ietf-kitten-sasl-saml-ec.xsd",
+        SAMLConstants.SAML1MD_SCHEMA_LOCATION,
+        SAMLConstants.SAML_IDP_DISCO_SCHEMA_LOCATION,
+        SAMLConstants.SAML20PTHRPTY_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MDQUERY_SCHEMA_LOCATION,
+        SAMLConstants.SAML20DEL_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MDUI_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MDATTR_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MDRPI_SCHEMA_LOCATION,
+        SAMLConstants.SAML20CB_SCHEMA_LOCATION,
+        SAMLConstants.SAML20PASLO_SCHEMA_LOCATION,
+        SAMLConstants.SAMLEC_GSS_SCHEMA_LOCATION,
         };
 
     /** Cached copy of the schema produced by the builder. */

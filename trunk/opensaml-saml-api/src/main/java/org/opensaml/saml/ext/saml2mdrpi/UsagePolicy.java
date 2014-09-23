@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2mdrpi;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 /**
@@ -34,8 +35,8 @@ public interface UsagePolicy extends LocalizedURI {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "UsagePolicy";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(MDRPI.MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            MDRPI.MDRPI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MDRPI_PREFIX);
 
 }
 // Checkstyle: InterfaceIsType ON
