@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * * Representation of the <code>&lt;mdrpi:RegistrationInfo&gt</code> element. <br/>
@@ -36,14 +37,15 @@ public interface RegistrationInfo extends SAMLObject {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationInfo";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(MDRPI.MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            MDRPI.MDRPI_PREFIX);
+    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+            SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
     public static final String TYPE_LOCAL_NAME = "RegistrationInfoType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(MDRPI.MDRPI_NS, TYPE_LOCAL_NAME, MDRPI.MDRPI_PREFIX);
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Registration Authority attribute name. */
     public String REGISTRATION_AUTHORITY_ATTRIB_NAME = "registrationAuthority";

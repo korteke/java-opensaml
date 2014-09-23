@@ -41,6 +41,9 @@ public final class SAMLConstants {
     /** XML core schema system Id. */
     public static final String XML_SCHEMA_LOCATION = SCHEMA_DIR + "xml.xsd";
 
+    /** XML Schema schema system Id. */
+    public static final String XSD_SCHEMA_LOCATION = SCHEMA_DIR + "XMLSchema.xsd";
+
     /** XML Signature schema Id. */
     public static final String XMLSIG_SCHEMA_LOCATION = SCHEMA_DIR + "xmldsig-core-schema.xsd";
 
@@ -57,7 +60,7 @@ public final class SAMLConstants {
     // SOAP
     // ****************************
     /** SOAP 1.1 schema Id. */
-    public static final String SOAP11ENV_SCHEMA_LOCATION = SCHEMA_DIR + SCHEMA_DIR + "soap-envelope.xsd";
+    public static final String SOAP11ENV_SCHEMA_LOCATION = SCHEMA_DIR + "soap-envelope.xsd";
 
     /** SOAP 1.1 Envelope XML namespace. */
     public static final String SOAP11ENV_NS = "http://schemas.xmlsoap.org/soap/envelope/";
@@ -203,23 +206,32 @@ public final class SAMLConstants {
     /** SAML 2.0 Condition for Delegation Restriction QName prefix. */
     public static final String SAML20DEL_PREFIX = "del";
 
-    /** SAML V2.0 Metadata Extension for Entity Attributes schema ID . */
+    /** SAML 2.0 Metadata Extension for Entity Attributes schema Id. */
     public static final String SAML20MDATTR_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-metadata-attr.xsd";
 
-    /** SAML V2.0 Metadata Extension for Entity Attributes XML Namespace. */
+    /** SAML 2.0 Metadata Extension for Entity Attributes XML Namespace. */
     public static final String SAML20MDATTR_NS = "urn:oasis:names:tc:SAML:metadata:attribute";
 
-    /** SAML V2.0 Metadata Extension for Entity Attributes QName prefix. */
+    /** SAML 2.0 Metadata Extension for Entity Attributes QName prefix. */
     public static final String SAML20MDATTR_PREFIX = "mdattr";
 
-    /** SAML V2.0 Metadata Extension for Discovery and Login UI schema ID . */
+    /** SAML 2.0 Metadata Extension for Discovery and Login UI schema Id. */
     public static final String SAML20MDUI_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-metadata-ui-v1.0.xsd";
 
-    /** SAML V2.0 Metadata Extension for Discovery and Login UI XML Namespace. */
+    /** SAML 2.0 Metadata Extension for Discovery and Login UI XML Namespace. */
     public static final String SAML20MDUI_NS = "urn:oasis:names:tc:SAML:metadata:ui";
 
-    /** SAML V2.0 Metadata Extension for Discovery and Login UI QName prefix. */
+    /** SAML 2.0 Metadata Extension for Discovery and Login UI QName prefix. */
     public static final String SAML20MDUI_PREFIX = "mdui";
+
+    /** SAML 2.0 Metadata Extension for Registration and Publication Information schema Id. */
+    public static final String SAML20MDRPI_SCHEMA_LOCATION = SCHEMA_DIR + "saml-metadata-rpi-v1.0.xsd";
+
+    /** SAML 2.0 Metadata Extension for Registration and Publication Information XML Namespace. */
+    public static final String SAML20MDRPI_NS = "urn:oasis:names:tc:SAML:metadata:rpi";
+
+    /** SAML 2.0 Metadata Extension for Registration and Publication Information QName prefix. */
+    public static final String SAML20MDRPI_PREFIX = "mdrpi";
 
     /** SAML 2.0 Channel Binding Extensions schema Id. */
     public static final String SAML20CB_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-channel-binding-ext-v1.0.xsd";
@@ -257,6 +269,15 @@ public final class SAMLConstants {
     /** SAML 2.0 XACML Attribute Profile QName prefix. */
     public static final String SAML20XACML_PREFIX = "xacmlprof";
 
+    /** SAML Identity Provider Discovery Protocol and Profile XML Schema Id. */
+    public static final String SAML_IDP_DISCO_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-idp-discovery.xsd";
+
+    /** SAML Identity Provider Discovery Protocol and Profile XML Namespace. */
+    public static final String SAML_IDP_DISCO_NS = "urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol";
+
+    /** SAML Identity Provider Discovery Protocol and Profile QName prefix. */
+    public static final String SAML_IDP_DISCO_PREFIX = "idpdisco";
+    
     /** SAML 2.0 Enhanced Client GSS-API schema Id. */
     public static final String SAMLEC_GSS_SCHEMA_LOCATION = SCHEMA_DIR + "ietf-kitten-sasl-saml-ec.xsd";
     

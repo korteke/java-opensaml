@@ -18,7 +18,7 @@
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
-import org.opensaml.saml.ext.saml2mdrpi.MDRPI;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdrpi.UsagePolicy;
 
 
@@ -29,7 +29,8 @@ public class UsagePolicyBuilder extends AbstractSAMLObjectBuilder<UsagePolicy> {
 
     /** {@inheritDoc} */
     public UsagePolicy buildObject() {
-        return buildObject(MDRPI.MDRPI_NS, UsagePolicy.DEFAULT_ELEMENT_LOCAL_NAME, MDRPI.MDRPI_PREFIX);
+        return buildObject(SAMLConstants.SAML20MDRPI_NS, UsagePolicy.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MDRPI_PREFIX);
     }
 
     /** {@inheritDoc} */
