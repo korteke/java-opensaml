@@ -21,7 +21,9 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
@@ -364,6 +366,38 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
     }
     
     @Test
+    public void testKeyTransportAlgorithmPredicate() throws ResolverException {
+        config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
+        config1.setKeyTransportEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        config1.setDataEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        
+        // Data algorithm -> key transport algorithm preferences mappings
+        HashMap<String,String> algoMap = new HashMap<>();
+        algoMap.put(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        algoMap.put(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        KeyTransportAlgorithmPredicate predicate = new MapBasedKeyTransportAlgorithmPredicate(algoMap);
+        
+        // Without the predicate, for control
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        
+        config1.setKeyTransportAlgorithmPredicate(predicate);
+        
+        // Explicit preference with predicate, mapping # 1
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        
+        config1.setDataEncryptionAlgorithms(Lists.newArrayList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        
+        // Explicit preference with predicate, mapping # 2
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+    }
+    
+    @Test
     public void testKeyInfoGenerationProfile() throws ResolverException {
         config1.setKeyTransportEncryptionCredentials(Lists.newArrayList(rsaCred1));
         config1.setDataEncryptionCredentials(Lists.newArrayList(aes128Cred1));
@@ -484,6 +518,20 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testAbsentCriterion() throws ResolverException {
         resolver.resolve(new CriteriaSet());
+    }
+    
+    // Test utility classes
+    
+    public class MapBasedKeyTransportAlgorithmPredicate implements KeyTransportAlgorithmPredicate {
+        private Map<String,String> algoMap;
+        
+        public MapBasedKeyTransportAlgorithmPredicate(Map<String,String> algoMap) {
+            this.algoMap = algoMap;
+        }
+        
+        public boolean apply(@Nullable SelectionInput input) {
+            return this.algoMap.get(input.getDataEncryptionAlgorithm()).equals(input.getKeyTransportAlgorithm());
+        }
     }
 
 }
