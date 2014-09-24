@@ -65,6 +65,7 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -572,7 +573,7 @@ public class Decrypter {
             throw new DecryptionException("EncryptedData of unsupported type was encountered");
         }        
 
-        validateAlgorithmURI(encryptedData.getEncryptionMethod().getAlgorithm());
+        validateAlgorithms(encryptedData);
         
         try {
             checkAndMarshall(encryptedData);
@@ -674,7 +675,7 @@ public class Decrypter {
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
         }
         
-        validateAlgorithmURI(encryptedKey.getEncryptionMethod().getAlgorithm());
+        validateAlgorithms(encryptedKey);
 
         try {
             checkAndMarshall(encryptedKey);
@@ -1016,6 +1017,56 @@ public class Decrypter {
         } catch (ComponentInitializationException e) {
             throw new XMLRuntimeException("Problem initializing Decrypter internal ParserPool", e);
         }
+    }
+    
+    /**
+     * Validate the algorithms contained within an {@link EncryptedKey}.
+     * 
+     * @param encryptedKey the encrypted key instance to validate
+     * @throws DecryptionException if any algorithms do not satisfy whitelist/blacklist policy
+     */
+    protected void validateAlgorithms(@Nonnull final EncryptedKey encryptedKey) throws DecryptionException {
+        String encryptionAlgorithm = encryptedKey.getEncryptionMethod().getAlgorithm();
+        validateAlgorithmURI(encryptionAlgorithm);
+        
+        if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithm)) {
+            // ds:DigestMethod
+            String digestAlgorithm = null;
+            List<XMLObject> digestMethods = encryptedKey.getEncryptionMethod()
+                    .getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
+            if (digestMethods.size() > 0) {
+                DigestMethod digestMethod = (DigestMethod) digestMethods.get(0);
+                digestAlgorithm = StringSupport.trimOrNull(digestMethod.getAlgorithm());
+            }
+            if (digestAlgorithm == null) {
+                // This is the implicit default per XML Encryption
+                digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA1;
+            }
+            validateAlgorithmURI(digestAlgorithm);
+            
+            // xenc11:MGF
+            String mgfAlgorithm = null;
+            List<XMLObject> mgfs = encryptedKey.getEncryptionMethod().getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+            if (mgfs.size() > 0) {
+                MGF mgf = (MGF) mgfs.get(0);
+                mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
+            }
+            if (mgfAlgorithm == null) {
+                // This is the implicit default per XML Encryption
+                mgfAlgorithm = EncryptionConstants.ALGO_ID_MGF1_SHA1;
+            }
+            validateAlgorithmURI(mgfAlgorithm);
+        }
+    }
+
+    /**
+     * Validate the algorithms contained within an {@link EncryptedData}.
+     * 
+     * @param encryptedData the encrypted data instance to validate
+     * @throws DecryptionException if any algorithms do not satisfy whitelist/blacklist policy
+     */
+    protected void validateAlgorithms(@Nonnull final EncryptedData encryptedData) throws DecryptionException {
+        validateAlgorithmURI(encryptedData.getEncryptionMethod().getAlgorithm());
     }
     
     /**

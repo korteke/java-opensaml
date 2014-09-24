@@ -17,9 +17,6 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyPair;
@@ -29,27 +26,27 @@ import java.util.Collections;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.security.BouncyCastleTestLoader;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
-import org.opensaml.xmlsec.encryption.support.Decrypter;
-import org.opensaml.xmlsec.encryption.support.DecryptionException;
-import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.support.Encrypter;
-import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
-import org.opensaml.xmlsec.encryption.support.EncryptionException;
-import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
-import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
-import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
+
+import com.google.common.collect.Sets;
 
 /**
  * Simple tests for decryption.
@@ -64,14 +61,18 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     private DataEncryptionParameters encParams;
     private EncryptedData encryptedData;
     private EncryptedData encryptedContent;
+    private Credential encCred;
     
     private String kekURI;
     private KeyEncryptionParameters kekParams;
     private EncryptedKey encryptedKey;
+    private Credential kekCred;
     
     private String targetFile;
     private Document targetDOM;
     private SignableSimpleXMLObject targetObject;
+    
+    private BouncyCastleTestLoader bcLoader;
 
     /**
      * Constructor.
@@ -79,6 +80,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     public SimpleDecryptionTest() {
         super();
+        
+        bcLoader = new BouncyCastleTestLoader();
         
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         kekURI = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP;
@@ -88,7 +91,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception {
-        Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
+        encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         encKey = encCred.getSecretKey();
         keyResolver = new StaticKeyInfoCredentialResolver(encCred);
         encParams = new DataEncryptionParameters();
@@ -96,7 +99,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         encParams.setEncryptionCredential(encCred);
         
         
-        Credential kekCred = AlgorithmSupport.generateKeyPairAndCredential(kekURI, 1024, true);
+        kekCred = AlgorithmSupport.generateKeyPairAndCredential(kekURI, 1024, true);
         kekResolver = new StaticKeyInfoCredentialResolver(kekCred);
         kekParams = new KeyEncryptionParameters();
         kekParams.setAlgorithm(kekURI);
@@ -175,7 +178,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     /**
      *  Test EncryptedData decryption which should pass the whitelist validation b/c the list specifies
-     *  the algoritm in use.
+     *  the algorithm in use.
      * @throws DecryptionException 
      */
     @Test()
@@ -190,6 +193,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyAlgorithmBlacklistFail() throws DecryptionException {
+        // Note: here testing the implicit digest method and MGF, which are the SHA-1 variants.
         Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(kekURI));
         decrypter.decryptKey(encryptedKey, encURI);
     }
@@ -197,22 +201,168 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     /**
      *  Test EncryptedKey decryption which should fail due to whitelist validation.
      * @throws DecryptionException 
+     * @throws XMLParserException 
+     * @throws EncryptionException 
      */
     @Test(expectedExceptions=DecryptionException.class)
-    public void testEncryptedKeyAlgorithmWhitelistFail() throws DecryptionException {
+    public void testEncryptedKeyDigestMethodBlacklistFail() throws DecryptionException, EncryptionException, XMLParserException {
+        bcLoader.load();
+        
+        try {
+            // Encrypt and test with explicit digest method and MGF
+            KeyEncryptionParameters params = new KeyEncryptionParameters();
+            params.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            params.setEncryptionCredential(kekCred);
+            params.setRSAOAEPParameters(new RSAOAEPParameters(EncryptionConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+            
+            Encrypter encrypter = new Encrypter();
+            encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
+            
+            Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(EncryptionConstants.ALGO_ID_DIGEST_SHA256));
+            decrypter.decryptKey(encryptedKey, encURI);
+        } finally {
+            bcLoader.unload();
+        }
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should fail due to whitelist validation.
+     * @throws DecryptionException 
+     * @throws XMLParserException 
+     * @throws EncryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyMGFBlacklistFail() throws DecryptionException, EncryptionException, XMLParserException {
+        bcLoader.load();
+        
+        try {
+            // Encrypt and test with explicit digest method and MGF
+            KeyEncryptionParameters params = new KeyEncryptionParameters();
+            params.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            params.setEncryptionCredential(kekCred);
+            params.setRSAOAEPParameters(new RSAOAEPParameters(EncryptionConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+            
+            Encrypter encrypter = new Encrypter();
+            encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
+            
+            Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(EncryptionConstants.ALGO_ID_MGF1_SHA256));
+            decrypter.decryptKey(encryptedKey, encURI);
+        } finally {
+            bcLoader.unload();
+        }
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should fail due to whitelist validation.
+     * @throws DecryptionException 
+     * @throws XMLParserException 
+     * @throws EncryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyAlgorithmWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
+        // Note: here testing the implicit digest method and MGF, which are the SHA-1 variants.
         Decrypter decrypter = new Decrypter(null, kekResolver, null, Collections.singleton("urn-x:some:bogus:algo"), null);
         decrypter.decryptKey(encryptedKey, encURI);
     }
     
     /**
-     *  Test EncryptedKey decryption which should pass the whitelist validation b/c the list specifies
-     *  the algoritm in use.
+     *  Test EncryptedKey decryption which should fail due to whitelist validation.
      * @throws DecryptionException 
+     * @throws XMLParserException 
+     * @throws EncryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyDigestMethodWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
+        bcLoader.load();
+        
+        try {
+            // Encrypt and test with explicit digest method and MGF
+            KeyEncryptionParameters params = new KeyEncryptionParameters();
+            params.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            params.setEncryptionCredential(kekCred);
+            params.setRSAOAEPParameters(new RSAOAEPParameters(EncryptionConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+            
+            Encrypter encrypter = new Encrypter();
+            encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
+            
+            Decrypter decrypter = new Decrypter(null, kekResolver, null, 
+                    Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
+                            "urn-x:some:bogus:algo",
+                            EncryptionConstants.ALGO_ID_MGF1_SHA256), 
+                            null);
+            decrypter.decryptKey(encryptedKey, encURI);
+        } finally {
+            bcLoader.unload();
+        }
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should fail due to whitelist validation.
+     * @throws DecryptionException 
+     * @throws XMLParserException 
+     * @throws EncryptionException 
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyMGFWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
+        bcLoader.load();
+        
+        try {
+            // Encrypt and test with explicit digest method and MGF
+            KeyEncryptionParameters params = new KeyEncryptionParameters();
+            params.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            params.setEncryptionCredential(kekCred);
+            params.setRSAOAEPParameters(new RSAOAEPParameters(EncryptionConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+            
+            Encrypter encrypter = new Encrypter();
+            encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
+            
+            Decrypter decrypter = new Decrypter(null, kekResolver, null, 
+                    Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
+                            EncryptionConstants.ALGO_ID_DIGEST_SHA256,
+                            "urn-x:some:bogus:algo"),
+                            null);
+            decrypter.decryptKey(encryptedKey, encURI);
+        } finally {
+            bcLoader.unload();
+        }
+    }
+    
+    /**
+     *  Test EncryptedKey decryption which should pass the whitelist validation b/c the list specifies
+     *  the algorithms in use.
+     * @throws DecryptionException 
+     * @throws XMLParserException 
+     * @throws EncryptionException 
      */
     @Test()
-    public void testEncryptedKeyAlgorithmWhitelistPass() throws DecryptionException {
-        Decrypter decrypter = new Decrypter(null, kekResolver, null, Collections.singleton(kekURI), null);
+    public void testEncryptedKeyAlgorithmWhitelistPass() throws DecryptionException, EncryptionException, XMLParserException {
+        // Note: have to whitelist the implicit digest method and MGF, which are the SHA-1 variants.
+        Decrypter decrypter = new Decrypter(null, kekResolver, null, 
+                Sets.newHashSet(kekURI, SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1), null);
         decrypter.decryptKey(encryptedKey, encURI);
+        
+        bcLoader.load();
+        
+        try {
+            // Encrypt and test with explicit digest method and MGF
+            KeyEncryptionParameters params = new KeyEncryptionParameters();
+            params.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            params.setEncryptionCredential(kekCred);
+            params.setRSAOAEPParameters(new RSAOAEPParameters(EncryptionConstants.ALGO_ID_DIGEST_SHA256, EncryptionConstants.ALGO_ID_MGF1_SHA256, null));
+            
+            Encrypter encrypter = new Encrypter();
+            encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
+            
+            decrypter = new Decrypter(null, kekResolver, null, 
+                    Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
+                            EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
+                            EncryptionConstants.ALGO_ID_MGF1_SHA256), 
+                            null);
+            decrypter.decryptKey(encryptedKey, encURI);
+        } finally {
+            bcLoader.unload();
+        }
+        
     }
     
     /**
@@ -320,5 +470,5 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         }
         
     }
- 
+    
 }
