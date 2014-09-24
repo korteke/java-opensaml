@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
@@ -30,7 +29,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -72,14 +70,8 @@ public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPre
     
     /** {@inheritDoc} */
     @Override
-    public boolean apply(@Nullable final EntityDescriptor input) {
-        
-        final RegistrationInfo info = getRegistrationInfo(input);
-        if (info != null) {
-            return authorities.contains(info.getRegistrationAuthority());
-        }
-        
-        return false;
+    protected boolean doApply(@Nonnull final RegistrationInfo info) {
+        return authorities.contains(info.getRegistrationAuthority());
     }
     
 }
