@@ -48,7 +48,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
-        Assert.assertEquals(nameId.getNameIdentifier(), "foo");
+        Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
     }
 
@@ -62,7 +62,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
-        Assert.assertEquals(nameId.getNameIdentifier(), "foo");
+        Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
     }
 
@@ -75,7 +75,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
-        Assert.assertEquals(nameId.getNameIdentifier(), "foo");
+        Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
     }
 
@@ -87,7 +87,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
         Assert.assertNotNull(nameId);
-        Assert.assertEquals(nameId.getNameIdentifier(), "foo");
+        Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
     }
     
