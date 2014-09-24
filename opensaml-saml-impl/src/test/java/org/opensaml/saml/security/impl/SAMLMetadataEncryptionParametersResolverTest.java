@@ -24,7 +24,11 @@ import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
@@ -45,6 +49,8 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.EncryptionParameters;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate.SelectionInput;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
 import org.opensaml.xmlsec.encryption.MGF;
@@ -52,6 +58,7 @@ import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.impl.BasicEncryptionConfiguration;
+import org.opensaml.xmlsec.impl.BasicEncryptionParametersResolverTest.MapBasedKeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
@@ -391,6 +398,49 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     }
     
     @Test
+    public void testKeyTransportAlgorithmPredicate() throws ResolverException {
+        KeyDescriptor keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
+        
+        
+        // Data algorithm -> key transport algorithm preferences mappings
+        HashMap<String,String> algoMap = new HashMap<>();
+        algoMap.put(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        algoMap.put(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        KeyTransportAlgorithmPredicate predicate = new MapBasedKeyTransportAlgorithmPredicate(algoMap);
+        
+        // Without the predicate, for control
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        
+        config1.setKeyTransportAlgorithmPredicate(predicate);
+        
+        // Explicit preference with predicate, mapping # 1
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
+        
+        // Change algo ordering
+        keyDescriptor.getEncryptionMethods().clear();
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        
+        // Explicit preference with predicate, mapping # 2
+        params = resolver.resolveSingle(criteriaSet);
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192);
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        
+    }
+    
+    @Test
     public void testEncryptionMethodWithBlacklist() throws ResolverException {
         KeyDescriptor keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
@@ -630,6 +680,21 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
        EncryptionMethod encMethod = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME); 
        encMethod.setAlgorithm(algorithm);
        return encMethod;
+    }
+    
+    
+    // Test utility classes
+    
+    public class MapBasedKeyTransportAlgorithmPredicate implements KeyTransportAlgorithmPredicate {
+        private Map<String,String> algoMap;
+        
+        public MapBasedKeyTransportAlgorithmPredicate(Map<String,String> algoMap) {
+            this.algoMap = algoMap;
+        }
+        
+        public boolean apply(@Nullable SelectionInput input) {
+            return this.algoMap.get(input.getDataEncryptionAlgorithm()).equals(input.getKeyTransportAlgorithm());
+        }
     }
 
 }
