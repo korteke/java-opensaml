@@ -140,7 +140,7 @@ public class SAML1ActionTestingSupport {
                     XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIdentifier>getBuilderOrThrow(
                             NameIdentifier.DEFAULT_ELEMENT_NAME);
             final NameIdentifier nameId = nameIdBuilder.buildObject();
-            nameId.setNameIdentifier(principalName);
+            nameId.setValue(principalName);
             subject.setNameIdentifier(nameId);
         }
 
