@@ -35,6 +35,8 @@ import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
@@ -43,6 +45,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
@@ -50,6 +53,9 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.config.GlobalAlgorithmRegistryInitializer;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
 import org.opensaml.xmlsec.encryption.MGF;
@@ -102,6 +108,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     private RoleDescriptor roleDesc;
     
     private String targetEntityID = "urn:test:foo";
+    
+    private SecurityProviderTestSupport providerSupport;
+    
+    public SAMLMetadataEncryptionParametersResolverTest() {
+        providerSupport = new SecurityProviderTestSupport();
+    }
     
     @BeforeClass
     public void buildCredentials() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -304,7 +316,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     }
     
     @Test
-    public void testEncryptionMethodWithRSAOAEPParameters() throws ResolverException {
+    public void testEncryptionMethodWithRSAOAEPParameters() throws ResolverException, InitializationException {
         EncryptionParameters params;
         EncryptionMethod rsaEncryptionMethod;
         DigestMethod digestMethod;
@@ -329,70 +341,80 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertNotNull(params.getRSAOAEPParameters());
         Assert.assertTrue(params.getRSAOAEPParameters().isEmpty());
         
-        // Note: in tests below, having an MGF with RSAOAEP (vs RSAOAEP11) doesn't technically make sense,
-        // but here it doesn't matter and we can't really test RSAOAEP11 directly b/c it isn't runtime supported on Java 7
-        // without BC.
         
-        // Should resolve digest from metadata
-        rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
-        digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-        keyDescriptor.getEncryptionMethods().clear();
-        keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
-        params = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-        Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+        // Load BouncyCastle so can really test RSA OAEP 1.1 stuff.
+        AlgorithmRegistry originalRegistry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+        Assert.assertNotNull(originalRegistry);
+        providerSupport.loadBC();
+        new GlobalAlgorithmRegistryInitializer().init();
+        resolver.setAlgorithmRegistry(AlgorithmSupport.getGlobalAlgorithmRegistry());
         
-        // Should resolve all values from metadata
-        rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
-        digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-        mgf = buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
-        mgf.setAlgorithm(EncryptionConstants.ALGO_ID_MGF1_SHA256);
-        rsaEncryptionMethod.getUnknownXMLObjects().add(mgf);
-        oaepParams = buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
-        oaepParams.setValue("oaep-params-md");
-        rsaEncryptionMethod.setOAEPparams(oaepParams);
-        keyDescriptor.getEncryptionMethods().clear();
-        keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
-        params = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertEquals(params.getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
-        Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-md");
+        try {
+            // Should resolve digest from metadata
+            rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+            digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
+            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            params = resolver.resolveSingle(criteriaSet);
+            Assert.assertNotNull(params.getRSAOAEPParameters());
+            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
+            Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+            
+            // Should resolve all values from metadata
+            rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+            digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
+            mgf = buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
+            mgf.setAlgorithm(EncryptionConstants.ALGO_ID_MGF1_SHA256);
+            rsaEncryptionMethod.getUnknownXMLObjects().add(mgf);
+            oaepParams = buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
+            oaepParams.setValue("oaep-params-md");
+            rsaEncryptionMethod.setOAEPparams(oaepParams);
+            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            params = resolver.resolveSingle(criteriaSet);
+            Assert.assertNotNull(params.getRSAOAEPParameters());
+            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertEquals(params.getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
+            Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-md");
+            
+            // Should resolve digest from metadata, should NOT resolve OAEPParms from config by default
+            config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
+            rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+            digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
+            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            params = resolver.resolveSingle(criteriaSet);
+            Assert.assertNotNull(params.getRSAOAEPParameters());
+            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
+            Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+            
+            // Should resolve digest from metadata, should resolve OAEPParms from config3
+            config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
+            resolver.setMergeMetadataRSAOAEPParametersWithConfig(true);
+            rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+            digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
+            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            params = resolver.resolveSingle(criteriaSet);
+            Assert.assertNotNull(params.getRSAOAEPParameters());
+            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
+            Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-3");
         
-        // Should resolve digest from metadata, should NOT resolve OAEPParms from config by default
-        config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
-        rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
-        digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-        keyDescriptor.getEncryptionMethods().clear();
-        keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
-        params = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-        Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
-        
-        // Should resolve digest from metadata, should resolve OAEPParms from config3
-        config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
-        resolver.setMergeMetadataRSAOAEPParametersWithConfig(true);
-        rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
-        digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-        keyDescriptor.getEncryptionMethods().clear();
-        keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
-        params = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-        Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-3");
+        } finally {
+            providerSupport.unloadBC();
+            ConfigurationService.register(AlgorithmRegistry.class, originalRegistry);
+        }
     }
     
     @Test
