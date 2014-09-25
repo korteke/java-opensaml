@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core;
 
 import javax.annotation.Nullable;
 
