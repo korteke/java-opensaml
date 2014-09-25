@@ -93,13 +93,11 @@ public class DefaultSecurityConfigurationBootstrap {
                 EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES
                 ));
         
-        /* TODO this is causing a problem in idp-conf tests due to some weird XML namespace problem
         config.setRSAOAEPParameters(new RSAOAEPParameters(
-                EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
-                EncryptionConstants.ALGO_ID_MGF1_SHA256, 
+                SignatureConstants.ALGO_ID_DIGEST_SHA1, 
+                EncryptionConstants.ALGO_ID_MGF1_SHA1, 
                 null
                 ));
-         */
         
         config.setDataKeyInfoGeneratorManager(buildDataEncryptionKeyInfoGeneratorManager());
         config.setKeyTransportKeyInfoGeneratorManager(buildKeyTransportEncryptionKeyInfoGeneratorManager());
