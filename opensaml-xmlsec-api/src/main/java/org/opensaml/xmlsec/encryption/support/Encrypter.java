@@ -23,7 +23,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.ECPublicKey;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,9 +31,6 @@ import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.NamespaceSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -53,7 +49,6 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
-import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
@@ -481,25 +476,12 @@ public class Encrypter {
 
         // Workaround for XML-Security library issue. To maximize interop, explicitly express the library
         // default of SHA-1 digest method input parameter to RSA-OAEP key transport algorithm.
-        // Check and only add if the library hasn't already done so, which it currently doesn't.
+        // Check and only add if the library hasn't already done so.
         if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI)) {
-            boolean sawDigestMethod = false;
-            Iterator childIter = apacheEncryptedKey.getEncryptionMethod().getEncryptionMethodInformation();
-            while (childIter.hasNext()) {
-                Element child = (Element) childIter.next();
-                if (DigestMethod.DEFAULT_ELEMENT_NAME.equals(QNameSupport.getNodeQName(child))) {
-                    sawDigestMethod = true;
-                    break;
-                }
-            }
-            if (!sawDigestMethod) {
-                Element digestMethodElem =
-                        ElementSupport.constructElement(containingDocument, DigestMethod.DEFAULT_ELEMENT_NAME);
-                NamespaceSupport.appendNamespaceDeclaration(digestMethodElem, SignatureConstants.XMLSIG_NS,
-                        SignatureConstants.XMLSIG_PREFIX);
-                digestMethodElem.setAttributeNS(null, DigestMethod.ALGORITHM_ATTRIB_NAME,
-                        SignatureConstants.ALGO_ID_DIGEST_SHA1);
-                apacheEncryptedKey.getEncryptionMethod().addEncryptionMethodInformation(digestMethodElem);
+            org.apache.xml.security.encryption.EncryptionMethod apacheEncryptionMethod =
+                    apacheEncryptedKey.getEncryptionMethod();
+            if (apacheEncryptionMethod.getDigestAlgorithm() == null) {
+                apacheEncryptionMethod.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
             }
         }
     }
