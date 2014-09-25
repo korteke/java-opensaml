@@ -736,24 +736,7 @@ public class Decrypter {
     protected void preProcessEncryptedKey(@Nonnull final EncryptedKey encryptedKey, @Nonnull final String algorithm,
             @Nonnull final Key kek) throws DecryptionException {
         
-        // Apache XML-Security currently only supports an internal, hard-coded default
-        // SHA-1 digest method with RSA-OAEP key transport.
-        String keyTransportAlgorithm = encryptedKey.getEncryptionMethod().getAlgorithm();
-        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(keyTransportAlgorithm)) {
-            List<XMLObject> digestMethods = 
-                encryptedKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
-            if (!digestMethods.isEmpty()) {
-                DigestMethod dm = (DigestMethod) digestMethods.get(0);
-                if (! SignatureConstants.ALGO_ID_DIGEST_SHA1
-                        .equals(StringSupport.trimOrNull(dm.getAlgorithm())) ) {
-                    log.error("EncryptedKey/EncryptionMethod/DigestMethod contains unsupported algorithm URI: {}",
-                            dm.getAlgorithm());
-                    throw new DecryptionException(
-                            "EncryptedKey/EncryptionMethod/DigestMethod contains unsupported algorithm URI");
-                }
-            }
-        }
-        
+        // No-op for now.  Subclasses can do things here if they want.
     }
 
     /**
