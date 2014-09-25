@@ -474,14 +474,21 @@ public class Encrypter {
             @Nonnull final String encryptionAlgorithmURI, @Nonnull final Document containingDocument)
             throws EncryptionException {
 
-        // Workaround for XML-Security library issue. To maximize interop, explicitly express the library
-        // default of SHA-1 digest method input parameter to RSA-OAEP key transport algorithm.
+        // To maximize interop, explicitly express the defaults of SHA-1 digest method and MGF-1 w/ SHA-1 input
+        // parameters to RSA-OAEP key transport algorithm. The latter only applies to the XML Encryption 1.1 variant.
         // Check and only add if the library hasn't already done so.
         if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI)) {
             org.apache.xml.security.encryption.EncryptionMethod apacheEncryptionMethod =
                     apacheEncryptedKey.getEncryptionMethod();
+            
             if (apacheEncryptionMethod.getDigestAlgorithm() == null) {
                 apacheEncryptionMethod.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+            }
+            
+            if (!EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(encryptionAlgorithmURI)) {
+                if (apacheEncryptionMethod.getMGFAlgorithm() == null) {
+                    apacheEncryptionMethod.setMGFAlgorithm(EncryptionConstants.ALGO_ID_MGF1_SHA1);
+                }
             }
         }
     }
