@@ -144,7 +144,7 @@ public class BasicSignatureSigningParametersResolver
      * 
      * @param params the resolved param
      */
-    protected void logResult(SignatureSigningParameters params) {
+    protected void logResult(@Nonnull final SignatureSigningParameters params) {
         if (log.isDebugEnabled()) {
             log.debug("Resolved SignatureSigningParameters:");
             

@@ -31,6 +31,8 @@ import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.SignatureValidationParametersResolver;
 import org.opensaml.xmlsec.criterion.SignatureValidationConfigurationCriterion;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of {@link SignatureValidationParametersResolver}.
@@ -45,6 +47,9 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 public class BasicSignatureValidationParametersResolver 
         extends AbstractSecurityParametersResolver<SignatureValidationParameters> 
         implements SignatureValidationParametersResolver {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(BasicSignatureValidationParametersResolver.class);
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<SignatureValidationParameters> resolve(@Nonnull final CriteriaSet criteria) 
@@ -72,7 +77,26 @@ public class BasicSignatureValidationParametersResolver
         
         params.setSignatureTrustEngine(resolveSignatureTrustEngine(criteria));
         
+        logResult(params);
+        
         return params;
+    }
+    
+    /**
+     * Log the resolved parameters.
+     * 
+     * @param params the resolved param
+     */
+    protected void logResult(@Nonnull final SignatureValidationParameters params) {
+        if (log.isDebugEnabled()) {
+            log.debug("Resolved SignatureValidationParameters:");
+            
+            log.debug("\tAlgorithm whitelist: {}", params.getWhitelistedAlgorithms());
+            log.debug("\tAlgorithm blacklist: {}", params.getBlacklistedAlgorithms());
+            
+            log.debug("\tSignatureTrustEngine: {}", 
+                    params.getSignatureTrustEngine() != null ? "present" : "null");
+        }
     }
 
     /**
