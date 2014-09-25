@@ -31,6 +31,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.security.BouncyCastleTestLoader;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -78,6 +79,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     private String expectedRecipientAES;
     private String targetFile;
     
+    private BouncyCastleTestLoader bcLoader;
+    
 
     /**
      * Constructor.
@@ -85,6 +88,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     public SimpleEncryptionTest() {
         super();
+        
+        bcLoader = new BouncyCastleTestLoader();
         
         expectedKeyName = "SuperSecretKey";
         expectedKEKKeyNameAES = "KEKKeyAES";
@@ -525,81 +530,77 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testRSAOAEPParameters() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException, KeyException, EncryptionException {
         
-        // Need to do this to make tests work on Java 7 if no appropriate security provider is installed.  We'll remove at the end.
-        boolean hadBC = Security.getProvider("BC") != null;
-        if (!hadBC) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
+        bcLoader.load();
         
-        Document ownerDocument = parserPool.newDocument();
-        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
-        String controlOAEPParams = "9lWu3Q==";
-        EncryptedKey encKey;
+        try {
+            Document ownerDocument = parserPool.newDocument();
+            Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
+            String controlOAEPParams = "9lWu3Q==";
+            EncryptedKey encKey;
+            
+            KeyEncryptionParameters kekParams = new KeyEncryptionParameters();
+            kekParams.setEncryptionCredential(AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 1024, false));
+            
+            //
+            // Encryption 1.0 variant, MGF is hard-coded as SHA-1 in algo spec, not expressed in the XML
+            //
+            kekParams.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+            
+            // Defaults via null params
+            kekParams.setRSAOAEPParameters(null);
+            encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+            Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+            Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
+            Assert.assertNull(getOAEPParams(encKey));
+            
+            // Defaults via empty params
+            kekParams.setRSAOAEPParameters(new RSAOAEPParameters());
+            encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+            Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+            Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
+            Assert.assertNull(getOAEPParams(encKey));
+            
+            // Set everything
+            kekParams.setRSAOAEPParameters(new RSAOAEPParameters(
+                    EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
+                    EncryptionConstants.ALGO_ID_MGF1_SHA256, 
+                    controlOAEPParams));
+            encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+            Assert.assertEquals(getDigestMethod(encKey), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
+            Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
+            
+            //
+            // Encryption 1.1 variant, MGF is free to vary
+            //
+            kekParams.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+            
+            // Defaults via null params
+            kekParams.setRSAOAEPParameters(null);
+            encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+            Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+            Assert.assertEquals(getMGF(encKey), EncryptionConstants.ALGO_ID_MGF1_SHA1); // Our hard-coded default for interop.
+            Assert.assertNull(getOAEPParams(encKey));
+            
+            // Defaults via empty params
+            kekParams.setRSAOAEPParameters(new RSAOAEPParameters());
+            encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+            Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
+            Assert.assertEquals(getMGF(encKey), EncryptionConstants.ALGO_ID_MGF1_SHA1); // Our hard-coded default for interop.
+            Assert.assertNull(getOAEPParams(encKey));
+            
+            // Set everything
+            kekParams.setRSAOAEPParameters(new RSAOAEPParameters(
+                    EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
+                    EncryptionConstants.ALGO_ID_MGF1_SHA256, 
+                    controlOAEPParams));
+            encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
+            Assert.assertEquals(getDigestMethod(encKey), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertEquals(getMGF(encKey), EncryptionConstants.ALGO_ID_MGF1_SHA256);
+            Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
         
-        KeyEncryptionParameters kekParams = new KeyEncryptionParameters();
-        kekParams.setEncryptionCredential(AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 1024, false));
-        
-        //
-        // Encryption 1.0 variant, MGF is hard-coded as SHA-1 in algo spec, not expressed in the XML
-        //
-        kekParams.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        
-        // Defaults via null params
-        kekParams.setRSAOAEPParameters(null);
-        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
-        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
-        Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
-        Assert.assertNull(getOAEPParams(encKey));
-        
-        // Defaults via empty params
-        kekParams.setRSAOAEPParameters(new RSAOAEPParameters());
-        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
-        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
-        Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
-        Assert.assertNull(getOAEPParams(encKey));
-        
-        // Set everything
-        kekParams.setRSAOAEPParameters(new RSAOAEPParameters(
-                EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
-                EncryptionConstants.ALGO_ID_MGF1_SHA256, 
-                controlOAEPParams));
-        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
-        Assert.assertEquals(getDigestMethod(encKey), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertNull(getMGF(encKey)); // Should always be null, implicit in the algo
-        Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
-        
-        //
-        // Encryption 1.1 variant, MGF is free to vary
-        //
-        kekParams.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
-        
-        // Defaults via null params
-        kekParams.setRSAOAEPParameters(null);
-        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
-        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
-        Assert.assertNull(getMGF(encKey));
-        Assert.assertNull(getOAEPParams(encKey));
-        
-        // Defaults via empty params
-        kekParams.setRSAOAEPParameters(new RSAOAEPParameters());
-        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
-        Assert.assertEquals(getDigestMethod(encKey), SignatureConstants.ALGO_ID_DIGEST_SHA1); // Our hard-coded default for interop.
-        Assert.assertNull(getMGF(encKey));
-        Assert.assertNull(getOAEPParams(encKey));
-        
-        // Set everything
-        kekParams.setRSAOAEPParameters(new RSAOAEPParameters(
-                EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
-                EncryptionConstants.ALGO_ID_MGF1_SHA256, 
-                controlOAEPParams));
-        encKey = encrypter.encryptKey(targetKey, kekParams, ownerDocument);
-        Assert.assertEquals(getDigestMethod(encKey), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertEquals(getMGF(encKey), EncryptionConstants.ALGO_ID_MGF1_SHA256);
-        Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
-        
-        // Remove BC if we didn't have it when the test started
-        if (!hadBC) {
-            Security.removeProvider("BC");
+        } finally {
+            bcLoader.unload();
         }
     }
     
