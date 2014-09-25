@@ -38,11 +38,11 @@
                     <archive>
                         <index>true</index>
                         <manifestEntries>
-                            <Main-Class>org.opensaml.core.xml.Version</Main-Class>
+                            <Main-Class>org.opensaml.core.Version</Main-Class>
                         </manifestEntries>
                         <manifestSections>
                             <manifestSection>
-                                <name>org/opensaml/core/xml/</name>
+                                <name>org/opensaml/core/</name>
                                 <manifestEntries>
                                     <Implementation-Title>${project.artifactId}</Implementation-Title>
                                     <Implementation-Version>${project.version}</Implementation-Version>
