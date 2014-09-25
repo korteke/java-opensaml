@@ -32,6 +32,8 @@ import org.opensaml.xmlsec.DecryptionParametersResolver;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of {@link DecryptionParametersResolver}.
@@ -45,6 +47,9 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
  */
 public class BasicDecryptionParametersResolver extends AbstractSecurityParametersResolver<DecryptionParameters> 
         implements DecryptionParametersResolver {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(BasicDecryptionParametersResolver.class);
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<DecryptionParameters> resolve(@Nonnull final CriteriaSet criteria) 
@@ -73,7 +78,31 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
         params.setKEKKeyInfoCredentialResolver(resolveKEKKeyInfoCredentialResolver(criteria));
         params.setEncryptedKeyResolver(resolveEncryptedKeyResolver(criteria));
         
+        logResult(params);
+        
         return params;
+    }
+    
+    /**
+     * Log the resolved parameters.
+     * 
+     * @param params the resolved param
+     */
+    protected void logResult(@Nonnull final DecryptionParameters params) {
+        if (log.isDebugEnabled()) {
+            log.debug("Resolved DecryptionParameters:");
+            
+            log.debug("\tAlgorithm whitelist: {}", params.getWhitelistedAlgorithms());
+            log.debug("\tAlgorithm blacklist: {}", params.getBlacklistedAlgorithms());
+            
+            log.debug("\tData KeyInfoCredentialResolver: {}", 
+                    params.getDataKeyInfoCredentialResolver() != null ? "present" : "null");
+            log.debug("\tKEK KeyInfoCredentialResolver: {}", 
+                    params.getKEKKeyInfoCredentialResolver() != null ? "present" : "null");
+            log.debug("\tEncryptedKeyResolver: {}", 
+                    params.getEncryptedKeyResolver() != null ? "present" : "null");
+            
+        }
     }
 
     /**

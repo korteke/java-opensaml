@@ -169,7 +169,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param params the resolved param
      */
-    protected void logResult(EncryptionParameters params) {
+    protected void logResult(@Nonnull final EncryptionParameters params) {
         if (log.isDebugEnabled()) {
             log.debug("Resolved EncryptionParameters:");
             
