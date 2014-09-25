@@ -381,7 +381,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         // Should resolve digest from metadata, should resolve OAEPParms from config3
         config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
-        resolver.setCompletePartialRSAOAEPParametersFromConfig(true);
+        resolver.setMergeMetadataRSAOAEPParametersWithConfig(true);
         rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
