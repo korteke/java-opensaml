@@ -37,6 +37,7 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -74,9 +75,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     /** Metadata credential resolver. */
     private MetadataCredentialResolver credentialResolver;
     
-    /** Flag indicating whether the resolver should attempt to complete a partially-resolved RSAOAEPParameters instance
-     * by delegating to the superclass local config resolution process. */
-    private boolean completePartialRSAOAEPParametersFromConfig;
+    /** Flag indicating whether the resolver should attempt to merge RSAOAEPParameters values resolved
+     * from metadata with additional parameters from supplied instances of {@link EncryptionConfiguration}. */
+    private boolean mergeMetadataRSAOAEPParametersWithConfig;
     
     /**
      * Constructor.
@@ -88,21 +89,29 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     }
     
     /**
-     * Determine whether to complete partially resolved RSA OAEP parameters by delegating to local configuration.
+     * Determine whether the resolver should attempt to merge RSAOAEPParameters values resolved
+     * from metadata with additional parameters from supplied instances of
+     * {@link EncryptionConfiguration}.
      * 
-     * @return true if should complete partial parameters instances, false otherwise
+     * <p>Defaults to: <code>false</code>
+     * 
+     * @return true if should merge metadata parameters with configuration, false otherwise
      */
-    public boolean isCompletePartialRSAOAEPParametersFromConfig() {
-        return completePartialRSAOAEPParametersFromConfig;
+    public boolean isMergeMetadataRSAOAEPParametersWithConfig() {
+        return mergeMetadataRSAOAEPParametersWithConfig;
     }
 
     /**
-     * Set whether to complete partially resolved RSA OAEP parameters by delegating to local configuration.
+     * Set whether the resolver should attempt to merge RSAOAEPParameters values resolved
+     * from metadata with additional parameters from supplied instances of
+     * {@link EncryptionConfiguration}.
      * 
-     * @param flag true if should complete partial parameters instances, false otherwise
+     * <p>Defaults to: <code>false</code>
+     * 
+     * @param flag true if should merge metadata parameters with configuration, false otherwise
      */
-    public void setCompletePartialRSAOAEPParametersFromConfig(boolean flag) {
-        completePartialRSAOAEPParametersFromConfig = flag;
+    public void setMergeMetadataRSAOAEPParametersWithConfig(boolean flag) {
+        mergeMetadataRSAOAEPParametersWithConfig = flag;
     }
 
     /**
@@ -180,9 +189,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * <p>
      * This method itself resolves the parameters data from the metadata {@link EncryptionMethod}.  If
      * this results in a non-complete RSAOAEPParameters instance and if 
-     * {@link #isCompletePartialRSAOAEPParametersFromConfig()} evaluates true, 
+     * {@link #isMergeMetadataRSAOAEPParametersWithConfig()} evaluates true, 
      * then the resolver will delegate to the local config resolution process via the superclass
-     * for completion of any missing parameters 
+     * to attempt to resolve and merge any null parameter values.
      * (see {@link #resolveAndPopulateRSAOAEPParams(EncryptionParameters, CriteriaSet, Predicate)}).
      * </p>
      * 
@@ -219,7 +228,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
          } else if (params.getRSAOAEPParameters().isEmpty()) {
              super.resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
          } else {
-             if (isCompletePartialRSAOAEPParametersFromConfig()) {
+             if (isMergeMetadataRSAOAEPParametersWithConfig()) {
                  super.resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
              }
          }
