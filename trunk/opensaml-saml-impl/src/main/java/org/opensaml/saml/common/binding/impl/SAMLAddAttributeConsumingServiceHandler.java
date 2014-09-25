@@ -47,45 +47,56 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLAddAttributeConsumingServiceHandler.class);
 
-    /** How to get the {@link SAMLMetadataContext} from the message. */
-    @Nonnull private Function<MessageContext,SAMLMetadataContext> metadataContextStrategy;
-    
-    /** Request to read from. */
-    @Nullable private AuthnRequest authnRequest;
+    /** Lookup strategy for {@link SAMLMetadataContext}. */
+    @Nonnull private Function<MessageContext,SAMLMetadataContext> metadataContextLookupStrategy;
+   
+    /** Lookup strategy for an {@link AttributeConsumingService} index. */
+    @Nullable private Function<MessageContext,Integer> indexLookupStrategy;
 
+    /** {@link AttributeConsumingService} index. */
+    @Nullable private Integer index;
+    
     /**
      * Constructor.
      */
     public SAMLAddAttributeConsumingServiceHandler() {
-        metadataContextStrategy =
+        metadataContextLookupStrategy =
                 Functions.compose(
                         new ChildContextLookup<SAMLPeerEntityContext,SAMLMetadataContext>(SAMLMetadataContext.class),
                         new ChildContextLookup<MessageContext,SAMLPeerEntityContext>(SAMLPeerEntityContext.class));
+        indexLookupStrategy = new AuthnRequestIndexLookup();
     }
 
     /**
-     * Get the strategy which find the {@link SAMLMetadataContext} from the message.
+     * Set the strategy to locate the {@link SAMLMetadataContext} from the {@link MessageContext}.
      * 
-     * @return Returns strategy.
+     * @param strategy lookup strategy
      */
-    @Nonnull public Function<MessageContext,SAMLMetadataContext> getMetadataContextStrategy() {
-        return metadataContextStrategy;
+    public void setMetadataContextLookupStrategy(@Nonnull final Function<MessageContext,SAMLMetadataContext> strategy) {
+        metadataContextLookupStrategy = Constraint.isNotNull(strategy,
+                "SAMLMetadataContext lookup strategy cannot be null");
     }
 
     /**
-     * Set the strategy which find the {@link SAMLMetadataContext} from the message.
+     * Set the strategy to locate the {@link AttributeConsumingService} index from the {@link MessageContext}.
      * 
-     * @param strategy what to set
+     * @param strategy lookup strategy
      */
-    public void setMetadataContextStrategy(@Nonnull final Function<MessageContext,SAMLMetadataContext> strategy) {
-        metadataContextStrategy = Constraint.isNotNull(strategy, "Metadata Strategy cannot be null");
+    public void setIndexLookupStrategy(@Nullable final Function<MessageContext,Integer> strategy) {
+        indexLookupStrategy = Constraint.isNotNull(strategy,
+                "AttributeConsumingService index lookup strategy cannot be null");
     }
     
     /** {@inheritDoc} */
-    @Override protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) {
-        final Object message = messageContext.getMessage();
-        if (message instanceof AuthnRequest) {
-            authnRequest = (AuthnRequest) message;
+    @Override
+    protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
+        if (indexLookupStrategy != null) {
+            indexLookupStrategy.apply(messageContext);
         }
         
         return true;
@@ -93,7 +104,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
 
     /** {@inheritDoc}*/
     @Override protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final SAMLMetadataContext metadataContext = metadataContextStrategy.apply(messageContext);
+        final SAMLMetadataContext metadataContext = metadataContextLookupStrategy.apply(messageContext);
         if (metadataContext == null) {
             log.debug("{} No metadata context found, nothing to do", getLogPrefix());
             return;
@@ -104,18 +115,11 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         
         final SPSSODescriptor ssoDescriptor = (SPSSODescriptor) metadataContext.getRoleDescriptor();
         
-        final Integer acsIndex;
-        if (authnRequest != null) {
-            acsIndex = authnRequest.getAttributeConsumingServiceIndex();
-        } else {
-            acsIndex = null;
-        }
-        
         AttributeConsumingService acs = null;
-        if (null != acsIndex) {
-            log.debug("{} AuthnRequest specified AttributeConsumingServiceIndex {}", getLogPrefix(), acsIndex);
+        if (null != index) {
+            log.debug("{} Request specified AttributeConsumingService index {}", getLogPrefix(), index);
             for (final AttributeConsumingService acsEntry : ssoDescriptor.getAttributeConsumingServices()) {
-                if (acsIndex.intValue() == acsEntry.getIndex()) {
+                if (index.intValue() == acsEntry.getIndex()) {
                     acs = acsEntry;
                     break;
                 }
@@ -134,4 +138,21 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         }
     }
 
+    /** Default lookup function that reads from a SAML 2 {@link AuthnRequest}. */
+    private class AuthnRequestIndexLookup implements Function<MessageContext,Integer> {
+
+        /** {@inheritDoc} */
+        @Override
+        public Integer apply(MessageContext input) {
+            if (input != null) {
+                final Object message = input.getMessage();
+                if (message != null && message instanceof AuthnRequest) {
+                    return ((AuthnRequest) message).getAttributeConsumingServiceIndex();
+                }
+            }
+            
+            return null;
+        }
+        
+    }
 }
