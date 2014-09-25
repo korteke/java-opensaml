@@ -56,7 +56,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     /**
      * Constructor.
      * 
-     * @param client HTTP client used to fetch remove metadata
+     * @param client HTTP client used to fetch remote metadata
      * @param metadataURL the URL to fetch the metadata
      * @param backupFilePath the file that will keep a backup copy of the metadata,
      * 
@@ -71,7 +71,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     /**
      * Constructor.
      * 
-     * @param client HTTP client used to fetch remove metadata
+     * @param client HTTP client used to fetch remote metadata
      * @param backgroundTaskTimer timer used to schedule background metadata refresh tasks
      * @param metadataURL the URL to fetch the metadata
      * @param backupFilePath the file that will keep a backup copy of the metadata,

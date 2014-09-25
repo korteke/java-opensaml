@@ -16,7 +16,7 @@
  */
 
 /**
- * Implementations of elements and attribtues used in multiple SAML 2.0 specifications.
+ * Implementations of elements and attributes used in multiple SAML 2.0 specifications.
  */
 
 package org.opensaml.saml.saml2.common.impl;

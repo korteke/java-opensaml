@@ -15,6 +15,6 @@
  * limitations under the License.
  */
 
-/** Interfaces for elements and attribtues used in multiple SAML 2.0 specification. */
+/** Interfaces for elements and attributes used in multiple SAML 2.0 specification. */
 
 package org.opensaml.saml.saml2.common;
