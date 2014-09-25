@@ -17,9 +17,8 @@
 
 package org.opensaml.xmlsec.algorithm;
 
-import java.security.Security;
-
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
@@ -32,6 +31,12 @@ import org.testng.annotations.Test;
  * Tests for the AlgorithmRegistry.
  */
 public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
+    
+    private SecurityProviderTestSupport providerSupport;
+    
+    public AlgorithmRegistryTest() {
+        providerSupport = new SecurityProviderTestSupport();
+    }
     
     @Test
     public void testRegistrationAndDeregistration() {
@@ -209,13 +214,13 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         
         // Conditional environment tests
         
-        if (haveSunEC() || haveBouncyCastle() || getJavaVersion() >= 8) {
+        if (providerSupport.haveSunEC() || providerSupport.haveBC() || providerSupport.getJavaVersion() >= 8) {
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
             
-            if (haveBouncyCastle() || getJavaVersion() >= 8) {
+            if (providerSupport.haveBC() || providerSupport.getJavaVersion() >= 8) {
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
             }
         } else {
@@ -226,7 +231,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
         }
         
-        if (haveBouncyCastle() || getJavaVersion() >= 8) {
+        if (providerSupport.haveBC() || providerSupport.getJavaVersion() >= 8) {
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
@@ -250,7 +255,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             Assert.assertFalse(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
         }
         
-        if (haveBouncyCastle()) {
+        if (providerSupport.haveBC()) {
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_RIPEMD160));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
@@ -261,17 +266,6 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         }
     }
     
-    private boolean haveSunEC() {
-       return Security.getProvider("SunEC") != null; 
-    }
-    
-    private boolean haveBouncyCastle() {
-       return Security.getProvider("BC") != null; 
-    }
-    
-    private int getJavaVersion() {
-       String versionStr = System.getProperty("java.version");
-       return Integer.parseInt(versionStr.split("\\.")[1]);
-    }
+
 
 }

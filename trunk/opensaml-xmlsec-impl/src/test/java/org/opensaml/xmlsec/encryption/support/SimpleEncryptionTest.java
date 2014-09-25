@@ -22,16 +22,14 @@ import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.BouncyCastleTestLoader;
+import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -79,7 +77,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     private String expectedRecipientAES;
     private String targetFile;
     
-    private BouncyCastleTestLoader bcLoader;
+    private SecurityProviderTestSupport providerSupport;
     
 
     /**
@@ -89,7 +87,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public SimpleEncryptionTest() {
         super();
         
-        bcLoader = new BouncyCastleTestLoader();
+        providerSupport = new SecurityProviderTestSupport();
         
         expectedKeyName = "SuperSecretKey";
         expectedKEKKeyNameAES = "KEKKeyAES";
@@ -530,7 +528,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testRSAOAEPParameters() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException, KeyException, EncryptionException {
         
-        bcLoader.load();
+        providerSupport.loadBC();
         
         try {
             Document ownerDocument = parserPool.newDocument();
@@ -600,7 +598,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             Assert.assertEquals(getOAEPParams(encKey), controlOAEPParams);
         
         } finally {
-            bcLoader.unload();
+            providerSupport.unloadBC();
         }
     }
     

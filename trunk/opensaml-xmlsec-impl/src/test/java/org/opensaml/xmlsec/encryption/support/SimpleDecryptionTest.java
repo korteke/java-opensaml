@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
-import org.opensaml.security.BouncyCastleTestLoader;
+import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -72,7 +72,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     private Document targetDOM;
     private SignableSimpleXMLObject targetObject;
     
-    private BouncyCastleTestLoader bcLoader;
+    private SecurityProviderTestSupport providerSupport;
 
     /**
      * Constructor.
@@ -81,7 +81,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     public SimpleDecryptionTest() {
         super();
         
-        bcLoader = new BouncyCastleTestLoader();
+        providerSupport = new SecurityProviderTestSupport();
         
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         kekURI = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP;
@@ -206,7 +206,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyDigestMethodBlacklistFail() throws DecryptionException, EncryptionException, XMLParserException {
-        bcLoader.load();
+        providerSupport.loadBC();
         
         try {
             // Encrypt and test with explicit digest method and MGF
@@ -221,7 +221,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(EncryptionConstants.ALGO_ID_DIGEST_SHA256));
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
-            bcLoader.unload();
+            providerSupport.unloadBC();
         }
     }
     
@@ -233,7 +233,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyMGFBlacklistFail() throws DecryptionException, EncryptionException, XMLParserException {
-        bcLoader.load();
+        providerSupport.loadBC();
         
         try {
             // Encrypt and test with explicit digest method and MGF
@@ -248,7 +248,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(EncryptionConstants.ALGO_ID_MGF1_SHA256));
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
-            bcLoader.unload();
+            providerSupport.unloadBC();
         }
     }
     
@@ -273,7 +273,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyDigestMethodWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
-        bcLoader.load();
+        providerSupport.loadBC();
         
         try {
             // Encrypt and test with explicit digest method and MGF
@@ -292,7 +292,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
                             null);
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
-            bcLoader.unload();
+            providerSupport.unloadBC();
         }
     }
     
@@ -304,7 +304,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyMGFWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
-        bcLoader.load();
+        providerSupport.loadBC();
         
         try {
             // Encrypt and test with explicit digest method and MGF
@@ -323,7 +323,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
                             null);
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
-            bcLoader.unload();
+            providerSupport.unloadBC();
         }
     }
     
@@ -341,7 +341,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
                 Sets.newHashSet(kekURI, SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1), null);
         decrypter.decryptKey(encryptedKey, encURI);
         
-        bcLoader.load();
+        providerSupport.loadBC();
         
         try {
             // Encrypt and test with explicit digest method and MGF
@@ -360,7 +360,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
                             null);
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
-            bcLoader.unload();
+            providerSupport.unloadBC();
         }
         
     }
