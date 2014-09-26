@@ -30,6 +30,31 @@ public class ClientTLSSecurityParametersContext extends BaseContext {
     
     /** A {@link ClientTLSValidationParameters} instance. */
     @Nullable private ClientTLSValidationParameters validationParameters;
+    
+    /** Flag indicating whether to evaluate the certificate presented by the TLS client. */
+    private boolean evaluateClientCertificate = true;
+
+    /**
+     * Determine whether to evaluate the certificate presented by the TLS client.
+     * 
+     * <p>Defaults to: <code>true</code></p>
+     * 
+     * @return true if should evaluate, false otherwise
+     */
+    public boolean isEvaluateClientCertificate() {
+        return evaluateClientCertificate;
+    }
+
+    /**
+     * Set whether to evaluate the certificate presented by the TLS client.
+     * 
+     * <p>Defaults to: <code>true</code></p>
+     * 
+     * @param flag true if should evaluate, false otherwise
+     */
+    public void setEvaluateClientCertificate(boolean flag) {
+        evaluateClientCertificate = flag;
+    }
 
     /**
      * Get an instance of {@link ClientTLSValidationParameters}.
