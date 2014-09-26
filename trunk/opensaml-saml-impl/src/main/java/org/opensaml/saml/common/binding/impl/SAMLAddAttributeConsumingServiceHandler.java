@@ -96,7 +96,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         }
         
         if (indexLookupStrategy != null) {
-            indexLookupStrategy.apply(messageContext);
+            index = indexLookupStrategy.apply(messageContext);
         }
         
         return true;
@@ -143,7 +143,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
 
         /** {@inheritDoc} */
         @Override
-        public Integer apply(MessageContext input) {
+        public Integer apply(@Nullable final MessageContext input) {
             if (input != null) {
                 final Object message = input.getMessage();
                 if (message != null && message instanceof AuthnRequest) {
