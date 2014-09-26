@@ -38,8 +38,9 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 
 /**
  * A registry of {@link AlgorithmDescriptor} instances, to support various use cases for working with algorithm URIs.
@@ -358,7 +359,7 @@ public class AlgorithmRegistry {
 
         /** {@inheritDoc} */
         public String toString() {
-            ToStringHelper tsh = Objects.toStringHelper(this);
+            ToStringHelper tsh = MoreObjects.toStringHelper(this);
             tsh.add("Key", key);
             tsh.add("Digest", digest);
             return tsh.toString();
