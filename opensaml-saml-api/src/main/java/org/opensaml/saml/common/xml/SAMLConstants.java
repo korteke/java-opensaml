@@ -78,19 +78,19 @@ public final class SAMLConstants {
     // SAML 1.X
     // ****************************
     /** SAML 1.0 Assertion schema system Id. */
-    public static final String SAML10_SCHEMA_LOCATION = SCHEMA_DIR + "cs-sstc-schema-assertion-01.xsd";
+    public static final String SAML10_SCHEMA_LOCATION = SCHEMA_DIR + "oasis-sstc-saml-schema-assertion-1.0.xsd";
 
     /** SAML 1.1 Assertion schema system Id. */
-    public static final String SAML11_SCHEMA_LOCATION = SCHEMA_DIR + "cs-sstc-schema-assertion-1.1.xsd";
+    public static final String SAML11_SCHEMA_LOCATION = SCHEMA_DIR + "oasis-sstc-saml-schema-assertion-1.1.xsd";
 
     /** SAML 1.X XML namespace. */
     public static final String SAML1_NS = "urn:oasis:names:tc:SAML:1.0:assertion";
 
     /** SAML 1.0 Protocol schema system Id. */
-    public static final String SAML10P_SCHEMA_LOCATION = SCHEMA_DIR + "cs-sstc-schema-protocol-01.xsd";
+    public static final String SAML10P_SCHEMA_LOCATION = SCHEMA_DIR + "oasis-sstc-saml-schema-protocol-1.0.xsd";
 
     /** SAML 1.1 Protocol schema system Id. */
-    public static final String SAML11P_SCHEMA_LOCATION = SCHEMA_DIR + "cs-sstc-schema-protocol-1.1.xsd";
+    public static final String SAML11P_SCHEMA_LOCATION = SCHEMA_DIR + "oasis-sstc-saml-schema-protocol-1.1.xsd";
 
     /** SAML 1.X protocol XML namespace. */
     public static final String SAML10P_NS = "urn:oasis:names:tc:SAML:1.0:protocol";
