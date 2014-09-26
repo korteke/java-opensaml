@@ -156,7 +156,7 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
     @Test public void navigate() throws MessageHandlerException, ComponentInitializationException {
         final SAMLAddAttributeConsumingServiceHandler navigatedHandler = new SAMLAddAttributeConsumingServiceHandler();
         
-        navigatedHandler.setMetadataContextStrategy(new ParentContextLookup<MessageContext, SAMLMetadataContext>());
+        navigatedHandler.setMetadataContextLookupStrategy(new ParentContextLookup<MessageContext, SAMLMetadataContext>());
         final SAMLMetadataContext metadataContext = new SAMLMetadataContext();
         final MessageContext<SAMLObject> messageContext = metadataContext.getSubcontext(MessageContext.class, true);
         metadataContext.setRoleDescriptor(withACS);
