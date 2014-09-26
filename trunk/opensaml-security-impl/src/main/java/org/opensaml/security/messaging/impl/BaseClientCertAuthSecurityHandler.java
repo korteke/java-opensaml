@@ -150,6 +150,10 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
     protected boolean doPreInvoke(MessageContext<MessageType> messageContext) throws MessageHandlerException {
         ClientTLSSecurityParametersContext secContext = 
                 messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
+        if (secContext != null && !secContext.isEvaluateClientCertificate()) {
+            log.debug("ClientTLSSecurityParametersContext signals to not perform client TLS cert evaluation");
+            return false;
+        }
         if (secContext == null || secContext.getValidationParameters() == null 
                 || secContext.getValidationParameters().getCertificateNameOptions() == null)  {
             throw new MessageHandlerException("CertificateNameOptions was not available from the MessageContext");
