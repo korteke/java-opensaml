@@ -98,10 +98,13 @@ public class AlgorithmRegistry {
     public boolean isRuntimeSupported(@Nullable final String algorithmURI) {
         String trimmed = StringSupport.trimOrNull(algorithmURI);
         if (trimmed == null) {
+            log.debug("Runtime support failed, algorithm URI was null or empty");
             return false;
         }
         
-        return runtimeSupported.contains(trimmed);
+        boolean supported = runtimeSupported.contains(trimmed);
+        log.debug("Runtime support eval for algorithm URI '{}': {}", trimmed, (supported ? "supported" : "unsupported"));
+        return supported;
     }
     
     /**
