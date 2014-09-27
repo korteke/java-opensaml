@@ -29,7 +29,7 @@ import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 import org.opensaml.saml.saml2.metadata.AuthzService;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
@@ -152,7 +152,7 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
         PDPDescriptor descriptor = (PDPDescriptor) buildXMLObject(qname);
 
         QName extensionsQName =
-                new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+                new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
         QName authzQName =

@@ -24,7 +24,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.xmlsec.signature.Signature;
@@ -193,8 +193,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
         
         descriptor.setSignature( buildSignatureSkeleton() );
 
-        QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
+        descriptor.setExtensions((Extensions) buildXMLObject(Extensions.DEFAULT_ELEMENT_NAME));
 
         QName affilMemberQName = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));

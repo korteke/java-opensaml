@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.common.impl;
+package org.opensaml.saml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.Extensions} objects.
  */
 public class ExtensionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

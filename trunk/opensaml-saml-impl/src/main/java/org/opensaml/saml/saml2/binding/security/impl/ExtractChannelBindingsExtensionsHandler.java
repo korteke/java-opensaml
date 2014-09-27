@@ -30,7 +30,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.core.Extensions;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;

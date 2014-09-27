@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.common.impl;
+package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,10 +25,10 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.AbstractSAMLObject;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 
 /**
- * Implementation of {@link org.opensaml.saml.saml2.common.Extensions}.
+ * Implementation of {@link org.opensaml.saml.saml2.metadata.Extensions}.
  */
 public class ExtensionsImpl extends AbstractSAMLObject implements Extensions {
 

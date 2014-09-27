@@ -15,16 +15,36 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.common;
+package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.ElementExtensibleXMLObject;
-import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.w3c.dom.Element;
 
 /**
- * SAML 2.0 Extensions.
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.metadata.Extensions} objects.
  */
-public interface Extensions extends SAMLObject, ElementExtensibleXMLObject {
+public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
 
-    /** Local name, no namespace. */
-    public static final String LOCAL_NAME = "Extensions";
+    /**
+     * Constructor.
+     */
+    public ExtensionsMarshaller() {
+        super();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no attributes
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no content
+    }
 }
