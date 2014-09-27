@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.security.impl;
 
-import javax.xml.namespace.QName;
-
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
@@ -27,11 +25,10 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
-import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
-import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.Extensions;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -73,9 +70,8 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
     
     /** Test that the handler ignores unsigned bindings. */
     @Test public void testUnsigned() throws MessageHandlerException {
-        final QName extQName = new QName(SAMLConstants.SAML20P_NS, Extensions.LOCAL_NAME);
         final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
-                extQName).buildObject(extQName);
+                Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
 
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
@@ -99,9 +95,8 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
     
     /** Test that the handler works. */
     @Test public void testSuccess() throws MessageHandlerException {
-        final QName extQName = new QName(SAMLConstants.SAML20P_NS, Extensions.LOCAL_NAME);
         final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
-                extQName).buildObject(extQName);
+                Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
 
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);

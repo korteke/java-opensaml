@@ -17,66 +17,29 @@
 
 package org.opensaml.saml.saml2.metadata;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.metadata.Extensions;
 
 /**
- * SAML 2.0 Metadata Organization.
+ * SAML 2.0 Metadata Extensions.
  */
-public interface Organization extends SAMLObject, AttributeExtensibleXMLObject {
-
-    /** Local name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Organization";
+public interface Extensions extends SAMLObject, ElementExtensibleXMLObject {
+    
+    /** Element name, no namespace. */
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Extensions";
 
     /** Default element name. */
     public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "OrganizationType";
+    public static final String TYPE_LOCAL_NAME = "ExtensionsType";
 
     /** QName of the XSI type. */
     public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
-    /**
-     * Gets the Extensions child of this object.
-     * 
-     * @return the Extensions child of this object
-     */
-    public Extensions getExtensions();
-
-    /**
-     * Sets the Extensions child of this object.
-     * 
-     * @param extensions the Extensions child of this object
-     */
-    public void setExtensions(Extensions extensions);
-
-    /**
-     * Gets a list of names for this organization.
-     * 
-     * @return list of names for this organization
-     */
-    public List<OrganizationName> getOrganizationNames();
-
-    /**
-     * Gets a list of display names for this organization.
-     * 
-     * @return list of display names for this organization
-     */
-    public List<OrganizationDisplayName> getDisplayNames();
-
-    /**
-     * Gets a list of URLs for this organization.
-     * 
-     * @return list of URLs for this organization
-     */
-    public List<OrganizationURL> getURLs();
 }

@@ -30,7 +30,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.AbstractSignableSAMLObject;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;

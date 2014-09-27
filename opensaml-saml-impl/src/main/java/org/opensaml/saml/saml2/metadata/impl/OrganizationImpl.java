@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.common.AbstractSAMLObject;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;

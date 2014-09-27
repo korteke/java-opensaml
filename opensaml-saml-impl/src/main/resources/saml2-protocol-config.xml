@@ -104,15 +104,15 @@
                  
         <!--  Extensions provider -->
         <ObjectProvider qualifiedName="saml2p:Extensions">
-            <BuilderClass className="org.opensaml.saml.saml2.common.impl.ExtensionsBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsUnmarshaller"/>
+            <BuilderClass className="org.opensaml.saml.saml2.core.impl.ExtensionsBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.ExtensionsMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.ExtensionsUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="saml2p:ExtensionsType">
-            <BuilderClass className="org.opensaml.saml.saml2.common.impl.ExtensionsBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.common.impl.ExtensionsUnmarshaller"/>
+            <BuilderClass className="org.opensaml.saml.saml2.core.impl.ExtensionsBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.ExtensionsMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.ExtensionsUnmarshaller"/>
         </ObjectProvider>
         
         <!-- GetComplete provider -->

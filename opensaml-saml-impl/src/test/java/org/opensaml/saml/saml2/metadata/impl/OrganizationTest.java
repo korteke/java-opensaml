@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
@@ -105,7 +105,7 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
         Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
         QName extensionsQName =
-                new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+                new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         org.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
         for (int i = 0; i < 3; i++) {

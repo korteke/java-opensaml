@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.Company;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
 import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration;
@@ -131,7 +131,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
         
         person.setType(expectedPersonType);
 
-        QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         person.setExtensions((Extensions) buildXMLObject(extensionsQName));
         
         QName companuQName = new QName(SAMLConstants.SAML20MD_NS, Company.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);

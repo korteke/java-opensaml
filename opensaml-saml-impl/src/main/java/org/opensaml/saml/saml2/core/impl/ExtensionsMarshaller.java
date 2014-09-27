@@ -15,8 +15,36 @@
  * limitations under the License.
  */
 
-/**
- * Implementations of elements and attributes used in multiple SAML 2.0 specifications.
- */
+package org.opensaml.saml.saml2.core.impl;
 
-package org.opensaml.saml.saml2.common.impl;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.w3c.dom.Element;
+
+/**
+ * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Extensions} objects.
+ */
+public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
+
+    /**
+     * Constructor.
+     */
+    public ExtensionsMarshaller() {
+        super();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no attributes
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        // no content
+    }
+}

@@ -22,9 +22,9 @@ import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
-import org.opensaml.saml.saml2.common.Extensions;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.Extensions;
 
 import com.google.common.base.Predicate;
 

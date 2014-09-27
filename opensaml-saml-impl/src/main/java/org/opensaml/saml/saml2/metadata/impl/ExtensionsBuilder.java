@@ -15,36 +15,28 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.common.impl;
+package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.w3c.dom.Element;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.metadata.Extensions;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.common.Extensions} objects.
+ * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ExtensionsImpl} objects.
  */
-public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
+public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
 
     /**
-     * Constructor.
+     * {@inheritDoc}
      */
-    public ExtensionsMarshaller() {
-        super();
+    public Extensions buildObject() {
+        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        // no attributes
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
-        // no content
+    public Extensions buildObject(String namespaceURI, String localName, String namespacePrefix) {
+        return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
     }
 }

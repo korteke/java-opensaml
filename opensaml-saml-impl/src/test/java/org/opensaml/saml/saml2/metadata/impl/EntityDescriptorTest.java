@@ -24,7 +24,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
@@ -241,7 +241,7 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
         descriptor.setEntityID(expectedEntityID);
 
         QName extensionsQName =
-                new QName(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+                new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
         descriptor.setSignature(buildSignatureSkeleton());

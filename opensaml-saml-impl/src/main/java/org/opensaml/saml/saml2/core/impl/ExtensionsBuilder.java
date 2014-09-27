@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.common.impl;
+package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.common.Extensions;
+import org.opensaml.saml.saml2.core.Extensions;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.common.impl.ExtensionsImpl} objects.
+ * Builder of {@link org.opensaml.saml.saml2.core.impl.ExtensionsImpl} objects.
  */
 public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
 
@@ -30,7 +30,7 @@ public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
      * {@inheritDoc}
      */
     public Extensions buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20P_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     }
 
     /**
