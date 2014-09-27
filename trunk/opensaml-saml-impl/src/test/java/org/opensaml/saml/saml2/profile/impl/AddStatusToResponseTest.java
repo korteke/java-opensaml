@@ -59,14 +59,14 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(status);
         
         Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.RESPONDER_URI);
+        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.RESPONDER);
         Assert.assertNull(status.getStatusCode().getStatusCode());
         
         Assert.assertNull(status.getStatusMessage());
     }
 
     @Test public void testMultiStatus() throws ComponentInitializationException {
-        action.setStatusCodes(Lists.newArrayList(StatusCode.REQUESTER_URI, StatusCode.REQUEST_VERSION_DEPRECATED_URI));
+        action.setStatusCodes(Lists.newArrayList(StatusCode.REQUESTER, StatusCode.REQUEST_VERSION_DEPRECATED));
         action.initialize();
         
         action.execute(prc);
@@ -78,9 +78,9 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(status);
         
         Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.REQUESTER_URI);
+        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.REQUESTER);
         Assert.assertNotNull(status.getStatusCode().getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getStatusCode().getValue(), StatusCode.REQUEST_VERSION_DEPRECATED_URI);
+        Assert.assertEquals(status.getStatusCode().getStatusCode().getValue(), StatusCode.REQUEST_VERSION_DEPRECATED);
         Assert.assertNull(status.getStatusCode().getStatusCode().getStatusCode());
         
         Assert.assertNull(status.getStatusMessage());

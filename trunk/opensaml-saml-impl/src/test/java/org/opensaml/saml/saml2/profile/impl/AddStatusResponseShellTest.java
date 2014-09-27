@@ -79,7 +79,7 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         final Status status = response.getStatus();
         Assert.assertNotNull(status);
         Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS_URI);
+        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
     }
 
     @Test public void testAddResponseWithIssuer() throws ComponentInitializationException {
@@ -135,7 +135,7 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         final Status status = response.getStatus();
         Assert.assertNotNull(status);
         Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS_URI);
+        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
     }
     
     @Test public void testAddLogoutResponse() throws ComponentInitializationException {
@@ -160,7 +160,7 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         final Status status = response.getStatus();
         Assert.assertNotNull(status);
         Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS_URI);
+        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
     }
 
 }

@@ -81,7 +81,7 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         response.setIssuer(issuer);
         
         StatusCode sc = buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
-        sc.setValue(StatusCode.SUCCESS_URI);
+        sc.setValue(StatusCode.SUCCESS);
         Status status = buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         status.setStatusCode(sc);
         response.setStatus(status);
@@ -104,7 +104,7 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         response.setIssuer(issuer);
         
         StatusCode sc = buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
-        sc.setValue(StatusCode.RESPONDER_URI);
+        sc.setValue(StatusCode.RESPONDER);
         Status status = buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         status.setStatusCode(sc);
         response.setStatus(status);

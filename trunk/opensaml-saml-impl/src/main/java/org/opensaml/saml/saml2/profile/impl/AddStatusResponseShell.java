@@ -53,7 +53,7 @@ import com.google.common.base.Function;
  * Action that creates an empty object derived from {@link StatusResponseType},
  * and sets it as the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
- * <p>The {@link Status} is set to {@link StatusCode#SUCCESS_URI} as a default assumption,
+ * <p>The {@link Status} is set to {@link StatusCode#SUCCESS} as a default assumption,
  * and this can be overridden by subsequent actions.</p>
  * 
  * <p>If an issuer value is returned via a lookup strategy, then it's set as the Issuer of the message.</p>
@@ -193,7 +193,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
         final SAMLObjectBuilder responseBuilder = (SAMLObjectBuilder) bf.getBuilderOrThrow(messageType);
 
         final StatusCode statusCode = statusCodeBuilder.buildObject();
-        statusCode.setValue(StatusCode.SUCCESS_URI);
+        statusCode.setValue(StatusCode.SUCCESS);
 
         final Status status = statusBuilder.buildObject();
         status.setStatusCode(statusCode);
