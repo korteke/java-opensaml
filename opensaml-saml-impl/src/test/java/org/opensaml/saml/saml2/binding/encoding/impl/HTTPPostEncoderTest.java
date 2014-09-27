@@ -72,7 +72,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
                 .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = statusCodeBuilder.buildObject();
-        statusCode.setValue(StatusCode.SUCCESS_URI);
+        statusCode.setValue(StatusCode.SUCCESS);
 
         SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
                 .getBuilder(Status.DEFAULT_ELEMENT_NAME);

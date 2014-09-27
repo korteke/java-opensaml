@@ -253,7 +253,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         StatusCode statusCode = statusCodeBuilder.buildObject();
         status.setStatusCode(statusCode);
         if (codes.isEmpty()) {
-            statusCode.setValue(StatusCode.RESPONDER_URI);
+            statusCode.setValue(StatusCode.RESPONDER);
         } else {
             statusCode.setValue(codes.get(0));
             final Iterator<String> i = codes.iterator();

@@ -107,7 +107,7 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
                     final org.opensaml.saml.saml2.core.StatusCode s2 =
                             ((StatusResponseType) message).getStatus().getStatusCode();
                     return s2 != null && s2.getValue() != null
-                            && !org.opensaml.saml.saml2.core.StatusCode.SUCCESS_URI.equals(s2.getValue());
+                            && !org.opensaml.saml.saml2.core.StatusCode.SUCCESS.equals(s2.getValue());
                 }
             }
         }
