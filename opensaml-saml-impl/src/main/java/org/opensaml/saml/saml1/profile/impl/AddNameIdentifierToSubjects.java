@@ -27,7 +27,6 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -36,7 +35,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.logic.MetadataNameIdentifierFormatStrategy;
@@ -51,12 +49,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 
 /**
  * Action that builds a {@link NameIdentifier} and adds it to the {@link Subject} of all the statements
- * in all the assertions found in a {@link Response}. The message to update is returned by a lookup
- * strategy, by default the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
+ * in all the assertions found via a lookup strategy, by default from the outbound message context.
  * 
  * <p>No assertions or statements will be created by this action, but if no {@link Subject} exists in
  * the statements found, it will be created.</p>
@@ -82,8 +78,8 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     /** Flag controlling whether to overwrite an existing NameIdentifier. */
     private boolean overwriteExisting;
     
-    /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
+    /** Strategy used to locate the {@link Assertion}s to operate on. */
+    @Nonnull private Function<ProfileRequestContext,List<Assertion>> assertionsLookupStrategy;
 
     /** Strategy used to determine the formats to try. */
     @Nonnull private Function<ProfileRequestContext,List<String>> formatLookupStrategy;
@@ -94,8 +90,8 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     /** Formats to try. */
     @Nonnull @NonnullElements private List<String> formats;
     
-    /** Response to modify. */
-    @Nullable private Response response;
+    /** Assertions to modify. */
+    @Nonnull @NonnullElements private List<Assertion> assertions;
     
     /** Constructor. */
     public AddNameIdentifierToSubjects() {
@@ -108,8 +104,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         overwriteExisting = true;
         
-        responseLookupStrategy =
-                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+        assertionsLookupStrategy = new AssertionStrategy();
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
         formats = Collections.emptyList();
     }
@@ -126,14 +121,14 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     }
     
     /**
-     * Set the strategy used to locate the {@link Response} to operate on.
+     * Set the strategy used to locate the {@link Assertion}s to operate on.
      * 
-     * @param strategy strategy used to locate the {@link Response} to operate on
+     * @param strategy lookup strategy
      */
-    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
+    public void setAssertionsLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<Assertion>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
+        assertionsLookupStrategy = Constraint.isNotNull(strategy, "Assertions lookup strategy cannot be null");
     }
 
     /**
@@ -171,15 +166,20 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        log.debug("{} Attempting to add NameIdentifier to statements in outgoing Response", getLogPrefix());
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
+        log.debug("{} Attempting to add NameIdentifier to statements in outgoing Assertions", getLogPrefix());
 
-        response = responseLookupStrategy.apply(profileRequestContext);
-        if (response == null) {
-            log.debug("{} No SAML response located in current profile request context", getLogPrefix());
+        assertions = assertionsLookupStrategy.apply(profileRequestContext);
+        if (assertions == null) {
+            log.debug("{} No suitable assertions located in profile request context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (response.getAssertions().isEmpty()) {
-            log.debug("{} No assertions in response message, nothing to do", getLogPrefix());
+        } else if (assertions.isEmpty()) {
+            log.debug("{} No assertions returned, nothing to do", getLogPrefix());
             return false;
         }
         
@@ -191,7 +191,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
             log.debug("{} Candidate NameIdentifier formats: {}", getLogPrefix(), formats);
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -206,7 +206,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         int count = 0;
         
-        for (final Assertion assertion : response.getAssertions()) {
+        for (final Assertion assertion : assertions) {
             for (final Statement statement : assertion.getStatements()) {
                 if (statement instanceof SubjectStatement) {
                     final Subject subject = getStatementSubject((SubjectStatement) statement);
@@ -285,5 +285,32 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         return clone;
     }
-    
+
+    /**
+     * Default strategy for obtaining assertions to modify.
+     * 
+     * <p>If the outbound context is empty, a null is returned. If the outbound
+     * message is already an assertion, it's returned. If the outbound message is a response,
+     * then its contents are returned. If the outbound message is anything else, null is returned.</p>
+     */
+    private class AssertionStrategy implements Function<ProfileRequestContext,List<Assertion>> {
+
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
+            if (input != null && input.getOutboundMessageContext() != null) {
+                final Object outboundMessage = input.getOutboundMessageContext().getMessage();
+                if (outboundMessage == null) {
+                    return null;
+                } else if (outboundMessage instanceof Assertion) {
+                    return Collections.singletonList((Assertion) outboundMessage);
+                } else if (outboundMessage instanceof Response) {
+                    return ((Response) outboundMessage).getAssertions();
+                }
+            }
+            
+            return null;
+        }
+    }
+
 }

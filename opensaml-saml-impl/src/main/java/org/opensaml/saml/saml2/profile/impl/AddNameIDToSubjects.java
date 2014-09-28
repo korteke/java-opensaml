@@ -28,7 +28,6 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
-import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -98,7 +97,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     @Nonnull private Function<ProfileRequestContext,AuthnRequest> requestLookupStrategy;
     
     /** Strategy used to locate the {@link Response} to operate on. */
-    @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext,List<Assertion>> assertionsLookupStrategy;
 
     /** Predicate to validate {@link NameIDPolicy}. */
     @Nonnull private Predicate<ProfileRequestContext> nameIDPolicyPredicate;
@@ -119,7 +118,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     @Nullable private AuthnRequest request;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @Nullable private List<Assertion> assertions;
     
     /** Constructor.
      *  
@@ -137,8 +136,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         requestLookupStrategy =
                 Functions.compose(new MessageLookup<>(AuthnRequest.class), new InboundMessageContextLookup());
-        responseLookupStrategy =
-                Functions.compose(new MessageLookup<>(Response.class), new OutboundMessageContextLookup());
+        assertionsLookupStrategy = new AssertionStrategy();
         
         // Default predicate pulls SPNameQualifier from NameIDPolicy and does a direct match
         // against issuer. Handles simple cases, overridden for complex ones.
@@ -176,14 +174,14 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     }
     
     /**
-     * Set the strategy used to locate the {@link Response} to operate on.
+     * Set the strategy used to locate the {@link Assertion}s to operate on.
      * 
-     * @param strategy strategy used to locate the {@link Response} to operate on
+     * @param strategy lookup strategy
      */
-    public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
+    public void setAssertionsLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<Assertion>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
+        assertionsLookupStrategy = Constraint.isNotNull(strategy, "Assertions lookup strategy cannot be null");
     }
     
     /**
@@ -232,15 +230,15 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        log.debug("{} Attempting to add NameID to assertions in outgoing Response", getLogPrefix());
+        log.debug("{} Attempting to add NameID to outgoing Assertion Subjects", getLogPrefix());
         
-        response = responseLookupStrategy.apply(profileRequestContext);
-        if (response == null) {
-            log.debug("{} No SAML response located in current profile request context", getLogPrefix());
+        assertions = assertionsLookupStrategy.apply(profileRequestContext);
+        if (assertions == null) {
+            log.debug("{} No suitable assertions located in profile request context", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (response.getAssertions().isEmpty()) {
-            log.debug("{} No assertions in response message, nothing to do", getLogPrefix());
+        } else if (assertions.isEmpty()) {
+            log.debug("{} No assertions returned, nothing to do", getLogPrefix());
             return false;
         }
         
@@ -287,7 +285,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         int count = 0;
         
-        for (final Assertion assertion : response.getAssertions()) {
+        for (final Assertion assertion : assertions) {
             final Subject subject = getAssertionSubject(assertion);
             final NameID existing = subject.getNameID();
             if (existing == null || overwriteExisting) {
@@ -386,6 +384,33 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         return clone;
     }
 
+    /**
+     * Default strategy for obtaining assertions to modify.
+     * 
+     * <p>If the outbound context is empty, a null is returned. If the outbound
+     * message is already an assertion, it's returned. If the outbound message is a response,
+     * then its contents are returned. If the outbound message is anything else, null is returned.</p>
+     */
+    private class AssertionStrategy implements Function<ProfileRequestContext,List<Assertion>> {
+
+        /** {@inheritDoc} */
+        @Override
+        @Nullable public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
+            if (input != null && input.getOutboundMessageContext() != null) {
+                final Object outboundMessage = input.getOutboundMessageContext().getMessage();
+                if (outboundMessage == null) {
+                    return null;
+                } else if (outboundMessage instanceof Assertion) {
+                    return Collections.singletonList((Assertion) outboundMessage);
+                } else if (outboundMessage instanceof Response) {
+                    return ((Response) outboundMessage).getAssertions();
+                }
+            }
+            
+            return null;
+        }
+    }
+    
     /**
      * Lookup function that returns the {@link NameIDPolicy} from an {@link AuthnRequest} message returned
      * from a lookup function, by default the inbound message.
