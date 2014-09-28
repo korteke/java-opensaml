@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
 
+import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -43,6 +44,42 @@ public final class SAML2ActionSupport {
     }
 
     /**
+     * Constructs an {@link Assertion} using the parameters supplied, with its issue instant set to the
+     * current time.
+     * 
+     * @param action the current action
+     * @param idGenerator source of assertion ID
+     * @param issuer value for assertion
+     * 
+     * @return the assertion
+     */
+    @Nonnull public static Assertion buildAssertion(@Nonnull final AbstractProfileAction action,
+            @Nonnull final IdentifierGenerationStrategy idGenerator, @Nonnull @NotEmpty final String issuer) {
+   
+        final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
+                        Assertion.DEFAULT_ELEMENT_NAME);
+
+        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                        Issuer.DEFAULT_ELEMENT_NAME);
+
+        final Issuer issuerObject = issuerBuilder.buildObject();
+        issuerObject.setValue(issuer);
+
+        final Assertion assertion = assertionBuilder.buildObject();
+        assertion.setID(idGenerator.generateIdentifier());
+        assertion.setIssueInstant(new DateTime());
+        assertion.setIssuer(issuerObject);
+        assertion.setVersion(SAMLVersion.VERSION_20);
+
+        getLogger().debug("Profile Action {}: Created Assertion {}", action.getClass().getSimpleName(),
+                assertion.getID());
+
+        return assertion;
+    }
+    
+    /**
      * Constructs and adds a {@link Assertion} to the given {@link Response}. The {@link Assertion} is constructed
      * using the parameters supplied, and its issue instant is set to the issue instant of the given {@link Response}.
      * 
@@ -57,22 +94,8 @@ public final class SAML2ActionSupport {
             @Nonnull final Response response, @Nonnull final IdentifierGenerationStrategy idGenerator,
             @Nonnull @NotEmpty final String issuer) {
 
-        final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
-                        Assertion.DEFAULT_ELEMENT_NAME);
-
-        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
-                        Issuer.DEFAULT_ELEMENT_NAME);
-
-        final Issuer issuerObject = issuerBuilder.buildObject();
-        issuerObject.setValue(issuer);
-
-        final Assertion assertion = assertionBuilder.buildObject();
-        assertion.setID(idGenerator.generateIdentifier());
+        final Assertion assertion = buildAssertion(action, idGenerator, issuer);
         assertion.setIssueInstant(response.getIssueInstant());
-        assertion.setIssuer(issuerObject);
-        assertion.setVersion(SAMLVersion.VERSION_20);
 
         getLogger().debug("Profile Action {}: Added Assertion {} to Response {}",
                 new Object[] {action.getClass().getSimpleName(), assertion.getID(), response.getID(),});
