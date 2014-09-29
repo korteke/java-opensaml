@@ -38,16 +38,19 @@ public class MutableStorageRecord extends StorageRecord {
     }    
 
     /** {@inheritDoc} */
+    @Override
     public void setValue(@Nonnull @NotEmpty final String val) {
         super.setValue(val);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setExpiration(@Nullable Long exp) {
         super.setExpiration(exp);
     }
 
     /** {@inheritDoc} */
+    @Override
     public long incrementVersion() {
         return super.incrementVersion();
     }

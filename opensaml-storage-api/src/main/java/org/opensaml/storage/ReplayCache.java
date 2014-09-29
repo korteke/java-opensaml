@@ -88,7 +88,8 @@ public class ReplayCache extends AbstractIdentifiableInitializableComponent {
     }
 
 
-    /** {@inheritDoc} */ 
+    /** {@inheritDoc} */
+    @Override
     public void doInitialize() throws ComponentInitializationException {
         if (storage == null) {
             throw new ComponentInitializationException("StorageService cannot be null");

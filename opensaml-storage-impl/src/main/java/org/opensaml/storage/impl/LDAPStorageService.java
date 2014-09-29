@@ -146,9 +146,8 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean update(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
-            @Nullable @Positive final Long expiration) throws IOException {
+    @Override public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException {
         if (expiration != null) {
             throw new UnsupportedOperationException("Expiration not supported");
         }
@@ -172,7 +171,7 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean updateExpiration(@Nonnull @NotEmpty final String context,
+    @Override public boolean updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         throw new UnsupportedOperationException("Expiration not supported");
     }

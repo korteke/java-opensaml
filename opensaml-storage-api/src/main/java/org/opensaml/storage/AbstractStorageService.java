@@ -226,7 +226,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
 
     /** {@inheritDoc} */
     @Override @Nullable public Object read(@Nonnull final Object value) throws IOException {
-        StorageRecord record = read(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+        final StorageRecord record = read(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
         if (record != null) {
             AnnotationSupport.setValue(value, record.getValue());
             AnnotationSupport.setExpiration(value, record.getExpiration());
@@ -236,9 +236,9 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean update(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException {
+    @Override public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
+            @Nullable @Positive final Long expiration) throws IOException {
         return update(context, key, serializer.serialize(value), expiration);
     }
 
@@ -254,7 +254,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     // Checkstyle: ParameterNumber ON
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean update(@Nonnull final Object value) throws IOException {
+    @Override public boolean update(@Nonnull final Object value) throws IOException {
         return update(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
@@ -267,7 +267,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean updateExpiration(@Nonnull final Object value) throws IOException {
+    @Override public boolean updateExpiration(@Nonnull final Object value) throws IOException {
         return updateExpiration(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getExpiration(value));
     }
