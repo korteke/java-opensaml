@@ -27,20 +27,20 @@ public interface StorageCapabilities {
      * 
      * @return  max size of context labels in characters
      */
-    public int getContextSize();
+    int getContextSize();
 
     /**
      * Gets max size of keys in characters.
      * 
      * @return  max size of keys in characters
      */
-    public int getKeySize();
+    int getKeySize();
     
     /**
      * Gets max size of values in characters.
      * 
      * @return  max size of values in characters
      */
-    public long getValueSize();
+    long getValueSize();
 
 }

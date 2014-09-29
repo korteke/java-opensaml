@@ -159,9 +159,8 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable boolean update(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
-            @Nullable @Positive final Long expiration) throws IOException;
+    boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches.
@@ -176,10 +175,9 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable Long updateWithVersion(@Positive final long version,
-            @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException,
-            VersionMismatchException;
+    @Nullable Long updateWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
+            @Nullable @Positive final Long expiration) throws IOException, VersionMismatchException;
 
     /**
      * Updates an existing record in the store using a custom serialization strategy.
@@ -193,9 +191,9 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable boolean update(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull final Object value,
-            @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException;
+    boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
+            @Nullable @Positive final Long expiration) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches, using a custom serialization strategy.
@@ -230,7 +228,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable boolean update(@Nonnull final Object value) throws IOException;
+    boolean update(@Nonnull final Object value) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches, using an annotated object as the source.
@@ -259,8 +257,8 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable boolean updateExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException;
+    boolean updateExpiration(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nullable @Positive final Long expiration) throws IOException;
 
     /**
      * Updates expiration of an existing record in the store, using an annotated object as the source.
@@ -274,7 +272,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process
      */
-    @Nullable boolean updateExpiration(@Nonnull final Object value) throws IOException;
+    boolean updateExpiration(@Nonnull final Object value) throws IOException;
     
     
     /**

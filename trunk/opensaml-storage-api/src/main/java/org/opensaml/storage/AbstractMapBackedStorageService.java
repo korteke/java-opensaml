@@ -60,6 +60,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
         final Lock writeLock = getLock().writeLock();
@@ -100,19 +101,22 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nullable public StorageRecord read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException {
         return readImpl(context, key, null).getSecond();
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull public Pair<Long, StorageRecord> read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, final long version) throws IOException {
         return readImpl(context, key, version);
     }
 
     /** {@inheritDoc} */
-    @Nullable public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    @Override
+    public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, value, expiration) != null;
@@ -122,6 +126,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public Long updateWithVersion(final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
@@ -129,8 +134,9 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
-    @Nullable public boolean updateExpiration(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nullable final Long expiration) throws IOException {
+    @Override
+    public boolean updateExpiration(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nullable final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, null, expiration) != null;
         } catch (VersionMismatchException e) {
@@ -139,12 +145,14 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean deleteWithVersion(long version, String context, String key) throws IOException,
             VersionMismatchException {
         return deleteImpl(version, context, key);
     }
     
     /** {@inheritDoc} */
+    @Override
     public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
             throws IOException {
         try {
@@ -155,6 +163,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
+    @Override
     public void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
             throws IOException {
         final Lock writeLock = getLock().writeLock();
@@ -181,6 +190,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
     
     /** {@inheritDoc} */
+    @Override
     public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
         
         final Lock writeLock = getLock().writeLock();
@@ -196,6 +206,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
+    @Override
     public void reap(@Nonnull @NotEmpty final String context) throws IOException {
 
         final Lock writeLock = getLock().writeLock();

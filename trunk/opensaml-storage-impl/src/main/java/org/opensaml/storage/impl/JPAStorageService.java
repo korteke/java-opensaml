@@ -236,9 +236,8 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean update(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
-            @Nullable @Positive final Long expiration) throws IOException {
+    @Override public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, value, expiration) != null;
         } catch (final VersionMismatchException e) {
@@ -255,7 +254,7 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public boolean updateExpiration(@Nonnull @NotEmpty final String context,
+    @Override public boolean updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, null, expiration) != null;
