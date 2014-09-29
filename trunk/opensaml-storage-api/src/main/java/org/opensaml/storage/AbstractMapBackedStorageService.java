@@ -112,10 +112,10 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
-    @Nullable public Long update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    @Nullable public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
         try {
-            return updateImpl(null, context, key, value, expiration);
+            return updateImpl(null, context, key, value, expiration) != null;
         } catch (VersionMismatchException e) {
             throw new IOException("Unexpected exception thrown by update.", e);
         }
@@ -129,10 +129,10 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
-    @Nullable public Long updateExpiration(@Nonnull @NotEmpty final String context,
+    @Nullable public boolean updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final Long expiration) throws IOException {
         try {
-            return updateImpl(null, context, key, null, expiration);
+            return updateImpl(null, context, key, null, expiration) != null;
         } catch (VersionMismatchException e) {
             throw new IOException("Unexpected exception thrown by update.", e);
         }

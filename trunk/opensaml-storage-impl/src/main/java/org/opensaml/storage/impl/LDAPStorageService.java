@@ -140,13 +140,13 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public Pair<Long, StorageRecord> read(@Nonnull @NotEmpty final String context,
+    @Override @Nonnull public Pair<Long,StorageRecord> read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Positive final long version) throws IOException {
         throw new UnsupportedOperationException("Versioning not supported");
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Long update(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public boolean update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException {
         if (expiration != null) {
@@ -156,7 +156,7 @@ public class LDAPStorageService extends AbstractStorageService {
         entry.addAttribute(new LdapAttribute(key, value));
         try {
             merge(entry);
-            return null;
+            return true;
         } catch (LdapException e) {
             log.error("LDAP merge operation failed", e);
             throw new IOException(e);
@@ -172,7 +172,7 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Long updateExpiration(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public boolean updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         throw new UnsupportedOperationException("Expiration not supported");
     }

@@ -156,10 +156,10 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @param value         updated value
      * @param expiration    expiration for record, or null
      * 
-     * @return the version of the record after update, null if no record exists
+     * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable Long update(@Nonnull @NotEmpty final String context,
+    @Nullable boolean update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException;
     
@@ -190,10 +190,10 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @param serializer    custom serializer
      * @param expiration    expiration for record, or null
      * 
-     * @return the version of the record after update, null if no record exists
+     * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable Long update(@Nonnull @NotEmpty final String context,
+    @Nullable boolean update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException;
     
@@ -227,10 +227,10 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * 
      * @param value         object to update from
      * 
-     * @return the version of the record after update, null if no record exists
+     * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable Long update(@Nonnull final Object value) throws IOException;
+    @Nullable boolean update(@Nonnull final Object value) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches, using an annotated object as the source.
@@ -256,10 +256,10 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @param key           a key unique to context
      * @param expiration    expiration for record, or null
      * 
-     * @return the version of the record, null if no record exists
+     * @return true if the update succeeded, false if the record does not exist 
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable Long updateExpiration(@Nonnull @NotEmpty final String context,
+    @Nullable boolean updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException;
 
     /**
@@ -271,10 +271,10 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * 
      * @param value         object to update from
      * 
-     * @return the version of the record, null if no record exists
-     * @throws IOException  if errors occur in the update process 
+     * @return true if the update succeeded, false if the record does not exist 
+     * @throws IOException  if errors occur in the update process
      */
-    @Nullable Long updateExpiration(@Nonnull final Object value) throws IOException;
+    @Nullable boolean updateExpiration(@Nonnull final Object value) throws IOException;
     
     
     /**
