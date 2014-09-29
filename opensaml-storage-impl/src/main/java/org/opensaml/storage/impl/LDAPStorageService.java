@@ -140,13 +140,13 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Positive final int version) throws IOException {
+    @Override @Nonnull public Pair<Long, StorageRecord> read(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Positive final long version) throws IOException {
         throw new UnsupportedOperationException("Versioning not supported");
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public Long update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException {
         if (expiration != null) {
@@ -164,7 +164,7 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateWithVersion(@Positive final int version,
+    @Override @Nullable public Long updateWithVersion(@Positive final long version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException,
             VersionMismatchException {
@@ -172,7 +172,7 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public Long updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         throw new UnsupportedOperationException("Expiration not supported");
     }
@@ -190,7 +190,7 @@ public class LDAPStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override public boolean deleteWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
+    @Override public boolean deleteWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         throw new UnsupportedOperationException("Versioning not supported");
     }

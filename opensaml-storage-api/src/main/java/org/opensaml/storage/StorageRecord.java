@@ -35,7 +35,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 public class StorageRecord<Type> {
 
     /** Version field. */
-    private int version;
+    private long version;
     
     /** Value field. */
     private String value;
@@ -60,7 +60,7 @@ public class StorageRecord<Type> {
      * 
      * @return  the record version
      */
-    public int getVersion() {
+    public long getVersion() {
         return version;
     }
 
@@ -101,8 +101,8 @@ public class StorageRecord<Type> {
      * 
      * @param ver   the new record version, must be > 0
      */
-    protected void setVersion(final int ver) {
-        version = (int) Constraint.isGreaterThan(0, ver, "Version must be greater than zero");
+    protected void setVersion(final long ver) {
+        version = Constraint.isGreaterThan(0, ver, "Version must be greater than zero");
     }
     
     /**
@@ -140,7 +140,7 @@ public class StorageRecord<Type> {
      * 
      * @return  the updated version
      */
-    protected int incrementVersion() {
+    protected long incrementVersion() {
         return ++version;
     }
 }

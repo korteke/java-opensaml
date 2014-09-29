@@ -42,7 +42,7 @@ public interface StorageSerializer<Type> extends InitializableComponent {
      * @return a string
      * @throws IOException if an error occurs during serialization
      */
-    @Nonnull @NotEmpty public String serialize(@Nonnull final Type instance) throws IOException;
+    @Nonnull @NotEmpty String serialize(@Nonnull final Type instance) throws IOException;
     
     /**
      * Returns an object recovered from a string produced through the {@link #serialize} method.
@@ -55,7 +55,7 @@ public interface StorageSerializer<Type> extends InitializableComponent {
      * @return a deserialized object
      * @throws IOException if an error occurs during deserialization
      */
-    @Nonnull public Type deserialize(final int version, @Nonnull @NotEmpty final String context,
+    @Nonnull Type deserialize(final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable Long expiration)
                     throws IOException;
 }

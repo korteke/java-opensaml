@@ -106,13 +106,13 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, final int version) throws IOException {
+    @Nonnull public Pair<Long, StorageRecord> read(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, final long version) throws IOException {
         return readImpl(context, key, version);
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    @Nullable public Long update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, value, expiration);
@@ -122,14 +122,14 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateWithVersion(final int version, @Nonnull @NotEmpty final String context,
+    @Nullable public Long updateWithVersion(final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
         return updateImpl(version, context, key, value, expiration);
     }
 
     /** {@inheritDoc} */
-    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+    @Nullable public Long updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, null, expiration);
@@ -139,7 +139,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /** {@inheritDoc} */
-    public boolean deleteWithVersion(int version, String context, String key) throws IOException,
+    public boolean deleteWithVersion(long version, String context, String key) throws IOException,
             VersionMismatchException {
         return deleteImpl(version, context, key);
     }
@@ -243,8 +243,8 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * @return  a pair consisting of the version of the record read back, if any, and the record itself
      * @throws IOException  if errors occur in the read process 
      */
-    @Nonnull protected Pair<Integer, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nullable final Integer version) throws IOException {
+    @Nonnull protected Pair<Long, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Nullable final Long version) throws IOException {
 
         Lock readLock = getLock().readLock();
         try {
@@ -295,7 +295,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
+    @Nullable protected Long updateImpl(@Nullable final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
 
@@ -357,7 +357,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    protected boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
+    protected boolean deleteImpl(@Nullable @Positive final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
 
         final Lock writeLock = getLock().writeLock();

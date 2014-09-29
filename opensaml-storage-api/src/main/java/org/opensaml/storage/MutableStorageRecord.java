@@ -48,7 +48,7 @@ public class MutableStorageRecord extends StorageRecord {
     }
 
     /** {@inheritDoc} */
-    public int incrementVersion() {
+    public long incrementVersion() {
         return super.incrementVersion();
     }
     

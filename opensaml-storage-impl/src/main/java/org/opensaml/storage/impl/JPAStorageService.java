@@ -29,10 +29,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.storage.AbstractStorageService;
@@ -50,10 +50,10 @@ import com.google.common.collect.Maps;
 public class JPAStorageService extends AbstractStorageService {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(JPAStorageService.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(JPAStorageService.class);
 
     /** Entity manager factory. */
-    private EntityManagerFactory entityManagerFactory;
+    @Nonnull private final EntityManagerFactory entityManagerFactory;
 
     /**
      * Creates a new JPA storage service.
@@ -66,11 +66,6 @@ public class JPAStorageService extends AbstractStorageService {
         setContextSize(JPAStorageRecord.CONTEXT_SIZE);
         setKeySize(JPAStorageRecord.KEY_SIZE);
         setValueSize(JPAStorageRecord.VALUE_SIZE);
-    }
-
-    /** {@inheritDoc} */
-    @Override protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
     }
 
     /** {@inheritDoc} */
@@ -113,7 +108,7 @@ public class JPAStorageService extends AbstractStorageService {
             log.debug("Inserted record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
                     expiration,});
             return true;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error creating record '{}' in context '{}' with expiration '{}'", key, context, expiration, e);
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -132,7 +127,7 @@ public class JPAStorageService extends AbstractStorageService {
      * @return all records or an empty list
      * @throws IOException if errors occur in the read process
      */
-    @Nonnull public List<StorageRecord> readAll() throws IOException {
+    @Nonnull @NonnullElements public List<StorageRecord> readAll() throws IOException {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
@@ -152,7 +147,8 @@ public class JPAStorageService extends AbstractStorageService {
      * @return all records in the context or an empty list
      * @throws IOException if errors occur in the read process
      */
-    @Nonnull public List<StorageRecord> readAll(@Nonnull @NotEmpty final String context) throws IOException {
+    @Nonnull @NonnullElements public List<StorageRecord> readAll(@Nonnull @NotEmpty final String context)
+            throws IOException {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
@@ -172,7 +168,7 @@ public class JPAStorageService extends AbstractStorageService {
      * @return all contexts or an empty list
      * @throws IOException if errors occur in the read process
      */
-    @Nonnull public List<String> readContexts() throws IOException {
+    @Nonnull @NonnullElements public List<String> readContexts() throws IOException {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
@@ -191,8 +187,8 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Positive final int version) throws IOException {
+    @Override @Nonnull public Pair<Long,StorageRecord> read(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Positive final long version) throws IOException {
         return readImpl(context, key, version);
     }
 
@@ -207,8 +203,8 @@ public class JPAStorageService extends AbstractStorageService {
      * @return pair of version and storage record
      * @throws IOException if errors occur in the read process
      */
-    @Nonnull protected Pair<Integer, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Positive final Integer version) throws IOException {
+    @Nonnull protected Pair<Long,StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Positive final Long version) throws IOException {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
@@ -228,8 +224,8 @@ public class JPAStorageService extends AbstractStorageService {
                 // Nothing's changed, so just echo back the version.
                 return new Pair(version, null);
             }
-            return new Pair<Integer, StorageRecord>(entity.getVersion(), entity);
-        } catch (Exception e) {
+            return new Pair<Long,StorageRecord>(entity.getVersion(), entity);
+        } catch (final Exception e) {
             log.error("Error reading record '{}' in context '{}'", key, context, e);
             return new Pair<>();
         } finally {
@@ -240,18 +236,18 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public Long update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, value, expiration);
-        } catch (VersionMismatchException e) {
+        } catch (final VersionMismatchException e) {
             throw new IllegalStateException("Unexpected exception thrown by update.", e);
         }
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateWithVersion(@Positive final int version,
+    @Override @Nullable public Long updateWithVersion(@Positive final long version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException,
             VersionMismatchException {
@@ -259,11 +255,11 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public Long updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         try {
             return updateImpl(null, context, key, null, expiration);
-        } catch (VersionMismatchException e) {
+        } catch (final VersionMismatchException e) {
             throw new IllegalStateException("Unexpected exception thrown by update.", e);
         }
     }
@@ -281,7 +277,7 @@ public class JPAStorageService extends AbstractStorageService {
      * @throws IOException if errors occur in the update process
      * @throws VersionMismatchException if the record found contains a version that does not match the parameter
      */
-    @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
+    @Nullable protected Long updateImpl(@Nullable final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException, VersionMismatchException {
         EntityManager manager = null;
@@ -318,9 +314,9 @@ public class JPAStorageService extends AbstractStorageService {
             log.debug("Updated record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
                     expiration,});
             return entity.getVersion();
-        } catch (VersionMismatchException e) {
+        } catch (final VersionMismatchException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error updating record '{}' in context '{}'", key, context, e);
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -334,7 +330,7 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override public boolean deleteWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
+    @Override public boolean deleteWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         return deleteImpl(version, context, key);
     }
@@ -344,7 +340,7 @@ public class JPAStorageService extends AbstractStorageService {
             throws IOException {
         try {
             return deleteImpl(null, context, key);
-        } catch (VersionMismatchException e) {
+        } catch (final VersionMismatchException e) {
             throw new IllegalStateException("Unexpected exception thrown by delete.", e);
         }
     }
@@ -360,7 +356,7 @@ public class JPAStorageService extends AbstractStorageService {
      * @throws IOException if errors occur in the delete process
      * @throws VersionMismatchException if the record found contains a version that does not match the parameter
      */
-    protected boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
+    protected boolean deleteImpl(@Nullable @Positive final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         EntityManager manager = null;
         EntityTransaction transaction = null;
@@ -381,9 +377,9 @@ public class JPAStorageService extends AbstractStorageService {
                 log.debug("Deleted record '{}' in context '{}'", key, context);
                 return true;
             }
-        } catch (VersionMismatchException e) {
+        } catch (final VersionMismatchException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error deleting record '{}' in context '{}'", key, context, e);
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -411,13 +407,13 @@ public class JPAStorageService extends AbstractStorageService {
             if (!entities.isEmpty()) {
                 transaction = manager.getTransaction();
                 transaction.begin();
-                for (JPAStorageRecord entity : entities) {
+                for (final JPAStorageRecord entity : entities) {
                     entity.setExpiration(expiration);
                 }
                 transaction.commit();
                 log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error updating context expiration in context '{}'", context, e);
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -463,7 +459,7 @@ public class JPAStorageService extends AbstractStorageService {
             if (!entities.isEmpty()) {
                 transaction = manager.getTransaction();
                 transaction.begin();
-                for (JPAStorageRecord entity : entities) {
+                for (final JPAStorageRecord entity : entities) {
                     if (expiration == null ||
                         (entity.getExpiration() != null && entity.getExpiration() <= expiration)) {
                         manager.remove(entity);
@@ -472,7 +468,7 @@ public class JPAStorageService extends AbstractStorageService {
                 }
                 transaction.commit();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error deleting context '{}'", context, e);
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -506,7 +502,7 @@ public class JPAStorageService extends AbstractStorageService {
                 }
             }
             results.addAll(queryResults.getResultList());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             log.error("Error executing named query", e);
         }
         return results;

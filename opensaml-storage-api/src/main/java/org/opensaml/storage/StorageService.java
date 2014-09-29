@@ -47,15 +47,14 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
  * or a null can be used to signify no expiration.</p>
  */
 @ThreadSafeAfterInit
-public interface StorageService extends InitializableComponent, DestructableComponent,
-        IdentifiedComponent {
+public interface StorageService extends InitializableComponent, DestructableComponent, IdentifiedComponent {
 
     /**
      * Returns the capabilities of the underlying store.
      *
      * @return interface to access the service's capabilities
      */
-    @Nonnull public StorageCapabilities getCapabilities();
+    @Nonnull StorageCapabilities getCapabilities();
 
     /**
      * Creates a new record in the store with an expiration.
@@ -68,7 +67,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process
      */
-    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException;
 
     /**
@@ -84,7 +83,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process
      */
-    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Object value, @Nonnull final StorageSerializer serializer,
             @Nullable @Positive final Long expiration) throws IOException;
     
@@ -100,7 +99,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  true iff record was inserted, false iff a duplicate was found
      * @throws IOException  if fatal errors occur in the insertion process
      */
-    public boolean create(@Nonnull final Object value) throws IOException;
+    boolean create(@Nonnull final Object value) throws IOException;
     
     /**
      * Returns an existing record from the store, if one exists.
@@ -111,7 +110,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  the record read back, if present, or null
      * @throws IOException  if errors occur in the read process 
      */
-    @Nullable public StorageRecord read(@Nonnull @NotEmpty final String context,
+    @Nullable StorageRecord read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException;
 
     /**
@@ -128,7 +127,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  the updated object passed into the method, or null if no record was found 
      * @throws IOException  if errors occur in the read process 
      */
-    @Nullable public Object read(@Nonnull final Object value) throws IOException;
+    @Nullable Object read(@Nonnull final Object value) throws IOException;
     
     /**
      * Returns an existing record from the store, along with its version.
@@ -145,8 +144,8 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return  a pair consisting of the version of the record read back, if any, and the record itself
      * @throws IOException  if errors occur in the read process 
      */
-    @Nonnull public Pair<Integer, StorageRecord> read(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Positive final int version) throws IOException;
+    @Nonnull Pair<Long, StorageRecord> read(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String key, @Positive final long version) throws IOException;
     
     
     /**
@@ -160,7 +159,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+    @Nullable Long update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException;
     
@@ -177,7 +176,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateWithVersion(@Positive final int version,
+    @Nullable Long updateWithVersion(@Positive final long version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException,
             VersionMismatchException;
@@ -194,7 +193,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+    @Nullable Long update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException;
     
@@ -213,7 +212,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
     // Checkstyle: ParameterNumber OFF
-    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
+    @Nullable Long updateWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration)
                     throws IOException, VersionMismatchException;
@@ -231,7 +230,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record after update, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer update(@Nonnull final Object value) throws IOException;
+    @Nullable Long update(@Nonnull final Object value) throws IOException;
     
     /**
      * Updates an existing record in the store, if a version matches, using an annotated object as the source.
@@ -247,7 +246,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the update process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull final Object value)
+    @Nullable Long updateWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException;
     
     /**
@@ -260,7 +259,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateExpiration(@Nonnull @NotEmpty final String context,
+    @Nullable Long updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException;
 
     /**
@@ -275,7 +274,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return the version of the record, null if no record exists
      * @throws IOException  if errors occur in the update process 
      */
-    @Nullable public Integer updateExpiration(@Nonnull final Object value) throws IOException;
+    @Nullable Long updateExpiration(@Nonnull final Object value) throws IOException;
     
     
     /**
@@ -287,7 +286,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true iff the record existed and was deleted
      * @throws IOException  if errors occur in the deletion process 
      */
-    public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
+    boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
             throws IOException;    
 
     /**
@@ -301,7 +300,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the deletion process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    public boolean deleteWithVersion(@Positive final int version, @Nonnull @NotEmpty final String context,
+    boolean deleteWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException;
     
     /**
@@ -316,7 +315,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @return true iff the record existed and was deleted
      * @throws IOException  if errors occur in the deletion process 
      */
-    public boolean delete(@Nonnull final Object value) throws IOException;
+    boolean delete(@Nonnull final Object value) throws IOException;
 
     /**
      * Deletes an existing record from the store, using an annotated object as the source, if it
@@ -333,7 +332,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * @throws IOException  if errors occur in the deletion process
      * @throws VersionMismatchException if the record has already been updated to a newer version
      */
-    public boolean deleteWithVersion(@Positive final int version, @Nonnull final Object value)
+    boolean deleteWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException;
     
     /**
@@ -344,7 +343,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * 
      * @throws IOException  if errors occur in the cleanup process
      */
-    public void reap(@Nonnull @NotEmpty final String context) throws IOException;
+    void reap(@Nonnull @NotEmpty final String context) throws IOException;
     
     /**
      * Updates the expiration time of all records in the context.
@@ -354,7 +353,7 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * 
      * @throws IOException  if errors occur in the cleanup process
      */
-    public void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
+    void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
             throws IOException;
 
     /**
@@ -365,6 +364,6 @@ public interface StorageService extends InitializableComponent, DestructableComp
      * 
      * @throws IOException  if errors occur in the cleanup process
      */
-    public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException;
+    void deleteContext(@Nonnull @NotEmpty final String context) throws IOException;
     
 }

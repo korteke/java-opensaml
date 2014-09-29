@@ -417,10 +417,10 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
 
     /** {@inheritDoc} */
     @Override
-    @Nullable protected Integer updateImpl(@Nullable final Integer version, @Nonnull @NotEmpty final String context,
+    @Nullable protected Long updateImpl(@Nullable final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final String value, @Nullable final Long expiration)
                     throws IOException, VersionMismatchException {
-        final Integer i = super.updateImpl(version, context, key, value, expiration);
+        final Long i = super.updateImpl(version, context, key, value, expiration);
         if (i != null) {
             setDirty(true);
         }
@@ -429,7 +429,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
 
     /** {@inheritDoc} */
     @Override
-    protected boolean deleteImpl(@Nullable @Positive final Integer version, @Nonnull @NotEmpty final String context,
+    protected boolean deleteImpl(@Nullable @Positive final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         if (super.deleteImpl(version, context, key)) {
             setDirty(true);
