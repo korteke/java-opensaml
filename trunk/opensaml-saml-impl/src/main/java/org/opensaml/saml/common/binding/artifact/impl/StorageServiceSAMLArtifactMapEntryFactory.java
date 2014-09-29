@@ -133,7 +133,7 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
 
     /** {@inheritDoc} */
     // Checkstyle: CyclomaticComplexity OFF
-    @Nonnull public SAMLArtifactMapEntry deserialize(final int version, @Nonnull @NotEmpty final String context,
+    @Nonnull public SAMLArtifactMapEntry deserialize(final long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value, @Nullable final Long expiration)
                     throws IOException {
         log.debug("Deserializing artifact mapping data from stored string");

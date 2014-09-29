@@ -236,7 +236,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer update(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public Long update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException {
         return update(context, key, serializer.serialize(value), expiration);
@@ -244,7 +244,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
 
     /** {@inheritDoc} */
     // Checkstyle: ParameterNumber OFF
-    @Override @Nullable public Integer updateWithVersion(@Positive final int version,
+    @Override @Nullable public Long updateWithVersion(@Positive final long version,
             @Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key, @Nonnull final Object value,
             @Nonnull final StorageSerializer serializer, @Nullable @Positive final Long expiration) throws IOException,
             VersionMismatchException {
@@ -254,20 +254,20 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     // Checkstyle: ParameterNumber ON
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer update(@Nonnull final Object value) throws IOException {
+    @Override @Nullable public Long update(@Nonnull final Object value) throws IOException {
         return update(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateWithVersion(@Positive final int version, @Nonnull final Object value)
+    @Override @Nullable public Long updateWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
         return updateWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Integer updateExpiration(@Nonnull final Object value) throws IOException {
+    @Override @Nullable public Long updateExpiration(@Nonnull final Object value) throws IOException {
         return updateExpiration(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
                 AnnotationSupport.getExpiration(value));
     }
@@ -278,7 +278,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     }
 
     /** {@inheritDoc} */
-    @Override public boolean deleteWithVersion(@Positive final int version, @Nonnull final Object value)
+    @Override public boolean deleteWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
         return deleteWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
     }

@@ -120,7 +120,7 @@ public class JPAStorageRecord extends MutableStorageRecord {
     }
 
     /** {@inheritDoc} */
-    @Column(nullable = false) @Override public int getVersion() {
+    @Column(nullable = false) @Override public long getVersion() {
         return super.getVersion();
     }
 
