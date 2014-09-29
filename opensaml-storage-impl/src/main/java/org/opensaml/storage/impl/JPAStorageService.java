@@ -236,11 +236,11 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Long update(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public boolean update(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException {
         try {
-            return updateImpl(null, context, key, value, expiration);
+            return updateImpl(null, context, key, value, expiration) != null;
         } catch (final VersionMismatchException e) {
             throw new IllegalStateException("Unexpected exception thrown by update.", e);
         }
@@ -255,10 +255,10 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nullable public Long updateExpiration(@Nonnull @NotEmpty final String context,
+    @Override @Nullable public boolean updateExpiration(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable @Positive final Long expiration) throws IOException {
         try {
-            return updateImpl(null, context, key, null, expiration);
+            return updateImpl(null, context, key, null, expiration) != null;
         } catch (final VersionMismatchException e) {
             throw new IllegalStateException("Unexpected exception thrown by update.", e);
         }
