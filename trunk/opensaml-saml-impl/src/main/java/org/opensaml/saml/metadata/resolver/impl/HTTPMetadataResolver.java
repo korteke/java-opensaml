@@ -23,7 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Timer;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -73,10 +72,10 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** The Last-Modified information provided when the currently cached metadata was fetched. */
     private String cachedMetadataLastModified;
-    
+
     /** HttpClient credentials provider. */
     private BasicCredentialsProvider credentialsProvider;
-    
+
     /**
      * Constructor.
      * 
@@ -122,10 +121,10 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     public String getMetadataURI() {
         return metadataURI.toASCIIString();
     }
-    
+
     /**
-     * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass 
-     * null for the credentials instance.
+     * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass null for the
+     * credentials instance.
      * 
      * An {@link AuthScope} will be generated based off the metadata URI's hostname and port.
      * 
@@ -134,20 +133,20 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
         setBasicCredentialsWithScope(credentials, null);
     }
-    
+
     /**
-     * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass 
-     * null for the credentials instance.
+     * Sets the username and password used to access the metadata URL. To disable BASIC authentication pass null for the
+     * credentials instance.
      * 
      * <p>
-     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated based off
-     * the metadata URI's hostname and port.
+     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated based off the metadata URI's
+     * hostname and port.
      * </p>
      * 
      * @param credentials the username and password credentials
      * @param scope the HTTP client auth scope with which to scope the credentials, may be null
      */
-    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials, 
+    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials,
             @Nullable final AuthScope scope) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
@@ -164,21 +163,23 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             log.debug("Either username or password were null, disabling basic auth");
             credentialsProvider = null;
         }
-        
+
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doDestroy() {
         httpClient = null;
         credentialsProvider = null;
         metadataURI = null;
         cachedMetadataETag = null;
         cachedMetadataLastModified = null;
-        
+
         super.doDestroy();
     }
 
     /** {@inheritDoc} */
+    @Override
     protected String getMetadataIdentifier() {
         return metadataURI.toString();
     }
@@ -191,11 +192,12 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @throws ResolverException thrown if there is a problem retrieving the metadata from the remote server
      */
+    @Override
     protected byte[] fetchMetadata() throws ResolverException {
         final HttpGet httpGet = buildHttpGet();
         final HttpClientContext context = buildHttpClientContext();
         HttpResponse response = null;
-        
+
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
             response = httpClient.execute(httpGet, context);
@@ -207,8 +209,8 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             }
 
             if (httpStatusCode != HttpStatus.SC_OK) {
-                final String errMsg = "Non-ok status code " + httpStatusCode
-                        + " returned from remote metadata source " + metadataURI;
+                final String errMsg =
+                        "Non-ok status code " + httpStatusCode + " returned from remote metadata source " + metadataURI;
                 log.error(errMsg);
                 throw new ResolverException(errMsg);
             }
@@ -226,7 +228,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         } finally {
             try {
                 if (response != null && response instanceof CloseableHttpResponse) {
-                    ((CloseableHttpResponse)response).close();
+                    ((CloseableHttpResponse) response).close();
                 }
             } catch (final IOException e) {
                 log.error("Error closing HTTP response from {}", metadataURI, e);
@@ -235,16 +237,15 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     }
 
     /**
-     * Builds the {@link HttpGet} instance used to fetch the metadata. 
-     * The returned method advertises support for GZIP and deflate compression, 
-     * enables conditional GETs if the cached metadata came with either an ETag or Last-Modified
-     * information, and sets up basic authentication if such is configured.
+     * Builds the {@link HttpGet} instance used to fetch the metadata. The returned method advertises support for GZIP
+     * and deflate compression, enables conditional GETs if the cached metadata came with either an ETag or
+     * Last-Modified information, and sets up basic authentication if such is configured.
      * 
      * @return the constructed HttpGet instance
      */
     protected HttpGet buildHttpGet() {
         final HttpGet getMethod = new HttpGet(getMetadataURI());
-        
+
         if (cachedMetadataETag != null) {
             getMethod.setHeader("If-None-Match", cachedMetadataETag);
         }
@@ -254,10 +255,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
         return getMethod;
     }
-    
+
     /**
-     * Build the {@link HttpClientContext} instance which will be used to invoke the 
-     * {@link HttpClient} request.
+     * Build the {@link HttpClientContext} instance which will be used to invoke the {@link HttpClient} request.
      * 
      * @return a new instance of {@link HttpClientContext}
      */
