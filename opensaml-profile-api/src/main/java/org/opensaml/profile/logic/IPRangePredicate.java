@@ -73,6 +73,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean apply(@Nullable final BaseContext input) {
         String address = httpRequest != null ? httpRequest.getRemoteAddr() : null;
         if (address == null || !InetAddresses.isInetAddress(address)) {

@@ -19,23 +19,19 @@ package org.opensaml.profile.logic;
 
 import javax.annotation.Nullable;
 
-import org.opensaml.messaging.context.MessageChannelSecurityContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import com.google.common.base.Predicate;
 
 /**
- * A predicate implementation that indicates whether the message channel does
- * <strong>NOT</strong> support integrity end-to-end.
- * 
- * <p>Typically but not exclusively used as a predicate for whether to sign something.</p>
+ * A predicate implementation that indicates whether the request is associated with a browser profile.
  */
-public class NoIntegrityMessageChannelPredicate implements Predicate<ProfileRequestContext> {
+public class BrowserProfilePredicate implements Predicate<ProfileRequestContext> {
 
     /** {@inheritDoc} */
     @Override
     public boolean apply(@Nullable final ProfileRequestContext input) {
-        return input == null || !input.getSubcontext(MessageChannelSecurityContext.class, true).isIntegrityActive();
+        return input != null && input.isBrowserProfile();
     }
     
 }
