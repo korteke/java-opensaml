@@ -48,9 +48,13 @@ public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet
         InitializableComponent, DestructableComponent {
     
     /**
-     * Gets whether the metadata returned by queries must be valid. At a minimum, metadata is valid only if the date
-     * expressed in the element, and all its ancestral element's, validUntil attribute has not passed. Specific
-     * implementations may add additional constraints.
+     * Gets whether the metadata returned by queries must be valid. 
+     * 
+     * <p>
+     * At a minimum, metadata is valid only if the date expressed in the <code>validUntil</code> attribute 
+     * of the element and all its ancestral elements has not passed. Specific implementations may add additional 
+     * constraints.
+     * </p>
      * 
      * @return whether the metadata returned by queries must be valid
      */
