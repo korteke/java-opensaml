@@ -224,6 +224,12 @@ public final class SAMLConstants {
     /** SAML 2.0 Metadata Extension for Discovery and Login UI QName prefix. */
     public static final String SAML20MDUI_PREFIX = "mdui";
 
+    /** SAML 2.0 Metadata Extension for SSO Service Provider Request Initiation Namespace. */
+    public static final String SAML20MDRI_NS = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
+
+    /** SAML 2.0 Metadata Extension for SSO Service Provider Request Initiation QName prefix. */
+    public static final String SAML20MDRI_PREFIX = "init";
+
     /** SAML 2.0 Metadata Extension for Registration and Publication Information schema Id. */
     public static final String SAML20MDRPI_SCHEMA_LOCATION = SCHEMA_DIR + "saml-metadata-rpi-v1.0.xsd";
 
