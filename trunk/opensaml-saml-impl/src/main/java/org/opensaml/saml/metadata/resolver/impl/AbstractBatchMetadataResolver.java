@@ -31,6 +31,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.IterableMetadataSource;
+import org.opensaml.saml.metadata.resolver.BatchMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -43,7 +44,8 @@ import com.google.common.base.Strings;
  * Abstract subclass for metadata resolvers that process and resolve metadata at a given point 
  * in time from a single metadata source document.
  */
-public abstract class AbstractBatchMetadataResolver extends AbstractMetadataResolver implements IterableMetadataSource {
+public abstract class AbstractBatchMetadataResolver extends AbstractMetadataResolver 
+        implements BatchMetadataResolver, IterableMetadataSource {
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractBatchMetadataResolver.class);
