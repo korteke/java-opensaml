@@ -49,6 +49,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.metadata.resolver.DynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -60,7 +61,8 @@ import com.google.common.base.Strings;
 /**
  * Abstract subclass for metadata resolvers that resolve metadata dynamically, as needed and on demand.
  */
-public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataResolver {
+public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataResolver 
+        implements DynamicMetadataResolver {
     
     /** Default list of supported content MIME types. */
     public static final String[] DEFAULT_CONTENT_TYPES = 
