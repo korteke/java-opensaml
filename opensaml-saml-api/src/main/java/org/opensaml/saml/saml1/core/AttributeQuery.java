@@ -22,7 +22,12 @@ package org.opensaml.saml.saml1.core;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
@@ -32,29 +37,41 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AttributeQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeQuery";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeQueryType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AttributeQueryType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** AuthenticationMethod attribute name. */
-    public static final String RESOURCE_ATTRIB_NAME = "Resource"; 
+    @Nonnull @NotEmpty static final String RESOURCE_ATTRIB_NAME = "Resource"; 
 
-    /** Get list of AttributeDesignators. */
-    public List<AttributeDesignator> getAttributeDesignators();
+    /**
+     * Get list of AttributeDesignators.
+     * 
+     * @return the list of AttributeDesignators
+     */
+    @Nonnull @NonnullElements List<AttributeDesignator> getAttributeDesignators();
     
-    /** Get Resource attribute. */
-    public String getResource();
+    /**
+     * Get Resource attribute.
+     * 
+     * @return the attribute value
+     */
+    @Nullable String getResource();
     
-    /** Set Resource attribute. */
-    public void setResource(String resource);
+    /**
+     * Set Resource attribute.
+     * 
+     * @param resource value to set
+     */
+    void setResource(@Nullable final String resource);
 
 }

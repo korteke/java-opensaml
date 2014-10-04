@@ -18,9 +18,8 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xacml.policy.ObligationsType;
 
-/** Marshaller for {@link ObligationsType}. */
+/** Marshaller for {@link org.opensaml.xacml.policy.ObligationsType}. */
 public class ObligationsTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
     /** Constructor. */

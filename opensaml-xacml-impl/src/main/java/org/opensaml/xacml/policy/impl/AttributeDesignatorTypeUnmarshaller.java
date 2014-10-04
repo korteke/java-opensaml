@@ -48,7 +48,7 @@ public class AttributeDesignatorTypeUnmarshaller extends AbstractXACMLObjectUnma
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.ISSUER_ATTRIB_NAME)){
             attributeDesignatorType.setIssuer(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME)){
-            if (attribute.getValue().equals("True") || attribute.getValue().equals("true")) {
+            if ("True".equals(attribute.getValue()) || "true".equals(attribute.getValue())) {
                 attributeDesignatorType.setMustBePresentXSBoolean(XSBooleanValue.valueOf("1"));
             } else {
                 attributeDesignatorType.setMustBePresentXSBoolean(XSBooleanValue.valueOf("0"));

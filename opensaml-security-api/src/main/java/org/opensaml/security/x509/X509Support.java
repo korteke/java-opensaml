@@ -467,6 +467,7 @@ public class X509Support {
         return builder.toString();
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Convert types returned by Bouncy Castle X509ExtensionUtil.getSubjectAlternativeNames(X509Certificate) to be
      * consistent with what is documented for: java.security.cert.X509Certificate#getSubjectAlternativeNames.
@@ -504,6 +505,7 @@ public class X509Support {
             return nameValue;
         }
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Get an SLF4J Logger.

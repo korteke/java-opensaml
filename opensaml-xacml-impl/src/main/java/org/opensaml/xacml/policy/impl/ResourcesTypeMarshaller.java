@@ -18,10 +18,9 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xacml.policy.ResourcesType;
 
 /**
- * Marshaller for {@link ResourcesType}.
+ * Marshaller for {@link org.opensaml.xacml.policy.ResourcesType}.
  */
 public class ResourcesTypeMarshaller extends AbstractXACMLObjectMarshaller {
 

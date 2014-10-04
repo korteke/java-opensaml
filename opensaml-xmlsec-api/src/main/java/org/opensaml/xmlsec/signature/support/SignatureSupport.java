@@ -56,6 +56,7 @@ public final class SignatureSupport {
         return LoggerFactory.getLogger(SignatureSupport.class);
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Prepare a {@link Signature} with necessary additional information prior to signing.
      * 
@@ -162,7 +163,8 @@ public final class SignatureSupport {
             }
         }
     }
-
+// Checkstyle: CyclomaticComplexity ON
+    
     /**
      * Signs a {@link SignableXMLObject}.
      * 

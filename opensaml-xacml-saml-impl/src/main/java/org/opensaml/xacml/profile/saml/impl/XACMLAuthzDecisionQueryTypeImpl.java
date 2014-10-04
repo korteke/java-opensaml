@@ -143,52 +143,50 @@ public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl imp
     }
 
     /** {@inheritDoc} */
-    public void setCombinePolicies(XSBooleanValue combinePolicies) {
-        this.combinePolicies = prepareForAssignment(this.combinePolicies, combinePolicies);
+    public void setCombinePolicies(XSBooleanValue combine) {
+        combinePolicies = prepareForAssignment(combinePolicies, combine);
     }
 
     /** {@inheritDoc} */
-    public void setCombinePolicies(Boolean combinePolicies) {
-        if (combinePolicies != null) {
-            this.combinePolicies = prepareForAssignment(this.combinePolicies,
-                    new XSBooleanValue(combinePolicies, false));
+    public void setCombinePolicies(Boolean combine) {
+        if (combine != null) {
+            combinePolicies = prepareForAssignment(combinePolicies, new XSBooleanValue(combine, false));
         } else {
-            this.combinePolicies = prepareForAssignment(this.combinePolicies, null);
+            combinePolicies = prepareForAssignment(combinePolicies, null);
         }
 
     }
 
     /** {@inheritDoc} */
-    public void setInputContextOnly(XSBooleanValue inputContextOnly) {
-        this.inputContextOnly = prepareForAssignment(this.inputContextOnly, inputContextOnly);
+    public void setInputContextOnly(XSBooleanValue flag) {
+        inputContextOnly = prepareForAssignment(inputContextOnly, flag);
     }
 
     /** {@inheritDoc} */
-    public void setInputContextOnly(Boolean inputContextOnly) {
-        if (inputContextOnly != null) {
-            this.inputContextOnly = prepareForAssignment(this.inputContextOnly, new XSBooleanValue(inputContextOnly,
-                    false));
+    public void setInputContextOnly(Boolean flag) {
+        if (flag != null) {
+            inputContextOnly = prepareForAssignment(inputContextOnly, new XSBooleanValue(flag, false));
         } else {
-            this.inputContextOnly = prepareForAssignment(this.inputContextOnly, null);
+            inputContextOnly = prepareForAssignment(inputContextOnly, null);
         }
     }
 
     /** {@inheritDoc} */
-    public void setRequest(RequestType request) {
-        this.request = prepareForAssignment(this.request, request);
+    public void setRequest(RequestType req) {
+        request = prepareForAssignment(this.request, req);
     }
 
     /** {@inheritDoc} */
-    public void setReturnContext(XSBooleanValue returnContext) {
-        this.returnContext = prepareForAssignment(this.returnContext, returnContext);
+    public void setReturnContext(XSBooleanValue flag) {
+        returnContext = prepareForAssignment(returnContext, flag);
     }
 
     /** {@inheritDoc} */
-    public void setReturnContext(Boolean returnContext) {
-        if (returnContext != null) {
-            this.returnContext = prepareForAssignment(this.returnContext, new XSBooleanValue(returnContext, false));
+    public void setReturnContext(Boolean flag) {
+        if (flag != null) {
+            returnContext = prepareForAssignment(returnContext, new XSBooleanValue(flag, false));
         } else {
-            this.returnContext = prepareForAssignment(this.returnContext, null);
+            returnContext = prepareForAssignment(returnContext, null);
         }
     }
 
@@ -208,7 +206,7 @@ public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl imp
     }
 
     /** {@inheritDoc} */
-    public void setReferencedPolicies(ReferencedPoliciesType policies) {
-        referencedPolicies = prepareForAssignment(referencedPolicies, policies);
+    public void setReferencedPolicies(ReferencedPoliciesType pols) {
+        referencedPolicies = prepareForAssignment(referencedPolicies, pols);
     }
 }

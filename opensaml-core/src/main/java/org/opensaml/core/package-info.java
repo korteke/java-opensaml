@@ -15,18 +15,5 @@
  * limitations under the License.
  */
 
-package org.opensaml.xacml.policy.impl;
-
-import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-
-/**
- * Marshaller for {@link org.opensaml.xacml.policy.EnvironmentsType}.
- */
-public class EnvironmentsTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public EnvironmentsTypeMarshaller() {
-        super();
-    }
-    
-}
+/** Classes at the most general level of the library. */
+package org.opensaml.core;

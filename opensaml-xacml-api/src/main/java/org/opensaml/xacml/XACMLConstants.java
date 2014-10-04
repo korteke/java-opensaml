@@ -18,7 +18,7 @@
 package org.opensaml.xacml;
 
 /** Defines the constants for the XACML providers. */
-public class XACMLConstants {
+public final class XACMLConstants {
 
     /** The prefix for the use of xacml policy. */
     public static final String XACML_PREFIX = "xacml";
@@ -52,4 +52,9 @@ public class XACMLConstants {
 
     /** DNS Name datatype URI. */
     public static final String DNS_NAME_DATATYPE_URI = "urn:oasis:names:tc:xacml:1.0:data-type:dnsName";
+    
+    /** Constructor. */
+    private XACMLConstants() {
+        
+    }
 }

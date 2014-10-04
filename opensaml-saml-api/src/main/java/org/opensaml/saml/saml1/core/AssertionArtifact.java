@@ -17,34 +17,39 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * This interface is for the SAML1 <code> AssertionArtifact </code> extention point.
+ * This interface is for the SAML1 <code> AssertionArtifact </code> element.
  */
 public interface AssertionArtifact extends SAMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionArtifact";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionArtifact";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1P_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /**
      * Get the contents of the artifact.
      * 
      * @return contents of the artifact
      */
-    public String getAssertionArtifact();
+    @Nullable String getAssertionArtifact();
 
     /**
-     * Set the contents of the artficat.
+     * Set the contents of the artifact.
      * 
      * @param assertionArtifact contents of the artifact
      */
-    public void setAssertionArtifact(String assertionArtifact);
+    void setAssertionArtifact(@Nullable final String assertionArtifact);
+    
 }

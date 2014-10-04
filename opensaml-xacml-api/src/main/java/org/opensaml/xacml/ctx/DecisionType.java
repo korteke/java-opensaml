@@ -26,22 +26,32 @@ import org.opensaml.xacml.XACMLObject;
 public interface DecisionType extends XACMLObject {
 
     /** Allowed decision values. */
-    public enum DECISION {
-        Deny, Permit, Indeterminate, NotApplicable
+    enum DECISION {
+        /** Denied. */
+        Deny,
+        
+        /** Permitted. */
+        Permit,
+        
+        /** Can't tell. */
+        Indeterminate,
+        
+        /** Not applicable. */
+        NotApplicable,
     };
 
     /** Element name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Decision";
+    static final String DEFAULT_ELEMENT_LOCAL_NAME = "Decision";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
+    static final QName DEFAULT_ELEMENT_NAME = new QName(XACMLConstants.XACML20CTX_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "DecisionType";
+    static final String TYPE_LOCAL_NAME = "DecisionType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XACMLConstants.XACML20CTX_NS, TYPE_LOCAL_NAME,
+    static final QName TYPE_NAME = new QName(XACMLConstants.XACML20CTX_NS, TYPE_LOCAL_NAME,
             XACMLConstants.XACMLCONTEXT_PREFIX);
 
     /**
@@ -49,12 +59,12 @@ public interface DecisionType extends XACMLObject {
      * 
      * @return The value of the decision
      */
-    public DECISION getDecision();
+    DECISION getDecision();
 
     /**
      * Sets the value of the decision.
      * 
      * @param decision value of the decision
      */
-    public void setDecision(DECISION decision);
+    void setDecision(DECISION decision);
 }

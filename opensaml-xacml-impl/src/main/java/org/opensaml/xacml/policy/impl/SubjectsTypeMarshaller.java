@@ -18,10 +18,9 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xacml.policy.SubjectsType;
 
 /**
- * Marshaller for {@link SubjectsType}.
+ * Marshaller for {@link org.opensaml.xacml.policy.SubjectsType}.
  */
 public class SubjectsTypeMarshaller extends AbstractXACMLObjectMarshaller {
 

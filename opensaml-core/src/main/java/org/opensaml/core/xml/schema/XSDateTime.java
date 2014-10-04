@@ -57,7 +57,7 @@ public interface XSDateTime extends XMLObject {
      * the {@link DateTime} value.
      * 
      * <p>Defaults to the formatter constructed by calling:
-     * <code>org.joda.time.format.ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC()</code>
+     * <code>ISODateTimeFormat.dateTime().withChronology(org.joda.time.chrono.ISOChronology.getInstanceUTC())</code>
      * </p>
      * 
      * @return the currently configured formatter

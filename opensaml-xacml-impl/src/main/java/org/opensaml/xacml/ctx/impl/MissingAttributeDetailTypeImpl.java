@@ -94,7 +94,7 @@ public class MissingAttributeDetailTypeImpl extends AbstractXACMLObject implemen
     }
 
     /** {@inheritDoc} */
-    public void setIssuer(String issuer) {
-        this.issuer = prepareForAssignment(this.issuer, issuer);
+    public void setIssuer(String iss) {
+        issuer = prepareForAssignment(issuer, iss);
     }
 }

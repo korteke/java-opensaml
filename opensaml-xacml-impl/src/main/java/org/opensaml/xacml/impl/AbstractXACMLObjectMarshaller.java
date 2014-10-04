@@ -23,8 +23,8 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe, abstract implementation of the {@link org.opensaml.core.xml.io.Marshaller} interface that handles most of
- * the boilerplate code for Marshallers.
+ * A thread safe, abstract implementation of the {@link org.opensaml.core.xml.io.Marshaller} interface that handles
+ * most of the boilerplate code for Marshallers.
  */
 public abstract class AbstractXACMLObjectMarshaller extends AbstractXMLObjectMarshaller {
     

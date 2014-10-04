@@ -354,7 +354,8 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         
         return CertStore.getInstance("Collection", new CollectionCertStoreParameters(storeMaterial));
     }
-    
+
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Add CRLs from the specified collection to the list of certs and CRLs being collected
      * for the CertStore.
@@ -398,6 +399,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             }
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Log information from the constructed cert path at level debug.

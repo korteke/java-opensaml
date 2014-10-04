@@ -41,18 +41,20 @@ public abstract class AbstractXMLObjectProviderInitializer implements Initialize
                 // begin with leading "/".  They are always absolute.
                 // This differs from Class.getResourceAsStream(), where absolute names must begin with /, otherwise
                 // are treated as relative.
+                // Checkstyle: ModifiedControlVariable OFF
                 if (resource.startsWith("/")) {
                     resource = resource.substring(1);
                 }
+                // Checkstyle: ModifiedControlVariable ON
                 log.debug("Loading XMLObject provider configuration from resource '{}'", resource);
-                InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
+                final InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
                 if (is != null) {
                     configurator.load(is);
                 } else {
                     throw new XMLConfigurationException("Resource not found");
                 }
             }
-        } catch (XMLConfigurationException e) {
+        } catch (final XMLConfigurationException e) {
             log.error("Problem loading configuration resource", e);
             throw new InitializationException("Problem loading configuration resource", e);
         }

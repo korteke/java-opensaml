@@ -24,11 +24,10 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.opensaml.xacml.policy.ExpressionType;
 import org.opensaml.xacml.policy.VariableDefinitionType;
-import org.opensaml.xacml.policy.VariableReferenceType;
 import org.w3c.dom.Attr;
 
 /**
- * Unmarshaller for {@link VariableDefinitionType}.
+ * Unmarshaller for {@link org.opensaml.xacml.policy.VariableDefinitionType}.
  */
 public class VariableDefinitionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 

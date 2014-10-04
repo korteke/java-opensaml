@@ -29,7 +29,6 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.schema.impl.XSBooleanBuilder;
 import org.w3c.dom.Document;
 
@@ -68,7 +67,7 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     * Tests Marshalling a string type.
+     * Tests Unmarshalling a boolean type.
      * 
      * @throws XMLParserException 
      * @throws UnmarshallingException 

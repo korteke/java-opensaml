@@ -111,7 +111,7 @@ public class PolicyTypeImpl extends AbstractXACMLObject implements PolicyType {
 
     /** {@inheritDoc} */
     public List<RuleType> getRules() {
-       	return (List<RuleType>) choiceGroup.subList(RuleType.DEFAULT_ELEMENT_NAME);
+        return (List<RuleType>) choiceGroup.subList(RuleType.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */

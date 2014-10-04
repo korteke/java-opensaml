@@ -37,8 +37,8 @@ public class AttributeSelectorTypeImpl extends AbstractXACMLObject implements At
     /** Issuer. */
     private String requestContextPath;
 
-    /** Must be present.Default = false */
-    private XSBooleanValue mustBePresentXS = null;
+    /** Must be present. Default = false. */
+    private XSBooleanValue mustBePresentXS;
 
     /**
      * Constructor.
@@ -50,58 +50,56 @@ public class AttributeSelectorTypeImpl extends AbstractXACMLObject implements At
      * @param namespacePrefix
      *                the prefix for the given namespace
      */
-    protected AttributeSelectorTypeImpl(String namespaceURI,
-	    String elementLocalName, String namespacePrefix) {
-	super(namespaceURI, elementLocalName, namespacePrefix);
-	mustBePresentXS = XSBooleanValue.valueOf("false");
+    protected AttributeSelectorTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+        mustBePresentXS = XSBooleanValue.valueOf("false");
     }
 
     /** {@inheritDoc} */
     public String getDataType() {
-	return dataType;
+        return dataType;
     }
 
     /** {@inheritDoc} */
     public Boolean getMustBePresent() {
-	if (mustBePresentXS != null) {
-	    return mustBePresentXS.getValue();
-	}
-	return Boolean.FALSE;
+        if (mustBePresentXS != null) {
+            return mustBePresentXS.getValue();
+        }
+        return Boolean.FALSE;
     }
 
     /** {@inheritDoc} */
     public XSBooleanValue getMustBePresentXSBoolean() {
-	return mustBePresentXS;
+        return mustBePresentXS;
     }
 
     /** {@inheritDoc} */
     public String getRequestContextPath() {
-	return requestContextPath;
+        return requestContextPath;
     }
 
     /** {@inheritDoc} */
     public void setDataType(String type) {
-	this.dataType = prepareForAssignment(this.dataType, type);
+        dataType = prepareForAssignment(dataType, type);
     }
 
     /** {@inheritDoc} */
     public void setMustBePresentXSBoolean(XSBooleanValue present) {
-	mustBePresentXS = prepareForAssignment(this.mustBePresentXS, present);
+        mustBePresentXS = prepareForAssignment(mustBePresentXS, present);
     }
 
     /** {@inheritDoc} */
     public void setMustBePresent(Boolean present) {
-	if (present != null) {
-	    mustBePresentXS = prepareForAssignment(mustBePresentXS,
-		    new XSBooleanValue(present, false));
-	} else {
-	    mustBePresentXS = prepareForAssignment(mustBePresentXS, null);
-	}
+        if (present != null) {
+            mustBePresentXS = prepareForAssignment(mustBePresentXS, new XSBooleanValue(present, false));
+        } else {
+            mustBePresentXS = prepareForAssignment(mustBePresentXS, null);
+        }
     }
 
     /** {@inheritDoc} */
     public void setRequestContextPath(String path) {
-	requestContextPath = prepareForAssignment(this.requestContextPath, path);
+        requestContextPath = prepareForAssignment(this.requestContextPath, path);
     }
 
     /** {@inheritDoc} */
