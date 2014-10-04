@@ -162,6 +162,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     /** {@inheritDoc} */
     @Override @Nullable public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
         Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
