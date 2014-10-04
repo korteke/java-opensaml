@@ -61,9 +61,9 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.collections.Lists;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 /**
  * Abstract subclass for metadata resolvers that resolve metadata dynamically, as needed and on demand.
