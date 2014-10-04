@@ -52,7 +52,7 @@ public class DecisionTypeImpl extends AbstractXACMLObject implements DecisionTyp
     }
 
     /** {@inheritDoc} */
-    public void setDecision(DECISION decision) {
-        this.decision = prepareForAssignment(this.decision, decision);
+    public void setDecision(DECISION dec) {
+        decision = prepareForAssignment(decision, dec);
     }
 }

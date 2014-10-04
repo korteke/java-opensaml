@@ -17,45 +17,66 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * This interface defines how the object representing a SAML 1 <code> AttributeDesignator </code> element behaves.
+ * This interface defines how the object representing a SAML 1 <code>AttributeDesignator</code> element behaves.
  */
 public interface AttributeDesignator extends SAMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeDesignator";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeDesignator";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeDesignatorType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AttributeDesignatorType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Name for the AttributeName attribute. */
-    public static final String ATTRIBUTENAME_ATTRIB_NAME = "AttributeName";
+    @Nonnull @NotEmpty static final String ATTRIBUTENAME_ATTRIB_NAME = "AttributeName";
 
     /** Name for the AttributeNamespace attribute. */
-    public static final String ATTRIBUTENAMESPACE_ATTRIB_NAME = "AttributeNamespace";
+    @Nonnull @NotEmpty static final String ATTRIBUTENAMESPACE_ATTRIB_NAME = "AttributeNamespace";
 
-    /** Get the contents of the AttributeName attribute. */
-    public String getAttributeName();
+    /**
+     * Get the contents of the AttributeName attribute.
+     * 
+     * @return the AttributeName attribute
+     */
+    @Nullable String getAttributeName();
     
-    /** Set the contents of the AttributeName attribute. */
-    public void setAttributeName(String attributeName);
+    /**
+     * Set the contents of the AttributeName attribute.
+     * 
+     * @param attributeName value to set
+     */
+    void setAttributeName(@Nullable final String attributeName);
     
-    /** Get the contents of the AttributeNamespace attribute. */
-    public String getAttributeNamespace();
+    /**
+     * Get the contents of the AttributeNamespace attribute.
+     * 
+     * @return the AttributeNamespace attribute
+     */
+    @Nullable String getAttributeNamespace();
     
-    /** Set the contents of the AttributeNamespace attribute. */
-    public void setAttributeNamespace(String attributeNamespace);
+    /**
+     * Set the contents of the AttributeNamespace attribute.
+     * 
+     * @param attributeNamespace value to set
+     */
+    void setAttributeNamespace(@Nullable final String attributeNamespace);
+    
 }

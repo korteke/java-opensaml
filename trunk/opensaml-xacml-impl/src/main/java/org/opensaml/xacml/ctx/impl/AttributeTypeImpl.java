@@ -75,13 +75,13 @@ public class AttributeTypeImpl extends AbstractXACMLObject implements AttributeT
     }
 
     /** {@inheritDoc} */
-    public void setDataType(String datatype) {
-        this.datatype = prepareForAssignment(this.datatype, datatype);
+    public void setDataType(String type) {
+        datatype = prepareForAssignment(datatype, type);
     }
 
     /** {@inheritDoc} */
-    public void setIssuer(String issuer) {
-        this.issuer = prepareForAssignment(this.issuer, issuer);
+    public void setIssuer(String iss) {
+        issuer = prepareForAssignment(issuer, iss);
     }
 
     /** {@inheritDoc} */

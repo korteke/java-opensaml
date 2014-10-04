@@ -45,7 +45,7 @@ public class AttributeSelectorTypeUnmarshaller extends AbstractXACMLObjectUnmars
         } else  if (attribute.getLocalName().equals(AttributeSelectorType.DATA_TYPE_ATTRIB_NAME)){
             attributeSelectorType.setDataType(StringSupport.trimOrNull(attribute.getValue()));
         } else  if (attribute.getLocalName().equals(AttributeSelectorType.MUST_BE_PRESENT_ATTRIB_NAME)){
-            if (attribute.getValue().equals("True") || attribute.getValue().equals("true")) {
+            if ("True".equals(attribute.getValue()) || "true".equals(attribute.getValue())) {
                 attributeSelectorType.setMustBePresentXSBoolean(XSBooleanValue.valueOf("1"));
             } else {
                 attributeSelectorType.setMustBePresentXSBoolean(XSBooleanValue.valueOf("0"));

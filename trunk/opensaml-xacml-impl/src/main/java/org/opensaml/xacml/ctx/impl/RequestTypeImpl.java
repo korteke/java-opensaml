@@ -74,8 +74,8 @@ public class RequestTypeImpl extends AbstractXACMLObject implements RequestType 
     }
 
     /** {@inheritDoc} */
-    public void setEnvironment(EnvironmentType environment) {
-        this.environment = prepareForAssignment(this.environment, environment);
+    public void setEnvironment(EnvironmentType env) {
+        environment = prepareForAssignment(environment, env);
     }
 
     /** {@inheritDoc} */
@@ -84,8 +84,8 @@ public class RequestTypeImpl extends AbstractXACMLObject implements RequestType 
     }
 
     /** {@inheritDoc} */
-    public void setAction(ActionType action) {
-        this.action = prepareForAssignment(this.action, action);
+    public void setAction(ActionType act) {
+        action = prepareForAssignment(action, act);
     }
 
     /** {@inheritDoc} */

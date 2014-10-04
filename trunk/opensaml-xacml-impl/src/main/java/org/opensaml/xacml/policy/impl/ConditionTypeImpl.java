@@ -50,8 +50,8 @@ public class ConditionTypeImpl extends AbstractXACMLObject implements ConditionT
     }
     
     /** {@inheritDoc} */
-    public void setExpression(ExpressionType expression){
-        this.expression = prepareForAssignment(this.expression, expression);
+    public void setExpression(ExpressionType exp){
+        expression = prepareForAssignment(expression, exp);
     }
 
     /** {@inheritDoc} */

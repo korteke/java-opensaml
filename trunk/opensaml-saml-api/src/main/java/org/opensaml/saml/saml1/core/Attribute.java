@@ -19,7 +19,11 @@ package org.opensaml.saml.saml1.core;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -30,21 +34,24 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Attribute extends AttributeDesignator {
 
     /** Element name, no namespace. */
-
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Attribute";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Attribute";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AttributeType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
-    /** Get all the subsiduary AttributeValue elements.
-     * @return the subsiduary attribute values */
-    public List<XMLObject> getAttributeValues();
+    /**
+     * Get all the subsiduary AttributeValue elements.
+     * 
+     * @return the subsiduary attribute values
+     */
+    @Nonnull @NonnullElements public List<XMLObject> getAttributeValues();
+    
 }

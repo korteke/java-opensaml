@@ -55,7 +55,8 @@ public class ResourceMatchTypeImpl extends AbstractXACMLObject implements Resour
 
     /** {@inheritDoc} */
     public AttributeSelectorType getAttributeSelector() {
-        List<XACMLObject> selectors = (List<XACMLObject>) attributeChoice.subList(AttributeSelectorType.DEFAULT_ELEMENT_NAME);
+        List<XACMLObject> selectors =
+                (List<XACMLObject>) attributeChoice.subList(AttributeSelectorType.DEFAULT_ELEMENT_NAME);
         if (selectors != null && !selectors.isEmpty()) {
             return (AttributeSelectorType) selectors.get(0);
         }

@@ -41,7 +41,7 @@ public class AttributeDesignatorTypeImpl extends AbstractXACMLObject implements 
     private String issuer;
 
     /** Must be present. */
-    private XSBooleanValue mustBePresentXS = null;
+    private XSBooleanValue mustBePresentXS;
 
     /**
      * Constructor.
@@ -53,70 +53,67 @@ public class AttributeDesignatorTypeImpl extends AbstractXACMLObject implements 
      * @param namespacePrefix
      *                the prefix for the given namespace
      */
-    protected AttributeDesignatorTypeImpl(String namespaceURI,
-	    String elementLocalName, String namespacePrefix) {
-	super(namespaceURI, elementLocalName, namespacePrefix);
-	mustBePresentXS = XSBooleanValue.valueOf("false");
+    protected AttributeDesignatorTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+        mustBePresentXS = XSBooleanValue.valueOf("false");
     }
 
     /** {@inheritDoc} */
     public String getAttributeId() {
-	return attributeId;
+        return attributeId;
     }
 
     /** {@inheritDoc} */
     public String getDataType() {
-	return dataType;
+        return dataType;
     }
 
     /** {@inheritDoc} */
     public String getIssuer() {
-	return issuer;
+        return issuer;
     }
 
     /** {@inheritDoc} */
     public XSBooleanValue getMustBePresentXSBoolean() {
-	return mustBePresentXS;
+        return mustBePresentXS;
     }
 
     /** {@inheritDoc} */
     public Boolean getMustBePresent() {
-	if (mustBePresentXS != null) {
-	    return mustBePresentXS.getValue();
-	}
-	return Boolean.FALSE;
+        if (mustBePresentXS != null) {
+            return mustBePresentXS.getValue();
+        }
+        return Boolean.FALSE;
     }
 
     /** {@inheritDoc} */
     public void setAttributeId(String id) {
-	this.attributeId = prepareForAssignment(this.attributeId, id);
+        this.attributeId = prepareForAssignment(this.attributeId, id);
     }
 
     /** {@inheritDoc} */
     public void setDataType(String type) {
-	this.dataType = prepareForAssignment(this.dataType, type);
+        this.dataType = prepareForAssignment(this.dataType, type);
     }
 
     /** {@inheritDoc} */
     public void setIssuer(String newIssuer) {
-	this.issuer = prepareForAssignment(this.issuer, newIssuer);
+        this.issuer = prepareForAssignment(this.issuer, newIssuer);
     }
 
     /** {@inheritDoc} */
     public void setMustBePresentXSBoolean(XSBooleanValue present) {
-	this.mustBePresentXS = prepareForAssignment(this.mustBePresentXS,
-		present);
+        this.mustBePresentXS = prepareForAssignment(this.mustBePresentXS,
+                present);
     }
 
     /** {@inheritDoc} */
     public void setMustBePresent(Boolean present) {
-	if (present != null) {
-	    this.mustBePresentXS = prepareForAssignment(this.mustBePresentXS,
-		    new XSBooleanValue(present, false));
-	} else {
-	    this.mustBePresentXS = prepareForAssignment(this.mustBePresentXS,
-		    null);
-	}
+        if (present != null) {
+            mustBePresentXS = prepareForAssignment(mustBePresentXS, new XSBooleanValue(present, false));
+        } else {
+            mustBePresentXS = prepareForAssignment(mustBePresentXS, null);
+        }
 
     }
 

@@ -31,7 +31,7 @@ public class ActionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
-        if (Action.NAMESPACEATTRIB_NAME.equals(attribute.getLocalName())) {
+        if (Action.NAMESPACE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             Action action = (Action) samlObject;
             action.setNamespace(attribute.getValue());
         } else {

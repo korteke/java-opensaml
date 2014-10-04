@@ -42,7 +42,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
@@ -151,7 +151,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return Objects.toStringHelper(this).add("bindingId", getId())
+        return MoreObjects.toStringHelper(this).add("bindingId", getId())
                 .add("synchronous", synchronous)
                 .add("artifact", artifact)
                 .toString();

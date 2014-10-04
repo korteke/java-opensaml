@@ -55,6 +55,7 @@ public class PolicySetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
         }
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
@@ -86,5 +87,6 @@ public class PolicySetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
-
+ // Checkstyle: CyclomaticComplexity ON
+    
 }

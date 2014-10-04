@@ -36,7 +36,7 @@ public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
         Action action = (Action) samlElement;
 
         if (action.getNamespace() != null) {
-            domElement.setAttributeNS(null, Action.NAMESPACEATTRIB_NAME, action.getNamespace());
+            domElement.setAttributeNS(null, Action.NAMESPACE_ATTRIB_NAME, action.getNamespace());
         }
     }
 

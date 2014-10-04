@@ -19,7 +19,12 @@ package org.opensaml.saml.saml1.core;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.joda.time.DateTime;
 import org.opensaml.saml.common.SAMLVersion;
@@ -32,134 +37,134 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Assertion extends SignableSAMLObject, Evidentiary {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Assertion";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Assertion";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AssertionType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AssertionType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the attribute which defines Major Version (attribute's value must be 1). */
-    public static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    @Nonnull @NotEmpty static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines Minor Version. */
-    public static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    @Nonnull @NotEmpty static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
     /** Name for the attribute which defines Assertion ID. */
-    public static final String ASSERTIONID_ATTRIB_NAME = "AssertionID";
+    @Nonnull @NotEmpty static final String ASSERTIONID_ATTRIB_NAME = "AssertionID";
 
     /** Name for the attribute which defines Issuer. */
-    public static final String ISSUER_ATTRIB_NAME = "Issuer";
+    @Nonnull @NotEmpty static final String ISSUER_ATTRIB_NAME = "Issuer";
 
     /** Name for the attribute which defines the issue instant. */
-    public static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    @Nonnull @NotEmpty static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** Name for the attribute which defines the Issue Instant. */
-    public static final String ID_ATTRIB_NAME = "AssertionID";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "AssertionID";
 
-    /* attributes */
+    /**
+     * Set the ID.
+     * 
+     * @return the ID
+     */
+    @Nullable String getID();
+
+    /**
+     * Get the ID.
+     * 
+     * @param id what to set
+     */
+    void setID(@Nullable final String id);
 
     /**
      * Get the MajorVersion attribute.
      * 
-     * @return The stored MajorVersion
+     * @return the stored MajorVersion
      */
-    public int getMajorVersion();
+    int getMajorVersion();
 
     /**
      * Get the MinorVersion attribute.
      * 
-     * @return The stored MinorVersion
+     * @return the stored MinorVersion
      */
-    public int getMinorVersion();
+    int getMinorVersion();
 
     /**
-     * Sets the SAML version of this assertion.
+     * Set the SAML version of this assertion.
      * 
      * @param version the SAML version of this assertion
      */
-    public void setVersion(SAMLVersion version);
+    void setVersion(@Nullable final SAMLVersion version);
 
     /**
      * Get the Issuer (which is an attribute) .
      * 
      * @return the Issuer
      */
-    public String getIssuer();
+    @Nullable String getIssuer();
 
     /**
      * Set the Issuer (attribute).
      * 
      * @param issuer the value to set
      */
-    public void setIssuer(String issuer);
+    void setIssuer(@Nullable final String issuer);
 
     /**
      * Get the IssueInstant (attribute).
      * 
      * @return the Issue Instant (as a Date)
      */
-    public DateTime getIssueInstant();
-
-    /** Set the ID.
-     * @return the ID. */
-    public String getID();
-
-    /** Get the ID.
-     * @param id what to set */
-    public void setID(String id);
+    @Nullable DateTime getIssueInstant();
 
     /**
      * Set the IssueInstance (attribute).
      * 
      * @param issueInstant the issue instant value to set
      */
-    public void setIssueInstant(DateTime issueInstant);
-
-    /* Singleton Elements */
+    void setIssueInstant(@Nullable final DateTime issueInstant);
 
     /**
      * Return the (singleton) Object, representing the <code> Conditions </code> sub element.
      * 
      * @return the Conditions object.
      */
-    public Conditions getConditions();
+    @Nullable Conditions getConditions();
 
     /**
      * Set the Object representing the <code> Conditions </code> Sub element.
      * 
      * @param conditions the condition to List
      */
-    public void setConditions(Conditions conditions);
+    void setConditions(@Nullable final Conditions conditions);
 
     /**
      * advice is a (singleton) Object, representing the <code> Advice </code> sub element.
      * 
      * @return the advice object in this assertion
      */
-    public Advice getAdvice();
+    @Nullable Advice getAdvice();
 
     /**
      * Set the Object representing the <code> Advice </code> sub element.
      * 
      * @param advice the object to set
      */
-    public void setAdvice(Advice advice);
-
-    /* Multiple Elements */
+    void setAdvice(@Nullable final Advice advice);
 
     /**
      * Return the List representing all the <code> Statement </code> sub elements.
      * 
      * @return the List representing all the statements
      */
-    public List<Statement> getStatements();
+    @Nonnull @NonnullElements List<Statement> getStatements();
 
     /**
      * Return the List representing all the <code> Statement </code> sub elements with a given schema type or element
@@ -169,33 +174,34 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * 
      * @return the List representing all the statements
      */
-    public List<Statement> getStatements(QName typeOrName);
+    @Nonnull @NonnullElements List<Statement> getStatements(@Nonnull final QName typeOrName);
 
     /**
      * Return the List representing all the <code> SubjectStatement </code> sub elements.
      * 
      * @return all the SubjectStatements
      */
-    public List<SubjectStatement> getSubjectStatements();
+    @Nonnull @NonnullElements List<SubjectStatement> getSubjectStatements();
 
     /**
      * Return the List representing all the <code> AuthenticationStatement </code> sub elements.
      * 
      * @return all the AuthenticationStatements
      */
-    public List<AuthenticationStatement> getAuthenticationStatements();
+    @Nonnull @NonnullElements List<AuthenticationStatement> getAuthenticationStatements();
 
     /**
      * Return the List representing all the <code> AuthorizationStatement </code> sub elements.
      * 
      * @return all the authorizationDecisionStatements.
      */
-    public List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements();
+    @Nonnull @NonnullElements List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements();
 
     /**
      * Return all the <code> AttributeStatement </code> elements.
      * 
      * @return all the attributeStatements
      */
-    public List<AttributeStatement> getAttributeStatements();
+    @Nonnull @NonnullElements List<AttributeStatement> getAttributeStatements();
+    
 }

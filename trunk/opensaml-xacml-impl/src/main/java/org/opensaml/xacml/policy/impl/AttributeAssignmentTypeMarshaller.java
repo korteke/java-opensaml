@@ -41,7 +41,7 @@ public class AttributeAssignmentTypeMarshaller extends AttributeValueTypeMarshal
                     .getAttributeId());
         }
         if(!Strings.isNullOrEmpty(attributeAssignment.getDataType())){
-        	super.marshallAttributes(samlElement, domElement);
+            super.marshallAttributes(samlElement, domElement);
         }
         
     }

@@ -18,10 +18,9 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xacml.policy.CombinerParametersType;
 
 /** 
- * Marshaller for {@link CombinerParametersType}.
+ * Marshaller for {@link org.opensaml.xacml.policy.CombinerParametersType}.
  */
 public class CombinerParametersTypeMarshaller extends AbstractXACMLObjectMarshaller {
 

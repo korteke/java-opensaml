@@ -18,8 +18,8 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xacml.policy.DefaultsType;
-/** Marshaller for {@link DefaultsType}. */
+
+/** Marshaller for {@link org.opensaml.xacml.policy.DefaultsType}. */
 public class DefaultsTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
     /** Constructor. */

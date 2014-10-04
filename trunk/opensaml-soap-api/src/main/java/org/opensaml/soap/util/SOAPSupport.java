@@ -542,7 +542,8 @@ public final class SOAPSupport {
         //TODO SOAP 1.2 support when object providers are implemented
         return false;
     }
-    
+
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Build a SOAP 1.1. Fault element.
      * 
@@ -561,11 +562,11 @@ public final class SOAPSupport {
         
         XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory(); 
         
-        Fault faultObj =  (Fault) builderFactory.getBuilder(Fault.DEFAULT_ELEMENT_NAME)
+        final Fault faultObj =  (Fault) builderFactory.getBuilder(Fault.DEFAULT_ELEMENT_NAME)
             .buildObject(Fault.DEFAULT_ELEMENT_NAME);
-        FaultCode faultCodeObj =  (FaultCode) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME)
+        final FaultCode faultCodeObj =  (FaultCode) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME)
             .buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
-        FaultString faultStringObj =  (FaultString) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME)
+        final FaultString faultStringObj =  (FaultString) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME)
             .buildObject(FaultString.DEFAULT_ELEMENT_NAME);
         
         faultCodeObj.setValue(faultCode);
@@ -575,7 +576,7 @@ public final class SOAPSupport {
         faultObj.setMessage(faultStringObj);
         
         if (faultActor != null) {
-            FaultActor faultActorObj =  (FaultActor) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME)
+            final FaultActor faultActorObj =  (FaultActor) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME)
                 .buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
             faultActorObj.setValue(faultActor);
             faultObj.setActor(faultActorObj);
@@ -594,7 +595,7 @@ public final class SOAPSupport {
                 detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
                     .buildObject(Detail.DEFAULT_ELEMENT_NAME);
             }
-            for (Entry<QName,String> entry : detailAttributes.entrySet()) {
+            for (final Entry<QName,String> entry : detailAttributes.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
                     detailObj.getUnknownAttributes().put(entry.getKey(), entry.getValue());
                 }
@@ -607,4 +608,6 @@ public final class SOAPSupport {
         
         return faultObj;
     }
+// Checkstyle: CyclomaticComplexity ON
+    
 }

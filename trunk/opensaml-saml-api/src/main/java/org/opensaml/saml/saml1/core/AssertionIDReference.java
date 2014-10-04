@@ -21,21 +21,25 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * This interface defines how the object representing a SAML 1 <code> AssertionIDReference </code> element behaves.
+ * This interface defines how the object representing a SAML 1 <code>AssertionIDReference</code> element behaves.
  */
 public interface AssertionIDReference extends SAMLObject, Evidentiary {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDReference";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDReference";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /**
@@ -43,12 +47,13 @@ public interface AssertionIDReference extends SAMLObject, Evidentiary {
      * 
      * @return the reference
      */
-    public String getReference();
+    @Nullable String getReference();
 
     /**
      * Set the reference.
      * 
      * @param newReference the reference
      */
-    public void setReference(String newReference);
+    void setReference(@Nullable final String newReference);
+    
 }

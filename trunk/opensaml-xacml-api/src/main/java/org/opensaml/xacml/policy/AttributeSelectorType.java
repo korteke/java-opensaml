@@ -26,36 +26,34 @@ import org.opensaml.xacml.XACMLConstants;
 public interface AttributeSelectorType extends ExpressionType {
 
     /** Local name of the element AttributeSelector. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeSelector";
+    static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeSelector";
 
     /** QName of the element AttributeSelector. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(
-	    XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-	    XACMLConstants.XACML_PREFIX);
+    static final QName DEFAULT_ELEMENT_NAME =
+            new QName(XACMLConstants.XACML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String SCHEMA_TYPE_LOCAL_NAME = "AttributeSelectorType";
+    static final String SCHEMA_TYPE_LOCAL_NAME = "AttributeSelectorType";
 
     /** QName of the XSI type. */
-    public static final QName SCHEMA_TYPE_NAME = new QName(
-	    XACMLConstants.XACML20_NS, SCHEMA_TYPE_LOCAL_NAME,
-	    XACMLConstants.XACML_PREFIX);
+    static final QName SCHEMA_TYPE_NAME =
+            new QName(XACMLConstants.XACML20_NS, SCHEMA_TYPE_LOCAL_NAME, XACMLConstants.XACML_PREFIX);
 
     /** RequestContextPath attribute name. */
-    public static final String REQUEST_CONTEXT_PATH_ATTRIB_NAME = "RequestContextPath";
+    static final String REQUEST_CONTEXT_PATH_ATTRIB_NAME = "RequestContextPath";
 
     /** DataType attribute name. */
-    public static final String DATA_TYPE_ATTRIB_NAME = "DataType";
+    static final String DATA_TYPE_ATTRIB_NAME = "DataType";
 
     /** MustBePresent attribute name. */
-    public static final String MUST_BE_PRESENT_ATTRIB_NAME = "MustBePresent";
+    static final String MUST_BE_PRESENT_ATTRIB_NAME = "MustBePresent";
 
     /**
      * Gets the request context path of the attribute to be selected.
      * 
      * @return request context path of the attribute to be selected
      */
-    public String getRequestContextPath();
+    String getRequestContextPath();
 
     /**
      * Sets the request context path of the attribute to be selected.
@@ -63,14 +61,14 @@ public interface AttributeSelectorType extends ExpressionType {
      * @param path
      *                request context path of the attribute to be selected
      */
-    public void setRequestContextPath(String path);
+    void setRequestContextPath(String path);
 
     /**
      * Gets the data type of the attribute to be selected.
      * 
      * @return data type of the attribute to be selected
      */
-    public String getDataType();
+    String getDataType();
 
     /**
      * Sets the data type of the attribute to be selected.
@@ -78,21 +76,21 @@ public interface AttributeSelectorType extends ExpressionType {
      * @param type
      *                data type of the attribute to be selected
      */
-    public void setDataType(String type);
+    void setDataType(String type);
 
     /**
      * Gets whether the attribute to be selected must be present.
      * 
      * @return whether the attribute to be selected must be present
      */
-    public Boolean getMustBePresent();
+    Boolean getMustBePresent();
 
     /**
      * Gets whether the attribute to be selected must be present.
      * 
      * @return whether the attribute to be selected must be present
      */
-    public XSBooleanValue getMustBePresentXSBoolean();
+    XSBooleanValue getMustBePresentXSBoolean();
 
     /**
      * Sets whether the attribute to be selected must be present.
@@ -100,7 +98,7 @@ public interface AttributeSelectorType extends ExpressionType {
      * @param present
      *                whether the attribute to be selected must be present
      */
-    public void setMustBePresent(Boolean present);
+    void setMustBePresent(Boolean present);
 
     /**
      * Sets whether the attribute to be selected must be present.
@@ -108,5 +106,5 @@ public interface AttributeSelectorType extends ExpressionType {
      * @param present
      *                whether the attribute to be selected must be present
      */
-    public void setMustBePresentXSBoolean(XSBooleanValue present);
+    void setMustBePresentXSBoolean(XSBooleanValue present);
 }

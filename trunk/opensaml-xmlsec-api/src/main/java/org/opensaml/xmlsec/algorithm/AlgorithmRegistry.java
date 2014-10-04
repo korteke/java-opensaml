@@ -104,7 +104,7 @@ public class AlgorithmRegistry {
         }
         
         boolean supported = runtimeSupported.contains(trimmed);
-        log.debug("Runtime support eval for algorithm URI '{}': {}", trimmed, (supported ? "supported" : "unsupported"));
+        log.debug("Runtime support eval for algorithm URI '{}': {}", trimmed, supported ? "supported" : "unsupported");
         return supported;
     }
     
@@ -300,12 +300,12 @@ public class AlgorithmRegistry {
             // Per Santuario XMLCipher: Some JDKs don't support RSA/ECB/OAEPPadding.
             // So check specifically for OAEPPadding with explicit SHA-1 digest and MGF1.
             if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP.equals(descriptor.getURI())) {
-                Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+                Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
                 log.trace("RSA OAEP algorithm passed as special case with OAEPWithSHA1AndMGF1Padding");
                 return true;
             }
             
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+        } catch (final NoSuchAlgorithmException | NoSuchPaddingException e) {
             log.trace("Special case eval for algorithm failed with exception", e);
         }
         

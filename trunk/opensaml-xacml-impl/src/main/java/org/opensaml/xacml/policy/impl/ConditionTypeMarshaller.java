@@ -18,10 +18,9 @@
 package org.opensaml.xacml.policy.impl;
 
 import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
-import org.opensaml.xacml.policy.ConditionType;
 
 /**
- * Marshaller for {@link ConditionType}.
+ * Marshaller for {@link org.opensaml.xacml.policy.ConditionType}.
  */
 public class ConditionTypeMarshaller extends AbstractXACMLObjectMarshaller {
 

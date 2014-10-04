@@ -118,39 +118,39 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             return null;
         }
 
-        X509Data x509Data = (X509Data) keyInfoChild;
+        final X509Data x509Data = (X509Data) keyInfoChild;
 
         log.debug("Attempting to extract credential from an X509Data");
 
-        List<X509Certificate> certs = extractCertificates(x509Data);
+        final List<X509Certificate> certs = extractCertificates(x509Data);
         if (certs.isEmpty()) {
             log.info("The X509Data contained no X509Certificate elements, skipping credential extraction");
             return null;
         }
-        List<X509CRL> crls = extractCRLs(x509Data);
+        final List<X509CRL> crls = extractCRLs(x509Data);
 
         PublicKey resolvedPublicKey = null;
         if (kiContext.getKey() != null && kiContext.getKey() instanceof PublicKey) {
             resolvedPublicKey = (PublicKey) kiContext.getKey();
         }
-        X509Certificate entityCert = findEntityCert(certs, x509Data, resolvedPublicKey);
+        final X509Certificate entityCert = findEntityCert(certs, x509Data, resolvedPublicKey);
         if (entityCert == null) {
             log.warn("The end-entity cert could not be identified, skipping credential extraction");
             return null;
         }
 
-        BasicX509Credential cred = new BasicX509Credential(entityCert);
+        final BasicX509Credential cred = new BasicX509Credential(entityCert);
         cred.setCRLs(crls);
         cred.setEntityCertificateChain(certs);
 
         cred.getKeyNames().addAll(kiContext.getKeyNames());
 
-        CredentialContext credContext = buildCredentialContext(kiContext);
+        final CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
             cred.getCredentialContextSet().add(credContext);
         }
 
-        LazySet<Credential> credentialSet = new LazySet<Credential>();
+        final LazySet<Credential> credentialSet = new LazySet<Credential>();
         credentialSet.add(cred);
         return credentialSet;
     }
@@ -166,7 +166,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         List<X509CRL> crls = null;
         try {
             crls = KeyInfoSupport.getCRLs(x509Data);
-        } catch (CRLException e) {
+        } catch (final CRLException e) {
             log.error("Error extracting CRLs from X509Data", e);
             throw new SecurityException("Error extracting CRLs from X509Data", e);
         }
@@ -187,7 +187,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         List<X509Certificate> certs = null;
         try {
             certs = KeyInfoSupport.getCertificates(x509Data);
-        } catch (CertificateException e) {
+        } catch (final CertificateException e) {
             log.error("Error extracting certificates from X509Data", e);
             throw new SecurityException("Error extracting certificates from X509Data", e);
         }
@@ -270,7 +270,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     @Nullable protected X509Certificate findCertFromKey(@Nonnull final List<X509Certificate> certs,
             @Nullable final PublicKey key) {
         if (key != null) {
-            for (X509Certificate cert : certs) {
+            for (final X509Certificate cert : certs) {
                 if (cert.getPublicKey().equals(key)) {
                     return cert;
                 }
@@ -288,17 +288,17 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     @Nullable protected X509Certificate findCertFromSubjectNames(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509SubjectName> names) {
-        for (X509SubjectName subjectName : names) {
+        for (final X509SubjectName subjectName : names) {
             if (!Strings.isNullOrEmpty(subjectName.getValue())) {
                 X500Principal subjectX500Principal = null;
                 try {
                     subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     log.warn("X500 subject name '{}' could not be parsed by configured X500DNHandler '{}'",
                             subjectName.getValue(), x500DNHandler.getClass().getName());
                     return null;
                 }
-                for (X509Certificate cert : certs) {
+                for (final X509Certificate cert : certs) {
                     if (cert.getSubjectX500Principal().equals(subjectX500Principal)) {
                         return cert;
                     }
@@ -317,22 +317,22 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     @Nullable protected X509Certificate findCertFromIssuerSerials(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509IssuerSerial> serials) {
-        for (X509IssuerSerial issuerSerial : serials) {
+        for (final X509IssuerSerial issuerSerial : serials) {
             if (issuerSerial.getX509IssuerName() == null || issuerSerial.getX509SerialNumber() == null) {
                 continue;
             }
-            String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
-            BigInteger serialNumber = issuerSerial.getX509SerialNumber().getValue();
+            final String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
+            final BigInteger serialNumber = issuerSerial.getX509SerialNumber().getValue();
             if (!Strings.isNullOrEmpty(issuerNameValue)) {
                 X500Principal issuerX500Principal = null;
                 try {
                     issuerX500Principal = x500DNHandler.parse(issuerNameValue);
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     log.warn("X500 issuer name '{}' could not be parsed by configured X500DNHandler '{}'",
                             issuerNameValue, x500DNHandler.getClass().getName());
                     return null;
                 }
-                for (X509Certificate cert : certs) {
+                for (final X509Certificate cert : certs) {
                     if (cert.getIssuerX500Principal().equals(issuerX500Principal)
                             && cert.getSerialNumber().equals(serialNumber)) {
                         return cert;
@@ -352,11 +352,11 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     @Nullable protected X509Certificate findCertFromSubjectKeyIdentifier(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509SKI> skis) {
-        for (X509SKI ski : skis) {
+        for (final X509SKI ski : skis) {
             if (!Strings.isNullOrEmpty(ski.getValue())) {
-                byte[] xmlValue = Base64Support.decode(ski.getValue());
-                for (X509Certificate cert : certs) {
-                    byte[] certValue = X509Support.getSubjectKeyIdentifier(cert);
+                final byte[] xmlValue = Base64Support.decode(ski.getValue());
+                for (final X509Certificate cert : certs) {
+                    final byte[] certValue = X509Support.getSubjectKeyIdentifier(cert);
                     if (certValue != null && Arrays.equals(xmlValue, certValue)) {
                         return cert;
                     }
@@ -375,24 +375,22 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     @Nullable protected X509Certificate findCertFromDigest(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509Digest> digests) {
-        byte[] certValue;
-        byte[] xmlValue;
         
-        for (X509Digest digest : digests) {
+        for (final X509Digest digest : digests) {
             if (!Strings.isNullOrEmpty(digest.getValue()) && !Strings.isNullOrEmpty(digest.getAlgorithm())) {
                 String alg = AlgorithmSupport.getAlgorithmID(digest.getAlgorithm());
                 if (alg == null) {
                     log.warn("Algorithm {} not supported", digest.getAlgorithm());
                     continue;
                 }
-                xmlValue = Base64Support.decode(digest.getValue());
+                final byte[] xmlValue = Base64Support.decode(digest.getValue());
                 for (X509Certificate cert : certs) {
                     try {
-                        certValue = X509Support.getX509Digest(cert, alg);
+                        final byte[] certValue = X509Support.getX509Digest(cert, alg);
                         if (certValue != null && Arrays.equals(xmlValue, certValue)) {
                             return cert;
                         }
-                    } catch (SecurityException e) {
+                    } catch (final SecurityException e) {
                         // Ignore as no match.
                     }
                 }
