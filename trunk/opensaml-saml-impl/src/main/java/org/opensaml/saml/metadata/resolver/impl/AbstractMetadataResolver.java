@@ -325,7 +325,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
         if (Strings.isNullOrEmpty(entityID)) {
             log.debug("EntityDescriptor entityID was null or empty, skipping search for it");
-            return null;
+            return Collections.emptyList();
         }
 
         List<EntityDescriptor> descriptors = lookupIndexedEntityID(entityID);
