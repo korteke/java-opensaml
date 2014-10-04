@@ -249,10 +249,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         }
 
         if (httpStatusCode != HttpStatus.SC_OK) {
-            String errMsg = "Non-ok status code " + httpStatusCode + " returned from remote metadata source: " 
-                    + requestURI;
-            log.error(errMsg);
-            throw new ResolverException(errMsg);
+            log.warn("Non-ok status code '{}' returned from remote metadata source: {}", httpStatusCode, requestURI);
+            return;
         }
         
         
@@ -261,7 +259,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             try {
                 validateResponse(response, requestURI);
             } catch (ResolverException e) {
-                // TODO for now don't treat this as fatal, just return. Maybe re-evaluate.
                 log.error("Problem validating dynamic metadata HTTP response", e);
                 return;
             }
@@ -270,7 +267,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                 InputStream ins = response.getEntity().getContent();
                 root = unmarshallMetadata(ins);
             } catch (IOException | UnmarshallingException e) {
-                // TODO for now don't treat this as fatal, just return. Maybe re-evaluate.
                 log.error("Error unmarshalling HTTP response stream", e);
                 return;
             }
@@ -281,7 +277,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         try {
             processNewMetadata(root);
         } catch (FilterException e) {
-            // TODO for now don't treat this as fatal, just return. Maybe re-evaluate.
             log.error("Metadata filtering problem processing new metadata", e);
             return;
         }
