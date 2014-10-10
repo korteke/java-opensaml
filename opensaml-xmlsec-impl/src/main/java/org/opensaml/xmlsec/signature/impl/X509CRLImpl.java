@@ -18,16 +18,14 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.Collections;
-
 import java.util.List;
+import java.util.Objects;
 
 import net.shibboleth.utilities.java.support.collection.IndexingObjectStore;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.X509CRL;
-
-import com.google.common.base.Objects;
 
 /** Concrete implementation of {@link X509CRL}. */
 public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
@@ -57,22 +55,24 @@ public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
     /** {@inheritDoc} */
     public void setValue(String newValue) {
         // Dump our cached DOM if the new value really is new
-        String currentCert = B64_CRL_STORE.get(b64CRLIndex);
-        String b64Cert = prepareForAssignment(currentCert, newValue);
+        final String currentCert = B64_CRL_STORE.get(b64CRLIndex);
+        final String b64Cert = prepareForAssignment(currentCert, newValue);
 
         // This is a new value, remove the old one, add the new one
-        if (!Objects.equal(currentCert, b64Cert)) {
+        if (!Objects.equals(currentCert, b64Cert)) {
             B64_CRL_STORE.remove(b64CRLIndex);
             b64CRLIndex = B64_CRL_STORE.put(b64Cert);
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void finalize() throws Throwable {
         super.finalize();
         B64_CRL_STORE.remove(b64CRLIndex);

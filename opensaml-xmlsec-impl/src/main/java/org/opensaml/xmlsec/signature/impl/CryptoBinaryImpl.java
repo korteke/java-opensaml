@@ -18,12 +18,12 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.CryptoBinary;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -46,6 +46,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     }
 
     /** {@inheritDoc} */
+    @Override
     public BigInteger getValueBigInt() {
         if (bigIntValue == null && !Strings.isNullOrEmpty(getValue())) {
             bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(getValue());
@@ -54,6 +55,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setValueBigInt(BigInteger bigInt) {
         if (bigInt == null) {
             setValue(null);
@@ -64,9 +66,10 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     }
     
     /** {@inheritDoc} */
+    @Override
     public void setValue(String newValue) {
         if (bigIntValue != null 
-                && (!Objects.equal(getValue(), newValue) || newValue == null)) {
+                && (!Objects.equals(getValue(), newValue) || newValue == null)) {
             // Just clear the cached value, my not be needed in big int form again,
             // let it be lazily recreated if necessary
             bigIntValue = null;

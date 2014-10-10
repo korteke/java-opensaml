@@ -19,6 +19,7 @@ package org.opensaml.saml.saml1.profile.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,7 +52,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -177,7 +177,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         final SAMLBindingContext bindingCtx = profileRequestContext.getOutboundMessageContext().getSubcontext(
                 SAMLBindingContext.class, false);
         artifactProfile = bindingCtx != null
-                && Objects.equal(bindingCtx.getBindingUri(), SAMLConstants.SAML1_ARTIFACT_BINDING_URI);
+                && Objects.equals(bindingCtx.getBindingUri(), SAMLConstants.SAML1_ARTIFACT_BINDING_URI);
         
         return super.doPreExecute(profileRequestContext);
     }

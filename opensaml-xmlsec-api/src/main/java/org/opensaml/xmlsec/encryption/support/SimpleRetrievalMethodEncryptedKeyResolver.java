@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -33,7 +34,6 @@ import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
@@ -86,7 +86,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
         }
 
         for (RetrievalMethod rm : encryptedData.getKeyInfo().getRetrievalMethods()) {
-            if (!Objects.equal(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
+            if (!Objects.equals(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
                 continue;
             } else if (rm.getTransforms() != null) {
                 log.warn("EncryptedKey RetrievalMethod has transforms, cannot process");

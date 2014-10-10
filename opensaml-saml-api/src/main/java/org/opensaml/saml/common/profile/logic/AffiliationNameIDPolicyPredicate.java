@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.profile.logic;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,8 +36,6 @@ import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Objects;
 
 /**
  * Evaluates name identifier data and enforces a default policy over its content.
@@ -93,7 +93,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
                 final AffiliationDescriptor descriptor = affiliation.getAffiliationDescriptor();
                 if (descriptor != null) {
                     for (final AffiliateMember member : descriptor.getMembers()) {
-                        if (Objects.equal(member.getID(), requesterId)) {
+                        if (Objects.equals(member.getID(), requesterId)) {
                             log.debug("Entity {} is authorized as a member of Affiliation {}", requesterId,
                                     spNameQualifier);
                             return true;

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.binding.impl;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import org.opensaml.saml.common.binding.AbstractEndpointResolver;
@@ -26,8 +28,6 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Objects;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -113,7 +113,7 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         
         // Check binding.
         if (comparisonEndpoint.getBinding() != null &&
-                !Objects.equal(comparisonEndpoint.getBinding(), endpoint.getBinding())) {
+                !Objects.equals(comparisonEndpoint.getBinding(), endpoint.getBinding())) {
             log.debug("{} Candidate endpoint binding did not match {}", getLogPrefix(),
                     comparisonEndpoint.getBinding());
             return false;
@@ -121,8 +121,8 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         
         // Check location.
         if (comparisonEndpoint.getLocation() != null) {
-            if (!Objects.equal(comparisonEndpoint.getLocation(), endpoint.getLocation())
-                    && !Objects.equal(comparisonEndpoint.getLocation(), endpoint.getResponseLocation())) {
+            if (!Objects.equals(comparisonEndpoint.getLocation(), endpoint.getLocation())
+                    && !Objects.equals(comparisonEndpoint.getLocation(), endpoint.getResponseLocation())) {
                 log.debug("{} Candidate endpoint location did not match {}", getLogPrefix(),
                         comparisonEndpoint.getLocation());
                 return false;
@@ -135,7 +135,7 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
             if (!(endpoint instanceof IndexedEndpoint)) {
                 log.debug("{} Candidate endpoint was not indexed, so did not match", getLogPrefix());
                 return false;
-            } else if (!Objects.equal(((IndexedEndpoint) comparisonEndpoint).getIndex(),
+            } else if (!Objects.equals(((IndexedEndpoint) comparisonEndpoint).getIndex(),
                     ((IndexedEndpoint) endpoint).getIndex())) {
                 log.debug("{} Candidate endpoint index did not match {}", getLogPrefix(),
                         ((IndexedEndpoint) comparisonEndpoint).getIndex());

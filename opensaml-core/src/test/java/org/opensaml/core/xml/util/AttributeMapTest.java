@@ -20,6 +20,8 @@ package org.opensaml.core.xml.util;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
+
+import java.util.Objects;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -33,8 +35,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.util.AttributeMap;
-
-import com.google.common.base.Objects;
 
 /**
  * Test the NamespaceManger used by XMLObjects.
@@ -182,8 +182,8 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
     }
     
     private boolean equals(Namespace ns1, Namespace ns2) {
-        if (Objects.equal(ns1.getNamespaceURI(), ns1.getNamespaceURI()) 
-                && Objects.equal(ns2.getNamespacePrefix(), ns2.getNamespacePrefix())) {
+        if (Objects.equals(ns1.getNamespaceURI(), ns1.getNamespaceURI()) 
+                && Objects.equals(ns2.getNamespacePrefix(), ns2.getNamespacePrefix())) {
             return true;
         } else {
             return false;

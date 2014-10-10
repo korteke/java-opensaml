@@ -17,12 +17,12 @@
 
 package org.opensaml.core.xml;
 
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
-import com.google.common.base.Objects;
 
 /** Data structure for representing XML namespace attributes. */
 public class Namespace {
@@ -103,9 +103,9 @@ public class Namespace {
         }
         
         if (obj instanceof Namespace) {
-            Namespace otherNamespace = (Namespace) obj;
-            if (Objects.equal(otherNamespace.getNamespaceURI(), getNamespaceURI())){
-                if (Objects.equal(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
+            final Namespace otherNamespace = (Namespace) obj;
+            if (Objects.equals(otherNamespace.getNamespaceURI(), getNamespaceURI())){
+                if (Objects.equals(otherNamespace.getNamespacePrefix(), getNamespacePrefix())){
                     return true;
                 }
             }

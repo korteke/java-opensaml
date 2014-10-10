@@ -23,6 +23,7 @@ import java.security.Signature;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -39,8 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.MoreObjects.ToStringHelper;
-import com.google.common.base.Objects;
 
 /**
  * A registry of {@link AlgorithmDescriptor} instances, to support various use cases for working with algorithm URIs.
@@ -336,6 +335,7 @@ public class AlgorithmRegistry {
         }
         
         /** {@inheritDoc} */
+        @Override
         public int hashCode() {
             int result = 17;  
             result = 37*result + key.hashCode();
@@ -344,25 +344,26 @@ public class AlgorithmRegistry {
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean equals(Object obj) {
             if (obj == this) {
                 return true;
             }
             
             if (obj instanceof SignatureAlgorithmIndex) {
-               SignatureAlgorithmIndex other = (SignatureAlgorithmIndex) obj; 
-               return Objects.equal(this.key, other.key) && Objects.equal(this.digest, other.digest);
+               final SignatureAlgorithmIndex other = (SignatureAlgorithmIndex) obj; 
+               return Objects.equals(key, other.key) && Objects.equals(digest, other.digest);
             }
             
             return false;
         }
 
         /** {@inheritDoc} */
+        @Override
         public String toString() {
-            ToStringHelper tsh = MoreObjects.toStringHelper(this);
-            tsh.add("Key", key);
-            tsh.add("Digest", digest);
-            return tsh.toString();
+            return MoreObjects.toStringHelper(this)
+                .add("Key", key)
+                .add("Digest", digest).toString();
         }
         
     }

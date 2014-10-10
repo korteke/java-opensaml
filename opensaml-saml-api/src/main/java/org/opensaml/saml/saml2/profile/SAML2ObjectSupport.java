@@ -17,14 +17,14 @@
 
 package org.opensaml.saml.saml2.profile;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml2.core.NameID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Objects;
 
 /**
  * A helper class for working with SAMLObjects.
@@ -47,7 +47,7 @@ public final class SAML2ObjectSupport {
     public static boolean areNameIDFormatsEquivalent(@Nullable final String format1,
             @Nullable final String format2) {
         
-        return Objects.equal(
+        return Objects.equals(
                 format1 != null ? format1 : NameID.UNSPECIFIED,
                 format2 != null ? format2 : NameID.UNSPECIFIED);
     }
@@ -61,9 +61,9 @@ public final class SAML2ObjectSupport {
      */
     public static boolean areNameIDsEquivalent(@Nonnull final NameID name1, @Nonnull final NameID name2) {
         return areNameIDFormatsEquivalent(name1.getFormat(), name2.getFormat())
-                && Objects.equal(name1.getValue(), name2.getValue())
-                && Objects.equal(name1.getNameQualifier(), name2.getNameQualifier())
-                && Objects.equal(name1.getSPNameQualifier(), name2.getSPNameQualifier());
+                && Objects.equals(name1.getValue(), name2.getValue())
+                && Objects.equals(name1.getNameQualifier(), name2.getNameQualifier())
+                && Objects.equals(name1.getSPNameQualifier(), name2.getSPNameQualifier());
     }
 
     

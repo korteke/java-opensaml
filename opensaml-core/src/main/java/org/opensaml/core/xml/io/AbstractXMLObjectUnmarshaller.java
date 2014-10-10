@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.io;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
@@ -39,8 +41,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
-
-import com.google.common.base.Objects;
 
 /**
  * An thread safe abstract unmarshaller. This unmarshaller will:
@@ -172,9 +172,9 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         log.trace("Pre-processing attribute {}", attribName);
         String attributeNamespace = StringSupport.trimOrNull(attribute.getNamespaceURI());
 
-        if (Objects.equal(attributeNamespace, XMLConstants.XMLNS_NS)) {
+        if (Objects.equals(attributeNamespace, XMLConstants.XMLNS_NS)) {
             unmarshallNamespaceAttribute(xmlObject, attribute);
-        } else if (Objects.equal(attributeNamespace, XMLConstants.XSI_NS)) {
+        } else if (Objects.equals(attributeNamespace, XMLConstants.XSI_NS)) {
             unmarshallSchemaInstanceAttributes(xmlObject, attribute);
         } else {
             if (log.isTraceEnabled()) {
@@ -209,7 +209,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
                     QNameSupport.getNodeQName(attribute));
         }
         Namespace namespace;
-        if (Objects.equal(attribute.getLocalName(), XMLConstants.XMLNS_PREFIX)) {
+        if (Objects.equals(attribute.getLocalName(), XMLConstants.XMLNS_PREFIX)) {
             namespace = new Namespace(attribute.getValue(), null);
         } else {
             namespace = new Namespace(attribute.getValue(), attribute.getLocalName());
