@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -51,7 +52,6 @@ import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
@@ -102,7 +102,7 @@ public final class SOAPSupport {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME));
-            return Objects.equal("1", value) || Objects.equal("true", value);
+            return Objects.equals("1", value) || Objects.equals("true", value);
         }
         return false;
     }
@@ -311,7 +311,7 @@ public final class SOAPSupport {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(
                             org.opensaml.soap.soap12.MustUnderstandBearing.SOAP12_MUST_UNDERSTAND_ATTR_NAME));
-            return Objects.equal("1", value) || Objects.equal("true", value);
+            return Objects.equals("1", value) || Objects.equals("true", value);
         }
         return false;
     }
@@ -351,7 +351,7 @@ public final class SOAPSupport {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String value = StringSupport.trimOrNull(((AttributeExtensibleXMLObject) soapObject)
                     .getUnknownAttributes().get(org.opensaml.soap.soap12.RelayBearing.SOAP12_RELAY_ATTR_LOCAL_NAME));
-            return Objects.equal("1", value) || Objects.equal("true", value);
+            return Objects.equals("1", value) || Objects.equals("true", value);
         }
         return false;
     }

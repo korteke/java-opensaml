@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.profile;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -33,7 +35,6 @@ import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObject;
 
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
@@ -267,7 +268,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
             @Nonnull @NotEmpty final String theFormat) throws SAMLException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
-        if (!Objects.equal(format, theFormat)) {
+        if (!Objects.equals(format, theFormat)) {
             throw new SAMLException("The format to generate does not match the value configured");
         } else if (!apply(profileRequestContext)) {
             return null;
@@ -311,7 +312,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
         if (idpNameQualifier != null) {
             if (omitQualifiers) {
                 if (defaultIdPNameQualifierLookupStrategy == null
-                        || !Objects.equal(idpNameQualifier,
+                        || !Objects.equals(idpNameQualifier,
                                 defaultIdPNameQualifierLookupStrategy.apply(profileRequestContext))) {
                     return idpNameQualifier;
                 } else {
@@ -338,7 +339,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
         if (spNameQualifier != null) {
             if (omitQualifiers) {
                 if (defaultSPNameQualifierLookupStrategy == null
-                        || !Objects.equal(spNameQualifier,
+                        || !Objects.equals(spNameQualifier,
                                 defaultSPNameQualifierLookupStrategy.apply(profileRequestContext))) {
                     return spNameQualifier;
                 } else {

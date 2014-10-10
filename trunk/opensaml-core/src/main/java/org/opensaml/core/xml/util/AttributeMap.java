@@ -20,6 +20,7 @@ package org.opensaml.core.xml.util;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -38,7 +39,6 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -87,7 +87,7 @@ public class AttributeMap implements Map<QName, String> {
     public String put(QName attributeName, String value) {
         Constraint.isNotNull(attributeName, "Attribute name cannot be null");
         String oldValue = get(attributeName);
-        if (!Objects.equal(value, oldValue)) {
+        if (!Objects.equals(value, oldValue)) {
             releaseDOM();
             attributes.put(attributeName, value);
             if (isIDAttribute(attributeName) || XMLObjectProviderRegistrySupport.isIDAttribute(attributeName)) {
@@ -126,7 +126,7 @@ public class AttributeMap implements Map<QName, String> {
             oldValue = resolveQName(oldValueString, true);
         }
         
-        if (!Objects.equal(oldValue, value)) {
+        if (!Objects.equals(oldValue, value)) {
             releaseDOM();
             if (value != null) {
                 // new value is not null, old value was either null or non-equal

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common.profile.impl;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -39,7 +41,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.base.Objects;
 
 /**
  * Action that verifies two sets of {@link ChannelBindings} from two different {@link ChannelBindingsContext}
@@ -171,10 +172,10 @@ public class VerifyChannelBindings extends AbstractProfileAction {
         
         for (final ChannelBindings cb1 : channelBindingsContext1.getChannelBindings()) {
             for (final ChannelBindings cb2 : channelBindingsContext2.getChannelBindings()) {
-                if (Objects.equal(cb1.getType(), cb2.getType())) {
+                if (Objects.equals(cb1.getType(), cb2.getType())) {
                     final String cb1Data = StringSupport.trimOrNull(cb1.getValue());
                     final String cb2Data = StringSupport.trimOrNull(cb2.getValue());
-                    if (Objects.equal(cb1Data, cb2Data)) {
+                    if (Objects.equals(cb1Data, cb2Data)) {
                         matched = cb1;
                         break;
                     }

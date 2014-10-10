@@ -17,14 +17,14 @@
 
 package org.opensaml.soap.wsaddressing.util;
 
+import java.util.Objects;
+
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.wsaddressing.IsReferenceParameterBearing;
-
-import com.google.common.base.Objects;
 
 /**
  * Helper methods for working with WS-Addressing.
@@ -74,7 +74,7 @@ public final class WSAddressingSupport {
         if (soapObject instanceof AttributeExtensibleXMLObject) {
             String valueStr = StringSupport.trimOrNull(((AttributeExtensibleXMLObject)soapObject)
                     .getUnknownAttributes().get(IsReferenceParameterBearing.WSA_IS_REFERENCE_PARAMETER_ATTR_NAME)); 
-            return Objects.equal("1", valueStr) || Objects.equal("true", valueStr);
+            return Objects.equals("1", valueStr) || Objects.equals("true", valueStr);
         }
         return false;
     }

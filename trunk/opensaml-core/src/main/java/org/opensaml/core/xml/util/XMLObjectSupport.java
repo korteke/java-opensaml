@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,8 +51,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.google.common.base.Objects;
 
 
 /**
@@ -285,7 +284,7 @@ public final class XMLObjectSupport {
         
         while (current != null) {
             for (Namespace ns : current.getNamespaces()) {
-                if (Objects.equal(ns.getNamespacePrefix(), prefix)) {
+                if (Objects.equals(ns.getNamespacePrefix(), prefix)) {
                     return ns.getNamespaceURI();
                 }
             }
@@ -308,7 +307,7 @@ public final class XMLObjectSupport {
         
         while (current != null) {
             for (Namespace ns : current.getNamespaces()) {
-                if (Objects.equal(ns.getNamespaceURI(), namespaceURI)) {
+                if (Objects.equals(ns.getNamespaceURI(), namespaceURI)) {
                     return ns.getNamespacePrefix();
                 }
             }

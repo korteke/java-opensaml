@@ -18,6 +18,7 @@
 package org.opensaml.core.xml;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -36,8 +37,6 @@ import org.opensaml.core.xml.util.IDIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
-
-import com.google.common.base.Objects;
 
 /**
  * An abstract implementation of XMLObject.
@@ -261,7 +260,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     @Nullable protected String prepareForAssignment(@Nullable final String oldValue, @Nullable final String newValue) {
         String newString = StringSupport.trimOrNull(newValue);
 
-        if (!Objects.equal(oldValue, newString)) {
+        if (!Objects.equals(oldValue, newString)) {
             releaseThisandParentDOM();
         }
 
@@ -359,7 +358,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     protected void registerOwnID(@Nullable final String oldID, @Nullable final String newID) {
         String newString = StringSupport.trimOrNull(newID);
 
-        if (!Objects.equal(oldID, newString)) {
+        if (!Objects.equals(oldID, newString)) {
             if (oldID != null) {
                 idIndex.deregisterIDMapping(oldID);
             }

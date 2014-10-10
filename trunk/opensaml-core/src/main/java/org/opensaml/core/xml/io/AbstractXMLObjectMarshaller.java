@@ -18,6 +18,7 @@
 package org.opensaml.core.xml.io;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -41,7 +42,6 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 /**
@@ -290,8 +290,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             if (!xmlObject.getNamespaceManager().getNamespaceDeclarations().contains(namespace)) {
                 log.trace("NamespaceManager getNamespaceDeclarations() did NOT contain namespace: {}",
                         namespace.toString());
-                if (Objects.equal(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)
-                        || Objects.equal(namespace.getNamespaceURI(), XMLConstants.XML_NS)) {
+                if (Objects.equals(namespace.getNamespacePrefix(), XMLConstants.XML_PREFIX)
+                        || Objects.equals(namespace.getNamespaceURI(), XMLConstants.XML_NS)) {
                     //the "xml" namespace never needs to be declared
                     continue;
                 }

@@ -17,11 +17,11 @@
 
 package org.opensaml.saml.criterion;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 
 import org.opensaml.saml.saml2.metadata.Endpoint;
-
-import com.google.common.base.Objects;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
@@ -110,13 +110,13 @@ public final class EndpointCriterion<EndpointType extends Endpoint> implements C
 
         if (obj instanceof EndpointCriterion) {
             final Endpoint endpoint2 = ((EndpointCriterion) obj).getEndpoint();
-            if (!Objects.equal(endpoint.getElementQName(), endpoint2.getElementQName())) {
+            if (!Objects.equals(endpoint.getElementQName(), endpoint2.getElementQName())) {
                 return false;
-            } else if (!Objects.equal(endpoint.getBinding(), endpoint2.getBinding())) {
+            } else if (!Objects.equals(endpoint.getBinding(), endpoint2.getBinding())) {
                 return false;
-            } else if (!Objects.equal(endpoint.getLocation(), endpoint2.getLocation())) {
+            } else if (!Objects.equals(endpoint.getLocation(), endpoint2.getLocation())) {
                 return false;
-            } else if (!Objects.equal(endpoint.getResponseLocation(), endpoint2.getResponseLocation())) {
+            } else if (!Objects.equals(endpoint.getResponseLocation(), endpoint2.getResponseLocation())) {
                 return false;
             }
             
