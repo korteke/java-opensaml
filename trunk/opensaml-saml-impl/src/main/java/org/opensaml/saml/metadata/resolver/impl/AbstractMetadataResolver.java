@@ -321,7 +321,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     @Nonnull @NonnullElements protected List<EntityDescriptor> lookupEntityID(@Nonnull @NotEmpty final String entityID)
             throws ResolverException {
         if (!isInitialized()) {
-            throw new ResolverException("Metadata provider has not been initialized");
+            throw new ResolverException("Metadata resolver has not been initialized");
         }
 
         if (Strings.isNullOrEmpty(entityID)) {
@@ -331,7 +331,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
         List<EntityDescriptor> descriptors = lookupIndexedEntityID(entityID);
         if (descriptors.isEmpty()) {
-            log.debug("Metadata document does not contain any EntityDescriptors with the ID {}", entityID);
+            log.debug("Metadata backing store does not contain any EntityDescriptors with the ID: {}", entityID);
             return descriptors;
         }
 
@@ -339,8 +339,8 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         while (entitiesIter.hasNext()) {
             EntityDescriptor descriptor = entitiesIter.next();
             if (!isValid(descriptor)) {
-                log.debug("Metadata document contained an EntityDescriptor with the ID {}, but it was no longer valid",
-                        entityID);
+                log.debug("Metadata backing store contained an EntityDescriptor with the ID: {}, " 
+                        + " but it was no longer valid", entityID);
                 entitiesIter.remove();
             }
         }
