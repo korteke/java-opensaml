@@ -17,11 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -36,8 +31,6 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
-import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -45,25 +38,15 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.DynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
 /**
  * Abstract subclass for metadata resolvers that resolve metadata dynamically, as needed and on demand.
@@ -71,15 +54,8 @@ import com.google.common.collect.Lists;
 public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataResolver 
         implements DynamicMetadataResolver {
     
-    /** Default list of supported content MIME types. */
-    public static final String[] DEFAULT_CONTENT_TYPES = 
-            new String[] {"application/samlmetadata+xml", "application/xml", "text/xml"};
-    
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractDynamicMetadataResolver.class);
-    
-    /** HTTP Client used to pull the metadata. */
-    private HttpClient httpClient;
     
     /** Timer used to schedule background metadata update tasks. */
     private Timer taskTimer;
@@ -87,14 +63,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     /** Whether we created our own task timer during object construction. */
     private boolean createdOwnTaskTimer;
     
-    /** List of supported MIME types for use in Accept request header and validation of 
-     * response Content-Type header.*/
-    private List<String> supportedContentTypes;
-    
-    /** Generated Accept request header value. */
-    private String supportedContentTypesValue;
-    
-    /** The maximum idle time for which the resolver will keep data for a given entityID, before it is removed. */
+    /** The maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
+     * before it is removed. */
     private Long maxIdleEntityData;
     
     /** The interval in milliseconds at which the cleanup task should run. */
@@ -106,23 +76,10 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     /**
      * Constructor.
      *
-     * @param client the instance of {@link HttpClient} used to fetch remote metadata
-     */
-    public AbstractDynamicMetadataResolver(@Nonnull final HttpClient client) {
-        this(null, client);
-    }
-    
-    /**
-     * Constructor.
-     *
      * @param backgroundTaskTimer the {@link Timer} instance used to run resolver background managment tasks
-     * @param client the instance of {@link HttpClient} used to fetch remote metadata
      */
-    public AbstractDynamicMetadataResolver(@Nullable final Timer backgroundTaskTimer, 
-            @Nonnull final HttpClient client) {
+    public AbstractDynamicMetadataResolver(@Nullable final Timer backgroundTaskTimer) {
         super();
-        
-        httpClient = Constraint.isNotNull(client, "HttpClient may not be null");
         
         if (backgroundTaskTimer == null) {
             taskTimer = new Timer(true);
@@ -133,32 +90,42 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         
         // Default to 30 minutes.
         cleanupTaskInterval = 30*60*1000L;
+        
+        // Default to 8 hours.
+        maxIdleEntityData = 8*60*60*1000L;
+        
     }
     
     /**
-     * Get the maximum idle time for which the resolver will keep data for a given entityID, before it is removed.
+     * Get the maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
+     * before it is removed.
      * 
-     * @return return the maximum idle time in milliseconds, or null if not value
+     * <p>Defaults to: 8 hours.</p>
+     * 
+     * @return return the maximum idle time in milliseconds
      */
-    @Nullable public Long getMaxIdleEntityData() {
+    @Nonnull public Long getMaxIdleEntityData() {
         return maxIdleEntityData;
     }
 
     /**
-     * Set the maximum idle time for which the resolver will keep data for a given entityID, before it is removed.
+     * Set the maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
+     * before it is removed.
+     * 
+     * <p>Defaults to: 8 hours.</p>
      * 
      * @param max the maximum entity data idle time, in milliseconds
      */
-    public void setMaxIdleEntityData(@Nullable final Long max) {
+    public void setMaxIdleEntityData(@Nonnull final Long max) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        maxIdleEntityData = max;
+        maxIdleEntityData = Constraint.isNotNull(max, "Max idle entity data may not be null");
     }
 
     /**
      * Get the interval in milliseconds at which the cleanup task should run.
      * 
-     * <p>The default is 30 minutes</p>
+     * <p>Defaults to: 30 minutes.</p>
      * 
      * @return return the interval, in milliseconds
      */
@@ -169,7 +136,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     /**
      * Set the interval in milliseconds at which the cleanup task should run.
      * 
-     * <p>The default is 30 minutes</p>
+     * <p>Defaults to: 30 minutes.</p>
      * 
      * @param interval the interval to set, in milliseconds
      */
@@ -179,31 +146,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         cleanupTaskInterval = Constraint.isNotNull(interval, "Cleanup task interval may not be null");
     }
 
-    /**
-     * Get the list of supported MIME types for use in Accept request header and validation of 
-     * response Content-Type header.
-     * 
-     * @return the supported content types
-     */
-    @NonnullAfterInit @NotLive @Unmodifiable public List<String> getSupportedContentTypes() {
-        return supportedContentTypes;
-    }
 
-    /**
-     * Set the list of supported MIME types for use in Accept request header and validation of 
-     * response Content-Type header.
-     * 
-     * @param types the new supported content types to set
-     */
-    public void setSupportedContentTypes(@Nullable final List<String> types) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        if (types == null) {
-            supportedContentTypes = Collections.emptyList();
-        } else {
-            supportedContentTypes = Lists.newArrayList(StringSupport.normalizeStringCollection(types));
-        }
-    }
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nonnull final CriteriaSet criteria) throws ResolverException {
@@ -241,175 +184,14 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the resolved metadata
      * @throws ResolverException  if there is a fatal error attempting to resolve the metadata
      */
-    @Nonnull @NonnullElements protected Iterable<EntityDescriptor> fetchByCriteria(@Nonnull final CriteriaSet criteria) 
-            throws ResolverException {
-        String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
-        Lock writeLock = getBackingStore().getManagementData(entityID).getReadWriteLock().writeLock(); 
-        
-        try {
-            writeLock.lock();
-            
-            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
-            if (!descriptors.isEmpty()) {
-                log.debug("Metadata was resolved and stored by another thread " 
-                        + "while this thread was waiting on the write lock");
-                return descriptors;
-            }
-            
-            HttpUriRequest request = buildHttpRequest(criteria);
-            if (request == null) {
-                log.debug("Could not build request based on input criteria, unable to query");
-                return Collections.emptyList();
-            }
-        
-            HttpResponse response = httpClient.execute(request);
-            
-            processResponse(response, request.getURI());
-            
-            return lookupEntityID(entityID);
-            
-        } catch (IOException e) {
-            log.error("Error executing HTTP request", e);
-            return Collections.emptyList();
-        } finally {
-            writeLock.unlock();
-        }
-        
-    }
+    @Nonnull @NonnullElements protected abstract Iterable<EntityDescriptor> fetchByCriteria(
+            @Nonnull final CriteriaSet criteria) throws ResolverException;
 
     /** {@inheritDoc} */
     @Nonnull @NonnullElements protected List<EntityDescriptor> lookupEntityID(@Nonnull String entityID) 
             throws ResolverException {
         getBackingStore().getManagementData(entityID).recordEntityAccess();
         return super.lookupEntityID(entityID);
-    }
-
-    /**
-     * Build an appropriate instance of {@link HttpUriRequest} based on the input criteria set.
-     * 
-     * @param criteria the input criteria set
-     * @return the newly constructed request, or null if it can not be built from the supplied criteria
-     */
-    @Nullable protected HttpUriRequest buildHttpRequest(@Nonnull final CriteriaSet criteria) {
-        String url = buildRequestURL(criteria);
-        log.debug("Built request URL of: {}", url);
-        
-        if (url == null) {
-            log.debug("Could not construct request URL from input criteria, unable to query");
-            return null;
-        }
-            
-        HttpGet getMethod = new HttpGet(url);
-        
-        if (!Strings.isNullOrEmpty(supportedContentTypesValue)) {
-            getMethod.addHeader("Accept", supportedContentTypesValue);
-        }
-        
-        // TODO other headers ?
-        
-        return getMethod;
-    }
-
-    /**
-     * Build the request URL based on the input criteria set.
-     * 
-     * @param criteria the input criteria set
-     * @return the request URL, or null if it can not be built based on the supplied criteria
-     */
-    @Nullable protected abstract String buildRequestURL(@Nonnull final CriteriaSet criteria);
-    
-    /**
-     * Process the received HTTP response, including validating the response, unmarshalling the received metadata,
-     * and storing the metadata in the backing store.  
-     * 
-     * @param response the received response
-     * @param requestURI the original request URI
-     * @throws ResolverException if there is a fatal error processing the response
-     */
-    protected void processResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
-            throws ResolverException {
-        
-        int httpStatusCode = response.getStatusLine().getStatusCode();
-        
-        // TODO should we be seeing/doing this? Probably not if we don't do conditional GET.
-        // But we will if we do pre-emptive refreshing of metadata in background thread.
-        if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
-            log.debug("Metadata document from '{}' has not changed since last retrieval", requestURI);
-            return;
-        }
-
-        if (httpStatusCode != HttpStatus.SC_OK) {
-            log.warn("Non-ok status code '{}' returned from remote metadata source: {}", httpStatusCode, requestURI);
-            return;
-        }
-        
-        
-        XMLObject root = null;
-        try {
-            try {
-                validateResponse(response, requestURI);
-            } catch (ResolverException e) {
-                log.error("Problem validating dynamic metadata HTTP response", e);
-                return;
-            }
-            
-            try {
-                InputStream ins = response.getEntity().getContent();
-                root = unmarshallMetadata(ins);
-            } catch (IOException | UnmarshallingException e) {
-                log.error("Error unmarshalling HTTP response stream", e);
-                return;
-            }
-        } finally {
-            closeResponse(response, requestURI);
-        }
-            
-        try {
-            processNewMetadata(root);
-        } catch (FilterException e) {
-            log.error("Metadata filtering problem processing new metadata", e);
-            return;
-        }
-        
-    }
-
-    /**
-     * Close the HTTP response instance.
-     * 
-     * @param response the received response
-     * @param requestURI the original request URI
-     */
-    protected void closeResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) {
-        if (response instanceof CloseableHttpResponse) {
-            try {
-                ((CloseableHttpResponse)response).close();
-            } catch (final IOException e) {
-                log.error("Error closing HTTP response from {}", requestURI, e);
-            }
-        }
-    }
-    
-    /**
-     * Validate the received HTTP response instance, such as checking for supported content types.
-     * 
-     * @param response the received response
-     * @param requestURI the original request URI
-     * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
-     */
-    public void validateResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
-            throws ResolverException {
-        if (!getSupportedContentTypes().isEmpty()) {
-            Header contentType = response.getEntity().getContentType();
-            if (contentType != null && contentType.getValue() != null) {
-                if (!getSupportedContentTypes().contains(contentType.getValue())) {
-                    throw new ResolverException("HTTP response specified an unsupported Content-Type: " 
-                            + contentType.getValue());
-                }
-            }
-        }
-        
-        // TODO other validation
-        
     }
 
     /**
@@ -429,19 +211,13 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             return;
         }
         
-        // TODO if is EntitiesDescriptor with multiple entityID's, then our per-entityID lock is not right
-        // - support EntitiesDescriptors case? It complicates things a lot.
-        
         // TODO handling case where exists already one (or more) entries for a given entityID when this is called
         // - either have to overwrite, or somehow pick one or the otheri, or (?) merge.
         
         if (filteredMetadata instanceof EntityDescriptor) {
             preProcessEntityDescriptor((EntityDescriptor)filteredMetadata, getBackingStore());
-        } else if (filteredMetadata instanceof EntitiesDescriptor) {
-            preProcessEntitiesDescriptor((EntitiesDescriptor)filteredMetadata, getBackingStore());
         } else {
-            log.warn("Document root was neither an EntityDescriptor nor an EntitiesDescriptor: {}", 
-                    root.getClass().getName());
+            log.warn("Document root was not an EntityDescriptor: {}", root.getClass().getName());
         }
     
     }
@@ -461,14 +237,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         super.initMetadataResolver();
         setBackingStore(createNewBackingStore());
         
-        if (getSupportedContentTypes() == null) {
-            setSupportedContentTypes(Arrays.asList(DEFAULT_CONTENT_TYPES));
-        }
-        
-        if (! getSupportedContentTypes().isEmpty()) {
-            supportedContentTypesValue = StringSupport.listToStringValue(getSupportedContentTypes(), ", ");
-        } 
-        
         cleanupTask = new BackingStoreCleanupSweeper();
         // Start with a delay of 1 minute, run at the user-specified interval
         taskTimer.schedule(cleanupTask, 1*60*1000, getCleanupTaskInterval());
@@ -482,11 +250,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         }
         cleanupTask = null;
         taskTimer = null;
-        
-        httpClient = null;
-        
-        supportedContentTypes = null;
-        supportedContentTypesValue = null;
         
         super.doDestroy();
     }
