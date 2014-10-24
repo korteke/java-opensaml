@@ -96,11 +96,20 @@ public class SecurityProviderTestSupport {
     
     /**
      * Return the current Java major version, e.g. 6, 7 or 8.
-     * @return
+     * @return the Java major version
      */
     public int getJavaVersion() {
         String versionStr = System.getProperty("java.version");
         return Integer.parseInt(versionStr.split("\\.")[1]);
+    }
+    
+    /**
+     * Determine if we're running on OpenJDK.
+     * @return true or false
+     */
+    public boolean isOpenJDK() {
+        return System.getProperty("java.runtime.name", "").startsWith("OpenJDK")
+                || System.getProperty("java.vm.name", "").startsWith("OpenJDK");
     }
 
 }
