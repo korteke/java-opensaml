@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
@@ -166,11 +167,14 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             
             List<EntityDescriptor> descriptors = lookupEntityID(entityID);
             if (!descriptors.isEmpty()) {
+                log.trace("Found requested metadata in backing store, returning");
                 return descriptors;
             }
         } finally {
             readLock.unlock();
         }
+        
+        log.trace("Did not find requested metadata in backing store, will attempt to fetch dynamically");
         
         return fetchByCriteria(criteria);
         
@@ -198,11 +202,19 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * Process the specified new metadata document, including metadata filtering, and store the 
      * processed metadata in the backing store.
      * 
+     * <p>
+     * In order to be processed successfully, the metadata (after filtering) must be an instance of
+     * {@link EntityDescriptor} and its <code>entityID</code> value must match the value supplied
+     * as the required <code>expectedEntityID</code> argument.
+     * </p>
+     * 
      * @param root the root of the new metadata document being processed
+     * @param expectedEntityID the expected entityID of the resolved metadata
      * 
      * @throws FilterException if there is a problem filtering the metadata
      */
-    @Nonnull protected void processNewMetadata(@Nonnull final XMLObject root) throws FilterException {
+    @Nonnull protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID) 
+            throws FilterException {
         
         XMLObject filteredMetadata = filterMetadata(root);
         
@@ -215,7 +227,13 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         // - either have to overwrite, or somehow pick one or the otheri, or (?) merge.
         
         if (filteredMetadata instanceof EntityDescriptor) {
-            preProcessEntityDescriptor((EntityDescriptor)filteredMetadata, getBackingStore());
+            EntityDescriptor entityDescriptor = (EntityDescriptor) filteredMetadata;
+            if (!Objects.equals(entityDescriptor.getEntityID(), expectedEntityID)) {
+                log.warn("New metadata's entityID '{}' does not match expected entityID '{}', will not process", 
+                        entityDescriptor.getEntityID(), expectedEntityID);
+               return; 
+            }
+            preProcessEntityDescriptor(entityDescriptor, getBackingStore());
         } else {
             log.warn("Document root was not an EntityDescriptor: {}", root.getClass().getName());
         }
@@ -386,8 +404,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
 
         /** {@inheritDoc} */
         public void run() {
-            if (isDestroyed()) {
-                // just in case the metadata provider was destroyed before this task runs
+            if (isDestroyed() || !isInitialized()) {
+                // just in case the metadata resolver was destroyed before this task runs, 
+                // or if it somehow is being called on a non-successfully-inited resolver instance.
                 return;
             }
             

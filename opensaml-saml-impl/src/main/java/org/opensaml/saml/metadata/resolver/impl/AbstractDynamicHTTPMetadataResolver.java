@@ -176,7 +176,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         
             HttpResponse response = httpClient.execute(request);
             
-            processResponse(response, request.getURI());
+            processResponse(response, request.getURI(), entityID);
             
             return lookupEntityID(entityID);
             
@@ -229,10 +229,11 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * @param response the received response
      * @param requestURI the original request URI
+     * @param expectedEntityID the expected entityID of the resolved metadata
      * @throws ResolverException if there is a fatal error processing the response
      */
-    protected void processResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
-            throws ResolverException {
+    protected void processResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI, 
+            @Nonnull final String expectedEntityID) throws ResolverException {
         
         int httpStatusCode = response.getStatusLine().getStatusCode();
         
@@ -252,7 +253,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         XMLObject root = null;
         try {
             try {
-                validateResponse(response, requestURI);
+                validateHttpResponse(response, requestURI);
             } catch (ResolverException e) {
                 log.error("Problem validating dynamic metadata HTTP response", e);
                 return;
@@ -270,7 +271,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         }
             
         try {
-            processNewMetadata(root);
+            processNewMetadata(root, expectedEntityID);
         } catch (FilterException e) {
             log.error("Metadata filtering problem processing new metadata", e);
             return;
@@ -301,7 +302,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param requestURI the original request URI
      * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
      */
-    public void validateResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
+    public void validateHttpResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
             throws ResolverException {
         if (!getSupportedContentTypes().isEmpty()) {
             Header contentType = response.getEntity().getContentType();
