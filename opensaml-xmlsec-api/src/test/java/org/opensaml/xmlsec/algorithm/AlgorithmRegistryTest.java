@@ -254,9 +254,15 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
                 Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
                 Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
             } else {
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
-                Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+                if (providerSupport.isOpenJDK()) {
+                    Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+                    Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+                    Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+                } else {
+                    Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+                    Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+                    Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+                }
                 
                 Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
                 
