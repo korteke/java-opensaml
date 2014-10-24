@@ -138,17 +138,20 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
                     Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_DIGEST_SHA224));
                     Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
                     Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+                    
+                    Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
                 } else {
                     Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_DIGEST_SHA224));
                     Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
                     Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+                    
+                    Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
                 }
-                
-                Assert.assertFalse(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
                 
                 Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
                 Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
                 Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+                
                 Assert.assertFalse(predicate.apply(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
             }
             
