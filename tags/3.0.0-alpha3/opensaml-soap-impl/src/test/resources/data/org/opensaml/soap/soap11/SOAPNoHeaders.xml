@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap11:Envelope xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap11:Body>
+        <m:GetLastTradePriceResponse xmlns:m="http://example.org/soap/ns/message">
+            <m:Price>34.5</m:Price>
+        </m:GetLastTradePriceResponse>
+    </soap11:Body>
+</soap11:Envelope>

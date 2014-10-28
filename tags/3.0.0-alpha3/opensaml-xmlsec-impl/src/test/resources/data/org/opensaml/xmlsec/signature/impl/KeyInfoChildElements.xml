@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:KeyName/>
+    <ds:KeyValue/>
+    <ds:X509Data/>
+    
+    <ds:KeyName/>
+    <ds:KeyValue/>
+    <ds:X509Data/>
+    
+    <ds:RetrievalMethod/>
+    
+    <ds:PGPData/>
+    <ds:SPKIData/>
+    <ds:MgmtData/>
+    
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+</ds:KeyInfo>

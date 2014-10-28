@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:ActionMatch xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" MatchId="http://example.org">
+    <xacml:AttributeValue/>
+    <xacml:ActionAttributeDesignator MustBePresent="false"/>
+    <xacml:AttributeSelector  MustBePresent="false"/>
+</xacml:ActionMatch>

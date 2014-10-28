@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:Status xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+	<xacml-context:StatusCode xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" Value="https://example.org/Status/Status/Code"/>
+	<xacml-context:StatusMessage xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">StatusStatusMessageTextstatusCode</xacml-context:StatusMessage>
+	<xacml-context:StatusDetail xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"/>
+</xacml-context:Status>
+	
+	
+

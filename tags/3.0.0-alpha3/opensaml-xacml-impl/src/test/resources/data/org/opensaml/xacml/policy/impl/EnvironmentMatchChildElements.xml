@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:EnvironmentMatch xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" MatchId="https://example.org/Environment/Match/Id">
+	<xacml:AttributeValue DataType="https://example.org/Environment/Match/Data/Type"/>
+	<xacml:EnvironmentAttributeDesignator DataType="https://example.org/Environment/Match/Data/Type" AttributeId="https://example.org/Environment/Match/Attribute/Id" />
+	<xacml:AttributeSelector RequestContextPath="ConextPathAttrSelect" DataType="https://example.org/Environment/Match/Data/Type" />
+</xacml:EnvironmentMatch>

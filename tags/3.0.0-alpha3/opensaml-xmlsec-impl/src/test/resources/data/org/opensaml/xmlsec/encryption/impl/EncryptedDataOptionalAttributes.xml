@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" Id="abc123" Type="someType" MimeType="someMimeType" Encoding="someEncoding"/>
