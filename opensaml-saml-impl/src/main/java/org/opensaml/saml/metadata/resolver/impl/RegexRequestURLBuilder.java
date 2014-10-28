@@ -42,6 +42,8 @@ public class RegexRequestURLBuilder implements Function<String, String> {
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nonnull String entityID) {
+        Constraint.isNotNull(entityID, "Entity ID was null");
+        
         //TODO logging, exception handling
         
         //TODO not sure if this approach is fundamentally right
