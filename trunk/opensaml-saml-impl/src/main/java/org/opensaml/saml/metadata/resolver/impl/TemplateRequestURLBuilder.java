@@ -17,17 +17,22 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.URISupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.velocity.Template;
+
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 
@@ -47,29 +52,64 @@ import com.google.common.base.Function;
  */
 public class TemplateRequestURLBuilder implements Function<String, String> {
     
+    /** The Velocity context variable name for the entity ID. */
     public static final String CONTEXT_KEY_ENTITY_ID = "entityID";
     
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(TemplateRequestURLBuilder.class);
+    
+    /** Velocity template instance used to render the request URL. */
     private Template template;
     
+    /** The template text, for logging purposes. */
+    private String templateText;
+    
+    /** Flag indicating whether to URL-encode the entity ID value before substitution. */
     private boolean encodeEntityID;
     
-    public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, @Nonnull @NotEmpty final String templateString) {
-        this(engine, templateString, true);
+    /**
+     * Constructor.
+     * 
+     * <p>The template character set will be US ASCII.</p>
+     *
+     * @param engine the {@link VelocityEngine} instance to use
+     * @param templateString the Velocity template string
+     * @param encoded true if entity ID should be URL-encoded prior to substitution, false otherwise
+     */
+    public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, 
+            @Nonnull @NotEmpty final String templateString, final boolean encoded) {
+        this(engine, templateString, encoded, StandardCharsets.US_ASCII);
     }
     
-    public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, @Nonnull @NotEmpty final String templateString, 
-            final boolean encoded) {
+    /**
+     * Constructor.
+     *
+     * @param engine the {@link VelocityEngine} instance to use
+     * @param templateString the Velocity template string
+     * @param encoded true if entity ID should be URL-encoded prior to substitution, false otherwise
+     * @param charSet character set of the template
+     */
+    public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, 
+            @Nonnull @NotEmpty final String templateString, final boolean encoded, @Nullable final Charset charSet) {
+        
         Constraint.isNotNull(engine, "VelocityEngine was null");
         
         String trimmedTemplate = StringSupport.trimOrNull(templateString);
-        Constraint.isNotNull(trimmedTemplate, "Template string was null or empty");
-        template = Template.fromTemplate(engine, trimmedTemplate);
+        templateText = Constraint.isNotNull(trimmedTemplate, "Template string was null or empty");
+        
+        if (charSet != null) {
+            template = Template.fromTemplate(engine, trimmedTemplate, charSet);
+        } else {
+            template = Template.fromTemplate(engine, trimmedTemplate);
+        }
         
         encodeEntityID = encoded;
     }
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nonnull String entityID) {
+        Constraint.isNotNull(entityID, "Entity ID was null");
+        
         VelocityContext context = new VelocityContext();
         if (encodeEntityID) {
             context.put(CONTEXT_KEY_ENTITY_ID, URISupport.doURLEncode(entityID));
@@ -77,9 +117,15 @@ public class TemplateRequestURLBuilder implements Function<String, String> {
             context.put(CONTEXT_KEY_ENTITY_ID, entityID);
         }
         
-        //TODO logging, exception handling
-        
-        return template.merge(context);
+        try {
+            String result = template.merge(context);
+            log.debug("From entityID '{}' and template text '{}', built request URL: {}", 
+                    entityID, templateText, result);
+            return result;
+        } catch (Throwable t) {
+            log.error("Encountered fatal error attempting to build request URL", t);
+            return null;
+        }
     }
 
 

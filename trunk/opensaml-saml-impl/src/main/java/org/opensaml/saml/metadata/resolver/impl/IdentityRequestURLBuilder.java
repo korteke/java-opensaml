@@ -20,6 +20,8 @@ package org.opensaml.saml.metadata.resolver.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,8 @@ public class IdentityRequestURLBuilder implements Function<String, String> {
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nonnull String entityID) {
+        Constraint.isNotNull(entityID, "Entity ID was null");
+        
         if (entityID.toLowerCase().startsWith("http:") || entityID.toLowerCase().startsWith("https:")) {
             log.debug("Saw entityID with HTTP/HTTPS URL syntax, returning the entityID itself as request URL");
             return entityID;
