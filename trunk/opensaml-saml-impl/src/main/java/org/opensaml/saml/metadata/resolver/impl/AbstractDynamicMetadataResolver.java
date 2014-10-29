@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -255,16 +257,16 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             
             List<EntityDescriptor> descriptors = lookupEntityID(entityID);
             if (!descriptors.isEmpty()) {
-                log.trace("Found requested metadata in backing store, returning");
+                log.debug("Found requested metadata in backing store, returning");
                 return descriptors;
             }
         } finally {
             readLock.unlock();
         }
         
-        log.trace("Did not find requested metadata in backing store, will attempt to fetch dynamically");
+        log.debug("Did not find requested metadata in backing store, will attempt to resolve dynamically");
         
-        return fetchByCriteria(criteria);
+        return resolveFromOriginSource(criteria);
         
     }
     
@@ -276,8 +278,57 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the resolved metadata
      * @throws ResolverException  if there is a fatal error attempting to resolve the metadata
      */
-    @Nonnull @NonnullElements protected abstract Iterable<EntityDescriptor> fetchByCriteria(
-            @Nonnull final CriteriaSet criteria) throws ResolverException;
+    @Nonnull @NonnullElements protected Iterable<EntityDescriptor> resolveFromOriginSource(
+            @Nonnull final CriteriaSet criteria) throws ResolverException {
+        
+        String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
+        Lock writeLock = getBackingStore().getManagementData(entityID).getReadWriteLock().writeLock(); 
+        
+        try {
+            writeLock.lock();
+            
+            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
+            if (!descriptors.isEmpty()) {
+                log.debug("Metadata was resolved and stored by another thread " 
+                        + "while this thread was waiting on the write lock");
+                return descriptors;
+            }
+            
+            log.debug("Resolving metadata dynamically for entity ID: {}", entityID);
+            
+            XMLObject root = fetchFromOriginSource(criteria);
+            if (root == null) {
+                log.debug("No metadata was fetched from the origin source");
+                return Collections.emptyList();
+            }
+            
+            try {
+                processNewMetadata(root, entityID);
+            } catch (FilterException e) {
+                log.error("Metadata filtering problem processing new metadata", e);
+                return Collections.emptyList();
+            }
+            
+            return lookupEntityID(entityID);
+            
+        } catch (IOException e) {
+            log.error("Error fetching metadata from origin source", e);
+            return Collections.emptyList();
+        } finally {
+            writeLock.unlock();
+        }
+        
+    }
+
+    /**
+     * Fetch the metadata from the origin source.
+     * 
+     * @param criteria the input criteria set
+     * @return the resolved metadata root XMLObject, or null if metadata could not be fetched
+     * @throws IOException if there is a fatal error fetching metadata from the origin source
+     */
+    @Nullable protected abstract XMLObject fetchFromOriginSource(@Nonnull final CriteriaSet criteria) 
+            throws IOException;
 
     /** {@inheritDoc} */
     @Nonnull @NonnullElements protected List<EntityDescriptor> lookupEntityID(@Nonnull String entityID) 
