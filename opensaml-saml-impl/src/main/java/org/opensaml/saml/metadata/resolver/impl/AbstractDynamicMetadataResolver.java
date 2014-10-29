@@ -39,6 +39,8 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.DynamicMetadataResolver;
@@ -68,6 +70,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * before it is removed. */
     private Long maxIdleEntityData;
     
+    /** Flag indicating whether idle entity data should be removed. */
+    private boolean removeIdleEntityData;
+    
     /** The interval in milliseconds at which the cleanup task should run. */
     private Long cleanupTaskInterval;
     
@@ -95,8 +100,30 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         // Default to 8 hours.
         maxIdleEntityData = 8*60*60*1000L;
         
+        // Default to removing idle metadata
+        removeIdleEntityData = true;
     }
     
+    /**
+     * Get the flag indicating whether idle entity data should be removed. 
+     * 
+     * @return true if idle entity data should be removed, false otherwise
+     */
+    public boolean isRemoveIdleEntityData() {
+        return removeIdleEntityData;
+    }
+
+    /**
+     * Set the flag indicating whether idle entity data should be removed. 
+     * 
+     * @param flag true if idle entity data should be removed, false otherwise
+     */
+    public void setRemoveIdleEntityData(boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        removeIdleEntityData = flag;
+    }
+
     /**
      * Get the maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
      * before it is removed.
@@ -355,23 +382,23 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     protected class EntityManagementData {
         
         /** The last time in milliseconds at which the entity's backing store data was accessed. */
-        private long lastAccessedTime;
+        private DateTime lastAccessedTime;
         
         /** Read-write lock instance which governs access to the entity's backing store data. */
         private ReadWriteLock readWriteLock;
         
         /** Constructor. */
         protected EntityManagementData() {
-            lastAccessedTime = System.currentTimeMillis();
+            lastAccessedTime = new DateTime(ISOChronology.getInstanceUTC());
             readWriteLock = new ReentrantReadWriteLock(true);
         }
         
         /**
-         * Get the last time in milliseconds at which the entity's backing store data was accessed.
+         * Get the last time at which the entity's backing store data was accessed.
          * 
          * @return the time in milliseconds since the epoch
          */
-        public long getLastAccessedTime() {
+        public DateTime getLastAccessedTime() {
             return lastAccessedTime;
         }
         
@@ -379,10 +406,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          * Record access of the entity's backing store data.
          */
         public void recordEntityAccess() {
-            long current = System.currentTimeMillis();
-            if (current > lastAccessedTime) {
-                lastAccessedTime = System.currentTimeMillis();
-            }
+            lastAccessedTime = new DateTime(ISOChronology.getInstanceUTC());
         }
 
         /**
@@ -407,12 +431,26 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             if (isDestroyed() || !isInitialized()) {
                 // just in case the metadata resolver was destroyed before this task runs, 
                 // or if it somehow is being called on a non-successfully-inited resolver instance.
+                log.debug("BackingStoreCleanupSweeper will not run because: inited: {}, destroyed: {}",
+                        isInitialized(), isDestroyed());
                 return;
             }
             
-            // Purge entries that haven't been accessed in the specified interval
-            long now = System.currentTimeMillis();
-            long latestValid = now - getMaxIdleEntityData();
+            if (isRemoveIdleEntityData()) {
+                removeIdleMetadata();
+            }
+            
+            // Cleanup mgmt data entries that don't have any indexed descriptors associated with them
+            DynamicEntityBackingStore backingStore = getBackingStore();
+            backingStore.cleanupOrphanedManagementData();
+        }
+
+        /**
+         *  Purge metadata that hasn't been accessed within the last 
+         *  {@link #getMaxIdleEntityData()} milliseconds.
+         */
+        private void removeIdleMetadata() {
+            DateTime earliestValid = new DateTime(ISOChronology.getInstanceUTC()).minus(getMaxIdleEntityData());
             
             DynamicEntityBackingStore backingStore = getBackingStore();
             Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
@@ -422,7 +460,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                 try {
                     writeLock.lock();
                     
-                    if (backingStore.getManagementData(entityID).getLastAccessedTime() < latestValid) {
+                    if (backingStore.getManagementData(entityID).getLastAccessedTime().isBefore(earliestValid)) {
+                        backingStore.getOrderedDescriptors().removeAll(indexedDescriptors.get(entityID));
                         indexedDescriptors.remove(entityID);
                         backingStore.removeManagementData(entityID);
                     }
@@ -431,9 +470,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                     writeLock.unlock();
                 }
             }
-            
-            // Cleanup mgmt data entries that don't have any indexed descriptors associated with them
-            backingStore.cleanupOrphanedManagementData();
         }
         
     }
