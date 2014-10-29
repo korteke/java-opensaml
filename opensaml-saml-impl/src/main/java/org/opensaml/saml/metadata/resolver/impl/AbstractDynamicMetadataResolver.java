@@ -45,6 +45,7 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.DynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,12 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     
     /** Whether we created our own task timer during object construction. */
     private boolean createdOwnTaskTimer;
+    
+    /** Minimum cache duration. */
+    private Long minCacheDuration;
+    
+    /** Maximum cache duration. */
+    private Long maxCacheDuration;
     
     /** The maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
      * before it is removed. */
@@ -94,6 +101,12 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             taskTimer = backgroundTaskTimer;
         }
         
+        // Default to 10 minutes.
+        minCacheDuration = 10*60*1000L;
+        
+        // Default to 8 hours.
+        maxCacheDuration = 8*60*60*1000L;
+        
         // Default to 30 minutes.
         cleanupTaskInterval = 30*60*1000L;
         
@@ -104,6 +117,54 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         removeIdleEntityData = true;
     }
     
+    /**
+     *  Get the minimum cache duration for metadata.
+     *  
+     *  <p>Defaults to: 10 minutes.</p>
+     *  
+     * @return the minimum cache duration, in milliseconds
+     */
+    @Nonnull public Long getMinCacheDuration() {
+        return minCacheDuration;
+    }
+
+    /**
+     *  Set the minimum cache duration for metadata.
+     *  
+     *  <p>Defaults to: 10 minutes.</p>
+     *  
+     * @param duration the minimum cache duration, in milliseconds
+     */
+    public void setMinCacheDuration(@Nonnull final Long duration) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        minCacheDuration = Constraint.isNotNull(duration, "Minimum cache duration may not be null");
+    }
+
+    /**
+     *  Get the maximum cache duration for metadata.
+     *  
+     *  <p>Defaults to: 8 hours.</p>
+     *  
+     * @return the maximum cache duration, in milliseconds
+     */
+    @Nonnull public Long getMaxCacheDuration() {
+        return maxCacheDuration;
+    }
+
+    /**
+     *  Set the maximum cache duration for metadata.
+     *  
+     *  <p>Defaults to: 8 hours.</p>
+     *  
+     * @param duration the maximum cache duration, in milliseconds
+     */
+    public void setMaxCacheDuration(@Nonnull final Long duration) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        maxCacheDuration = Constraint.isNotNull(duration, "Maximum cache duration may not be null");
+    }
+
     /**
      * Get the flag indicating whether idle entity data should be removed. 
      * 
@@ -268,6 +329,36 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     }
     
     /** {@inheritDoc} */
+    protected void preProcessEntityDescriptor(@Nonnull EntityDescriptor entityDescriptor, 
+            @Nonnull EntityBackingStore backingStore) {
+        
+        super.preProcessEntityDescriptor(entityDescriptor, backingStore);
+        
+        DynamicEntityBackingStore dynamicBackingStore = (DynamicEntityBackingStore) backingStore;
+        EntityManagementData mgmtData = dynamicBackingStore.getManagementData(entityDescriptor.getEntityID());
+        mgmtData.setExpirationTime(computeExpirationTime(entityDescriptor));
+    }
+
+    /**
+     * Compute the effective expiration time for the specified metadata.
+     * 
+     * @param entityDescriptor the EntityDescriptor instance to evaluate
+     * @return the effective expiration time for the metadata
+     */
+    @Nonnull protected DateTime computeExpirationTime(@Nonnull final EntityDescriptor entityDescriptor) {
+        DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+        DateTime lowerBound = now.plus(getMinCacheDuration());
+        
+        DateTime expiration = SAML2Support.getEarliestExpiration(entityDescriptor, 
+                now.plus(getMaxCacheDuration()), now);
+        if (expiration.isBefore(lowerBound)) {
+            expiration = lowerBound;
+        }
+        
+        return expiration;
+    }
+
+    /** {@inheritDoc} */
     @Nonnull protected DynamicEntityBackingStore createNewBackingStore() {
         return new DynamicEntityBackingStore();
     }
@@ -333,7 +424,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                 if (entityData != null) {
                     return entityData;
                 } else {
-                    entityData = new EntityManagementData();
+                    entityData = new EntityManagementData(entityID);
                     mgmtDataMap.put(entityID, entityData);
                     return entityData;
                 }
@@ -381,24 +472,62 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      */
     protected class EntityManagementData {
         
+        /** The entity ID managed by this instance. */
+        private String entityID;
+        
+        /** Expiration time of the associated metadata. */
+        private DateTime expirationTime;
+        
         /** The last time in milliseconds at which the entity's backing store data was accessed. */
         private DateTime lastAccessedTime;
         
         /** Read-write lock instance which governs access to the entity's backing store data. */
         private ReadWriteLock readWriteLock;
         
-        /** Constructor. */
-        protected EntityManagementData() {
+        /** Constructor. 
+         * 
+         * @param id the entity ID managed by this instance
+         */
+        protected EntityManagementData(@Nonnull final String id) {
+            entityID = Constraint.isNotNull(id, "Entity ID was null");
+            expirationTime = new DateTime(ISOChronology.getInstanceUTC()).plus(getMaxCacheDuration());
             lastAccessedTime = new DateTime(ISOChronology.getInstanceUTC());
             readWriteLock = new ReentrantReadWriteLock(true);
         }
         
         /**
+         * Get the entity ID managed by this instance.
+         * 
+         * @return the entity ID
+         */
+        @Nonnull public String getEntityID() {
+            return entityID;
+        }
+        
+        /**
+         * Get the expiration time of the metadata. 
+         * 
+         * @return the expiration time
+         */
+        @Nonnull public DateTime getExpirationTime() {
+            return expirationTime;
+        }
+
+        /**
+         * Set the expiration time of the metadata.
+         * 
+         * @param dateTime the new expiration time
+         */
+        public void setExpirationTime(@Nonnull final DateTime dateTime) {
+            expirationTime = Constraint.isNotNull(dateTime, "Expiration time may not be null");
+        }
+
+        /**
          * Get the last time at which the entity's backing store data was accessed.
          * 
          * @return the time in milliseconds since the epoch
          */
-        public DateTime getLastAccessedTime() {
+        @Nonnull public DateTime getLastAccessedTime() {
             return lastAccessedTime;
         }
         
@@ -414,17 +543,20 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          * 
          * @return the lock instance
          */
-        public ReadWriteLock getReadWriteLock() {
+        @Nonnull public ReadWriteLock getReadWriteLock() {
             return readWriteLock;
         }
         
     }
     
     /**
-     * Background maintenance task which cleans idle metadata from the backing store, and removes
+     * Background maintenance task which cleans expired and idle metadata from the backing store, and removes
      * orphaned entity management data.
      */
     protected class BackingStoreCleanupSweeper extends TimerTask {
+        
+        /** Logger. */
+        private final Logger log = LoggerFactory.getLogger(BackingStoreCleanupSweeper.class);
 
         /** {@inheritDoc} */
         public void run() {
@@ -436,21 +568,19 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                 return;
             }
             
-            if (isRemoveIdleEntityData()) {
-                removeIdleMetadata();
-            }
+            removeExpiredAndIdleMetadata();
             
             // Cleanup mgmt data entries that don't have any indexed descriptors associated with them
-            DynamicEntityBackingStore backingStore = getBackingStore();
-            backingStore.cleanupOrphanedManagementData();
+            getBackingStore().cleanupOrphanedManagementData();
         }
 
         /**
-         *  Purge metadata that hasn't been accessed within the last 
-         *  {@link #getMaxIdleEntityData()} milliseconds.
+         *  Purge metadata which is either 1) expired or 2) (if {@link #isRemoveIdleEntityData()} is true) 
+         *  which hasn't been accessed within the last {@link #getMaxIdleEntityData()} milliseconds.
          */
-        private void removeIdleMetadata() {
-            DateTime earliestValid = new DateTime(ISOChronology.getInstanceUTC()).minus(getMaxIdleEntityData());
+        private void removeExpiredAndIdleMetadata() {
+            DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+            DateTime earliestValidLastAccessed = now.minus(getMaxIdleEntityData());
             
             DynamicEntityBackingStore backingStore = getBackingStore();
             Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
@@ -460,7 +590,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                 try {
                     writeLock.lock();
                     
-                    if (backingStore.getManagementData(entityID).getLastAccessedTime().isBefore(earliestValid)) {
+                    EntityManagementData mgmtData = backingStore.getManagementData(entityID);
+                    
+                    if (isRemoveData(mgmtData, now, earliestValidLastAccessed)) {
                         backingStore.getOrderedDescriptors().removeAll(indexedDescriptors.get(entityID));
                         indexedDescriptors.remove(entityID);
                         backingStore.removeManagementData(entityID);
@@ -469,6 +601,28 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                 } finally {
                     writeLock.unlock();
                 }
+            }
+            
+        }
+        
+        /**
+         * Determine whether metadata should be removed based on expiration and idle time data.
+         * 
+         * @param mgmtData the management data instance for the entity
+         * @param now the current time
+         * @param earliestValidLastAccessed the earliest last accessed time which would be valid
+         * 
+         * @return true if the entity is expired or exceeds the max idle time, false otherwise
+         */
+        private boolean isRemoveData(EntityManagementData mgmtData, DateTime now, DateTime earliestValidLastAccessed) {
+            if (isRemoveIdleEntityData() && mgmtData.getLastAccessedTime().isBefore(earliestValidLastAccessed)) {
+                log.debug("Entity metadata exceeds maximum idle time, removing: {}", mgmtData.getEntityID());
+                return true;
+            } else if (now.isAfter(mgmtData.getExpirationTime())) {
+                log.debug("Entity metadata is expired, removing: {}", mgmtData.getEntityID());
+                return true;
+            } else {
+                return false;
             }
         }
         
