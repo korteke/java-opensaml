@@ -24,13 +24,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
-import java.util.concurrent.locks.Lock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -47,11 +45,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -153,40 +148,18 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     }
     
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements protected Iterable<EntityDescriptor> fetchByCriteria(@Nonnull final CriteriaSet criteria) 
-            throws ResolverException {
-        String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
-        Lock writeLock = getBackingStore().getManagementData(entityID).getReadWriteLock().writeLock(); 
-        
-        try {
-            writeLock.lock();
+    @Nullable protected XMLObject fetchFromOriginSource(@Nonnull final CriteriaSet criteria) 
+            throws IOException {
             
-            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
-            if (!descriptors.isEmpty()) {
-                log.debug("Metadata was resolved and stored by another thread " 
-                        + "while this thread was waiting on the write lock");
-                return descriptors;
-            }
-            
-            HttpUriRequest request = buildHttpRequest(criteria);
-            if (request == null) {
-                log.debug("Could not build request based on input criteria, unable to query");
-                return Collections.emptyList();
-            }
-        
-            HttpResponse response = httpClient.execute(request);
-            
-            processResponse(response, request.getURI(), entityID);
-            
-            return lookupEntityID(entityID);
-            
-        } catch (IOException e) {
-            log.error("Error executing HTTP request", e);
-            return Collections.emptyList();
-        } finally {
-            writeLock.unlock();
+        HttpUriRequest request = buildHttpRequest(criteria);
+        if (request == null) {
+            log.debug("Could not build request based on input criteria, unable to query");
+            return null;
         }
         
+        HttpResponse response = httpClient.execute(request);
+        
+        return processResponse(response, request.getURI());
     }
     
     /**
@@ -229,11 +202,10 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * @param response the received response
      * @param requestURI the original request URI
-     * @param expectedEntityID the expected entityID of the resolved metadata
-     * @throws ResolverException if there is a fatal error processing the response
+     * 
+     * @return the resolved metadata document root, or null if there was a fatal error
      */
-    protected void processResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI, 
-            @Nonnull final String expectedEntityID) throws ResolverException {
+    @Nullable protected XMLObject processResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) {
         
         int httpStatusCode = response.getStatusLine().getStatusCode();
         
@@ -241,42 +213,32 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         // But we will if we do pre-emptive refreshing of metadata in background thread.
         if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
             log.debug("Metadata document from '{}' has not changed since last retrieval", requestURI);
-            return;
+            return null;
         }
 
         if (httpStatusCode != HttpStatus.SC_OK) {
             log.warn("Non-ok status code '{}' returned from remote metadata source: {}", httpStatusCode, requestURI);
-            return;
+            return null;
         }
         
-        
-        XMLObject root = null;
         try {
             try {
                 validateHttpResponse(response, requestURI);
             } catch (ResolverException e) {
                 log.error("Problem validating dynamic metadata HTTP response", e);
-                return;
+                return null;
             }
             
             try {
                 InputStream ins = response.getEntity().getContent();
-                root = unmarshallMetadata(ins);
+                return unmarshallMetadata(ins);
             } catch (IOException | UnmarshallingException e) {
                 log.error("Error unmarshalling HTTP response stream", e);
-                return;
+                return null;
             }
         } finally {
             closeResponse(response, requestURI);
         }
-            
-        try {
-            processNewMetadata(root, expectedEntityID);
-        } catch (FilterException e) {
-            log.error("Metadata filtering problem processing new metadata", e);
-            return;
-        }
-        
     }
 
     /**
@@ -302,8 +264,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param requestURI the original request URI
      * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
      */
-    public void validateHttpResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
+    protected void validateHttpResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
             throws ResolverException {
+        
         if (!getSupportedContentTypes().isEmpty()) {
             Header contentType = response.getEntity().getContentType();
             if (contentType != null && contentType.getValue() != null) {
@@ -317,6 +280,5 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         // TODO other validation
         
     }
-
 
 }
