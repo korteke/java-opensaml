@@ -19,7 +19,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,8 +40,9 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.opensaml.core.xml.XMLObject;
@@ -75,6 +75,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     /** Generated Accept request header value. */
     private String supportedContentTypesValue;
     
+    /** HttpClient ResponseHandler instance to use. */
+    private ResponseHandler<XMLObject> responseHandler;
+    
     /**
      * Constructor.
      *
@@ -95,6 +98,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         super(backgroundTaskTimer);
         
         httpClient = Constraint.isNotNull(client, "HttpClient may not be null");
+        
+        // The default handler
+        responseHandler = new BasicMetadataResponseHandler();
     }
     
     /**
@@ -157,9 +163,8 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             return null;
         }
         
-        HttpResponse response = httpClient.execute(request);
-        
-        return processResponse(response, request.getURI());
+        //TODO HttpContext
+        return httpClient.execute(request, responseHandler);
     }
     
     /**
@@ -197,33 +202,29 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     @Nullable protected abstract String buildRequestURL(@Nonnull final CriteriaSet criteria);
     
     /**
-     * Process the received HTTP response, including validating the response, unmarshalling the received metadata,
-     * and storing the metadata in the backing store.  
-     * 
-     * @param response the received response
-     * @param requestURI the original request URI
-     * 
-     * @return the resolved metadata document root, or null if there was a fatal error
+     * Basic HttpClient response handler for processing metadata fetch requests.
      */
-    @Nullable protected XMLObject processResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) {
-        
-        int httpStatusCode = response.getStatusLine().getStatusCode();
-        
-        // TODO should we be seeing/doing this? Probably not if we don't do conditional GET.
-        // But we will if we do pre-emptive refreshing of metadata in background thread.
-        if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
-            log.debug("Metadata document from '{}' has not changed since last retrieval", requestURI);
-            return null;
-        }
+    public class BasicMetadataResponseHandler implements ResponseHandler<XMLObject> {
 
-        if (httpStatusCode != HttpStatus.SC_OK) {
-            log.warn("Non-ok status code '{}' returned from remote metadata source: {}", httpStatusCode, requestURI);
-            return null;
-        }
-        
-        try {
+        /** {@inheritDoc} */
+        public XMLObject handleResponse(@Nonnull final HttpResponse response) throws ClientProtocolException, IOException {
+            
+            int httpStatusCode = response.getStatusLine().getStatusCode();
+            
+            // TODO should we be seeing/doing this? Probably not if we don't do conditional GET.
+            // But we will if we do pre-emptive refreshing of metadata in background thread.
+            if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
+                log.debug("Metadata document from '{}' has not changed since last retrieval" );
+                return null;
+            }
+
+            if (httpStatusCode != HttpStatus.SC_OK) {
+                log.warn("Non-ok status code '{}' returned from remote metadata source: {}", httpStatusCode);
+                return null;
+            }
+            
             try {
-                validateHttpResponse(response, requestURI);
+                validateHttpResponse(response);
             } catch (ResolverException e) {
                 log.error("Problem validating dynamic metadata HTTP response", e);
                 return null;
@@ -236,48 +237,30 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
                 log.error("Error unmarshalling HTTP response stream", e);
                 return null;
             }
-        } finally {
-            closeResponse(response, requestURI);
+                
         }
-    }
-
-    /**
-     * Close the HTTP response instance.
-     * 
-     * @param response the received response
-     * @param requestURI the original request URI
-     */
-    protected void closeResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) {
-        if (response instanceof CloseableHttpResponse) {
-            try {
-                ((CloseableHttpResponse)response).close();
-            } catch (final IOException e) {
-                log.error("Error closing HTTP response from {}", requestURI, e);
-            }
-        }
-    }
-    
-    /**
-     * Validate the received HTTP response instance, such as checking for supported content types.
-     * 
-     * @param response the received response
-     * @param requestURI the original request URI
-     * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
-     */
-    protected void validateHttpResponse(@Nonnull final HttpResponse response, @Nonnull final URI requestURI) 
-            throws ResolverException {
         
-        if (!getSupportedContentTypes().isEmpty()) {
-            Header contentType = response.getEntity().getContentType();
-            if (contentType != null && contentType.getValue() != null) {
-                if (!getSupportedContentTypes().contains(contentType.getValue())) {
-                    throw new ResolverException("HTTP response specified an unsupported Content-Type: " 
-                            + contentType.getValue());
+        /**
+         * Validate the received HTTP response instance, such as checking for supported content types.
+         * 
+         * @param response the received response
+         * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
+         */
+        protected void validateHttpResponse(@Nonnull final HttpResponse response) throws ResolverException {
+            
+            if (!getSupportedContentTypes().isEmpty()) {
+                Header contentType = response.getEntity().getContentType();
+                if (contentType != null && contentType.getValue() != null) {
+                    if (!getSupportedContentTypes().contains(contentType.getValue())) {
+                        throw new ResolverException("HTTP response specified an unsupported Content-Type: " 
+                                + contentType.getValue());
+                    }
                 }
             }
+            
+            // TODO other validation
+            
         }
-        
-        // TODO other validation
         
     }
 
