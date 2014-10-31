@@ -17,12 +17,16 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.google.common.base.Function;
 
 
 public class TemplateRequestURLBuilderTest {
@@ -55,6 +59,19 @@ public class TemplateRequestURLBuilderTest {
         function = new TemplateRequestURLBuilder(engine, "${entityID}", false);
         
         Assert.assertEquals(function.apply("http://example.org/idp"), "http://example.org/idp");
+    }
+    
+    @Test
+    public void testTransformer() {
+        Function<String,String> transformer = new Function<String, String>() {
+            @Nullable public String apply(@Nullable String input) {
+                return input.toUpperCase();
+            }
+        };
+        
+        function = new TemplateRequestURLBuilder(engine, "${entityID}", false, transformer);
+        
+        Assert.assertEquals(function.apply("http://example.org/idp"), "HTTP://EXAMPLE.ORG/IDP");
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

@@ -43,23 +43,48 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<String, 
     /** The request base URL per the specification. */
     private String base;
     
+    /** Function which transforms the entityID prior to substitution into the URL. */
+    private Function<String, String> transformer;
+    
     /**
      * Constructor.
      *
      * @param baseURL the base URL for the metadata responder
      */
     public MetadataQueryProtocolRequestURLBuilder(@Nonnull @NotEmpty final String baseURL) {
+        this(baseURL, null);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param baseURL the base URL for the metadata responder
+     * @param transform function which transforms the entityID prior to URL construction substitution, may be null
+     */
+    public MetadataQueryProtocolRequestURLBuilder(@Nonnull @NotEmpty final String baseURL, 
+            @Nullable final Function<String,String> transform) {
         base = Constraint.isNotNull(StringSupport.trimOrNull(baseURL), "Base URL was null or empty");
         if (!base.endsWith("/")) {
             log.debug("Base URL did not end in a trailing '/', one will be added");
             base = base + "/";
         }
         log.debug("Effective base URL value was: {}", base);
+        
+        transformer = transform;
     }
 
     /** {@inheritDoc} */
-    @Nullable public String apply(@Nonnull String entityID) {
-        Constraint.isNotNull(entityID, "Entity ID was null");
+    @Nullable public String apply(@Nonnull String input) {
+        String entityID = Constraint.isNotNull(input, "Entity ID was null");
+        
+        if (transformer != null) {
+            entityID = transformer.apply(entityID);
+            log.debug("Transformed entityID is '{}'", entityID);
+            if (entityID == null) {
+                log.debug("Transformed entityID was null");
+                return null;
+            }
+        }
         
         try {
             String result = base +  "entities/" + URISupport.doURLEncode(entityID);

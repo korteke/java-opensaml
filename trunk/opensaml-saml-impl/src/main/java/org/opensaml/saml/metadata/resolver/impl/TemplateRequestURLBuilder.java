@@ -64,6 +64,9 @@ public class TemplateRequestURLBuilder implements Function<String, String> {
     /** The template text, for logging purposes. */
     private String templateText;
     
+    /** Function which transforms the entityID prior to substitution into the template. */
+    private Function<String, String> transformer;
+    
     /** Flag indicating whether to URL-encode the entity ID value before substitution. */
     private boolean encodeEntityID;
     
@@ -78,7 +81,22 @@ public class TemplateRequestURLBuilder implements Function<String, String> {
      */
     public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, 
             @Nonnull @NotEmpty final String templateString, final boolean encoded) {
-        this(engine, templateString, encoded, StandardCharsets.US_ASCII);
+        this(engine, templateString, encoded, null, StandardCharsets.US_ASCII);
+    }
+    /**
+     * Constructor.
+     * 
+     * <p>The template character set will be US ASCII.</p>
+     *
+     * @param engine the {@link VelocityEngine} instance to use
+     * @param templateString the Velocity template string
+     * @param transform function which transforms the entityID prior to substitution, may be null
+     * @param encoded true if entity ID should be URL-encoded prior to substitution, false otherwise
+     */
+    public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, 
+            @Nonnull @NotEmpty final String templateString, final boolean encoded, 
+            @Nullable final Function<String, String> transform) {
+        this(engine, templateString, encoded, transform, StandardCharsets.US_ASCII);
     }
     
     /**
@@ -87,15 +105,19 @@ public class TemplateRequestURLBuilder implements Function<String, String> {
      * @param engine the {@link VelocityEngine} instance to use
      * @param templateString the Velocity template string
      * @param encoded true if entity ID should be URL-encoded prior to substitution, false otherwise
-     * @param charSet character set of the template
+     * @param transform function which transforms the entityID prior to substitution, may be null
+     * @param charSet character set of the template, may be null
      */
     public TemplateRequestURLBuilder(@Nonnull final VelocityEngine engine, 
-            @Nonnull @NotEmpty final String templateString, final boolean encoded, @Nullable final Charset charSet) {
+            @Nonnull @NotEmpty final String templateString, final boolean encoded, 
+            @Nullable final Function<String, String> transform, @Nullable final Charset charSet) {
         
         Constraint.isNotNull(engine, "VelocityEngine was null");
         
         String trimmedTemplate = StringSupport.trimOrNull(templateString);
         templateText = Constraint.isNotNull(trimmedTemplate, "Template string was null or empty");
+        
+        transformer = transform;
         
         if (charSet != null) {
             template = Template.fromTemplate(engine, trimmedTemplate, charSet);
@@ -107,8 +129,19 @@ public class TemplateRequestURLBuilder implements Function<String, String> {
     }
 
     /** {@inheritDoc} */
-    @Nullable public String apply(@Nonnull String entityID) {
-        Constraint.isNotNull(entityID, "Entity ID was null");
+    @Nullable public String apply(@Nonnull String input) {
+        String entityID = Constraint.isNotNull(input, "Entity ID was null");
+        
+        log.debug("Saw input entityID '{}'", entityID);
+        
+        if (transformer != null) {
+            entityID = transformer.apply(entityID);
+            log.debug("Transformed entityID is '{}'", entityID);
+            if (entityID == null) {
+                log.debug("Transformed entityID was null");
+                return null;
+            }
+        }
         
         VelocityContext context = new VelocityContext();
         if (encodeEntityID) {

@@ -40,6 +40,14 @@ public class MetadataQueryProtocolRequestURLBuilderTest {
         Assert.assertEquals(function.apply("http://example.org/idp"), "http://metadata.example.org/service/entities/http%3A%2F%2Fexample.org%2Fidp");
     }
     
+    @Test
+    public void testWithSHA1Transformer() {
+        function = new MetadataQueryProtocolRequestURLBuilder("http://metadata.example.org/service/", 
+                new MetadataQueryProtocolSHA1Transformer());
+        
+        Assert.assertEquals(function.apply("http://example.org/service"), "http://metadata.example.org/service/entities/%7Bsha1%7D11d72e8cf351eb6c75c721e838f469677ab41bdb");
+    }
+    
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testNullEntityID() {
         function = new MetadataQueryProtocolRequestURLBuilder("http://metadata.example.org/service/");
