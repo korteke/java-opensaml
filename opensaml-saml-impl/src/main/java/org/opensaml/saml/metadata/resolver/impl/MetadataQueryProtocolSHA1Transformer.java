@@ -39,6 +39,7 @@ public class MetadataQueryProtocolSHA1Transformer implements Function<String, St
     /** String digester instance. */
     private StringDigester digester;
     
+    /** Constructor. */
     public MetadataQueryProtocolSHA1Transformer() {
         try {
             digester = new StringDigester("SHA-1", OutputFormat.HEX_LOWER);
