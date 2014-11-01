@@ -28,6 +28,10 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.PKIXValidationInformationResolver;
+import org.opensaml.security.x509.TrustedNamesCriterion;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -43,15 +47,33 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
 
     /** The set of trusted names to return. */
     private final Set<String> trustedNames;
-
+    
+    /** Flag indicating whether dynamic trusted names should be extracted from criteria set. */
+    private boolean supportDynamicTrustedNames;
+    
     /**
      * Constructor.
+     * 
+     * <p>Dynamic trusted names will not be supported.</p>
      * 
      * @param info list of PKIX validation information to return
      * @param names set of trusted names to return
      */
     public StaticPKIXValidationInformationResolver(@Nullable final List<PKIXValidationInformation> info,
             @Nullable final Set<String> names) {
+        this(info, names, false);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param info list of PKIX validation information to return
+     * @param names set of trusted names to return
+     * @param supportDynamicNames whether resolver should support dynamic extraction of trusted names
+     *        from an instance of {@link TrustedNamesCriterion} in the criteria set
+     */
+    public StaticPKIXValidationInformationResolver(@Nullable final List<PKIXValidationInformation> info,
+            @Nullable final Set<String> names, boolean supportDynamicNames) {
         if (info != null) {
             pkixInfo = new ArrayList<PKIXValidationInformation>(info);
         } else {
@@ -63,11 +85,22 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
         } else {
             trustedNames = Collections.EMPTY_SET;
         }
+        
+        supportDynamicTrustedNames = supportDynamicNames;
     }
 
     /** {@inheritDoc} */
     @Nullable public Set<String> resolveTrustedNames(CriteriaSet criteriaSet) throws ResolverException {
-        return trustedNames;
+        if (supportDynamicTrustedNames) {
+            TrustedNamesCriterion criterion = criteriaSet.get(TrustedNamesCriterion.class);
+            if (criterion != null) {
+                return Sets.union(trustedNames, criterion.getTrustedNames());
+            } else {
+                return ImmutableSet.copyOf(trustedNames);
+            }
+        } else {
+            return ImmutableSet.copyOf(trustedNames);
+        }
     }
 
     /** {@inheritDoc} */

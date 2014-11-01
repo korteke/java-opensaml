@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,6 +37,7 @@ import org.opensaml.saml.security.impl.SAMLSignatureProfileValidator;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
@@ -43,6 +45,8 @@ import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Function;
 
 /**
  * A metadata filter that validates XML signatures.
@@ -63,6 +67,9 @@ public class SignatureValidationFilter implements MetadataFilter {
     
     /** Prevalidator for XML Signature instances. */
     private SignaturePrevalidator signaturePrevalidator;
+    
+    /** Strategy function for extracting dynamic trusted names from signed metadata elements. */
+    private Function<XMLObject, Set<String>> dynamicTrustedNamesStrategy;
 
     /**
      * Constructor.
@@ -80,6 +87,24 @@ public class SignatureValidationFilter implements MetadataFilter {
 
         signatureTrustEngine = engine;
         signaturePrevalidator = new SAMLSignatureProfileValidator();
+    }
+
+    /**
+     * Get the strategy function for extracting dynamic trusted names from signed metadata elements.
+     * 
+     * @return the function, or null
+     */
+    @Nullable public Function<XMLObject, Set<String>> getDynamicTrustedNamesStrategy() {
+        return dynamicTrustedNamesStrategy;
+    }
+
+    /**
+     * Get the strategy function for extracting dynamic trusted names from signed metadata elements.
+     * 
+     * @param strategy the function, may be null
+     */
+    public void setDynamicTrustedNamesStrategy(@Nullable final Function<XMLObject, Set<String>> strategy) {
+        dynamicTrustedNamesStrategy = strategy;
     }
 
     /**
@@ -398,17 +423,13 @@ public class SignatureValidationFilter implements MetadataFilter {
             newCriteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         }
         
-        // TODO how to handle adding dynamic entity ID and/or other criteria for trust engine consumption?
-        //
-        // Have 4 signed metadata types:
-        // 1) EntitiesDescriptor
-        // 2) EntityDescriptor
-        // 3) RoleDescriptor
-        // 4) AffiliationDescriptor
-        //
-        // Logic will likely vary for how to specify criteria to trust engine for different types + specific use cases,
-        // e.g. for federation metadata publishers of EntitiesDescriptors vs. "self-signed" EntityDescriptors.
-        // May need to delegate to more specialized subclasses.
+        // If configured, add dynamic trusted names computed from metadata via strategy function.
+        if (getDynamicTrustedNamesStrategy() != null) {
+            Set<String> dynamicTrustedNames = getDynamicTrustedNamesStrategy().apply(signedMetadata);
+            if (dynamicTrustedNames != null && !dynamicTrustedNames.isEmpty()) {
+                newCriteriaSet.add(new TrustedNamesCriterion(dynamicTrustedNames));
+            }
+        }
         
         return newCriteriaSet;
     }
