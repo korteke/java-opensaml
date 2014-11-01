@@ -40,7 +40,7 @@ import com.google.common.collect.Sets;
  * Names are extracted as follows from these signed metadata element types:
  * <ul>
  * <li><code>EntityDescriptor</code>: the <code>entityID</code> attribute</li> 
- * <li><code>EntitiesDescriptor</code>: the <code>name</code> attribute</li> 
+ * <li><code>EntitiesDescriptor</code>: the <code>Name</code> attribute</li> 
  * <li><code>RoleDescriptor</code>: the <code>entityID</code> attribute of the parent 
  *     <code>EntityDescriptor</code></li> 
  * <li><code>RoleDescriptor</code>: 1) the <code>affiliationOwnerID</code> attribute and 
