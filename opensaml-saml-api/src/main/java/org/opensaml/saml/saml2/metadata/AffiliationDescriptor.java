@@ -54,7 +54,7 @@ public interface AffiliationDescriptor extends SignableSAMLObject, TimeBoundSAML
     public static final String ID_ATTRIB_NAME = "ID";
 
     /**
-     * Gets the ID of the owner of this affiliation. The owner may, or may not, be a memeber of the affiliation.
+     * Gets the ID of the owner of this affiliation. The owner may, or may not, be a member of the affiliation.
      * 
      * @return the ID of the owner of this affiliation
      */
