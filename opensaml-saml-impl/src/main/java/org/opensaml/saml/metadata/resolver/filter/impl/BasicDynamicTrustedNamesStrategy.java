@@ -18,11 +18,13 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
@@ -51,39 +53,39 @@ import com.google.common.collect.Sets;
 public class BasicDynamicTrustedNamesStrategy implements Function<XMLObject, Set<String>> {
 
     /** {@inheritDoc} */
-    @Nonnull public Set<String> apply(@Nullable XMLObject input) {
+    @Nonnull @NonnullElements public Set<String> apply(@Nullable XMLObject input) {
         if (input == null) {
             return Collections.emptySet();
         }
         
+        Set<String> rawResult = null;
+        
         if (input instanceof EntityDescriptor) {
-            return Sets.newHashSet(((EntityDescriptor)input).getEntityID());
-        }
-        
-        if (input instanceof EntitiesDescriptor) {
-            return Sets.newHashSet(((EntitiesDescriptor)input).getName());
-        }
-        
-        if (input instanceof RoleDescriptor) {
+            rawResult = Collections.singleton(((EntityDescriptor)input).getEntityID());
+        } else if (input instanceof EntitiesDescriptor) {
+            rawResult = Collections.singleton(((EntitiesDescriptor)input).getName());
+        } else if (input instanceof RoleDescriptor) {
             XMLObject parent = input.getParent();
             if (parent instanceof EntityDescriptor) {
-                return Sets.newHashSet(((EntityDescriptor)parent).getEntityID());
+                rawResult = Collections.singleton(((EntityDescriptor)parent).getEntityID());
             }
-        }
-        
-        if (input instanceof AffiliationDescriptor) {
-            HashSet<String> result = Sets.newHashSet();
+        } else if (input instanceof AffiliationDescriptor) {
+            rawResult = Sets.newHashSet();
             
-            result.add(((AffiliationDescriptor)input).getOwnerID());
+            rawResult.add(((AffiliationDescriptor)input).getOwnerID());
             
             XMLObject parent = input.getParent();
             if (parent instanceof EntityDescriptor) {
-                result.add(((EntityDescriptor)parent).getEntityID());
+                rawResult.add(((EntityDescriptor)parent).getEntityID());
             }
-            return result;
         }
         
-        return Collections.emptySet();
+        if (rawResult != null) {
+            return Sets.newHashSet(StringSupport.normalizeStringCollection(rawResult));
+        } else {
+            return Collections.emptySet();
+        }
+        
     }
 
 }
