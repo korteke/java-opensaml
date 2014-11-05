@@ -90,7 +90,11 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     }
 
     /** {@inheritDoc} */
-    @Nullable public Set<String> resolveTrustedNames(CriteriaSet criteriaSet) throws ResolverException {
+    @Nullable public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet) throws ResolverException {
+        if (criteriaSet == null) {
+            return ImmutableSet.copyOf(trustedNames);
+        }
+        
         if (supportDynamicTrustedNames) {
             TrustedNamesCriterion criterion = criteriaSet.get(TrustedNamesCriterion.class);
             if (criterion != null) {
