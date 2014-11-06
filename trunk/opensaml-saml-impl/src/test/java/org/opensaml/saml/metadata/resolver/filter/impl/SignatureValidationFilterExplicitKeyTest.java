@@ -51,7 +51,7 @@ import org.w3c.dom.Document;
 /**
  * Unit tests for {@link SignatureValidationFilter}.
  */
-public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
+public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestCase {
     
     private final String switchMDFileValid = "/data/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.xml";
     private final String switchMDFileInvalid = "/data/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.invalid.xml";
@@ -102,8 +102,8 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        switchMDDocumentValid = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(switchMDFileValid));
-        switchMDDocumentInvalid = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(switchMDFileInvalid));
+        switchMDDocumentValid = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(switchMDFileValid));
+        switchMDDocumentInvalid = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(switchMDFileInvalid));
         
         X509Certificate switchCert = X509Support.decodeCertificate(switchMDCertBase64);
         X509Credential switchCred = CredentialSupport.getSimpleCredential(switchCert, null);
@@ -160,7 +160,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
+        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
         XMLObject xmlObject = 
             unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
@@ -183,7 +183,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
+        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject = 
             unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
@@ -207,7 +207,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileValid));
+        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
         
         DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
@@ -231,7 +231,7 @@ public class SignatureValidationFilterTest extends XMLObjectBaseTestCase {
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterTest.class.getResourceAsStream(openIDFileInvalid));
+        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
         
         DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
