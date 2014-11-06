@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="abc123" entityID="https://foo.example.org/sp">
+    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:AssertionConsumerService 
+            Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://foo.example.org/acs"
+            index="0" />
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
