@@ -134,7 +134,6 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         String template = "http://bogus.example.org/metadata?entityID=${entityID}";
         String entityID = "https://www.example.org/sp";
         
-        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
         TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
                 VelocityEngine.newVelocityEngine(), 
                 template, 
@@ -160,7 +159,6 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         String template = "http://shibboleth.net/unittests/metadata?entityID=${entityID}";
         String entityID = "https://www.example.org/sp";
         
-        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
         TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
                 VelocityEngine.newVelocityEngine(), 
                 template, 
@@ -178,6 +176,28 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
         Assert.assertNull(ed);
+    }
+    
+    @Test
+    public void testWellKnownLocation() throws Exception {
+        //TODO update with permanent test target, if there is a better one.
+        String entityID = "https://issues.shibboleth.net/shibboleth";
+        
+        HTTPEntityIDRequestURLBuilder requestURLBuilder = new HTTPEntityIDRequestURLBuilder();
+        
+        HttpClient httpClient = new HttpClientBuilder().buildClient();
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
     }
     
     @Test
