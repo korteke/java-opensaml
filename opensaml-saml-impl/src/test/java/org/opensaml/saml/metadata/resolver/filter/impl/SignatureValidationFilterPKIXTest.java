@@ -93,6 +93,7 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
 
     private XMLObject generateSignedMetadata(Credential signingCredential, String unsignedMetadata) 
             throws SecurityException, SignatureException, MarshallingException, UnmarshallingException {
+        
         XMLObject unsignedObject = unmarshallElement(DATA_PATH + unsignedMetadata);
         if (!(unsignedObject instanceof SignableSAMLObject)) {
             Assert.fail("Not a signable SAML object");
@@ -108,8 +109,6 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
         kigf.setEmitEntityCertificate(true);
         kigf.setEmitEntityCertificateChain(true);
         kigf.setEmitX509SubjectName(true);
-        kigf.setEmitX509SKI(false);
-        kigf.setEmitX509IssuerSerial(false);
         params.setKeyInfoGenerator(kigf.newInstance());
         
         Signature signature = buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
@@ -121,8 +120,9 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
         
         Signer.signObject(signature);
         
-        System.out.println(SerializeSupport.prettyPrintXML(dom));
+        //System.out.println(SerializeSupport.prettyPrintXML(dom));
         
+        // Unmarshall a new tree around the signed DOM to avoid any XMLSignature weirdness
         return unmarshallerFactory.getUnmarshaller(dom).unmarshall(dom);
     }
 
