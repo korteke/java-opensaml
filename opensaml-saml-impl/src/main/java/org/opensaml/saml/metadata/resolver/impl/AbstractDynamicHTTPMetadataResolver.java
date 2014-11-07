@@ -50,7 +50,9 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 /**
@@ -115,7 +117,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
 
     /**
      * Set the list of supported MIME types for use in Accept request header and validation of 
-     * response Content-Type header.
+     * response Content-Type header. Values will be effectively lower-cased at runtime.
      * 
      * @param types the new supported content types to set
      */
@@ -125,7 +127,14 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         if (types == null) {
             supportedContentTypes = Collections.emptyList();
         } else {
-            supportedContentTypes = Lists.newArrayList(StringSupport.normalizeStringCollection(types));
+            supportedContentTypes = Lists.newArrayList(Collections2.transform(
+                    StringSupport.normalizeStringCollection(types),
+                    new Function<String,String>() {
+                        @Nullable public String apply(@Nullable String input) {
+                            return input == null ? null : input.toLowerCase();
+                        }
+                    }
+                    ));
         }
     }
     
@@ -141,6 +150,8 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         if (! getSupportedContentTypes().isEmpty()) {
             supportedContentTypesValue = StringSupport.listToStringValue(getSupportedContentTypes(), ", ");
         } 
+        
+        log.debug("Supported content types are: {}", getSupportedContentTypes());
     }
     
    /** {@inheritDoc} */
@@ -207,7 +218,8 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     public class BasicMetadataResponseHandler implements ResponseHandler<XMLObject> {
 
         /** {@inheritDoc} */
-        public XMLObject handleResponse(@Nonnull final HttpResponse response) throws ClientProtocolException, IOException {
+        public XMLObject handleResponse(@Nonnull final HttpResponse response) 
+                throws ClientProtocolException, IOException {
             
             int httpStatusCode = response.getStatusLine().getStatusCode();
             
@@ -251,15 +263,34 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             if (!getSupportedContentTypes().isEmpty()) {
                 Header contentType = response.getEntity().getContentType();
                 if (contentType != null && contentType.getValue() != null) {
-                    if (!getSupportedContentTypes().contains(contentType.getValue())) {
-                        throw new ResolverException("HTTP response specified an unsupported Content-Type: " 
-                                + contentType.getValue());
+                    log.debug("Saw raw Content-Type from response header '{}'", contentType.getValue());
+                    String mimeType = getContentTypeMIMEType(contentType.getValue());
+                    log.debug("Extracted Content-Type MIME type to evaluate '{}'", mimeType);
+                    if (!getSupportedContentTypes().contains(mimeType)) { 
+                        throw new ResolverException("HTTP response specified an unsupported Content-Type MIME type: " 
+                                + mimeType);
                     }
                 }
             }
             
-            // TODO other validation
-            
+        }
+
+        /**
+         * Get the effective Content-Type value to evaluate against the supported types.
+         * 
+         * @param value the raw Content-Type value header
+         * @return the effective value to evaluate
+         */
+        private String getContentTypeMIMEType(String value) {
+            String trimmed = StringSupport.trimOrNull(value);
+            if (trimmed == null) {
+                return null;
+            }
+            if (!trimmed.contains(";")) {
+                return trimmed.toLowerCase();
+            }
+            String typeSubtype = trimmed.split(";")[0];
+            return StringSupport.trim(typeSubtype).toLowerCase();
         }
         
     }
