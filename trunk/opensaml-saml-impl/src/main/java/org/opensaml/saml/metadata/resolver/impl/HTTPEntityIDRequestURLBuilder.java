@@ -31,10 +31,10 @@ import com.google.common.base.Function;
  * Function which examines an entity ID and returns it as a metadata request URL if and only if the entity ID 
  * is an HTTP or HTTPS URL.
  */
-public class IdentityRequestURLBuilder implements Function<String, String> {
+public class HTTPEntityIDRequestURLBuilder implements Function<String, String> {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(IdentityRequestURLBuilder.class);
+    private final Logger log = LoggerFactory.getLogger(HTTPEntityIDRequestURLBuilder.class);
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nonnull String entityID) {
