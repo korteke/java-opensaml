@@ -180,5 +180,28 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed);
     }
     
+    @Test
+    public void testMDQ() throws Exception {
+        //TODO update with permanent test target, when it's stood up on shibboleth.net
+        String baseURL = "http://md.iay.org.uk/global";
+        String entityID = "https://login.cmu.edu/idp/shibboleth";
+        
+        MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL);
+        
+        HttpClient httpClient = new HttpClientBuilder().buildClient();
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
     
 }
