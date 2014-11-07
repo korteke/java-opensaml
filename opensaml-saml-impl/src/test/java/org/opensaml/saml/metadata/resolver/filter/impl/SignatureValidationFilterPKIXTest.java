@@ -25,8 +25,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -119,8 +117,6 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
         Element dom = XMLObjectSupport.marshall(signableSAML);
         
         Signer.signObject(signature);
-        
-        //System.out.println(SerializeSupport.prettyPrintXML(dom));
         
         // Unmarshall a new tree around the signed DOM to avoid any XMLSignature weirdness
         return unmarshallerFactory.getUnmarshaller(dom).unmarshall(dom);
