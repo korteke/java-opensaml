@@ -22,9 +22,9 @@ import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class IdentityRequestURLBuilderTest {
+public class HTTPEntityIDRequestURLBuilderTest {
     
-    private IdentityRequestURLBuilder function = new IdentityRequestURLBuilder();
+    private HTTPEntityIDRequestURLBuilder function = new HTTPEntityIDRequestURLBuilder();
     
     @Test
     public void testHTTP() {
