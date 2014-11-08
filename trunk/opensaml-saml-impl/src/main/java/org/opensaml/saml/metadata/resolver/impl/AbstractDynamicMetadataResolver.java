@@ -435,7 +435,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         EntityManagementData mgmtData = dynamicBackingStore.getManagementData(entityID);
         
         DateTime now = new DateTime(ISOChronology.getInstanceUTC());
-        log.debug("For metadata expiration and refresh, computation 'now' is : {}", now);
+        log.debug("For metadata expiration and refresh computation, 'now' is : {}", now);
+        
+        mgmtData.setLastUpdateTime(now);
         
         mgmtData.setExpirationTime(computeExpirationTime(entityDescriptor, now));
         log.debug("Computed metadata expiration time: {}", mgmtData.getExpirationTime());
@@ -602,6 +604,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         /** The entity ID managed by this instance. */
         private String entityID;
         
+        /** Last update time of the associated metadata. */
+        private DateTime lastUpdateTime;
+        
         /** Expiration time of the associated metadata. */
         private DateTime expirationTime;
         
@@ -633,6 +638,24 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          */
         @Nonnull public String getEntityID() {
             return entityID;
+        }
+        
+        /**
+         * Get the last update time of the metadata. 
+         * 
+         * @return the last update time, or null if no metadata is yet loaded for the entity
+         */
+        @Nullable public DateTime getLastUpdateTime() {
+            return lastUpdateTime;
+        }
+
+        /**
+         * Set the last update time of the metadata.
+         * 
+         * @param dateTime the last update time
+         */
+        public void setLastUpdateTime(@Nonnull final DateTime dateTime) {
+            lastUpdateTime = dateTime;
         }
         
         /**
