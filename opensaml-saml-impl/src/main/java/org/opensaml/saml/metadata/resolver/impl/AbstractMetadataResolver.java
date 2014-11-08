@@ -408,6 +408,21 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         backingStore.getOrderedDescriptors().add(entityDescriptor);
         indexEntityDescriptor(entityDescriptor, backingStore);
     }
+    
+    /**
+     * Remove from the backing store all metadata for the entity with the given entity ID.
+     * 
+     * @param entityID the entity ID of the metadata to remove
+     * @param backingStore the backing store instance to update
+     */
+    protected void removeByEntityID(@Nonnull final String entityID, @Nonnull final EntityBackingStore backingStore) {
+        Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
+        List<EntityDescriptor> descriptors = indexedDescriptors.get(entityID);
+        if (descriptors != null) {
+            backingStore.getOrderedDescriptors().removeAll(descriptors);
+        }
+        indexedDescriptors.remove(entityID);
+    }
 
     /**
      * Index the specified entity descriptor, updating the specified entity backing store instance as necessary.

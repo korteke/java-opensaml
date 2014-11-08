@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -75,6 +74,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     /** Maximum cache duration. */
     private Long maxCacheDuration;
     
+    /** Factor used to compute when the next refresh interval will occur. Default value: 0.75 */
+    private Float refreshDelayFactor = 0.75f;
+    
     /** The maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
      * before it is removed. */
     private Long maxIdleEntityData;
@@ -108,6 +110,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         
         // Default to 8 hours.
         maxCacheDuration = 8*60*60*1000L;
+        
+        refreshDelayFactor = 0.75f;
         
         // Default to 30 minutes.
         cleanupTaskInterval = 30*60*1000L;
@@ -165,6 +169,35 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         maxCacheDuration = Constraint.isNotNull(duration, "Maximum cache duration may not be null");
+    }
+    
+    /**
+     * Gets the delay factor used to compute the next refresh time.
+     * 
+     * <p>Defaults to:  0.75.</p>
+     * 
+     * @return delay factor used to compute the next refresh time
+     */
+    public Float getRefreshDelayFactor() {
+        return refreshDelayFactor;
+    }
+
+    /**
+     * Sets the delay factor used to compute the next refresh time. The delay must be between 0.0 and 1.0, exclusive.
+     * 
+     * <p>Defaults to:  0.75.</p>
+     * 
+     * @param factor delay factor used to compute the next refresh time
+     */
+    public void setRefreshDelayFactor(Float factor) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
+        if (factor <= 0 || factor >= 1) {
+            throw new IllegalArgumentException("Refresh delay factor must be a number between 0.0 and 1.0, exclusive");
+        }
+
+        refreshDelayFactor = factor;
     }
 
     /**
@@ -251,23 +284,33 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         }
         
         String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
-        Lock readLock = getBackingStore().getManagementData(entityID).getReadWriteLock().readLock();
+        log.debug("Attempting to resolve metadata for entityID: {}", entityID);
+        
+        EntityManagementData mgmtData = getBackingStore().getManagementData(entityID);
+        Lock readLock = mgmtData.getReadWriteLock().readLock();
+        boolean shouldAttemptRefresh = false;
         try {
             readLock.lock();
             
-            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
-            if (!descriptors.isEmpty()) {
-                log.debug("Found requested metadata in backing store, returning");
-                return descriptors;
+            shouldAttemptRefresh = shouldAttemptRefresh(mgmtData);
+            
+            if (!shouldAttemptRefresh) {
+                List<EntityDescriptor> descriptors = lookupEntityID(entityID);
+                if (!descriptors.isEmpty()) {
+                    log.debug("Found requested metadata in backing store, returning");
+                    return descriptors;
+                } else {
+                    log.debug("Did not find requested metadata in backing store, will attempt to resolve dynamically");
+                }
+        
+            } else {
+                log.debug("Metadata was indicated to be refreshed based on refresh trigger time");
             }
         } finally {
             readLock.unlock();
         }
         
-        log.debug("Did not find requested metadata in backing store, will attempt to resolve dynamically");
-        
-        return resolveFromOriginSource(criteria);
-        
+        return resolveFromOriginSource(criteria, shouldAttemptRefresh);
     }
     
     /**
@@ -275,11 +318,13 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * and then return it.
      * 
      * @param criteria the input criteria set
+     * @param resolveUnconditionally whether metadata should unconditionally be resolved, 
+     *           even if there is existing metadata
      * @return the resolved metadata
      * @throws ResolverException  if there is a fatal error attempting to resolve the metadata
      */
     @Nonnull @NonnullElements protected Iterable<EntityDescriptor> resolveFromOriginSource(
-            @Nonnull final CriteriaSet criteria) throws ResolverException {
+            @Nonnull final CriteriaSet criteria, boolean resolveUnconditionally) throws ResolverException {
         
         String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
         Lock writeLock = getBackingStore().getManagementData(entityID).getReadWriteLock().writeLock(); 
@@ -287,11 +332,13 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         try {
             writeLock.lock();
             
-            List<EntityDescriptor> descriptors = lookupEntityID(entityID);
-            if (!descriptors.isEmpty()) {
-                log.debug("Metadata was resolved and stored by another thread " 
-                        + "while this thread was waiting on the write lock");
-                return descriptors;
+            if (!resolveUnconditionally) {
+                List<EntityDescriptor> descriptors = lookupEntityID(entityID);
+                if (!descriptors.isEmpty()) {
+                    log.debug("Metadata was resolved and stored by another thread " 
+                            + "while this thread was waiting on the write lock");
+                    return descriptors;
+                }
             }
             
             log.debug("Resolving metadata dynamically for entity ID: {}", entityID);
@@ -299,21 +346,19 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             XMLObject root = fetchFromOriginSource(criteria);
             if (root == null) {
                 log.debug("No metadata was fetched from the origin source");
-                return Collections.emptyList();
-            }
-            
-            try {
-                processNewMetadata(root, entityID);
-            } catch (FilterException e) {
-                log.error("Metadata filtering problem processing new metadata", e);
-                return Collections.emptyList();
+            } else {
+                try {
+                    processNewMetadata(root, entityID);
+                } catch (FilterException e) {
+                    log.error("Metadata filtering problem processing new metadata", e);
+                }
             }
             
             return lookupEntityID(entityID);
             
         } catch (IOException e) {
             log.error("Error fetching metadata from origin source", e);
-            return Collections.emptyList();
+            return lookupEntityID(entityID);
         } finally {
             writeLock.unlock();
         }
@@ -383,22 +428,36 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     protected void preProcessEntityDescriptor(@Nonnull EntityDescriptor entityDescriptor, 
             @Nonnull EntityBackingStore backingStore) {
         
+        String entityID = StringSupport.trimOrNull(entityDescriptor.getEntityID());
+        
+        removeByEntityID(entityID, backingStore);
+        
         super.preProcessEntityDescriptor(entityDescriptor, backingStore);
         
         DynamicEntityBackingStore dynamicBackingStore = (DynamicEntityBackingStore) backingStore;
-        EntityManagementData mgmtData = dynamicBackingStore.getManagementData(entityDescriptor.getEntityID());
-        mgmtData.setExpirationTime(computeExpirationTime(entityDescriptor));
+        EntityManagementData mgmtData = dynamicBackingStore.getManagementData(entityID);
+        
+        DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+        log.debug("For metadata expiration and refresh, computation 'now' is : {}", now);
+        
+        mgmtData.setExpirationTime(computeExpirationTime(entityDescriptor, now));
+        log.debug("Computed metadata expiration time: {}", mgmtData.getExpirationTime());
+        
+        mgmtData.setRefreshTriggerTime(computeRefreshTriggerTime(mgmtData.getExpirationTime(), now));
+        log.debug("Computed refresh trigger time: {}", mgmtData.getRefreshTriggerTime());
     }
 
     /**
      * Compute the effective expiration time for the specified metadata.
      * 
      * @param entityDescriptor the EntityDescriptor instance to evaluate
+     * @param now the current date time instant
      * @return the effective expiration time for the metadata
      */
-    @Nonnull protected DateTime computeExpirationTime(@Nonnull final EntityDescriptor entityDescriptor) {
-        DateTime now = new DateTime(ISOChronology.getInstanceUTC());
-        DateTime lowerBound = now.plus(getMinCacheDuration());
+    @Nonnull protected DateTime computeExpirationTime(@Nonnull final EntityDescriptor entityDescriptor,
+            @Nonnull final DateTime now) {
+        
+        DateTime lowerBound = now.toDateTime(ISOChronology.getInstanceUTC()).plus(getMinCacheDuration());
         
         DateTime expiration = SAML2Support.getEarliestExpiration(entityDescriptor, 
                 now.plus(getMaxCacheDuration()), now);
@@ -407,6 +466,47 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         }
         
         return expiration;
+    }
+    
+    /**
+     * Compute the refresh trigger time.
+     * 
+     * @param expirationTime the time at which the metadata effectively expires
+     * @param nowDateTime the current date time instant
+     * 
+     * @return the time after which refresh attempt(s) should be made
+     */
+    @Nonnull protected DateTime computeRefreshTriggerTime(@Nullable final DateTime expirationTime,
+            @Nonnull final DateTime nowDateTime) {
+        
+        DateTime nowDateTimeUTC = nowDateTime.toDateTime(ISOChronology.getInstanceUTC());
+        long now = nowDateTimeUTC.getMillis();
+
+        long expireInstant = 0;
+        if (expirationTime != null) {
+            expireInstant = expirationTime.toDateTime(ISOChronology.getInstanceUTC()).getMillis();
+        }
+        long refreshDelay = (long) ((expireInstant - now) * getRefreshDelayFactor());
+
+        // if the expiration time was null or the calculated refresh delay was less than the floor
+        // use the floor
+        if (refreshDelay < getMinCacheDuration()) {
+            refreshDelay = getMinCacheDuration();
+        }
+
+        return nowDateTimeUTC.plus(refreshDelay);
+    }
+    
+    /**
+     * Determine whether should attempt to refresh the metadata, based on stored refresh trigger time.
+     * 
+     * @param mgmtData the entity'd management data
+     * @return true if should attempt refresh, false otherwise
+     */
+    protected boolean shouldAttemptRefresh(@Nonnull final EntityManagementData mgmtData) {
+        DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+        return now.isAfter(mgmtData.getRefreshTriggerTime());
+        
     }
 
     /** {@inheritDoc} */
@@ -529,6 +629,9 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         /** Expiration time of the associated metadata. */
         private DateTime expirationTime;
         
+        /** Time at which should start attempting to refresh the metadata. */
+        private DateTime refreshTriggerTime;
+        
         /** The last time in milliseconds at which the entity's backing store data was accessed. */
         private DateTime lastAccessedTime;
         
@@ -542,6 +645,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         protected EntityManagementData(@Nonnull final String id) {
             entityID = Constraint.isNotNull(id, "Entity ID was null");
             expirationTime = new DateTime(ISOChronology.getInstanceUTC()).plus(getMaxCacheDuration());
+            refreshTriggerTime = new DateTime(ISOChronology.getInstanceUTC()).plus(getMaxCacheDuration());
             lastAccessedTime = new DateTime(ISOChronology.getInstanceUTC());
             readWriteLock = new ReentrantReadWriteLock(true);
         }
@@ -571,6 +675,24 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
          */
         public void setExpirationTime(@Nonnull final DateTime dateTime) {
             expirationTime = Constraint.isNotNull(dateTime, "Expiration time may not be null");
+        }
+        
+        /**
+         * Get the refresh trigger time of the metadata. 
+         * 
+         * @return the refresh trigger time
+         */
+        @Nonnull public DateTime getRefreshTriggerTime() {
+            return refreshTriggerTime;
+        }
+
+        /**
+         * Set the refresh trigger time of the metadata.
+         * 
+         * @param dateTime the new refresh trigger time
+         */
+        public void setRefreshTriggerTime(@Nonnull final DateTime dateTime) {
+            refreshTriggerTime = Constraint.isNotNull(dateTime, "Refresh trigger time may not be null");
         }
 
         /**
@@ -644,8 +766,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
                     EntityManagementData mgmtData = backingStore.getManagementData(entityID);
                     
                     if (isRemoveData(mgmtData, now, earliestValidLastAccessed)) {
-                        backingStore.getOrderedDescriptors().removeAll(indexedDescriptors.get(entityID));
-                        indexedDescriptors.remove(entityID);
+                        removeByEntityID(entityID, backingStore);
                         backingStore.removeManagementData(entityID);
                     }
                     
