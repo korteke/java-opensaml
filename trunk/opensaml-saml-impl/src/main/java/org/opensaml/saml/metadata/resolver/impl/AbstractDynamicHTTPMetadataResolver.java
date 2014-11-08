@@ -40,11 +40,16 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
@@ -80,6 +85,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     /** HttpClient ResponseHandler instance to use. */
     private ResponseHandler<XMLObject> responseHandler;
     
+    /** HttpClient credentials provider. */
+    private CredentialsProvider credentialsProvider;
+    
     /**
      * Constructor.
      *
@@ -103,6 +111,67 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         
         // The default handler
         responseHandler = new BasicMetadataResponseHandler();
+    }
+    
+    /**
+     * Set an instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
+     * 
+     * @param provider the credentials provider
+     */
+    public void setCredentialsProvider(@Nullable final CredentialsProvider provider) {
+        credentialsProvider = provider;
+    }
+    
+    /**
+     * A convenience method to set a (single) username and password used to access metadata. 
+     * To disable BASIC authentication pass null for the credentials instance.
+     * 
+     * <p>
+     * An {@link AuthScope} will be generated which specifies any host, port, scheme and realm.
+     * </p>
+     * 
+     * <p>To specify multiple usernames and passwords for multiple host, port, scheme, and realm combinations, instead 
+     * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
+     * 
+     * @param credentials the username and password credentials
+     */
+    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
+        setBasicCredentialsWithScope(credentials, null);
+    }
+
+    /**
+     * A convenience method to set a (single) username and password used to access metadata.
+     * To disable BASIC authentication pass null for the credentials instance.
+     * 
+     * <p>
+     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated which specifies
+     * any host, port, scheme and realm.
+     * </p>
+     * 
+     * <p>To specify multiple usernames and passwords for multiple host, port, scheme, and realm combinations, instead 
+     * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
+     * 
+     * @param credentials the username and password credentials
+     * @param scope the HTTP client auth scope with which to scope the credentials, may be null
+     */
+    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials,
+            @Nullable final AuthScope scope) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
+        if (credentials != null) {
+            AuthScope authScope = scope;
+            if (authScope == null) {
+                authScope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT);
+            }
+            BasicCredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(authScope, credentials);
+            credentialsProvider = provider;
+        } else {
+            log.debug("Either username or password were null, disabling basic auth");
+            credentialsProvider = null;
+        }
+
     }
     
     /**
@@ -157,6 +226,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
    /** {@inheritDoc} */
     protected void doDestroy() {
         httpClient = null;
+        credentialsProvider = null;
         
         supportedContentTypes = null;
         supportedContentTypesValue = null;
@@ -174,8 +244,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             return null;
         }
         
-        //TODO HttpContext
-        return httpClient.execute(request, responseHandler);
+        HttpClientContext context = buildHttpClientContext();
+        
+        return httpClient.execute(request, responseHandler, context);
     }
     
     /**
@@ -211,6 +282,19 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @return the request URL, or null if it can not be built based on the supplied criteria
      */
     @Nullable protected abstract String buildRequestURL(@Nonnull final CriteriaSet criteria);
+    
+    /**
+     * Build the {@link HttpClientContext} instance which will be used to invoke the {@link HttpClient} request.
+     * 
+     * @return a new instance of {@link HttpClientContext}
+     */
+    protected HttpClientContext buildHttpClientContext() {
+        final HttpClientContext context = HttpClientContext.create();
+        if (credentialsProvider != null) {
+            context.setCredentialsProvider(credentialsProvider);
+        }
+        return context;
+    }
     
     /**
      * Basic HttpClient response handler for processing metadata fetch requests.
