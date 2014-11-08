@@ -407,9 +407,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             return;
         }
         
-        // TODO handling case where exists already one (or more) entries for a given entityID when this is called
-        // - either have to overwrite, or somehow pick one or the otheri, or (?) merge.
-        
         if (filteredMetadata instanceof EntityDescriptor) {
             EntityDescriptor entityDescriptor = (EntityDescriptor) filteredMetadata;
             if (!Objects.equals(entityDescriptor.getEntityID(), expectedEntityID)) {
@@ -595,27 +592,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             }
         }
         
-        /**
-         * Remove management data instances which have been orphaned, meaning there is
-         * no metadata for the corresponding entityID in the backing store.
-         */
-        public void cleanupOrphanedManagementData() {
-            // TODO think have a race condition here 
-            for (String entityID : mgmtDataMap.keySet()) {
-                Lock writeLock = mgmtDataMap.get(entityID).getReadWriteLock().writeLock();
-                try {
-                    writeLock.lock();
-                    
-                    if (!getIndexedDescriptors().containsKey(entityID)) {
-                        removeManagementData(entityID);
-                    }
-                    
-                } finally {
-                    writeLock.unlock();
-                }
-            }
-        }
-        
     }
     
     /**
@@ -742,9 +718,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             }
             
             removeExpiredAndIdleMetadata();
-            
-            // Cleanup mgmt data entries that don't have any indexed descriptors associated with them
-            getBackingStore().cleanupOrphanedManagementData();
         }
 
         /**
@@ -759,11 +732,10 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
             
             for (String entityID : indexedDescriptors.keySet()) {
-                Lock writeLock = backingStore.getManagementData(entityID).getReadWriteLock().writeLock();
+                EntityManagementData mgmtData = backingStore.getManagementData(entityID);
+                Lock writeLock = mgmtData.getReadWriteLock().writeLock();
                 try {
                     writeLock.lock();
-                    
-                    EntityManagementData mgmtData = backingStore.getManagementData(entityID);
                     
                     if (isRemoveData(mgmtData, now, earliestValidLastAccessed)) {
                         removeByEntityID(entityID, backingStore);
