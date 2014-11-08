@@ -119,6 +119,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param provider the credentials provider
      */
     public void setCredentialsProvider(@Nullable final CredentialsProvider provider) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         credentialsProvider = provider;
     }
     
