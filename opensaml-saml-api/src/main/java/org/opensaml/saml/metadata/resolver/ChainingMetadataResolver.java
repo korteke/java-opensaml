@@ -79,7 +79,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * 
      * @throws ResolverException thrown if there is a problem adding the metadata resolvers
      */
-    public void setResolvers(@Nonnull @NonnullElements final List<MetadataResolver> newResolvers)
+    public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers)
             throws ResolverException {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
