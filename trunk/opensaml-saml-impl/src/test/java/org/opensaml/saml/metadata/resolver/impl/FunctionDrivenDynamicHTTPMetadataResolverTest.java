@@ -200,7 +200,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertEquals(ed.getEntityID(), entityID);
     }
     
-    @Test(enabled=true)
+    @Test
     public void testMDQ() throws Exception {
         //TODO update with permanent test target, when it's stood up on shibboleth.net
         String baseURL = "http://md.iay.org.uk/global";
