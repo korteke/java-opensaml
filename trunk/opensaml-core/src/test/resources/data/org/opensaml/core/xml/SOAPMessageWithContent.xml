@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><Header/><Body><test:Statement xmlns:test="http://www.example.org/testObjects"/><test:Statement xmlns:test="http://www.example.org/testObjects"/></Body></Envelope>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" S:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><S:Header/><S:Body><test:Statement xmlns:test="http://www.example.org/testObjects"/><test:Statement xmlns:test="http://www.example.org/testObjects"/></S:Body></S:Envelope>

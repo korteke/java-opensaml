@@ -44,8 +44,6 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * Constructor
      */
     public MarshallingTest() {
-        super();
-
         simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
     }
 
@@ -138,7 +136,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         String expectedDocumentLocation = "/data/org/opensaml/core/xml/SOAPMessageWithContent.xml";
         String soapDocLocation = "/data/org/opensaml/core/xml/SOAPMessage.xml";
         Document soapDoc = parserPool.parse(MarshallingTest.class.getResourceAsStream(soapDocLocation));
-        Element soapBody = (Element) soapDoc.getDocumentElement().getElementsByTagName("Body").item(0);
+        Element soapBody = (Element) soapDoc.getDocumentElement().getElementsByTagNameNS(
+                "http://schemas.xmlsoap.org/soap/envelope/", "Body").item(0);
         
         SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
         
