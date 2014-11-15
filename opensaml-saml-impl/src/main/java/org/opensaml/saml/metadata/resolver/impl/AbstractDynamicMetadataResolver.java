@@ -31,8 +31,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.Duration;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -69,23 +71,23 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     private boolean createdOwnTaskTimer;
     
     /** Minimum cache duration. */
-    private Long minCacheDuration;
+    @Duration @Positive private Long minCacheDuration;
     
     /** Maximum cache duration. */
-    private Long maxCacheDuration;
+    @Duration @Positive private Long maxCacheDuration;
     
     /** Factor used to compute when the next refresh interval will occur. Default value: 0.75 */
-    private Float refreshDelayFactor = 0.75f;
+    @Positive private Float refreshDelayFactor = 0.75f;
     
     /** The maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
      * before it is removed. */
-    private Long maxIdleEntityData;
+    @Duration @Positive private Long maxIdleEntityData;
     
     /** Flag indicating whether idle entity data should be removed. */
     private boolean removeIdleEntityData;
     
     /** The interval in milliseconds at which the cleanup task should run. */
-    private Long cleanupTaskInterval;
+    @Duration @Positive private Long cleanupTaskInterval;
     
     /** The backing store cleanup sweeper background task. */
     private BackingStoreCleanupSweeper cleanupTask;
