@@ -32,7 +32,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
-import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -69,7 +68,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
     
     private ChainingSAML2NameIDGenerator generator;
 
-    private ProfileRequestContext<Object,Response> prc;
+    private ProfileRequestContext prc;
     
     private AddNameIDToSubjects action;
     
@@ -127,7 +126,11 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
     public void testNoMessage() throws ComponentInitializationException {
         action.initialize();
         action.execute(prc);
-        ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        Assertion assertion = (Assertion) prc.getOutboundMessageContext().getMessage();
+        Subject subject = assertion.getSubject();
+        Assert.assertNull(subject);
     }
 
     @Test
@@ -136,7 +139,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertTrue(prc.getOutboundMessageContext().getMessage().getAssertions().isEmpty());
+        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
     }
 
     @Test void testRequiredFormat() throws ComponentInitializationException {
@@ -151,14 +154,14 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
         Assert.assertEquals(subject.getNameID().getValue(), "baz");
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.EMAIL);
 
-        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
@@ -178,7 +181,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
         
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNull(subject);
     }
@@ -196,7 +199,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
 
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNull(subject);
         
@@ -204,7 +207,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
@@ -231,7 +234,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.INVALID_NAMEID_POLICY);
 
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNull(subject);
         
@@ -239,7 +242,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
@@ -254,11 +257,11 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNull(subject);
 
-        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
         subject = assertion.getSubject();
         Assert.assertNull(subject);
     }
@@ -271,14 +274,14 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
         Assert.assertEquals(subject.getNameID().getValue(), "foo");
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.X509_SUBJECT);
 
-        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
@@ -294,14 +297,14 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(0);
+        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
         Subject subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());
         Assert.assertEquals(subject.getNameID().getValue(), "baz");
         Assert.assertEquals(subject.getNameID().getFormat(), NameID.EMAIL);
 
-        assertion = prc.getOutboundMessageContext().getMessage().getAssertions().get(1);
+        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
         subject = assertion.getSubject();
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getNameID());

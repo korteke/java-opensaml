@@ -34,6 +34,8 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
+import net.shibboleth.utilities.java.support.security.SecureRandomIdentifierGenerationStrategy;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
@@ -51,6 +53,7 @@ import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
+import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.opensaml.saml.saml2.profile.SAML2NameIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +68,10 @@ import com.google.common.base.Strings;
  * found in a {@link Response}. The message to update is returned by a lookup strategy, by default
  * the message returned by {@link ProfileRequestContext#getOutboundMessageContext()}.
  * 
- * <p>No assertions will be created by this action, but if no {@link Subject} exists in
- * the assertions found, it will be cretaed.</p>
+ * <p>If no {@link Response} exists, then an {@link Assertion} directly in the outbound message context will
+ * be used or created by the default lookup strategy.</p>
+ * 
+ * <p>If no {@link Subject} exists in the assertions found, it will be cretaed.</p>
  * 
  * <p>The source of the {@link NameID} is one of a set of candidate {@link SAML2NameIDGenerator}
  * plugins injected into the action. The plugin(s) to attempt to use are derived from the Format value,
@@ -76,7 +81,7 @@ import com.google.common.base.Strings;
  * is evaluated using a pluggable predicate.</p>
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
- * @event {@link EventIds#INVALID_MSG_CTX}
+ * @event {@link EventIds#INVALID_PROFILE_CTX}
  * @event {@link SAMLEventIds#INVALID_NAMEID_POLICY}
  */
 public class AddNameIDToSubjects extends AbstractProfileAction {
@@ -99,6 +104,12 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     /** Strategy used to locate the {@link Response} to operate on. */
     @Nonnull private Function<ProfileRequestContext,List<Assertion>> assertionsLookupStrategy;
 
+    /** Strategy used to locate the {@link IdentifierGenerationStrategy} to use. */
+    @Nonnull private Function<ProfileRequestContext,IdentifierGenerationStrategy> idGeneratorLookupStrategy;
+
+    /** Strategy used to obtain the response issuer value. */
+    @Nullable private Function<ProfileRequestContext,String> issuerLookupStrategy;
+    
     /** Predicate to validate {@link NameIDPolicy}. */
     @Nonnull private Predicate<ProfileRequestContext> nameIDPolicyPredicate;
     
@@ -120,6 +131,12 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     /** Response to modify. */
     @Nullable private List<Assertion> assertions;
     
+    /** The generator to use. */
+    @Nullable private IdentifierGenerationStrategy idGenerator;
+
+    /** EntityID to populate into Issuer element. */
+    @Nullable private String issuerId;
+
     /** Constructor.
      *  
      * @throws ComponentInitializationException if an error occurs initializing default predicate.
@@ -137,6 +154,13 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         requestLookupStrategy =
                 Functions.compose(new MessageLookup<>(AuthnRequest.class), new InboundMessageContextLookup());
         assertionsLookupStrategy = new AssertionStrategy();
+
+        // Default strategy is a 16-byte secure random source.
+        idGeneratorLookupStrategy = new Function<ProfileRequestContext,IdentifierGenerationStrategy>() {
+            public IdentifierGenerationStrategy apply(ProfileRequestContext input) {
+                return new SecureRandomIdentifierGenerationStrategy();
+            }
+        };
         
         // Default predicate pulls SPNameQualifier from NameIDPolicy and does a direct match
         // against issuer. Handles simple cases, overridden for complex ones.
@@ -182,6 +206,30 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         assertionsLookupStrategy = Constraint.isNotNull(strategy, "Assertions lookup strategy cannot be null");
+    }
+
+    /**
+     * Set the strategy used to locate the {@link IdentifierGenerationStrategy} to use.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setIdentifierGeneratorLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,IdentifierGenerationStrategy> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        idGeneratorLookupStrategy =
+                Constraint.isNotNull(strategy, "IdentifierGenerationStrategy lookup strategy cannot be null");
+    }
+
+    /**
+     * Set the strategy used to locate the issuer value to use.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setIssuerLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        issuerLookupStrategy = strategy;
     }
     
     /**
@@ -230,14 +278,26 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         log.debug("{} Attempting to add NameID to outgoing Assertion Subjects", getLogPrefix());
         
-        assertions = assertionsLookupStrategy.apply(profileRequestContext);
-        if (assertions == null) {
-            log.debug("{} No suitable assertions located in profile request context", getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
+        idGenerator = idGeneratorLookupStrategy.apply(profileRequestContext);
+        if (idGenerator == null) {
+            log.debug("{} No identifier generation strategy", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_PROFILE_CTX);
             return false;
-        } else if (assertions.isEmpty()) {
+        }
+        
+        if (issuerLookupStrategy != null) {
+            issuerId = issuerLookupStrategy.apply(profileRequestContext);
+        }
+        
+        assertions = assertionsLookupStrategy.apply(profileRequestContext);
+        if (assertions == null || assertions.isEmpty()) {
             log.debug("{} No assertions returned, nothing to do", getLogPrefix());
             return false;
         }
@@ -264,7 +324,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
             }
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -399,7 +459,10 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
             if (input != null && input.getOutboundMessageContext() != null) {
                 final Object outboundMessage = input.getOutboundMessageContext().getMessage();
                 if (outboundMessage == null) {
-                    return null;
+                    final Assertion ret = SAML2ActionSupport.buildAssertion(AddNameIDToSubjects.this,
+                            idGenerator, issuerId);
+                    input.getOutboundMessageContext().setMessage(ret);
+                    return Collections.singletonList(ret);
                 } else if (outboundMessage instanceof Assertion) {
                     return Collections.singletonList((Assertion) outboundMessage);
                 } else if (outboundMessage instanceof Response) {

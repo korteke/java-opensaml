@@ -24,8 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.profile.action.AbstractProfileAction;
-import org.opensaml.profile.action.ActionSupport;
-import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
@@ -61,8 +59,7 @@ import com.google.common.base.Function;
  * plugins injected into the action. The plugin(s) to attempt to use are derived from the Format value,
  * which is established by a lookup strategy.</p>
  * 
- * @event {@link EventIds#PROCEED_EVENT_ID}
- * @event {@link EventIds#INVALID_MSG_CTX}
+ * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  */
 public class AddNameIdentifierToSubjects extends AbstractProfileAction {
 
@@ -174,11 +171,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         log.debug("{} Attempting to add NameIdentifier to statements in outgoing Assertions", getLogPrefix());
 
         assertions = assertionsLookupStrategy.apply(profileRequestContext);
-        if (assertions == null) {
-            log.debug("{} No suitable assertions located in profile request context", getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
-            return false;
-        } else if (assertions.isEmpty()) {
+        if (assertions == null || assertions.isEmpty()) {
             log.debug("{} No assertions returned, nothing to do", getLogPrefix());
             return false;
         }

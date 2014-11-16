@@ -84,7 +84,8 @@ public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {
     public void testNoMessage() throws ComponentInitializationException {
         action.initialize();
         action.execute(prc);
-        ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
+        ActionTestingSupport.assertProceedEvent(prc);
+        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
     }
 
     @Test

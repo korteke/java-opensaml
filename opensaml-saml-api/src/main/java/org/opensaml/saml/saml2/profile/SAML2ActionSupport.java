@@ -18,8 +18,8 @@
 package org.opensaml.saml.saml2.profile;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
 
 import org.joda.time.DateTime;
@@ -54,25 +54,26 @@ public final class SAML2ActionSupport {
      * @return the assertion
      */
     @Nonnull public static Assertion buildAssertion(@Nonnull final AbstractProfileAction action,
-            @Nonnull final IdentifierGenerationStrategy idGenerator, @Nonnull @NotEmpty final String issuer) {
+            @Nonnull final IdentifierGenerationStrategy idGenerator, @Nullable final String issuer) {
    
         final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
                         Assertion.DEFAULT_ELEMENT_NAME);
 
-        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
-                        Issuer.DEFAULT_ELEMENT_NAME);
-
-        final Issuer issuerObject = issuerBuilder.buildObject();
-        issuerObject.setValue(issuer);
-
         final Assertion assertion = assertionBuilder.buildObject();
         assertion.setID(idGenerator.generateIdentifier());
         assertion.setIssueInstant(new DateTime());
-        assertion.setIssuer(issuerObject);
         assertion.setVersion(SAMLVersion.VERSION_20);
 
+        if (issuer != null) {
+            final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                            Issuer.DEFAULT_ELEMENT_NAME);
+            final Issuer issuerObject = issuerBuilder.buildObject();
+            issuerObject.setValue(issuer);
+            assertion.setIssuer(issuerObject);
+        }
+        
         getLogger().debug("Profile Action {}: Created Assertion {}", action.getClass().getSimpleName(),
                 assertion.getID());
 
@@ -92,7 +93,7 @@ public final class SAML2ActionSupport {
      */
     @Nonnull public static Assertion addAssertionToResponse(@Nonnull final AbstractProfileAction action,
             @Nonnull final Response response, @Nonnull final IdentifierGenerationStrategy idGenerator,
-            @Nonnull @NotEmpty final String issuer) {
+            @Nullable final String issuer) {
 
         final Assertion assertion = buildAssertion(action, idGenerator, issuer);
         assertion.setIssueInstant(response.getIssueInstant());
