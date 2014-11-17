@@ -142,7 +142,7 @@ public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
         
         ss.save();
         Assert.assertNotNull(mockResponse.getCookie("test"));
-        mockRequest.setAttribute(ServletRequestScopedStorageService.CONTEXT_MAP_ATTRIBUTE, null);
+        mockRequest.setAttribute(ServletRequestScopedStorageService.CONTEXT_MAP_ATTRIBUTE + "." + ss.getCookieName(), null);
         
         for (int i = 1; i <= 10; i++) {
             Assert.assertNull(ss.read(context, Integer.toString(i)));

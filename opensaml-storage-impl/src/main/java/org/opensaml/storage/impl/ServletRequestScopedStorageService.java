@@ -163,6 +163,15 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     }
 
     /**
+     * Get the cookie name to use for storage tracking.
+     * 
+     * @return cookie name to use
+     */
+    @Nonnull @NotEmpty public String getCookieName() {
+        return cookieName;
+    }
+
+    /**
      * Set the cookie name to use for storage tracking.
      * 
      * @param name cookie name to use
@@ -449,13 +458,13 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     @Override
     @Nonnull @NonnullElements @Live protected Map<String, Map<String, MutableStorageRecord>> getContextMap() {
         
-        final Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE);
+        final Object contextMap = httpServletRequest.getAttribute(CONTEXT_MAP_ATTRIBUTE + '.' + cookieName);
         if (contextMap != null) {
             return (Map<String, Map<String, MutableStorageRecord>>) contextMap;
         }
 
         final Map<String, Map<String, MutableStorageRecord>> newMap = Maps.newHashMap();
-        httpServletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE, newMap);
+        httpServletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE + '.' + cookieName, newMap);
         
         // The first time through, do a load from the cookie.
         // Any subsequent calls to get the context map will return the previously set map.
@@ -482,9 +491,9 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
      */
     private void setDirty(final boolean flag) {
         if (flag) {
-            httpServletRequest.setAttribute(DIRTY_BIT_ATTRIBUTE, Boolean.TRUE);
+            httpServletRequest.setAttribute(DIRTY_BIT_ATTRIBUTE  + '.' + cookieName, Boolean.TRUE);
         } else {
-            httpServletRequest.removeAttribute(DIRTY_BIT_ATTRIBUTE);
+            httpServletRequest.removeAttribute(DIRTY_BIT_ATTRIBUTE + '.' + cookieName);
         }
     }
 
@@ -494,7 +503,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
      * @return  status of dirty bit
      */
     private boolean isDirty() {
-        final Object dirty = httpServletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE);
+        final Object dirty = httpServletRequest.getAttribute(DIRTY_BIT_ATTRIBUTE + '.' + cookieName);
         if (dirty != null && dirty instanceof Boolean) {
             return (Boolean) dirty;
         } else {
