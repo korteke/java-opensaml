@@ -77,7 +77,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     @Duration @Positive private Long maxCacheDuration;
     
     /** Factor used to compute when the next refresh interval will occur. Default value: 0.75 */
-    @Positive private Float refreshDelayFactor = 0.75f;
+    @Positive private Float refreshDelayFactor;
     
     /** The maximum idle time in milliseconds for which the resolver will keep data for a given entityID, 
      * before it is removed. */
