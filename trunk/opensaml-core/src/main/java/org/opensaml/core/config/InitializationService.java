@@ -51,7 +51,7 @@ public class InitializationService {
         Iterator<Initializer> iter = serviceLoader.iterator();
         while (iter.hasNext()) {
             Initializer initializer  = iter.next();
-            log.info("Initializing module initializer implementation: {}", initializer.getClass().getName());
+            log.debug("Initializing module initializer implementation: {}", initializer.getClass().getName());
             try {
                 initializer.init();
             } catch (InitializationException e) {
