@@ -125,7 +125,7 @@ public class AlgorithmRegistry {
     public void register(@Nonnull final AlgorithmDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "AlgorithmDescriptor was null");
         
-        log.info("Registering algorithm descriptor with URI: {}", descriptor.getURI());
+        log.debug("Registering algorithm descriptor with URI: {}", descriptor.getURI());
         
         AlgorithmDescriptor old = descriptors.get(descriptor.getURI());
         if (old != null) {
@@ -203,7 +203,7 @@ public class AlgorithmRegistry {
         if (checkRuntimeSupports(descriptor)) {
             runtimeSupported.add(descriptor.getURI());
         } else {
-            log.warn("Algorithm failed runtime support check, will not be usable: {}", descriptor.getURI());
+            log.info("Algorithm failed runtime support check, will not be usable: {}", descriptor.getURI());
             // Just for good measure, for case where environment has changed 
             // and algorithm is being re-registered.
             runtimeSupported.remove(descriptor.getURI());
@@ -268,7 +268,7 @@ public class AlgorithmRegistry {
                     break;
                     
                 default:
-                    log.warn("Saw unknown AlgorithmDescriptor type, failing runtime support check: {}",
+                    log.info("Saw unknown AlgorithmDescriptor type, failing runtime support check: {}",
                             descriptor.getClass().getName());
                 
             }
