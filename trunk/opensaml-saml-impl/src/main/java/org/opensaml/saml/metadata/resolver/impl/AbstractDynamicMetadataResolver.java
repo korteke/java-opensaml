@@ -290,13 +290,10 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         
         EntityManagementData mgmtData = getBackingStore().getManagementData(entityID);
         Lock readLock = mgmtData.getReadWriteLock().readLock();
-        boolean shouldAttemptRefresh = false;
         try {
             readLock.lock();
             
-            shouldAttemptRefresh = shouldAttemptRefresh(mgmtData);
-            
-            if (!shouldAttemptRefresh) {
+            if (!shouldAttemptRefresh(mgmtData)) {
                 List<EntityDescriptor> descriptors = lookupEntityID(entityID);
                 if (!descriptors.isEmpty()) {
                     log.debug("Found requested metadata in backing store, returning");
@@ -312,7 +309,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             readLock.unlock();
         }
         
-        return resolveFromOriginSource(criteria, shouldAttemptRefresh);
+        return resolveFromOriginSource(criteria);
     }
     
     /**
@@ -320,21 +317,23 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * and then return it.
      * 
      * @param criteria the input criteria set
-     * @param resolveUnconditionally whether metadata should unconditionally be resolved, 
-     *           even if there is existing metadata
      * @return the resolved metadata
      * @throws ResolverException  if there is a fatal error attempting to resolve the metadata
      */
     @Nonnull @NonnullElements protected Iterable<EntityDescriptor> resolveFromOriginSource(
-            @Nonnull final CriteriaSet criteria, boolean resolveUnconditionally) throws ResolverException {
+            @Nonnull final CriteriaSet criteria) throws ResolverException {
         
         String entityID = StringSupport.trimOrNull(criteria.get(EntityIdCriterion.class).getEntityId());
-        Lock writeLock = getBackingStore().getManagementData(entityID).getReadWriteLock().writeLock(); 
+        EntityManagementData mgmtData = getBackingStore().getManagementData(entityID);
+        Lock writeLock = mgmtData.getReadWriteLock().writeLock(); 
         
         try {
             writeLock.lock();
             
-            if (!resolveUnconditionally) {
+            // It's possible that multiple threads fall into here and attempt to preemptively refresh. 
+            // This check should ensure that only 1 actually successfully does it, b/c the refresh
+            // trigger time will be updated as seen by the subsequent ones. 
+            if (!shouldAttemptRefresh(mgmtData)) {
                 List<EntityDescriptor> descriptors = lookupEntityID(entityID);
                 if (!descriptors.isEmpty()) {
                     log.debug("Metadata was resolved and stored by another thread " 
