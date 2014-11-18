@@ -42,7 +42,7 @@ import com.google.common.base.Function;
  * </p>
  * 
  * <p>
- * The rutime logic is effectively:
+ * The runtime logic is effectively:
  * <blockquote><pre>
  * Pattern pattern = Pattern.compile(regex);
  * Matcher matcher = pattern.matcher(entityID);
