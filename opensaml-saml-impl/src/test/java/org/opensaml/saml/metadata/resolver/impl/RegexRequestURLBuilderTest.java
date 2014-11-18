@@ -27,12 +27,12 @@ public class RegexRequestURLBuilderTest {
     @Test
     public void testBasic() {
         // Attempt to pluck out the domain name into match group $1.
-        function = new RegexRequestURLBuilder("^https?://([a-zA-Z0-9\\.]+).*$", "urn:test:domain:$1");
+        function = new RegexRequestURLBuilder("^https?://([a-zA-Z0-9\\.]+).*$", "http://metadata.example.org/query?domain=$1");
         
-        Assert.assertEquals(function.apply("http://example.org"), "urn:test:domain:example.org");
-        Assert.assertEquals(function.apply("http://example.org/"), "urn:test:domain:example.org");
-        Assert.assertEquals(function.apply("http://example.org/idp"), "urn:test:domain:example.org");
-        Assert.assertEquals(function.apply("http://example.org:443/idp"), "urn:test:domain:example.org");
+        Assert.assertEquals(function.apply("http://example.org"), "http://metadata.example.org/query?domain=example.org");
+        Assert.assertEquals(function.apply("http://example.org/"), "http://metadata.example.org/query?domain=example.org");
+        Assert.assertEquals(function.apply("http://example.org/idp"), "http://metadata.example.org/query?domain=example.org");
+        Assert.assertEquals(function.apply("http://example.org:443/idp"), "http://metadata.example.org/query?domain=example.org");
         
         // These shouldn't match, so should return null.
         Assert.assertNull(function.apply("urn:test:foo"));
