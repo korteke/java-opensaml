@@ -20,12 +20,12 @@ package org.opensaml.xmlsec.encryption;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
-import org.opensaml.xmlsec.signature.KeyInfoType;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, OriginatorKeyInfo element.
  */
-public interface OriginatorKeyInfo extends KeyInfoType {
+public interface OriginatorKeyInfo extends KeyInfo {
 
     /** Element local name. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "OriginatorKeyInfo";

@@ -17,7 +17,37 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-/** Unmarshaller of {@link org.opensaml.xmlsec.signature.KeyInfo} objects. */
-public class KeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.w3c.dom.Attr;
+
+/**
+ * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.signature.KeyInfoType} objects.
+ */
+public class KeyInfoUnmarshaller extends AbstractXMLSignatureUnmarshaller {
+
+    /** {@inheritDoc} */
+    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+        KeyInfo keyInfo = (KeyInfo) xmlObject;
+
+        if (attribute.getLocalName().equals(KeyInfo.ID_ATTRIB_NAME)) {
+            keyInfo.setID(attribute.getValue());
+            attribute.getOwnerElement().setIdAttributeNode(attribute, true);
+        } else {
+            super.processAttribute(xmlObject, attribute);
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+            throws UnmarshallingException {
+        KeyInfo keyInfo = (KeyInfo) parentXMLObject;
+
+        // KeyInfoType contains a range of specific types, but also
+        // support <any>, with an unbounded choice over all (no ordering)
+        // so no need to distinguish.
+        keyInfo.getXMLObjects().add(childXMLObject);
+    }
 
 }

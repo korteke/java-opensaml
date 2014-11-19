@@ -17,9 +17,24 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.w3c.dom.Element;
+
 /**
  * A thread-safe Marshaller for {@link org.opensaml.xmlsec.signature.KeyInfo} objects.
  */
-public class KeyInfoMarshaller extends KeyInfoTypeMarshaller {
+public class KeyInfoMarshaller extends AbstractXMLSignatureMarshaller {
+
+    /** {@inheritDoc} */
+    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        KeyInfo keyInfo = (KeyInfo ) xmlObject;
+
+        if (keyInfo.getID() != null) {
+            domElement.setAttributeNS(null, KeyInfo.ID_ATTRIB_NAME, keyInfo.getID());
+            domElement.setIdAttributeNS(null, KeyInfo.ID_ATTRIB_NAME, true);
+        }
+    }
 
 }
