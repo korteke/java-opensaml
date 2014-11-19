@@ -17,11 +17,11 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import org.opensaml.xmlsec.signature.impl.KeyInfoTypeUnmarshaller;
+import org.opensaml.xmlsec.signature.impl.KeyInfoUnmarshaller;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo} objects.
  */
-public class OriginatorKeyInfoUnmarshaller extends KeyInfoTypeUnmarshaller {
+public class OriginatorKeyInfoUnmarshaller extends KeyInfoUnmarshaller {
 
 }

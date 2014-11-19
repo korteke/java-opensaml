@@ -17,12 +17,38 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.xmlsec.encryption.AgreementMethod;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfoReference;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.MgmtData;
+import org.opensaml.xmlsec.signature.PGPData;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.SPKIData;
+import org.opensaml.xmlsec.signature.X509Data;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfo}.
  */
-public class KeyInfoImpl extends KeyInfoTypeImpl implements KeyInfo {
+public class KeyInfoImpl extends AbstractXMLObject implements KeyInfo {
+    
+    /** The list of XMLObject child elements. */
+    private final IndexedXMLObjectChildrenList indexedChildren;
+    
+    /** The Id attribute value. */
+    private String id;
 
     /**
      * Constructor.
@@ -33,6 +59,97 @@ public class KeyInfoImpl extends KeyInfoTypeImpl implements KeyInfo {
      */
     protected KeyInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+        indexedChildren = new IndexedXMLObjectChildrenList(this);
+    }
+    
+    /** {@inheritDoc} */
+    public String getID() {
+        return this.id;
+    }
+
+    /** {@inheritDoc} */
+    public void setID(String newID) {
+        String oldID = this.id;
+        this.id = prepareForAssignment(this.id, newID);
+        registerOwnID(oldID, this.id);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getXMLObjects() {
+        return (List<XMLObject>) indexedChildren;
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getXMLObjects(QName typeOrName) {
+        return (List<XMLObject>) indexedChildren.subList(typeOrName);
+    }
+
+    /** {@inheritDoc} */
+    public List<KeyName> getKeyNames() {
+        return (List<KeyName>) indexedChildren.subList(KeyName.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<KeyValue> getKeyValues() {
+        return (List<KeyValue>) indexedChildren.subList(KeyValue.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<DEREncodedKeyValue> getDEREncodedKeyValues() {
+        return (List<DEREncodedKeyValue>) indexedChildren.subList(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+    }
+    
+    /** {@inheritDoc} */
+    public List<RetrievalMethod> getRetrievalMethods() {
+        return (List<RetrievalMethod>) indexedChildren.subList(RetrievalMethod.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<KeyInfoReference> getKeyInfoReferences() {
+        return (List<KeyInfoReference>) indexedChildren.subList(KeyInfoReference.DEFAULT_ELEMENT_NAME);
+    }
+    
+    /** {@inheritDoc} */
+    public List<X509Data> getX509Datas() {
+        return (List<X509Data>) indexedChildren.subList(X509Data.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<PGPData> getPGPDatas() {
+        return (List<PGPData>) indexedChildren.subList(PGPData.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<SPKIData> getSPKIDatas() {
+        return (List<SPKIData>) indexedChildren.subList(SPKIData.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<MgmtData> getMgmtDatas() {
+        return (List<MgmtData>) indexedChildren.subList(MgmtData.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<AgreementMethod> getAgreementMethods() {
+        return (List<AgreementMethod>) indexedChildren.subList(AgreementMethod.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<EncryptedKey> getEncryptedKeys() {
+        return (List<EncryptedKey>) indexedChildren.subList(EncryptedKey.DEFAULT_ELEMENT_NAME);
+    }
+
+    /** {@inheritDoc} */
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        
+        children.addAll(indexedChildren);
+        
+        if (children.size() == 0) {
+            return null;
+        }
+        
+        return Collections.unmodifiableList(children);
     }
 
 }

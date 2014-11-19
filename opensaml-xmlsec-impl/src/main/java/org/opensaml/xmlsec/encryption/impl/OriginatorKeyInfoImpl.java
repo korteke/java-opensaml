@@ -18,12 +18,12 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
-import org.opensaml.xmlsec.signature.impl.KeyInfoTypeImpl;
+import org.opensaml.xmlsec.signature.impl.KeyInfoImpl;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OriginatorKeyInfo}.
  */
-public class OriginatorKeyInfoImpl extends KeyInfoTypeImpl implements OriginatorKeyInfo {
+public class OriginatorKeyInfoImpl extends KeyInfoImpl implements OriginatorKeyInfo {
 
     /**
      * Constructor.
