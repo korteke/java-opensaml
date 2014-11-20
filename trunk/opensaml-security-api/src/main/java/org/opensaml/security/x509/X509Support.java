@@ -54,9 +54,9 @@ import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.cryptacular.util.CertUtil;
 import org.cryptacular.util.CodecUtil;
 import org.cryptacular.x509.GeneralNameType;
-import org.cryptacular.x509.dn.AttributeType;
-import org.cryptacular.x509.dn.Attributes;
 import org.cryptacular.x509.dn.NameReader;
+import org.cryptacular.x509.dn.RDNSequence;
+import org.cryptacular.x509.dn.StandardAttributeType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
@@ -164,9 +164,9 @@ public class X509Support {
 
         Logger log = getLogger();
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
-        final Attributes attrs = NameReader.readX500Principal(dn);
+        final RDNSequence attrs = NameReader.readX500Principal(dn);
         // Have to copy because list returned from Attributes is unmodifiable, so can't reverse it.
-        List<String> values = Lists.newArrayList(attrs.getValues(AttributeType.CommonName));
+        List<String> values = Lists.newArrayList(attrs.getValues(StandardAttributeType.CommonName));
         
         // Reverse the order so that the most-specific CN is first in the list, 
         // consistent with RFC 1779/2253 RDN ordering.
