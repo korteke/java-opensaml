@@ -45,7 +45,7 @@ import com.google.common.collect.Sets;
  * <li><code>EntitiesDescriptor</code>: the <code>Name</code> attribute</li> 
  * <li><code>RoleDescriptor</code>: the <code>entityID</code> attribute of the parent 
  *     <code>EntityDescriptor</code></li> 
- * <li><code>RoleDescriptor</code>: 1) the <code>affiliationOwnerID</code> attribute and 
+ * <li><code>AffiliationDescriptor</code>: 1) the <code>affiliationOwnerID</code> attribute and 
  *     2) the <code>entityID</code> attribute of the parent <code>EntityDescriptor</code></li> 
  * </ul>
  * </p>
