@@ -27,6 +27,12 @@
             <artifactId>opensaml-messaging-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>${httpclient.groupId}</groupId>
+            <artifactId>httpclient</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!-- Provided Dependencies -->
         <dependency>
