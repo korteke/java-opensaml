@@ -161,27 +161,27 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
                 HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET);
         if (criteriaSet == null) {
             log.debug("No criteria set supplied by caller, skipping trust eval");
+            return;
         } else {
             log.trace("Saw CriteriaSet: {}", criteriaSet);
         }
 
         X509Credential credential = extractCredential(sslSocket);
         
-        boolean trusted = false;
         try {
-            trusted = trustEngine.validate(credential, criteriaSet);
+            if (trustEngine.validate(credential, criteriaSet)) {
+                log.debug("Credential evaluated as trusted");
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED, 
+                        Boolean.TRUE);
+            } else {
+                log.debug("Credential evaluated as untrusted");
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED, 
+                        Boolean.FALSE);
+                throw new SSLPeerUnverifiedException("Trust engine could not establish trust of server TLS credential");
+            }
         } catch (SecurityException e) {
             log.error("Trust engine error evaluating credential", e);
             throw new IOException("Trust engine error evaluating credential", e);
-        }
-        
-        if (trusted) {
-            log.debug("Credential evaluated as trusted");
-            context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED, Boolean.TRUE);
-        } else {
-            log.debug("Credential evaluated as untrusted");
-            context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED, Boolean.FALSE);
-            throw new SSLPeerUnverifiedException("Trust engine could not establish trust of TLS server credential");
         }
         
     }
