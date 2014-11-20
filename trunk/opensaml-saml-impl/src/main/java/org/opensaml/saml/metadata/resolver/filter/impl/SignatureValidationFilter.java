@@ -74,7 +74,13 @@ public class SignatureValidationFilter implements MetadataFilter {
     /**
      * Constructor.
      * 
+     * <p>
      * Signature pre-validator defaults to {@link SAMLSignatureProfileValidator}.
+     * </p>
+     * 
+     * <p>
+     * Dynamic trusted names strategy defaults to {@link BasicDynamicTrustedNamesStrategy}.
+     * </p>
      * 
      * @param engine the trust engine used to validate signatures on incoming metadata.
      */
@@ -87,10 +93,13 @@ public class SignatureValidationFilter implements MetadataFilter {
 
         signatureTrustEngine = engine;
         signaturePrevalidator = new SAMLSignatureProfileValidator();
+        dynamicTrustedNamesStrategy = new BasicDynamicTrustedNamesStrategy();
     }
 
     /**
      * Get the strategy function for extracting dynamic trusted names from signed metadata elements.
+     * 
+     * <p>Defaults to: {@link BasicDynamicTrustedNamesStrategy}.</p>
      * 
      * @return the function, or null
      */
@@ -100,6 +109,8 @@ public class SignatureValidationFilter implements MetadataFilter {
 
     /**
      * Get the strategy function for extracting dynamic trusted names from signed metadata elements.
+     * 
+     * <p>Defaults to: {@link BasicDynamicTrustedNamesStrategy}.</p>
      * 
      * @param strategy the function, may be null
      */
@@ -119,6 +130,8 @@ public class SignatureValidationFilter implements MetadataFilter {
     /**
      * Get the validator used to perform pre-validation on Signature tokens.
      * 
+     * <p>Defaults to: {@link SAMLSignatureProfileValidator}.</p>
+     * 
      * @return the configured Signature validator, or null
      */
     @Nullable public SignaturePrevalidator getSignaturePrevalidator() {
@@ -128,6 +141,8 @@ public class SignatureValidationFilter implements MetadataFilter {
     /**
      * Set the validator used to perform pre-validation on Signature tokens.
      * 
+     * <p>Defaults to: {@link SAMLSignatureProfileValidator}.</p>
+     * 
      * @param validator the signature prevalidator to use
      */
     public void setSignaturePrevalidator(@Nullable final SignaturePrevalidator validator) {
@@ -136,7 +151,8 @@ public class SignatureValidationFilter implements MetadataFilter {
 
     /**
      * Gets whether incoming metadata's root element is required to be signed.
-     * Defaults to <code>true</code>.
+     * 
+     * <p>Defaults to <code>true</code>.</p>
      * 
      * @return whether incoming metadata is required to be signed
      */
@@ -146,7 +162,8 @@ public class SignatureValidationFilter implements MetadataFilter {
 
     /**
      * Sets whether incoming metadata's root element is required to be signed.
-     * Defaults to <code>true</code>.
+     * 
+     * <p>Defaults to <code>true</code>.</p>
      * 
      * @param require whether incoming metadata is required to be signed
      */
@@ -155,7 +172,7 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
  
     /**
-     * Get the set of default criteria used as input to the trust engine.
+     * Get the optional set of default criteria used as input to the trust engine.
      * 
      * @return the criteria set
      */
@@ -164,7 +181,7 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
     
     /**
-     * Set the set of default criteria used as input to the trust engine.
+     * Set the optional set of default criteria used as input to the trust engine.
      * 
      * @param newCriteria the new criteria set to use
      */
