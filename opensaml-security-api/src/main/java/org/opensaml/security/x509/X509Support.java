@@ -166,7 +166,7 @@ public class X509Support {
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
         final RDNSequence attrs = NameReader.readX500Principal(dn);
         // Have to copy because list returned from Attributes is unmodifiable, so can't reverse it.
-        List<String> values = Lists.newArrayList(attrs.getValues(StandardAttributeType.CommonName));
+        final List<String> values = Lists.newArrayList(attrs.getValues(StandardAttributeType.CommonName));
         
         // Reverse the order so that the most-specific CN is first in the list, 
         // consistent with RFC 1779/2253 RDN ordering.
