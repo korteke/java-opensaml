@@ -39,7 +39,10 @@ public final class EventIds {
      */
     @Nonnull @NotEmpty public static final String INVALID_MSG_CTX = "InvalidMessageContext";
 
-    /** ID of the event returned if a SAML message version is incorrect or unsupported. */
+    /** ID of the event returned if a message is invalid in some general way. */
+    @Nonnull @NotEmpty public static final String INVALID_MESSAGE = "InvalidMessage";
+
+    /** ID of the event returned if a message version is incorrect or unsupported. */
     @Nonnull @NotEmpty public static final String INVALID_MESSAGE_VERSION = "InvalidMessageVersion";
 
     /** ID of event returned if an error occurs with security configuration. */
