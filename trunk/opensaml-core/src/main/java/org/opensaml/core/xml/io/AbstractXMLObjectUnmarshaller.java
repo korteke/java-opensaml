@@ -58,13 +58,13 @@ import org.w3c.dom.Text;
 public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectUnmarshaller.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectUnmarshaller.class);
 
     /** Factory for XMLObjectBuilders. */
-    private final XMLObjectBuilderFactory xmlObjectBuilderFactory;
+    @Nonnull private final XMLObjectBuilderFactory xmlObjectBuilderFactory;
 
     /** Factory for creating unmarshallers for child elements. */
-    private final UnmarshallerFactory unmarshallerFactory;
+    @Nonnull private final UnmarshallerFactory unmarshallerFactory;
 
     /**
      * Constructor.
@@ -75,6 +75,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull public XMLObject unmarshall(@Nonnull final Element domElement) throws UnmarshallingException {
         log.trace("Starting to unmarshall DOM element {}", QNameSupport.getNodeQName(domElement));
 
@@ -340,7 +341,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
             @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
-        log.debug("Ignorning unknown child element {}", childXMLObject.getElementQName());
+        log.debug("Ignoring unknown child element {}", childXMLObject.getElementQName());
     }
 
     /**
@@ -355,7 +356,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      */
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        log.debug("Ignorning unknown attribute {}", QNameSupport.getNodeQName(attribute));
+        log.debug("Ignoring unknown attribute {}", QNameSupport.getNodeQName(attribute));
     }
 
     /**
@@ -367,7 +368,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
      * @param elementContent the Element's content
      */
     protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
-        log.debug("Ignorning unknown element content {}", elementContent);
+        log.debug("Ignoring unknown element content {}", elementContent);
     }
     
     /**
