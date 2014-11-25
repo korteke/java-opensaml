@@ -155,7 +155,7 @@ public class PredicateFilter implements MetadataFilter {
             entityDescriptors.removeAll(emptyEntityDescriptors);
         }
 
-        // Next, check contained EntityDescriptors.
+        // Next, check contained EntitiesDescriptors.
         final List<EntitiesDescriptor> entitiesDescriptors = descriptor.getEntitiesDescriptors();
         if (!entitiesDescriptors.isEmpty()) {
             final List<EntitiesDescriptor> emptyEntitiesDescriptors = new ArrayList<>();
