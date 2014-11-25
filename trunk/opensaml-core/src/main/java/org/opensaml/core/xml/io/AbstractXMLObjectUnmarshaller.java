@@ -305,7 +305,7 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
         }
 
         if (log.isTraceEnabled()) {
-            log.trace("Unmarshalling child element {}with unmarshaller {}", QNameSupport.getNodeQName(childElement),
+            log.trace("Unmarshalling child element {} with unmarshaller {}", QNameSupport.getNodeQName(childElement),
                     unmarshaller.getClass().getName());
         }
         processChildElement(xmlObject, unmarshaller.unmarshall(childElement));
