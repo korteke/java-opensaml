@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.annotation.Duration;
 
 import org.joda.time.DateTime;
@@ -40,7 +43,7 @@ import org.slf4j.LoggerFactory;
 public class RequiredValidUntilFilter implements MetadataFilter {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(RequiredValidUntilFilter.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(RequiredValidUntilFilter.class);
 
     /** The maximum interval, in milliseconds, between now and the <code>validUntil</code> date. */
     @Duration private long maxValidityInterval;
@@ -55,12 +58,12 @@ public class RequiredValidUntilFilter implements MetadataFilter {
      * 
      * @param maxValidity maximum internal, in seconds, between now and the <code>validUntil</code> date
      */
-    public RequiredValidUntilFilter(long maxValidity) {
-        this.maxValidityInterval = maxValidity * 1000;
+    public RequiredValidUntilFilter(final long maxValidity) {
+        maxValidityInterval = maxValidity * 1000;
     }
 
     /**
-     * Gets the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
+     * Get the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
      * A value of less than 1 indicates that there is no restriction.
      * 
      * @return maximum internal, in milliseconds, between now and the <code>validUntil</code> date
@@ -70,31 +73,31 @@ public class RequiredValidUntilFilter implements MetadataFilter {
     }
     
     /**
-     * Sets the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
+     * Set the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
      * A value of less than 1 indicates that there is no restriction.
      * 
      * @param validity time in milliseconds between now and the <code>validUntil</code> date
      */
-    public void setMaxValidityInterval(@Duration long validity) {
+    public void setMaxValidityInterval(@Duration final long validity) {
         maxValidityInterval = validity;
     }
 
     /** {@inheritDoc} */
     @Override
-    public XMLObject filter(XMLObject metadata) throws FilterException {
+    @Nullable public XMLObject filter(@Nullable final XMLObject metadata) throws FilterException {
         if (metadata == null) {
             return null;
         }
         
-        DateTime validUntil = getValidUntil(metadata);
+        final DateTime validUntil = getValidUntil(metadata);
 
         if (validUntil == null) {
             throw new FilterException("Metadata did not include a validUntil attribute");
         }
 
-        DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+        final DateTime now = new DateTime(ISOChronology.getInstanceUTC());
         if (maxValidityInterval > 0 && validUntil.isAfter(now)) {
-            long validityInterval = validUntil.getMillis() - now.getMillis();
+            final long validityInterval = validUntil.getMillis() - now.getMillis();
             if (validityInterval > maxValidityInterval) {
                 throw new FilterException("Metadata's validity interval, " + validityInterval
                         + "ms, is larger than is allowed, " + maxValidityInterval + "ms.");
@@ -114,7 +117,7 @@ public class RequiredValidUntilFilter implements MetadataFilter {
      * @throws FilterException thrown if the given XML object is not an {@link EntitiesDescriptor} or
      *             {@link EntityDescriptor}
      */
-    protected DateTime getValidUntil(XMLObject metadata) throws FilterException {
+    @Nullable protected DateTime getValidUntil(@Nonnull final XMLObject metadata) throws FilterException {
         if (metadata instanceof EntitiesDescriptor) {
             return ((EntitiesDescriptor) metadata).getValidUntil();
         } else if (metadata instanceof EntityDescriptor) {
@@ -125,4 +128,5 @@ public class RequiredValidUntilFilter implements MetadataFilter {
             throw new FilterException("Metadata root element was not an EntitiesDescriptor or EntityDescriptor");
         }
     }
+    
 }

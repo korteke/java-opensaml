@@ -83,10 +83,10 @@ public class SchemaValidationFilter implements MetadataFilter {
             log.info("Overriding SchemaBuilder used to construct schemas to accomodate extension schemas");
             log.warn("Supplying extension schemas directly to metadata filter is deprecated");
             
-            SchemaBuilder overriddenSchemaBuilder = new SchemaBuilder();
+            final SchemaBuilder overriddenSchemaBuilder = new SchemaBuilder();
             overriddenSchemaBuilder.setResourceResolver(new ClasspathResolver());
-            Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
-            for (String extension : extensionSchemas) {
+            final Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
+            for (final String extension : extensionSchemas) {
                 final String trimmed = StringSupport.trimOrNull(extension);
                 if (trimmed != null) {
                     final InputStream stream = clazz.getResourceAsStream(trimmed);
@@ -106,7 +106,7 @@ public class SchemaValidationFilter implements MetadataFilter {
             return null;
         }
         
-        Validator schemaValidator = null;
+        final Validator schemaValidator;
         try {
             schemaValidator = samlSchemaBuilder.getSAMLSchema().newValidator();
         } catch (final SAXException e) {

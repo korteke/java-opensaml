@@ -17,15 +17,25 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.Live;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 
 /**
  * A filter that allows the composition of {@link MetadataFilter}s. Filters will be executed on the given metadata
@@ -34,10 +44,10 @@ import org.slf4j.LoggerFactory;
 public class MetadataFilterChain implements MetadataFilter {
 
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(MetadataFilterChain.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(MetadataFilterChain.class);
 
     /** Registered filters. */
-    private List<MetadataFilter> filters;
+    @Nonnull @NonnullElements private List<MetadataFilter> filters;
 
     /**
      * Constructor.
@@ -47,7 +57,8 @@ public class MetadataFilterChain implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public final XMLObject filter(XMLObject xmlObject) throws FilterException {
+    @Override
+    @Nullable public final XMLObject filter(@Nullable final XMLObject xmlObject) throws FilterException {
         if (xmlObject == null) {
             return null;
         }
@@ -72,31 +83,23 @@ public class MetadataFilterChain implements MetadataFilter {
     }
 
     /**
-     * Gets the list of {@link MetadataFilter}s that make up this chain.
+     * Get the list of {@link MetadataFilter}s that make up this chain.
      * 
      * @return the filters that make up this chain
      */
-    public List<MetadataFilter> getFilters() {
+    @Nonnull @NonnullElements @Live public List<MetadataFilter> getFilters() {
         return filters;
     }
 
     /**
-     * Sets the list of {@link MetadataFilter}s that make up this chain.
+     * Set the list of {@link MetadataFilter}s that make up this chain.
      * 
      * @param newFilters list of {@link MetadataFilter}s that make up this chain
      */
-    public void setFilters(List<MetadataFilter> newFilters) {
-        if (newFilters == null || newFilters.isEmpty()) {
-            filters.clear();
-        }
-
-        ArrayList<MetadataFilter> checkedFilters = new ArrayList<MetadataFilter>();
-        for (MetadataFilter filter : newFilters) {
-            if (filter != null) {
-                checkedFilters.add(filter);
-            }
-        }
-
-        filters = checkedFilters;
+    public void setFilters(@Nonnull @NonnullElements final List<MetadataFilter> newFilters) {
+        Constraint.isNotNull(newFilters, "Filter collection cannot be null");
+        
+        filters = Lists.newArrayList(Collections2.filter(newFilters, Predicates.notNull()));
     }
+    
 }
