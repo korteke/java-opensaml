@@ -78,12 +78,23 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
         } else if (attribute.getLocalName().equals(ResponseAbstractType.ISSUEINSTANT_ATTRIB_NAME)
                 && !Strings.isNullOrEmpty(attribute.getValue())) {
             response.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
+        } else if (attribute.getLocalName().equals(ResponseAbstractType.MAJORVERSION_ATTRIB_NAME)) {
+            int major;
+            try {
+                major = Integer.parseInt(attribute.getValue());
+                if (major != 1) {
+                    throw new UnmarshallingException("MajorVersion was invalid, must be 1");
+                }
+            } catch (final NumberFormatException n) {
+                log.error("Failed to parse major version", n);
+                throw new UnmarshallingException(n);
+            }
         } else if (attribute.getLocalName().equals(ResponseAbstractType.MINORVERSION_ATTRIB_NAME)) {
             int minor;
             try {
                 minor = Integer.parseInt(attribute.getValue());
             } catch (NumberFormatException n) {
-                log.error("Parsing minor version ", n);
+                log.error("Failed to parse minor version", n);
                 throw new UnmarshallingException(n);
             }
             if (minor == 0) {

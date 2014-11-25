@@ -79,10 +79,26 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         } else if (Assertion.ISSUEINSTANT_ATTRIB_NAME.equals(attribute.getLocalName())
                 && !Strings.isNullOrEmpty(attribute.getValue())) {
             assertion.setIssueInstant(new DateTime(attribute.getValue(), ISOChronology.getInstanceUTC()));
+        } else if (Assertion.MAJORVERSION_ATTRIB_NAME.equals(attribute.getLocalName())) {
+            int major;
+            try {
+                major = Integer.parseInt(attribute.getValue());
+                if (major != 1) {
+                    throw new UnmarshallingException("MajorVersion was invalid, must be 1");
+                }
+            } catch (final NumberFormatException n) {
+                throw new UnmarshallingException(n);
+            }
         } else if (Assertion.MINORVERSION_ATTRIB_NAME.equals(attribute.getLocalName())) {
-            if ("0".equals(attribute.getValue())) {
+            int minor;
+            try {
+                minor = Integer.parseInt(attribute.getValue());
+            } catch (NumberFormatException n) {
+                throw new UnmarshallingException(n);
+            }
+            if (minor == 0) {
                 assertion.setVersion(SAMLVersion.VERSION_10);
-            } else {
+            } else if (minor == 1) {
                 assertion.setVersion(SAMLVersion.VERSION_11);
             }
         } else {
