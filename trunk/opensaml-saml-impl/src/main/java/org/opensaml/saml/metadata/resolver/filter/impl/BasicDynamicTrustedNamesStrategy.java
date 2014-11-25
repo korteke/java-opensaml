@@ -53,6 +53,7 @@ import com.google.common.collect.Sets;
 public class BasicDynamicTrustedNamesStrategy implements Function<XMLObject, Set<String>> {
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements public Set<String> apply(@Nullable XMLObject input) {
         if (input == null) {
             return Collections.emptySet();

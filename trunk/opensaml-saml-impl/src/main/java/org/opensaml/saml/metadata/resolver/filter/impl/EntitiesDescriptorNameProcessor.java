@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;
@@ -36,9 +38,10 @@ import org.slf4j.LoggerFactory;
 public class EntitiesDescriptorNameProcessor implements MetadataNodeProcessor {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(EntitiesDescriptorNameProcessor.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(EntitiesDescriptorNameProcessor.class);
 
     /** {@inheritDoc} */
+    @Override
     public void process(XMLObject metadataNode) throws FilterException {
         if (metadataNode instanceof EntityDescriptor) {
             XMLObject currentParent = metadataNode.getParent();

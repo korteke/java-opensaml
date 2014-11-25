@@ -24,6 +24,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -47,6 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * A metadata filter that validates XML signatures.
@@ -54,22 +57,22 @@ import com.google.common.base.Function;
 public class SignatureValidationFilter implements MetadataFilter {
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SignatureValidationFilter.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SignatureValidationFilter.class);
 
     /** Trust engine used to validate a signature. */
-    private SignatureTrustEngine signatureTrustEngine;
+    @Nonnull private SignatureTrustEngine signatureTrustEngine;
 
     /** Indicates whether signed metadata is required. */
     private boolean requireSignature;
     
     /** Set of externally specified default criteria for input to the trust engine. */
-    private CriteriaSet defaultCriteria;
+    @Nullable private CriteriaSet defaultCriteria;
     
     /** Prevalidator for XML Signature instances. */
-    private SignaturePrevalidator signaturePrevalidator;
+    @Nullable private SignaturePrevalidator signaturePrevalidator;
     
     /** Strategy function for extracting dynamic trusted names from signed metadata elements. */
-    private Function<XMLObject, Set<String>> dynamicTrustedNamesStrategy;
+    @Nullable private Function<XMLObject, Set<String>> dynamicTrustedNamesStrategy;
 
     /**
      * Constructor.
@@ -84,10 +87,8 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @param engine the trust engine used to validate signatures on incoming metadata.
      */
-    public SignatureValidationFilter(SignatureTrustEngine engine) {
-        if (engine == null) {
-            throw new IllegalArgumentException("Signature trust engine may not be null");
-        }
+    public SignatureValidationFilter(@Nonnull final SignatureTrustEngine engine) {
+        Constraint.isNotNull(engine, "SignatureTrustEngine cannot be null");
         
         requireSignature = true;
 
@@ -150,7 +151,7 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
 
     /**
-     * Gets whether incoming metadata's root element is required to be signed.
+     * Get whether incoming metadata's root element is required to be signed.
      * 
      * <p>Defaults to <code>true</code>.</p>
      * 
@@ -161,13 +162,13 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
 
     /**
-     * Sets whether incoming metadata's root element is required to be signed.
+     * Set whether incoming metadata's root element is required to be signed.
      * 
      * <p>Defaults to <code>true</code>.</p>
      * 
      * @param require whether incoming metadata is required to be signed
      */
-    public void setRequireSignature(boolean require) {
+    public void setRequireSignature(final boolean require) {
         requireSignature = require;
     }
  
@@ -190,7 +191,8 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    public XMLObject filter(XMLObject metadata) throws FilterException {
+    @Override
+    @Nullable public XMLObject filter(@Nullable final XMLObject metadata) throws FilterException {
         if (metadata == null) {
             return null;
         }
@@ -199,7 +201,7 @@ public class SignatureValidationFilter implements MetadataFilter {
             log.warn("Input was not a SignableXMLObject, skipping filtering: {}", metadata.getClass().getName());
             return metadata;
         }
-        SignableXMLObject signableMetadata = (SignableXMLObject) metadata;
+        final SignableXMLObject signableMetadata = (SignableXMLObject) metadata;
 
         if (!signableMetadata.isSigned()){
             if (getRequireSignature()) {
@@ -227,17 +229,17 @@ public class SignatureValidationFilter implements MetadataFilter {
      * @throws FilterException thrown if an error occurs during the signature verification process
      *                          on the root EntityDescriptor specified
      */
-    protected void processEntityDescriptor(EntityDescriptor entityDescriptor) throws FilterException {
-        String entityID = entityDescriptor.getEntityID();
+    protected void processEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor) throws FilterException {
+        final String entityID = entityDescriptor.getEntityID();
         log.trace("Processing EntityDescriptor: {}", entityID);
         
         if (entityDescriptor.isSigned()) {
             verifySignature(entityDescriptor, entityID, false);
         }
         
-        Iterator<RoleDescriptor> roleIter = entityDescriptor.getRoleDescriptors().iterator();
+        final Iterator<RoleDescriptor> roleIter = entityDescriptor.getRoleDescriptors().iterator();
         while (roleIter.hasNext()) {
-           RoleDescriptor roleChild = roleIter.next(); 
+           final RoleDescriptor roleChild = roleIter.next(); 
             if (!roleChild.isSigned()) {
                 log.trace("RoleDescriptor member '{}' was not signed, skipping signature processing...",
                         roleChild.getElementQName());
@@ -247,9 +249,9 @@ public class SignatureValidationFilter implements MetadataFilter {
             }
             
             try {
-                String roleID = getRoleIDToken(entityID, roleChild);
+                final String roleID = getRoleIDToken(entityID, roleChild);
                 verifySignature(roleChild, roleID, false);
-            } catch (FilterException e) {
+            } catch (final FilterException e) {
                 log.error("RoleDescriptor '{}' subordinate to entity '{}' failed signature verification, " 
                        + "removing from metadata provider", 
                        roleChild.getElementQName(), entityID); 
@@ -260,7 +262,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         }
         
         if (entityDescriptor.getAffiliationDescriptor() != null) {
-            AffiliationDescriptor affiliationDescriptor = entityDescriptor.getAffiliationDescriptor();
+            final AffiliationDescriptor affiliationDescriptor = entityDescriptor.getAffiliationDescriptor();
             if (!affiliationDescriptor.isSigned()) {
                 log.trace("AffiliationDescriptor member was not signed, skipping signature processing...");
             } else {
@@ -269,13 +271,12 @@ public class SignatureValidationFilter implements MetadataFilter {
                 
                 try {
                     verifySignature(affiliationDescriptor, affiliationDescriptor.getOwnerID(), false);
-                } catch (FilterException e) {
+                } catch (final FilterException e) {
                     log.error("AffiliationDescriptor with owner ID '{}' subordinate to entity '{}' " + 
                             "failed signature verification, removing from metadata provider", 
                             affiliationDescriptor.getOwnerID(), entityID); 
                     entityDescriptor.setAffiliationDescriptor(null);
                 }
-                
             }
         }
     }
@@ -290,7 +291,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      * @throws FilterException thrown if an error occurs during the signature verification process
      *                          on the root EntitiesDescriptor specified
      */
-    protected void processEntityGroup(EntitiesDescriptor entitiesDescriptor) throws FilterException {
+    protected void processEntityGroup(@Nonnull final EntitiesDescriptor entitiesDescriptor) throws FilterException {
         log.trace("Processing EntitiesDescriptor group: {}", entitiesDescriptor.getName());
         
         if (entitiesDescriptor.isSigned()) {
@@ -299,11 +300,11 @@ public class SignatureValidationFilter implements MetadataFilter {
         
         // Can't use IndexedXMLObjectChildrenList sublist iterator remove() to remove members,
         // so just note them in a set and then remove after iteration has completed.
-        HashSet<XMLObject> toRemove = new HashSet<XMLObject>();
+        final HashSet<XMLObject> toRemove = Sets.newHashSet();
         
-        Iterator<EntityDescriptor> entityIter = entitiesDescriptor.getEntityDescriptors().iterator();
+        final Iterator<EntityDescriptor> entityIter = entitiesDescriptor.getEntityDescriptors().iterator();
         while (entityIter.hasNext()) {
-            EntityDescriptor entityChild = entityIter.next();
+            final EntityDescriptor entityChild = entityIter.next();
             if (!entityChild.isSigned()) {
                 log.trace("EntityDescriptor member '{}' was not signed, skipping signature processing...",
                         entityChild.getEntityID());
@@ -314,7 +315,7 @@ public class SignatureValidationFilter implements MetadataFilter {
             
             try {
                 processEntityDescriptor(entityChild);
-            } catch (FilterException e) {
+            } catch (final FilterException e) {
                log.error("EntityDescriptor '{}' failed signature verification, removing from metadata provider", 
                        entityChild.getEntityID()); 
                toRemove.add(entityChild);
@@ -326,13 +327,13 @@ public class SignatureValidationFilter implements MetadataFilter {
             toRemove.clear();
         }
         
-        Iterator<EntitiesDescriptor> entitiesIter = entitiesDescriptor.getEntitiesDescriptors().iterator();
+        final Iterator<EntitiesDescriptor> entitiesIter = entitiesDescriptor.getEntitiesDescriptors().iterator();
         while(entitiesIter.hasNext()) {
-            EntitiesDescriptor entitiesChild = entitiesIter.next();
+            final EntitiesDescriptor entitiesChild = entitiesIter.next();
             log.trace("Processing EntitiesDescriptor member: {}", entitiesChild.getName());
             try {
                 processEntityGroup(entitiesChild);
-            } catch (FilterException e) {
+            } catch (final FilterException e) {
                log.error("EntitiesDescriptor '{}' failed signature verification, removing from metadata provider", 
                        entitiesChild.getName()); 
                toRemove.add(entitiesChild);
@@ -359,12 +360,12 @@ public class SignatureValidationFilter implements MetadataFilter {
      * @throws FilterException thrown if the metadata entry's signature can not be established as trusted,
      *                         or if an error occurs during the signature verification process
      */
-    protected void verifySignature(SignableXMLObject signedMetadata, String metadataEntryName, 
-            boolean isEntityGroup) throws FilterException {
+    protected void verifySignature(@Nonnull final SignableXMLObject signedMetadata,
+            @Nonnull @NotEmpty final String metadataEntryName, final boolean isEntityGroup) throws FilterException {
         
         log.debug("Verifying signature on metadata entry: {}", metadataEntryName);
         
-        Signature signature = signedMetadata.getSignature();
+        final Signature signature = signedMetadata.getSignature();
         if (signature == null) {
             // We shouldn't ever be calling this on things that aren't actually signed, but just to be safe...
             log.warn("Signature was null, skipping processing on metadata entry: {}", metadataEntryName);
@@ -373,17 +374,17 @@ public class SignatureValidationFilter implements MetadataFilter {
         
         performPreValidation(signature, metadataEntryName);
         
-        CriteriaSet criteriaSet = buildCriteriaSet(signedMetadata, metadataEntryName, isEntityGroup);
+        final CriteriaSet criteriaSet = buildCriteriaSet(signedMetadata, metadataEntryName, isEntityGroup);
         
         try {
-            if ( getSignatureTrustEngine().validate(signature, criteriaSet) ) {
+            if (getSignatureTrustEngine().validate(signature, criteriaSet)) {
                 log.trace("Signature trust establishment succeeded for metadata entry {}", metadataEntryName);
                 return;
             } else {
                 log.error("Signature trust establishment failed for metadata entry {}", metadataEntryName);
                 throw new FilterException("Signature trust establishment failed for metadata entry");
             }
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // Treat evaluation errors as fatal
             log.error("Error processing signature verification for metadata entry '{}': {} ",
                     metadataEntryName, e.getMessage());
@@ -403,11 +404,12 @@ public class SignatureValidationFilter implements MetadataFilter {
      *                          should not be used operationally (e.g. for building a criteria set).
      * @throws FilterException thrown if the signature element fails pre-validation
      */
-    protected void performPreValidation(Signature signature, String metadataEntryName) throws FilterException {
+    protected void performPreValidation(@Nonnull final Signature signature,
+            @Nonnull @NotEmpty final String metadataEntryName) throws FilterException {
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
-            } catch (SignatureException e) {
+            } catch (final SignatureException e) {
                 log.error("Signature on metadata entry '{}' failed signature pre-validation", metadataEntryName);
                 throw new FilterException("Metadata instance signature failed signature pre-validation", e);
             }
@@ -427,10 +429,10 @@ public class SignatureValidationFilter implements MetadataFilter {
      * @param isEntityGroup flag indicating whether the signed object is a metadata group (EntitiesDescriptor)
      * @return the newly constructed criteria set
      */
-    protected CriteriaSet buildCriteriaSet(SignableXMLObject signedMetadata,
-            String metadataEntryName, boolean isEntityGroup) {
+    @Nonnull protected CriteriaSet buildCriteriaSet(@Nonnull final SignableXMLObject signedMetadata,
+            @Nonnull @NotEmpty final String metadataEntryName, final boolean isEntityGroup) {
         
-        CriteriaSet newCriteriaSet = new CriteriaSet();
+        final CriteriaSet newCriteriaSet = new CriteriaSet();
         
         if (getDefaultCriteria() != null) {
             newCriteriaSet.addAll( getDefaultCriteria() );
@@ -442,7 +444,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         
         // If configured, add dynamic trusted names computed from metadata via strategy function.
         if (getDynamicTrustedNamesStrategy() != null) {
-            Set<String> dynamicTrustedNames = getDynamicTrustedNamesStrategy().apply(signedMetadata);
+            final Set<String> dynamicTrustedNames = getDynamicTrustedNamesStrategy().apply(signedMetadata);
             if (dynamicTrustedNames != null && !dynamicTrustedNames.isEmpty()) {
                 newCriteriaSet.add(new TrustedNamesCriterion(dynamicTrustedNames));
             }
@@ -459,8 +461,9 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return the constructed role ID token.
      */
-    protected String getRoleIDToken(String entityID, RoleDescriptor role) {
-        String roleName = role.getElementQName().getLocalPart();
+    protected String getRoleIDToken(@Nonnull @NotEmpty final String entityID, @Nonnull final RoleDescriptor role) {
+        final String roleName = role.getElementQName().getLocalPart();
         return "[Role: " + entityID + "::" + roleName + "]";
     }
+    
 }

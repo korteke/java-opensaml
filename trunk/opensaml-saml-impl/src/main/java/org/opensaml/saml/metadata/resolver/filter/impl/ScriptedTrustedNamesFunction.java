@@ -62,7 +62,8 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * @param theScript the script we will evaluate.
      * @param extraInfo debugging information.
      */
-    protected ScriptedTrustedNamesFunction(@Nonnull EvaluableScript theScript, @Nullable String extraInfo) {
+    protected ScriptedTrustedNamesFunction(@Nonnull final EvaluableScript theScript,
+            @Nullable final String extraInfo) {
         script = Constraint.isNotNull(theScript, "Supplied script cannot be null");
         logPrefix = "Scripted Function from " + extraInfo + " :";
     }
@@ -72,13 +73,13 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * 
      * @param theScript the script we will evaluate.
      */
-    protected ScriptedTrustedNamesFunction(@Nonnull EvaluableScript theScript) {
+    protected ScriptedTrustedNamesFunction(@Nonnull final EvaluableScript theScript) {
         script = Constraint.isNotNull(theScript, "Supplied script should not be null");
         logPrefix = "Anonymous Scripted Function :";
     }
 
     /** {@inheritDoc} */
-    @Override public Set<String> apply(@Nullable XMLObject context) {
+    @Override public Set<String> apply(@Nullable final XMLObject context) {
 
         final SimpleScriptContext scriptContext = new SimpleScriptContext();
         scriptContext.setAttribute("profileContext", context, ScriptContext.ENGINE_SCOPE);
@@ -103,9 +104,9 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * @throws ScriptException if the compile fails
      * @throws IOException if the file doesn't exist.
      */
-    static ScriptedTrustedNamesFunction
-            resourceScript(@Nonnull @NotEmpty String engineName, @Nonnull Resource resource) throws ScriptException,
-                    IOException {
+    @Nonnull static ScriptedTrustedNamesFunction
+            resourceScript(@Nonnull @NotEmpty final String engineName, @Nonnull final Resource resource)
+                    throws ScriptException, IOException {
         final EvaluableScript script = new EvaluableScript(engineName, resource.getFile());
         return new ScriptedTrustedNamesFunction(script, resource.getDescription());
     }
@@ -118,7 +119,8 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * @throws ScriptException if the compile fails
      * @throws IOException if the file doesn't exist.
      */
-    static ScriptedTrustedNamesFunction resourceScript(Resource resource) throws ScriptException, IOException {
+    @Nonnull static ScriptedTrustedNamesFunction resourceScript(@Nonnull final Resource resource)
+            throws ScriptException, IOException {
         return resourceScript(DEFAULT_ENGINE, resource);
     }
 
@@ -130,8 +132,8 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * @return the function
      * @throws ScriptException if the compile fails
      */
-    static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty String engineName,
-            @Nonnull @NotEmpty String scriptSource) throws ScriptException {
+    @Nonnull static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty final String engineName,
+            @Nonnull @NotEmpty final String scriptSource) throws ScriptException {
         final EvaluableScript script = new EvaluableScript(engineName, scriptSource);
         return new ScriptedTrustedNamesFunction(script, "Inline");
     }
@@ -143,7 +145,9 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * @return the function
      * @throws ScriptException if the compile fails
      */
-    static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty String scriptSource) throws ScriptException {
+    @Nonnull static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty final String scriptSource)
+            throws ScriptException {
         return inlineScript(DEFAULT_ENGINE, scriptSource);
     }
+    
 }
