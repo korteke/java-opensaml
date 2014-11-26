@@ -1,0 +1,10 @@
+dn: dc=shibboleth,dc=net
+dc: shibboleth
+objectClass: dcObject
+objectClass: organization
+o: Shibboleth, Inc.
+
+dn: ou=people,dc=shibboleth,dc=net
+ou: people
+description: All people in organization
+objectclass: organizationalunit

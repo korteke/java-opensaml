@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foo:bar xmlns:foo="urn:example.org:foo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:baz="urn:example.org:baz" xsi:type="xsd:QName">baz:SomeValue</foo:bar>

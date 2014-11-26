@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:DSAKeyValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:P/>
+    <ds:Q/>
+    <ds:G/>
+    <ds:Y/>
+    <ds:J/>
+    <ds:Seed/>
+    <ds:PgenCounter/>
+</ds:DSAKeyValue>

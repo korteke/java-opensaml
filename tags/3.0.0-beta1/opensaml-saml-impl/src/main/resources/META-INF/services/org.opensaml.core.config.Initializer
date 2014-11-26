@@ -1,0 +1,2 @@
+org.opensaml.saml.config.XMLObjectProviderInitializer
+org.opensaml.saml.config.SAMLConfigurationInitializer

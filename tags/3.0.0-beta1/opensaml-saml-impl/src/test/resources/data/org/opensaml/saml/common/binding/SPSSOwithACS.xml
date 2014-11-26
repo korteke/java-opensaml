@@ -1,0 +1,16 @@
+   <SPSSODescriptor 
+       xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+       protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+       <AttributeConsumingService xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+           index="1" >
+           <RequestedAttribute FriendlyName="displayName"
+               Name="urn:mace:dir:attribute-def:displayName" NameFormat="urn:mace:shibboleth:1.0:attributeNamespace:uri" />
+       </AttributeConsumingService>
+       <AttributeConsumingService xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+           index="3" isDefault="true">
+           <RequestedAttribute FriendlyName="displayName" isRequired="true"
+               Name="urn:oid:2.16.840.1.113730.3.1.241" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" />
+           <RequestedAttribute FriendlyName="eduPersonPrincipalName"
+               Name="urn:mace:dir:attribute-def:eduPersonPrincipalName" NameFormat="urn:mace:shibboleth:1.0:attributeNamespace:uri" />
+       </AttributeConsumingService>
+</SPSSODescriptor>
