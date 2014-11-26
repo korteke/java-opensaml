@@ -28,18 +28,14 @@ import com.google.common.base.Strings;
  * Marshaller for {@link PolicySetCombinerParametersType}.
  */
 public class PolicySetCombinerParametersTypeMarshaller extends CombinerParametersTypeMarshaller {
-
-    /** Constructor. */
-    public PolicySetCombinerParametersTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         PolicySetCombinerParametersType policySetCombinerParametersType = (PolicySetCombinerParametersType)xmlObject;
         
         if(!Strings.isNullOrEmpty(policySetCombinerParametersType.getPolicySetIdRef())){
-            domElement.setAttribute(PolicySetCombinerParametersType.POLICY_SET_ID_REF_ATTRIB_NAME,
+            domElement.setAttributeNS(null, PolicySetCombinerParametersType.POLICY_SET_ID_REF_ATTRIB_NAME,
                     policySetCombinerParametersType.getPolicySetIdRef());
         }   
         super.marshallAttributes(xmlObject, domElement);

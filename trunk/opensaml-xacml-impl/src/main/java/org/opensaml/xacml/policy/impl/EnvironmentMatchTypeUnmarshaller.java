@@ -31,12 +31,8 @@ import org.w3c.dom.Attr;
 /** Unmarshaller of {@link EnvironmentMatchType} objects. */
 public class EnvironmentMatchTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public EnvironmentMatchTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         if (attribute.getLocalName().equals(EnvironmentMatchType.MATCH_ID_ATTRIB_NAME)) {
             EnvironmentMatchType matchType = (EnvironmentMatchType) xmlObject;
@@ -47,6 +43,7 @@ public class EnvironmentMatchTypeUnmarshaller extends AbstractXACMLObjectUnmarsh
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         EnvironmentMatchType matchType = (EnvironmentMatchType) parentXMLObject;

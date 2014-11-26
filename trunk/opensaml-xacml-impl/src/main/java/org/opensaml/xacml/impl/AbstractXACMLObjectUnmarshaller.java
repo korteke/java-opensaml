@@ -29,13 +29,6 @@ import org.w3c.dom.Attr;
 public abstract class AbstractXACMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /**
-     * Constructor.
-     */
-    public AbstractXACMLObjectUnmarshaller() {
-        super();
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)

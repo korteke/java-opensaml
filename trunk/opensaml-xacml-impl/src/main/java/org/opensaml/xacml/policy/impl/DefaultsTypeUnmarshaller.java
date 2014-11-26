@@ -27,6 +27,7 @@ import org.opensaml.xacml.policy.DefaultsType;
 public class DefaultsTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         if (childXMLObject instanceof XSString) {

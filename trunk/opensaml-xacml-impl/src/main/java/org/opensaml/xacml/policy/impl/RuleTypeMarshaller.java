@@ -31,25 +31,20 @@ import com.google.common.base.Strings;
  */
 public class RuleTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-
-    /** Constructor. */
-    public RuleTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         RuleType ruleType = (RuleType) xmlObject;
 
         if (!Strings.isNullOrEmpty(ruleType.getRuleId())) {
-            domElement.setAttribute(RuleType.RULE_ID_ATTRIB_NAME, ruleType.getRuleId());
+            domElement.setAttributeNS(null, RuleType.RULE_ID_ATTRIB_NAME, ruleType.getRuleId());
         }
         
-        if(!Strings.isNullOrEmpty(ruleType.getEffect().toString())){
+        if (!Strings.isNullOrEmpty(ruleType.getEffect().toString())) {
             if(ruleType.getEffect().equals(EffectType.Deny)){
-                domElement.setAttribute(RuleType.EFFECT_ATTRIB_NAME,EffectType.Deny.toString());
+                domElement.setAttributeNS(null, RuleType.EFFECT_ATTRIB_NAME,EffectType.Deny.toString());
             }else{
-                domElement.setAttribute(RuleType.EFFECT_ATTRIB_NAME,EffectType.Permit.toString());
+                domElement.setAttributeNS(null, RuleType.EFFECT_ATTRIB_NAME,EffectType.Permit.toString());
             }
         }
     }

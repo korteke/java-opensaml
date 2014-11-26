@@ -24,9 +24,4 @@ import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
  */
 public class ResourcesTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public ResourcesTypeMarshaller() {
-        super();
-    }
-
 }

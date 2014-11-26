@@ -28,14 +28,9 @@ import org.w3c.dom.Attr;
  * Unmarshaller for {@link PolicySetCombinerParametersType}.
  */
 public class PolicySetCombinerParametersTypeUnmarshaller extends CombinerParametersTypeUnmarshaller {
-    /**
-     * Constructor.
-     */
-    public PolicySetCombinerParametersTypeUnmarshaller(){
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         if(attribute.getLocalName().equals(PolicySetCombinerParametersType.POLICY_SET_ID_REF_ATTRIB_NAME)){
             PolicySetCombinerParametersType policySetCombinerParametersType = 

@@ -29,17 +29,13 @@ import com.google.common.base.Strings;
  * Marshaller for {@link FunctionType}.
  */
 public class FunctionTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public FunctionTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         FunctionType functionType = (FunctionType) xmlObject;
         if(!Strings.isNullOrEmpty(functionType.getFunctionId())){
-            domElement.setAttribute(FunctionType.FUNCTION_ID_ATTRIB_NAME,functionType.getFunctionId());
+            domElement.setAttributeNS(null, FunctionType.FUNCTION_ID_ATTRIB_NAME,functionType.getFunctionId());
         }
     }
 

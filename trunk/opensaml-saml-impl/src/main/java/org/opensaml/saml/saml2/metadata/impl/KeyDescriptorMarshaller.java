@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 public class KeyDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         KeyDescriptor keyDescriptor = (KeyDescriptor) xmlObject;
 
@@ -37,7 +38,7 @@ public class KeyDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
             UsageType use = keyDescriptor.getUse();
             // UsageType enum contains more values than are allowed by SAML 2 schema
             if (use.equals(UsageType.SIGNING) || use.equals(UsageType.ENCRYPTION)) {
-                domElement.setAttribute(KeyDescriptor.USE_ATTRIB_NAME, use.toString().toLowerCase());
+                domElement.setAttributeNS(null, KeyDescriptor.USE_ATTRIB_NAME, use.toString().toLowerCase());
             } else if (use.equals(UsageType.UNSPECIFIED)) {
                 // emit nothing for unspecified - this is semantically equivalent to non-existent attribute
             } else {

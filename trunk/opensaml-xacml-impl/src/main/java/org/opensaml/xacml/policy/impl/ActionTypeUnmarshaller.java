@@ -28,12 +28,8 @@ import org.opensaml.xacml.policy.ActionType;
  */
 public class ActionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public ActionTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ActionType actionType = (ActionType) parentXMLObject;

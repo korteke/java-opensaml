@@ -35,12 +35,8 @@ import org.w3c.dom.Attr;
 /** Unmarshaller for {@link PolicySetType} objects. */
 public class PolicySetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public PolicySetTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         PolicySetType policySet = (PolicySetType) xmlObject;
 
@@ -57,6 +53,7 @@ public class PolicySetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         PolicySetType policySet = (PolicySetType) parentXMLObject;
@@ -87,6 +84,6 @@ public class PolicySetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
     }
- // Checkstyle: CyclomaticComplexity ON
+// Checkstyle: CyclomaticComplexity ON
     
 }

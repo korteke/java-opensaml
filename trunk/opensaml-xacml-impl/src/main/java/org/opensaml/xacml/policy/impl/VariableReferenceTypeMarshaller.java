@@ -29,18 +29,13 @@ import com.google.common.base.Strings;
  * Marshaller for {@link VariableReferenceType}.
  */
 public class VariableReferenceTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public VariableReferenceTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         VariableReferenceType variableReferenceType = (VariableReferenceType) xmlObject;
         
         if(!Strings.isNullOrEmpty(variableReferenceType.getVariableId())){
-            domElement.setAttribute(VariableReferenceType.VARIABLE_ID_ATTRIB_NAME,
+            domElement.setAttributeNS(null, VariableReferenceType.VARIABLE_ID_ATTRIB_NAME,
                     variableReferenceType.getVariableId());
         }
     }

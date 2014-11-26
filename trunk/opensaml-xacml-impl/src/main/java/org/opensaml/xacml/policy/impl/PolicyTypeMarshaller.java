@@ -28,25 +28,22 @@ import com.google.common.base.Strings;
 /** Marshaller for {@link PolicyType} objects. */
 public class PolicyTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public PolicyTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         PolicyType policy = (PolicyType) xmlObject;
 
         if (!Strings.isNullOrEmpty(policy.getPolicyId())) {
-            domElement.setAttribute(PolicyType.POLICY_ID_ATTRIB_NAME, policy.getPolicyId());
+            domElement.setAttributeNS(null, PolicyType.POLICY_ID_ATTRIB_NAME, policy.getPolicyId());
         }
 
         if (!Strings.isNullOrEmpty(policy.getVersion())) {
-            domElement.setAttribute(PolicyType.VERSION_ATTRIB_NAME, policy.getVersion());
+            domElement.setAttributeNS(null, PolicyType.VERSION_ATTRIB_NAME, policy.getVersion());
         }
 
         if (!Strings.isNullOrEmpty(policy.getRuleCombiningAlgoId())) {
-            domElement.setAttribute(PolicyType.RULE_COMBINING_ALG_ID_ATTRIB_NAME, policy.getRuleCombiningAlgoId());
+            domElement.setAttributeNS(null, PolicyType.RULE_COMBINING_ALG_ID_ATTRIB_NAME,
+                    policy.getRuleCombiningAlgoId());
         }
     }
 

@@ -29,19 +29,14 @@ import com.google.common.base.Strings;
  * Marshaller for {@link ApplyType}.
  */
 public class ApplyTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public ApplyTypeMarshaller() {
-        super();
-    }
-    
-    
+        
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ApplyType applyType = (ApplyType)xmlObject;
         
         if(!Strings.isNullOrEmpty(applyType.getFunctionId())){
-            domElement.setAttribute(ApplyType.FUNCTION_ID_ATTRIB_NAME, applyType.getFunctionId());
+            domElement.setAttributeNS(null, ApplyType.FUNCTION_ID_ATTRIB_NAME, applyType.getFunctionId());
         }
 
     }

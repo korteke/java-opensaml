@@ -30,14 +30,9 @@ import org.w3c.dom.Attr;
  * Unmarshaller for {@link org.opensaml.xacml.policy.VariableDefinitionType}.
  */
 public class VariableDefinitionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
-
-
-    /** Constructor. */
-    public VariableDefinitionTypeUnmarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         
         if(attribute.getLocalName().equals(VariableDefinitionType.VARIABLE_ID_ATTRIB_NAME)){
@@ -46,10 +41,10 @@ public class VariableDefinitionTypeUnmarshaller extends AbstractXACMLObjectUnmar
         } else {
             super.processAttribute(xmlObject, attribute);
         }
-
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         
@@ -59,7 +54,6 @@ public class VariableDefinitionTypeUnmarshaller extends AbstractXACMLObjectUnmar
         } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
-
     }
 
     

@@ -29,6 +29,7 @@ import org.w3c.dom.Attr;
 public class ObligationTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
         ObligationType obligation = (ObligationType) parentObject;
 
@@ -40,6 +41,7 @@ public class ObligationTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller 
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
 
         ObligationType obligation = (ObligationType) xmlObject;

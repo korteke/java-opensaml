@@ -30,26 +30,22 @@ import com.google.common.base.Strings;
  * Marshaller for {@link AttributeSelectorType}.
  */
 public class AttributeSelectorTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public AttributeSelectorTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributeSelectorType attributeSelectorType = (AttributeSelectorType) xmlObject;
         
         if(!Strings.isNullOrEmpty(attributeSelectorType.getDataType())){
-            domElement.setAttribute(AttributeSelectorType.DATA_TYPE_ATTRIB_NAME, 
+            domElement.setAttributeNS(null, AttributeSelectorType.DATA_TYPE_ATTRIB_NAME, 
                     attributeSelectorType.getDataType());
         }
         if(!Strings.isNullOrEmpty(attributeSelectorType.getRequestContextPath())){
-            domElement.setAttribute(AttributeSelectorType.REQUEST_CONTEXT_PATH_ATTRIB_NAME, 
+            domElement.setAttributeNS(null, AttributeSelectorType.REQUEST_CONTEXT_PATH_ATTRIB_NAME, 
                     attributeSelectorType.getRequestContextPath());
         }
         if(attributeSelectorType.getMustBePresentXSBoolean() != null){
-            domElement.setAttribute(AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME, 
+            domElement.setAttributeNS(null, AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME, 
                     Boolean.toString(attributeSelectorType.getMustBePresentXSBoolean().getValue()));
         }
    }

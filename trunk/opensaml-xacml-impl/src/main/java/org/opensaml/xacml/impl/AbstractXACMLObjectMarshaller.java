@@ -27,14 +27,6 @@ import org.w3c.dom.Element;
  * most of the boilerplate code for Marshallers.
  */
 public abstract class AbstractXACMLObjectMarshaller extends AbstractXMLObjectMarshaller {
-    
-    /**
-     * Constructor.
-     *
-     */
-    public AbstractXACMLObjectMarshaller() {
-        super();
-    }
 
     /**
      * No-op method. Extending implementations should override this method if they have attributes to marshall into the

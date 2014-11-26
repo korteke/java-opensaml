@@ -34,13 +34,8 @@ import org.w3c.dom.Attr;
  */
 public class RuleTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public RuleTypeUnmarshaller() {
-        super();
-    }
-
-    
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         RuleType ruleType = (RuleType) xmlObject;
       
@@ -56,6 +51,7 @@ public class RuleTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         RuleType ruleType = (RuleType) parentXMLObject;

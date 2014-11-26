@@ -29,18 +29,14 @@ import com.google.common.base.Strings;
  * Marshaller for {@link VariableDefinitionType}.
  */
 public class VariableDefinitionTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public VariableDefinitionTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         VariableDefinitionType variableDefinitionType = (VariableDefinitionType) xmlObject;
         
         if(!Strings.isNullOrEmpty(variableDefinitionType.getVariableId())){
-            domElement.setAttribute(VariableDefinitionType.VARIABLE_ID_ATTRIB_NAME,
+            domElement.setAttributeNS(null, VariableDefinitionType.VARIABLE_ID_ATTRIB_NAME,
                     variableDefinitionType.getVariableId());
         }   
     }

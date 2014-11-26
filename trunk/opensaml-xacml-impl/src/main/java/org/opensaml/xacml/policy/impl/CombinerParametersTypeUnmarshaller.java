@@ -28,12 +28,8 @@ import org.opensaml.xacml.policy.CombinerParametersType;
  */
 public class CombinerParametersTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public CombinerParametersTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         CombinerParametersType combinerParametersType = (CombinerParametersType) parentXMLObject;

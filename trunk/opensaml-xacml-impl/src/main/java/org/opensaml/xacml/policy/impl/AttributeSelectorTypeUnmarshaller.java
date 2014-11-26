@@ -30,13 +30,9 @@ import org.w3c.dom.Attr;
  *Unmarshaller for {@link AttributeSelectorType}.
  */
 public class AttributeSelectorTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
-
-    /** Constructor. */
-    public AttributeSelectorTypeUnmarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributeSelectorType attributeSelectorType = (AttributeSelectorType) xmlObject;
         

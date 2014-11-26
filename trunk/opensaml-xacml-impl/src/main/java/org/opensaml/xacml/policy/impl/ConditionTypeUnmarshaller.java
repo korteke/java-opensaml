@@ -28,12 +28,8 @@ import org.opensaml.xacml.policy.ExpressionType;
  */
 public class ConditionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public ConditionTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         if(childXMLObject instanceof ExpressionType){

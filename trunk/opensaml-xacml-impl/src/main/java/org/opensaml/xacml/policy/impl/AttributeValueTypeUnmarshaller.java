@@ -31,12 +31,8 @@ import org.w3c.dom.Attr;
 /** Unmarshaller for {@link org.opensaml.xacml.policy.AttributeValueType}. */
 public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public AttributeValueTypeUnmarshaller() {
-        super();
-    }    
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
@@ -54,6 +50,7 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) parentXMLObject;
@@ -61,6 +58,7 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
         attributeValue.setValue(elementContent);

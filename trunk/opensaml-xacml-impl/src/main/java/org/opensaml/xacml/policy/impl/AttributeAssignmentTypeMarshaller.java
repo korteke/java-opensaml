@@ -27,12 +27,8 @@ import com.google.common.base.Strings;
 /** Marshaller for {@link AttributeAssignmentType}. */
 public class AttributeAssignmentTypeMarshaller extends AttributeValueTypeMarshaller {
 
-    /** Constructor. */
-    public AttributeAssignmentTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
         AttributeAssignmentType attributeAssignment = (AttributeAssignmentType) samlElement;
 

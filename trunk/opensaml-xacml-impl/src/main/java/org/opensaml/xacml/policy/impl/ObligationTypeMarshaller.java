@@ -29,12 +29,8 @@ import com.google.common.base.Strings;
 /** Marshaller for {@link ObligationType}. */
 public class ObligationTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public ObligationTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject samlElement, Element domElement) throws MarshallingException {
         ObligationType obligation = (ObligationType) samlElement;
 

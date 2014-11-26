@@ -29,26 +29,22 @@ import com.google.common.base.Strings;
  * Marshaller for {@link IdReferenceType}.
  */
 public class IdReferenceTypeMarshaller extends XSStringMarshaller {
-
-    /** Constructor. */
-    public IdReferenceTypeMarshaller() {
-       super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         IdReferenceType idReferenceType = (IdReferenceType)xmlObject;
         
         if(!Strings.isNullOrEmpty(idReferenceType.getEarliestVersion())){
-            domElement.setAttribute(IdReferenceType.EARLIEST_VERSION_ATTRIB_NAME,
+            domElement.setAttributeNS(null, IdReferenceType.EARLIEST_VERSION_ATTRIB_NAME,
                     idReferenceType.getEarliestVersion());
         }
         if(!Strings.isNullOrEmpty(idReferenceType.getLatestVersion())){
-            domElement.setAttribute(IdReferenceType.LATEST_VERSION_ATTRIB_NAME,
+            domElement.setAttributeNS(null, IdReferenceType.LATEST_VERSION_ATTRIB_NAME,
                     idReferenceType.getLatestVersion());
         }
         if(!Strings.isNullOrEmpty(idReferenceType.getVersion())){
-            domElement.setAttribute(IdReferenceType.VERSION_ATTRIB_NAME,
+            domElement.setAttributeNS(null, IdReferenceType.VERSION_ATTRIB_NAME,
                     idReferenceType.getVersion());
         }
     }

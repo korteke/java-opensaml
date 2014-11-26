@@ -30,13 +30,9 @@ import com.google.common.base.Strings;
 
 /** Marshaller for {@link org.opensaml.xacml.policy.AttributeValueType}. */
 public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public AttributeValueTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
@@ -48,6 +44,7 @@ public class AttributeValueTypeMarshaller extends AbstractXACMLObjectMarshaller 
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
         AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
