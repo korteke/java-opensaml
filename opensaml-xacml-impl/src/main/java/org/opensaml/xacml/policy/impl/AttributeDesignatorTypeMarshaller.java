@@ -30,29 +30,25 @@ import com.google.common.base.Strings;
  */
 public class AttributeDesignatorTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public AttributeDesignatorTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement)  throws MarshallingException {
         AttributeDesignatorType attributeDesignatorType = (AttributeDesignatorType) xmlObject;
 
         if (!Strings.isNullOrEmpty(attributeDesignatorType.getAttributeId())) {
-            domElement.setAttribute(AttributeDesignatorType.ATTRIBUTE_ID_ATTRIB_NAME,
+            domElement.setAttributeNS(null, AttributeDesignatorType.ATTRIBUTE_ID_ATTRIB_NAME,
                     attributeDesignatorType.getAttributeId());
         }
         if (!Strings.isNullOrEmpty(attributeDesignatorType.getDataType())) {
-            domElement.setAttribute(AttributeDesignatorType.DATA_TYPE_ATTRIB_NAME,
+            domElement.setAttributeNS(null, AttributeDesignatorType.DATA_TYPE_ATTRIB_NAME,
                     attributeDesignatorType.getDataType());
         }
         if (!Strings.isNullOrEmpty(attributeDesignatorType.getIssuer())) {
-            domElement.setAttribute(AttributeDesignatorType.ISSUER_ATTRIB_NAME,
+            domElement.setAttributeNS(null, AttributeDesignatorType.ISSUER_ATTRIB_NAME,
                     attributeDesignatorType.getIssuer());
         }
         if (attributeDesignatorType.getMustBePresentXSBoolean() != null) {
-            domElement.setAttribute(AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME,
+            domElement.setAttributeNS(null, AttributeDesignatorType.MUST_BE_PRESENT_ATTRIB_NAME,
                     Boolean.toString(attributeDesignatorType.getMustBePresentXSBoolean().getValue()));
         }
 

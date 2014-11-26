@@ -26,12 +26,8 @@ import org.opensaml.xacml.policy.DescriptionType;
  */
 public class DescriptionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public DescriptionTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processElementContent(XMLObject xmlObject, String elementContent) {
         DescriptionType description = (DescriptionType) xmlObject;
         description.setValue(elementContent);

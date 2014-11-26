@@ -30,14 +30,9 @@ import org.w3c.dom.Attr;
  * Unmarshaller for {@link CombinerParameterType}.
  */
 public class CombinerParameterTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
-
-    /** Constructor. */
-    public CombinerParameterTypeUnmarshaller() {
-        super();
-    }
-
     
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         CombinerParameterType combinerParameterType = (CombinerParameterType) xmlObject;
       
@@ -49,6 +44,7 @@ public class CombinerParameterTypeUnmarshaller extends AbstractXACMLObjectUnmars
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         CombinerParameterType combinerParameterType = (CombinerParameterType) parentXMLObject;

@@ -25,21 +25,17 @@ import org.w3c.dom.Element;
 import com.google.common.base.Strings;
 
 /**
- * Marshalelr for {@link PolicyCombinerParametersType}.
+ * Marshaller for {@link PolicyCombinerParametersType}.
  */
 public class PolicyCombinerParametersTypeMarshaller extends CombinerParametersTypeMarshaller {
 
-    /** Constructor. */
-    public PolicyCombinerParametersTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         PolicyCombinerParametersType policyCombinerParametersType = (PolicyCombinerParametersType)xmlObject;
         
         if(!Strings.isNullOrEmpty(policyCombinerParametersType.getPolicyIdRef())){
-            domElement.setAttribute(PolicyCombinerParametersType.POLICY_ID_REF_ATTRIB_NAME,
+            domElement.setAttributeNS(null, PolicyCombinerParametersType.POLICY_ID_REF_ATTRIB_NAME,
                     policyCombinerParametersType.getPolicyIdRef());
         }     
         super.marshallAttributes(xmlObject, domElement);

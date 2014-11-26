@@ -32,12 +32,8 @@ import org.opensaml.xacml.policy.TargetType;
  */
 public class TargetTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public TargetTypeUnmarshaller() {
-        super();
-    }
-    
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         TargetType targetType = (TargetType) parentXMLObject;

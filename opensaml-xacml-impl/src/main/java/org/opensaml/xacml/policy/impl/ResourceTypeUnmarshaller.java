@@ -27,13 +27,9 @@ import org.opensaml.xacml.policy.ResourceType;
  * Unmarshaller for {@link ResourceType}. 
  */
 public class ResourceTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
-
-    /** Constructor. */
-    public ResourceTypeUnmarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ResourceType resourceType = (ResourceType) parentXMLObject;

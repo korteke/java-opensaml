@@ -24,9 +24,4 @@ import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
  */
 public class ActionsTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public ActionsTypeMarshaller() {
-        super();
-    }
-
 }

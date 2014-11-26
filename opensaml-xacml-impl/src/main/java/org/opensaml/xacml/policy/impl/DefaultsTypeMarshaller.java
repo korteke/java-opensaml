@@ -22,9 +22,4 @@ import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
 /** Marshaller for {@link org.opensaml.xacml.policy.DefaultsType}. */
 public class DefaultsTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public DefaultsTypeMarshaller() {
-        super();
-    }
-
 }

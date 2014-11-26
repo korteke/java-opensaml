@@ -28,11 +28,8 @@ import org.w3c.dom.Attr;
  */
 public class SubjectAttributeDesignatorTypeUnmarshaller extends AttributeDesignatorTypeUnmarshaller {
 
-    /** Constructor. */
-    public SubjectAttributeDesignatorTypeUnmarshaller() {
-       super();
-    }  
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         
         if(attribute.getLocalName().equals(SubjectAttributeDesignatorType.SUBJECT_CATEGORY_ATTRIB_NAME)){

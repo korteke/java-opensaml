@@ -34,12 +34,8 @@ import org.w3c.dom.Attr;
 /** Unmarshaller for {@link PolicyType} objects. */
 public class PolicyTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public PolicyTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         PolicyType policy = (PolicyType) xmlObject;
 
@@ -55,6 +51,7 @@ public class PolicyTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         PolicyType policy = (PolicyType) parentXMLObject;

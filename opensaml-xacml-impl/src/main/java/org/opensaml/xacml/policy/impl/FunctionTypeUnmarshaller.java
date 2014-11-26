@@ -29,13 +29,9 @@ import org.w3c.dom.Attr;
  *Unmarshaller for {@link FunctionType}.
  */
 public class FunctionTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
-
-    /** Constructor. */
-    public FunctionTypeUnmarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         
         if(attribute.getLocalName().equals(FunctionType.FUNCTION_ID_ATTRIB_NAME)){

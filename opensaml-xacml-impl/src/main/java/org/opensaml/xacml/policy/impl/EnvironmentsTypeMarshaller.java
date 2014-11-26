@@ -23,10 +23,5 @@ import org.opensaml.xacml.impl.AbstractXACMLObjectMarshaller;
  * Marshaller for {@link org.opensaml.xacml.policy.EnvironmentsType}.
  */
 public class EnvironmentsTypeMarshaller extends AbstractXACMLObjectMarshaller {
-
-    /** Constructor. */
-    public EnvironmentsTypeMarshaller() {
-        super();
-    }
-    
+   
 }

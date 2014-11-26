@@ -27,12 +27,8 @@ import org.w3c.dom.Attr;
 /** UnMarshaller for {@link AttributeAssignmentType}. */
 public class AttributeAssignmentTypeUnmarshaller extends AttributeValueTypeUnmarshaller {
 
-    /** Constructor. */
-    public AttributeAssignmentTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
         AttributeAssignmentType attrib = (AttributeAssignmentType) samlObject;

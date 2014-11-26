@@ -31,12 +31,8 @@ import org.w3c.dom.Attr;
  */
 public class ApplyTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public ApplyTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
 
         if (attribute.getLocalName().equals(ApplyType.FUNCTION_ID_ATTRIB_NAME)) {
@@ -49,6 +45,7 @@ public class ApplyTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         ApplyType applayType = (ApplyType) parentXMLObject;

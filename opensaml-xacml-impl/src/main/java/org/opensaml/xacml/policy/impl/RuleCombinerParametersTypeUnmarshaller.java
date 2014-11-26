@@ -31,13 +31,8 @@ import org.w3c.dom.Attr;
  */
 public class RuleCombinerParametersTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public RuleCombinerParametersTypeUnmarshaller() {
-        super();
-    }
-
-    
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
       
         if(attribute.getLocalName().equals(RuleCombinerParametersType.RULE_ID_REF_ATTRIB_NAME)){
@@ -49,6 +44,7 @@ public class RuleCombinerParametersTypeUnmarshaller extends AbstractXACMLObjectU
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         RuleCombinerParametersType ruleCombinerParametersType = (RuleCombinerParametersType) parentXMLObject;

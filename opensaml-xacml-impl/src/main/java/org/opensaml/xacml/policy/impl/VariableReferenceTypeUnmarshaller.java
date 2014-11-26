@@ -31,12 +31,8 @@ import org.w3c.dom.Attr;
  */
 public class VariableReferenceTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public VariableReferenceTypeUnmarshaller() {
-        super();
-    }
-    
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         
         if(attribute.getLocalName().equals(VariableReferenceType.VARIABLE_ID_ATTRIB_NAME)){
@@ -45,10 +41,10 @@ public class VariableReferenceTypeUnmarshaller extends AbstractXACMLObjectUnmars
         } else {
             super.processAttribute(xmlObject, attribute);
         }
-
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         
@@ -58,7 +54,6 @@ public class VariableReferenceTypeUnmarshaller extends AbstractXACMLObjectUnmars
         } else {
             super.processChildElement(parentXMLObject, childXMLObject);
         }
-
     }
 
 }

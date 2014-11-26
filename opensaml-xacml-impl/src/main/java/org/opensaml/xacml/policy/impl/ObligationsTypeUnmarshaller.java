@@ -26,12 +26,8 @@ import org.opensaml.xacml.policy.ObligationsType;
 /** UnMarshaller for {@link ObligationsType}. */
 public class ObligationsTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public ObligationsTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentObject, XMLObject childObject) throws UnmarshallingException {
 
         ObligationsType obligations = (ObligationsType) parentObject;

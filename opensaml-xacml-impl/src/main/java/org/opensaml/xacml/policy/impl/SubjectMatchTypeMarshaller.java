@@ -28,17 +28,13 @@ import com.google.common.base.Strings;
 /** Marshaller of {@link SubjectMatchType} objects. */
 public class SubjectMatchTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public SubjectMatchTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         SubjectMatchType matchType = (SubjectMatchType) xmlObject;
 
         if (!Strings.isNullOrEmpty(matchType.getMatchId())) {
-            domElement.setAttribute(SubjectMatchType.MATCH_ID_ATTRIB_NAME, matchType.getMatchId());
+            domElement.setAttributeNS(null, SubjectMatchType.MATCH_ID_ATTRIB_NAME, matchType.getMatchId());
         }
     }
 

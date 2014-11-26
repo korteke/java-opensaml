@@ -28,18 +28,14 @@ import com.google.common.base.Strings;
  * Marshaller for {@link SubjectAttributeDesignatorType}.
  */
 public class SubjectAttributeDesignatorTypeMarshaller extends AttributeDesignatorTypeMarshaller {
-
-    /** Constructor. */
-    public SubjectAttributeDesignatorTypeMarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {       
         SubjectAttributeDesignatorType subjectAttributeDesignatorType = (SubjectAttributeDesignatorType) xmlObject;
         
         if(!Strings.isNullOrEmpty(subjectAttributeDesignatorType.getSubjectCategory())){            
-            domElement.setAttribute(SubjectAttributeDesignatorType.SUBJECT_CATEGORY_ATTRIB_NAME, 
+            domElement.setAttributeNS(null, SubjectAttributeDesignatorType.SUBJECT_CATEGORY_ATTRIB_NAME, 
                     subjectAttributeDesignatorType.getSubjectCategory());
         }
         super.marshallAttributes(xmlObject, domElement);

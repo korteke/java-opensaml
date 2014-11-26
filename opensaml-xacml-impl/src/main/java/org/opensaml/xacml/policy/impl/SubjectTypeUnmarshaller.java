@@ -28,12 +28,8 @@ import org.opensaml.xacml.policy.SubjectType;
  */
 public class SubjectTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public SubjectTypeUnmarshaller() {
-        super();
-    }
-    
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         SubjectType subjectType = (SubjectType) parentXMLObject;

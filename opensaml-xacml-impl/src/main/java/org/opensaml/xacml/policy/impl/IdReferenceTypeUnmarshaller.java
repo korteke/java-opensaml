@@ -29,14 +29,9 @@ import org.w3c.dom.Attr;
  * Unmarshaller for {@link IdReferenceType}.
  */
 public class IdReferenceTypeUnmarshaller extends XSStringUnmarshaller {
-  
-    /** Constructor. */
-    public IdReferenceTypeUnmarshaller() {
-        super();
-    }
-    
     
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         IdReferenceType idReferenceType = (IdReferenceType)xmlObject;
      

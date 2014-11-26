@@ -30,12 +30,8 @@ import org.w3c.dom.Element;
  */
 public class DescriptionTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public DescriptionTypeMarshaller() {
-        super();
-    }
-    
     /** {@inheritDoc} */
+    @Override
     protected void marshallElementContent(XMLObject xmlobject, Element domElement) throws MarshallingException {
         DescriptionType message = (DescriptionType) xmlobject;
 

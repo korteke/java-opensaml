@@ -27,13 +27,9 @@ import org.opensaml.xacml.policy.EnvironmentsType;
  * Unmarshaller for {@link EnvironmentsType}.
  */
 public class EnvironmentsTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
-
-    /** Constructor. */
-    public EnvironmentsTypeUnmarshaller() {
-        super();
-    }
     
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         EnvironmentsType environmentsType = (EnvironmentsType) parentXMLObject;

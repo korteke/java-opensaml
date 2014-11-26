@@ -28,17 +28,13 @@ import com.google.common.base.Strings;
 /** Marshaller of {@link ResourceMatchType} objects. */
 public class ResourceMatchTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public ResourceMatchTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         ResourceMatchType matchType = (ResourceMatchType) xmlObject;
 
         if (!Strings.isNullOrEmpty(matchType.getMatchId())) {
-            domElement.setAttribute(ResourceMatchType.MATCH_ID_ATTRIB_NAME, matchType.getMatchId());
+            domElement.setAttributeNS(null, ResourceMatchType.MATCH_ID_ATTRIB_NAME, matchType.getMatchId());
         }
     }
 

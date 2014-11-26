@@ -30,17 +30,13 @@ import com.google.common.base.Strings;
  */
 public class CombinerParameterTypeMarshaller extends AbstractXACMLObjectMarshaller {
 
-    /** Constructor. */
-    public CombinerParameterTypeMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
         CombinerParameterType combinerParameterType = (CombinerParameterType) xmlObject;
 
         if (!Strings.isNullOrEmpty(combinerParameterType.getParameterName())) {
-            domElement.setAttribute(CombinerParameterType.PARAMETER_NAMEATTRIB_NAME,
+            domElement.setAttributeNS(null, CombinerParameterType.PARAMETER_NAMEATTRIB_NAME,
                     combinerParameterType.getParameterName());
         }      
     }

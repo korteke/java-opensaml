@@ -31,12 +31,8 @@ import org.w3c.dom.Attr;
 /** Unmarshaller of {@link SubjectMatchType} objects. */
 public class SubjectMatchTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {
 
-    /** Constructor. */
-    public SubjectMatchTypeUnmarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
         if (attribute.getLocalName().equals(SubjectMatchType.MATCH_ID_ATTRIB_NAME)) {
             SubjectMatchType matchType = (SubjectMatchType) xmlObject;
@@ -47,6 +43,7 @@ public class SubjectMatchTypeUnmarshaller extends AbstractXACMLObjectUnmarshalle
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
             throws UnmarshallingException {
         SubjectMatchType matchType = (SubjectMatchType) parentXMLObject;
