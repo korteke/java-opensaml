@@ -285,7 +285,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             @Nonnull @NotEmpty final String entityID, @Nonnull final QName role, 
             @Nullable final String protocol, @Nonnull final UsageType usage) throws ResolverException {
 
-        log.debug("Resolving credentials from metdata using entityID: {}, role: {}, protocol: {}, usage: {}", 
+        log.debug("Resolving credentials from metadata using entityID: {}, role: {}, protocol: {}, usage: {}", 
                 entityID, role, protocol, usage);
         HashSet<Credential> credentials = new HashSet<Credential>(3);
 
