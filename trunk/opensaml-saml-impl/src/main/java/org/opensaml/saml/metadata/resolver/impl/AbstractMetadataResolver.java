@@ -240,7 +240,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
             log.trace("Parsing retrieved metadata into a DOM object");
             Document mdDocument = parser.parse(metadataInput);
 
-            log.trace("Unmarshalling and caching metdata DOM");
+            log.trace("Unmarshalling and caching metadata DOM");
             Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(mdDocument.getDocumentElement());
             if (unmarshaller == null) {
                 String msg =
