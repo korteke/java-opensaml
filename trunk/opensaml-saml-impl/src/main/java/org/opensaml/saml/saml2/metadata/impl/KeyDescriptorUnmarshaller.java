@@ -60,8 +60,9 @@ public class KeyDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             } catch (IllegalArgumentException e) {
                 throw new UnmarshallingException("Invalid key usage type: " + attribute.getValue());
             }
+        } else {
+            super.processAttribute(samlObject, attribute);
         }
-
-        super.processAttribute(samlObject, attribute);
     }
+    
 }
