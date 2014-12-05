@@ -17,9 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver;
 
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
@@ -41,8 +39,7 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  * <li>{@link org.opensaml.saml.criterion.BindingCriterion}</li>
  * </ul>
  */
-public interface RoleDescriptorResolver extends Resolver<RoleDescriptor, CriteriaSet>, IdentifiedComponent,
-        InitializableComponent, DestructableComponent {
+public interface RoleDescriptorResolver extends Resolver<RoleDescriptor, CriteriaSet>, IdentifiedComponent {
     
     /**
      * Gets whether the metadata returned by queries must be valid. At a minimum, metadata is valid only if the date

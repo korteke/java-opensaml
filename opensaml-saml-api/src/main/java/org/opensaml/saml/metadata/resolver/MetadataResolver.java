@@ -19,9 +19,7 @@ package org.opensaml.saml.metadata.resolver;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 
@@ -44,8 +42,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
  * <li>{@link org.opensaml.saml.criterion.BindingCriterion}</li>
  * </ul>
  */
-public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiedComponent,
-        InitializableComponent, DestructableComponent {
+public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiedComponent {
     
     /**
      * Gets whether the metadata returned by queries must be valid. 

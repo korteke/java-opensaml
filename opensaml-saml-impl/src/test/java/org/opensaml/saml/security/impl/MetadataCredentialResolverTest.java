@@ -36,7 +36,6 @@ import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
-import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -149,7 +148,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private String mdFileName = "/data/org/opensaml/saml/security/test1-metadata.xml";
     
-    private RoleDescriptorResolver roleResolver;
+    private BasicRoleDescriptorResolver roleResolver;
     
     private MetadataCredentialResolver mdCredResolver;
     

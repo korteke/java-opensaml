@@ -27,7 +27,6 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.binding.artifact.impl.BasicSAMLArtifactMap;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.profile.SAMLEventIds;
@@ -43,7 +42,7 @@ import com.google.common.base.Function;
 /** {@link ResolveArtifacts} unit test. */
 public class ResolveArtifactsTest extends OpenSAMLInitBaseTestCase {
 
-    private SAMLArtifactMap artifactMap;
+    private BasicSAMLArtifactMap artifactMap;
     
     private ProfileRequestContext<Request,Response> prc;
     
