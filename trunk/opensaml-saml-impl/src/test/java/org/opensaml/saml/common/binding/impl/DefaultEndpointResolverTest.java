@@ -36,7 +36,6 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.binding.EndpointResolver;
 import org.opensaml.saml.common.binding.impl.DefaultEndpointResolver;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.criterion.BindingCriterion;
@@ -59,7 +58,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     private static final String LOCATION_POST = "https://sp.example.org/POST2";
     private static final String LOCATION_ART = "https://sp.example.org/Art2";
     
-    private EndpointResolver<AssertionConsumerService> resolver;
+    private DefaultEndpointResolver<AssertionConsumerService> resolver;
     
     private EndpointCriterion<AssertionConsumerService> endpointCrit;
     

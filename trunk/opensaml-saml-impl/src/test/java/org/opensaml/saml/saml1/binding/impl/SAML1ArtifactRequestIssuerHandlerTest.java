@@ -25,7 +25,6 @@ import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.binding.artifact.impl.BasicSAMLArtifactMap;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
@@ -36,7 +35,7 @@ import org.testng.annotations.Test;
 /** {@link SAML1ArtifactRequestIssuerHandler} unit test. */
 public class SAML1ArtifactRequestIssuerHandlerTest extends OpenSAMLInitBaseTestCase {
 
-    private SAMLArtifactMap artifactMap;
+    private BasicSAMLArtifactMap artifactMap;
     
     private MessageContext<SAMLObject> mc;
     

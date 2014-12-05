@@ -33,7 +33,6 @@ import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml1.core.AttributeQuery;
@@ -51,7 +50,7 @@ import org.testng.annotations.Test;
  */
 public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
 
-    private RoleDescriptorResolver roleResolver;
+    private BasicRoleDescriptorResolver roleResolver;
     private SAMLMetadataLookupHandler handler;
     private MessageContext<SAMLObject> messageContext;
     

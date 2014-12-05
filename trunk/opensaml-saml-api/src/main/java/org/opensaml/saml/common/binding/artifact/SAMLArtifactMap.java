@@ -23,8 +23,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 import org.opensaml.saml.common.SAMLObject;
 
@@ -40,7 +38,7 @@ import org.opensaml.saml.common.SAMLObject;
  * implementation of {@link SAMLArtifactMapEntryFactory}.
  * </p>
  */
-public interface SAMLArtifactMap extends InitializableComponent, DestructableComponent {
+public interface SAMLArtifactMap {
 
     /**
      * Checks if a given artifact has a map entry.
