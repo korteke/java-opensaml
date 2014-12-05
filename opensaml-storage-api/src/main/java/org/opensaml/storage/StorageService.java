@@ -26,9 +26,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 /**
  * Generic data storage facility. Implementations will vary in how much
@@ -47,7 +45,7 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
  * or a null can be used to signify no expiration.</p>
  */
 @ThreadSafeAfterInit
-public interface StorageService extends InitializableComponent, DestructableComponent, IdentifiedComponent {
+public interface StorageService extends IdentifiedComponent {
 
     /**
      * Returns the capabilities of the underlying store.
