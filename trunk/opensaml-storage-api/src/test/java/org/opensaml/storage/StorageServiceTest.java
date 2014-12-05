@@ -23,6 +23,8 @@ import java.security.SecureRandom;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.DestructableComponent;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
@@ -61,12 +63,16 @@ public abstract class StorageServiceTest {
     protected void setUp() throws ComponentInitializationException {
         random = new SecureRandom();
         shared = getStorageService();
-        shared.initialize();
+        if (shared instanceof InitializableComponent) {
+            ((InitializableComponent) shared).initialize();
+        }
     }
     
     @AfterClass
     protected void tearDown() {
-        shared.destroy();
+        if (shared instanceof DestructableComponent) {
+            ((DestructableComponent) shared).destroy();
+        }
     }
     
     @Test(threadPoolSize = 10, invocationCount = 10,  timeOut = 10000)

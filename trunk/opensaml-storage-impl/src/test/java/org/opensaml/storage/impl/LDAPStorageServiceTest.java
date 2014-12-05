@@ -28,7 +28,6 @@ import org.ldaptive.LdapAttribute;
 import org.ldaptive.pool.BlockingConnectionPool;
 import org.ldaptive.pool.PooledConnectionFactory;
 import org.opensaml.storage.StorageRecord;
-import org.opensaml.storage.StorageService;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
@@ -47,7 +46,7 @@ import com.unboundid.ldap.sdk.LDAPException;
 public class LDAPStorageServiceTest {
 
     /** Storage service to test. */
-    protected StorageService storageService;
+    protected LDAPStorageService storageService;
 
     /** In-memory directory server. */
     private InMemoryDirectoryServer directoryServer;
@@ -94,7 +93,7 @@ public class LDAPStorageServiceTest {
                 "ldap://localhost:10389")));
     }
 
-    @Nonnull protected StorageService getStorageService() {
+    @Nonnull protected LDAPStorageService getStorageService() {
         LDAPStorageService ss = new LDAPStorageService(
                 getPooledConnectionFactory(),
                 new LdapAttribute("objectClass", "inetOrgPerson", "organizationalPerson", "person", "top"),
