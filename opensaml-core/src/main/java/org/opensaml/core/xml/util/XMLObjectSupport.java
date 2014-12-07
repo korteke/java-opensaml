@@ -465,7 +465,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject unmarshaller, or null if no provider registered
      */
-    public static Unmarshaller getunmarshaller(QName typeOrName) {
+    public static Unmarshaller getUnmarshaller(QName typeOrName) {
         return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(typeOrName);
     }
     
