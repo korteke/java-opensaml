@@ -31,14 +31,12 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
@@ -59,7 +57,7 @@ import com.google.common.base.Strings;
  * Base class for security-oriented message handlers which verify simple "blob" signatures computed 
  * over some components of a request.
  */
-public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMessageHandler<SAMLObject>{
+public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMessageHandler {
 
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseSAMLSimpleSignatureSecurityHandler.class);
@@ -104,18 +102,6 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
-    
-    /**
-     * Get the current SAML Protocol context.
-     * 
-     * @param messageContext the current message context
-     * @return the current SAML protocol context
-     */
-    @Nullable protected SAMLProtocolContext getSAMLProtocolContext(
-            @Nonnull final MessageContext<SAMLObject> messageContext) {
-        //TODO is this the final resting place?
-        return messageContext.getSubcontext(SAMLProtocolContext.class, false);
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -129,15 +115,23 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
 
     /** {@inheritDoc} */
     @Override
-    protected boolean doPreInvoke(@Nonnull final MessageContext<SAMLObject> messageContext)
-            throws MessageHandlerException {
-        peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
-        samlProtocolContext = getSAMLProtocolContext(messageContext);
+    protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
+        peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+        if (peerContext == null || peerContext.getRole() == null) {
+            throw new MessageHandlerException("SAMLPeerEntityContext was missing or unpopulated");
+        }
+        
+        samlProtocolContext = messageContext.getSubcontext(SAMLProtocolContext.class);
         if (samlProtocolContext == null || samlProtocolContext.getProtocol() == null) {
             throw new MessageHandlerException("SAMLProtocolContext was missing or unpopulated");
         }
         
-        SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class, false);
+        final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
         if (secParams == null || secParams.getSignatureValidationParameters() == null 
                 || secParams.getSignatureValidationParameters().getSignatureTrustEngine() == null) {
             throw new MessageHandlerException("No SignatureTrustEngine was available from the MessageContext");
@@ -145,12 +139,12 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
             trustEngine = secParams.getSignatureValidationParameters().getSignatureTrustEngine();
         }
         
-        return super.doPreInvoke(messageContext);
+        return true;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         log.debug("{} Evaluating simple signature rule of type: {}", getLogPrefix(), getClass().getName());
 
         if (!ruleHandles(messageContext)) {
@@ -191,7 +185,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * 
      */
     private void doEvaluate(@Nonnull @NotEmpty final byte[] signature, @Nonnull @NotEmpty byte[] signedContent,
-            @Nonnull @NotEmpty final String algorithmURI, @Nonnull final MessageContext<SAMLObject> messageContext)
+            @Nonnull @NotEmpty final String algorithmURI, @Nonnull final MessageContext messageContext)
                     throws MessageHandlerException {
 
         final List<Credential> candidateCredentials = getRequestCredentials(messageContext);
@@ -309,7 +303,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
     @Nonnull @NonnullElements protected List<Credential> getRequestCredentials(
-            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
         // This will be specific to the binding and message types, so no default.
         return Collections.emptyList();
     }
@@ -353,7 +347,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @return the signer's derived entity ID
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    @Nullable protected String deriveSignerEntityID(@Nonnull final MessageContext<SAMLObject> messageContext)
+    @Nullable protected String deriveSignerEntityID(@Nonnull final MessageContext messageContext)
             throws MessageHandlerException {
         // No default
         return null;
@@ -368,33 +362,22 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @throws MessageHandlerException thrown if criteria set can not be constructed
      */
     @Nonnull protected CriteriaSet buildCriteriaSet(@Nullable final String entityID,
-            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
         final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIdCriterion(entityID));
         }
         
-        try {
-            SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-            Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
-            Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
-            criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
-
-            SAMLProtocolContext protocolContext = getSAMLProtocolContext(messageContext);
-            Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
-            Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
-            criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
-        } catch (ConstraintViolationException e) {
-            throw new MessageHandlerException(e);
-        }
-        
+        criteriaSet.add(new EntityRoleCriterion(peerContext.getRole()));
+        criteriaSet.add(new ProtocolCriterion(samlProtocolContext.getProtocol()));
         criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         
-        SecurityParametersContext secParamsContext = messageContext.getSubcontext(SecurityParametersContext.class);
+        final SecurityParametersContext secParamsContext =
+                messageContext.getSubcontext(SecurityParametersContext.class);
         if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
-            criteriaSet.add(new SignatureValidationParametersCriterion(
-                    secParamsContext.getSignatureValidationParameters()));
+            criteriaSet.add(
+                    new SignatureValidationParametersCriterion(secParamsContext.getSignatureValidationParameters()));
         }
 
         return criteriaSet;
@@ -407,8 +390,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @return the signed content extracted from the request, in the format suitable for input to the trust engine.
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    @Nullable protected abstract byte[] getSignedContent()
-            throws MessageHandlerException;
+    @Nullable protected abstract byte[] getSignedContent() throws MessageHandlerException;
 
     /**
      * Determine whether the rule should handle the request, based on the unwrapped HTTP servlet request and/or message
@@ -418,7 +400,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @return true if the rule should attempt to process the request, otherwise false
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    protected abstract boolean ruleHandles(@Nonnull final MessageContext<SAMLObject> messageContext)
+    protected abstract boolean ruleHandles(@Nonnull final MessageContext messageContext)
             throws MessageHandlerException;
 
 }

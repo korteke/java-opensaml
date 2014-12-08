@@ -37,7 +37,6 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -75,8 +74,11 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     /** Metadata credential resolver. */
     private MetadataCredentialResolver credentialResolver;
     
-    /** Flag indicating whether the resolver should attempt to merge RSAOAEPParameters values resolved
-     * from metadata with additional parameters from supplied instances of {@link EncryptionConfiguration}. */
+    /**
+     * Flag indicating whether the resolver should attempt to merge RSAOAEPParameters
+     * values resolved from metadata with additional parameters from supplied instances of
+     * {@link org.opensaml.xmlsec.EncryptionConfiguration}.
+     */
     private boolean mergeMetadataRSAOAEPParametersWithConfig;
     
     /**
@@ -91,7 +93,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     /**
      * Determine whether the resolver should attempt to merge RSAOAEPParameters values resolved
      * from metadata with additional parameters from supplied instances of
-     * {@link EncryptionConfiguration}.
+     * {@link org.opensaml.xmlsec.EncryptionConfiguration}.
      * 
      * <p>Defaults to: <code>false</code>
      * 
@@ -104,7 +106,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     /**
      * Set whether the resolver should attempt to merge RSAOAEPParameters values resolved
      * from metadata with additional parameters from supplied instances of
-     * {@link EncryptionConfiguration}.
+     * {@link org.opensaml.xmlsec.EncryptionConfiguration}.
      * 
      * <p>Defaults to: <code>false</code>
      * 

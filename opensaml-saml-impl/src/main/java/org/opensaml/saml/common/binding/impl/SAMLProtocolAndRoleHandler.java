@@ -29,7 +29,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 
@@ -41,7 +40,7 @@ import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
  * <p>A profile flow would typically run this handler after message decoding occurs,
  * to bootstrap subsequent handlers.</p>
  */
-public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
     
     /** Protocol value to add to context. */
     @NonnullAfterInit @NotEmpty private String samlProtocol;
@@ -79,7 +78,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler<SAMLObjec
     
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(samlProtocol);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(peerRole);
     }

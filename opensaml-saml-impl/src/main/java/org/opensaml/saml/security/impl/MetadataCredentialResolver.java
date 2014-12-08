@@ -101,7 +101,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         implements InitializableComponent {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(MetadataCredentialResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(MetadataCredentialResolver.class);
     
     /** Metadata RoleDescriptor resolver which is the source of credentials. */
     @Nullable private RoleDescriptorResolver roleDescriptorResolver;
@@ -112,17 +112,14 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     /** Initialization flag. */
     private boolean isInitialized;
     
-    /** Constructor. */
-    public MetadataCredentialResolver() {
-        super();
-    }
-
     /** {@inheritDoc} */
+    @Override
     public boolean isInitialized() {
         return isInitialized;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void initialize() throws ComponentInitializationException {
         if (getKeyInfoCredentialResolver() == null) {
             throw new ComponentInitializationException("A KeyInfoCredentialResolver instance is required");
@@ -187,6 +184,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull protected Iterable<Credential> resolveFromSource(@Nonnull final CriteriaSet criteriaSet) 
             throws ResolverException {
         

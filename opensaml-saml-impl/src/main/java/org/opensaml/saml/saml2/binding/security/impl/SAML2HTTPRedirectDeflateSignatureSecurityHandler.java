@@ -19,11 +19,14 @@ package org.opensaml.saml.saml2.binding.security.impl;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.net.URISupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.security.impl.BaseSAMLSimpleSignatureSecurityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,25 +39,26 @@ import com.google.common.base.Strings;
 public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSimpleSignatureSecurityHandler {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SAML2HTTPRedirectDeflateSignatureSecurityHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SAML2HTTPRedirectDeflateSignatureSecurityHandler.class);
 
     /** {@inheritDoc} */
-    protected boolean ruleHandles(MessageContext<SAMLObject> messgaeContext)
-            throws MessageHandlerException {
+    @Override
+    protected boolean ruleHandles(@Nonnull final MessageContext messgaeContext) throws MessageHandlerException {
         return "GET".equals(getHttpServletRequest().getMethod());
     }
 
     /** {@inheritDoc} */
-    protected byte[] getSignedContent() throws MessageHandlerException {
+    @Override
+    @Nullable protected byte[] getSignedContent() throws MessageHandlerException {
         // We need the raw non-URL-decoded query string param values for HTTP-Redirect DEFLATE simple signature
         // validation.
         // We have to construct a string containing the signature input by accessing the
         // request directly. We can't use the decoded parameters because we need the raw
         // data and URL-encoding isn't canonical.
-        String queryString = getHttpServletRequest().getQueryString();
+        final String queryString = getHttpServletRequest().getQueryString();
         log.debug("Constructing signed content string from URL query string {}", queryString);
 
-        String constructed = buildSignedContentString(queryString);
+        final String constructed = buildSignedContentString(queryString);
         if (Strings.isNullOrEmpty(constructed)) {
             log.warn("Could not extract signed content string from query string");
             return null;
@@ -63,7 +67,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
 
         try {
             return constructed.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             // JVM is required to support UTF-8
         }
         return null;
@@ -76,8 +80,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
      * @return a string representation of the signed content
      * @throws MessageHandlerException thrown if there is an error during request processing
      */
-    private String buildSignedContentString(String queryString) throws MessageHandlerException {
-        StringBuilder builder = new StringBuilder();
+    @Nonnull @NotEmpty private String buildSignedContentString(String queryString) throws MessageHandlerException {
+        final StringBuilder builder = new StringBuilder();
 
         // One of these two is mandatory
         if (!appendParameter(builder, queryString, "SAMLRequest")) {
@@ -104,8 +108,9 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
      * @param paramName the name of the parameter to append
      * @return true if parameter was found, false otherwise
      */
-    private boolean appendParameter(StringBuilder builder, String queryString, String paramName) {
-        String rawParam = URISupport.getRawQueryStringParameter(queryString, paramName);
+    private boolean appendParameter(@Nonnull final StringBuilder builder, @Nullable final String queryString,
+            @Nullable final String paramName) {
+        final String rawParam = URISupport.getRawQueryStringParameter(queryString, paramName);
         if (rawParam == null) {
             return false;
         }
@@ -118,4 +123,5 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
 
         return true;
     }
+    
 }

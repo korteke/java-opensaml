@@ -19,11 +19,15 @@ package org.opensaml.saml.saml2.binding.security.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -38,7 +42,6 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.security.impl.BaseSAMLSimpleSignatureSecurityHandler;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -49,6 +52,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 /**
  * Message handler which evaluates simple "blob" signatures according to the SAML 2 HTTP-POST-SimpleSign binding.
@@ -56,20 +60,20 @@ import com.google.common.base.Strings;
 public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignatureSecurityHandler {
 
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SAML2HTTPPostSimpleSignSecurityHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SAML2HTTPPostSimpleSignSecurityHandler.class);
 
     /** Parser pool to use to process KeyInfo request parameter. */
-    private ParserPool parserPool;
+    @NonnullAfterInit private ParserPool parserPool;
 
     /** KeyInfo resolver to use to process KeyInfo request parameter. */
-    private KeyInfoCredentialResolver keyInfoResolver;
+    @NonnullAfterInit private KeyInfoCredentialResolver keyInfoResolver;
     
     /**
      * Get the parser pool.
      * 
      * @return Returns the parser pool.
      */
-    public ParserPool getParserPool() {
+    @NonnullAfterInit public ParserPool getParserPool() {
         return parserPool;
     }
 
@@ -78,9 +82,9 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * 
      * @param newParserPool The parser to set.
      */
-    public void setParser(ParserPool newParserPool) {
+    public void setParser(@Nonnull final ParserPool newParserPool) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        parserPool = Constraint.isNotNull(newParserPool, "ParserPool may not be null");
+        parserPool = Constraint.isNotNull(newParserPool, "ParserPool cannot be null");
     }
 
     /**
@@ -88,7 +92,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * 
      * @return Returns the keyInfoResolver.
      */
-    public KeyInfoCredentialResolver getKeyInfoResolver() {
+    @NonnullAfterInit public KeyInfoCredentialResolver getKeyInfoResolver() {
         return keyInfoResolver;
     }
 
@@ -97,26 +101,29 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * 
      * @param newKeyInfoResolver The keyInfoResolver to set.
      */
-    public void setKeyInfoResolver(KeyInfoCredentialResolver newKeyInfoResolver) {
+    public void setKeyInfoResolver(@Nonnull final KeyInfoCredentialResolver newKeyInfoResolver) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        keyInfoResolver = Constraint.isNotNull(newKeyInfoResolver, "KeyInfoCredentialResolver may not be null");
+        keyInfoResolver = Constraint.isNotNull(newKeyInfoResolver, "KeyInfoCredentialResolver cannot be null");
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        Constraint.isNotNull(parserPool, "ParserPool must be supplied");
-        Constraint.isNotNull(keyInfoResolver, "KeyInfoCredentialResolver must be supplied");
+        Constraint.isNotNull(parserPool, "ParserPool cannot be null");
+        Constraint.isNotNull(keyInfoResolver, "KeyInfoCredentialResolver cannot be null");
     }
 
     /** {@inheritDoc} */
-    protected boolean ruleHandles(MessageContext<SAMLObject> messageContext) {
+    @Override
+    protected boolean ruleHandles(@Nonnull final MessageContext messageContext) {
         return "POST".equals(getHttpServletRequest().getMethod());
     }
 
     /** {@inheritDoc} */
-    protected byte[] getSignedContent() throws MessageHandlerException {
+    @Override
+    @Nullable protected byte[] getSignedContent() throws MessageHandlerException {
         final HttpServletRequest request = getHttpServletRequest();
         
         final StringBuilder builder = new StringBuilder();
@@ -132,7 +139,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
                 log.warn("Could not extract either a SAMLRequest or a SAMLResponse from the form control data");
                 throw new MessageHandlerException("Extract of SAMLRequest or SAMLResponse from form control data");
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             // All JVM's required to support UTF-8
         }
 
@@ -151,61 +158,61 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
 
         try {
             return constructed.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             // All JVM's required to support UTF-8
         }
         return null;
     }
 
     /** {@inheritDoc} */
-    protected List<Credential> getRequestCredentials(MessageContext<SAMLObject> samlContext)
-            throws MessageHandlerException {
+    @Override
+    @Nonnull @NonnullElements protected List<Credential> getRequestCredentials(
+            @Nonnull final MessageContext samlContext) throws MessageHandlerException {
 
-        String kiBase64 = getHttpServletRequest().getParameter("KeyInfo");
+        final String kiBase64 = getHttpServletRequest().getParameter("KeyInfo");
         if (Strings.isNullOrEmpty(kiBase64)) {
             log.debug("Form control data did not contain a KeyInfo");
-            return null;
+            return Collections.emptyList();
         } else {
             log.debug("Found a KeyInfo in form control data, extracting validation credentials");
         }
 
-        Unmarshaller unmarshaller =
+        final Unmarshaller unmarshaller =
                 XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
         if (unmarshaller == null) {
             throw new MessageHandlerException("Could not obtain a KeyInfo unmarshaller");
         }
 
-        ByteArrayInputStream is = new ByteArrayInputStream(Base64Support.decode(kiBase64));
+        final ByteArrayInputStream is = new ByteArrayInputStream(Base64Support.decode(kiBase64));
         KeyInfo keyInfo = null;
         try {
-            Document doc = getParserPool().parse(is);
+            final Document doc = getParserPool().parse(is);
             keyInfo = (KeyInfo) unmarshaller.unmarshall(doc.getDocumentElement());
-        } catch (XMLParserException e) {
+        } catch (final XMLParserException e) {
             log.warn("Error parsing KeyInfo data", e);
             throw new MessageHandlerException("Error parsing KeyInfo data", e);
-        } catch (UnmarshallingException e) {
+        } catch (final UnmarshallingException e) {
             log.warn("Error unmarshalling KeyInfo data", e);
             throw new MessageHandlerException("Error unmarshalling KeyInfo data", e);
         }
 
         if (keyInfo == null) {
             log.warn("Could not successfully extract KeyInfo object from the form control data");
-            return null;
+            return Collections.emptyList();
         }
 
-        List<Credential> credentials = new ArrayList<Credential>();
-        CriteriaSet criteriaSet = new CriteriaSet(new KeyInfoCriterion(keyInfo));
+        final List<Credential> credentials = Lists.newArrayList();
+        final CriteriaSet criteriaSet = new CriteriaSet(new KeyInfoCriterion(keyInfo));
         try {
-            for (Credential cred : keyInfoResolver.resolve(criteriaSet)) {
+            for (final Credential cred : keyInfoResolver.resolve(criteriaSet)) {
                 credentials.add(cred);
             }
-        } catch (ResolverException e) {
+        } catch (final ResolverException e) {
             log.warn("Error resolving credentials from KeyInfo", e);
             throw new MessageHandlerException("Error resolving credentials from KeyInfo", e);
         }
 
         return credentials;
     }
-
 
 }

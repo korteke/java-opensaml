@@ -30,7 +30,6 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
@@ -51,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * the message with an entityID and role to look up. A protocol from a {@link SAMLProtocolContext}
  * will be added to the lookup, if available.</p>
  */
-public class SAMLMetadataLookupHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLMetadataLookupHandler.class);
@@ -82,11 +81,11 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler<SAMLObject
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
-        final SAMLPeerEntityContext peerCtx = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
-        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class, false);
+        final SAMLPeerEntityContext peerCtx = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class);
      
         if (peerCtx == null || peerCtx.getEntityId() == null || peerCtx.getRole() == null) {
             log.info("{} SAMLPeerEntityContext missing or did not contain an entityID or role", getLogPrefix());

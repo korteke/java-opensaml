@@ -33,10 +33,10 @@ import com.google.common.base.Function;
 /**
  * MessageHandler to set the Consent attribute on a {@link StatusResponseType} message.
  */
-public class AddConsentToResponseHandler extends AbstractMessageHandler<StatusResponseType> {
+public class AddConsentToResponseHandler extends AbstractMessageHandler {
     
     /** Strategy for locating {@link SAMLConsentContext}. */
-    @Nonnull private Function<MessageContext<StatusResponseType>, SAMLConsentContext> consentContextStrategy;
+    @Nonnull private Function<MessageContext,SAMLConsentContext> consentContextStrategy;
 
     /** Constructor. */
     public AddConsentToResponseHandler() {
@@ -48,19 +48,19 @@ public class AddConsentToResponseHandler extends AbstractMessageHandler<StatusRe
      * 
      * @param strategy  lookup strategy
      */
-    public synchronized void setConsentContextLookupStrategy(
-            @Nonnull final Function<MessageContext<StatusResponseType>, SAMLConsentContext> strategy) {
+    public void setConsentContextLookupStrategy(@Nonnull final Function<MessageContext,SAMLConsentContext> strategy) {
         consentContextStrategy = Constraint.isNotNull(strategy, "SAMLConsentContext lookup strategy cannot be null");
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<StatusResponseType> messageContext)
-            throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        final StatusResponseType response = messageContext.getMessage();
+        final Object response = messageContext.getMessage();
         if (response == null) {
-            throw new MessageHandlerException("Response was not found");
+            throw new MessageHandlerException("Message not found");
+        } else if (!(response instanceof StatusResponseType)) {
+            throw new MessageHandlerException("Message was not a StatusResponseType");
         }
         
         final SAMLConsentContext consentContext = consentContextStrategy.apply(messageContext);
@@ -68,7 +68,7 @@ public class AddConsentToResponseHandler extends AbstractMessageHandler<StatusRe
             throw new MessageHandlerException("Consent value not found");
         }
         
-        response.setConsent(consentContext.getConsent());
+        ((StatusResponseType) response).setConsent(consentContext.getConsent());
     }
     
 }

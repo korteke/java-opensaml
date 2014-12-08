@@ -31,7 +31,6 @@ import org.joda.time.DateTime;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.storage.ReplayCache;
@@ -41,7 +40,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Security message handler implementation that which checks for replay of SAML messages.
  */
-public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObject> {
+public class MessageReplaySecurityHandler extends AbstractMessageHandler {
 
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(MessageReplaySecurityHandler.class);
@@ -117,12 +116,12 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler<SAMLObj
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        Constraint.isNotNull(getReplayCache(), "ReplayCache instance cannot be null");
+        Constraint.isNotNull(getReplayCache(), "ReplayCache cannot be null");
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
         
         String entityID = StringSupport.trimOrNull(peerContext.getEntityId());

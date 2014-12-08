@@ -24,7 +24,6 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.security.impl.SAMLSignatureProfileValidator;
@@ -90,9 +89,9 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
 
     /** {@inheritDoc} */
     @Override
-    public void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    public void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        final SAMLObject samlMsg = messageContext.getMessage();
+        final Object samlMsg = messageContext.getMessage();
         if (!(samlMsg instanceof SignableSAMLObject)) {
             log.debug("{} Extracted SAML message was not a SignableSAMLObject, cannot process signature",
                     getLogPrefix());
@@ -120,12 +119,12 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * @throws MessageHandlerException thrown if the signature fails validation
      */
     protected void doEvaluate(@Nonnull final Signature signature, @Nonnull final SignableSAMLObject signableObject, 
-            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
         //TODO authentication flags - on peer or on message?
         
-        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, false);
-        if (peerContext != null && peerContext.getEntityId() != null) {
+        final SAMLPeerEntityContext peerContext = getSAMLPeerEntityContext();
+        if (peerContext.getEntityId() != null) {
             final String contextEntityID = peerContext.getEntityId();
             final String msgType = signableObject.getElementQName().toString();
             log.debug("{} Attempting to verify signature on signed SAML protocol message type: {}",
@@ -162,7 +161,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
         if (getSignaturePrevalidator() != null) {
             try {
                 getSignaturePrevalidator().validate(signature);
-            } catch (SignatureException e) {
+            } catch (final SignatureException e) {
                 log.debug("{} Protocol message signature failed signature pre-validation", getLogPrefix(), e);
                 throw new MessageHandlerException("Protocol message signature failed signature pre-validation", e);
             }

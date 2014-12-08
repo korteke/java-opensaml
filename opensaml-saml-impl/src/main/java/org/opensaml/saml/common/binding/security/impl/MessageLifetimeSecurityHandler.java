@@ -28,7 +28,6 @@ import org.joda.time.DateTime;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Security message handler implementation that checks for validity of SAML message issue instant date and time.
  */
-public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLObject> {
+public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(MessageLifetimeSecurityHandler.class);
@@ -123,7 +122,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
 
     /** {@inheritDoc} */
     @Override
-    public void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    public void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
         
         if (msgInfoContext.getMessageIssueInstant() == null) {
@@ -154,6 +153,6 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler<SAMLO
                     getLogPrefix(), issueInstant, expiration, now);
             throw new MessageHandlerException("Message was rejected due to issue instant expiration");
         }
-
     }
+    
 }

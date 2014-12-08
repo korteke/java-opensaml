@@ -20,7 +20,6 @@ package org.opensaml.security.messaging.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -35,40 +34,40 @@ import org.slf4j.LoggerFactory;
  * Base rule which uses a trust engine to evaluate a token extracted from the request or message.
  * 
  * @param <TokenType> type of token which is being evaluated by the underlying trust engine
- * @param <MessageType> type of message contained in the message context being evaluated
  */
-public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType> 
-        extends AbstractMessageHandler<MessageType> {
+public abstract class BaseTrustEngineSecurityHandler<TokenType> extends AbstractMessageHandler {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseTrustEngineSecurityHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BaseTrustEngineSecurityHandler.class);
 
     /** Trust engine used to verify the particular token type. */
-    private TrustEngine<TokenType> trustEngine;
+    @Nullable private TrustEngine<TokenType> trustEngine;
 
     /**
      * Gets the trust engine used to validate the untrusted token.
      * 
      * @return trust engine used to validate the untrusted token
      */
-    protected TrustEngine<TokenType> getTrustEngine() {
+    @Nullable protected TrustEngine<TokenType> getTrustEngine() {
         return trustEngine;
-    }
-    
-    /** {@inheritDoc} */
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
     }
 
     /** {@inheritDoc} */
-    protected boolean doPreInvoke(MessageContext<MessageType> messageContext) throws MessageHandlerException {
-        TrustEngine<TokenType> engine = resolveTrustEngine(messageContext);
+    @Override
+    protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
+        final TrustEngine<TokenType> engine = resolveTrustEngine(messageContext);
         if (engine == null) {
             throw new MessageHandlerException("TrustEngine could not be resolved from MessageContext");
         } else {
             trustEngine = engine;
         }
-        return super.doPreInvoke(messageContext);
+        
+        return true;
     }
 
     /**
@@ -77,7 +76,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
      * @param messageContext the message context which is being evaluated
      * @return the resolved TrustEngine, may be null
      */
-    @Nullable protected abstract TrustEngine<TokenType> resolveTrustEngine(MessageContext<MessageType> messageContext);
+    @Nullable protected abstract TrustEngine<TokenType> resolveTrustEngine(
+            @Nonnull final MessageContext messageContext);
 
     /**
      * Subclasses are required to implement this method to build a criteria set for the trust engine
@@ -88,8 +88,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
      * @return a newly constructly set of criteria suitable for the configured trust engine
      * @throws MessageHandlerException thrown if criteria set can not be constructed
      */
-    @Nonnull protected abstract CriteriaSet buildCriteriaSet(String entityID, 
-            MessageContext<MessageType> messageContext) throws MessageHandlerException;
+    @Nullable protected abstract CriteriaSet buildCriteriaSet(@Nullable final String entityID, 
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException;
 
     /**
      * Evaluate the token using the configured trust engine against criteria built using
@@ -101,10 +101,10 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
      * @return true if the token satisfies the criteria as determined by the trust engine, otherwise false
      * @throws MessageHandlerException thrown if there is a fatal error during trust engine evaluation
      */
-    protected boolean evaluate(TokenType token, String entityID, MessageContext<MessageType> messageContext)
-        throws MessageHandlerException {
+    protected boolean evaluate(@Nonnull final TokenType token, @Nullable final String entityID,
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
-        CriteriaSet criteriaSet = buildCriteriaSet(entityID, messageContext);
+        final CriteriaSet criteriaSet = buildCriteriaSet(entityID, messageContext);
         if (criteriaSet == null) {
             log.error("{} Returned criteria set was null, can not perform trust engine evaluation of token",
                     getLogPrefix());
@@ -122,10 +122,11 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType, MessageType>
      * @return true if the token satisfies the criteria as determined by the trust engine, otherwise false
      * @throws MessageHandlerException thrown if there is a fatal error during trust engine evaluation
      */
-    protected boolean evaluate(TokenType token, CriteriaSet criteriaSet) throws MessageHandlerException {
+    protected boolean evaluate(@Nonnull final TokenType token, @Nullable final CriteriaSet criteriaSet)
+            throws MessageHandlerException {
         try {
             return getTrustEngine().validate(token, criteriaSet);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             log.error("{} There was an error evaluating the request's token using the trust engine", getLogPrefix(), e);
             throw new MessageHandlerException("Error during trust engine evaluation of the token", e);
         }

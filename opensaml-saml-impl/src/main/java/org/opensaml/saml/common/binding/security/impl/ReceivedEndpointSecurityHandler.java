@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * Message handler which checks the validity of the SAML protocol message receiver 
  * endpoint against requirements indicated in the message.
  */
-public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAMLObject> {
+public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(ReceivedEndpointSecurityHandler.class);
@@ -113,7 +113,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler<SAML
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         checkEndpointURI(messageContext, getURIComparator());
     }
     

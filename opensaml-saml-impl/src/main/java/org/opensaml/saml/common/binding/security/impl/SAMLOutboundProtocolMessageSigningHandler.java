@@ -26,7 +26,6 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml2.core.StatusResponseType;
@@ -41,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * contains an instance of {@link SignatureSigningParameters} as determined by
  * {@link SAMLMessageSecuritySupport#getContextSigningParameters(MessageContext)}.
  */
-public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHandler {
     
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLOutboundProtocolMessageSigningHandler.class);
@@ -67,7 +66,7 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
     
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SignatureSigningParameters signingParameters = 
                 SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
         if (signingParameters != null) {
@@ -94,7 +93,7 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
      * 
      * @return  true iff the message is a SAML response containing an error status
      */
-    private boolean isErrorResponse(@Nullable final SAMLObject message) {
+    private boolean isErrorResponse(@Nullable final Object message) {
         if (message != null) {
             if (message instanceof Response) {
                 if (((Response) message).getStatus() != null) {
@@ -114,4 +113,5 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
         
         return false;
     }
+    
 }

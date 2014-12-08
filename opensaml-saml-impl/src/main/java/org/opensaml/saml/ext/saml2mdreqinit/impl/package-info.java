@@ -17,7 +17,7 @@
 
 /**
  * Concrete implementations of the interfaces for the 
- * <em>SAML 2 Metadata Extension for SSO Service Provider Request Initiation<em>.
+ * <em>SAML 2 Metadata Extension for SSO Service Provider Request Initiation</em>.
  */
 
 package org.opensaml.saml.ext.saml2mdreqinit.impl;

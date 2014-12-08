@@ -28,7 +28,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
@@ -44,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * <p>The issuer/requester is deduced in this case by resolving an artifact from the request
  * and assuming the issuer is the intended recipient of the artifact.</p> 
  */
-public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler {
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML1ArtifactRequestIssuerHandler.class);
@@ -73,7 +72,7 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler<SA
     
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
         if (messageContext.getMessage() == null || !(messageContext.getMessage() instanceof Request)) {
             log.trace("{} Request message not set, or not of an applicable type", getLogPrefix());
