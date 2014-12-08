@@ -55,8 +55,8 @@ public class AttributeDesignatorImpl extends AbstractSAMLObject implements Attri
     }
 
     /** {@inheritDoc} */
-    public void setAttributeName(String attributeName) {
-        this.attributeName = prepareForAssignment(this.attributeName, attributeName);
+    public void setAttributeName(String name) {
+        attributeName = prepareForAssignment(attributeName, name);
     }
 
     /** {@inheritDoc} */
@@ -65,8 +65,8 @@ public class AttributeDesignatorImpl extends AbstractSAMLObject implements Attri
     }
 
     /** {@inheritDoc} */
-    public void setAttributeNamespace(String attributeNamespace) {
-        this.attributeNamespace = prepareForAssignment(this.attributeNamespace, attributeNamespace);
+    public void setAttributeNamespace(String ns) {
+        attributeNamespace = prepareForAssignment(attributeNamespace, ns);
     }
 
     /** {@inheritDoc} */

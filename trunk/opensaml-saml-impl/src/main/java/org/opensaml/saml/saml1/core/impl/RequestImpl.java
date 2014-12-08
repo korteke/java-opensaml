@@ -33,21 +33,21 @@ import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml1.core.Request}
+ * Concrete implementation of {@link org.opensaml.saml.saml1.core.Request}.
  */
 public class RequestImpl extends RequestAbstractTypeImpl implements Request {
 
-    /** Saves the query (one of Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisionQuery */
+    /** Saves the query (one of Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisionQuery. */
     private Query query;
 
-    /** The List of AssertionIDReferences */
+    /** The List of AssertionIDReferences. */
     private final XMLObjectChildrenList<AssertionIDReference> assertionIDReferences;
 
-    /** The List of AssertionArtifacts */
+    /** The List of AssertionArtifacts. */
     private final XMLObjectChildrenList<AssertionArtifact> assertionArtifacts;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -66,27 +66,27 @@ public class RequestImpl extends RequestAbstractTypeImpl implements Request {
 
     /** {@inheritDoc} */
     public SubjectQuery getSubjectQuery() {
-        return (query instanceof SubjectQuery ? (SubjectQuery) query : null);
+        return query instanceof SubjectQuery ? (SubjectQuery) query : null;
     }
 
     /** {@inheritDoc} */
     public AttributeQuery getAttributeQuery() {
-        return (query instanceof AttributeQuery ? (AttributeQuery) query : null);
+        return query instanceof AttributeQuery ? (AttributeQuery) query : null;
     }
 
     /** {@inheritDoc} */
     public AuthenticationQuery getAuthenticationQuery() {
-        return (query instanceof AuthenticationQuery ? (AuthenticationQuery) query : null);
+        return query instanceof AuthenticationQuery ? (AuthenticationQuery) query : null;
     }
 
     /** {@inheritDoc} */
     public AuthorizationDecisionQuery getAuthorizationDecisionQuery() {
-        return (query instanceof AuthorizationDecisionQuery ? (AuthorizationDecisionQuery) query : null);
+        return query instanceof AuthorizationDecisionQuery ? (AuthorizationDecisionQuery) query : null;
     }
 
     /** {@inheritDoc} */
-    public void setQuery(Query query) throws IllegalArgumentException {
-        this.query = prepareForAssignment(this.query, query);
+    public void setQuery(Query q) {
+        query = prepareForAssignment(query, q);
     }
 
     /** {@inheritDoc} */

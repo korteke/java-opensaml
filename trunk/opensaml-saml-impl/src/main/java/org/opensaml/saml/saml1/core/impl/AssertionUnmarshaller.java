@@ -67,6 +67,7 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         }
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
 
@@ -105,5 +106,6 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             super.processAttribute(samlObject, attribute);
         }
     }
-
+// Checkstyle: CyclomaticComplexity ON
+    
 }

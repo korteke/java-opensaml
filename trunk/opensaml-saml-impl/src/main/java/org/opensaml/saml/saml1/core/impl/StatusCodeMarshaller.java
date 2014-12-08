@@ -38,7 +38,8 @@ public class StatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
 
         QName statusValue = statusCode.getValue();
         if (statusValue != null) {
-            domElement.setAttributeNS(null, StatusCode.VALUE_ATTRIB_NAME, QNameSupport.qnameToContentString(statusValue));
+            domElement.setAttributeNS(null, StatusCode.VALUE_ATTRIB_NAME,
+                    QNameSupport.qnameToContentString(statusValue));
         }
     }
 }

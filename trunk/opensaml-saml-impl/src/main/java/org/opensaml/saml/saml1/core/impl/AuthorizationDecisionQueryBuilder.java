@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 public class AuthorizationDecisionQueryBuilder extends AbstractSAMLObjectBuilder<AuthorizationDecisionQuery> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthorizationDecisionQueryBuilder() {
 
@@ -35,7 +35,8 @@ public class AuthorizationDecisionQueryBuilder extends AbstractSAMLObjectBuilder
 
     /** {@inheritDoc} */
     public AuthorizationDecisionQuery buildObject() {
-        return buildObject(SAMLConstants.SAML10P_NS, AuthorizationDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+        return buildObject(SAMLConstants.SAML10P_NS, AuthorizationDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */

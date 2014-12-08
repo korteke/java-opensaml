@@ -28,18 +28,18 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
 
 /**
- * Complete implementation of {@link org.opensaml.saml.saml1.core.Subject}
+ * Complete implementation of {@link org.opensaml.saml.saml1.core.Subject}.
  */
 public class SubjectImpl extends AbstractSAMLObject implements Subject {
 
-    /** Contains the NameIdentifier inside the Subject */
+    /** Contains the NameIdentifier inside the Subject. */
     private NameIdentifier nameIdentifier;
 
-    /** Contains the SubjectConfirmation inside the Subject */
+    /** Contains the SubjectConfirmation inside the Subject. */
     private SubjectConfirmation subjectConfirmation;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -55,8 +55,8 @@ public class SubjectImpl extends AbstractSAMLObject implements Subject {
     }
 
     /** {@inheritDoc} */
-    public void setNameIdentifier(NameIdentifier nameIdentifier) throws IllegalArgumentException {
-        this.nameIdentifier = prepareForAssignment(this.nameIdentifier, nameIdentifier);
+    public void setNameIdentifier(NameIdentifier name) {
+        nameIdentifier = prepareForAssignment(nameIdentifier, name);
     }
 
     /** {@inheritDoc} */
@@ -65,8 +65,8 @@ public class SubjectImpl extends AbstractSAMLObject implements Subject {
     }
 
     /** {@inheritDoc} */
-    public void setSubjectConfirmation(SubjectConfirmation subjectConfirmation) throws IllegalArgumentException {
-        this.subjectConfirmation = prepareForAssignment(this.subjectConfirmation, subjectConfirmation);
+    public void setSubjectConfirmation(SubjectConfirmation conf) {
+        subjectConfirmation = prepareForAssignment(subjectConfirmation, conf);
     }
 
     /** {@inheritDoc} */

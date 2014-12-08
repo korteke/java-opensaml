@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.Status;
 public class StatusBuilder extends AbstractSAMLObjectBuilder<Status> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public StatusBuilder() {
 

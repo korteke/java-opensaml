@@ -28,26 +28,27 @@ import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 
 /**
- * Abstract implementation of {@link org.opensaml.saml.saml1.core.ResponseAbstractType} Object
+ * Abstract implementation of {@link org.opensaml.saml.saml1.core.ResponseAbstractType} Object.
  */
 public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObject implements ResponseAbstractType {
 
-    /** Contains the ID */
+    /** Contains the ID. */
     private String id;
 
+    /** Message version. */
     private SAMLVersion version;
 
-    /** Contents of the InResponseTo attribute */
-    private String inResponseTo = null;
+    /** Contents of the InResponseTo attribute. */
+    private String inResponseTo;
 
-    /** Contents of the Date attribute */
-    private DateTime issueInstant = null;
+    /** Contents of the IssueInstant attribute. */
+    private DateTime issueInstant;
 
-    /** Contents of the recipient attribute */
-    private String recipient = null;
+    /** Contents of the Recipient attribute. */
+    private String recipient;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -64,10 +65,10 @@ public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObjec
     }
 
     /** {@inheritDoc} */
-    public void setID(String id) {
-        String oldID = this.id;
-        this.id = prepareForAssignment(this.id, id);
-        registerOwnID(oldID, this.id);
+    public void setID(String newID) {
+        String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
@@ -76,8 +77,8 @@ public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObjec
     }
 
     /** {@inheritDoc} */
-    public void setInResponseTo(String inResponseTo) {
-        this.inResponseTo = prepareForAssignment(this.inResponseTo, inResponseTo);
+    public void setInResponseTo(String to) {
+        inResponseTo = prepareForAssignment(inResponseTo, to);
     }
 
     /** {@inheritDoc} */
@@ -107,8 +108,8 @@ public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObjec
     }
 
     /** {@inheritDoc} */
-    public void setRecipient(String recipient) {
-        this.recipient = prepareForAssignment(this.recipient, recipient);
+    public void setRecipient(String recip) {
+        recipient = prepareForAssignment(recipient, recip);
     }
     
     /** {@inheritDoc} */

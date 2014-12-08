@@ -38,17 +38,17 @@ import org.opensaml.saml.saml1.core.DoNotCacheCondition;
  */
 public class ConditionsImpl extends AbstractSAMLObject implements Conditions {
 
-    /** Value saved in the NotBefore attribute */
+    /** Value saved in the NotBefore attribute. */
     private DateTime notBefore;
 
-    /** Value saved in the NotOnOrAfter attribute */
+    /** Value saved in the NotOnOrAfter attribute. */
     private DateTime notOnOrAfter;
 
-    /** Set containing all the Conditions */
+    /** Set containing all the Conditions. */
     private final IndexedXMLObjectChildrenList<Condition> conditions;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -65,8 +65,8 @@ public class ConditionsImpl extends AbstractSAMLObject implements Conditions {
     }
 
     /** {@inheritDoc} */
-    public void setNotBefore(DateTime notBefore) {
-        this.notBefore = prepareForAssignment(this.notBefore, notBefore);
+    public void setNotBefore(DateTime dt) {
+        notBefore = prepareForAssignment(notBefore, dt);
     }
 
     /** {@inheritDoc} */
@@ -75,8 +75,8 @@ public class ConditionsImpl extends AbstractSAMLObject implements Conditions {
     }
 
     /** {@inheritDoc} */
-    public void setNotOnOrAfter(DateTime notOnOrAfter) {
-        this.notOnOrAfter = prepareForAssignment(this.notOnOrAfter, notOnOrAfter);
+    public void setNotOnOrAfter(DateTime dt) {
+        notOnOrAfter = prepareForAssignment(notOnOrAfter, dt);
     }
 
     /** {@inheritDoc} */

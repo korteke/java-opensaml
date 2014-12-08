@@ -29,17 +29,17 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 import org.opensaml.saml.saml1.core.Evidence;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} interface
+ * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} interface.
  */
 public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements AuthorizationDecisionQuery {
 
-    /** Contains the resource attribute */
+    /** Contains the resource attribute. */
     private String resource;
 
-    /** Contains all the Action child elements */
+    /** Contains all the Action child elements. */
     private final XMLObjectChildrenList<Action> actions;
 
-    /** Contains the Evidence child element */
+    /** Contains the Evidence child element. */
     private Evidence evidence;
     
     /**
@@ -61,8 +61,8 @@ public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements 
     }
 
     /** {@inheritDoc} */
-    public void setResource(String resource) {
-        this.resource = prepareForAssignment(this.resource, resource);
+    public void setResource(String res) {
+        resource = prepareForAssignment(resource, res);
     }
 
     /** {@inheritDoc} */
@@ -76,8 +76,8 @@ public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements 
     }
 
     /** {@inheritDoc} */
-    public void setEvidence(Evidence evidence) {
-        this.evidence = prepareForAssignment(this.evidence, evidence);
+    public void setEvidence(Evidence ev) {
+        evidence = prepareForAssignment(evidence, ev);
     }
 
     /** {@inheritDoc} */

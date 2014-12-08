@@ -37,8 +37,8 @@ import org.w3c.dom.Element;
 import com.google.common.base.Strings;
 
 /**
- * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml.saml1.core.ResponseAbstractType}
- * objects.
+ * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for
+ * {@link org.opensaml.saml.saml1.core.ResponseAbstractType} objects.
  */
 public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -67,6 +67,7 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
         }
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlObject, Attr attribute) throws UnmarshallingException {
         ResponseAbstractType response = (ResponseAbstractType) samlObject;
@@ -108,5 +109,6 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
             super.processAttribute(samlObject, attribute);
         }
     }
-
+// Checkstyle: CyclomaticComplexity ON
+    
 }

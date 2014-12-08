@@ -98,10 +98,10 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     }
 
     /** {@inheritDoc} */
-    public void setID(String id) {
-        String oldID = this.id;
-        this.id = prepareForAssignment(this.id, id);   
-        registerOwnID(oldID, this.id);
+    public void setID(String newID) {
+        String oldID = id;
+        id = prepareForAssignment(id, newID);   
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
@@ -110,8 +110,8 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     }
 
     /** {@inheritDoc} */
-    public void setIssuer(String issuer) {
-        this.issuer = prepareForAssignment(this.issuer, issuer);
+    public void setIssuer(String iss) {
+        issuer = prepareForAssignment(issuer, iss);
     }
 
     /** {@inheritDoc} */
@@ -120,8 +120,8 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     }
 
     /** {@inheritDoc} */
-    public void setIssueInstant(DateTime issueInstant) {
-        this.issueInstant = prepareForAssignment(this.issueInstant, issueInstant);
+    public void setIssueInstant(DateTime instant) {
+        issueInstant = prepareForAssignment(issueInstant, instant);
     }
 
     /** {@inheritDoc} */
@@ -130,8 +130,8 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     }
 
     /** {@inheritDoc} */
-    public void setConditions(Conditions conditions) throws IllegalArgumentException {
-        this.conditions = prepareForAssignment(this.conditions, conditions);
+    public void setConditions(Conditions c) {
+        conditions = prepareForAssignment(conditions, c);
     }
 
     /** {@inheritDoc} */
@@ -140,8 +140,8 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     }
 
     /** {@inheritDoc} */
-    public void setAdvice(Advice advice) throws IllegalArgumentException {
-        this.advice = prepareForAssignment(this.advice, advice);
+    public void setAdvice(Advice adv) {
+        advice = prepareForAssignment(advice, adv);
     }
 
     /** {@inheritDoc} */
@@ -168,7 +168,8 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
 
     /** {@inheritDoc} */
     public List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements() {
-        QName statementQName = new QName(SAMLConstants.SAML1_NS, AuthorizationDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME);
+        QName statementQName =
+                new QName(SAMLConstants.SAML1_NS, AuthorizationDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<AuthorizationDecisionStatement>) statements.subList(statementQName);
     }
 

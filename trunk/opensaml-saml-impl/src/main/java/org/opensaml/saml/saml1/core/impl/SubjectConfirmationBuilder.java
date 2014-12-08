@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.SubjectConfirmation;
 public class SubjectConfirmationBuilder extends AbstractSAMLObjectBuilder<SubjectConfirmation> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SubjectConfirmationBuilder() {
 
@@ -35,7 +35,8 @@ public class SubjectConfirmationBuilder extends AbstractSAMLObjectBuilder<Subjec
 
     /** {@inheritDoc} */
     public SubjectConfirmation buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

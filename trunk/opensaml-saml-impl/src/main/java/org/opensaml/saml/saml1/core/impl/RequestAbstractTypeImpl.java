@@ -34,20 +34,20 @@ import org.opensaml.saml.saml1.core.RespondWith;
  */
 public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject implements RequestAbstractType {
 
-    /** Contains the ID */
+    /** Contains the ID. */
     private String id;
 
-    /** Containt the IssueInstant */
+    /** Containt the IssueInstant. */
     private DateTime issueInstant;
 
-    /** Version of this SAML message */
+    /** Version of this SAML message. */
     private SAMLVersion version;
 
-    /** Contains the respondWiths */
-    public final XMLObjectChildrenList<RespondWith> respondWiths;
+    /** Contains the respondWiths. */
+    private final XMLObjectChildrenList<RespondWith> respondWiths;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -65,10 +65,10 @@ public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject
     }
 
     /** {@inheritDoc} */
-    public void setID(String id) {
-        String oldID = this.id;
-        this.id = prepareForAssignment(this.id, id);
-        registerOwnID(oldID, this.id);
+    public void setID(String newID) {
+        String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */

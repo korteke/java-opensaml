@@ -26,13 +26,6 @@ import org.opensaml.saml.saml1.core.Response;
  */
 public class ResponseBuilder extends AbstractSAMLObjectBuilder<Response> {
 
-    /**
-     * Constructor
-     */
-    public ResponseBuilder() {
-
-    }
-
     /** {@inheritDoc} */
     public Response buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);

@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.SubjectLocality;
 public class SubjectLocalityBuilder extends AbstractSAMLObjectBuilder<SubjectLocality> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SubjectLocalityBuilder() {
 
@@ -35,7 +35,8 @@ public class SubjectLocalityBuilder extends AbstractSAMLObjectBuilder<SubjectLoc
 
     /** {@inheritDoc} */
     public SubjectLocality buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
