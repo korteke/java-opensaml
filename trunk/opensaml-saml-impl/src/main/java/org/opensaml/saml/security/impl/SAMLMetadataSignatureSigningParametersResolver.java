@@ -59,9 +59,11 @@ import com.google.common.base.Predicate;
 public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatureSigningParametersResolver {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SAMLMetadataSignatureSigningParametersResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SAMLMetadataSignatureSigningParametersResolver.class);
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
+    @Override
     protected void resolveAndPopulateCredentialAndSignatureAlgorithm(@Nonnull final SignatureSigningParameters params, 
             @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
         
@@ -70,7 +72,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             return;
         }
         
-        List<XMLObject> signingMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
+        final List<XMLObject> signingMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
                 SigningMethod.DEFAULT_ELEMENT_NAME);
         
         if (signingMethods == null || signingMethods.isEmpty()) {
@@ -78,10 +80,10 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             return;
         }
         
-        List<Credential> credentials = getEffectiveSigningCredentials(criteria);
+        final List<Credential> credentials = getEffectiveSigningCredentials(criteria);
         
-        for (XMLObject xmlObject : signingMethods) {
-            SigningMethod signingMethod = (SigningMethod) xmlObject;
+        for (final XMLObject xmlObject : signingMethods) {
+            final SigningMethod signingMethod = (SigningMethod) xmlObject;
             
             log.trace("Evaluating SAML metadata SigningMethod with algorithm: {}, minKeySize: {}, maxKeySize: {}", 
                     signingMethod.getAlgorithm(), signingMethod.getMinKeySize(), signingMethod.getMaxKeySize());
@@ -92,10 +94,10 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
                 continue;
             }
             
-            for (Credential credential : credentials) {
+            for (final Credential credential : credentials) {
                 
                 if (log.isTraceEnabled()) {
-                    Key key = CredentialSupport.extractSigningKey(credential);
+                    final Key key = CredentialSupport.extractSigningKey(credential);
                     log.trace("Evaluating credential of type: {}, with length: {}", 
                             key != null ? key.getAlgorithm() : "n/a",
                             KeySupport.getKeyLength(key));
@@ -119,6 +121,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         
         super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Evaluate whether the specified credential is supported for use with the specified {@link SigningMethod}.
@@ -134,13 +137,13 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         }
         
         if (signingMethod.getMinKeySize() != null  || signingMethod.getMaxKeySize() != null) {
-            Key signingKey = CredentialSupport.extractSigningKey(credential);
+            final Key signingKey = CredentialSupport.extractSigningKey(credential);
             if (signingKey == null) {
                 log.warn("Could not extract signing key from credential. Failing evaluation");
                 return false;
             }
             
-            Integer keyLength = KeySupport.getKeyLength(signingKey);
+            final Integer keyLength = KeySupport.getKeyLength(signingKey);
             if (keyLength == null) {
                 log.warn("Could not determine key length of candidate signing credential. Failing evaluation");
                 return false;
@@ -161,21 +164,22 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable protected String resolveReferenceDigestMethod(@Nonnull final CriteriaSet criteria, 
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
         if (!criteria.contains(RoleDescriptorCriterion.class)) {
             return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
         }
         
-        List<XMLObject> digestMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
+        final List<XMLObject> digestMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
                 DigestMethod.DEFAULT_ELEMENT_NAME);
         
         if (digestMethods == null || digestMethods.isEmpty()) {
             return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
         }
         
-        for (XMLObject xmlObject : digestMethods) {
-            DigestMethod digestMethod = (DigestMethod) xmlObject;
+        for (final XMLObject xmlObject : digestMethods) {
+            final DigestMethod digestMethod = (DigestMethod) xmlObject;
             
             log.trace("Evaluating SAML metadata DigestMethod with algorithm: {}", digestMethod.getAlgorithm());
             

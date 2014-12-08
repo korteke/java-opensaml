@@ -22,9 +22,12 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -85,27 +88,24 @@ import com.google.common.base.Strings;
  * If the method returns null, the client certificate presenter entity ID and transport authentication state will remain
  * unmodified.
  * </p>
- * 
- * @param <MessageType> type of message contained in the message context being evaluated
  */
-public abstract class BaseClientCertAuthSecurityHandler<MessageType>
-        extends BaseTrustEngineSecurityHandler<X509Credential, MessageType> {
+public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineSecurityHandler<X509Credential> {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseClientCertAuthSecurityHandler.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BaseClientCertAuthSecurityHandler.class);
 
     /** Options for deriving client cert presenter entity ID's from an X.509 certificate. */
-    private CertificateNameOptions certNameOptions;
+    @Nullable private CertificateNameOptions certNameOptions;
     
     /** The HttpServletRequest being processed. */
-    private HttpServletRequest httpServletRequest;
+    @NonnullAfterInit private HttpServletRequest httpServletRequest;
     
     /**
      * Get the HTTP servlet request being processed.
      * 
      * @return Returns the request.
      */
-    public HttpServletRequest getHttpServletRequest() {
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
         return httpServletRequest;
     }
 
@@ -114,9 +114,9 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * 
      * @param request The to set.
      */
-    public void setHttpServletRequest(HttpServletRequest request) {
+    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
+        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
 
     /**
@@ -129,15 +129,19 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
     }
     
     /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        Constraint.isNotNull(httpServletRequest, "HttpServletRequest must be supplied");
+        if (httpServletRequest == null) {
+            throw new ComponentInitializationException("HttpServletRequest cannot be null");
+        }
     }
     
     /** {@inheritDoc} */
-    @Nullable protected TrustEngine<X509Credential> resolveTrustEngine(MessageContext<MessageType> messageContext) {
-        ClientTLSSecurityParametersContext secContext = 
+    @Override
+    @Nullable protected TrustEngine<X509Credential> resolveTrustEngine(@Nonnull final MessageContext messageContext) {
+        final ClientTLSSecurityParametersContext secContext = 
                 messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
         if (secContext == null || secContext.getValidationParameters() == null)  {
             return null;
@@ -147,11 +151,18 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
     }
 
     /** {@inheritDoc} */
-    protected boolean doPreInvoke(MessageContext<MessageType> messageContext) throws MessageHandlerException {
-        ClientTLSSecurityParametersContext secContext = 
+    @Override
+    protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
+        final ClientTLSSecurityParametersContext secContext = 
                 messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
         if (secContext != null && !secContext.isEvaluateClientCertificate()) {
-            log.debug("ClientTLSSecurityParametersContext signals to not perform client TLS cert evaluation");
+            log.debug("{} ClientTLSSecurityParametersContext signals to not perform client TLS cert evaluation",
+                    getLogPrefix());
             return false;
         }
         if (secContext == null || secContext.getValidationParameters() == null 
@@ -161,31 +172,33 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
             certNameOptions = secContext.getValidationParameters().getCertificateNameOptions();
         }
         
-        return super.doPreInvoke(messageContext);
+        return true;
     }
 
     /** {@inheritDoc} */
-    protected void doInvoke(MessageContext<MessageType> messageContext)
-            throws MessageHandlerException {
+    @Override
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        X509Credential requestCredential = null;
+        final X509Credential requestCredential;
         try {
             requestCredential = new ServletRequestX509CredentialAdapter(getHttpServletRequest());
-        } catch (SecurityException e) {
-            log.info("HttpServletRequest did not contain a peer credential, "
-                    + "skipping client certificate authentication");
+        } catch (final SecurityException e) {
+            log.debug("{} HttpServletRequest did not contain a peer credential, "
+                    + "skipping client certificate authentication", getLogPrefix());
             return;
         }
         
         if (log.isDebugEnabled()) {
             try {
-                log.debug("Attempting to authenticate inbound connection that presented the certificate:");
+                log.debug("{} Attempting to authenticate inbound connection that presented the certificate:",
+                        getLogPrefix());
                 log.debug(Base64Support.encode(requestCredential.getEntityCertificate().getEncoded(),
                         Base64Support.UNCHUNKED));
-            } catch (CertificateEncodingException e) {
+            } catch (final CertificateEncodingException e) {
                 // do nothing
             }
         }
+        
         doEvaluate(requestCredential, messageContext);
     }
     
@@ -198,21 +211,21 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      *             and the client certificate token can not be establishd as trusted on that basis, or if there is error
      *             during evaluation processing
      */
-    protected void doEvaluate(X509Credential requestCredential, MessageContext<MessageType> messageContext)
-            throws MessageHandlerException {
+    protected void doEvaluate(@Nonnull final X509Credential requestCredential,
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        String presenterEntityID = getCertificatePresenterEntityID(messageContext);
+        final String presenterEntityID = getCertificatePresenterEntityID(messageContext);
 
         if (presenterEntityID != null) {
-            log.debug("Attempting client certificate authentication using context presenter entity ID: {}",
-                    presenterEntityID);
+            log.debug("{} Attempting client certificate authentication using context presenter entity ID: {}",
+                    getLogPrefix(), presenterEntityID);
             if (evaluate(requestCredential, presenterEntityID, messageContext)) {
-                log.info("Authentication via client certificate succeeded for context presenter entity ID: {}",
-                        presenterEntityID);
+                log.debug("{} Authentication via client certificate succeeded for context presenter entity ID: {}",
+                        getLogPrefix(), presenterEntityID);
                 setAuthenticatedState(messageContext, true);
             } else {
-                log.error("Authentication via client certificate failed for context presenter entity ID: {}",
-                        presenterEntityID);
+                log.error("{} Authentication via client certificate failed for context presenter entity ID: {}",
+                        getLogPrefix(), presenterEntityID);
                 throw new MessageHandlerException(
                         "Client certificate authentication failed for context presenter entity ID");
             }
@@ -221,8 +234,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
 
         String derivedPresenter = evaluateCertificateNameDerivedPresenters(requestCredential, messageContext);
         if (derivedPresenter != null) {
-            log.info("Authentication via client certificate succeeded for certificate-derived presenter entity ID: {}",
-                    derivedPresenter);
+            log.debug("{} Authentication via client certificate succeeded for "
+                    + "certificate-derived presenter entity ID: {}", getLogPrefix(), derivedPresenter);
             setAuthenticatedCertificatePresenterEntityID(messageContext, derivedPresenter);
             setAuthenticatedState(messageContext, true);
             return;
@@ -230,8 +243,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
 
         derivedPresenter = evaluateDerivedPresenters(requestCredential, messageContext);
         if (derivedPresenter != null) {
-            log.info("Authentication via client certificate succeeded for derived presenter entity ID: {}",
-                    derivedPresenter);
+            log.debug("{} Authentication via client certificate succeeded for derived presenter entity ID: {}",
+                    getLogPrefix(), derivedPresenter);
             setAuthenticatedCertificatePresenterEntityID(messageContext, derivedPresenter);
             setAuthenticatedState(messageContext, true);
             return;
@@ -249,7 +262,7 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @param messageContext the current message context
      * @return the entity ID of the client TLS certificate presenter
      */
-    protected abstract String getCertificatePresenterEntityID(MessageContext<MessageType> messageContext);
+    @Nullable protected abstract String getCertificatePresenterEntityID(@Nonnull final MessageContext messageContext);
 
     /**
      * Store the successfully authenticated derived entity ID of the certificate presenter in the message context.
@@ -262,8 +275,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @param messageContext the current message context
      * @param entityID the successfully authenticated derived entity ID of the client TLS certificate presenter
      */
-    protected abstract void setAuthenticatedCertificatePresenterEntityID(MessageContext<MessageType> messageContext, 
-            String entityID);
+    protected abstract void setAuthenticatedCertificatePresenterEntityID(@Nonnull final MessageContext messageContext, 
+            @Nullable final String entityID);
     
     
     /**
@@ -277,13 +290,15 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @param messageContext the current message context
      * @param authenticated flag indicating what authentication state to store
      */
-    protected abstract void setAuthenticatedState(MessageContext<MessageType> messageContext, boolean authenticated);
+    protected abstract void setAuthenticatedState(@Nonnull final MessageContext messageContext,
+            final boolean authenticated);
 
     /** {@inheritDoc} */
-    protected CriteriaSet buildCriteriaSet(String entityID, MessageContext<MessageType> messageContext)
-            throws MessageHandlerException {
+    @Override
+    @Nullable protected CriteriaSet buildCriteriaSet(@Nullable final String entityID,
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        CriteriaSet criteriaSet = new CriteriaSet();
+        final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIdCriterion(entityID));
         }
@@ -311,8 +326,8 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @return a presenter entity ID which was successfully evaluated by the trust engine
      * @throws MessageHandlerException thrown if there is error during processing
      */
-    protected String evaluateDerivedPresenters(X509Credential requestCredential, 
-            MessageContext<MessageType> messageContext) throws MessageHandlerException {
+    @Nullable protected String evaluateDerivedPresenters(@Nonnull final X509Credential requestCredential, 
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
         return null;
     }
@@ -344,8 +359,9 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @return a certificate presenter entity ID which was successfully evaluated by the trust engine
      * @throws MessageHandlerException thrown if there is error during processing
      */
-    protected String evaluateCertificateNameDerivedPresenters(X509Credential requestCredential,
-            MessageContext<MessageType> messageContext) throws MessageHandlerException {
+    @Nullable protected String evaluateCertificateNameDerivedPresenters(
+            @Nullable final X509Credential requestCredential, @Nonnull final MessageContext messageContext)
+                    throws MessageHandlerException {
 
         String candidatePresenter = null;
 
@@ -383,18 +399,19 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @return a presenter entity ID which was successfully evaluated by the trust engine
      * @throws MessageHandlerException thrown if there is error during processing
      */
-    protected String evaluateSubjectCommonName(X509Credential requestCredential, 
-            MessageContext<MessageType> messageContext) throws MessageHandlerException {
+    @Nullable protected String evaluateSubjectCommonName(@Nonnull final X509Credential requestCredential, 
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        log.debug("Evaluating client cert by deriving presenter as cert CN");
-        X509Certificate certificate = requestCredential.getEntityCertificate();
-        String candidatePresenter = getCommonName(certificate);
+        log.debug("{} Evaluating client cert by deriving presenter as cert CN", getLogPrefix());
+        final X509Certificate certificate = requestCredential.getEntityCertificate();
+        final String candidatePresenter = getCommonName(certificate);
         if (candidatePresenter != null) {
             if (evaluate(requestCredential, candidatePresenter, messageContext)) {
-                log.info("Authentication succeeded for presenter entity ID derived from CN: {}", candidatePresenter);
+                log.debug("{} Authentication succeeded for presenter entity ID derived from CN: {}", getLogPrefix(),
+                        candidatePresenter);
                 return candidatePresenter;
             } else {
-                log.info("Authentication failed for presenter entity ID derived from CN: {}",
+                log.debug("{} Authentication failed for presenter entity ID derived from CN: {}", getLogPrefix(),
                         candidatePresenter);
             }
         }
@@ -409,20 +426,20 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @return a presenter entity ID which was successfully evaluated by the trust engine
      * @throws MessageHandlerException thrown if there is error during processing
      */
-    protected String evaluateSubjectDN(X509Credential requestCredential, MessageContext<MessageType> messageContext)
-            throws MessageHandlerException {
+    @Nullable protected String evaluateSubjectDN(@Nonnull final X509Credential requestCredential,
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        log.debug("Evaluating client cert by deriving presenter as cert subject DN");
-        X509Certificate certificate = requestCredential.getEntityCertificate();
-        String candidatePresenter = getSubjectName(certificate);
+        log.debug("{} Evaluating client cert by deriving presenter as cert subject DN", getLogPrefix());
+        final X509Certificate certificate = requestCredential.getEntityCertificate();
+        final String candidatePresenter = getSubjectName(certificate);
         if (candidatePresenter != null) {
             if (evaluate(requestCredential, candidatePresenter, messageContext)) {
-                log.info("Authentication succeeded for presenter entity ID derived from subject DN: {}",
-                        candidatePresenter);
+                log.debug("{} Authentication succeeded for presenter entity ID derived from subject DN: {}",
+                        getLogPrefix(), candidatePresenter);
                 return candidatePresenter;
             } else {
-                log.info("Authentication failed for presenter entity ID derived from subject DN: {}",
-                        candidatePresenter); 
+                log.debug("{} Authentication failed for presenter entity ID derived from subject DN: {}",
+                        getLogPrefix(), candidatePresenter); 
             }
         }
         return null;
@@ -437,22 +454,22 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @return a presenter entity ID which was successfully evaluated by the trust engine
      * @throws MessageHandlerException thrown if there is error during processing
      */
-    protected String evaluateSubjectAltNames(X509Credential requestCredential, 
-            MessageContext<MessageType> messageContext) throws MessageHandlerException {
+    @Nullable protected String evaluateSubjectAltNames(@Nonnull final X509Credential requestCredential, 
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        log.debug("Evaluating client cert by deriving presenter from subject alt names");
-        X509Certificate certificate = requestCredential.getEntityCertificate();
-        for (Integer altNameType : getCertificateNameOptions().getSubjectAltNames()) {
-            log.debug("Evaluating alt names of type: {}", altNameType.toString());
-            List<String> altNames = getAltNames(certificate, altNameType);
-            for (String altName : altNames) {
+        log.debug("{} Evaluating client cert by deriving presenter from subject alt names", getLogPrefix());
+        final X509Certificate certificate = requestCredential.getEntityCertificate();
+        for (final Integer altNameType : getCertificateNameOptions().getSubjectAltNames()) {
+            log.debug("{} Evaluating alt names of type: {}", getLogPrefix(), altNameType.toString());
+            final List<String> altNames = getAltNames(certificate, altNameType);
+            for (final String altName : altNames) {
                 if (evaluate(requestCredential, altName, messageContext)) {
-                    log.info("Authentication succeeded for presenter entity ID derived from subject alt name: {}",
-                            altName);
+                    log.debug("{} Authentication succeeded for presenter entity ID derived from subject alt name: {}",
+                            getLogPrefix(), altName);
                     return altName;
                 } else {
-                    log.info("Authentication failed for presenter entity ID derived from subject alt name: {}",
-                            altName);
+                    log.debug("{} Authentication failed for presenter entity ID derived from subject alt name: {}",
+                            getLogPrefix(), altName);
                 }
             }
         }
@@ -465,11 +482,11 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @param cert the certificate being processed
      * @return the first CN value, or null if there are none
      */
-    protected String getCommonName(X509Certificate cert) {
-        List<String> names = X509Support.getCommonNames(cert.getSubjectX500Principal());
+    @Nullable protected String getCommonName(@Nonnull final X509Certificate cert) {
+        final List<String> names = X509Support.getCommonNames(cert.getSubjectX500Principal());
         if (names != null && !names.isEmpty()) {
             String name = names.get(0);
-            log.debug("Extracted common name from certificate: {}", name);
+            log.debug("{} Extracted common name from certificate: {}", getLogPrefix(), name);
             return name;
         }
         return null;
@@ -481,7 +498,7 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * @param cert the certificate being processed
      * @return the subject name
      */
-    protected String getSubjectName(X509Certificate cert) {
+    @Nullable protected String getSubjectName(@Nonnull final X509Certificate cert) {
         if (cert == null) {
             return null;
         }
@@ -493,7 +510,7 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
         } else {
             name = getCertificateNameOptions().getX500DNHandler().getName(cert.getSubjectX500Principal());
         }
-        log.debug("Extracted subject name from certificate: {}", name);
+        log.debug("{} Extracted subject name from certificate: {}", getLogPrefix(), name);
         return name;
     }
 
@@ -505,21 +522,21 @@ public abstract class BaseClientCertAuthSecurityHandler<MessageType>
      * 
      * @return the list of certificate subject alt names
      */
-    protected List<String> getAltNames(X509Certificate cert, Integer altNameType) {
-        log.debug("Extracting alt names from certificate of type: {}", altNameType.toString());
+    @Nonnull @NonnullElements protected List<String> getAltNames(@Nonnull final X509Certificate cert,
+            @Nonnull final Integer altNameType) {
+        log.debug("{} Extracting alt names from certificate of type: {}", getLogPrefix(), altNameType.toString());
         Integer[] nameTypes = new Integer[] {altNameType};
         List altNames = X509Support.getAltNames(cert, nameTypes);
         List<String> names = new ArrayList<String>();
         for (Object altNameValue : altNames) {
             if (!(altNameValue instanceof String)) {
-                log.debug("Skipping non-String certificate alt name value");
+                log.debug("{} Skipping non-String certificate alt name value", getLogPrefix());
             } else {
                 names.add((String) altNameValue);
             }
         }
-        log.debug("Extracted alt names from certificate: {}", names.toString());
+        log.debug("{} Extracted alt names from certificate: {}", getLogPrefix(), names.toString());
         return names;
     }
-
 
 }

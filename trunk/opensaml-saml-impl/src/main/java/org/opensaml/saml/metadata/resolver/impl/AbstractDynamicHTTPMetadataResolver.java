@@ -42,7 +42,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -305,8 +304,8 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     public class BasicMetadataResponseHandler implements ResponseHandler<XMLObject> {
 
         /** {@inheritDoc} */
-        public XMLObject handleResponse(@Nonnull final HttpResponse response) 
-                throws ClientProtocolException, IOException {
+        @Override
+        public XMLObject handleResponse(@Nonnull final HttpResponse response) throws IOException {
             
             int httpStatusCode = response.getStatusLine().getStatusCode();
             

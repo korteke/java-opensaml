@@ -20,14 +20,11 @@ package org.opensaml.saml.common.binding.security.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
@@ -45,12 +42,57 @@ import com.google.common.base.Strings;
 /**
  * Base class for SAML security message handlers which evaluate a signature with a signature trust engine.
  */
-public abstract class BaseSAMLXMLSignatureSecurityHandler
-        extends BaseTrustEngineSecurityHandler<Signature, SAMLObject> {
+public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngineSecurityHandler<Signature> {
+    
+    /** The context representing the SAML peer entity. */
+    @Nullable private SAMLPeerEntityContext peerContext;
+    
+    /** The SAML protocol context in operation. */
+    @Nullable private SAMLProtocolContext samlProtocolContext;
+    
+    /**
+     * Get the {@link SAMLPeerEntityContext} associated with the message.
+     * 
+     * @return the peer context
+     */
+    @Nullable protected SAMLPeerEntityContext getSAMLPeerEntityContext() {
+        return peerContext;
+    }
+
+    /**
+     * Get the {@link SAMLProtocolContext} associated with the message.
+     * 
+     * @return the protocol context
+     */
+    @Nullable protected SAMLProtocolContext getSAMLProtocolContext() {
+        return samlProtocolContext;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
+        peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+        if (peerContext == null || peerContext.getRole() == null) {
+            throw new MessageHandlerException("SAMLPeerEntityContext was missing or unpopulated");
+        }
+        
+        samlProtocolContext = messageContext.getSubcontext(SAMLProtocolContext.class);
+        if (samlProtocolContext == null || samlProtocolContext.getProtocol() == null) {
+            throw new MessageHandlerException("SAMLProtocolContext was missing or unpopulated");
+        }
+        
+        return true;
+    }
     
     /** {@inheritDoc} */
-    protected TrustEngine<Signature> resolveTrustEngine(MessageContext<SAMLObject> messageContext) {
-        SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class, false);
+    @Override
+    @Nullable protected TrustEngine<Signature> resolveTrustEngine(@Nonnull final MessageContext messageContext) {
+        final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
         if (secParams == null || secParams.getSignatureValidationParameters() == null) {
             return null;
         } else {
@@ -61,47 +103,25 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler
     /** {@inheritDoc} */
     @Override
     @Nonnull protected CriteriaSet buildCriteriaSet(@Nullable final String entityID,
-            @Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
+            @Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
         final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
             criteriaSet.add(new EntityIdCriterion(entityID) );
         }
-        
-        try {
-            SAMLPeerEntityContext peerEntityContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-            Constraint.isNotNull(peerEntityContext, "SAMLPeerEntityContext was null");
-            Constraint.isNotNull(peerEntityContext.getRole(), "SAML peer role was null");
-            criteriaSet.add(new EntityRoleCriterion(peerEntityContext.getRole()));
 
-            SAMLProtocolContext protocolContext = getSAMLProtocolContext(messageContext);
-            Constraint.isNotNull(protocolContext, "SAMLProtocolContext was null");
-            Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null");
-            criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
-        }  catch (ConstraintViolationException e) {
-            throw new MessageHandlerException(e);
-        }
-        
+        criteriaSet.add(new EntityRoleCriterion(peerContext.getRole()));
+        criteriaSet.add(new ProtocolCriterion(samlProtocolContext.getProtocol()));
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
-        SecurityParametersContext secParamsContext = messageContext.getSubcontext(SecurityParametersContext.class);
+        final SecurityParametersContext secParamsContext =
+                messageContext.getSubcontext(SecurityParametersContext.class);
         if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
-            criteriaSet.add(new SignatureValidationParametersCriterion(
-                    secParamsContext.getSignatureValidationParameters()));
+            criteriaSet.add(
+                    new SignatureValidationParametersCriterion(secParamsContext.getSignatureValidationParameters()));
         }
         
         return criteriaSet;
-    }
-    
-    /**
-     * Get the current SAML Protocol context.
-     * 
-     * @param messageContext the current message context
-     * @return the current SAML protocol context
-     */
-    protected SAMLProtocolContext getSAMLProtocolContext(@Nonnull final MessageContext<SAMLObject> messageContext) {
-        //TODO is this the final resting place?
-        return messageContext.getSubcontext(SAMLProtocolContext.class, false);
     }
 
 }

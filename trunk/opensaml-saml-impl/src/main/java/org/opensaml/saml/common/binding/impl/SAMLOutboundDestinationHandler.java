@@ -21,8 +21,6 @@ import java.net.URI;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -38,16 +36,19 @@ import org.slf4j.LoggerFactory;
  * 'destination' attribute to {@link org.opensaml.saml.saml2.core.RequestAbstractType} and 
  * {@link org.opensaml.saml.saml2.core.StatusResponseType} messages.
  */
-public class SAMLOutboundDestinationHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAMLOutboundDestinationHandler extends AbstractMessageHandler {
     
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLOutboundDestinationHandler.class);
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<SAMLObject> messageContext) throws MessageHandlerException {
-        SAMLObject samlMessage = Constraint.isNotNull(messageContext.getMessage(), 
-                "SAML message was not present in message context");
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        if (messageContext.getMessage() == null || !(messageContext.getMessage() instanceof SAMLObject)) {
+            throw new MessageHandlerException("SAML message was not present in message context");
+        }
+        
+        final SAMLObject samlMessage = (SAMLObject) messageContext.getMessage();
         
         try {
             URI endpointURI = SAMLBindingSupport.getEndpointURL(messageContext);
@@ -61,11 +62,9 @@ public class SAMLOutboundDestinationHandler extends AbstractMessageHandler<SAMLO
                 log.debug("Adding destination to outbound SAML 2 protocol message: {}", endpointURL);
                 SAMLBindingSupport.setSAML2Destination(samlMessage, endpointURL);
             }
-            
-        } catch (BindingException e) {
+        } catch (final BindingException e) {
             throw new MessageHandlerException("Could not obtain SAML destination endpoint URL from message context", e);
         }
-        
     }
 
 }

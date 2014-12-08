@@ -33,10 +33,10 @@ import com.google.common.base.Function;
 /**
  * MessageHandler to get the Consent attribute from a {@link RequestAbstractType} message.
  */
-public class ExtractConsentFromRequestHandler extends AbstractMessageHandler<RequestAbstractType> {
+public class ExtractConsentFromRequestHandler extends AbstractMessageHandler {
     
     /** Strategy for locating {@link SAMLConsentContext}. */
-    @Nonnull private Function<MessageContext<RequestAbstractType>, SAMLConsentContext> consentContextStrategy;
+    @Nonnull private Function<MessageContext,SAMLConsentContext> consentContextStrategy;
 
     /** Constructor. */
     public ExtractConsentFromRequestHandler() {
@@ -48,19 +48,19 @@ public class ExtractConsentFromRequestHandler extends AbstractMessageHandler<Req
      * 
      * @param strategy  lookup strategy
      */
-    public synchronized void setConsentContextLookupStrategy(
-            @Nonnull final Function<MessageContext<RequestAbstractType>, SAMLConsentContext> strategy) {
+    public void setConsentContextLookupStrategy(@Nonnull final Function<MessageContext,SAMLConsentContext> strategy) {
         consentContextStrategy = Constraint.isNotNull(strategy, "SAMLConsentContext lookup strategy cannot be null");
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(@Nonnull final MessageContext<RequestAbstractType> messageContext)
-            throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
-        final RequestAbstractType request = messageContext.getMessage();
+        final Object request = messageContext.getMessage();
         if (request == null) {
-            throw new MessageHandlerException("Request was not found");
+            throw new MessageHandlerException("Message not found");
+        } else if (!(request instanceof RequestAbstractType)) {
+            throw new MessageHandlerException("Message was not a RequestAbstractType");
         }
         
         final SAMLConsentContext consentContext = consentContextStrategy.apply(messageContext);
@@ -68,7 +68,7 @@ public class ExtractConsentFromRequestHandler extends AbstractMessageHandler<Req
             throw new MessageHandlerException("SAMLConsentContext to populate not found");
         }
         
-        consentContext.setConsent(request.getConsent());
+        consentContext.setConsent(((RequestAbstractType) request).getConsent());
     }
     
 }

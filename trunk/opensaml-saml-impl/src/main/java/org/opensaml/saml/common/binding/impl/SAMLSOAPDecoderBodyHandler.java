@@ -21,8 +21,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -36,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Body handler impl for use with SAML SOAP message decoders.
  */
-public class SAMLSOAPDecoderBodyHandler extends AbstractMessageHandler<SAMLObject> {
+public class SAMLSOAPDecoderBodyHandler extends AbstractMessageHandler {
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAMLSOAPDecoderBodyHandler.class);
@@ -45,10 +43,14 @@ public class SAMLSOAPDecoderBodyHandler extends AbstractMessageHandler<SAMLObjec
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
-        final SOAP11Context soap11Context = messageContext.getSubcontext(SOAP11Context.class, false);
-        Constraint.isNotNull(soap11Context, "SOAP 1.1 context was not present in message context");
+        final SOAP11Context soap11Context = messageContext.getSubcontext(SOAP11Context.class);
+        if (soap11Context == null) {
+            throw new MessageHandlerException("SOAP 1.1 context was not present in message context");
+        }
         final Envelope soapMessage = soap11Context.getEnvelope();
-        Constraint.isNotNull(soapMessage, "SOAP 1.1 envelope was not present in SOAP context");
+        if (soapMessage == null) {
+            throw new MessageHandlerException("SOAP 1.1 envelope was not present in SOAP context");
+        }
         
         final List<XMLObject> soapBodyChildren = soapMessage.getBody().getUnknownXMLObjects();
         if (soapBodyChildren.size() < 1 || soapBodyChildren.size() > 1) {
