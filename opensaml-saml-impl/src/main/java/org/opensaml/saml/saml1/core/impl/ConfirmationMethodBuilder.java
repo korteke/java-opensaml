@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.ConfirmationMethod;
 public class ConfirmationMethodBuilder extends AbstractSAMLObjectBuilder<ConfirmationMethod> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ConfirmationMethodBuilder() {
 
@@ -35,7 +35,8 @@ public class ConfirmationMethodBuilder extends AbstractSAMLObjectBuilder<Confirm
 
     /** {@inheritDoc} */
     public ConfirmationMethod buildObject() {
-        return buildObject(SAMLConstants.SAML1_NS, ConfirmationMethod.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        return buildObject(SAMLConstants.SAML1_NS, ConfirmationMethod.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */

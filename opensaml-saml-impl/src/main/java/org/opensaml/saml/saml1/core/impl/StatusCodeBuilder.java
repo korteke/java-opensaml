@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.StatusCode;
 public class StatusCodeBuilder extends AbstractSAMLObjectBuilder<StatusCode> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public StatusCodeBuilder() {
 
@@ -35,7 +35,8 @@ public class StatusCodeBuilder extends AbstractSAMLObjectBuilder<StatusCode> {
 
     /** {@inheritDoc} */
     public StatusCode buildObject() {
-        return buildObject(SAMLConstants.SAML10P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+        return buildObject(SAMLConstants.SAML10P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */

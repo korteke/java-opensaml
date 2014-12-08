@@ -28,18 +28,18 @@ import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
 
 /**
- * Implementation of the {@link org.opensaml.saml.saml1.core.Response} Object
+ * Implementation of the {@link org.opensaml.saml.saml1.core.Response} Object.
  */
 public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
 
-    /** Status associated with this element */
-    private Status status = null;
+    /** Status associated with this element. */
+    private Status status;
 
-    /** List of all the Assertions */
+    /** List of all the Assertions. */
     private final XMLObjectChildrenList<Assertion> assertions;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -61,8 +61,8 @@ public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
     }
 
     /** {@inheritDoc} */
-    public void setStatus(Status status) throws IllegalArgumentException {
-        this.status = prepareForAssignment(this.status, status);
+    public void setStatus(Status s) {
+        status = prepareForAssignment(status, s);
     }
 
     /** {@inheritDoc} */

@@ -24,7 +24,8 @@ import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
 
 /**
- * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml.saml1.core.Response} objects.
+ * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml.saml1.core.Response}
+ * objects.
  */
 public class ResponseUnmarshaller extends ResponseAbstractTypeUnmarshaller {
 

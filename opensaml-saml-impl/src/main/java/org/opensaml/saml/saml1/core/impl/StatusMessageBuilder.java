@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.StatusMessage;
 public class StatusMessageBuilder extends AbstractSAMLObjectBuilder<StatusMessage> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public StatusMessageBuilder() {
 
@@ -35,7 +35,8 @@ public class StatusMessageBuilder extends AbstractSAMLObjectBuilder<StatusMessag
 
     /** {@inheritDoc} */
     public StatusMessage buildObject() {
-        return buildObject(SAMLConstants.SAML10P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+        return buildObject(SAMLConstants.SAML10P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */

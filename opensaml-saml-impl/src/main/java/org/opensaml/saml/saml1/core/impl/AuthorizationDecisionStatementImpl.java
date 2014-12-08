@@ -29,20 +29,20 @@ import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml1.core.Evidence;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml1.core.AuthorizationDecisionStatement}
+ * A concrete implementation of {@link org.opensaml.saml.saml1.core.AuthorizationDecisionStatement}.
  */
 public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl implements AuthorizationDecisionStatement {
 
-    /** Contains the Resource attribute */
+    /** Contains the Resource attribute. */
     private String resource;
 
-    /** Contains the Decision attribute */
+    /** Contains the Decision attribute. */
     private DecisionTypeEnumeration decision;
 
-    /** Contains the list of Action elements */
+    /** Contains the list of Action elements. */
     private final XMLObjectChildrenList<Action> actions;
 
-    /** Contains the (single) Evidence element */
+    /** Contains the (single) Evidence element. */
     private Evidence evidence;
 
     /**
@@ -63,8 +63,8 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
     }
 
     /** {@inheritDoc} */
-    public void setResource(String resource) {
-        this.resource = prepareForAssignment(this.resource, resource);
+    public void setResource(String res) {
+        resource = prepareForAssignment(resource, res);
     }
 
     /** {@inheritDoc} */
@@ -73,8 +73,8 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
     }
 
     /** {@inheritDoc} */
-    public void setDecision(DecisionTypeEnumeration decision) {
-        this.decision = prepareForAssignment(this.decision, decision);
+    public void setDecision(DecisionTypeEnumeration dec) {
+        decision = prepareForAssignment(decision, dec);
     }
 
     /** {@inheritDoc} */
@@ -88,8 +88,8 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
     }
 
     /** {@inheritDoc} */
-    public void setEvidence(Evidence evidence) throws IllegalArgumentException {
-        this.evidence = prepareForAssignment(this.evidence, evidence);
+    public void setEvidence(Evidence ev) {
+        evidence = prepareForAssignment(evidence, ev);
     }
 
     /** {@inheritDoc} */

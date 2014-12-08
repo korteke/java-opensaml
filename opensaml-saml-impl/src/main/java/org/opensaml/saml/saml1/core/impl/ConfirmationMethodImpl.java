@@ -24,15 +24,15 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;
 
 /**
- * Concrete Implementation of the {@link org.opensaml.saml.saml1.core.ConfirmationMethod} interface
+ * Concrete Implementation of the {@link org.opensaml.saml.saml1.core.ConfirmationMethod} interface.
  */
 public class ConfirmationMethodImpl extends AbstractSAMLObject implements ConfirmationMethod {
 
-    /** Contains the content string */
+    /** Contains the content string. */
     private String confirmationMethod;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -48,8 +48,8 @@ public class ConfirmationMethodImpl extends AbstractSAMLObject implements Confir
     }
 
     /** {@inheritDoc} */
-    public void setConfirmationMethod(String confirmationMethod) {
-        this.confirmationMethod = prepareForAssignment(this.confirmationMethod, confirmationMethod);
+    public void setConfirmationMethod(String method) {
+        confirmationMethod = prepareForAssignment(confirmationMethod, method);
     }
 
     /** {@inheritDoc} */

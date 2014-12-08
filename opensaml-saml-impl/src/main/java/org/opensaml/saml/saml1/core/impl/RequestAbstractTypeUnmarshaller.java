@@ -69,6 +69,7 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
         }
     }
 
+ // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     protected void processAttribute(XMLObject samlElement, Attr attribute) throws UnmarshallingException {
         RequestAbstractType request = (RequestAbstractType) samlElement;
@@ -107,5 +108,6 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
             super.processAttribute(samlElement, attribute);
         }
     }
-
+// Checkstyle: CyclomaticComplexity OFF
+    
 }

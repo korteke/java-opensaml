@@ -24,18 +24,18 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.SubjectLocality;
 
 /**
- * A concrete impementation of the {@link org.opensaml.saml.saml1.core.SubjectLocality} interface
+ * A concrete impementation of the {@link org.opensaml.saml.saml1.core.SubjectLocality} interface.
  */
 public class SubjectLocalityImpl extends AbstractSAMLObject implements SubjectLocality {
 
-    /** The ipAddress */
+    /** The ipAddress. */
     private String ipAddress;
 
-    /** The DNS Address */
+    /** The DNS Address. */
     private String dnsAddress;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents

@@ -29,7 +29,7 @@ import org.opensaml.saml.saml1.core.StatusDetail;
 import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Concrete Implementation {@link org.opensaml.saml.saml1.core.Status}
+ * Concrete Implementation {@link org.opensaml.saml.saml1.core.Status}.
  */
 public class StatusImpl extends AbstractSAMLObject implements Status {
 
@@ -43,7 +43,7 @@ public class StatusImpl extends AbstractSAMLObject implements Status {
     private StatusDetail statusDetail;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -59,8 +59,8 @@ public class StatusImpl extends AbstractSAMLObject implements Status {
     }
 
     /** {@inheritDoc} */
-    public void setStatusMessage(StatusMessage statusMessage) throws IllegalArgumentException {
-        this.statusMessage = prepareForAssignment(this.statusMessage, statusMessage);
+    public void setStatusMessage(StatusMessage message) {
+        statusMessage = prepareForAssignment(statusMessage, message);
     }
 
     /** {@inheritDoc} */
@@ -69,8 +69,8 @@ public class StatusImpl extends AbstractSAMLObject implements Status {
     }
 
     /** {@inheritDoc} */
-    public void setStatusCode(StatusCode statusCode) throws IllegalArgumentException {
-        this.statusCode = prepareForAssignment(this.statusCode, statusCode);
+    public void setStatusCode(StatusCode code) {
+        statusCode = prepareForAssignment(statusCode, code);
     }
 
     /** {@inheritDoc} */
@@ -79,8 +79,8 @@ public class StatusImpl extends AbstractSAMLObject implements Status {
     }
 
     /** {@inheritDoc} */
-    public void setStatusDetail(StatusDetail statusDetail) throws IllegalArgumentException {
-        this.statusDetail = prepareForAssignment(this.statusDetail, statusDetail);
+    public void setStatusDetail(StatusDetail detail) {
+        statusDetail = prepareForAssignment(statusDetail, detail);
     }
 
     /** {@inheritDoc} */

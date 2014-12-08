@@ -33,10 +33,10 @@ import org.opensaml.saml.saml1.core.StatusCode;
 public class StatusCodeImpl extends AbstractSAMLObject implements StatusCode {
 
     /** Contents of the Value attribute. */
-    private QName value = null;
+    private QName value;
 
     /** The child StatusCode sub element. */
-    private StatusCode childStatusCode = null;
+    private StatusCode childStatusCode;
 
     /**
      * Constructor.

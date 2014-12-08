@@ -27,11 +27,11 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * Concrete (but abstract) implementation of {@link org.opensaml.saml.saml1.core.SubjectQuery} abstract type
+ * Concrete (but abstract) implementation of {@link org.opensaml.saml.saml1.core.SubjectQuery} abstract type.
  */
 public abstract class SubjectQueryImpl extends AbstractSAMLObject implements SubjectQuery {
 
-    /** Contains the Subject subelement */
+    /** Contains the Subject subelement. */
     private Subject subject;
     
     /**
@@ -51,8 +51,8 @@ public abstract class SubjectQueryImpl extends AbstractSAMLObject implements Sub
     }
 
     /** {@inheritDoc} */
-    public void setSubject(Subject subject) {
-        this.subject = prepareForAssignment(this.subject, subject);
+    public void setSubject(Subject sub) {
+        subject = prepareForAssignment(subject, sub);
     }
 
     /** {@inheritDoc} */

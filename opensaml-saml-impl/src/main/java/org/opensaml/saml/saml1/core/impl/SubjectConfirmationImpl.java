@@ -29,21 +29,21 @@ import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
- * Concrete implementation of a <code> SubjectConfirmation </code> object
+ * Concrete implementation of a <code> SubjectConfirmation </code> object.
  */
 public class SubjectConfirmationImpl extends AbstractSAMLObject implements SubjectConfirmation {
 
-    /** Contains the list of ConfirmationMethods */
+    /** Contains the list of ConfirmationMethods. */
     private final XMLObjectChildrenList<ConfirmationMethod> confirmationMethods;
 
-    /** Contains the SubjectConfirmationData element */
+    /** Contains the SubjectConfirmationData element. */
     private XMLObject subjectConfirmationData;
 
-    /** Contains the KeyInfo element */
+    /** Contains the KeyInfo element. */
     private KeyInfo keyInfo;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -60,10 +60,8 @@ public class SubjectConfirmationImpl extends AbstractSAMLObject implements Subje
     }
 
     /** {@inheritDoc} */
-    public void setSubjectConfirmationData(XMLObject subjectConfirmationData)
-            throws IllegalArgumentException {
-
-        this.subjectConfirmationData = prepareForAssignment(this.subjectConfirmationData, subjectConfirmationData);
+    public void setSubjectConfirmationData(XMLObject data) {
+        subjectConfirmationData = prepareForAssignment(subjectConfirmationData, data);
     }
 
     /** {@inheritDoc} */
@@ -77,8 +75,8 @@ public class SubjectConfirmationImpl extends AbstractSAMLObject implements Subje
     }
 
     /** {@inheritDoc} */
-    public void setKeyInfo(KeyInfo keyInfo) {
-        this.keyInfo = prepareForAssignment(this.keyInfo, keyInfo);
+    public void setKeyInfo(KeyInfo info) {
+        keyInfo = prepareForAssignment(keyInfo, info);
     }
 
     /** {@inheritDoc} */

@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.Subject;
 public class SubjectBuilder extends AbstractSAMLObjectBuilder<Subject> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public SubjectBuilder() {
 

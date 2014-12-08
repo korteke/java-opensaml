@@ -27,7 +27,7 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 public class AuthorizationDecisionStatementBuilder extends AbstractSAMLObjectBuilder<AuthorizationDecisionStatement> {
 
     /**
-     * Constructor
+     * Constructor.
      */
     public AuthorizationDecisionStatementBuilder() {
 

@@ -26,17 +26,17 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
 
 /**
- * A concrete impementation of the {@link org.opensaml.saml.saml1.core.SubjectLocality} interface
+ * A concrete impementation of the {@link org.opensaml.saml.saml1.core.SubjectLocality} interface.
  */
 public class AuthorityBindingImpl extends AbstractSAMLObject implements AuthorityBinding {
 
-    /** The AuthorityKind */
+    /** The AuthorityKind. */
     private QName authorityKind;
 
-    /** The Location */
+    /** The Location. */
     private String location;
 
-    /** The Binding */
+    /** The Binding. */
     private String binding;
 
     /**
@@ -56,9 +56,9 @@ public class AuthorityBindingImpl extends AbstractSAMLObject implements Authorit
     }
 
     /** {@inheritDoc} */
-    public void setAuthorityKind(QName authorityKind) {
-        this.authorityKind = prepareAttributeValueForAssignment(AuthorityBinding.AUTHORITYKIND_ATTRIB_NAME, 
-                this.authorityKind, authorityKind);
+    public void setAuthorityKind(QName kind) {
+        authorityKind = prepareAttributeValueForAssignment(AuthorityBinding.AUTHORITYKIND_ATTRIB_NAME, 
+                authorityKind, kind);
     }
 
     /** {@inheritDoc} */
@@ -67,8 +67,8 @@ public class AuthorityBindingImpl extends AbstractSAMLObject implements Authorit
     }
 
     /** {@inheritDoc} */
-    public void setLocation(String location) {
-        this.location = prepareForAssignment(this.location, location);
+    public void setLocation(String loc) {
+        location = prepareForAssignment(location, loc);
     }
 
     /** {@inheritDoc} */
@@ -77,8 +77,8 @@ public class AuthorityBindingImpl extends AbstractSAMLObject implements Authorit
     }
 
     /** {@inheritDoc} */
-    public void setBinding(String binding) {
-        this.binding = prepareForAssignment(this.binding, binding);
+    public void setBinding(String newBinding) {
+        binding = prepareForAssignment(binding, newBinding);
     }
 
     /** {@inheritDoc} */

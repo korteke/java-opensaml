@@ -24,17 +24,17 @@ import org.opensaml.saml.common.AbstractSAMLObject;
 import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Concrete implementation of org.opensaml.saml.saml1.core StatusMessage object
+ * Concrete implementation of org.opensaml.saml.saml1.core StatusMessage object.
  */
 public class StatusMessageImpl extends AbstractSAMLObject implements StatusMessage {
 
     /**
-     * Contents of the element
+     * Contents of the element.
      */
     private String message;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param namespaceURI the namespace the element is in
      * @param elementLocalName the local name of the XML element this Object represents
@@ -50,8 +50,8 @@ public class StatusMessageImpl extends AbstractSAMLObject implements StatusMessa
     }
 
     /** {@inheritDoc} */
-    public void setMessage(String message) {
-        this.message = prepareForAssignment(this.message, message);
+    public void setMessage(String msg) {
+        message = prepareForAssignment(message, msg);
     }
 
     /** {@inheritDoc} */

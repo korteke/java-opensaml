@@ -27,11 +27,11 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectStatement;
 
 /**
- * Abstract type to implement SubjectStatementType
+ * Abstract type to implement SubjectStatementType.
  */
 public abstract class SubjectStatementImpl extends AbstractSAMLObject implements SubjectStatement {
 
-    /** Contains the Subject subelement */
+    /** Contains the Subject subelement. */
     private Subject subject;
 
     /**
@@ -51,8 +51,8 @@ public abstract class SubjectStatementImpl extends AbstractSAMLObject implements
     }
 
     /** {@inheritDoc} */
-    public void setSubject(Subject subject) throws IllegalArgumentException {
-        this.subject = prepareForAssignment(this.subject, subject);
+    public void setSubject(Subject sub) {
+        subject = prepareForAssignment(subject, sub);
     }
 
     /** {@inheritDoc} */
