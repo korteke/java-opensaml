@@ -142,23 +142,15 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         return expirationTime;
     }
 
-    /**
-     * Gets the time that the currently available metadata was last updated. Note, this may be different than the time
-     * retrieved by {@link #getLastRefresh()} is the metadata was known not to have changed during the last refresh
-     * cycle.
-     * 
-     * @return time when the currently metadata was last update, null if metadata has never successfully been read in
-     */
-    public DateTime getLastUpdate() {
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public DateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    /**
-     * Gets the time the last refresh cycle occurred.
-     * 
-     * @return time the last refresh cycle occurred
-     */
-    public DateTime getLastRefresh() {
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public DateTime getLastRefresh() {
         return lastRefresh;
     }
 

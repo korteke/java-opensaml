@@ -33,6 +33,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.joda.time.DateTime;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
@@ -160,6 +161,38 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public DateTime getLastUpdate() {
+        DateTime ret = null;
+        for (final MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                final DateTime lastUpdate = ((RefreshableMetadataResolver) resolver).getLastUpdate();
+                if (ret == null || ret.isBefore(lastUpdate)) {
+                    ret = lastUpdate;
+                }
+            }
+        }
+        
+        return ret;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public DateTime getLastRefresh() {
+        DateTime ret = null;
+        for (final MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                final DateTime lastRefresh = ((RefreshableMetadataResolver) resolver).getLastRefresh();
+                if (ret == null || ret.isBefore(lastRefresh)) {
+                    ret = lastRefresh;
+                }
+            }
+        }
+        
+        return ret;
+    }
+    
     /** {@inheritDoc} */
     @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();

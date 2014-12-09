@@ -21,12 +21,19 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.joda.time.DateTime;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
@@ -35,8 +42,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 /**
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
@@ -46,15 +55,14 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
         RefreshableMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(CompositeMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(CompositeMetadataResolver.class);
 
     /** Resolvers composed by this resolver. */
-    private List<MetadataResolver> resolvers;
+    @Nonnull @NonnullElements private List<MetadataResolver> resolvers;
 
     /** Constructor. */
     public CompositeMetadataResolver() {
-        super();
-        resolvers = Collections.EMPTY_LIST;
+        resolvers = Collections.emptyList();
     }
 
     /**
@@ -62,8 +70,8 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
      * 
      * @return list of currently registered resolvers
      */
-    public List<MetadataResolver> getResolvers() {
-        return resolvers;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<MetadataResolver> getResolvers() {
+        return ImmutableList.copyOf(resolvers);
     }
 
     /**
@@ -73,7 +81,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
      * 
      * @throws ResolverException thrown if there is a problem adding the metadata provider
      */
-    public void setResolvers(List<MetadataResolver> newResolvers) throws ResolverException {
+    public void setResolvers(@Nonnull @NonnullElements List<MetadataResolver> newResolvers) throws ResolverException {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
@@ -82,7 +90,8 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
             return;
         }
 
-        resolvers = Collections.unmodifiableList(newResolvers);
+        resolvers = Lists.newArrayListWithExpectedSize(newResolvers.size());
+        resolvers.addAll(Collections2.filter(newResolvers, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
@@ -92,32 +101,32 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override public void setRequireValidMetadata(boolean requireValidMetadata) {
+    @Override public void setRequireValidMetadata(final boolean requireValidMetadata) {
         throw new UnsupportedOperationException("Setting require valid metadata is not supported on chaining resolver");
     }
 
     /** {@inheritDoc} */
-    @Override public MetadataFilter getMetadataFilter() {
+    @Override @Nullable public MetadataFilter getMetadataFilter() {
         log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataResolver");
         return null;
     }
 
     /** {@inheritDoc} */
-    @Override public void setMetadataFilter(MetadataFilter newFilter) {
+    @Override public void setMetadataFilter(@Nullable final MetadataFilter newFilter) {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataProviders");
     }
 
     /** {@inheritDoc} */
-    @Override public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+    @Override public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         return new CompositeMetadataResolverIterable(resolvers, criteria);
     }
 
     /** {@inheritDoc} */
-    @Override public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+    @Override public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         EntityDescriptor metadata = null;
-        for (MetadataResolver resolver : resolvers) {
+        for (final MetadataResolver resolver : resolvers) {
             metadata = resolver.resolveSingle(criteria);
             if (metadata != null) {
                 return metadata;
@@ -145,11 +154,43 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
 
     /** {@inheritDoc} */
     @Override public void refresh() throws ResolverException {
-        for (MetadataResolver resolver : resolvers) {
+        for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 ((RefreshableMetadataResolver) resolver).refresh();
             }
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public DateTime getLastUpdate() {
+        DateTime ret = null;
+        for (final MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                final DateTime lastUpdate = ((RefreshableMetadataResolver) resolver).getLastUpdate();
+                if (ret == null || ret.isBefore(lastUpdate)) {
+                    ret = lastUpdate;
+                }
+            }
+        }
+        
+        return ret;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Nullable public DateTime getLastRefresh() {
+        DateTime ret = null;
+        for (final MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                final DateTime lastRefresh = ((RefreshableMetadataResolver) resolver).getLastRefresh();
+                if (ret == null || ret.isBefore(lastRefresh)) {
+                    ret = lastRefresh;
+                }
+            }
+        }
+        
+        return ret;
     }
 
     /**
