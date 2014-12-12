@@ -67,9 +67,9 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
     /** {@inheritDoc} */
     @Override
     protected void doDestroy() {
-        super.doDestroy();
         contextMap = null;
         lock = null;
+        super.doDestroy();
     }
 
 
@@ -89,9 +89,11 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
     @Override
     @Nullable protected TimerTask getCleanupTask() {
         return new TimerTask() {
+            
             /** {@inheritDoc} */
+            @Override
             public void run() {
-                log.info("Running cleanup task");
+                log.debug("Running cleanup task");
                 
                 final Long now = System.currentTimeMillis();
                 final Lock writeLock = getLock().writeLock();
@@ -117,9 +119,9 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
                 }
                 
                 if (purged) {
-                    log.info("Purged expired record(s) from storage");
+                    log.debug("Purged expired record(s) from storage");
                 } else {
-                    log.info("No expired records found in storage");
+                    log.debug("No expired records found in storage");
                 }
             }
         };

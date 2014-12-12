@@ -436,6 +436,7 @@ public class JPAStorageService extends AbstractStorageService {
         log.debug("Reaped all entities in context '{}'", context);
     }
 
+// Checkstyle: CyclomaticComplexity OFF    
     /**
      * Deletes every record with the supplied context. If expiration is supplied, only records with an expiration before
      * the supplied expiration will be removed.
@@ -478,6 +479,8 @@ public class JPAStorageService extends AbstractStorageService {
             }
         }
     }
+// Checkstyle: CyclomaticComplexity ON
+
 
     /**
      * Executes the supplied named query.
@@ -510,21 +513,22 @@ public class JPAStorageService extends AbstractStorageService {
     /** {@inheritDoc} */
     @Override @Nullable protected TimerTask getCleanupTask() {
         return new TimerTask() {
+            
             /** {@inheritDoc} */
             @Override public void run() {
-                log.info("Running cleanup task");
+                log.debug("Running cleanup task");
                 final Long now = System.currentTimeMillis();
                 List<String> contexts = null;
                 try {
                     contexts = readContexts();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     log.error("Error reading contexts", e);
                 }
                 if (contexts != null && !contexts.isEmpty()) {
-                    for (String context : contexts) {
+                    for (final String context : contexts) {
                         try {
                             deleteContextImpl(context, now);
-                        } catch (IOException e) {
+                        } catch (final IOException e) {
                             log.error("Error deleting records in context '{}' for timestamp '{}'", context, now, e);
                         }
                     }
