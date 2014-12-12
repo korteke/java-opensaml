@@ -40,33 +40,6 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
     /** Resource from which metadata is read. */
     private Resource metadataResource;
 
-
-    /**
-     * Constructor.
-     * 
-     * @param resource resource from which to read the metadata file.
-     * @param timer task timer used to schedule metadata refresh tasks
-     * @param maxMetadataCacheDuration maximum amount of time, in milliseconds, that metadata may be cached before being
-     *            re-read
-     * 
-     * @throws ResolverException thrown if there is a problem retrieving information about the resource 
-     * 
-     * @deprecated
-     */
-    public ResourceBackedMetadataResolver(Resource resource, Timer timer, long maxMetadataCacheDuration)
-            throws ResolverException {
-        super(timer);
-
-        try {
-            if (!resource.exists()) {
-                throw new IOException("Resource " + resource.getDescription() + " does not exist.");
-            }
-            metadataResource = resource;
-        } catch (IOException e) {
-            throw new ResolverException("Unable to read resource", e);
-        }
-    }
-
     /**
      * Constructor.
      * 
@@ -82,7 +55,22 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
             throw new IOException("Resource " + resource.getDescription() + " does not exist.");
         }
         metadataResource = resource;
-}
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param resource resource from which to read the metadata file.
+     * 
+     * @throws IOException thrown if there is a problem retrieving information about the resource
+     */
+    public ResourceBackedMetadataResolver(Resource resource) throws IOException {
+
+        if (!resource.exists()) {
+            throw new IOException("Resource " + resource.getDescription() + " does not exist.");
+        }
+        metadataResource = resource;
+    }
 
     /** {@inheritDoc} */
     protected void doDestroy() {
