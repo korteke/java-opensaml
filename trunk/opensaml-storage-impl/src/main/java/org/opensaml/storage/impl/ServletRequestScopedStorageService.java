@@ -124,7 +124,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
 
     /** {@inheritDoc} */
     @Override
-    public synchronized void setCleanupInterval(long interval) {
+    public synchronized void setCleanupInterval(final long interval) {
         // Don't allow a cleanup task.
         super.setCleanupInterval(0);
     }
