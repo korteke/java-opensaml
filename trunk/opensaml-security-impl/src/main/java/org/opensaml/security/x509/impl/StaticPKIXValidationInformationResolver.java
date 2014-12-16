@@ -26,15 +26,15 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+
+import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.PKIXValidationInformationResolver;
 import org.opensaml.security.x509.TrustedNamesCriterion;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * An implementation of {@link PKIXValidationInformationResolver} which always returns a static, fixed set of
@@ -90,21 +90,25 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     }
 
     /** {@inheritDoc} */
-    @Nullable public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet) throws ResolverException {
+    @Nonnull public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet) throws ResolverException {
         if (criteriaSet == null) {
             return ImmutableSet.copyOf(trustedNames);
         }
         
-        if (supportDynamicTrustedNames) {
-            TrustedNamesCriterion criterion = criteriaSet.get(TrustedNamesCriterion.class);
-            if (criterion != null) {
-                return Sets.union(trustedNames, criterion.getTrustedNames());
-            } else {
-                return ImmutableSet.copyOf(trustedNames);
-            }
-        } else {
-            return ImmutableSet.copyOf(trustedNames);
+        HashSet<String> temp = new HashSet<String>(trustedNames);
+        EntityIdCriterion entityIDCriterion = criteriaSet.get(EntityIdCriterion.class);
+        if (entityIDCriterion != null) {
+            temp.add(entityIDCriterion.getEntityId());
         }
+        
+        if (supportDynamicTrustedNames) {
+            TrustedNamesCriterion trustedNamesCriterion = criteriaSet.get(TrustedNamesCriterion.class);
+            if (trustedNamesCriterion != null) {
+                temp.addAll(trustedNamesCriterion.getTrustedNames());
+            }
+        }
+        
+        return ImmutableSet.copyOf(temp);
     }
 
     /** {@inheritDoc} */

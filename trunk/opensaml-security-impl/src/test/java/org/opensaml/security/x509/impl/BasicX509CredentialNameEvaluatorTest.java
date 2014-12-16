@@ -245,14 +245,14 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
     public void testNoTrustedNames() {
         names.clear();
         
-        testEvaluateSuccess("Trusted name set was empty", names, cred);
+        testEvaluateFailure("Trusted name set was empty", names, cred);
     }
     
     @Test
     public void testTrustedNamesNull() {
         names.clear();
         
-        testEvaluateSuccess("Trusted name set was null", null, cred);
+        testEvaluateFailure("Trusted name set was null", null, cred);
     }
     
     /********************

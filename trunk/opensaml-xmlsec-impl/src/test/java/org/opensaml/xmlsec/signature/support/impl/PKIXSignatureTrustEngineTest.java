@@ -146,7 +146,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
                 MAX_DEPTH
                 );
         
-        testValidateSuccess("Entity cert was good, full path in cred, no trusted names");
+        testValidateFailure("Entity cert was good, full path in cred, no trusted names");
     }
     
     @Test
@@ -344,7 +344,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
                 MAX_DEPTH
                 );
         
-        testRawValidateSuccess("Entity cert was good, empty trusted names");
+        testRawValidateFailure("Entity cert was good, empty trusted names");
     }
     
     @Test
