@@ -75,8 +75,8 @@ public class ApacheSantuarioSignatureValidationProviderImpl implements Signature
             throw new SignatureException("Unable to evaluate key against signature", e);
         }
 
-        log.debug("Signature did not validate against the credential's key");
-        throw new SignatureException("Signature did not validate against the credential's key");
+        log.debug("Signature cryptographic validation not successful");
+        throw new SignatureException("Signature cryptographic validation not successful");
     }
 
     /**
