@@ -39,6 +39,8 @@ import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.protocol.HttpContext;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.UsageType;
+import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
@@ -67,7 +69,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * <p>
- * If either of the trust engine or criteria set context attributes is not populated by the caller, then no trust 
+ * If the trust engine context attribute is not populated by the caller, then no trust 
  * evaluation is performed.  This allows use of this implementation with use cases where, given a particular 
  * HttpClient instance, sometimes trust engine evaluation is to be performed, and sometimes not.
  * </p>
@@ -160,8 +162,8 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
         CriteriaSet criteriaSet = (CriteriaSet) context.getAttribute(
                 HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET);
         if (criteriaSet == null) {
-            log.debug("No criteria set supplied by caller, skipping trust eval");
-            return;
+            log.debug("No criteria set supplied by caller, building new criteria set with signing criteria");
+            criteriaSet = new CriteriaSet(new UsageCriterion(UsageType.SIGNING));
         } else {
             log.trace("Saw CriteriaSet: {}", criteriaSet);
         }
