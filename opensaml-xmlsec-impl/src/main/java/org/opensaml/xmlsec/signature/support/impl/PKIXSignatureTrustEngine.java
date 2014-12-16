@@ -291,7 +291,7 @@ public class PKIXSignatureTrustEngine extends
             log.debug("No credential name evaluator was available, skipping trusted name evaluation");
             return true;
         } else if (trustedNames == null) {
-            log.debug("Truted names was null, signalling PKIX resolver does not support trusted names resolution, " 
+            log.debug("Trusted names was null, signalling PKIX resolver does not support trusted names resolution, " 
                     + "skipping trusted name evaluation");
            return true; 
         } else {
