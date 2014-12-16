@@ -19,6 +19,7 @@ package org.opensaml.security.x509;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -45,7 +46,7 @@ public interface PKIXValidationInformationResolver extends Resolver<PKIXValidati
      * @throws ResolverException thrown if there is an error resolving the trusted names
      * @throws UnsupportedOperationException thrown if this optional method is not supported by the implementation
      */
-    @Nullable public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet)
+    @Nonnull public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet)
         throws ResolverException;
     
     /**
