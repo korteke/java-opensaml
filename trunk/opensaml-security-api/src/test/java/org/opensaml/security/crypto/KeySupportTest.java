@@ -18,15 +18,19 @@
 package org.opensaml.security.crypto;
 
 import java.io.InputStream;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
+
+import javax.crypto.SecretKey;
 
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.crypto.KeySupport;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -212,6 +216,29 @@ public class KeySupportTest {
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("DES", 56, null)), new Integer(64));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("DESede", 112, null)), new Integer(192));
         Assert.assertEquals(KeySupport.getKeyLength(KeySupport.generateKey("DESede", 168, null)), new Integer(192));
+    }
+    
+    @DataProvider
+    public Object[][] decodeSecretKeyData() {
+       return new Object[][] {
+              new Object[] {128, "AES"}, 
+              new Object[] {192, "AES"}, 
+              new Object[] {256, "AES"}, 
+              new Object[] {64, "DES"}, 
+              new Object[] {168, "DESede"}, 
+              new Object[] {192, "DESede"}, 
+       };
+    }
+    
+    @Test(dataProvider="decodeSecretKeyData")
+    public void testDecodeSecretKey(Integer keyLengthBits, String algorithm) throws NoSuchAlgorithmException, KeyException {
+        // This is just for testing, not real.
+        byte[] key = new byte[keyLengthBits/8];
+        SecureRandom.getInstance("SHA1PRNG").nextBytes(key);
+        SecretKey secretKey = KeySupport.decodeSecretKey(key, algorithm);
+        Assert.assertNotNull(secretKey);
+        Assert.assertEquals(secretKey.getAlgorithm(), algorithm);
+        Assert.assertEquals(secretKey.getEncoded(), key);
     }
 
     /** Generic key testing. */

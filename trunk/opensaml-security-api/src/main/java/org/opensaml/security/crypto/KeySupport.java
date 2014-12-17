@@ -52,6 +52,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
@@ -101,21 +102,48 @@ public final class KeySupport {
     }
 
     /**
-     * Decodes secret keys in DER and PEM format.
+     * Produces SecretKey instances specified as a raw byte[] plus a JCA key algorithm.
      * 
-     * This method is not yet implemented.
-     * 
-     * @param key secret key
-     * @param password password if the key is encrypted or null if not
+     * @param key the raw secret key bytes
+     * @param algorithm the JCA key algorithm
      * 
      * @return the decoded key
      * 
      * @throws KeyException thrown if the key can not be decoded
      */
-    @Nonnull public static SecretKey decodeSecretKey(@Nonnull final byte[] key, @Nullable final char[] password)
+    @Nonnull public static SecretKey decodeSecretKey(@Nonnull final byte[] key, @Nonnull final String algorithm)
             throws KeyException {
-        // TODO
-        throw new UnsupportedOperationException("This method is not yet supported");
+        Logger log = getLogger();
+        Constraint.isNotNull(key, "Secret key bytes can not be null");
+        Constraint.isNotNull(algorithm, "Secret key algorithm can not be null");
+        Constraint.isGreaterThanOrEqual(1, key.length, "Secret key bytes can not be empty");
+        
+        int keyLengthBits = key.length*8;
+        
+        switch(algorithm) {
+            case "AES":
+                if (keyLengthBits != 128 && keyLengthBits != 192 && keyLengthBits != 256) {
+                    throw new KeyException(String.format("Saw invalid key length %d for algorithm %s", 
+                            keyLengthBits, "AES"));
+                }
+                break;
+            case "DES":
+                if (keyLengthBits != 64) {
+                    throw new KeyException(String.format("Saw invalid key length %d for algorithm %s", 
+                            keyLengthBits, "DES"));
+                }
+                break;
+            case "DESede":
+                if (keyLengthBits != 192 && keyLengthBits != 168) {
+                    throw new KeyException(String.format("Saw invalid key length %d for algorithm %s", 
+                            keyLengthBits, "DESede"));
+                }
+                break;
+            default:
+                log.debug("No length and sanity checking done for key with algorithm: {}", algorithm);
+        }
+        
+        return new SecretKeySpec(key, algorithm);
     }
 
     /**
