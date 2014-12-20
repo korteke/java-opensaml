@@ -99,7 +99,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
         }
         final SignableSAMLObject signableObject = (SignableSAMLObject) samlMsg;
         if (!signableObject.isSigned()) {
-            log.info("{} SAML protocol message was not signed, skipping XML signature processing", getLogPrefix());
+            log.debug("{} SAML protocol message was not signed, skipping XML signature processing", getLogPrefix());
             return;
         }
         final Signature signature = signableObject.getSignature();
