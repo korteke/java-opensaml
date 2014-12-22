@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2p:Extensions xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" >
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+</saml2p:Extensions>

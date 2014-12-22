@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2p:NameIDPolicy xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" Format="urn:string:format" SPNameQualifier="urn:string:spname" AllowCreate="true"/>
