@@ -407,7 +407,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
 
     /**
      * Processes metadata that has been determined to be valid at the time it was fetched. A metadata document is
-     * considered be valid if its root element returns true when passed to the {@link #isValid(XMLObject)} method.
+     * considered to be valid if its root element returns true when passed to the {@link #isValid(XMLObject)} method.
      * 
      * @param metadataIdentifier identifier of the metadata source
      * @param refreshStart when the current refresh cycle started
