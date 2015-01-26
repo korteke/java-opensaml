@@ -462,7 +462,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         }
         nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(nextRefreshDelay);
 
-        log.info("New metadata succesfully loaded for '{}'", getMetadataIdentifier());
+        log.info("New metadata successfully loaded for '{}'", getMetadataIdentifier());
     }
 
     /**
