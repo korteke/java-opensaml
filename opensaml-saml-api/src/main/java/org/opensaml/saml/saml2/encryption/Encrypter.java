@@ -25,10 +25,13 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
 import net.shibboleth.utilities.java.support.security.RandomIdentifierGenerationStrategy;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.BaseID;
@@ -59,6 +62,7 @@ import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
 
@@ -142,6 +146,9 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(Encrypter.class);
+
+    /** Pre-encryption logger. */
+    private final Logger logPreEncryption = LoggerFactory.getLogger("SAML_PRE_ENCRYPTION");
 
     /**
      * Constructor.
@@ -248,6 +255,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @throws EncryptionException thrown when encryption generates an error
      */
     public EncryptedAssertion encrypt(Assertion assertion) throws EncryptionException {
+        logPreEncryption(assertion, "Assertion");
         return (EncryptedAssertion) encrypt(assertion, EncryptedAssertion.DEFAULT_ELEMENT_NAME);
     }
 
@@ -259,6 +267,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @throws EncryptionException thrown when encryption generates an error
      */
     public EncryptedID encryptAsID(Assertion assertion) throws EncryptionException {
+        logPreEncryption(assertion, "Assertion (as EncryptedID)");
         return (EncryptedID) encrypt(assertion, EncryptedID.DEFAULT_ELEMENT_NAME);
     }
 
@@ -270,6 +279,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @throws EncryptionException thrown when encryption generates an error
      */
     public EncryptedAttribute encrypt(Attribute attribute) throws EncryptionException {
+        logPreEncryption(attribute, "Attribute");
         return (EncryptedAttribute) encrypt(attribute, EncryptedAttribute.DEFAULT_ELEMENT_NAME);
     }
 
@@ -281,6 +291,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @throws EncryptionException thrown when encryption generates an error
      */
     public EncryptedID encrypt(NameID nameID) throws EncryptionException {
+        logPreEncryption(nameID, "NameID");
         return (EncryptedID) encrypt(nameID, EncryptedID.DEFAULT_ELEMENT_NAME);
     }
 
@@ -292,6 +303,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @throws EncryptionException thrown when encryption generates an error
      */
     public EncryptedID encrypt(BaseID baseID) throws EncryptionException {
+        logPreEncryption(baseID, "BaseID");
         return (EncryptedID) encrypt(baseID, EncryptedID.DEFAULT_ELEMENT_NAME);
     }
 
@@ -303,7 +315,25 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @throws EncryptionException thrown when encryption generates an error
      */
     public NewEncryptedID encrypt(NewID newID) throws EncryptionException {
+        logPreEncryption(newID, "NewID");
         return (NewEncryptedID) encrypt(newID, NewEncryptedID.DEFAULT_ELEMENT_NAME);
+    }
+    
+    /**
+     * Log the target object prior to encryption.
+     * 
+     * @param xmlObject the XMLObject to encrypt
+     * @param objectType String description of the type of object to encrypt
+     */
+    private void logPreEncryption(XMLObject xmlObject, String objectType) {
+        if (logPreEncryption.isDebugEnabled()) {
+            try {
+                final Element dom = XMLObjectSupport.marshall(xmlObject);
+                logPreEncryption.debug("{} before encryption:\n{}", objectType, SerializeSupport.prettyPrintXML(dom));
+            } catch (final MarshallingException e) {
+                logPreEncryption.error("Unable to marshall {} for logging purposes", objectType, e);
+            }
+        }
     }
 
     /**
