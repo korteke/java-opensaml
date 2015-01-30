@@ -66,5 +66,30 @@
         <property name="password" value="oracle" />
     </bean>
     -->
+    
+    <!-- MySQL configuration
+    
+    Testing against MySQL fails, probably need quoted identifiers.
+    
+        Add this dependency to your pom
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.34</version>
+        </dependency>
+        
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL" />
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+        <property name="generateDdl" value="true" />
+    </bean>
+    
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/storageservice" />
+        <property name="username" value="mysql" />
+        <property name="password" value="password" />
+    </bean>
+   -->
 
 </beans>
