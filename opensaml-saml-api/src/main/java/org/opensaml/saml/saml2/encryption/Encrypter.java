@@ -147,9 +147,6 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(Encrypter.class);
 
-    /** Pre-encryption logger. */
-    private final Logger logPreEncryption = LoggerFactory.getLogger("SAML_PRE_ENCRYPTION");
-
     /**
      * Constructor.
      * 
@@ -326,12 +323,12 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * @param objectType String description of the type of object to encrypt
      */
     private void logPreEncryption(XMLObject xmlObject, String objectType) {
-        if (logPreEncryption.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             try {
                 final Element dom = XMLObjectSupport.marshall(xmlObject);
-                logPreEncryption.debug("{} before encryption:\n{}", objectType, SerializeSupport.prettyPrintXML(dom));
+                log.debug("{} before encryption:\n{}", objectType, SerializeSupport.prettyPrintXML(dom));
             } catch (final MarshallingException e) {
-                logPreEncryption.error("Unable to marshall {} for logging purposes", objectType, e);
+                log.error("Unable to marshall {} for logging purposes", objectType, e);
             }
         }
     }
