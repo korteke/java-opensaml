@@ -252,7 +252,26 @@ public class DefaultSecurityConfigurationBootstrap {
      * @return a named KeyInfo generator manager instance
      */
     protected static NamedKeyInfoGeneratorManager buildSignatureKeyInfoGeneratorManager() {
-        return buildBasicKeyInfoGeneratorManager();
+        NamedKeyInfoGeneratorManager namedManager = new NamedKeyInfoGeneratorManager();
+        
+        namedManager.setUseDefaultManager(true);
+        KeyInfoGeneratorManager defaultManager = namedManager.getDefaultManager();
+        
+        // Generator for basic Credentials
+        BasicKeyInfoGeneratorFactory basicFactory = new BasicKeyInfoGeneratorFactory();
+        basicFactory.setEmitPublicKeyValue(true);
+        basicFactory.setEmitPublicDEREncodedKeyValue(true);
+        basicFactory.setEmitKeyNames(true);
+        
+        // Generator for X509Credentials
+        X509KeyInfoGeneratorFactory x509Factory = new X509KeyInfoGeneratorFactory();
+        x509Factory.setEmitEntityCertificate(true);
+        x509Factory.setEmitEntityCertificateChain(true);
+        
+        defaultManager.registerFactory(basicFactory);
+        defaultManager.registerFactory(x509Factory);
+        
+        return namedManager;
     }
     
     /**
@@ -275,7 +294,6 @@ public class DefaultSecurityConfigurationBootstrap {
         // Generator for X509Credentials
         X509KeyInfoGeneratorFactory x509Factory = new X509KeyInfoGeneratorFactory();
         x509Factory.setEmitEntityCertificate(true);
-        x509Factory.setEmitEntityCertificateChain(true);
         
         defaultManager.registerFactory(basicFactory);
         defaultManager.registerFactory(x509Factory);
