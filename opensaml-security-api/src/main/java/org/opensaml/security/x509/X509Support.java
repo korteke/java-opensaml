@@ -189,7 +189,7 @@ public class X509Support {
             return null;
         }
 
-        final List<Object> altNames = new LinkedList<Object>();
+        final List<Object> altNames = new LinkedList<>();
         final GeneralNameType[] types = new GeneralNameType[nameTypes.length];
         for (int i = 0; i < nameTypes.length; i++) {
             types[i]= GeneralNameType.fromTagNumber(nameTypes[i]);
@@ -351,7 +351,11 @@ public class X509Support {
      * @throws CertificateException thrown if the certificate cannot be decoded
      */
     @Nullable public static X509Certificate decodeCertificate(@Nonnull final byte[] cert) throws CertificateException {
-        return CertUtil.decodeCertificate(cert);
+        try {
+            return CertUtil.decodeCertificate(cert);
+        } catch (final IllegalArgumentException e) {
+            throw new CertificateException(e);
+        }
     }
     
     /**
