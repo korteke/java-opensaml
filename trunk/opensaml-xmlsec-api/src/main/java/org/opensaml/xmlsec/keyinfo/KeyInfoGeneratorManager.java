@@ -40,7 +40,7 @@ public class KeyInfoGeneratorManager {
     
     /** Constructor. */
     public KeyInfoGeneratorManager() {
-        factories = new HashMap<Class<? extends Credential>, KeyInfoGeneratorFactory>(5);
+        factories = new HashMap<>(5);
     }
 
     /**

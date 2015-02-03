@@ -51,7 +51,7 @@ public class NamedKeyInfoGeneratorManager {
     
     /** Constructor. */
     public NamedKeyInfoGeneratorManager() {
-        managers = new LazyMap<String, KeyInfoGeneratorManager>();
+        managers = new LazyMap<>();
         defaultManager = new KeyInfoGeneratorManager();
         useDefaultManager = true;
     }

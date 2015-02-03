@@ -103,7 +103,7 @@ public class KeyInfoSupport {
      * @return a list of key name strings
      */
     @Nonnull public static List<String> getKeyNames(@Nullable final KeyInfo keyInfo) {
-        List<String> keynameList = new LinkedList<String>();
+        List<String> keynameList = new LinkedList<>();
 
         if (keyInfo == null) {
             return keynameList;
@@ -148,7 +148,7 @@ public class KeyInfoSupport {
      */
     @Nonnull public static List<X509Certificate> getCertificates(@Nullable final KeyInfo keyInfo)
             throws CertificateException {
-        List<X509Certificate> certList = new LinkedList<X509Certificate>();
+        List<X509Certificate> certList = new LinkedList<>();
 
         if (keyInfo == null) {
             return certList;
@@ -174,7 +174,7 @@ public class KeyInfoSupport {
      */
     @Nonnull public static List<X509Certificate> getCertificates(@Nullable final X509Data x509Data)
             throws CertificateException {
-        List<X509Certificate> certList = new LinkedList<X509Certificate>();
+        List<X509Certificate> certList = new LinkedList<>();
 
         if (x509Data == null) {
             return certList;
@@ -221,7 +221,7 @@ public class KeyInfoSupport {
      *             s
      */
     @Nonnull public static List<X509CRL> getCRLs(@Nullable final KeyInfo keyInfo) throws CRLException {
-        List<X509CRL> crlList = new LinkedList<X509CRL>();
+        List<X509CRL> crlList = new LinkedList<>();
 
         if (keyInfo == null) {
             return crlList;
@@ -246,7 +246,7 @@ public class KeyInfoSupport {
      *             s
      */
     @Nonnull public static List<X509CRL> getCRLs(@Nullable final X509Data x509Data) throws CRLException {
-        List<X509CRL> crlList = new LinkedList<X509CRL>();
+        List<X509CRL> crlList = new LinkedList<>();
 
         if (x509Data == null) {
             return crlList;
@@ -638,7 +638,7 @@ public class KeyInfoSupport {
 
         // TODO support ECKeyValue and DEREncodedKeyValue
 
-        List<PublicKey> keys = new LinkedList<PublicKey>();
+        List<PublicKey> keys = new LinkedList<>();
 
         if (keyInfo == null) {
             return keys;
