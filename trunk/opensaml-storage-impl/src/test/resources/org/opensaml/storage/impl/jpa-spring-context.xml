@@ -10,6 +10,13 @@
         <property name="jpaDialect">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
         </property>
+        <!-- IDP-584 Uncomment for MySQL.
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.globally_quoted_identifiers">true</prop>
+            </props>
+        </property>
+        -->
     </bean>
  
     <!--  Hypersonic configuration -->
@@ -68,8 +75,6 @@
     -->
     
     <!-- MySQL configuration
-    
-    Testing against MySQL fails, probably need quoted identifiers.
     
         Add this dependency to your pom
         <dependency>
