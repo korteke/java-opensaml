@@ -118,6 +118,7 @@ public class SAMLSchemaBuilder {
         SAMLConstants.SAML20CB_SCHEMA_LOCATION,
         SAMLConstants.SAML20PASLO_SCHEMA_LOCATION,
         SAMLConstants.SAMLEC_GSS_SCHEMA_LOCATION,
+        SAMLConstants.SAML20ALG_SCHEMA_LOCATION,
         };
 
     /** Cached copy of the schema produced by the builder. */

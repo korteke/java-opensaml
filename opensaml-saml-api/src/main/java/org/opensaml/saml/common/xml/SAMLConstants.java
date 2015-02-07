@@ -312,6 +312,9 @@ public final class SAMLConstants {
     /** URI for SAML 2 PAOS binding. */
     public static final String SAML2_PAOS_BINDING_URI = "urn:oasis:names:tc:SAML:2.0:bindings:PAOS";
     
+    /** SAML 2.0 Metadata Profile for Algorithm Support schema Id. */
+    public static final String SAML20ALG_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-metadata-algsupport-v1.0.xsd";
+    
     /** SAML 2.0 Metadata Profile for Algorithm Support Namespace. */
     public static final String SAML20ALG_NS = "urn:oasis:names:tc:SAML:metadata:algsupport";
     
