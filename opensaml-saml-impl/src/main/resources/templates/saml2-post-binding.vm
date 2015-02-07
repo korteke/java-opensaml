@@ -7,10 +7,12 @@
 ## RelayState - String - the relay state for the message
 ## SAMLRequest - String - the Base64 encoded SAML Request
 ## SAMLResponse - String - the Base64 encoded SAML Response
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+##
+<!DOCTYPE html>
+<html>
     <head>
-    #parse ( "/templates/add-html-head-content.vm" )
+        <meta charset="utf-8" />
+        #parse ( "/templates/add-html-head-content.vm" )
     </head>
     <body onload="document.forms[0].submit()">
         <noscript>

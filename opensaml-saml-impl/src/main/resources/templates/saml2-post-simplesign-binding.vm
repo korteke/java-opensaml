@@ -10,10 +10,12 @@
 ## Signature - String - the Base64 encoded simple signature
 ## SigAlg - String - the signature algorithm URI
 ## KeyInfo - String - the Base64 encoded ds:KeyInfo (optional)
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+##
+<!DOCTYPE html>
+<html>
     <head>
-    #parse ( "/templates/add-html-head-content.vm" )
+        <meta charset="utf-8" />
+        #parse ( "/templates/add-html-head-content.vm" )
     </head>
     <body onload="document.forms[0].submit()">
         <noscript>
