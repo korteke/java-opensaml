@@ -17,6 +17,7 @@
 
 package org.opensaml.security.trust.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -36,7 +37,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Evaluate a token in sequence using a chain of subordinate trust engines. If the token may be established as trusted
@@ -47,10 +47,10 @@ import com.google.common.collect.Lists;
 public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ChainingTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingTrustEngine.class);
 
     /** The chain of subordinate trust engines. */
-    private List<TrustEngine<TokenType>> engines;
+    @Nonnull @NonnullElements private List<TrustEngine<TokenType>> engines;
 
     /** 
      * Constructor.
@@ -58,8 +58,8 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * @param chain the list of trust engines in the chain
      */
     public ChainingTrustEngine(@Nonnull final List<TrustEngine<TokenType>> chain) {
-        Constraint.isNotNull(chain, "TrustEngine list was null");
-        engines = Lists.newArrayList(Collections2.filter(chain, Predicates.notNull()));
+        Constraint.isNotNull(chain, "TrustEngine list cannot be null");
+        engines = new ArrayList<>(Collections2.filter(chain, Predicates.notNull()));
     }
 
     /**
@@ -74,7 +74,7 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
     /** {@inheritDoc} */
     public boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
-        for (TrustEngine<TokenType> engine : engines) {
+        for (final TrustEngine<TokenType> engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
                 log.debug("Token was trusted by chain member: {}", engine.getClass().getName());
                 return true;

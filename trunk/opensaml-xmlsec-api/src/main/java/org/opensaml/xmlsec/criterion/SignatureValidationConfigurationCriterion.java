@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.criterion;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,6 @@ import org.opensaml.xmlsec.SignatureValidationConfiguration;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Criterion which holds one or more instances of {@link SignatureValidationConfiguration}.
@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
 public class SignatureValidationConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    private List<SignatureValidationConfiguration> configs;
+    @Nonnull @NonnullElements private List<SignatureValidationConfiguration> configs;
     
     /**
      * Constructor.
@@ -51,8 +51,8 @@ public class SignatureValidationConfigurationCriterion implements Criterion {
      */
     public SignatureValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
             List<SignatureValidationConfiguration> configurations) {
-        Constraint.isNotNull(configurations, "List of configurations may not be null");
-        configs = Lists.newArrayList(Collections2.filter(configurations, Predicates.notNull()));
+        Constraint.isNotNull(configurations, "List of configurations cannot be null");
+        configs = new ArrayList<>(Collections2.filter(configurations, Predicates.notNull()));
         Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
         
     }
@@ -64,8 +64,8 @@ public class SignatureValidationConfigurationCriterion implements Criterion {
      */
     public SignatureValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
             SignatureValidationConfiguration... configurations) {
-        Constraint.isNotNull(configurations, "List of configurations may not be null");
-        configs = Lists.newArrayList(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
+        Constraint.isNotNull(configurations, "List of configurations cannot be null");
+        configs = new ArrayList<>(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
         Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
     }
     

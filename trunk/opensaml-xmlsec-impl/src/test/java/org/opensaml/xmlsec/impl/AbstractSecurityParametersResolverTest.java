@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.impl;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,8 +48,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * Test various aspects of the {@link AbstractSecurityParametersResolver} so don't have to test
@@ -75,9 +74,9 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         criteriaSet = new CriteriaSet(criterion);
         
-        set1 = Sets.newHashSet("A", "B", "C", "D");
-        set2 = Sets.newHashSet("X", "Y", "Z");
-        set3 = Sets.newHashSet("foo", "bar", "baz");
+        set1 = new HashSet<>(Arrays.asList("A", "B", "C", "D"));
+        set2 = new HashSet<>(Arrays.asList("X", "Y", "Z"));
+        set3 = new HashSet<>(Arrays.asList("foo", "bar", "baz"));
     }
     
     @Test
@@ -214,7 +213,7 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         config1.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
         
-        predicate = resolver.resolveWhitelistBlacklistPredicate(criteriaSet, Lists.newArrayList(config1, config2, config3));
+        predicate = resolver.resolveWhitelistBlacklistPredicate(criteriaSet, Arrays.asList(config1, config2, config3));
         
         // Note: Have effective whitelist based on set1
         
@@ -232,7 +231,7 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         config1.setWhitelistBlacklistPrecedence(Precedence.BLACKLIST);
         
-        predicate = resolver.resolveWhitelistBlacklistPredicate(criteriaSet, Lists.newArrayList(config1, config2, config3));
+        predicate = resolver.resolveWhitelistBlacklistPredicate(criteriaSet, Arrays.asList(config1, config2, config3));
         
         // Note: Have effective blacklist based on set2
         

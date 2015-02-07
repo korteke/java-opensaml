@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.util.Arrays;
+
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
@@ -30,8 +32,6 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
@@ -91,7 +91,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
-        resolver.setSupportedContentTypes(Lists.newArrayList("application/samlmetadata+xml", "application/xml", "text/xml", "TEXT/PLAIN"));
+        resolver.setSupportedContentTypes(Arrays.asList("application/samlmetadata+xml", "application/xml", "text/xml", "TEXT/PLAIN"));
         resolver.initialize();
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));

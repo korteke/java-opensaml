@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,8 +40,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 
 /**
  * Basic implementation of {@link EncryptionConfiguration}.
@@ -84,7 +83,6 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     
     /** Constructor. */
     public BasicEncryptionConfiguration() {
-        super();
         dataEncryptionCredentials = Collections.emptyList();
         dataEncryptionAlgorithms = Collections.emptyList();
         keyTransportEncryptionCredentials = Collections.emptyList();
@@ -106,10 +104,10 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      */
     public void setDataEncryptionCredentials(@Nullable final List<Credential> credentials) {
         if (credentials == null) {
-           dataEncryptionCredentials  = Collections.emptyList();
+            dataEncryptionCredentials  = Collections.emptyList();
             return;
         }
-        dataEncryptionCredentials = Lists.newArrayList(Collections2.filter(credentials, Predicates.notNull()));
+        dataEncryptionCredentials = new ArrayList<>(Collections2.filter(credentials, Predicates.notNull()));
     }
     
     /** {@inheritDoc} */
@@ -128,7 +126,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
             dataEncryptionAlgorithms = Collections.emptyList();
             return;
         }
-        dataEncryptionAlgorithms = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
+        dataEncryptionAlgorithms = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */
@@ -144,10 +142,10 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      */
     public void setKeyTransportEncryptionCredentials(@Nullable final List<Credential> credentials) {
         if (credentials == null) {
-           keyTransportEncryptionCredentials  = Collections.emptyList();
+            keyTransportEncryptionCredentials  = Collections.emptyList();
             return;
         }
-        keyTransportEncryptionCredentials = Lists.newArrayList(Collections2.filter(credentials, Predicates.notNull()));
+        keyTransportEncryptionCredentials = new ArrayList<>(Collections2.filter(credentials, Predicates.notNull()));
     }
     
     /** {@inheritDoc} */
@@ -166,7 +164,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
             keyTransportEncryptionAlgorithms = Collections.emptyList();
             return;
         }
-        keyTransportEncryptionAlgorithms = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
+        keyTransportEncryptionAlgorithms = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */

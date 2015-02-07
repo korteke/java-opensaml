@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,8 +45,6 @@ import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 public class TrustEngineTLSSocketFactoryTest {
     
@@ -77,7 +76,7 @@ public class TrustEngineTLSSocketFactoryTest {
        X509Credential cred = getCredential("foo-1A1-good.crt");
        
        trustEngineFactory = new TrustEngineTLSSocketFactory(buildInnerSSLFactory(
-               Lists.newArrayList((Certificate)cred.getEntityCertificate()), hostname), null);
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), null);
        Socket socket = trustEngineFactory.createSocket(httpContext);
        
        trustEngineFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
@@ -92,7 +91,7 @@ public class TrustEngineTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        trustEngineFactory = new TrustEngineTLSSocketFactory(buildInnerSSLFactory(
-               Lists.newArrayList((Certificate)cred.getEntityCertificate()), hostname), null);
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), null);
        Socket socket = trustEngineFactory.createSocket(httpContext);
        
        trustEngineFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
@@ -107,7 +106,7 @@ public class TrustEngineTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        trustEngineFactory = new TrustEngineTLSSocketFactory(buildInnerSSLFactory(
-               Lists.newArrayList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
        Socket socket = trustEngineFactory.createSocket(httpContext);
        
        trustEngineFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
@@ -123,7 +122,7 @@ public class TrustEngineTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        trustEngineFactory = new TrustEngineTLSSocketFactory(buildInnerSSLFactory(
-               Lists.newArrayList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
        Socket socket = trustEngineFactory.createSocket(httpContext);
        
        try {
@@ -141,7 +140,7 @@ public class TrustEngineTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        trustEngineFactory = new TrustEngineTLSSocketFactory(buildInnerSSLFactory(
-               Lists.newArrayList((Certificate)cred.getEntityCertificate()), "bogus.example.com"), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), "bogus.example.com"), new StrictHostnameVerifier());
        Socket socket = trustEngineFactory.createSocket(httpContext);
        
        
@@ -182,7 +181,7 @@ public class TrustEngineTLSSocketFactoryTest {
         
         BasicX509Credential cred = new BasicX509Credential(entityCert);
         
-        HashSet<X509Certificate> certChain = new HashSet<X509Certificate>();
+        HashSet<X509Certificate> certChain = new HashSet<>();
         certChain.add(entityCert);
         
         for (String member: chainMembers) {

@@ -17,10 +17,12 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.xmlsec.signature.Signature;
@@ -31,32 +33,32 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 /**
- * A signature prevalidator impl which chains execution of a list of {@link SignaturePrevalidator} instances.
+ * A signature prevalidator implementation which chains execution of a list of {@link SignaturePrevalidator} instances.
  */
 public class ChainingSignaturePrevalidator implements SignaturePrevalidator {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ChainingSignaturePrevalidator.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ChainingSignaturePrevalidator.class);
     
     /** The chain of SignaturePrevalidator instances to execute. */
-    private List<SignaturePrevalidator> validators;
+    @Nonnull @NonnullElements private List<SignaturePrevalidator> validators;
     
     /**
      * Constructor.
      *
      * @param validatorChain the chain of SignaturePrevalidator instances to execute
      */
-    public ChainingSignaturePrevalidator(@Nonnull final List<SignaturePrevalidator> validatorChain) {
-        Constraint.isNotNull(validatorChain, "SignaturePrevalidator list was null");
-        validators = Lists.newArrayList(Collections2.filter(validatorChain, Predicates.notNull()));
+    public ChainingSignaturePrevalidator(@Nonnull @NonnullElements final List<SignaturePrevalidator> validatorChain) {
+        Constraint.isNotNull(validatorChain, "SignaturePrevalidator list cannot be null");
+        validators = new ArrayList<>(Collections2.filter(validatorChain, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
+    @Override
     public void validate(@Nonnull final Signature signature) throws SignatureException {
-        for (SignaturePrevalidator validator : validators) {
+        for (final SignaturePrevalidator validator : validators) {
             log.debug("Validating signature using prevalidator: {}", validator.getClass().getName());
             validator.validate(signature);
         }

@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -45,7 +46,6 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 /**
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
@@ -90,8 +90,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
             return;
         }
 
-        resolvers = Lists.newArrayListWithExpectedSize(newResolvers.size());
-        resolvers.addAll(Collections2.filter(newResolvers, Predicates.notNull()));
+        resolvers = new ArrayList<>(Collections2.filter(newResolvers, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */

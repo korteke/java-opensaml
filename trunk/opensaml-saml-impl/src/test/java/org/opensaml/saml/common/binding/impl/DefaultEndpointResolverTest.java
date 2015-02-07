@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,8 +49,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
-
-import com.google.common.collect.Lists;
 
 /** Test for {@link DefaultEndpointResolver}. */
 public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
@@ -215,7 +214,10 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         final RoleDescriptorCriterion roleCrit =
                 new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
-        final List<AssertionConsumerService> eps = Lists.newArrayList(resolver.resolve(crits));
+        final List<AssertionConsumerService> eps = new ArrayList<>();
+        for (final AssertionConsumerService ep : resolver.resolve(crits)) {
+            eps.add(ep);
+        }
         Assert.assertEquals(eps.size(), 4);
     }
 
@@ -226,7 +228,10 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         final RoleDescriptorCriterion roleCrit =
                 new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
-        final List<AssertionConsumerService> eps = Lists.newArrayList(resolver.resolve(crits));
+        final List<AssertionConsumerService> eps = new ArrayList<>();
+        for (final AssertionConsumerService ep : resolver.resolve(crits)) {
+            eps.add(ep);
+        }
         Assert.assertEquals(eps.size(), 2);
     }
     

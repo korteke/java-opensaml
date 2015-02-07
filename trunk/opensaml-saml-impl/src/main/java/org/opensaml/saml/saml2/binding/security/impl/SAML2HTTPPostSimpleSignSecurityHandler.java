@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.binding.security.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,7 +53,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
 /**
  * Message handler which evaluates simple "blob" signatures according to the SAML 2 HTTP-POST-SimpleSign binding.
@@ -201,7 +201,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
             return Collections.emptyList();
         }
 
-        final List<Credential> credentials = Lists.newArrayList();
+        final List<Credential> credentials = new ArrayList<>();
         final CriteriaSet criteriaSet = new CriteriaSet(new KeyInfoCriterion(keyInfo));
         try {
             for (final Credential cred : keyInfoResolver.resolve(criteriaSet)) {

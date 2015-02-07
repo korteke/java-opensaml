@@ -32,6 +32,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,7 +64,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
 
@@ -166,7 +166,7 @@ public class X509Support {
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
         final RDNSequence attrs = NameReader.readX500Principal(dn);
         // Have to copy because list returned from Attributes is unmodifiable, so can't reverse it.
-        final List<String> values = Lists.newArrayList(attrs.getValues(StandardAttributeType.CommonName));
+        final List<String> values = new ArrayList<>(attrs.getValues(StandardAttributeType.CommonName));
         
         // Reverse the order so that the most-specific CN is first in the list, 
         // consistent with RFC 1779/2253 RDN ordering.

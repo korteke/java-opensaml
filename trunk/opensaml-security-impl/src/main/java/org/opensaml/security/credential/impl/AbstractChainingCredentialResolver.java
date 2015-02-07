@@ -17,6 +17,7 @@
 
 package org.opensaml.security.credential.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which chains together one or more underlying credential 
@@ -52,10 +52,10 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         extends AbstractCredentialResolver {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(ChainingCredentialResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingCredentialResolver.class);
 
     /** List of credential resolvers in the chain. */
-    private List<ResolverType> resolvers;
+    @Nonnull @NonnullElements private List<ResolverType> resolvers;
 
     /**
      * Constructor.
@@ -63,8 +63,8 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
      * @param credResolvers the list of chained credential resolvers
      */
     public AbstractChainingCredentialResolver(@Nonnull final List<ResolverType> credResolvers) {
-        Constraint.isNotNull(credResolvers, "CredentialResolver list may not be null");
-        resolvers = Lists.newArrayList(Collections2.filter(credResolvers, Predicates.notNull()));
+        Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null");
+        resolvers = new ArrayList<>(Collections2.filter(credResolvers, Predicates.notNull()));
     }
 
     /**
@@ -109,6 +109,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         }
 
         /** {@inheritDoc} */
+        @Override
         @Nonnull public Iterator<Credential> iterator() {
             return new CredentialIterator(parent, critSet);
         }
@@ -121,7 +122,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
     public class CredentialIterator implements Iterator<Credential> {
 
         /** Logger. */
-        private final Logger log = LoggerFactory.getLogger(CredentialIterator.class);
+        @Nonnull private final Logger log = LoggerFactory.getLogger(CredentialIterator.class);
 
         /** The chaining credential resolver which owns this instance. */
         private AbstractChainingCredentialResolver<ResolverType> parent;
@@ -159,6 +160,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean hasNext() {
             if (nextCredential != null) {
                 return true;
@@ -171,6 +173,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         }
 
         /** {@inheritDoc} */
+        @Override
         public Credential next() {
             Credential tempCred;
             if (nextCredential != null) {
@@ -187,6 +190,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
         }
 
         /** {@inheritDoc} */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove operation is not supported by this iterator");
         }

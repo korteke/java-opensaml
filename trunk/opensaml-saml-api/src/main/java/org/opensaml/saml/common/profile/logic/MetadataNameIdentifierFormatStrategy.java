@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.profile.logic;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 /**
  * Function to return a set of candidate NameIdentifier/NameID Format values derived from an entity's
@@ -68,7 +68,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
     @Nullable public List<String> apply(@Nullable final ProfileRequestContext input) {
         final SSODescriptor role = ssoDescriptorLookupStrategy.apply(input);
         if (role != null) {
-            final List<String> strings = Lists.newArrayList();
+            final List<String> strings = new ArrayList<>();
             for (final NameIDFormat nif : role.getNameIDFormats()) {
                 if (nif.getFormat() != null) {
                     if (NameID.UNSPECIFIED.equals(nif.getFormat())) {

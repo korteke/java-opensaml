@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +43,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * A metadata provider that uses registered resolvers, in turn, to answer queries.
@@ -90,8 +90,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
             return;
         }
 
-        resolvers = Lists.newArrayListWithExpectedSize(newResolvers.size());
-        resolvers.addAll(Collections2.filter(newResolvers, Predicates.notNull()));
+        resolvers = new ArrayList<>(Collections2.filter(newResolvers, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */

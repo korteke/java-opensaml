@@ -20,6 +20,8 @@ package org.opensaml.xmlsec.impl;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
@@ -30,8 +32,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 /**
  *
@@ -77,7 +77,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertEquals(config.getSigningCredentials().size(), 0);
         
-        config.setSigningCredentials(Lists.newArrayList(cred1, null, cred2, null));
+        config.setSigningCredentials(Arrays.asList(cred1, null, cred2, null));
         
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertEquals(config.getSigningCredentials().size(), 2);
@@ -90,7 +90,7 @@ public class BasicSignatureSigningConfigurationTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSigningCredentialsImmutable() throws NoSuchAlgorithmException, NoSuchProviderException {
-        config.setSigningCredentials(Lists.newArrayList(cred1));
+        config.setSigningCredentials(Collections.singletonList(cred1));
         config.getSigningCredentials().add(cred2);
     }
 
@@ -99,7 +99,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSignatureAlgorithms());
         Assert.assertEquals(config.getSignatureAlgorithms().size(), 0);
         
-        config.setSignatureAlgorithms(Lists.newArrayList("  A   ", null, null, "  B   ", null, "  C   "));
+        config.setSignatureAlgorithms(Arrays.asList("  A   ", null, null, "  B   ", null, "  C   "));
         
         Assert.assertNotNull(config.getSignatureAlgorithms());
         Assert.assertEquals(config.getSignatureAlgorithms().size(), 3);
@@ -115,7 +115,7 @@ public class BasicSignatureSigningConfigurationTest {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSignatureAlgorithmURIsImmutable() {
-        config.setSignatureAlgorithms(Lists.newArrayList("A", "B", "C"));
+        config.setSignatureAlgorithms(Arrays.asList("A", "B", "C"));
         config.getSignatureAlgorithms().add("D");
     }
 
@@ -124,7 +124,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSignatureReferenceDigestMethods());
         Assert.assertEquals(config.getSignatureReferenceDigestMethods().size(), 0);
         
-        config.setSignatureReferenceDigestMethods(Lists.newArrayList("   A  ", null, null, "   B   ", null, "  C    "));
+        config.setSignatureReferenceDigestMethods(Arrays.asList("   A  ", null, null, "   B   ", null, "  C    "));
         
         Assert.assertNotNull(config.getSignatureReferenceDigestMethods());
         Assert.assertEquals(config.getSignatureReferenceDigestMethods().size(), 3);
@@ -140,7 +140,7 @@ public class BasicSignatureSigningConfigurationTest {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSignatureReferenceDigestMethodsImmutable() {
-        config.setSignatureReferenceDigestMethods(Lists.newArrayList("A", "B", "C"));
+        config.setSignatureReferenceDigestMethods(Arrays.asList("A", "B", "C"));
         config.getSignatureReferenceDigestMethods().add("D");
     }
 
