@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,6 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 /**
  * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor} to each element node in the
@@ -72,7 +72,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         Constraint.isNotNull(newProcessors, "MetadataNodeProcessor list cannot be null");
 
-        processors = Lists.newArrayList(Collections2.filter(newProcessors, Predicates.notNull()));
+        processors = new ArrayList<>(Collections2.filter(newProcessors, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */

@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.messaging.context;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
@@ -26,8 +27,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
-
-import com.google.common.collect.Lists;
 
 /**
  * Context, usually attached to a {@link org.opensaml.messaging.context.MessageContext}
@@ -40,7 +39,7 @@ public class ChannelBindingsContext extends BaseContext {
     
     /** Constructor. */
     public ChannelBindingsContext() {
-        channelBindings = Lists.newArrayList();
+        channelBindings = new ArrayList<>();
     }
 
     /**

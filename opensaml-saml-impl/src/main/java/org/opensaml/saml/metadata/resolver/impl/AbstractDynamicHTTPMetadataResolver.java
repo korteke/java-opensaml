@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 /**
  * Abstract subclass for dynamic metadata resolvers that implement metadata resolution based on HTTP requests.
@@ -69,10 +69,10 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             new String[] {"application/samlmetadata+xml", "application/xml", "text/xml"};
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractDynamicHTTPMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractDynamicHTTPMetadataResolver.class);
     
     /** HTTP Client used to pull the metadata. */
-    private HttpClient httpClient;
+    @Nonnull private HttpClient httpClient;
     
     /** List of supported MIME types for use in Accept request header and validation of 
      * response Content-Type header.*/
@@ -198,7 +198,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         if (types == null) {
             supportedContentTypes = Collections.emptyList();
         } else {
-            supportedContentTypes = Lists.newArrayList(Collections2.transform(
+            supportedContentTypes = new ArrayList<>(Collections2.transform(
                     StringSupport.normalizeStringCollection(types),
                     new Function<String,String>() {
                         @Nullable public String apply(@Nullable String input) {

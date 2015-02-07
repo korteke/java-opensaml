@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -47,7 +48,6 @@ import org.w3c.dom.Element;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
 
 /**
  * Action that encrypts all assertions in a {@link Response} message obtained from a lookup
@@ -122,8 +122,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        final List<EncryptedAssertion> accumulator =
-                Lists.newArrayListWithExpectedSize(response.getAssertions().size());
+        final List<EncryptedAssertion> accumulator = new ArrayList<>(response.getAssertions().size());
         
         for (final Assertion assertion : response.getAssertions()) {
             try {

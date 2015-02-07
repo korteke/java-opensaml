@@ -18,6 +18,8 @@
 package org.opensaml.storage.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
@@ -40,9 +42,6 @@ import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * Implementation of {@link org.opensaml.storage.StorageService} that uses JPA to persist to a database.
@@ -152,7 +151,7 @@ public class JPAStorageService extends AbstractStorageService {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            final Map<String, Object> params = Maps.newHashMap();
+            final Map<String, Object> params = new HashMap<>();
             params.put("context", context);
             return executeNamedQuery(manager, "JPAStorageRecord.findByContext", params, StorageRecord.class);
         } finally {
@@ -398,7 +397,7 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            final Map<String, Object> params = Maps.newHashMap();
+            final Map<String, Object> params = new HashMap<>();
             params.put("context", context);
             params.put("now", System.currentTimeMillis());
             final List<JPAStorageRecord> entities =
@@ -452,7 +451,7 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            final Map<String, Object> params = Maps.newHashMap();
+            final Map<String, Object> params = new HashMap<>();
             params.put("context", context);
             final List<JPAStorageRecord> entities =
                     executeNamedQuery(manager, "JPAStorageRecord.findByContext", params, JPAStorageRecord.class);
@@ -495,7 +494,7 @@ public class JPAStorageService extends AbstractStorageService {
      */
     private <T> List<T> executeNamedQuery(@Nonnull final EntityManager manager, @Nonnull @NotEmpty final String query,
             @Nonnull final Map<String, Object> params, @Nonnull final Class<T> clazz) {
-        final List<T> results = Lists.newArrayList();
+        final List<T> results = new ArrayList<>();
         try {
             final Query queryResults = manager.createNamedQuery(query, clazz);
             if (params != null && !params.isEmpty()) {

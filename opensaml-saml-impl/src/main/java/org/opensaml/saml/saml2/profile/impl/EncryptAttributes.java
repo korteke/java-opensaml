@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -49,7 +50,6 @@ import org.w3c.dom.Element;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
 
 /**
  * Action that encrypts all attributes in a {@link Response} message obtained from a lookup strategy,
@@ -128,8 +128,7 @@ public class EncryptAttributes extends AbstractEncryptAction {
         for (final Assertion assertion : response.getAssertions()) {
             for (final AttributeStatement statement : assertion.getAttributeStatements()) {
                 
-                final List<EncryptedAttribute> accumulator =
-                        Lists.newArrayListWithExpectedSize(statement.getAttributes().size());
+                final List<EncryptedAttribute> accumulator = new ArrayList<>(statement.getAttributes().size());
                 
                 for (final Attribute attribute : statement.getAttributes()) {
                     try {

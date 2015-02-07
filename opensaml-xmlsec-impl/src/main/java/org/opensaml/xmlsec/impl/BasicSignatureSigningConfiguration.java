@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Basic implementation of {@link SignatureSigningConfiguration}.
@@ -93,7 +93,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
             signingCredentials = Collections.emptyList();
             return;
         }
-        signingCredentials = Lists.newArrayList(Collections2.filter(credentials, Predicates.notNull()));
+        signingCredentials = new ArrayList<>(Collections2.filter(credentials, Predicates.notNull()));
     }
     
     /** {@inheritDoc} */
@@ -112,7 +112,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
             signatureAlgorithms = Collections.emptyList();
             return;
         }
-        signatureAlgorithms = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
+        signatureAlgorithms = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */
@@ -131,7 +131,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
             signatureReferenceDigestMethods = Collections.emptyList();
             return;
         }
-        signatureReferenceDigestMethods = Lists.newArrayList(StringSupport.normalizeStringCollection(algorithms));
+        signatureReferenceDigestMethods = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
 
     /** {@inheritDoc} */

@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,8 +40,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * An implementation of {@link EncryptedKeyResolver} which chains multiple other resolver implementations together,
@@ -48,10 +48,10 @@ import com.google.common.collect.Sets;
 public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** The list of resolvers which form the resolution chain. */
-    private final List<EncryptedKeyResolver> resolvers;
+    @Nonnull @NonnullElements private final List<EncryptedKeyResolver> resolvers;
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.class);
 
     /** 
      * Constructor. 
@@ -59,9 +59,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param encKeyResolvers the chain of encrypted key resolvers
      */
     public ChainingEncryptedKeyResolver(@Nonnull final List<EncryptedKeyResolver> encKeyResolvers) {
-        super();
-        Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers may not be null");
-        resolvers = Lists.newArrayList(Collections2.filter(encKeyResolvers, Predicates.notNull()));
+        Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null");
+        resolvers = new ArrayList<>(Collections2.filter(encKeyResolvers, Predicates.notNull()));
     }
 
     /** 
@@ -73,8 +72,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     public ChainingEncryptedKeyResolver(@Nonnull final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable final Set<String> recipients) {
         super(recipients);
-        Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers may not be null");
-        resolvers = Lists.newArrayList(Collections2.filter(encKeyResolvers, Predicates.notNull()));
+        Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null");
+        resolvers = new ArrayList<>(Collections2.filter(encKeyResolvers, Predicates.notNull()));
     }
     
     /** 
@@ -85,7 +84,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      */
     public ChainingEncryptedKeyResolver(@Nonnull final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable final String recipient) {
-        this(encKeyResolvers, Sets.newHashSet(recipient));
+        this(encKeyResolvers, Collections.singleton(recipient));
     }
 
     /**
@@ -98,6 +97,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
         if (resolvers.isEmpty()) {
             log.warn("Chaining encrypted key resolver resolution was attempted with an empty resolver chain");
@@ -179,6 +179,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean hasNext() {
             if (nextKey != null) {
                 return true;
@@ -191,6 +192,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         }
 
         /** {@inheritDoc} */
+        @Override
         public EncryptedKey next() {
             EncryptedKey tempKey;
             if (nextKey != null) {
@@ -207,6 +209,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         }
 
         /** {@inheritDoc} */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Remove operation is not supported by this iterator");
         }

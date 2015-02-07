@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.binding;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -37,8 +38,6 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 /**
  * Base implementation that resolves and validates protocol/profile endpoints using a combination of supplied
@@ -203,7 +202,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         final RoleDescriptorCriterion role = criteria.get(RoleDescriptorCriterion.class);
         if (role == null) {
             log.debug("{} No metadata supplied, no candidate endpoints to return", getLogPrefix());
-            return Lists.newArrayList();
+            return new ArrayList<>();
         }
         
         // Determine the QName type of endpoints to extract based on candidate type.
@@ -242,7 +241,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         // the first not marked false.
         EndpointType hardDefault = null;
         EndpointType softDefault = null;
-        final LinkedList<EndpointType> toReturn = Lists.newLinkedList();
+        final LinkedList<EndpointType> toReturn = new LinkedList();
         for (final Endpoint endpoint : candidates) {
             if (hardDefault == null && endpoint instanceof IndexedEndpoint) {
                 final Boolean flag = ((IndexedEndpoint) endpoint).isDefault();

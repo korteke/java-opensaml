@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Evaluate a signature in sequence using a chain of subordinate trust engines. If the signature may be established as
@@ -48,19 +48,19 @@ import com.google.common.collect.Lists;
 public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ChainingSignatureTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingSignatureTrustEngine.class);
 
     /** The chain of subordinate trust engines. */
-    private List<SignatureTrustEngine> engines;
+    @Nonnull @NonnullElements private List<SignatureTrustEngine> engines;
 
     /**
      *  Constructor. 
      *  
      *  @param chain the list of trust engines in the chain
      */
-    public ChainingSignatureTrustEngine(@Nonnull final List<SignatureTrustEngine> chain) {
-        Constraint.isNotNull(chain, "SignatureTrustEngine list was null");
-        engines = Lists.newArrayList(Collections2.filter(chain, Predicates.notNull()));
+    public ChainingSignatureTrustEngine(@Nonnull @NonnullElements final List<SignatureTrustEngine> chain) {
+        Constraint.isNotNull(chain, "SignatureTrustEngine list cannot be null");
+        engines = new ArrayList<>(Collections2.filter(chain, Predicates.notNull()));
     }
 
     /**
@@ -73,15 +73,18 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public KeyInfoCredentialResolver getKeyInfoResolver() {
         // Chaining signature trust engine does not support an attached KeyInfoResolver
         return null;
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean validate(@Nonnull final Signature token, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
-        for (SignatureTrustEngine engine : engines) {
+        
+        for (final SignatureTrustEngine engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
                 log.debug("Signature was trusted by chain member: {}", engine.getClass().getName());
                 return true;
@@ -91,10 +94,12 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
             @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
             @Nonnull final Credential candidateCredential) throws SecurityException {
-        for (SignatureTrustEngine engine : engines) {
+        
+        for (final SignatureTrustEngine engine : engines) {
             if (engine.validate(signature, content, algorithmURI, trustBasisCriteria, candidateCredential)) {
                 log.debug("Signature was trusted by chain member: {}", engine.getClass().getName());
                 return true;

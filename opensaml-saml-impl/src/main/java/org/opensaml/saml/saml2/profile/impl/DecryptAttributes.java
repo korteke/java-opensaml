@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -38,8 +39,6 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 /**
  * Action to decrypt an {@link EncryptedAttribute} element and replace it with the decrypted
@@ -118,7 +117,7 @@ public class DecryptAttributes extends AbstractDecryptAction {
     private void processAssertion(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final Assertion assertion) throws DecryptionException {
 
-        final Collection<Attribute> decrypteds = Lists.newArrayList();
+        final Collection<Attribute> decrypteds = new ArrayList<>();
         
         for (final AttributeStatement s : assertion.getAttributeStatements()) {
             final Iterator<EncryptedAttribute> i = s.getEncryptedAttributes().iterator();

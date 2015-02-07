@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.profile.logic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +55,6 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 /**
  * Predicate to determine whether an {@link EntityDescriptor} or its parent groups contain an {@EntityAttribute}
@@ -82,8 +82,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         
         Constraint.isNotNull(candidates, "Attribute collection cannot be null");
         
-        candidateSet = Lists.newArrayListWithExpectedSize(candidates.size());
-        candidateSet.addAll(Collections2.filter(candidates, Predicates.notNull()));
+        candidateSet = new ArrayList<>(Collections2.filter(candidates, Predicates.notNull()));
         
         trimTags = trim;
     }
@@ -122,7 +121,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             final List<XMLObject> children = exts.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME);
             if (!children.isEmpty() && children.get(0) instanceof EntityAttributes) {
                 if (entityAttributes == null) {
-                    entityAttributes = Lists.newArrayList();
+                    entityAttributes = new ArrayList<>();
                 }
                 entityAttributes.addAll(((EntityAttributes) children.get(0)).getAttributes());
             }
@@ -135,7 +134,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
                 final List<XMLObject> children = exts.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME);
                 if (!children.isEmpty() && children.get(0) instanceof EntityAttributes) {
                     if (entityAttributes == null) {
-                        entityAttributes = Lists.newArrayList();
+                        entityAttributes = new ArrayList<>();
                     }
                     entityAttributes.addAll(((EntityAttributes) children.get(0)).getAttributes());
                 }
@@ -227,7 +226,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          */
         public void setValues(@Nonnull @NonnullElements final Collection<String> vals) {
             Constraint.isNotNull(vals, "Values collection cannot be null");
-            values = Lists.newArrayListWithExpectedSize(vals.size());
+            values = new ArrayList<>(vals.size());
             for (final String value : vals) {
                 if (value != null) {
                     values.add(value);
@@ -251,7 +250,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          */
         public void setRegexps(@Nonnull @NonnullElements final Collection<Pattern> exps) {
             Constraint.isNotNull(exps, "Regular expressions collection cannot be null");
-            regexps = Lists.newArrayListWithExpectedSize(exps.size());
+            regexps = new ArrayList<>(exps.size());
             regexps.addAll(Collections2.filter(exps, Predicates.notNull()));
         }
     }

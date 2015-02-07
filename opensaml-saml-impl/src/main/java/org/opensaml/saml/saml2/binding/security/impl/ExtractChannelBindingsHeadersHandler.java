@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.binding.security.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,8 +36,6 @@ import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 /**
  * MessageHandler to process {@link ChannelBindings} SOAP header blocks in an incoming SOAP envelope
@@ -84,7 +83,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
-        final Collection<ChannelBindings> channelBindings = Lists.newArrayList();
+        final Collection<ChannelBindings> channelBindings = new ArrayList<>();
         
         final List<XMLObject> headers = SOAPSupport.getInboundHeaderBlock(messageContext,
                 ChannelBindings.DEFAULT_ELEMENT_NAME, null, finalDestination);

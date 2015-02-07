@@ -17,6 +17,7 @@
 
 package org.opensaml.profile.logic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -33,7 +34,6 @@ import org.opensaml.messaging.context.BaseContext;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.net.InetAddresses;
 
 /**
@@ -60,7 +60,10 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     public void setAddressRanges(@Nonnull @NonnullElements Iterable<IPRange> ranges) {
         Constraint.isNotNull(ranges, "Address range collection cannot be null");
         
-        addressRanges = Lists.newArrayList(Iterables.filter(ranges, Predicates.notNull()));
+        addressRanges = new ArrayList<>();
+        for (final IPRange range : Iterables.filter(ranges, Predicates.notNull())) {
+            addressRanges.add(range);
+        }
     }
     
     /**
@@ -88,4 +91,5 @@ public class IPRangePredicate implements Predicate<BaseContext> {
         
         return false;
     }
+    
 }

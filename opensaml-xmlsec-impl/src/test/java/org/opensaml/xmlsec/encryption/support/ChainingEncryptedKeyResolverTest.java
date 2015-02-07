@@ -18,6 +18,8 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,9 +31,6 @@ import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.internal.annotations.Sets;
-
-import com.google.common.collect.Lists;
 
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
@@ -50,10 +49,10 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         EncryptedKeyResolver inline = new InlineEncryptedKeyResolver();
         EncryptedKeyResolver rm = new SimpleRetrievalMethodEncryptedKeyResolver();
-        resolverChain = Lists.newArrayList(inline, rm);
+        resolverChain = Arrays.asList(inline, rm);
         //resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
         
-        recipients = Sets.newHashSet();
+        recipients = new HashSet<>();
     }
     
     /** Test error case of empty resolver chain. */
@@ -203,7 +202,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      * @return a list of EncryptedKey elements
      */
     private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
-        List<EncryptedKey> allKeys = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> allKeys = new ArrayList<>();
         allKeys.addAll(sxo.getSimpleXMLObjects().get(0).getEncryptedData().getKeyInfo().getEncryptedKeys());
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
            if (xmlObject instanceof EncryptedKey)  {
@@ -221,7 +220,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      * @return list of resolved EncryptedKeys
      */
     private List<EncryptedKey> generateList(EncryptedData encData, EncryptedKeyResolver ekResolver) {
-        List<EncryptedKey> resolved = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> resolved = new ArrayList<>();
         for (EncryptedKey encKey : ekResolver.resolve(encData)) {
             resolved.add(encKey);
         }

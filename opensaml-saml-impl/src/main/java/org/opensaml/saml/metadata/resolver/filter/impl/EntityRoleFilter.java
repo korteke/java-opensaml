@@ -40,8 +40,6 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
 /**
  * A filter that removes roles from an entity descriptor. For those roles specified within the SAML metadata
  * specification the role element QName is used to identify the role. For other roles, those that appear as
@@ -78,7 +76,7 @@ public class EntityRoleFilter implements MetadataFilter {
      * @param keptRoles list of roles NOT removed by this filter
      */
     public EntityRoleFilter(@Nullable final List<QName> keptRoles) {
-        roleWhiteList = Lists.newArrayList();
+        roleWhiteList = new ArrayList<>();
 
         if (keptRoles != null) {
             roleWhiteList.addAll(keptRoles);
@@ -168,7 +166,7 @@ public class EntityRoleFilter implements MetadataFilter {
         // First we filter out any contained EntityDescriptors
         List<EntityDescriptor> entityDescriptors = descriptor.getEntityDescriptors();
         if (entityDescriptors != null && !entityDescriptors.isEmpty()) {
-            List<EntityDescriptor> emptyEntityDescriptors = new ArrayList<EntityDescriptor>();
+            List<EntityDescriptor> emptyEntityDescriptors = new ArrayList<>();
             Iterator<EntityDescriptor> entityDescriptorsItr = entityDescriptors.iterator();
             EntityDescriptor entityDescriptor;
             List<RoleDescriptor> entityRoles;
@@ -190,7 +188,7 @@ public class EntityRoleFilter implements MetadataFilter {
         // Next, contained EntityDescriptors
         List<EntitiesDescriptor> entitiesDescriptors = descriptor.getEntitiesDescriptors();
         if (entitiesDescriptors != null && !entitiesDescriptors.isEmpty()) {
-            List<EntitiesDescriptor> emptyEntitiesDescriptors = new ArrayList<EntitiesDescriptor>();
+            List<EntitiesDescriptor> emptyEntitiesDescriptors = new ArrayList<>();
             Iterator<EntitiesDescriptor> entitiesDescriptorsItr = entitiesDescriptors.iterator();
             EntitiesDescriptor entitiesDescriptor;
             while (entitiesDescriptorsItr.hasNext()) {

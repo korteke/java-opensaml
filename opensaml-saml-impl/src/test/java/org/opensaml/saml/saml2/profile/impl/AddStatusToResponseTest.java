@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.util.Arrays;
+
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -31,8 +33,6 @@ import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 /** {@link AddStatusToResponse} unit test. */
 public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
@@ -66,7 +66,7 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test public void testMultiStatus() throws ComponentInitializationException {
-        action.setStatusCodes(Lists.newArrayList(StatusCode.REQUESTER, StatusCode.REQUEST_VERSION_DEPRECATED));
+        action.setStatusCodes(Arrays.asList(StatusCode.REQUESTER, StatusCode.REQUEST_VERSION_DEPRECATED));
         action.initialize();
         
         action.execute(prc);
