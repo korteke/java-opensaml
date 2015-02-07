@@ -23,9 +23,13 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.XMLConstants;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
@@ -411,11 +415,20 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
      * @param request
      * @param htmlContentString
      * @throws XMLParserException
+     * @throws ComponentInitializationException 
      */
-    private void populateRequest(MockHttpServletRequest request, String htmlContentString) throws XMLParserException {
+    private void populateRequest(MockHttpServletRequest request, String htmlContentString) throws XMLParserException, ComponentInitializationException {
         request.setContent(htmlContentString.getBytes());
+        
+        // Encoder template now carries HTML 5 DOCTYPE, so have to use a parser pool that allows this.
+        HashMap<String, Boolean> features = new HashMap<>();
+        features.put(XMLConstants.FEATURE_SECURE_PROCESSING, false);
+        features.put("http://apache.org/xml/features/disallow-doctype-decl", false);
+        BasicParserPool pp = new BasicParserPool();
+        pp.setBuilderFeatures(features);
+        pp.initialize();
 
-        Document doc = parserPool.parse(new ByteArrayInputStream(htmlContentString.getBytes()));
+        Document doc = pp.parse(new ByteArrayInputStream(htmlContentString.getBytes()));
         // html
         Element current = doc.getDocumentElement();
         // head
@@ -429,7 +442,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         current = ElementSupport.getFirstChildElement(current);
         // list of form input fields
         List<Element> inputs =
-                ElementSupport.getChildElementsByTagNameNS(current, "http://www.w3.org/1999/xhtml", "input");
+                ElementSupport.getChildElementsByTagNameNS(current, null, "input");
         for (Element element : inputs) {
             String name = element.getAttributeNS(null, "name");
             String value = element.getAttributeNS(null, "value");
