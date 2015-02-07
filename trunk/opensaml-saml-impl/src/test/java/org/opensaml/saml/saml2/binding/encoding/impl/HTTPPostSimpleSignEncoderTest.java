@@ -129,7 +129,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         // TODO: this hashes differently with endorsed Xerces
-        Assert.assertEquals(response.getContentAsString().hashCode(), 138273327);
+        Assert.assertEquals(response.getContentAsString().hashCode(), 300154326);
     }
 
     @Test
@@ -170,7 +170,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         // TODO: this hashes differently with endorsed Xerces
-        Assert.assertEquals(response.getContentAsString().hashCode(), -198852454);
+        Assert.assertEquals(response.getContentAsString().hashCode(), 1094784467);
     }
     
     @Test

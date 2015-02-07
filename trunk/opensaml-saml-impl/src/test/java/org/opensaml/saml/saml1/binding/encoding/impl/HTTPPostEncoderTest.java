@@ -99,6 +99,6 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         // TODO: hash is different with endorsed Xerces
-        Assert.assertEquals(response.getContentAsString().hashCode(), 2014741896);
+        Assert.assertEquals(response.getContentAsString().hashCode(), 1601070451);
     }
 }
