@@ -19,6 +19,7 @@ package org.opensaml.saml.common.profile.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -47,7 +48,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Sets;
 
 /**
  * Action that adds the <code>InResponseTo</code> attribute to a response message if a SAML message ID is set on
@@ -164,7 +164,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
         public void setSuppressForBindings(@Nonnull @NonnullElements Collection<String> bindings) {
             Constraint.isNotNull(bindings, "Bindings collection cannot be null");
             
-            suppressForBindings = Sets.newHashSet();
+            suppressForBindings = new HashSet<>();
             for (final String b : bindings) {
                 final String trimmed = StringSupport.trimOrNull(b);
                 if (trimmed != null) {

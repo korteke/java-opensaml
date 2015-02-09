@@ -18,7 +18,9 @@
 package org.opensaml.security.x509.impl;
 
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,7 +45,6 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * A basic implementaion of {@link X509CredentialNameEvaluator} which evaluates various identifiers 
@@ -101,7 +102,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
         setCheckSubjectAltNames(true);
         setCheckSubjectDNCommonName(true);
         setCheckSubjectDN(true);
-        setSubjectAltNameTypes(Sets.newHashSet(X509Support.DNS_ALT_NAME, X509Support.URI_ALT_NAME));
+        setSubjectAltNameTypes(new HashSet<>(Arrays.asList(X509Support.DNS_ALT_NAME, X509Support.URI_ALT_NAME)));
     }
 
     /**
@@ -137,7 +138,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
         if (nameTypes == null) {
             subjectAltNameTypes = Collections.emptySet();
         } else {
-            subjectAltNameTypes = Sets.newHashSet(Collections2.filter(nameTypes, Predicates.notNull()));
+            subjectAltNameTypes = new HashSet<>(Collections2.filter(nameTypes, Predicates.notNull()));
         }
     }
 

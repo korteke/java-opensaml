@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,7 +33,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * Basic implementation of {@link WhitelistBlacklistConfiguration}.
@@ -94,7 +94,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
             whitelist = Collections.emptySet();
             return;
         }
-        whitelist = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
+        whitelist = new HashSet<>(StringSupport.normalizeStringCollection(uris));
     }
 
     /** 
@@ -137,7 +137,7 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
             blacklist = Collections.emptySet();
             return;
         }
-        blacklist = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
+        blacklist = new HashSet<>(StringSupport.normalizeStringCollection(uris));
     }
 
     /** 

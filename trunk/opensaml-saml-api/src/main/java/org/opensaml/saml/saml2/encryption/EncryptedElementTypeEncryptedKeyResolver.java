@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.encryption;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -28,8 +29,6 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.AbstractEncryptedKeyResolver;
 
-import com.google.common.collect.Sets;
-
 /**
  * An implementation of {@link org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver}
  * which resolves {@link EncryptedKey} elements which appear as immediate children of the
@@ -39,7 +38,7 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
     
     /** Constructor. */
     public EncryptedElementTypeEncryptedKeyResolver() {
-        super();
+        
     }
 
     /** 
@@ -57,20 +56,20 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
      * @param recipient the recipient
      */
     public EncryptedElementTypeEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Sets.newHashSet(recipient));
+        this(Collections.singleton(recipient));
     }
 
     /** {@inheritDoc} */
     public Iterable<EncryptedKey> resolve(EncryptedData encryptedData) {
-        List<EncryptedKey> resolvedEncKeys = new ArrayList<EncryptedKey>();
+        final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
-        if (! (encryptedData.getParent() instanceof EncryptedElementType) ) {
+        if (!(encryptedData.getParent() instanceof EncryptedElementType) ) {
             return resolvedEncKeys;
         }
         
-        EncryptedElementType encElementType = (EncryptedElementType) encryptedData.getParent();
+        final EncryptedElementType encElementType = (EncryptedElementType) encryptedData.getParent();
         
-        for (EncryptedKey encKey : encElementType.getEncryptedKeys()) {
+        for (final EncryptedKey encKey : encElementType.getEncryptedKeys()) {
             if (matchRecipient(encKey.getRecipient())) {
                 resolvedEncKeys.add(encKey);
             }
@@ -78,4 +77,5 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
         
         return resolvedEncKeys;
     }
+    
 }

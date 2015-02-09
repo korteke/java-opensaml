@@ -17,18 +17,18 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.Arrays;
+
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Sets;
-
 public class BlacklistPredicateTest {
 
     @Test
     public void testBasic() {
-        BlacklistPredicate predicate = new BlacklistPredicate(Sets.newHashSet("A", "B", "C", "D"));
+        BlacklistPredicate predicate = new BlacklistPredicate(Arrays.asList("A", "B", "C", "D"));
         
         Assert.assertFalse(predicate.apply("A"));
         Assert.assertFalse(predicate.apply("B"));
@@ -45,7 +45,7 @@ public class BlacklistPredicateTest {
     
     @Test
     public void testWithNullsInSet() {
-        BlacklistPredicate predicate = new BlacklistPredicate(Sets.newHashSet("A", null, "B", null, "C", null, "D"));
+        BlacklistPredicate predicate = new BlacklistPredicate(Arrays.asList("A", null, "B", null, "C", null, "D"));
         
         Assert.assertFalse(predicate.apply("A"));
         Assert.assertFalse(predicate.apply("B"));
@@ -62,12 +62,12 @@ public class BlacklistPredicateTest {
     
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testNullSet() {
-        BlacklistPredicate predicate = new BlacklistPredicate(null);
+        new BlacklistPredicate(null);
     }
     
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testNullArg() {
-        BlacklistPredicate predicate = new BlacklistPredicate(Sets.newHashSet("A", "B", "C", "D"));
+        BlacklistPredicate predicate = new BlacklistPredicate(Arrays.asList("A", "B", "C", "D"));
         predicate.apply(null);
     }
     

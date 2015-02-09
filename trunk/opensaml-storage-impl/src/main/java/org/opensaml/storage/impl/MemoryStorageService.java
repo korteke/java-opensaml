@@ -18,6 +18,7 @@
 package org.opensaml.storage.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TimerTask;
@@ -38,9 +39,6 @@ import org.opensaml.storage.MutableStorageRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
-
-
 /**
  * Implementation of {@link AbstractMapBackedStorageService} that stores data in-memory in a shared data structure 
  * with no persistence.
@@ -60,7 +58,7 @@ public class MemoryStorageService extends AbstractMapBackedStorageService {
     @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        contextMap = Maps.newHashMap();
+        contextMap = new HashMap<>();
         lock = new ReentrantReadWriteLock(true);
     }
 

@@ -18,6 +18,7 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -33,7 +34,6 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Sets;
 
 /**
  * Function which implements a basic strategy for extracting trusted names for PKIX trust engine evaluation.
@@ -71,7 +71,7 @@ public class BasicDynamicTrustedNamesStrategy implements Function<XMLObject, Set
                 rawResult = Collections.singleton(((EntityDescriptor)parent).getEntityID());
             }
         } else if (input instanceof AffiliationDescriptor) {
-            rawResult = Sets.newHashSet();
+            rawResult = new HashSet<>();
             
             rawResult.add(((AffiliationDescriptor)input).getOwnerID());
             
@@ -82,7 +82,7 @@ public class BasicDynamicTrustedNamesStrategy implements Function<XMLObject, Set
         }
         
         if (rawResult != null) {
-            return Sets.newHashSet(StringSupport.normalizeStringCollection(rawResult));
+            return new HashSet<>(StringSupport.normalizeStringCollection(rawResult));
         } else {
             return Collections.emptySet();
         }

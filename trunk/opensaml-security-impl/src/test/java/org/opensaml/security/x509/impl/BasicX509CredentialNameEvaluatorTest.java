@@ -18,6 +18,8 @@
 package org.opensaml.security.x509.impl;
 
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,8 +31,6 @@ import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
@@ -81,14 +81,14 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         
         altNameDNS = "asimov.example.org";
         altNameURL = "http://heinlein.example.org";
-        names = new HashSet<String>();
+        names = new HashSet<>();
         
         // Reset evaluator checks to a known starting state, in case defaults change in future.
         evaluator = new BasicX509CredentialNameEvaluator();
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(true);
         evaluator.setCheckSubjectDNCommonName(true);
-        evaluator.setSubjectAltNameTypes(Sets.newHashSet(X509Support.DNS_ALT_NAME, X509Support.URI_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(new HashSet<>(Arrays.asList(X509Support.DNS_ALT_NAME, X509Support.URI_ALT_NAME)));
     }
     
     @Test
@@ -151,7 +151,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Sets.newHashSet(X509Support.DNS_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.DNS_ALT_NAME));
         
         names.add(altNameDNS);
         
@@ -163,7 +163,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Sets.newHashSet(X509Support.DNS_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.DNS_ALT_NAME));
         
         names.add("wacky.internet2.edu");
         
@@ -175,7 +175,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Sets.newHashSet(X509Support.URI_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.URI_ALT_NAME));
         
         names.add(altNameURL);
         
@@ -187,7 +187,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Sets.newHashSet(X509Support.URI_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.URI_ALT_NAME));
         
         names.add("http://wacky.internet2.edu/idp");
         

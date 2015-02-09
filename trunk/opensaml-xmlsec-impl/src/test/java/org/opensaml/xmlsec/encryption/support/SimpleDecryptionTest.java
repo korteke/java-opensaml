@@ -22,6 +22,7 @@ import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.crypto.SecretKey;
@@ -45,8 +46,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
-
-import com.google.common.collect.Sets;
 
 /**
  * Simple tests for decryption.
@@ -286,7 +285,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
             
             Decrypter decrypter = new Decrypter(null, kekResolver, null, 
-                    Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
+                    Arrays.asList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
                             "urn-x:some:bogus:algo",
                             EncryptionConstants.ALGO_ID_MGF1_SHA256), 
                             null);
@@ -317,7 +316,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
             
             Decrypter decrypter = new Decrypter(null, kekResolver, null, 
-                    Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
+                    Arrays.asList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
                             EncryptionConstants.ALGO_ID_DIGEST_SHA256,
                             "urn-x:some:bogus:algo"),
                             null);
@@ -338,7 +337,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptedKeyAlgorithmWhitelistPass() throws DecryptionException, EncryptionException, XMLParserException {
         // Note: have to whitelist the implicit digest method and MGF, which are the SHA-1 variants.
         Decrypter decrypter = new Decrypter(null, kekResolver, null, 
-                Sets.newHashSet(kekURI, SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1), null);
+                Arrays.asList(kekURI, SignatureConstants.ALGO_ID_DIGEST_SHA1, EncryptionConstants.ALGO_ID_MGF1_SHA1), null);
         decrypter.decryptKey(encryptedKey, encURI);
         
         providerSupport.loadBC();
@@ -354,7 +353,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
             
             decrypter = new Decrypter(null, kekResolver, null, 
-                    Sets.newHashSet(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
+                    Arrays.asList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 
                             EncryptionConstants.ALGO_ID_DIGEST_SHA256, 
                             EncryptionConstants.ALGO_ID_MGF1_SHA256), 
                             null);

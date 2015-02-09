@@ -17,12 +17,12 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.Arrays;
+
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 /**
  *
@@ -31,7 +31,7 @@ public class WhitelistPredicateTest {
 
     @Test
     public void testBasic() {
-        WhitelistPredicate predicate = new WhitelistPredicate(Sets.newHashSet("A", "B", "C", "D"));
+        WhitelistPredicate predicate = new WhitelistPredicate(Arrays.asList("A", "B", "C", "D"));
         
         Assert.assertTrue(predicate.apply("A"));
         Assert.assertTrue(predicate.apply("B"));
@@ -48,7 +48,7 @@ public class WhitelistPredicateTest {
 
     @Test
     public void testWithNullsInSet() {
-        WhitelistPredicate predicate = new WhitelistPredicate(Sets.newHashSet("A", null, "B", null, "C", null, "D"));
+        WhitelistPredicate predicate = new WhitelistPredicate(Arrays.asList("A", null, "B", null, "C", null, "D"));
         
         Assert.assertTrue(predicate.apply("A"));
         Assert.assertTrue(predicate.apply("B"));
@@ -65,12 +65,12 @@ public class WhitelistPredicateTest {
     
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testNullSet() {
-        WhitelistPredicate predicate = new WhitelistPredicate(null);
+        new WhitelistPredicate(null);
     }
     
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testNullArg() {
-        WhitelistPredicate predicate = new WhitelistPredicate(Sets.newHashSet("A", "B", "C", "D"));
+        WhitelistPredicate predicate = new WhitelistPredicate(Arrays.asList("A", "B", "C", "D"));
         predicate.apply(null);
     }
     

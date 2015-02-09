@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -75,8 +76,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-
 
 /**
  * Implementation of {@link RequestScopedStorageService} that stores data in-memory in a servlet request attribute,
@@ -463,7 +462,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             return (Map<String, Map<String, MutableStorageRecord>>) contextMap;
         }
 
-        final Map<String, Map<String, MutableStorageRecord>> newMap = Maps.newHashMap();
+        final Map<String, Map<String, MutableStorageRecord>> newMap = new HashMap<>();
         httpServletRequest.setAttribute(CONTEXT_MAP_ATTRIBUTE + '.' + cookieName, newMap);
         
         // The first time through, do a load from the cookie.

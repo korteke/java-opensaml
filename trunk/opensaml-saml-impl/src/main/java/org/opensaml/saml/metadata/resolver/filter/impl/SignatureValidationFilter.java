@@ -49,7 +49,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.collect.Sets;
 
 /**
  * A metadata filter that validates XML signatures.
@@ -300,7 +299,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         
         // Can't use IndexedXMLObjectChildrenList sublist iterator remove() to remove members,
         // so just note them in a set and then remove after iteration has completed.
-        final HashSet<XMLObject> toRemove = Sets.newHashSet();
+        final HashSet<XMLObject> toRemove = new HashSet<>();
         
         final Iterator<EntityDescriptor> entityIter = entitiesDescriptor.getEntityDescriptors().iterator();
         while (entityIter.hasNext()) {

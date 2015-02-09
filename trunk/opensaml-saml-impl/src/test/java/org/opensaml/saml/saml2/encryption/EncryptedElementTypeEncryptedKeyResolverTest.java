@@ -19,7 +19,11 @@ package org.opensaml.saml.saml2.encryption;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -28,8 +32,6 @@ import org.opensaml.saml.saml2.encryption.EncryptedElementTypeEncryptedKeyResolv
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
-
-import com.google.common.collect.Sets;
 
 /**
  * Test the SAML EncryptedElementType encrypted key resolver, with keys as peers.
@@ -73,7 +75,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo", "bar", "baz"));
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "bar", "baz")));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -94,7 +96,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo"));
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -115,7 +117,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("bar"));
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Collections.singleton("bar"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
@@ -157,7 +159,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo"));
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
@@ -178,7 +180,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
         List<EncryptedKey> allKeys = encAssertion.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new EncryptedElementTypeEncryptedKeyResolver(Sets.newHashSet("foo", "baz"));
+        resolver = new EncryptedElementTypeEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 3, "Incorrect number of resolved EncryptedKeys found");
@@ -196,7 +198,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
      * @return list of resolved EncryptedKeys
      */
     private List<EncryptedKey> generateList(EncryptedData encData, EncryptedKeyResolver ekResolver) {
-        List<EncryptedKey> resolved = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> resolved = new ArrayList<>();
         for (EncryptedKey encKey : ekResolver.resolve(encData)) {
             resolved.add(encKey);
         }

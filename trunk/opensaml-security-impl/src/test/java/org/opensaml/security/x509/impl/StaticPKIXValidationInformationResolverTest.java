@@ -18,6 +18,7 @@
 package org.opensaml.security.x509.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,17 +31,16 @@ import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Sets;
-
 public class StaticPKIXValidationInformationResolverTest {
     
     @Test
     public void testDynamicNamesDisabled() throws ResolverException {
-        HashSet<String> staticTrustedNames = Sets.newHashSet("foo", "bar");
-        ArrayList<PKIXValidationInformation> staticPKIXInfo = new ArrayList<>();
+        final HashSet<String> staticTrustedNames = new HashSet<>(Arrays.asList("foo", "bar"));
+        final ArrayList<PKIXValidationInformation> staticPKIXInfo = new ArrayList<>();
         staticPKIXInfo.add(new BasicPKIXValidationInformation(null, null, 1));
         
-        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(staticPKIXInfo, staticTrustedNames);
+        final StaticPKIXValidationInformationResolver resolver =
+                new StaticPKIXValidationInformationResolver(staticPKIXInfo, staticTrustedNames);
         
         Assert.assertTrue(resolver.resolve(null).iterator().hasNext());
         Assert.assertTrue(resolver.resolve(new CriteriaSet()).iterator().hasNext());
@@ -59,7 +59,7 @@ public class StaticPKIXValidationInformationResolverTest {
         Assert.assertEquals(trustedNamesResult.size(), staticTrustedNames.size());
         Assert.assertTrue(trustedNamesResult.containsAll(staticTrustedNames));
         
-        HashSet<String> dynamicTrustedNames = Sets.newHashSet("abc", "xyz");
+        final HashSet<String> dynamicTrustedNames = new HashSet<>(Arrays.asList("abc", "xyz"));
         trustedNamesResult = resolver.resolveTrustedNames(new CriteriaSet(new TrustedNamesCriterion(dynamicTrustedNames)));
         Assert.assertNotNull(trustedNamesResult);
         Assert.assertEquals(trustedNamesResult.size(), staticTrustedNames.size());
@@ -68,11 +68,12 @@ public class StaticPKIXValidationInformationResolverTest {
     
     @Test
     public void testDynamicNamesEnabled() throws ResolverException {
-        HashSet<String> staticTrustedNames = Sets.newHashSet("foo", "bar");
-        ArrayList<PKIXValidationInformation> staticPKIXInfo = new ArrayList<>();
+        final HashSet<String> staticTrustedNames = new HashSet<>(Arrays.asList("foo", "bar"));
+        final ArrayList<PKIXValidationInformation> staticPKIXInfo = new ArrayList<>();
         staticPKIXInfo.add(new BasicPKIXValidationInformation(null, null, 1));
         
-        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(staticPKIXInfo, staticTrustedNames, true);
+        final StaticPKIXValidationInformationResolver resolver =
+                new StaticPKIXValidationInformationResolver(staticPKIXInfo, staticTrustedNames, true);
         
         Assert.assertTrue(resolver.resolve(null).iterator().hasNext());
         Assert.assertTrue(resolver.resolve(new CriteriaSet()).iterator().hasNext());
@@ -91,7 +92,7 @@ public class StaticPKIXValidationInformationResolverTest {
         Assert.assertEquals(trustedNamesResult.size(), staticTrustedNames.size());
         Assert.assertTrue(trustedNamesResult.containsAll(staticTrustedNames));
         
-        HashSet<String> dynamicTrustedNames = Sets.newHashSet("abc", "xyz");
+        final HashSet<String> dynamicTrustedNames = new HashSet<>(Arrays.asList("abc", "xyz"));
         trustedNamesResult = resolver.resolveTrustedNames(new CriteriaSet(new TrustedNamesCriterion(dynamicTrustedNames)));
         Assert.assertNotNull(trustedNamesResult);
         Assert.assertEquals(trustedNamesResult.size(), staticTrustedNames.size() + dynamicTrustedNames.size());
@@ -101,11 +102,12 @@ public class StaticPKIXValidationInformationResolverTest {
     
     @Test
     public void testEntityIdIncluded() throws ResolverException {
-        HashSet<String> staticTrustedNames = Sets.newHashSet("foo", "bar");
-        ArrayList<PKIXValidationInformation> staticPKIXInfo = new ArrayList<>();
+        final HashSet<String> staticTrustedNames = new HashSet<>(Arrays.asList("foo", "bar"));
+        final ArrayList<PKIXValidationInformation> staticPKIXInfo = new ArrayList<>();
         staticPKIXInfo.add(new BasicPKIXValidationInformation(null, null, 1));
         
-        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(staticPKIXInfo, staticTrustedNames, true);
+        final StaticPKIXValidationInformationResolver resolver =
+                new StaticPKIXValidationInformationResolver(staticPKIXInfo, staticTrustedNames, true);
         
         Set<String> trustedNamesResult = null;
         
@@ -115,7 +117,7 @@ public class StaticPKIXValidationInformationResolverTest {
         Assert.assertTrue(trustedNamesResult.containsAll(staticTrustedNames));
         Assert.assertTrue(trustedNamesResult.contains("myEntity"));
         
-        HashSet<String> dynamicTrustedNames = Sets.newHashSet("abc", "xyz");
+        final HashSet<String> dynamicTrustedNames = new HashSet<>(Arrays.asList("abc", "xyz"));
         criteriaSet = new CriteriaSet(new EntityIdCriterion("myEntity"), new TrustedNamesCriterion(dynamicTrustedNames));
         trustedNamesResult = resolver.resolveTrustedNames(criteriaSet);
         Assert.assertEquals(trustedNamesResult.size(), staticTrustedNames.size() + dynamicTrustedNames.size() + 1);

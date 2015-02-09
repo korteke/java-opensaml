@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.profile.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -64,7 +65,6 @@ import org.w3c.dom.Element;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import com.google.common.collect.Sets;
 
 /**
  * Action that encrypts all {@link NameID}s in a message obtained from a lookup strategy,
@@ -116,8 +116,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * @param formats   formats to exclude
      */
     public void setExcludedFormats(@Nonnull @NonnullElements final Collection<String> formats) {
-        excludedFormats = Sets.newHashSetWithExpectedSize(formats.size());
-        excludedFormats.addAll(StringSupport.normalizeStringCollection(formats));
+        excludedFormats = new HashSet<>(StringSupport.normalizeStringCollection(formats));
     }
 
     /** {@inheritDoc} */

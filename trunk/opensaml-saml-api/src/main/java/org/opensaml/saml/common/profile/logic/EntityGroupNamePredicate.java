@@ -18,6 +18,7 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -34,7 +35,6 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * Predicate to determine whether one of a set of names matches any of an entity's containing
@@ -53,7 +53,7 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
     public EntityGroupNamePredicate(@Nonnull @NonnullElements final Collection<String> names) {
         
         Constraint.isNotNull(names, "Group name collection cannot be null");
-        groupNames = Sets.newHashSetWithExpectedSize(names.size());
+        groupNames = new HashSet<>(names.size());
         for (final String name : names) {
             final String trimmed = StringSupport.trimOrNull(name);
             if (trimmed != null) {

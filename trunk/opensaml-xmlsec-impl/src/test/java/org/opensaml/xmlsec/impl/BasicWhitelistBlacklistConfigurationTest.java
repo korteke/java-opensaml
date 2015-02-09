@@ -1,14 +1,14 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.Arrays;
+
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 public class BasicWhitelistBlacklistConfigurationTest {
     
@@ -34,7 +34,7 @@ public class BasicWhitelistBlacklistConfigurationTest {
     
     @Test
     public void testValidWhitelist() {
-        config.setWhitelistedAlgorithms(Sets.newHashSet("  A   ", null, "   B   ", null, "   C   "));
+        config.setWhitelistedAlgorithms(Arrays.asList("  A   ", null, "   B   ", null, "   C   "));
         
         Assert.assertEquals(config.getWhitelistedAlgorithms().size(), 3);
         Assert.assertTrue(config.getWhitelistedAlgorithms().contains("A"));
@@ -51,7 +51,7 @@ public class BasicWhitelistBlacklistConfigurationTest {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testWhitelistImmutable() {
-        config.setWhitelistedAlgorithms(Sets.newHashSet("A", "B", "C"));
+        config.setWhitelistedAlgorithms(Arrays.asList("A", "B", "C"));
         config.getWhitelistedAlgorithms().add("D");
     }
 
@@ -69,7 +69,7 @@ public class BasicWhitelistBlacklistConfigurationTest {
 
     @Test
     public void testValidBlacklist() {
-        config.setBlacklistedAlgorithms(Sets.newHashSet("   A   ", null, "   B   ", null, "   C   "));
+        config.setBlacklistedAlgorithms(Arrays.asList("   A   ", null, "   B   ", null, "   C   "));
         
         Assert.assertEquals(config.getBlacklistedAlgorithms().size(), 3);
         Assert.assertTrue(config.getBlacklistedAlgorithms().contains("A"));
@@ -86,7 +86,7 @@ public class BasicWhitelistBlacklistConfigurationTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testBlacklistImmutable() {
-        config.setBlacklistedAlgorithms(Sets.newHashSet("A", "B", "C"));
+        config.setBlacklistedAlgorithms(Arrays.asList("A", "B", "C"));
         config.getBlacklistedAlgorithms().add("D");
     }
     
