@@ -17,7 +17,9 @@
 
 package org.opensaml.saml.common.profile.logic;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -41,7 +43,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
 
 /**
  * Base class for implementations of {@link Predicate} that handle evaluation of name identifier content in various
@@ -67,7 +68,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
     
     /** Constructor. */
     public AbstractNameIDPolicyPredicate() {
-        formats = Sets.newHashSet(NameID.TRANSIENT, NameID.PERSISTENT);
+        formats = new HashSet<>(Arrays.asList(NameID.TRANSIENT, NameID.PERSISTENT));
     }
     
     /**

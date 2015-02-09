@@ -19,7 +19,11 @@ package org.opensaml.xmlsec.encryption.support;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -27,8 +31,6 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
-
-import com.google.common.collect.Sets;
 
 /**
  * Test the inline encrypted key resolver.
@@ -68,7 +70,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(Sets.newHashSet("foo"));
+        resolver = new InlineEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -87,7 +89,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(Sets.newHashSet("bar"));
+        resolver = new InlineEncryptedKeyResolver(Collections.singleton("bar"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
@@ -127,7 +129,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(Sets.newHashSet("foo"));
+        resolver = new InlineEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
@@ -147,7 +149,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(Sets.newHashSet("foo", "baz"));
+        resolver = new InlineEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 3, "Incorrect number of resolved EncryptedKeys found");
@@ -165,7 +167,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      * @return list of resolved EncryptedKeys
      */
     private List<EncryptedKey> generateList(EncryptedData encData, EncryptedKeyResolver ekResolver) {
-        List<EncryptedKey> resolved = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> resolved = new ArrayList<>();
         for (EncryptedKey encKey : ekResolver.resolve(encData)) {
             resolved.add(encKey);
         }

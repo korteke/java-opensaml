@@ -18,6 +18,7 @@
 package org.opensaml.security.x509.tls;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -34,7 +35,6 @@ import org.opensaml.security.x509.X500DNHandler;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * Options for deriving message context issuer names from an client TLS X.509 certificate.
@@ -124,7 +124,7 @@ public class CertificateNameOptions implements Cloneable {
             return;
         }
         
-        subjectAltNames = Sets.newHashSet(Collections2.filter(names, Predicates.notNull()));
+        subjectAltNames = new HashSet<>(Collections2.filter(names, Predicates.notNull()));
     }
 
     /**
@@ -178,7 +178,7 @@ public class CertificateNameOptions implements Cloneable {
             return null;
         }
 
-        clonedOptions.subjectAltNames = new LinkedHashSet<Integer>();
+        clonedOptions.subjectAltNames = new LinkedHashSet<>();
         clonedOptions.subjectAltNames.addAll(this.subjectAltNames);
 
         clonedOptions.x500DNHandler = this.x500DNHandler.clone();

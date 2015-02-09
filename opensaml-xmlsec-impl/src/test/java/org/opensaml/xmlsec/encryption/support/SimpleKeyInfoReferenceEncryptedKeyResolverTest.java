@@ -18,6 +18,9 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,9 +32,6 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
-
 
 /**
  * Test the encrypted key resolver which dereferences KeyInfoReferences.
@@ -83,7 +83,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Sets.newHashSet("foo"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -108,7 +108,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Sets.newHashSet("foo"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -136,7 +136,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Sets.newHashSet("foo", "baz"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
@@ -152,7 +152,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
      * @return a list of EncryptedKey elements
      */
     private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
-        List<EncryptedKey> allKeys = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> allKeys = new ArrayList<>();
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
            if (xmlObject instanceof KeyInfo)  {
                allKeys.addAll(((KeyInfo) xmlObject).getEncryptedKeys());
@@ -169,7 +169,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
      * @return list of resolved EncryptedKeys
      */
     private List<EncryptedKey> generateList(EncryptedData encData, EncryptedKeyResolver ekResolver) {
-        List<EncryptedKey> resolved = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> resolved = new ArrayList<>();
         for (EncryptedKey encKey : ekResolver.resolve(encData)) {
             resolved.add(encKey);
         }

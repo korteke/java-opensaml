@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11.profile.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -46,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
 
 /**
  * Action that builds a SOAP 1.1 {@link Fault} object in the outbound message context.
@@ -240,8 +240,8 @@ public class AddSOAPFault extends AbstractProfileAction {
         public FaultCodeMappingFunction(@Nonnull @NonnullElements final Map<String,QName> mappings) {
             Constraint.isNotNull(mappings, "Faultcode mappings cannot be null");
             
-            codeMappings = Maps.newHashMapWithExpectedSize(mappings.size());
-            for (Map.Entry<String,QName> entry : mappings.entrySet()) {
+            codeMappings = new HashMap<>(mappings.size());
+            for (final Map.Entry<String,QName> entry : mappings.entrySet()) {
                 final String event = StringSupport.trimOrNull(entry.getKey());
                 if (event != null && entry.getValue() != null) {
                     codeMappings.put(event, entry.getValue());

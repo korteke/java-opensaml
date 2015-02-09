@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
@@ -37,8 +38,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 public class BasicSignatureValidationParametersResolverTest {
     
@@ -102,7 +101,7 @@ public class BasicSignatureValidationParametersResolverTest {
 
     @Test
     public void testResolve() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
         Iterable<SignatureValidationParameters> paramsIter = resolver.resolve(criteriaSet);
@@ -127,7 +126,7 @@ public class BasicSignatureValidationParametersResolverTest {
 
     @Test
     public void testResolveSingle() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
         SignatureValidationParameters params = resolver.resolveSingle(criteriaSet);

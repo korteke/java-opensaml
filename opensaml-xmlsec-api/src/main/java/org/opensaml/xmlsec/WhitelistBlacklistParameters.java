@@ -19,6 +19,7 @@ package org.opensaml.xmlsec;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +30,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * The whitelist and blacklist algorithm parameters.
@@ -67,7 +67,7 @@ public class WhitelistBlacklistParameters {
             whiteListedAlgorithmURIs = Collections.emptySet();
             return;
         }
-        whiteListedAlgorithmURIs = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
+        whiteListedAlgorithmURIs = new HashSet<>(StringSupport.normalizeStringCollection(uris));
     }
     
     /**
@@ -89,7 +89,7 @@ public class WhitelistBlacklistParameters {
             blackListedAlgorithmURIs = Collections.emptySet();
             return;
         }
-        blackListedAlgorithmURIs = Sets.newHashSet(StringSupport.normalizeStringCollection(uris));
+        blackListedAlgorithmURIs = new HashSet<>(StringSupport.normalizeStringCollection(uris));
     }
     
 }

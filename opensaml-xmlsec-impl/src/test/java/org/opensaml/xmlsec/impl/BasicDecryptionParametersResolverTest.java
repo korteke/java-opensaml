@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
@@ -35,8 +36,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 /**
  *
@@ -157,7 +156,7 @@ public class BasicDecryptionParametersResolverTest {
     
     @Test
     public void testResolve() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
         config1.setDataKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);
@@ -186,7 +185,7 @@ public class BasicDecryptionParametersResolverTest {
     
     @Test
     public void testResolveSingle() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Sets.newHashSet("foo", "bar"));
+        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
         config1.setDataKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);

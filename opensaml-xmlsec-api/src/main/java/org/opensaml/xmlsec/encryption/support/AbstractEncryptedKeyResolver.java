@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption.support;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * Abstract class implementation for {@link EncryptedKeyResolver}.
@@ -59,7 +59,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @param newRecipents set of recipients
      */
     public AbstractEncryptedKeyResolver(@Nullable final Set<String> newRecipents) {
-        recipients = Sets.newHashSet(StringSupport.normalizeStringCollection(newRecipents));
+        recipients = new HashSet<>(StringSupport.normalizeStringCollection(newRecipents));
     }
 
     /** 
@@ -68,15 +68,16 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @param recipient the recipient
      */
     public AbstractEncryptedKeyResolver(@Nullable final String recipient) {
-        String trimmed = StringSupport.trimOrNull(recipient);
+        final String trimmed = StringSupport.trimOrNull(recipient);
         if (trimmed != null) {
-            recipients = Sets.newHashSet(trimmed);
+            recipients = Collections.singleton(trimmed);
         } else {
             recipients = Collections.emptySet();
         }
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getRecipients() {
         return ImmutableSet.copyOf(recipients);
     }

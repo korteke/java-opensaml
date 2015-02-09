@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -35,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Sets;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
@@ -54,7 +54,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
     
     /** Constructor. */
     public SimpleRetrievalMethodEncryptedKeyResolver() {
-        super();
+        
     }
 
     /** 
@@ -72,14 +72,14 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
      * @param recipient the recipient
      */
     public SimpleRetrievalMethodEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Sets.newHashSet(recipient));
+        this(Collections.singleton(recipient));
     }
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         
-        List<EncryptedKey> resolvedEncKeys = new ArrayList<EncryptedKey>();
+        final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
 
         if (encryptedData.getKeyInfo() == null) {
             return resolvedEncKeys;

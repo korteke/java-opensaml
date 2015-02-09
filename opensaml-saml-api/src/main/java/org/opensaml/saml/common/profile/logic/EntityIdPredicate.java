@@ -18,6 +18,7 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -36,7 +37,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * Predicate that matches an {@link EntityDescriptor} against a set of entityIDs.
@@ -57,7 +57,7 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
     public EntityIdPredicate(@Nonnull @NonnullElements final Collection<String> ids) {
         Constraint.isNotNull(ids, "EntityID collection cannot be null");
         
-        entityIds = Sets.newHashSetWithExpectedSize(ids.size());
+        entityIds = new HashSet<>(ids.size());
         for (final String id : ids) {
             final String trimmed = StringSupport.trimOrNull(id);
             if (trimmed != null) {

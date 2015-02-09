@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -29,8 +30,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
-import com.google.common.collect.Sets;
-
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements
  * within the {@link org.opensaml.xmlsec.signature.KeyInfo} of the {@link EncryptedData} context.
@@ -39,7 +38,7 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     
     /** Constructor. */
     public InlineEncryptedKeyResolver() {
-        super();
+        
     }
 
     /** 
@@ -57,20 +56,20 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param recipient the recipient
      */
     public InlineEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Sets.newHashSet(recipient));
+        this(Collections.singleton(recipient));
     }
 
     /** {@inheritDoc} */
     @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         
-        List<EncryptedKey> resolvedEncKeys = new ArrayList<EncryptedKey>();
+        final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
         if (encryptedData.getKeyInfo() == null) {
             return resolvedEncKeys;
         }
         
-        for (EncryptedKey encKey : encryptedData.getKeyInfo().getEncryptedKeys()) {
+        for (final EncryptedKey encKey : encryptedData.getKeyInfo().getEncryptedKeys()) {
             if (matchRecipient(encKey.getRecipient())) {
                 resolvedEncKeys.add(encKey);
             }

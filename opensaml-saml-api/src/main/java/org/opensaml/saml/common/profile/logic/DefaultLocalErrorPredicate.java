@@ -19,6 +19,7 @@ package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -46,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
 
 /**
  * Predicate that decides whether to handle an error by returning a SAML response to a requester
@@ -130,7 +130,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
         if (events == null) {
             localEvents = Collections.emptySet();
         } else {
-            localEvents = Sets.newHashSetWithExpectedSize(events.size());
+            localEvents = new HashSet<>(events.size());
             for (final String e : events) {
                 final String trimmed = StringSupport.trimOrNull(e);
                 if (trimmed != null) {
@@ -163,7 +163,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
             return true;
         }
 
-        final AuthnRequest authnRequest = new MessageLookup<AuthnRequest>(AuthnRequest.class).apply(
+        final AuthnRequest authnRequest = new MessageLookup<>(AuthnRequest.class).apply(
                 new InboundMessageContextLookup().apply(input));
         if (authnRequest != null && authnRequest.isPassive()) {
             log.debug("Request was a SAML 2 AuthnRequest with IsPassive set, handling error with response");

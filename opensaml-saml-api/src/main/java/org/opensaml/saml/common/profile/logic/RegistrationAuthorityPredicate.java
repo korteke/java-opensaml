@@ -18,6 +18,7 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -31,7 +32,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 /**
  * Predicate to determine whether one of a set of names matches an entity's
@@ -50,7 +50,7 @@ public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPre
     public RegistrationAuthorityPredicate(@Nonnull @NonnullElements final Collection<String> names) {
         
         Constraint.isNotNull(names, "Authority name collection cannot be null");
-        authorities = Sets.newHashSetWithExpectedSize(names.size());
+        authorities = new HashSet<>(names.size());
         for (final String name : names) {
             final String trimmed = StringSupport.trimOrNull(name);
             if (trimmed != null) {

@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -34,8 +35,6 @@ import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
-
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
  * {@link KeyInfoReference} children of the {@link org.opensaml.xmlsec.signature.KeyInfo} of the {@link EncryptedData}
@@ -49,7 +48,7 @@ import com.google.common.collect.Sets;
 public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SimpleKeyInfoReferenceEncryptedKeyResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SimpleKeyInfoReferenceEncryptedKeyResolver.class);
     
     /** Number of times to follow a reference before failing. */
     private int depthLimit;
@@ -75,7 +74,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
      * @param recipient the recipient
      */
     public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Sets.newHashSet(recipient));
+        this(Collections.singleton(recipient));
     }
     
     /**
@@ -97,6 +96,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
     }
     
     /** {@inheritDoc} */
+    @Override
     @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         
@@ -111,7 +111,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
      * @return  encrypted keys
      */
     @Nonnull protected Iterable<EncryptedKey> resolveKeyInfo(@Nullable final KeyInfo keyInfo, int limit) {
-        List<EncryptedKey> resolvedEncKeys = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
         if (keyInfo == null) {
             return resolvedEncKeys;
@@ -120,7 +120,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
         // The first time in, we don't directly resolve any keys, only references.
         // After that, we always start by looking inline.
         if (limit < depthLimit) {
-            for (EncryptedKey encKey : keyInfo.getEncryptedKeys()) {
+            for (final EncryptedKey encKey : keyInfo.getEncryptedKeys()) {
                 if (matchRecipient(encKey.getRecipient())) {
                     resolvedEncKeys.add(encKey);
                 }
@@ -130,8 +130,8 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
         if (limit == 0) {
             log.info("Reached depth limit for KeyInfoReferences");
         } else {
-            for (KeyInfoReference ref : keyInfo.getKeyInfoReferences()) {
-                for (EncryptedKey encKey : resolveKeyInfo(dereferenceURI(ref), limit-1)) {
+            for (final KeyInfoReference ref : keyInfo.getKeyInfoReferences()) {
+                for (final EncryptedKey encKey : resolveKeyInfo(dereferenceURI(ref), limit-1)) {
                     resolvedEncKeys.add(encKey);
                 }
             }
