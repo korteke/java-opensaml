@@ -52,6 +52,10 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.httpclient.HttpClientSecurityConstants;
+import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
+import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,6 +91,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     /** HttpClient credentials provider. */
     private CredentialsProvider credentialsProvider;
     
+    /** Optional trust engine used in evaluating server TLS credentials. */
+    private TrustEngine<Credential> tlsTrustEngine;
+    
     /**
      * Constructor.
      *
@@ -110,6 +117,20 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         
         // The default handler
         responseHandler = new BasicMetadataResponseHandler();
+    }
+    
+    /**
+     * Sets the optional trust engine used in evaluating server TLS credentials.
+     * 
+     * <p>
+     * Must be used in conjunction with an HttpClient instance which is configured with a 
+     * {@link TrustEngineTLSSocketFactory}, otherwise has no effect.
+     * </p>
+     * 
+     * @param engine the trust engine instance to use
+     */
+    public void setTLSTrustEngine(@Nullable final TrustEngine<Credential> engine) {
+        tlsTrustEngine = engine;
     }
     
     /**
@@ -248,7 +269,24 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         
         HttpClientContext context = buildHttpClientContext();
         
-        return httpClient.execute(request, responseHandler, context);
+        XMLObject result = httpClient.execute(request, responseHandler, context);
+        checkTLSCredentialTrusted(context, request);
+        return result;
+    }
+    
+    /**
+     * Check that trust engine evaluation of the server TLS credential was actually performed.
+     * 
+     * @param context the current HTTP context instance in use
+     * @param request the HTTP URI request
+     */
+    protected void checkTLSCredentialTrusted(HttpClientContext context, HttpUriRequest request) {
+        if ("https".equalsIgnoreCase(request.getURI().getScheme()) && tlsTrustEngine != null) {
+            if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
+                log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
+                        + "the appropriate socket factory was likely not configured");
+            }
+        }
     }
     
     /**
@@ -294,6 +332,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         final HttpClientContext context = HttpClientContext.create();
         if (credentialsProvider != null) {
             context.setCredentialsProvider(credentialsProvider);
+        }
+        if (tlsTrustEngine != null) {
+            context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, tlsTrustEngine);
         }
         return context;
     }

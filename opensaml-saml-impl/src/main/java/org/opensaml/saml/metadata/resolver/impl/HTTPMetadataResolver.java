@@ -39,6 +39,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.util.EntityUtils;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.httpclient.HttpClientSecurityConstants;
+import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
+import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,6 +79,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** HttpClient credentials provider. */
     private BasicCredentialsProvider credentialsProvider;
+    
+    /** Optional trust engine used in evaluating server TLS credentials. */
+    private TrustEngine<Credential> tlsTrustEngine;
 
     /**
      * Constructor.
@@ -120,6 +127,20 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      */
     public String getMetadataURI() {
         return metadataURI.toASCIIString();
+    }
+    
+    /**
+     * Sets the optional trust engine used in evaluating server TLS credentials.
+     * 
+     * <p>
+     * Must be used in conjunction with an HttpClient instance which is configured with a 
+     * {@link TrustEngineTLSSocketFactory}, otherwise has no effect.
+     * </p>
+     * 
+     * @param engine the trust engine instance to use
+     */
+    public void setTLSTrustEngine(@Nullable final TrustEngine<Credential> engine) {
+        tlsTrustEngine = engine;
     }
 
     /**
@@ -201,6 +222,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
             response = httpClient.execute(httpGet, context);
+            checkTLSCredentialTrusted(context);
             final int httpStatusCode = response.getStatusLine().getStatusCode();
 
             if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
@@ -237,6 +259,20 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     }
 
     /**
+     * Check that trust engine evaluation of the server TLS credential was actually performed.
+     * 
+     * @param context the current HTTP context instance in use
+     */
+    protected void checkTLSCredentialTrusted(HttpClientContext context) {
+        if ("https".equalsIgnoreCase(metadataURI.getScheme()) && tlsTrustEngine != null) {
+            if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
+                log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
+                        + "the appropriate socket factory was likely not configured");
+            }
+        }
+    }
+
+    /**
      * Builds the {@link HttpGet} instance used to fetch the metadata. The returned method advertises support for GZIP
      * and deflate compression, enables conditional GETs if the cached metadata came with either an ETag or
      * Last-Modified information, and sets up basic authentication if such is configured.
@@ -265,6 +301,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         final HttpClientContext context = HttpClientContext.create();
         if (credentialsProvider != null) {
             context.setCredentialsProvider(credentialsProvider);
+        }
+        if (tlsTrustEngine != null) {
+            context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, tlsTrustEngine);
         }
         return context;
     }
