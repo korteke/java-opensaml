@@ -26,6 +26,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -56,9 +57,6 @@ public class JPAStorageRecord extends MutableStorageRecord {
 
     /** Length of the key column. */
     public static final int KEY_SIZE = 255;
-
-    /** Length of the value column. */
-    public static final int VALUE_SIZE = 255;
 
     /** Context string. */
     private String context;
@@ -110,18 +108,26 @@ public class JPAStorageRecord extends MutableStorageRecord {
     }
 
     /** {@inheritDoc} */
-    @Column(length = VALUE_SIZE, nullable = false) @Nonnull @Override public String getValue() {
+    @Lob
+    @Column(name="value", nullable = false) @Nonnull @Override public String getValue() {
         return super.getValue();
     }
 
     /** {@inheritDoc} */
-    @Column(nullable = true) @Nullable @Override public Long getExpiration() {
+    @Column(name="expires", nullable = true) @Nullable @Override public Long getExpiration() {
         return super.getExpiration();
     }
 
     /** {@inheritDoc} */
-    @Column(nullable = false) @Override public long getVersion() {
+    @Column(name="version", nullable = false) @Override public long getVersion() {
         return super.getVersion();
+    }
+
+    /**
+     * Resets the version of this storage record to 1.
+     */
+    public void resetVersion() {
+        super.setVersion(1);
     }
 
     /** {@inheritDoc} */
@@ -165,7 +171,7 @@ public class JPAStorageRecord extends MutableStorageRecord {
          * 
          * @return context
          */
-        @Column(length = CONTEXT_SIZE, nullable = false) @Nonnull public String getContext() {
+        @Column(name = "context", length = CONTEXT_SIZE, nullable = false) @Nonnull public String getContext() {
             return context;
         }
 
@@ -183,7 +189,7 @@ public class JPAStorageRecord extends MutableStorageRecord {
          * 
          * @return key
          */
-        @Column(length = KEY_SIZE, nullable = false) @Nonnull public String getKey() {
+        @Column(name="id", length = KEY_SIZE, nullable = false) @Nonnull public String getKey() {
             return key;
         }
 
