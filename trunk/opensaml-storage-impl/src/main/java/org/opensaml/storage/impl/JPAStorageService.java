@@ -26,9 +26,11 @@ import java.util.TimerTask;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -64,7 +66,7 @@ public class JPAStorageService extends AbstractStorageService {
 
         setContextSize(JPAStorageRecord.CONTEXT_SIZE);
         setKeySize(JPAStorageRecord.KEY_SIZE);
-        setValueSize(JPAStorageRecord.VALUE_SIZE);
+        setValueSize(Integer.MAX_VALUE);
     }
 
     /** {@inheritDoc} */
@@ -75,6 +77,7 @@ public class JPAStorageService extends AbstractStorageService {
         super.doDestroy();
     }
 
+    // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException {
@@ -82,43 +85,72 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            JPAStorageRecord entity = manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key));
+            transaction = manager.getTransaction();
+            transaction.begin();
+            JPAStorageRecord entity =
+                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                            LockModeType.PESSIMISTIC_WRITE);
             if (entity != null) {
                 // Not yet expired?
                 final Long exp = entity.getExpiration();
                 if (exp == null || System.currentTimeMillis() < exp) {
+                    log.debug("Duplicate record '{}' in context '{}' with expiration '{}'", key, context, expiration);
                     return false;
                 }
 
-                // It's dead, so we can just delete it.
-                delete(context, key);
+                // It's dead, reset the version for merge.
+                entity.resetVersion();
+            } else {
+                entity = new JPAStorageRecord();
+                entity.setContext(context);
+                entity.setKey(key);
             }
 
-            transaction = manager.getTransaction();
-            transaction.begin();
-            entity = new JPAStorageRecord();
-            entity.setContext(context);
-            entity.setKey(key);
             entity.setValue(value);
             entity.setExpiration(expiration);
-            manager.persist(entity);
-            transaction.commit();
-
-            log.debug("Inserted record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
+            manager.merge(entity);
+            log.debug("Merged record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
                     expiration,});
             return true;
-        } catch (final Exception e) {
-            log.error("Error creating record '{}' in context '{}' with expiration '{}'", key, context, expiration, e);
+        } catch (final EntityExistsException e) {
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
             }
+            log.debug("Duplicate record '{}' in context '{}' with expiration '{}'", key, context, expiration);
             return false;
+        } catch (final Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
+            }
+            log.error("Error creating record '{}' in context '{}' with expiration '{}'", key, context, expiration, e);
+            throw new IOException(e);
         } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
+
+    // Checkstyle: CyclomaticComplexity ON
 
     /**
      * Returns all records from the store.
@@ -130,10 +162,15 @@ public class JPAStorageService extends AbstractStorageService {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            return executeNamedQuery(manager, "JPAStorageRecord.findAll", null, StorageRecord.class);
+            return executeNamedQuery(manager, "JPAStorageRecord.findAll", null, StorageRecord.class,
+                    LockModeType.PESSIMISTIC_READ);
         } finally {
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
@@ -153,10 +190,15 @@ public class JPAStorageService extends AbstractStorageService {
             manager = entityManagerFactory.createEntityManager();
             final Map<String, Object> params = new HashMap<>();
             params.put("context", context);
-            return executeNamedQuery(manager, "JPAStorageRecord.findByContext", params, StorageRecord.class);
+            return executeNamedQuery(manager, "JPAStorageRecord.findByContext", params, StorageRecord.class,
+                    LockModeType.PESSIMISTIC_READ);
         } finally {
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
@@ -171,10 +213,16 @@ public class JPAStorageService extends AbstractStorageService {
         EntityManager manager = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            return executeNamedQuery(manager, "JPAStorageRecord.findAllContexts", null, String.class);
+            // this query uses the distinct keyword, it must use optimistic locking
+            return executeNamedQuery(manager, "JPAStorageRecord.findAllContexts", null, String.class,
+                    LockModeType.OPTIMISTIC);
         } finally {
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
@@ -186,11 +234,12 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public Pair<Long,StorageRecord> read(@Nonnull @NotEmpty final String context,
+    @Override @Nonnull public Pair<Long, StorageRecord> read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Positive final long version) throws IOException {
         return readImpl(context, key, version);
     }
 
+    // Checkstyle: CyclomaticComplexity OFF
     /**
      * Reads the record matching the supplied parameters. Returns an empty pair if the record cannot be found or is
      * expired.
@@ -202,13 +251,17 @@ public class JPAStorageService extends AbstractStorageService {
      * @return pair of version and storage record
      * @throws IOException if errors occur in the read process
      */
-    @Nonnull protected Pair<Long,StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
+    @Nonnull protected Pair<Long, StorageRecord> readImpl(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Positive final Long version) throws IOException {
         EntityManager manager = null;
+        EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
+            transaction = manager.getTransaction();
+            transaction.begin();
             final JPAStorageRecord entity =
-                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key));
+                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                            LockModeType.PESSIMISTIC_READ);
             if (entity == null) {
                 log.debug("Read failed, key '{}' not found in context '{}'", key, context);
                 return new Pair<>();
@@ -223,16 +276,36 @@ public class JPAStorageService extends AbstractStorageService {
                 // Nothing's changed, so just echo back the version.
                 return new Pair(version, null);
             }
-            return new Pair<Long,StorageRecord>(entity.getVersion(), entity);
+            return new Pair<Long, StorageRecord>(entity.getVersion(), entity);
         } catch (final Exception e) {
             log.error("Error reading record '{}' in context '{}'", key, context, e);
-            return new Pair<>();
+            if (transaction != null && transaction.isActive()) {
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
+            }
+            throw new IOException(e);
         } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
+
+    // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     @Override public boolean update(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
@@ -262,6 +335,7 @@ public class JPAStorageService extends AbstractStorageService {
         }
     }
 
+    // Checkstyle: CyclomaticComplexity OFF
     /**
      * Updates the record matching the supplied parameters. Returns null if the record cannot be found or is expired.
      * 
@@ -282,8 +356,11 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
+            transaction = manager.getTransaction();
+            transaction.begin();
             final JPAStorageRecord entity =
-                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key));
+                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                            LockModeType.PESSIMISTIC_WRITE);
             if (entity == null) {
                 log.debug("Update failed, key '{}' not found in context '{}'", key, context);
                 return null;
@@ -300,16 +377,13 @@ public class JPAStorageService extends AbstractStorageService {
                 throw new VersionMismatchException();
             }
 
-            transaction = manager.getTransaction();
-            transaction.begin();
             if (value != null) {
                 entity.setValue(value);
                 entity.incrementVersion();
             }
             entity.setExpiration(expiration);
             manager.merge(entity);
-            transaction.commit();
-            log.debug("Updated record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
+            log.debug("Merged record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
                     expiration,});
             return entity.getVersion();
         } catch (final VersionMismatchException e) {
@@ -317,15 +391,32 @@ public class JPAStorageService extends AbstractStorageService {
         } catch (final Exception e) {
             log.error("Error updating record '{}' in context '{}'", key, context, e);
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
             }
-            return null;
+            throw new IOException(e);
         } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
+
+    // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     @Override public boolean deleteWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
@@ -343,6 +434,7 @@ public class JPAStorageService extends AbstractStorageService {
         }
     }
 
+    // Checkstyle: CyclomaticComplexity OFF
     /**
      * Deletes the record matching the supplied parameters.
      * 
@@ -360,18 +452,18 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
+            transaction = manager.getTransaction();
+            transaction.begin();
             final JPAStorageRecord entity =
-                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key));
+                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                            LockModeType.PESSIMISTIC_WRITE);
             if (entity == null) {
                 log.debug("Deleting record '{}' in context '{}'....key not found", key, context);
                 return false;
             } else if (version != null && entity.getVersion() != version) {
                 throw new VersionMismatchException();
             } else {
-                transaction = manager.getTransaction();
-                transaction.begin();
                 manager.remove(entity);
-                transaction.commit();
                 log.debug("Deleted record '{}' in context '{}'", key, context);
                 return true;
             }
@@ -380,16 +472,34 @@ public class JPAStorageService extends AbstractStorageService {
         } catch (final Exception e) {
             log.error("Error deleting record '{}' in context '{}'", key, context, e);
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
             }
-            return false;
+            throw new IOException(e);
         } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
 
+    // Checkstyle: CyclomaticComplexity ON
+
+    // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override public void updateContextExpiration(@Nonnull @NotEmpty final String context,
             @Nullable @Positive final Long expiration) throws IOException {
@@ -397,31 +507,49 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            final Map<String, Object> params = new HashMap<>();
-            params.put("context", context);
-            params.put("now", System.currentTimeMillis());
-            final List<JPAStorageRecord> entities =
-                    executeNamedQuery(manager, "JPAStorageRecord.findActiveByContext", params, JPAStorageRecord.class);
+            transaction = manager.getTransaction();
+            transaction.begin();
+            final Query queryResults =
+                    manager.createNamedQuery("JPAStorageRecord.findActiveByContext", JPAStorageRecord.class);
+            queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+            queryResults.setParameter("context", context);
+            queryResults.setParameter("now", System.currentTimeMillis());
+            final List<JPAStorageRecord> entities = queryResults.getResultList();
             if (!entities.isEmpty()) {
-                transaction = manager.getTransaction();
-                transaction.begin();
                 for (final JPAStorageRecord entity : entities) {
                     entity.setExpiration(expiration);
                 }
-                transaction.commit();
                 log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
             }
         } catch (final Exception e) {
             log.error("Error updating context expiration in context '{}'", context, e);
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
             }
+            throw new IOException(e);
         } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
+
+    // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     @Override public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
@@ -435,7 +563,7 @@ public class JPAStorageService extends AbstractStorageService {
         log.debug("Reaped all entities in context '{}'", context);
     }
 
-// Checkstyle: CyclomaticComplexity OFF    
+    // Checkstyle: CyclomaticComplexity OFF
     /**
      * Deletes every record with the supplied context. If expiration is supplied, only records with an expiration before
      * the supplied expiration will be removed.
@@ -451,36 +579,54 @@ public class JPAStorageService extends AbstractStorageService {
         EntityTransaction transaction = null;
         try {
             manager = entityManagerFactory.createEntityManager();
-            final Map<String, Object> params = new HashMap<>();
-            params.put("context", context);
-            final List<JPAStorageRecord> entities =
-                    executeNamedQuery(manager, "JPAStorageRecord.findByContext", params, JPAStorageRecord.class);
+            transaction = manager.getTransaction();
+            transaction.begin();
+            final Query queryResults =
+                    manager.createNamedQuery("JPAStorageRecord.findByContext", JPAStorageRecord.class);
+            queryResults.setParameter("context", context);
+            queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+            final List<JPAStorageRecord> entities = queryResults.getResultList();
+
             if (!entities.isEmpty()) {
-                transaction = manager.getTransaction();
-                transaction.begin();
                 for (final JPAStorageRecord entity : entities) {
-                    if (expiration == null ||
-                        (entity.getExpiration() != null && entity.getExpiration() <= expiration)) {
+                    if (expiration == null || (entity.getExpiration() != null &&
+                            entity.getExpiration() <= expiration)) {
                         manager.remove(entity);
                         log.trace("Deleted entity {}", entity);
                     }
                 }
-                transaction.commit();
             }
         } catch (final Exception e) {
             log.error("Error deleting context '{}'", context, e);
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
             }
+            throw new IOException(e);
         } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
             if (manager != null && manager.isOpen()) {
-                manager.close();
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
             }
         }
     }
-// Checkstyle: CyclomaticComplexity ON
 
+    // Checkstyle: CyclomaticComplexity ON
 
+    // Checkstyle: CyclomaticComplexity OFF
     /**
      * Executes the supplied named query.
      * 
@@ -489,14 +635,21 @@ public class JPAStorageService extends AbstractStorageService {
      * @param query to execute
      * @param params parameters for the query
      * @param clazz type of entity to return
+     * @param lockMode of the transaction
      * 
      * @return query results or an empty list
+     * @throws IOException if an error occurs executing the query
      */
     private <T> List<T> executeNamedQuery(@Nonnull final EntityManager manager, @Nonnull @NotEmpty final String query,
-            @Nonnull final Map<String, Object> params, @Nonnull final Class<T> clazz) {
+            @Nonnull final Map<String, Object> params, @Nonnull final Class<T> clazz,
+            @Nonnull final LockModeType lockMode) throws IOException {
         final List<T> results = new ArrayList<>();
+        EntityTransaction transaction = null;
         try {
+            transaction = manager.getTransaction();
+            transaction.begin();
             final Query queryResults = manager.createNamedQuery(query, clazz);
+            queryResults.setLockMode(lockMode);
             if (params != null && !params.isEmpty()) {
                 for (Map.Entry<String, Object> entry : params.entrySet()) {
                     queryResults.setParameter(entry.getKey(), entry.getValue());
@@ -505,14 +658,32 @@ public class JPAStorageService extends AbstractStorageService {
             results.addAll(queryResults.getResultList());
         } catch (final Exception e) {
             log.error("Error executing named query", e);
+            if (transaction != null && transaction.isActive()) {
+                try {
+                    transaction.rollback();
+                } catch (Exception ex) {
+                    log.error("Error rolling back transaction", e);
+                }
+            }
+            throw new IOException(e);
+        } finally {
+            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                try {
+                    transaction.commit();
+                } catch (Exception e) {
+                    log.error("Error committing transaction", e);
+                }
+            }
         }
         return results;
     }
 
+    // Checkstyle: CyclomaticComplexity ON
+
     /** {@inheritDoc} */
     @Override @Nullable protected TimerTask getCleanupTask() {
         return new TimerTask() {
-            
+
             /** {@inheritDoc} */
             @Override public void run() {
                 log.debug("Running cleanup task");
@@ -535,5 +706,4 @@ public class JPAStorageService extends AbstractStorageService {
             }
         };
     }
-
 }
