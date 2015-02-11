@@ -39,8 +39,8 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -49,11 +49,8 @@ import org.testng.annotations.Test;
  */
 public class JPAStorageServiceTest extends StorageServiceTest {
 
-    /** Storage service to test. */
-    protected StorageService storageService;
-
-    /** Entity manager factory. */
-    private EntityManagerFactory factory;
+    /** Storage service. */
+    private JPAStorageService storageService;
 
     /** Contexts used for testing. */
     private Object[][] contexts;
@@ -69,8 +66,11 @@ public class JPAStorageServiceTest extends StorageServiceTest {
     /**
      * Creates the shared instance of the entity manager factory.
      */
-    @BeforeTest public void setupEntityManagerFactory() throws ComponentInitializationException {
-        factory = createEntityManagerFactory();
+    @BeforeClass public void setUp() throws ComponentInitializationException {
+        storageService = new JPAStorageService(createEntityManagerFactory());
+        storageService.setId("test");
+        storageService.setCleanupInterval(5000);
+        super.setUp();
     }
 
     /**
@@ -91,56 +91,38 @@ public class JPAStorageServiceTest extends StorageServiceTest {
         }
     }
 
-    /**
-     * Removes all test data from the database.
-     */
-    @AfterTest public void clearDatabase() throws ComponentInitializationException, IOException {
-        JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
-        ss.setId("test");
-        ss.initialize();
-        List<String> contexts = ss.readContexts();
-        for (String ctx : contexts) {
-            ss.deleteContext(ctx);
+    @AfterClass
+    protected void tearDown() {
+        try {
+            List<String> contexts = storageService.readContexts();
+            for (String ctx : contexts) {
+                storageService.deleteContext(ctx);
+            }
+            List<StorageRecord> recs = storageService.readAll();
+            Assert.assertEquals(recs.size(), 0);
+        } catch (IOException e){ 
+            throw new RuntimeException(e);
         }
-        List<StorageRecord> recs = ss.readAll();
-        Assert.assertEquals(recs.size(), 0);
-        ss.destroy();
+        super.tearDown();
     }
 
     @Nonnull protected StorageService getStorageService() {
-        JPAStorageService ss = new JPAStorageService(factory);
-        ss.setId("test");
-        return ss;
-    }
-
-    @Test
-    public void validConfig() throws ComponentInitializationException {
-        JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
-        ss.setId("test");
-        ss.initialize();
-        ss.destroy();
+        return storageService;
     }
 
     @Test
     public void cleanup() throws ComponentInitializationException, IOException {
-        JPAStorageService ss = new JPAStorageService(createEntityManagerFactory());
-        ss.setId("test");
-        ss.setCleanupInterval(5000);
-        ss.initialize();
-
         String context = Long.toString(random.nextLong());
         for (int i = 1; i <= 100; i++) {
-            ss.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 100);
+            storageService.create(context, Integer.toString(i), Integer.toString(i + 1), System.currentTimeMillis() + 100);
         }
         try {
             Thread.sleep(7500);
         } catch (InterruptedException e) {
             throw new IOException(e);
         }
-        List<StorageRecord> recs = ss.readAll(context);
+        List<StorageRecord> recs = storageService.readAll(context);
         Assert.assertEquals(recs.size(), 0);
-
-        ss.destroy();
     }
 
     @DataProvider(name = "contexts")
