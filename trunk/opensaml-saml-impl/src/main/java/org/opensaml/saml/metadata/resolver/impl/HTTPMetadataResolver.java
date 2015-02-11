@@ -264,7 +264,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @param context the current HTTP context instance in use
      */
     protected void checkTLSCredentialTrusted(HttpClientContext context) {
-        if ("https".equalsIgnoreCase(metadataURI.getScheme()) && tlsTrustEngine != null) {
+        if (tlsTrustEngine != null && "https".equalsIgnoreCase(metadataURI.getScheme())) {
             if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
                 log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
                         + "the appropriate socket factory was likely not configured");
