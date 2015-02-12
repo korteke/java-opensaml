@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.xml;
 
 import java.io.InputStream;
-import java.lang.ref.SoftReference;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,7 +36,7 @@ import org.xml.sax.SAXException;
  * A convenience builder for creating {@link Schema}s for validating SAML 1.0, 1.1, and 2.0.
  * 
  * <p>Additional schemas may be included in the resulting object by supplying their locations
- * to a injected {@link SchemaBuilder} object.</p>
+ * to an injected {@link SchemaBuilder} object.</p>
  */
 @ThreadSafe
 public class SAMLSchemaBuilder {
@@ -115,14 +114,14 @@ public class SAMLSchemaBuilder {
         SAMLConstants.SAML20MDUI_SCHEMA_LOCATION,
         SAMLConstants.SAML20MDATTR_SCHEMA_LOCATION,
         SAMLConstants.SAML20MDRPI_SCHEMA_LOCATION,
+        SAMLConstants.SAML20ALG_SCHEMA_LOCATION,
         SAMLConstants.SAML20CB_SCHEMA_LOCATION,
         SAMLConstants.SAML20PASLO_SCHEMA_LOCATION,
         SAMLConstants.SAMLEC_GSS_SCHEMA_LOCATION,
-        SAMLConstants.SAML20ALG_SCHEMA_LOCATION,
         };
 
     /** Cached copy of the schema produced by the builder. */
-    @Nullable private SoftReference<Schema> cachedSchema;
+    @Nullable private Schema cachedSchema;
 
     /** Reference to SAML 1.x schemas to apply. */
     @Nonnull @NonnullElements @NotEmpty private String[] saml1xSchemas;
@@ -178,11 +177,11 @@ public class SAMLSchemaBuilder {
      * @throws SAXException thrown if a schema object cannot be created
      */
     @Nonnull public synchronized Schema getSAMLSchema() throws SAXException {
-        if (cachedSchema == null || cachedSchema.get() == null) {
-            cachedSchema = new SoftReference<>(schemaBuilder.buildSchema());
+        if (cachedSchema == null) {
+            cachedSchema = schemaBuilder.buildSchema();
         }
 
-        return cachedSchema.get();
+        return cachedSchema;
     }
 
 // Checkstyle: CyclomaticComplexity OFF
@@ -191,7 +190,7 @@ public class SAMLSchemaBuilder {
      */
     @Nonnull private void configureBuilder() {
         
-        Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
+        final Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
         
         for (final String source : baseXMLSchemas) {
             final InputStream stream = clazz.getResourceAsStream(source);
