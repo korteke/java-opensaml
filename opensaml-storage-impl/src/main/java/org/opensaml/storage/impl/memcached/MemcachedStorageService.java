@@ -7,7 +7,7 @@ package org.opensaml.storage.impl.memcached;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.spy.memcached.CASResponse;
@@ -67,7 +67,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @author Marvin S. Addison
  */
-public class MemcachedStorageService extends AbstractIdentifiedInitializableComponent implements StorageService {
+public class MemcachedStorageService extends AbstractIdentifiableInitializableComponent implements StorageService {
 
     /** Key suffix for entry that contains a list of context keys. */
     protected static final String CTX_KEY_LIST_SUFFIX = ":contextKeyList";
