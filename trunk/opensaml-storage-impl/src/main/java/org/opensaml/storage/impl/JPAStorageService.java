@@ -94,7 +94,7 @@ public class JPAStorageService extends AbstractStorageService {
                 // Not yet expired?
                 final Long exp = entity.getExpiration();
                 if (exp == null || System.currentTimeMillis() < exp) {
-                    log.debug("Duplicate record '{}' in context '{}' with expiration '{}'", key, context, expiration);
+                    log.debug("Duplicate record '{}' in context '{}'", key, context);
                     return false;
                 }
 
@@ -109,7 +109,7 @@ public class JPAStorageService extends AbstractStorageService {
             entity.setValue(value);
             entity.setExpiration(expiration);
             manager.merge(entity);
-            log.debug("Merged record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
+            log.debug("Create record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
                     expiration,});
             return true;
         } catch (final EntityExistsException e) {
@@ -383,7 +383,7 @@ public class JPAStorageService extends AbstractStorageService {
             }
             entity.setExpiration(expiration);
             manager.merge(entity);
-            log.debug("Merged record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
+            log.debug("Update record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
                     expiration,});
             return entity.getVersion();
         } catch (final VersionMismatchException e) {
@@ -592,7 +592,8 @@ public class JPAStorageService extends AbstractStorageService {
                     if (expiration == null || (entity.getExpiration() != null &&
                             entity.getExpiration() <= expiration)) {
                         manager.remove(entity);
-                        log.trace("Deleted entity {}", entity);
+                        log.debug("Deleted record '{}' in context '{}' with expiration '{}'", entity.getKey(),
+                                entity.getContext(), entity.getExpiration());
                     }
                 }
             }
@@ -686,11 +687,12 @@ public class JPAStorageService extends AbstractStorageService {
 
             /** {@inheritDoc} */
             @Override public void run() {
-                log.debug("Running cleanup task");
                 final Long now = System.currentTimeMillis();
+                log.debug("Running cleanup task at {}", now);
                 List<String> contexts = null;
                 try {
                     contexts = readContexts();
+                    log.debug("Cleanup read contexts {}", contexts);
                 } catch (final IOException e) {
                     log.error("Error reading contexts", e);
                 }
@@ -698,11 +700,13 @@ public class JPAStorageService extends AbstractStorageService {
                     for (final String context : contexts) {
                         try {
                             deleteContextImpl(context, now);
+                            log.debug("Cleanup removed expired records in context {}", context);
                         } catch (final IOException e) {
                             log.error("Error deleting records in context '{}' for timestamp '{}'", context, now, e);
                         }
                     }
                 }
+                log.debug("Finished cleanup task");
             }
         };
     }
