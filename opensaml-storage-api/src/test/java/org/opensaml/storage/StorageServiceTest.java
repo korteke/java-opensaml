@@ -75,7 +75,7 @@ public abstract class StorageServiceTest {
         }
     }
     
-    @Test(threadPoolSize = 10, invocationCount = 10,  timeOut = 10000)
+    @Test(threadPoolSize = 10, invocationCount = 10)
     public void strings() throws IOException {
         threadInit();
         
