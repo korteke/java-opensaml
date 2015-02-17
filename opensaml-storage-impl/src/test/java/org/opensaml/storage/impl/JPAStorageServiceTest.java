@@ -70,6 +70,7 @@ public class JPAStorageServiceTest extends StorageServiceTest {
         storageService = new JPAStorageService(createEntityManagerFactory());
         storageService.setId("test");
         storageService.setCleanupInterval(5000);
+        storageService.setTransactionRetry(2);
         super.setUp();
     }
 

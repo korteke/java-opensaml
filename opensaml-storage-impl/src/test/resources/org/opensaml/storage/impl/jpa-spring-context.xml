@@ -2,7 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:p="http://www.springframework.org/schema/p"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:property-placeholder />
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="unit-tests" />
@@ -15,39 +19,44 @@
         </property>
     </bean>
  
+    <!-- Run test with -DdbType=<hibernate|mysql|postgres> to activate various beans -->
+    <alias name="${dbType:hibernate}JpaVendorAdapter" alias="jpaVendorAdapter" />
+    <alias name="${dbType:hibernate}DataSource" alias="dataSource" />
+
     <!--  Hypersonic configuration -->
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="database" value="HSQL" />
         <property name="generateDdl" value="true" />
         <property name="showSql" value="false"/>
     </bean> 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-        <property name="url" value="jdbc:hsqldb:mem:JPAStorageService" />
-        <property name="username" value="SA" />
-        <property name="password" value="" />
-    </bean>
+    <bean id="hibernateDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
+        p:driverClass="org.hsqldb.jdbcDriver"
+        p:jdbcUrl="jdbc:hsqldb:mem:JPAStorageService" p:user="SA" p:password="" p:acquireIncrement="3"
+        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
+        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
 
-    <!-- Postgres configuration
-
-        Add this dependency to your pom
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.3-1101-jdbc41</version>
-        </dependency>
-
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    <!-- Postgres configuration -->
+    <bean id="postgresJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="database" value="POSTGRESQL" />
         <property name="generateDdl" value="true" />
     </bean> 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://localhost:5432/storageservice" />
-        <property name="username" value="postgres" />
-        <property name="password" value="" />
+    <bean id="postgresDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
+        p:driverClass="org.postgresql.Driver"
+        p:jdbcUrl="jdbc:postgresql://localhost:5432/storageservice" p:user="shib" p:password="p@ssw0rd" p:acquireIncrement="3"
+        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
+        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
+
+    <!-- MySQL configuration -->
+    <bean id="mysqlJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL" />
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+        <property name="generateDdl" value="true" />
     </bean>
-    -->
+    <bean id="mysqlDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
+        p:driverClass="com.mysql.jdbc.Driver"
+        p:jdbcUrl="jdbc:mysql://localhost:3306/storageservice" p:user="shib" p:password="p@ssw0rd" p:acquireIncrement="3"
+        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
+        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
 
     <!-- Oracle configuration
     
@@ -57,41 +66,17 @@
             <artifactId>jdbc</artifactId>
             <version>12.1.0.1</version>
         </dependency>
+    -->
     
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+    <bean id="oracleJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="database" value="ORACLE" />
         <property name="databasePlatform" value="org.hibernate.dialect.OracleDialect" />
         <property name="generateDdl" value="true" />
     </bean> 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-        <property name="url" value="jdbc:oracle:thin:@//localhost:1521/PDB1" />
-        <property name="username" value="pmuser" />
-        <property name="password" value="oracle" />
-    </bean>
-    -->
+    <bean id="oracleDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
+        p:driverClass="oracle.jdbc.OracleDriver"
+        p:jdbcUrl="jdbc:oracle:thin:@//localhost:1521/PDB1" p:user="pmuser" p:password="oracle" p:acquireIncrement="3"
+        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
+        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
     
-    <!-- MySQL configuration
-    
-        Add this dependency to your pom
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.34</version>
-        </dependency>
-        
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="database" value="MYSQL" />
-        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
-        <property name="generateDdl" value="true" />
-    </bean>
-    
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/storageservice" />
-        <property name="username" value="mysql" />
-        <property name="password" value="password" />
-    </bean>
-    -->
-
 </beans>
