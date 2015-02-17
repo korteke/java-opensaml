@@ -32,11 +32,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.storage.AbstractStorageService;
@@ -56,6 +59,9 @@ public class JPAStorageService extends AbstractStorageService {
     /** Entity manager factory. */
     @Nonnull private final EntityManagerFactory entityManagerFactory;
 
+    /** Number of times to retry a transaction if it rolls back. Default value is {@value} . */
+    @NonNegative private int transactionRetry = 3;
+
     /**
      * Creates a new JPA storage service.
      * 
@@ -69,6 +75,27 @@ public class JPAStorageService extends AbstractStorageService {
         setValueSize(Integer.MAX_VALUE);
     }
 
+    /**
+     * Returns the number of times a transaction will be retried if a {@link RollbackException} is encountered.
+     * 
+     * @return number of transaction retries
+     */
+    public int getTransactionRetry() {
+        return transactionRetry;
+    }
+
+    /**
+     * Sets the number of times a transaction will be retried.
+     * 
+     * @param retry number of transaction retries
+     */
+    public void setTransactionRetry(final int retry) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        transactionRetry =
+                (int) Constraint.isGreaterThanOrEqual(0, retry,
+                        "Transaction retry must be greater than or equal to zero");
+    }
+
     /** {@inheritDoc} */
     @Override protected void doDestroy() {
         if (entityManagerFactory.isOpen()) {
@@ -77,69 +104,83 @@ public class JPAStorageService extends AbstractStorageService {
         super.doDestroy();
     }
 
+    // Checkstyle: MethodLength OFF
     // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException {
         EntityManager manager = null;
-        EntityTransaction transaction = null;
         try {
-            manager = entityManagerFactory.createEntityManager();
-            transaction = manager.getTransaction();
-            transaction.begin();
-            JPAStorageRecord entity =
-                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
-                            LockModeType.PESSIMISTIC_WRITE);
-            if (entity != null) {
-                // Not yet expired?
-                final Long exp = entity.getExpiration();
-                if (exp == null || System.currentTimeMillis() < exp) {
-                    log.debug("Duplicate record '{}' in context '{}'", key, context);
-                    return false;
-                }
+            int retry = 0;
+            RollbackException lastThrown = null;
+            do {
+                EntityTransaction transaction = null;
+                try {
+                    manager = entityManagerFactory.createEntityManager();
+                    transaction = manager.getTransaction();
+                    transaction.begin();
+                    JPAStorageRecord entity =
+                            manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                                    LockModeType.PESSIMISTIC_WRITE);
+                    if (entity != null) {
+                        // Not yet expired?
+                        final Long exp = entity.getExpiration();
+                        if (exp == null || System.currentTimeMillis() < exp) {
+                            log.debug("Duplicate record '{}' in context '{}'", key, context);
+                            return false;
+                        }
 
-                // It's dead, reset the version for merge.
-                entity.resetVersion();
-            } else {
-                entity = new JPAStorageRecord();
-                entity.setContext(context);
-                entity.setKey(key);
-            }
+                        // It's dead, reset the version for merge.
+                        entity.resetVersion();
+                    } else {
+                        entity = new JPAStorageRecord();
+                        entity.setContext(context);
+                        entity.setKey(key);
+                    }
 
-            entity.setValue(value);
-            entity.setExpiration(expiration);
-            manager.merge(entity);
-            log.debug("Create record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
-                    expiration,});
-            return true;
-        } catch (final EntityExistsException e) {
-            if (transaction != null && transaction.isActive()) {
-                try {
-                    transaction.rollback();
-                } catch (Exception ex) {
-                    log.error("Error rolling back transaction", e);
-                }
-            }
-            log.debug("Duplicate record '{}' in context '{}' with expiration '{}'", key, context, expiration);
-            return false;
-        } catch (final Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                try {
-                    transaction.rollback();
-                } catch (Exception ex) {
-                    log.error("Error rolling back transaction", e);
-                }
-            }
-            log.error("Error creating record '{}' in context '{}' with expiration '{}'", key, context, expiration, e);
-            throw new IOException(e);
-        } finally {
-            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
-                try {
+                    entity.setValue(value);
+                    entity.setExpiration(expiration);
+                    manager.merge(entity);
                     transaction.commit();
-                } catch (Exception e) {
-                    log.error("Error committing transaction", e);
+                    log.debug("Create record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
+                            expiration,});
+                    return true;
+                } catch (final EntityExistsException e) {
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    log.debug("Duplicate record '{}' in context '{}' with expiration '{}'", key, context, expiration);
+                    return false;
+                } catch (final RollbackException e) {
+                    lastThrown = e;
+                    retry++;
+                } catch (final Exception e) {
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    log.error("Error creating record '{}' in context '{}' with expiration '{}'", key, context,
+                            expiration, e);
+                    throw new IOException(e);
+                } finally {
+                    if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                        try {
+                            transaction.commit();
+                        } catch (Exception e) {
+                            log.error("Error committing transaction", e);
+                        }
+                    }
                 }
-            }
+            } while (retry < transactionRetry);
+            throw lastThrown;
+        } finally {
             if (manager != null && manager.isOpen()) {
                 try {
                     manager.close();
@@ -151,6 +192,7 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     // Checkstyle: CyclomaticComplexity ON
+    // Checkstyle: MethodLength ON
 
     /**
      * Returns all records from the store.
@@ -335,6 +377,7 @@ public class JPAStorageService extends AbstractStorageService {
         }
     }
 
+    // Checkstyle: MethodLength OFF
     // Checkstyle: CyclomaticComplexity OFF
     /**
      * Updates the record matching the supplied parameters. Returns null if the record cannot be found or is expired.
@@ -353,59 +396,71 @@ public class JPAStorageService extends AbstractStorageService {
             @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
             @Nullable @Positive final Long expiration) throws IOException, VersionMismatchException {
         EntityManager manager = null;
-        EntityTransaction transaction = null;
         try {
-            manager = entityManagerFactory.createEntityManager();
-            transaction = manager.getTransaction();
-            transaction.begin();
-            final JPAStorageRecord entity =
-                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
-                            LockModeType.PESSIMISTIC_WRITE);
-            if (entity == null) {
-                log.debug("Update failed, key '{}' not found in context '{}'", key, context);
-                return null;
-            } else {
-                final Long exp = entity.getExpiration();
-                if (exp != null && System.currentTimeMillis() >= exp) {
-                    log.debug("Update failed, key '{}' expired in context '{}'", key, context);
-                    return null;
-                }
-            }
-
-            if (version != null && entity.getVersion() != version) {
-                // Caller is out of sync.
-                throw new VersionMismatchException();
-            }
-
-            if (value != null) {
-                entity.setValue(value);
-                entity.incrementVersion();
-            }
-            entity.setExpiration(expiration);
-            manager.merge(entity);
-            log.debug("Update record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
-                    expiration,});
-            return entity.getVersion();
-        } catch (final VersionMismatchException e) {
-            throw e;
-        } catch (final Exception e) {
-            log.error("Error updating record '{}' in context '{}'", key, context, e);
-            if (transaction != null && transaction.isActive()) {
+            int retry = 0;
+            RollbackException lastThrown = null;
+            do {
+                EntityTransaction transaction = null;
                 try {
-                    transaction.rollback();
-                } catch (Exception ex) {
-                    log.error("Error rolling back transaction", e);
-                }
-            }
-            throw new IOException(e);
-        } finally {
-            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
-                try {
+                    manager = entityManagerFactory.createEntityManager();
+                    transaction = manager.getTransaction();
+                    transaction.begin();
+                    final JPAStorageRecord entity =
+                            manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                                    LockModeType.PESSIMISTIC_WRITE);
+                    if (entity == null) {
+                        log.debug("Update failed, key '{}' not found in context '{}'", key, context);
+                        return null;
+                    } else {
+                        final Long exp = entity.getExpiration();
+                        if (exp != null && System.currentTimeMillis() >= exp) {
+                            log.debug("Update failed, key '{}' expired in context '{}'", key, context);
+                            return null;
+                        }
+                    }
+
+                    if (version != null && entity.getVersion() != version) {
+                        // Caller is out of sync.
+                        throw new VersionMismatchException();
+                    }
+
+                    if (value != null) {
+                        entity.setValue(value);
+                        entity.incrementVersion();
+                    }
+                    entity.setExpiration(expiration);
+                    manager.merge(entity);
                     transaction.commit();
-                } catch (Exception e) {
-                    log.error("Error committing transaction", e);
+                    log.debug("Update record '{}' in context '{}' with expiration '{}'", new Object[] {key, context,
+                            expiration,});
+                    return entity.getVersion();
+                } catch (final VersionMismatchException e) {
+                    throw e;
+                } catch (final RollbackException e) {
+                    lastThrown = e;
+                    retry++;
+                } catch (final Exception e) {
+                    log.error("Error updating record '{}' in context '{}'", key, context, e);
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    throw new IOException(e);
+                } finally {
+                    if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                        try {
+                            transaction.commit();
+                        } catch (Exception e) {
+                            log.error("Error committing transaction", e);
+                        }
+                    }
                 }
-            }
+            } while (retry < transactionRetry);
+            throw lastThrown;
+        } finally {
             if (manager != null && manager.isOpen()) {
                 try {
                     manager.close();
@@ -417,6 +472,7 @@ public class JPAStorageService extends AbstractStorageService {
     }
 
     // Checkstyle: CyclomaticComplexity ON
+    // Checkstyle: MethodLength ON
 
     /** {@inheritDoc} */
     @Override public boolean deleteWithVersion(@Positive final long version, @Nonnull @NotEmpty final String context,
@@ -449,44 +505,56 @@ public class JPAStorageService extends AbstractStorageService {
     protected boolean deleteImpl(@Nullable @Positive final Long version, @Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         EntityManager manager = null;
-        EntityTransaction transaction = null;
         try {
-            manager = entityManagerFactory.createEntityManager();
-            transaction = manager.getTransaction();
-            transaction.begin();
-            final JPAStorageRecord entity =
-                    manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
-                            LockModeType.PESSIMISTIC_WRITE);
-            if (entity == null) {
-                log.debug("Deleting record '{}' in context '{}'....key not found", key, context);
-                return false;
-            } else if (version != null && entity.getVersion() != version) {
-                throw new VersionMismatchException();
-            } else {
-                manager.remove(entity);
-                log.debug("Deleted record '{}' in context '{}'", key, context);
-                return true;
-            }
-        } catch (final VersionMismatchException e) {
-            throw e;
-        } catch (final Exception e) {
-            log.error("Error deleting record '{}' in context '{}'", key, context, e);
-            if (transaction != null && transaction.isActive()) {
+            int retry = 0;
+            RollbackException lastThrown = null;
+            do {
+                EntityTransaction transaction = null;
                 try {
-                    transaction.rollback();
-                } catch (Exception ex) {
-                    log.error("Error rolling back transaction", e);
+                    manager = entityManagerFactory.createEntityManager();
+                    transaction = manager.getTransaction();
+                    transaction.begin();
+                    final JPAStorageRecord entity =
+                            manager.find(JPAStorageRecord.class, new JPAStorageRecord.RecordId(context, key),
+                                    LockModeType.PESSIMISTIC_WRITE);
+                    if (entity == null) {
+                        log.debug("Deleting record '{}' in context '{}'....key not found", key, context);
+                        return false;
+                    } else if (version != null && entity.getVersion() != version) {
+                        throw new VersionMismatchException();
+                    } else {
+                        manager.remove(entity);
+                        transaction.commit();
+                        log.debug("Deleted record '{}' in context '{}'", key, context);
+                        return true;
+                    }
+                } catch (final VersionMismatchException e) {
+                    throw e;
+                } catch (final RollbackException e) {
+                    lastThrown = e;
+                    retry++;
+                } catch (final Exception e) {
+                    log.error("Error deleting record '{}' in context '{}'", key, context, e);
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    throw new IOException(e);
+                } finally {
+                    if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                        try {
+                            transaction.commit();
+                        } catch (Exception e) {
+                            log.error("Error committing transaction", e);
+                        }
+                    }
                 }
-            }
-            throw new IOException(e);
+            } while (retry < transactionRetry);
+            throw lastThrown;
         } finally {
-            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
-                try {
-                    transaction.commit();
-                } catch (Exception e) {
-                    log.error("Error committing transaction", e);
-                }
-            }
             if (manager != null && manager.isOpen()) {
                 try {
                     manager.close();
@@ -504,41 +572,54 @@ public class JPAStorageService extends AbstractStorageService {
     @Override public void updateContextExpiration(@Nonnull @NotEmpty final String context,
             @Nullable @Positive final Long expiration) throws IOException {
         EntityManager manager = null;
-        EntityTransaction transaction = null;
         try {
-            manager = entityManagerFactory.createEntityManager();
-            transaction = manager.getTransaction();
-            transaction.begin();
-            final Query queryResults =
-                    manager.createNamedQuery("JPAStorageRecord.findActiveByContext", JPAStorageRecord.class);
-            queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            queryResults.setParameter("context", context);
-            queryResults.setParameter("now", System.currentTimeMillis());
-            final List<JPAStorageRecord> entities = queryResults.getResultList();
-            if (!entities.isEmpty()) {
-                for (final JPAStorageRecord entity : entities) {
-                    entity.setExpiration(expiration);
-                }
-                log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
-            }
-        } catch (final Exception e) {
-            log.error("Error updating context expiration in context '{}'", context, e);
-            if (transaction != null && transaction.isActive()) {
+            int retry = 0;
+            RollbackException lastThrown = null;
+            do {
+                EntityTransaction transaction = null;
                 try {
-                    transaction.rollback();
-                } catch (Exception ex) {
-                    log.error("Error rolling back transaction", e);
+                    manager = entityManagerFactory.createEntityManager();
+                    transaction = manager.getTransaction();
+                    transaction.begin();
+                    final Query queryResults =
+                            manager.createNamedQuery("JPAStorageRecord.findActiveByContext", JPAStorageRecord.class);
+                    queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+                    queryResults.setParameter("context", context);
+                    queryResults.setParameter("now", System.currentTimeMillis());
+                    final List<JPAStorageRecord> entities = queryResults.getResultList();
+                    if (!entities.isEmpty()) {
+                        for (final JPAStorageRecord entity : entities) {
+                            entity.setExpiration(expiration);
+                        }
+                        transaction.commit();
+                        log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
+                    }
+                    return;
+                } catch (final RollbackException e) {
+                    lastThrown = e;
+                    retry++;
+                } catch (final Exception e) {
+                    log.error("Error updating context expiration in context '{}'", context, e);
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    throw new IOException(e);
+                } finally {
+                    if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                        try {
+                            transaction.commit();
+                        } catch (Exception e) {
+                            log.error("Error committing transaction", e);
+                        }
+                    }
                 }
-            }
-            throw new IOException(e);
+            } while (retry < transactionRetry);
+            throw lastThrown;
         } finally {
-            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
-                try {
-                    transaction.commit();
-                } catch (Exception e) {
-                    log.error("Error committing transaction", e);
-                }
-            }
             if (manager != null && manager.isOpen()) {
                 try {
                     manager.close();
@@ -576,45 +657,58 @@ public class JPAStorageService extends AbstractStorageService {
     protected void deleteContextImpl(@Nonnull @NotEmpty final String context, @Nonnull final Long expiration)
             throws IOException {
         EntityManager manager = null;
-        EntityTransaction transaction = null;
         try {
-            manager = entityManagerFactory.createEntityManager();
-            transaction = manager.getTransaction();
-            transaction.begin();
-            final Query queryResults =
-                    manager.createNamedQuery("JPAStorageRecord.findByContext", JPAStorageRecord.class);
-            queryResults.setParameter("context", context);
-            queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            final List<JPAStorageRecord> entities = queryResults.getResultList();
+            int retry = 0;
+            RollbackException lastThrown = null;
+            do {
+                EntityTransaction transaction = null;
+                try {
+                    manager = entityManagerFactory.createEntityManager();
+                    transaction = manager.getTransaction();
+                    transaction.begin();
+                    final Query queryResults =
+                            manager.createNamedQuery("JPAStorageRecord.findByContext", JPAStorageRecord.class);
+                    queryResults.setParameter("context", context);
+                    queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+                    final List<JPAStorageRecord> entities = queryResults.getResultList();
 
-            if (!entities.isEmpty()) {
-                for (final JPAStorageRecord entity : entities) {
-                    if (expiration == null || (entity.getExpiration() != null &&
-                            entity.getExpiration() <= expiration)) {
-                        manager.remove(entity);
-                        log.debug("Deleted record '{}' in context '{}' with expiration '{}'", entity.getKey(),
-                                entity.getContext(), entity.getExpiration());
+                    if (!entities.isEmpty()) {
+                        for (final JPAStorageRecord entity : entities) {
+                            if (expiration == null
+                                    || (entity.getExpiration() != null && entity.getExpiration() <= expiration)) {
+                                manager.remove(entity);
+                            }
+                        }
+                        transaction.commit();
+                        log.debug("Deleted records '{}' in context '{}' with expiration '{}'", entities, context,
+                                expiration);
+                    }
+                    return;
+                } catch (final RollbackException e) {
+                    lastThrown = e;
+                    retry++;
+                } catch (final Exception e) {
+                    log.error("Error deleting context '{}'", context, e);
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    throw new IOException(e);
+                } finally {
+                    if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                        try {
+                            transaction.commit();
+                        } catch (Exception e) {
+                            log.error("Error committing transaction", e);
+                        }
                     }
                 }
-            }
-        } catch (final Exception e) {
-            log.error("Error deleting context '{}'", context, e);
-            if (transaction != null && transaction.isActive()) {
-                try {
-                    transaction.rollback();
-                } catch (Exception ex) {
-                    log.error("Error rolling back transaction", e);
-                }
-            }
-            throw new IOException(e);
+            } while (retry < transactionRetry);
+            throw lastThrown;
         } finally {
-            if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
-                try {
-                    transaction.commit();
-                } catch (Exception e) {
-                    log.error("Error committing transaction", e);
-                }
-            }
             if (manager != null && manager.isOpen()) {
                 try {
                     manager.close();
