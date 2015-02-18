@@ -111,7 +111,7 @@ public class JPAStorageService extends AbstractStorageService {
             @Nonnull @NotEmpty final String value, @Nullable @Positive final Long expiration) throws IOException {
         EntityManager manager = null;
         try {
-            int retry = 0;
+            int retry = -1;
             RollbackException lastThrown = null;
             do {
                 EntityTransaction transaction = null;
@@ -397,7 +397,7 @@ public class JPAStorageService extends AbstractStorageService {
             @Nullable @Positive final Long expiration) throws IOException, VersionMismatchException {
         EntityManager manager = null;
         try {
-            int retry = 0;
+            int retry = -1;
             RollbackException lastThrown = null;
             do {
                 EntityTransaction transaction = null;
@@ -506,7 +506,7 @@ public class JPAStorageService extends AbstractStorageService {
             @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
         EntityManager manager = null;
         try {
-            int retry = 0;
+            int retry = -1;
             RollbackException lastThrown = null;
             do {
                 EntityTransaction transaction = null;
@@ -573,7 +573,7 @@ public class JPAStorageService extends AbstractStorageService {
             @Nullable @Positive final Long expiration) throws IOException {
         EntityManager manager = null;
         try {
-            int retry = 0;
+            int retry = -1;
             RollbackException lastThrown = null;
             do {
                 EntityTransaction transaction = null;
@@ -658,7 +658,7 @@ public class JPAStorageService extends AbstractStorageService {
             throws IOException {
         EntityManager manager = null;
         try {
-            int retry = 0;
+            int retry = -1;
             RollbackException lastThrown = null;
             do {
                 EntityTransaction transaction = null;
