@@ -140,7 +140,8 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
     
     /** {@inheritDoc} */
     @Override
-    @Nullable protected TrustEngine<X509Credential> resolveTrustEngine(@Nonnull final MessageContext messageContext) {
+    @Nullable protected TrustEngine<? super X509Credential> resolveTrustEngine(
+            @Nonnull final MessageContext messageContext) {
         final ClientTLSSecurityParametersContext secContext = 
                 messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
         if (secContext == null || secContext.getValidationParameters() == null)  {

@@ -50,7 +50,7 @@ public class BasicClientTLSValidationParametersResolverTest {
 
     private BasicClientTLSValidationConfiguration config1, config2, config3;
 
-    private TrustEngine<X509Credential> controlTrustEngine1, controlTrustEngine2, controlTrustEngine3;
+    private TrustEngine<? super X509Credential> controlTrustEngine1, controlTrustEngine2, controlTrustEngine3;
     
     private CertificateNameOptions controlNameOpts1, controlNameOpts2, controlNameOpts3;
 
@@ -79,7 +79,7 @@ public class BasicClientTLSValidationParametersResolverTest {
     }
 
     @Test public void testResolveTrustEngine() {
-        TrustEngine<X509Credential> trustEngine;
+        TrustEngine<? super X509Credential> trustEngine;
 
         trustEngine = resolver.resolveTrustEngine(criteriaSet);
         Assert.assertNull(trustEngine);

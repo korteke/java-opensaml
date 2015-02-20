@@ -39,7 +39,7 @@ public class ChainingTrustEngineTest {
     
     private ChainingTrustEngine<FooToken> engine;
     
-    private List<TrustEngine<FooToken>> chain;
+    private List<TrustEngine<? super FooToken>> chain;
     
     private FooToken token;
 
@@ -79,6 +79,15 @@ public class ChainingTrustEngineTest {
     }
     
     @Test
+    public void testMixedEngines() throws SecurityException {
+        // Testing generically-mixed trust engine types, and input of a mixed List<TrustEngine<? super FooToken>>.
+        chain.add( new FooEngine(Boolean.FALSE));
+        chain.add( new SuperEngine(Boolean.TRUE));
+        engine = new ChainingTrustEngine<>(chain);
+        Assert.assertTrue(engine.validate(token, criteriaSet), "SuperEngine evaled token as trusted");
+    }
+    
+    @Test
     public void testNullEngineOK() throws SecurityException {
         chain.add( new FooEngine(Boolean.FALSE));
         chain.add( null );
@@ -101,8 +110,11 @@ public class ChainingTrustEngineTest {
         engine = new ChainingTrustEngine<>(null);
     }
     
-    /** Mock token type. */
-    private class FooToken {
+    /** Mock token types. */
+    private class SuperToken {
+        
+    }
+    private class FooToken extends SuperToken {
         
     }
     
@@ -117,6 +129,25 @@ public class ChainingTrustEngineTest {
 
         /** {@inheritDoc} */
         public boolean validate(FooToken token, CriteriaSet trustBasisCriteria) throws SecurityException {
+            if (trusted == null) {
+                throw new SecurityException("This means an error happened");
+            }
+            return trusted;
+        }
+        
+    }
+
+    /** Mock trust engine for SuperToken. */
+    private class SuperEngine implements TrustEngine<SuperToken> {
+        
+        private Boolean trusted;
+        
+        private SuperEngine(Boolean trusted) {
+            this.trusted = trusted;
+        }
+
+        /** {@inheritDoc} */
+        public boolean validate(SuperToken token, CriteriaSet trustBasisCriteria) throws SecurityException {
             if (trusted == null) {
                 throw new SecurityException("This means an error happened");
             }

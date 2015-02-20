@@ -50,14 +50,14 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
     @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingTrustEngine.class);
 
     /** The chain of subordinate trust engines. */
-    @Nonnull @NonnullElements private List<TrustEngine<TokenType>> engines;
+    @Nonnull @NonnullElements private List<TrustEngine<? super TokenType>> engines;
 
     /** 
      * Constructor.
      * 
      * @param chain the list of trust engines in the chain
      */
-    public ChainingTrustEngine(@Nonnull final List<TrustEngine<TokenType>> chain) {
+    public ChainingTrustEngine(@Nonnull final List<TrustEngine<? super TokenType>> chain) {
         Constraint.isNotNull(chain, "TrustEngine list cannot be null");
         engines = new ArrayList<>(Collections2.filter(chain, Predicates.notNull()));
     }
@@ -67,14 +67,14 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * 
      * @return the modifiable list of trust engines in the chain
      */
-    @Nonnull  @NonnullElements @Unmodifiable @NotLive public List<TrustEngine<TokenType>> getChain() {
+    @Nonnull  @NonnullElements @Unmodifiable @NotLive public List<TrustEngine<? super TokenType>> getChain() {
         return ImmutableList.copyOf(engines);
     }
 
     /** {@inheritDoc} */
     public boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
-        for (final TrustEngine<TokenType> engine : engines) {
+        for (final TrustEngine<? super TokenType> engine : engines) {
             if (engine.validate(token, trustBasisCriteria)) {
                 log.debug("Token was trusted by chain member: {}", engine.getClass().getName());
                 return true;

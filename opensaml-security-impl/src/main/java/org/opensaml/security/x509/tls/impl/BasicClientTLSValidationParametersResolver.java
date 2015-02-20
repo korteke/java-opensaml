@@ -74,13 +74,13 @@ public class BasicClientTLSValidationParametersResolver implements ClientTLSVali
     }
     
     /**
-     * Resolve and return the effective {@link TrustEngine<X509Credential>}.
+     * Resolve and return the effective {@link TrustEngine<? super X509Credential>}.
      * 
      * @param criteria the input criteria being evaluated
      * 
      * @return the effective resolver, or null
      */
-    @Nullable protected TrustEngine<X509Credential> resolveTrustEngine(@Nonnull final CriteriaSet criteria) {
+    @Nullable protected TrustEngine<? super X509Credential> resolveTrustEngine(@Nonnull final CriteriaSet criteria) {
         
         for (ClientTLSValidationConfiguration config : 
             criteria.get(ClientTLSValidationConfigurationCriterion.class).getConfigurations()) {

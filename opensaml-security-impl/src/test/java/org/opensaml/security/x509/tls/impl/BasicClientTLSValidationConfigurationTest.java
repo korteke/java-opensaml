@@ -23,8 +23,9 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
+import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
+import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.opensaml.security.x509.tls.CertificateNameOptions;
-import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -39,11 +40,22 @@ public class BasicClientTLSValidationConfigurationTest {
     }
     
     @Test
-    public void testTrustEngine() {
+    public void testCredentialTrustEngine() {
         Assert.assertNull(config.getX509TrustEngine());
         
         CredentialResolver credResolver = new StaticCredentialResolver(new ArrayList<Credential>());
         ExplicitX509CertificateTrustEngine trustEngine = new ExplicitX509CertificateTrustEngine(credResolver);
+        config.setX509TrustEngine(trustEngine);
+        
+        Assert.assertNotNull(config.getX509TrustEngine());
+    }
+    
+    @Test
+    public void testX509CredentialTrustEngine() {
+        Assert.assertNull(config.getX509TrustEngine());
+        
+        StaticPKIXValidationInformationResolver pkixResolver = new StaticPKIXValidationInformationResolver(null, null);
+        PKIXX509CredentialTrustEngine trustEngine = new PKIXX509CredentialTrustEngine(pkixResolver);
         config.setX509TrustEngine(trustEngine);
         
         Assert.assertNotNull(config.getX509TrustEngine());

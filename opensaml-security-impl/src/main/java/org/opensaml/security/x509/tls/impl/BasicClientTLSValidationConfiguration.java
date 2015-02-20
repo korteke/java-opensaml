@@ -30,14 +30,14 @@ import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
 public class BasicClientTLSValidationConfiguration implements ClientTLSValidationConfiguration {
     
     /** A {@link TrustEngine} instance used to validate a client TLS {@link X509Credential}. **/
-    @Nullable private TrustEngine<X509Credential> x509TrustEngine;
+    @Nullable private TrustEngine<? super X509Credential> x509TrustEngine;
     
     /** A {@link CertificateNameOptions} instance used to validate a client TLS {@link X509Credential}. **/
     @Nullable private CertificateNameOptions certificateNameOptions;
 
     /** {@inheritDoc} */
     @Override
-    @Nullable public TrustEngine<X509Credential> getX509TrustEngine() {
+    @Nullable public TrustEngine<? super X509Credential> getX509TrustEngine() {
         return x509TrustEngine;
     }
 
@@ -46,7 +46,7 @@ public class BasicClientTLSValidationConfiguration implements ClientTLSValidatio
      * 
      * @param engine a trust engine instance, may be null
      */
-    public void setX509TrustEngine(@Nullable final TrustEngine<X509Credential> engine) {
+    public void setX509TrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
         x509TrustEngine = engine;
     }
 
