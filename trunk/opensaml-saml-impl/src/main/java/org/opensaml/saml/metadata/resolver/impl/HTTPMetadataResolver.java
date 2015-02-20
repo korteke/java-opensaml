@@ -43,6 +43,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     private BasicCredentialsProvider credentialsProvider;
     
     /** Optional trust engine used in evaluating server TLS credentials. */
-    private TrustEngine<Credential> tlsTrustEngine;
+    private TrustEngine<? super X509Credential> tlsTrustEngine;
 
     /**
      * Constructor.
@@ -139,7 +140,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @param engine the trust engine instance to use
      */
-    public void setTLSTrustEngine(@Nullable final TrustEngine<Credential> engine) {
+    public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
         tlsTrustEngine = engine;
     }
 

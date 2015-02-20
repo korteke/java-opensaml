@@ -32,7 +32,7 @@ public interface ClientTLSValidationConfiguration {
      * 
      * @return a trust engine instance, may be null
      */
-    @Nullable public TrustEngine<X509Credential> getX509TrustEngine();
+    @Nullable public TrustEngine<? super X509Credential> getX509TrustEngine();
 
     /**
      * Get a {@link CertificateNameOptions} instance to use when evaluating a client TLS {@link X509Credential}.

@@ -150,7 +150,7 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
         log.debug("Attempting to evaluate server TLS credential against supplied TrustEngine and CriteriaSet");
         
         @SuppressWarnings("unchecked")
-        TrustEngine<Credential> trustEngine = (TrustEngine<Credential>) context.getAttribute(
+        TrustEngine<? super X509Credential> trustEngine = (TrustEngine<? super X509Credential>) context.getAttribute(
                 HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE);
         if (trustEngine == null) {
             log.debug("No trust engine supplied by caller, skipping trust eval");

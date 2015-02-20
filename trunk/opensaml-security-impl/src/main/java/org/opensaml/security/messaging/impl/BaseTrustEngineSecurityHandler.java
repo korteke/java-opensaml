@@ -41,14 +41,14 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseTrustEngineSecurityHandler.class);
 
     /** Trust engine used to verify the particular token type. */
-    @Nullable private TrustEngine<TokenType> trustEngine;
+    @Nullable private TrustEngine<? super TokenType> trustEngine;
 
     /**
      * Gets the trust engine used to validate the untrusted token.
      * 
      * @return trust engine used to validate the untrusted token
      */
-    @Nullable protected TrustEngine<TokenType> getTrustEngine() {
+    @Nullable protected TrustEngine<? super TokenType> getTrustEngine() {
         return trustEngine;
     }
 
@@ -60,7 +60,7 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
             return false;
         }
         
-        final TrustEngine<TokenType> engine = resolveTrustEngine(messageContext);
+        final TrustEngine<? super TokenType> engine = resolveTrustEngine(messageContext);
         if (engine == null) {
             throw new MessageHandlerException("TrustEngine could not be resolved from MessageContext");
         } else {
@@ -76,7 +76,7 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
      * @param messageContext the message context which is being evaluated
      * @return the resolved TrustEngine, may be null
      */
-    @Nullable protected abstract TrustEngine<TokenType> resolveTrustEngine(
+    @Nullable protected abstract TrustEngine<? super TokenType> resolveTrustEngine(
             @Nonnull final MessageContext messageContext);
 
     /**

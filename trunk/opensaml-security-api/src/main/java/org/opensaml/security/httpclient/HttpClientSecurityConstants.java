@@ -24,7 +24,7 @@ package org.opensaml.security.httpclient;
 public final class HttpClientSecurityConstants {
     
     /** Context key for a trust engine instance supplied by an HttpClient caller. 
-     * Value must be an instance of {@link TrustEngine<Credential>}. */
+     * Value must be an instance of {@link TrustEngine<? super X509Credential>}. */
     public static final String CONTEXT_KEY_TRUST_ENGINE = "opensaml.TrustEngine";
     
     /** Context key for a criteria set instance supplied by an HttpClient caller. 
