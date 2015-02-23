@@ -54,24 +54,46 @@ public interface AuthorityBinding extends SAMLObject {
     /** Name for the Binding attribute.  */
     public static final String BINDING_ATTRIB_NAME = "Binding";
 
-    /** Getter for AuthorityKind. */
+    /**
+     * Get the type of authority described.
+     * 
+     * @return the type of authority
+     */
     public QName getAuthorityKind();
 
-    /** Setter for AuthorityKind. */
+    /**
+     * Set the type of authority described.
+     * 
+     * @param authorityKind the type of authority
+     */
     public void setAuthorityKind(QName authorityKind);
     
-    /** Getter for Location. */
+    /**
+     * Get the authority location.
+     * 
+     * @return the location
+     */
     public String getLocation();
 
-    /** Setter for Location. */
+    /**
+     * Set the authority location.
+     * 
+     * @param location the location
+     */
     public void setLocation(String location);
     
-    /** Getter for Binding. */
+    /**
+     * Get the authority binding.
+     * 
+     * @return the binding
+     */
     public String getBinding();
 
-    /** Setter for Binding. */
+    /**
+     * Set the authority binding.
+     * 
+     * @param binding the binding
+     */
     public void setBinding(String binding);
-    
-
 
 }

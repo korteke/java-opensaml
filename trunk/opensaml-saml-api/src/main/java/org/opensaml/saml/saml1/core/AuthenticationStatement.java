@@ -83,25 +83,53 @@ public interface AuthenticationStatement extends SAMLObject, SubjectStatement {
     /** URI for unspecified authentication method. */
     public static final String UNSPECIFIED_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:unspecified";    
     
-    /** Return the contents of the AuthenticationMethod attribute. */
+    /**
+     * Return the contents of the AuthenticationMethod attribute.
+     *
+     * @return the authentication method
+     */
     public String getAuthenticationMethod();
 
-    /** Set the contents of the AuthenticationMethod attribute. */
+    /**
+     * Set the contents of the AuthenticationMethod attribute.
+     * 
+     * @param authenticationMethod the authentication method
+     */
     public void setAuthenticationMethod(String authenticationMethod);
 
-    /** Return the contents of the AuthenticationInstant attribute. */
+    /**
+     * Return the contents of the AuthenticationInstant attribute.
+     * 
+     * @return the authentication instant
+     */
     public DateTime getAuthenticationInstant();
 
-    /** Set the contents of the AuthenticationInstant attribute. */
+    /**
+     * Set the contents of the AuthenticationInstant attribute.
+     *
+     *  @param authenticationInstant the authentication instant
+     */
     public void setAuthenticationInstant(DateTime authenticationInstant);
 
-    /** Set the (single) SubjectLocality child element. */
+    /**
+     * Get the {@link SubjectLocality}.
+     * 
+     * @return the {@link SubjectLocality} 
+     */
     public SubjectLocality getSubjectLocality();
 
-    /** Get the (single) SubjectLocality child element. */
+    /**
+     * Set the {@link SubjectLocality}.
+     * 
+     * @param subjectLocality the {@link SubjectLocality} 
+     */
     public void setSubjectLocality(SubjectLocality subjectLocality);
 
-    /** return all the AuthorityBinding subelement. */
+    /**
+     * Get the list of {@link AuthorityBinding}s.
+     * 
+     * @return the list of {@link AuthorityBinding}s
+     */
     public List<AuthorityBinding> getAuthorityBindings();
 
 }

@@ -46,9 +46,18 @@ public interface AuthenticationQuery extends SubjectQuery {
     /** AuthenticationMethod attribute name. */
     public static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
 
-    /** Get AuthenticationMethod attribute .*/
+    /**
+     * Get AuthenticationMethod attribute.
+     * 
+     * @return the authentication method
+     */
     public String getAuthenticationMethod();
     
-    /** Set AuthenticationMethod attribute. */
+    /**
+     * Set AuthenticationMethod attribute.
+     * 
+     * @param authenticationMethod the authentication method
+     */
     public void setAuthenticationMethod(String authenticationMethod);
+    
 }

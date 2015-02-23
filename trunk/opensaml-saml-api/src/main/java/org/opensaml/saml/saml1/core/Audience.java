@@ -38,9 +38,18 @@ public interface Audience extends SAMLObject {
     public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
-    /** Return the URI which makes up the Body. */
+    /** 
+     * Return the audience URI.
+     * 
+     * @return the audience URI
+     */
     public String getUri();
 
-    /** Set the Uri which makes up the body text. */
+    /**
+     * Set the audience URI.
+     * 
+     * @param uri the audience URI
+     */
     public void setUri(String uri);
+    
 }
