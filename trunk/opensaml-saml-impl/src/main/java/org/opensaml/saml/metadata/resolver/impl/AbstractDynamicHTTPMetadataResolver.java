@@ -54,7 +54,6 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
-import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -125,7 +124,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * <p>
      * Must be used in conjunction with an HttpClient instance which is configured with a 
-     * {@link TrustEngineTLSSocketFactory}, otherwise has no effect.
+     * {@link org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory}. If this socket
+     * factory is not configured, then this will result in no TLS trust evaluation being performed
+     * and a {@link ResolverException} will ultimately be thrown.
      * </p>
      * 
      * @param engine the trust engine instance to use

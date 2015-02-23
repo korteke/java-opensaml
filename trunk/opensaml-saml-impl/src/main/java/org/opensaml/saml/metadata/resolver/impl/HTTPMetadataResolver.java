@@ -40,9 +40,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.util.EntityUtils;
-import org.opensaml.security.credential.Credential;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
-import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -136,7 +134,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * <p>
      * Must be used in conjunction with an HttpClient instance which is configured with a 
-     * {@link TrustEngineTLSSocketFactory}, otherwise has no effect.
+     * {@link org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory}. If this socket
+     * factory is not configured, then this will result in no TLS trust evaluation being performed
+     * and a {@link ResolverException} will ultimately be thrown.
      * </p>
      * 
      * @param engine the trust engine instance to use
