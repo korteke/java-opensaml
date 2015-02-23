@@ -46,12 +46,25 @@ public interface Evidence extends SAMLObject {
     public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
-    /** Get the ordered list of all Evidentiary child elements.  */
+    /**
+     * Get the list of all {@link Evidentiary} child elements.
+     * 
+     * @return list of all {@link Evidentiary} elements
+     */
     public List<Evidentiary> getEvidence();
 
-    /** Get the list of the AssertionIdReference. */
+    /**
+     * Get the list of assertion ID references.
+     * 
+     * @return list of assertion ID references
+     */
     public List<AssertionIDReference> getAssertionIDReferences();
     
-    /** Get the list of Assertions. */
+    /**
+     * Get the list of Assertions.
+     * 
+     * @return list of assertions
+     */
     public List<Assertion> getAssertions();
+    
 }
