@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.util.Timer;
 
 import javax.annotation.Nullable;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -263,12 +264,15 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * Check that trust engine evaluation of the server TLS credential was actually performed.
      * 
      * @param context the current HTTP context instance in use
+     * @throws SSLPeerUnverifiedException thrown if the TLS credential was not actually evaluated by the trust engine
      */
-    protected void checkTLSCredentialTrusted(HttpClientContext context) {
+    protected void checkTLSCredentialTrusted(HttpClientContext context) throws SSLPeerUnverifiedException {
         if (tlsTrustEngine != null && "https".equalsIgnoreCase(metadataURI.getScheme())) {
             if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
                 log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
                         + "the appropriate socket factory was likely not configured");
+                throw new SSLPeerUnverifiedException(
+                        "Evaluation of server TLS credential with configured TrustEngine was not performed");
             }
         }
     }

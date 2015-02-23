@@ -27,6 +27,7 @@ import java.util.Timer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
@@ -52,7 +53,6 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.security.credential.Credential;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
@@ -280,12 +280,16 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * @param context the current HTTP context instance in use
      * @param request the HTTP URI request
+     * @throws SSLPeerUnverifiedException thrown if the TLS credential was not actually evaluated by the trust engine
      */
-    protected void checkTLSCredentialTrusted(HttpClientContext context, HttpUriRequest request) {
+    protected void checkTLSCredentialTrusted(HttpClientContext context, HttpUriRequest request) 
+            throws SSLPeerUnverifiedException {
         if (tlsTrustEngine != null && "https".equalsIgnoreCase(request.getURI().getScheme())) {
             if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
                 log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
                         + "the appropriate socket factory was likely not configured");
+                throw new SSLPeerUnverifiedException(
+                        "Evaluation of server TLS credential with configured TrustEngine was not performed");
             }
         }
     }
