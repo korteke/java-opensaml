@@ -17,25 +17,53 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Collections;
 
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
+import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.velocity.VelocityEngine;
 
-import org.apache.http.client.HttpClient;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.security.credential.impl.StaticCredentialResolver;
+import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
+import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.PKIXValidationInformation;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Support;
+import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
+import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
+import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
+    private static final String DATA_PATH = "/data/org/opensaml/saml/metadata/resolver/impl/";
+    
     private FunctionDrivenDynamicHTTPMetadataResolver resolver;
+    
+    private HttpClientBuilder httpClientBuilder;
+    
+    @BeforeMethod
+    public void setUp() {
+        httpClientBuilder = new HttpClientBuilder();
+    }
     
     @AfterMethod
     public void tearDown() {
@@ -57,9 +85,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 true, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -85,9 +111,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 true, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -114,9 +138,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 true, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -139,9 +161,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 template, 
                 true);
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -164,9 +184,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 template, 
                 true);
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -185,9 +203,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         HTTPEntityIDRequestURLBuilder requestURLBuilder = new HTTPEntityIDRequestURLBuilder();
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -208,9 +224,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL);
         
-        HttpClient httpClient = new HttpClientBuilder().buildClient();
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClient);
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
@@ -223,5 +237,276 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertEquals(ed.getEntityID(), entityID);
     }
     
+    @Test
+    public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception {
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
+    @Test
+    public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildExplicitKeyTrustEngine("svn-entity.crt"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
+    @Test
+    public void testHTTPSNoTrustEngine() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineExplicitKey() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildExplicitKeyTrustEngine("svn-entity.crt"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineInvalidKey()  throws Exception {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildExplicitKeyTrustEngine("badKey.crt"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(ed);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineValidPKIX() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "*.shibboleth.net"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("badCA.crt", "*.shibboleth.net"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(ed);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "foobar.shibboleth.net"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(ed);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineWrongSocketFactory() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        // Trust engine set, but appropriate socket factory not set
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildExplicitKeyTrustEngine("svn-entity.crt"));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(ed);
+    }
+    
+    
+    
+    // Helpers
+    
+    private LayeredConnectionSocketFactory buildTrustEngineSocketFactory() {
+        return new TrustEngineTLSSocketFactory(
+                HttpClientSupport.buildNoTrustSSLConnectionSocketFactory(),
+                SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER
+                );
+    }
+
+    private TrustEngine<? super X509Credential> buildExplicitKeyTrustEngine(String cert) throws URISyntaxException, CertificateException {
+        File certFile = new File(this.getClass().getResource(DATA_PATH + cert).toURI());
+        X509Certificate entityCert = X509Support.decodeCertificate(certFile);
+        X509Credential entityCredential = new BasicX509Credential(entityCert);
+        return new ExplicitKeyTrustEngine(new StaticCredentialResolver(entityCredential));
+    }
+    
+    private TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name) throws URISyntaxException, CertificateException {
+        File certFile = new File(this.getClass().getResource(DATA_PATH + cert).toURI());
+        X509Certificate rootCert = X509Support.decodeCertificate(certFile);
+        PKIXValidationInformation info = new BasicPKIXValidationInformation(Collections.singletonList(rootCert), null, 5);
+        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), Collections.singleton(name));
+        return new PKIXX509CredentialTrustEngine(resolver);
+    }
     
 }
