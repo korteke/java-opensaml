@@ -21,7 +21,6 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.x509.PKIXValidationInformation;
@@ -50,11 +49,7 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
     public BasicPKIXValidationInformation(@Nullable final Collection<X509Certificate> anchors,
             @Nullable final Collection<X509CRL> crls, @Nullable final Integer depth) {
 
-        if (null == depth) {
-            verificationDepth = 1; 
-        } else {
-            verificationDepth = depth;
-        }
+        verificationDepth = depth;
         trustAnchors = anchors;
         trustedCRLs = crls;
     }
@@ -73,7 +68,7 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull public Integer getVerificationDepth() {
+    @Nullable public Integer getVerificationDepth() {
         return verificationDepth;
     }
 }
