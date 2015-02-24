@@ -18,11 +18,10 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.apache.http.client.params.AllClientPNames;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -35,7 +34,7 @@ import org.testng.annotations.Test;
  */
 public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
-    private DefaultHttpClient httpClient;
+    private HttpClientBuilder httpClientBuilder;
 
     private String inCommonMDURL;
     private String badMDURL;
@@ -45,14 +44,13 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception {
-        httpClient = new DefaultHttpClient();
-        httpClient.getParams().setIntParameter(AllClientPNames.CONNECTION_TIMEOUT, 1000 * 5);
+        httpClientBuilder = new HttpClientBuilder();
         
         inCommonMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
         badMDURL = "http://www.google.com/";
         entityID = "urn:mace:incommon:washington.edu";
         
-        metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), inCommonMDURL);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
         metadataProvider.initialize();
@@ -74,8 +72,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * Test fail-fast = true with known bad metadata URL.
      */
     @Test
-    public void testFailFastBadURL() throws ResolverException {
-        metadataProvider = new HTTPMetadataResolver(httpClient, badMDURL);
+    public void testFailFastBadURL() throws Exception {
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), badMDURL);
         
         metadataProvider.setFailFastInitialization(true);
         metadataProvider.setId("test");
@@ -93,8 +91,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * Test fail-fast = false with known bad metadata URL.
      */
     @Test
-    public void testNoFailFastBadURL() throws ResolverException {
-        metadataProvider = new HTTPMetadataResolver(httpClient, badMDURL);
+    public void testNoFailFastBadURL() throws Exception {
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), badMDURL);
         
         metadataProvider.setFailFastInitialization(false);
         metadataProvider.setId("test");
