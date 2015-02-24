@@ -28,23 +28,23 @@
         <property name="database" value="HSQL" />
         <property name="generateDdl" value="true" />
         <property name="showSql" value="false"/>
-    </bean> 
-    <bean id="hibernateDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
-        p:driverClass="org.hsqldb.jdbcDriver"
-        p:jdbcUrl="jdbc:hsqldb:mem:JPAStorageService" p:user="SA" p:password="" p:acquireIncrement="3"
-        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
-        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
+    </bean>
+    <bean id="hibernateDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="org.hsqldb.jdbcDriver"
+       p:url="jdbc:hsqldb:mem:JPAStorageService"
+       p:username="SA"
+       p:password="" />
 
     <!-- Postgres configuration -->
     <bean id="postgresJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="database" value="POSTGRESQL" />
         <property name="generateDdl" value="true" />
     </bean> 
-    <bean id="postgresDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
-        p:driverClass="org.postgresql.Driver"
-        p:jdbcUrl="jdbc:postgresql://localhost:5432/storageservice" p:user="shib" p:password="p@ssw0rd" p:acquireIncrement="3"
-        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
-        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
+    <bean id="postgresDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="org.postgresql.Driver"
+       p:url="jdbc:postgresql://localhost:5432/storageservice"
+       p:username="shib"
+       p:password="p@ssw0rd" />
 
     <!-- MySQL configuration -->
     <bean id="mysqlJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
@@ -52,11 +52,11 @@
         <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
         <property name="generateDdl" value="true" />
     </bean>
-    <bean id="mysqlDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
-        p:driverClass="com.mysql.jdbc.Driver"
-        p:jdbcUrl="jdbc:mysql://localhost:3306/storageservice" p:user="shib" p:password="p@ssw0rd" p:acquireIncrement="3"
-        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
-        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
+    <bean id="mysqlDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="com.mysql.jdbc.Driver"
+       p:url="jdbc:mysql://localhost:3306/storageservice"
+       p:username="shib"
+       p:password="p@ssw0rd" />
 
     <!-- Oracle configuration
     
@@ -73,10 +73,10 @@
         <property name="databasePlatform" value="org.hibernate.dialect.OracleDialect" />
         <property name="generateDdl" value="true" />
     </bean> 
-    <bean id="oracleDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" lazy-init="true"
-        p:driverClass="oracle.jdbc.OracleDriver"
-        p:jdbcUrl="jdbc:oracle:thin:@//localhost:1521/PDB1" p:user="pmuser" p:password="oracle" p:acquireIncrement="3"
-        p:acquireRetryAttempts="24" p:acquireRetryDelay="5000" p:breakAfterAcquireFailure="true" p:minPoolSize="1"
-        p:maxPoolSize="5" p:maxIdleTime="300" p:idleConnectionTestPeriod="360" />
+    <bean id="oracleDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="oracle.jdbc.OracleDriver"
+       p:url="jdbc:oracle:thin:@//localhost:1521/PDB1"
+       p:username="pmuser"
+       p:password="oracle" />
     
 </beans>
