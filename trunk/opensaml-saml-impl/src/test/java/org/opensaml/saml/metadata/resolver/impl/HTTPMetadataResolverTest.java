@@ -17,14 +17,34 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Collections;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
+import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.security.credential.impl.StaticCredentialResolver;
+import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
+import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
+import org.opensaml.security.x509.BasicX509Credential;
+import org.opensaml.security.x509.PKIXValidationInformation;
+import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.X509Support;
+import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
+import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
+import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,9 +54,12 @@ import org.testng.annotations.Test;
  */
 public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
+    private static final String DATA_PATH = "/data/org/opensaml/saml/metadata/resolver/impl/";
+    
     private HttpClientBuilder httpClientBuilder;
 
-    private String inCommonMDURL;
+    private String httpsMDURL;
+    private String httpMDURL;
     private String badMDURL;
     private String entityID;
     private HTTPMetadataResolver metadataProvider;
@@ -46,11 +69,13 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         httpClientBuilder = new HttpClientBuilder();
         
-        inCommonMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
-        badMDURL = "http://www.google.com/";
-        entityID = "urn:mace:incommon:washington.edu";
+        httpsMDURL = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/08ced64cddc9f1578598b2cf71ae747b11d11472.xml";
+        httpMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/08ced64cddc9f1578598b2cf71ae747b11d11472.xml?view=co";
         
-        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), inCommonMDURL);
+        badMDURL = "http://www.google.com/";
+        entityID = "https://www.example.org/sp";
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpMDURL);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
         metadataProvider.initialize();
@@ -107,4 +132,166 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNull(descriptor);
     }
+    
+    @Test
+    public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception  {
+        // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test
+    public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
+        // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildExplicitKeyTrustEngine("svn-entity.crt"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test
+    public void testHTTPSNoTrustEngine() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineExplicitKey() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildExplicitKeyTrustEngine("svn-entity.crt"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+
+    @Test(expectedExceptions=ComponentInitializationException.class)
+    public void testHTTPSTrustEngineInvalidKey() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildExplicitKeyTrustEngine("badKey.crt"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineValidPKIX() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "*.shibboleth.net"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test(expectedExceptions=ComponentInitializationException.class)
+    public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("badCA.crt", "*.shibboleth.net"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test(expectedExceptions=ComponentInitializationException.class)
+    public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "foobar.shibboleth.net"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test(expectedExceptions=ComponentInitializationException.class)
+    public void testHTTPSTrustEngineWrongSocketFactory() throws Exception  {
+        // Trust engine set, but appropriate socket factory not set
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildExplicitKeyTrustEngine("svn-entity.crt"));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    
+    
+    // Helpers
+    
+    private LayeredConnectionSocketFactory buildTrustEngineSocketFactory() {
+        return new TrustEngineTLSSocketFactory(
+                HttpClientSupport.buildNoTrustSSLConnectionSocketFactory(),
+                SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER
+                );
+    }
+
+    private TrustEngine<? super X509Credential> buildExplicitKeyTrustEngine(String cert) throws URISyntaxException, CertificateException {
+        File certFile = new File(this.getClass().getResource(DATA_PATH + cert).toURI());
+        X509Certificate entityCert = X509Support.decodeCertificate(certFile);
+        X509Credential entityCredential = new BasicX509Credential(entityCert);
+        return new ExplicitKeyTrustEngine(new StaticCredentialResolver(entityCredential));
+    }
+    
+    private TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name) throws URISyntaxException, CertificateException {
+        File certFile = new File(this.getClass().getResource(DATA_PATH + cert).toURI());
+        X509Certificate rootCert = X509Support.decodeCertificate(certFile);
+        PKIXValidationInformation info = new BasicPKIXValidationInformation(Collections.singletonList(rootCert), null, 5);
+        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), Collections.singleton(name));
+        return new PKIXX509CredentialTrustEngine(resolver);
+    }
+    
 }
