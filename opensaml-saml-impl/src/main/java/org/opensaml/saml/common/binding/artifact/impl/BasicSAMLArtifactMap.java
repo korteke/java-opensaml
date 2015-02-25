@@ -78,11 +78,11 @@ public class BasicSAMLArtifactMap extends AbstractInitializableComponent impleme
     /** {@inheritDoc} */
     @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        artifactStore = new ConcurrentHashMap<String, ExpiringSAMLArtifactMapEntry>();
+        artifactStore = new ConcurrentHashMap<>();
 
         if (cleanupInterval > 0) {
             cleanupTask = new Cleanup();
-            cleanupTaskTimer = new Timer();
+            cleanupTaskTimer = new Timer(true);
             cleanupTaskTimer.schedule(cleanupTask, cleanupInterval * 1000, cleanupInterval * 1000);
         }
     }

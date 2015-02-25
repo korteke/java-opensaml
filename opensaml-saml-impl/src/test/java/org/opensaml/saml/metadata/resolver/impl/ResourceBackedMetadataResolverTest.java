@@ -51,7 +51,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         Resource mdResource = ResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
 
-        metadataProvider = new ResourceBackedMetadataResolver(new Timer(), mdResource);
+        metadataProvider = new ResourceBackedMetadataResolver(new Timer(true), mdResource);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMaxRefreshDelay(500000);
         metadataProvider.setId("test");
