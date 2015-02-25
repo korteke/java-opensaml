@@ -170,7 +170,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
             if (cleanupTask == null) {
                 throw new ComponentInitializationException("Cleanup task cannot be null if cleanupInterval is set.");
             } else if (cleanupTaskTimer == null) {
-                internalTaskTimer = new Timer();
+                internalTaskTimer = new Timer(true);
             } else {
                 internalTaskTimer = cleanupTaskTimer;
             }
