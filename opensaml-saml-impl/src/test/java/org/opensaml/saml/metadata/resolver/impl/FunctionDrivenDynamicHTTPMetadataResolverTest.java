@@ -23,6 +23,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Set;
 
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
@@ -45,6 +46,8 @@ import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
+import org.opensaml.security.x509.impl.BasicX509CredentialNameEvaluator;
+import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.testng.Assert;
@@ -392,7 +395,35 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
-        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "*.shibboleth.net"));
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", null, false));
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNotNull(ed);
+        Assert.assertEquals(ed.getEntityID(), entityID);
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                true, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "*.shibboleth.net", true));
         resolver.initialize();
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
@@ -420,7 +451,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
-        resolver.setTLSTrustEngine(buildPKIXTrustEngine("badCA.crt", "*.shibboleth.net"));
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("badCA.crt", null, false));
         resolver.initialize();
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
@@ -447,7 +478,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
-        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "foobar.shibboleth.net"));
+        resolver.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "foobar.shibboleth.net", true));
         resolver.initialize();
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
@@ -501,12 +532,15 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         return new ExplicitKeyTrustEngine(new StaticCredentialResolver(entityCredential));
     }
     
-    private TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name) throws URISyntaxException, CertificateException {
+    private TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name, boolean nameCheckEnabled) throws URISyntaxException, CertificateException {
         File certFile = new File(this.getClass().getResource(DATA_PATH + cert).toURI());
         X509Certificate rootCert = X509Support.decodeCertificate(certFile);
         PKIXValidationInformation info = new BasicPKIXValidationInformation(Collections.singletonList(rootCert), null, 5);
-        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), Collections.singleton(name));
-        return new PKIXX509CredentialTrustEngine(resolver);
+        Set<String> trustedNames = (Set<String>) (name != null ? Collections.singleton(name) : Collections.emptySet());
+        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), trustedNames);
+        return new PKIXX509CredentialTrustEngine(resolver, 
+                new CertPathPKIXTrustEvaluator(),
+                (nameCheckEnabled ? new BasicX509CredentialNameEvaluator() : null));
     }
     
 }
