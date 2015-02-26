@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
+import java.util.Set;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
@@ -43,6 +44,8 @@ import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
+import org.opensaml.security.x509.impl.BasicX509CredentialNameEvaluator;
+import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.testng.Assert;
@@ -308,7 +311,22 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "*.shibboleth.net"));
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", null, false));
+        metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+    }
+    
+    @Test
+    public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
+        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL, backupFilePath);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "*.shibboleth.net", true));
         metadataProvider.initialize();
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
@@ -323,7 +341,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("badCA.crt", "*.shibboleth.net"));
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("badCA.crt", null, false));
         metadataProvider.initialize();
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
@@ -338,7 +356,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), httpsMDURL, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "foobar.shibboleth.net"));
+        metadataProvider.setTLSTrustEngine(buildPKIXTrustEngine("svn-rootCA.crt", "foobar.shibboleth.net", true));
         metadataProvider.initialize();
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
@@ -377,12 +395,15 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         return new ExplicitKeyTrustEngine(new StaticCredentialResolver(entityCredential));
     }
     
-    private TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name) throws URISyntaxException, CertificateException {
+    private TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name, boolean nameCheckEnabled) throws URISyntaxException, CertificateException {
         File certFile = new File(this.getClass().getResource(DATA_PATH + cert).toURI());
         X509Certificate rootCert = X509Support.decodeCertificate(certFile);
         PKIXValidationInformation info = new BasicPKIXValidationInformation(Collections.singletonList(rootCert), null, 5);
-        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), Collections.singleton(name));
-        return new PKIXX509CredentialTrustEngine(resolver);
+        Set<String> trustedNames = (Set<String>) (name != null ? Collections.singleton(name) : Collections.emptySet());
+        StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), trustedNames);
+        return new PKIXX509CredentialTrustEngine(resolver, 
+                new CertPathPKIXTrustEvaluator(),
+                (nameCheckEnabled ? new BasicX509CredentialNameEvaluator() : null));
     }
 
 }
