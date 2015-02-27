@@ -42,6 +42,7 @@ import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.OAEPparams;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.impl.BasicEncryptionParametersResolver;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -251,6 +252,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
+     // Checkstyle: CyclomaticComplexity OFF -- more readable not split up
     protected void populateRSAOAEPParamsFromEncryptionMethod(@Nonnull final RSAOAEPParameters params, 
             @Nonnull final EncryptionMethod encryptionMethod, 
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
@@ -267,12 +269,14 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             }
         }
         
-        List<XMLObject> mgfs = encryptionMethod.getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
-        if (mgfs.size() > 0) {
-            MGF mgf = (MGF) mgfs.get(0);
-            String mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
-            if (mgfAlgorithm != null && whitelistBlacklistPredicate.apply(mgfAlgorithm)) {
-                params.setMaskGenerationFunction(mgfAlgorithm);
+        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11.equals(encryptionMethod.getAlgorithm())) {
+            List<XMLObject> mgfs = encryptionMethod.getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+            if (mgfs.size() > 0) {
+                MGF mgf = (MGF) mgfs.get(0);
+                String mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
+                if (mgfAlgorithm != null && whitelistBlacklistPredicate.apply(mgfAlgorithm)) {
+                    params.setMaskGenerationFunction(mgfAlgorithm);
+                }
             }
         }
         
@@ -285,6 +289,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         }
         
     }
+    // Checkstyle:CyclomaticComplexity ON
 
     /**
      * Determine the key transport algorithm URI to use with the specified credential, also returning the associated
@@ -314,9 +319,11 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             for (EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
                 String algorithm = encryptionMethod.getAlgorithm();
                 log.trace("Evaluating SAML metadata EncryptionMethod algorithm for key transport: {}", algorithm);
-                if (isKeyTransportAlgorithm(algorithm) && whitelistBlacklistPredicate.apply(algorithm) 
+                if (isKeyTransportAlgorithm(algorithm) 
+                        && whitelistBlacklistPredicate.apply(algorithm) 
                         && getAlgorithmRuntimeSupportedPredicate().apply(algorithm)
-                        && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)) {
+                        && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)
+                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, whitelistBlacklistPredicate)) {
                     
                     if (keyTransportPredicate != null) {
                         if (keyTransportPredicate.apply(new KeyTransportAlgorithmPredicate.SelectionInput(
@@ -368,8 +375,10 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             for (EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
                 String algorithm = encryptionMethod.getAlgorithm();
                 log.trace("Evaluating SAML metadata EncryptionMethod algorithm for data encryption: {}", algorithm);
-                if (isDataEncryptionAlgorithm(algorithm) && whitelistBlacklistPredicate.apply(algorithm)
-                        && getAlgorithmRuntimeSupportedPredicate().apply(algorithm)) {
+                if (isDataEncryptionAlgorithm(algorithm) 
+                        && whitelistBlacklistPredicate.apply(algorithm)
+                        && getAlgorithmRuntimeSupportedPredicate().apply(algorithm)
+                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, whitelistBlacklistPredicate)) {
                     log.debug("Resolved data encryption algorithm URI from SAML metadata EncryptionMethod: {}",
                             algorithm);
                     return new Pair<>(algorithm, encryptionMethod);
@@ -383,6 +392,79 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         return new Pair<>(
                 super.resolveDataEncryptionAlgorithm(null, criteria, whitelistBlacklistPredicate),
                 null);
+    }
+
+    /**
+     * Evaluate the child elements of an EncryptionMethod for acceptability based on for example
+     * whitelist/blacklist policy and algorithm runtime support.
+     * 
+     * @param encryptionMethod the EncryptionMethod being evaluated
+     * @param criteria  the criteria instance being evaluated
+     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     *          candidate data encryption and key transport algorithm URIs
+     *          
+     * @return true if the EncryptionMethod children are acceptable
+     */
+    protected boolean evaluateEncryptionMethodChildren(@Nonnull final EncryptionMethod encryptionMethod, 
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
+        switch(encryptionMethod.getAlgorithm()) {
+            
+            case EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP:
+            case EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11:
+                return evaluateRSAOAEPChildren(encryptionMethod, criteria, whitelistBlacklistPredicate);
+                
+            default:
+                return true;
+        }
+        
+    }
+
+    /**
+     * Evaluate the child elements of an RSA OAEP EncryptionMethod for acceptability based on for example
+     * whitelist/blacklist policy and algorithm runtime support.
+     * 
+     * @param encryptionMethod the EncryptionMethod being evaluated
+     * @param criteria  the criteria instance being evaluated
+     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     *          candidate data encryption and key transport algorithm URIs
+     *          
+     * @return true if the EncryptionMethod children are acceptable
+     */
+    protected boolean evaluateRSAOAEPChildren(@Nonnull final EncryptionMethod encryptionMethod, 
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+        
+        Predicate<String> algoSupportPredicate = getAlgorithmRuntimeSupportedPredicate();
+        
+        List<XMLObject> digestMethods = encryptionMethod.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
+        if (digestMethods.size() > 0) {
+            DigestMethod digestMethod = (DigestMethod) digestMethods.get(0);
+            String digestAlgorithm = StringSupport.trimOrNull(digestMethod.getAlgorithm());
+            if (digestAlgorithm != null) {
+                if (!whitelistBlacklistPredicate.apply(digestAlgorithm) 
+                        || !algoSupportPredicate.apply(digestAlgorithm)) {
+                    log.debug("Rejecting RSA OAEP EncryptionMethod due to unsupported or disallowed DigestMethod: {}",
+                            digestAlgorithm);
+                    return false;
+                }
+            }
+        }
+        
+        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11.equals(encryptionMethod.getAlgorithm())) {
+            List<XMLObject> mgfs = encryptionMethod.getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+            if (mgfs.size() > 0) {
+                MGF mgf = (MGF) mgfs.get(0);
+                String mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
+                if (mgfAlgorithm != null) {
+                    if (!whitelistBlacklistPredicate.apply(mgfAlgorithm)) {
+                        log.debug("Rejecting RSA OAEP EncryptionMethod due to disallowed MGF: {}", mgfAlgorithm);
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
     }
 
     /**

@@ -503,6 +503,47 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     }
     
     @Test
+    public void testEncryptionMethodWithBlacklistedDigest() throws ResolverException {
+        EncryptionMethod rsaEncryptionMethod;
+        DigestMethod digestMethod;
+        
+        KeyDescriptor keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
+        
+        // This one will be effectively blacklist due to the DigestMethod SHA-1, won't be resolved.
+        rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
+        keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+        
+        // This one will be resolved with DigestMethod SHA-256.
+        rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
+        keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+        
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
+        
+        config1.setBlacklistedAlgorithms(Arrays.asList(SignatureConstants.ALGO_ID_DIGEST_SHA1));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertNotNull(params.getRSAOAEPParameters());
+        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
+        Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
     public void testMultipleKeyDescriptors() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(dsaCred1KeyName, UsageType.SIGNING, dsaCred1.getPublicKey()));
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
