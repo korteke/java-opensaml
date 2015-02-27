@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.security.KeyException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,6 +66,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.security.DataExpiredException;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerException;
+import net.shibboleth.utilities.java.support.security.DataSealerKeyStrategy;
 
 import org.opensaml.storage.AbstractMapBackedStorageService;
 import org.opensaml.storage.MutableStorageRecord;
@@ -115,6 +117,9 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     
     /** DataSealer instance to secure data. */
     @NonnullAfterInit private DataSealer dataSealer;
+
+    /** KeyStrategy enabling us to detect whether data has been sealed with an older key. */
+    @Nullable private DataSealerKeyStrategy keyStrategy;
 
     /** Constructor. */
     public ServletRequestScopedStorageService() {
@@ -184,14 +189,25 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     /**
      * Set the {@link DataSealer} to use for data security.
      * 
-     * @param sealer    {@link DataSealer} to use for data security
+     * @param sealer {@link DataSealer} to use for data security
      */
     public void setDataSealer(@Nonnull final DataSealer sealer) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         dataSealer = Constraint.isNotNull(sealer, "DataSealer cannot be null");
     }
-    
+
+    /**
+     * Set the {@link DataSealerKeyStrategy} to use for stale key detection.
+     * 
+     * @param strategy {@link DataSealerKeyStrategy} to use for stale key detection
+     */
+    public void setKeyStrategy(@Nonnull final DataSealerKeyStrategy strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        keyStrategy = strategy;
+    }
+
     /** {@inheritDoc} */
     @Override
     protected void doInitialize() throws ComponentInitializationException {
@@ -298,7 +314,8 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         }
         
         try {
-            final String decrypted = dataSealer.unwrap(URISupport.doURLDecode(cookie.get().getValue()));
+            final StringBuffer keyAliasUsed = new StringBuffer();
+            final String decrypted = dataSealer.unwrap(URISupport.doURLDecode(cookie.get().getValue()), keyAliasUsed);
             
             log.trace("Data after decryption: {}", decrypted);
             
@@ -327,7 +344,17 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
                     create(context.getKey(), record.getKey(), fields.getString("v"), exp);
                 }
             }
-            setDirty(false);
+            
+            if (keyStrategy != null) {
+                try {
+                    setDirty(!keyStrategy.getDefaultKey().getFirst().equals(keyAliasUsed.toString()));
+                } catch (final KeyException e) {
+                    log.error("Exception while accessing default key during stale key detection", e);
+                    setDirty(false);
+                }
+            } else {
+                setDirty(false);
+            }
         } catch (final NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
             contextMap.clear();
             setDirty(true);
