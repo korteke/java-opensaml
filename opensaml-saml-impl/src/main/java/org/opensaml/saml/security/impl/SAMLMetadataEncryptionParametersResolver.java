@@ -325,14 +325,13 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                         && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)
                         && evaluateEncryptionMethodChildren(encryptionMethod, criteria, whitelistBlacklistPredicate)) {
                     
+                    boolean accepted = true;
                     if (keyTransportPredicate != null) {
-                        if (keyTransportPredicate.apply(new KeyTransportAlgorithmPredicate.SelectionInput(
-                                algorithm, dataEncryptionAlgorithm, keyTransportCredential))) {
-                            log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
-                                    algorithm);
-                            return new Pair<>(algorithm, encryptionMethod);
-                        }
-                    } else {
+                        accepted = keyTransportPredicate.apply(new KeyTransportAlgorithmPredicate.SelectionInput(
+                                algorithm, dataEncryptionAlgorithm, keyTransportCredential));
+                    }
+                    
+                    if (accepted) {
                         log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
                                 algorithm);
                         return new Pair<>(algorithm, encryptionMethod);
