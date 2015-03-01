@@ -362,7 +362,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
             throw new IOException("Found invalid data structure while parsing context map", e);
         } catch (final DataExpiredException e) {
             setDirty(true);
-            log.debug("Secured data expired");
+            log.debug("Secured data or key has expired");
             return;
         } catch (final DataSealerException e) {
             setDirty(true);
