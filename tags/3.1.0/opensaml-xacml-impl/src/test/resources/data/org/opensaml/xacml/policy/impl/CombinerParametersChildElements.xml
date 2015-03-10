@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:CombinerParameters xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+	<xacml:CombinerParameter ParameterName="nameParameters-0" />
+	<xacml:CombinerParameter ParameterName="nameParameters-1" />
+	<xacml:CombinerParameter ParameterName="nameParameters-2" />
+</xacml:CombinerParameters>	

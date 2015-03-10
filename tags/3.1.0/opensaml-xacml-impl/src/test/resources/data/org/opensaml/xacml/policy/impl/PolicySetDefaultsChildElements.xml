@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:PolicySetDefaults xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+	<xacml:XPathVersion>https://example.org/Policy/Set/Defaults/Xpath/Version</xacml:XPathVersion>
+</xacml:PolicySetDefaults>

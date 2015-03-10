@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdui:UIInfo xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
+  <mdui:DisplayName/>
+  <mdui:Description/>
+  <mdui:Keywords/>
+  <mdui:Keywords/>
+  <mdui:InformationURL/>
+  <mdui:DisplayName/>
+  <mdui:Logo/>
+  <mdui:PrivacyStatementURL/>
+  <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+  <mdui:DisplayName/>
+</mdui:UIInfo>

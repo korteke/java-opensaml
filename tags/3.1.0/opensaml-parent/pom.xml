@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.shibboleth</groupId>
+        <artifactId>parent-v3</artifactId>
+        <version>8</version>
+    </parent>
+
+    <name>OpenSAML</name>
+    <description>
+        A library for creating, reading, writing and performing some processing of SAML messages.
+        
+        For further information see https://wiki.shibboleth.net/confluence/display/OS30/Home
+    </description>
+    
+    <groupId>org.opensaml</groupId>
+    <artifactId>opensaml-parent</artifactId>
+    <version>3.1.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../opensaml-core</module>
+        <module>../opensaml-storage-api</module>
+        <module>../opensaml-security-api</module>
+        <module>../opensaml-xmlsec-api</module>
+        <module>../opensaml-messaging-api</module>
+        <module>../opensaml-soap-api</module>
+        <module>../opensaml-saml-api</module>
+        <module>../opensaml-xacml-api</module>
+        <module>../opensaml-xacml-saml-api</module>
+        
+        <module>../opensaml-storage-impl</module>
+        <module>../opensaml-security-impl</module>
+        <module>../opensaml-xmlsec-impl</module>
+        <module>../opensaml-messaging-impl</module>
+        <module>../opensaml-soap-impl</module>
+        <module>../opensaml-saml-impl</module>
+        <module>../opensaml-xacml-impl</module>        
+        <module>../opensaml-xacml-saml-impl</module>
+        <module>../opensaml-profile-api</module>
+        <module>../opensaml-profile-impl</module>
+    </modules>
+
+    <properties>
+        <svn.relative.location>java-opensaml</svn.relative.location>
+        <java-support.version>7.1.0</java-support.version>
+        <spring-extensions.version>5.1.0</spring-extensions.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>shib-release</id>
+            <url>https://build.shibboleth.net/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>shib-snapshot</id>
+            <url>https://build.shibboleth.net/nexus/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <!-- Dependencies which are required by every single project module should go here and will be inherited by all modules. -->
+    <dependencies>
+        <!-- Compile Dependencies -->
+        <dependency>
+            <groupId>net.shibboleth.utilities</groupId>
+            <artifactId>java-support</artifactId>
+            <version>${java-support.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+
+        <!-- Provided Dependencies -->
+
+        <!-- Runtime Dependencies -->
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>net.shibboleth.utilities</groupId>
+            <artifactId>java-support</artifactId>
+            <version>${java-support.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- Dependencies which are not required by every project module but for which every module should use the same version 
+        of the dependency should go here. That is to say, placing a dependency here allows one to "peg" the version of the artifact 
+        used by all project modules. -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Compile Dependencies -->
+          <dependency>
+              <groupId>org.hibernate</groupId>
+              <artifactId>hibernate-entitymanager</artifactId>
+              <version>4.3.5.Final</version>
+          </dependency>
+          <dependency>
+              <groupId>org.hibernate.javax.persistence</groupId>
+              <artifactId>hibernate-jpa-2.1-api</artifactId>
+              <version>1.0.0.Final</version>
+          </dependency>
+          <dependency>
+              <groupId>net.spy</groupId>
+              <artifactId>spymemcached</artifactId>
+              <version>2.11.4</version>
+          </dependency>
+
+            <!-- Provided Dependencies -->
+
+            <!-- Runtime Dependencies -->
+
+            <!-- Test Dependencies -->
+          <dependency>
+              <groupId>org.hsqldb</groupId>
+              <artifactId>hsqldb</artifactId>
+              <version>2.2.9</version>
+              <scope>test</scope>
+          </dependency>
+
+          <dependency>
+              <groupId>net.shibboleth.ext</groupId>
+              <artifactId>spring-extensions</artifactId>
+              <version>${spring-extensions.version}</version>
+              <scope>test</scope>
+          </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+    
+</project>
