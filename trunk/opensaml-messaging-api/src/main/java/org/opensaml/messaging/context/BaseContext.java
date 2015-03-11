@@ -73,7 +73,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
     
     /** Constructor. Generates a random context id. */
     public BaseContext() {
-        subcontexts = new ClassIndexedSet<BaseContext>();
+        subcontexts = new ClassIndexedSet<>();
         
         setAutoCreateSubcontexts(false);
     }
