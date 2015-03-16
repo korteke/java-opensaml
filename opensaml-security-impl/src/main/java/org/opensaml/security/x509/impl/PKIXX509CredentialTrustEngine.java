@@ -91,7 +91,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
 
     /**
-     * Get the {@link PKIXTrustEvaluator} instance used to evalute trust.
+     * Get the {@link PKIXTrustEvaluator} instance used to evaluate trust.
      * 
      * <p>The parameters of this evaluator may be modified to
      * adjust trust evaluation processing.</p>
@@ -103,7 +103,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
     
     /**
-     * Get the {@link X509CredentialNameEvaluator} instance used to evalute a credential 
+     * Get the {@link X509CredentialNameEvaluator} instance used to evaluate a credential 
      * against trusted names.
      * 
      * <p>The parameters of this evaluator may be modified to
@@ -156,7 +156,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
      * 
      * @param untrustedX509Credential the credential to evaluate
      * @param trustedNames the set of trusted names for name checking purposes
-     * @param validationInfoSet the set of validation information which serves as ths basis for trust evaluation
+     * @param validationInfoSet the set of validation information which serves as the basis for trust evaluation
      * 
      * @return true if PKIX validation of the untrusted credential is successful, otherwise false
      * @throws SecurityException thrown if there is an error validating the untrusted credential
@@ -191,7 +191,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     /**
      * Evaluate the credential against the set of trusted names.
      * 
-     * <p>Evaluates to true if no intsance of {@link X509CredentialNameEvaluator} is configured.</p>
+     * <p>Evaluates to true if no instance of {@link X509CredentialNameEvaluator} is configured.</p>
      * 
      * @param trustedNames set of trusted names
      * @param untrustedCredential the credential being evaluated
