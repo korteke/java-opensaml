@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * 
  * The credential being tested is valid if its entity certificate matches the entity certificate contained within any of
  * the trusted credentials produced by the given credential resolver. Matching of public keys is <strong>NOT</strong>
- * sufficient for the purpoes of this engine.
+ * sufficient for the purpose of this engine.
  */
 public class ExplicitX509CertificateTrustEngine implements TrustedCredentialTrustEngine<X509Credential> {
 
