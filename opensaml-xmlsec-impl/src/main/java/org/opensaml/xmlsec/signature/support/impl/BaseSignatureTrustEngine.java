@@ -165,7 +165,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      *          otherwise false
      * 
      * @throws SecurityException thrown if there is a problem attempting to verify the signature such as the signature
-     *             algorithim not being supported
+     *             algorithm not being supported
      */
     protected abstract boolean doValidate(@Nonnull final byte[] signature, @Nonnull final byte[] content,
             @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria,
