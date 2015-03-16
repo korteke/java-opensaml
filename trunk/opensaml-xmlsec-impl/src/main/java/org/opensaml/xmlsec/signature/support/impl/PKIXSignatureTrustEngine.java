@@ -102,7 +102,8 @@ public class PKIXSignatureTrustEngine extends
      * 
      * @param resolver credential resolver used to resolve trusted credentials.
      * @param keyInfoResolver KeyInfo credential resolver used to obtain the (advisory) signing credential from a
-     *            Signature's KeyInfo element. * @param pkixEvaluator the PKIX trust evaluator to use
+     *            Signature's KeyInfo element. 
+     * @param pkixEvaluator the PKIX trust evaluator to use
      * @param nameEvaluator the X.509 credential name evaluator to use (may be null)
      */
     public PKIXSignatureTrustEngine(@Nonnull final PKIXValidationInformationResolver resolver,
@@ -117,7 +118,7 @@ public class PKIXSignatureTrustEngine extends
     }
 
     /**
-     * Get the PKIXTrustEvaluator instance used to evalute trust.
+     * Get the PKIXTrustEvaluator instance used to evaluate trust.
      * 
      * <p>
      * The parameters of this evaluator may be modified to adjust trust evaluation processing.
@@ -130,7 +131,7 @@ public class PKIXSignatureTrustEngine extends
     }
 
     /**
-     * Get the X509CredentialNameEvaluator instance used to evalute a credential against trusted names.
+     * Get the X509CredentialNameEvaluator instance used to evaluate a credential against trusted names.
      * 
      * <p>
      * The parameters of this evaluator may be modified to adjust trust evaluation processing.
@@ -276,7 +277,7 @@ public class PKIXSignatureTrustEngine extends
      * Evaluate the credential against the set of trusted names.
      * 
      * <p>
-     * Evaluates to true if no intsance of {@link X509CredentialNameEvaluator} is configured.
+     * Evaluates to true if no instance of {@link X509CredentialNameEvaluator} is configured.
      * </p>
      * 
      * @param trustedNames set of trusted names
