@@ -24,6 +24,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.HashSet;
 
+import javax.crypto.SecretKey;
+
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
@@ -382,6 +384,24 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         whiteList.add("urn:test:NOTtarget");
         Assert.assertFalse(AlgorithmSupport.validateAlgorithmURI(targetURI, whiteList, blackList));
         whiteList.clear();
+    }
+    
+    @Test
+    public void testGenerateSymmetricKey() throws NoSuchAlgorithmException, KeyException {
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_KEYWRAP_AES192));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
     }
 
 }
