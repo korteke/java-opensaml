@@ -29,7 +29,7 @@ public abstract class AbstractAuthenticatableSAMLEntityContext extends AbstractS
     /**
      * Gets the flag indicating whether the SAML peer entity has been authenticated.
      * 
-     * @return Returns the authenticated falg.
+     * @return Returns the authenticated flag.
      */
     public boolean isAuthenticated() {
         return authenticated;
