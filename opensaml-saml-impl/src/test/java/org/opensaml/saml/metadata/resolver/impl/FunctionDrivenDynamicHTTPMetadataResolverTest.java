@@ -221,9 +221,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQ() throws Exception {
-        //TODO update with permanent test target, when it's stood up on shibboleth.net
-        String baseURL = "http://md.iay.org.uk/global";
-        String entityID = "https://login.cmu.edu/idp/shibboleth";
+        String baseURL = "http://shibboleth.net:9000";
+        String entityID = "https://foo1.example.org/idp/shibboleth";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL);
         
