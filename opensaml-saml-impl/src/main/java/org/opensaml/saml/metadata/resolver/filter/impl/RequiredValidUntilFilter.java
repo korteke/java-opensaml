@@ -34,10 +34,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A metadata filter that requires the presence of a <code>validUntil</code> attribute on the root element of the
- * metadata document. It can optionally also enforce that the validity period (now minus <code>validUntil</code> date)
+ * metadata document. It can optionally enforce that the validity period (now minus <code>validUntil</code> date)
  * is not longer than a specified amount.
  * 
- * A maximum validity interval of less than 1 means the no restriction is placed on the metadata's
+ * A maximum validity interval of less than 1 means that no restriction is placed on the metadata's
  * <code>validUntil</code> attribute.
  */
 public class RequiredValidUntilFilter implements MetadataFilter {
@@ -56,24 +56,24 @@ public class RequiredValidUntilFilter implements MetadataFilter {
     /**
      * Constructor.
      * 
-     * @param maxValidity maximum internal, in seconds, between now and the <code>validUntil</code> date
+     * @param maxValidity maximum interval, in seconds, between now and the <code>validUntil</code> date
      */
     public RequiredValidUntilFilter(final long maxValidity) {
         maxValidityInterval = maxValidity * 1000;
     }
 
     /**
-     * Get the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
+     * Get the maximum interval, in milliseconds, between now and the <code>validUntil</code> date.
      * A value of less than 1 indicates that there is no restriction.
      * 
-     * @return maximum internal, in milliseconds, between now and the <code>validUntil</code> date
+     * @return maximum interval, in milliseconds, between now and the <code>validUntil</code> date
      */
     public long getMaxValidityInterval() {
         return maxValidityInterval;
     }
     
     /**
-     * Set the maximum internal, in milliseconds, between now and the <code>validUntil</code> date.
+     * Set the maximum interval, in milliseconds, between now and the <code>validUntil</code> date.
      * A value of less than 1 indicates that there is no restriction.
      * 
      * @param validity time in milliseconds between now and the <code>validUntil</code> date
