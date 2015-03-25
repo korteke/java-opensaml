@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:Obligations xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os">
+	<xacml:Obligation xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" ObligationId="http://example.org/Obligations/Id" FulfillOn="Permit"/>
+	<xacml:Obligation xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" ObligationId="http://example.org/Obligations/Id" FulfillOn="Permit"/>
+	<xacml:Obligation xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" ObligationId="http://example.org/Obligations/Id" FulfillOn="Permit"/>
+	<xacml:Obligation xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" ObligationId="http://example.org/Obligations/Id" FulfillOn="Permit"/>
+	<xacml:Obligation xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" ObligationId="http://example.org/Obligations/Id" FulfillOn="Permit"/>
+</xacml:Obligations>

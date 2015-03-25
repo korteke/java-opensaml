@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foo:bar xmlns:foo="urn:example.org:foo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="xsd:dateTime">2010-04-05T18:52:42Z</foo:bar>

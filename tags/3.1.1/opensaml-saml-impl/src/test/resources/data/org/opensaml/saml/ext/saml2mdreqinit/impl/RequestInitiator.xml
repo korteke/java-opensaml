@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://example.org/reqinit"/>

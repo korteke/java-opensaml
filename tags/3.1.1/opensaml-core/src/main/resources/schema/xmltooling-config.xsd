@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xt="http://www.opensaml.org/xmltooling-config" targetNamespace="http://www.opensaml.org/xmltooling-config">
+
+    <element name="XMLTooling" type="xt:XMLToolingType"/>
+    <complexType name="XMLToolingType">
+        <sequence>
+            <element ref="xt:ObjectProviders" minOccurs="0"/>
+            <element ref="xt:IDAttributes" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <element name="ObjectProviders" type="xt:ObjectProvidersType"/>
+    <complexType name="ObjectProvidersType">
+        <sequence>
+            <element ref="xt:ObjectProvider" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+
+    <element name="ObjectProvider" type="xt:ObjectProviderType"/>
+    <complexType name="ObjectProviderType">
+        <sequence>
+            <element ref="xt:BuilderClass"/>
+            <element ref="xt:MarshallingClass"/>
+            <element ref="xt:UnmarshallingClass"/>
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+        </sequence>
+
+        <attribute name="qualifiedName" type="QName" use="required"/>
+        <anyAttribute namespace="##other" processContents="lax"/>
+    </complexType>
+
+    <element name="BuilderClass" type="xt:ClassType"/>
+    <element name="MarshallingClass" type="xt:ClassType"/>
+    <element name="UnmarshallingClass" type="xt:ClassType"/>
+    <complexType name="ClassType">
+        <sequence>
+            <any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+        </sequence>
+
+        <attribute name="className" type="string" use="required"/>
+        <anyAttribute namespace="##other" processContents="lax"/>
+    </complexType>
+
+    <element name="IDAttributes" type="xt:IDAttributesType"/>
+    <complexType name="IDAttributesType">
+        <sequence>
+            <element ref="xt:IDAttribute" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <element name="IDAttribute" type="QName"/>
+</schema>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:Subject xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" SubjectCategory="https://example.org/Subject/Subject/Category" >
+	<xacml-context:Attribute AttributeId="https://example.org/Subject/Attribute/Attribute/Id"  DataType="https://example.org/Subject/Attribute/Data/Type" />
+	<xacml-context:Attribute AttributeId="https://example.org/Subject/Attribute/Attribute/Id"  DataType="https://example.org/Subject/Attribute/Data/Type" />
+</xacml-context:Subject>

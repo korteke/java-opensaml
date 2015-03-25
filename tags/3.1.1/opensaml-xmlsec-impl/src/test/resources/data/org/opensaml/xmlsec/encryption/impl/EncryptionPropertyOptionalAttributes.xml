@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptionProperty xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:foo="urn:namespace:foo" Id="someID" Target="urn:string:foo" foo:bar="abc" foo:baz="123"/>

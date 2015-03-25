@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test:SimpleElement xmlns:test="http://www.example.org/testObjects" Id="IDLevel1">
+    <test:SimpleElement Id="IDLevel2A">
+        <test:SimpleElement Id="IDLevel3A">
+            <test:SimpleElement Id="IDLevel4A"/>
+            <test:SimpleElement/>
+        </test:SimpleElement>
+        <test:SimpleElement/>
+        <test:SimpleElement Id="IDLevel3B"/>
+        <test:SimpleElement Id="IDLevel3C"/>
+    </test:SimpleElement>
+    <test:SimpleElement Id="IDLevel2B"/>
+    <test:SimpleElement/>
+    <test:SimpleElement Id="IDLevel2C"/>
+</test:SimpleElement>

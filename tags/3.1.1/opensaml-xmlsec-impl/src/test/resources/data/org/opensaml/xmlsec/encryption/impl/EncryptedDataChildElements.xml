@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:EncryptedData xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <xenc:EncryptionMethod/>
+    <ds:KeyInfo/>
+    <xenc:CipherData/>
+    <xenc:EncryptionProperties/>
+</xenc:EncryptedData>

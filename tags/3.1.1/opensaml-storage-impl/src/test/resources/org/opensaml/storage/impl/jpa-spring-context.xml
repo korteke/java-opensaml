@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:property-placeholder />
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="unit-tests" />
+        <property name="packagesToScan" value="org.opensaml.storage.impl" />
+        <!-- non jta datasource is resource_local -->
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        </property>
+    </bean>
+ 
+    <!-- Run test with -DdbType=<hibernate|mysql|postgres> to activate various beans -->
+    <alias name="${dbType:hibernate}JpaVendorAdapter" alias="jpaVendorAdapter" />
+    <alias name="${dbType:hibernate}DataSource" alias="dataSource" />
+
+    <!--  Hypersonic configuration -->
+    <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="HSQL" />
+        <property name="generateDdl" value="true" />
+        <property name="showSql" value="false"/>
+    </bean>
+    <bean id="hibernateDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="org.hsqldb.jdbcDriver"
+       p:url="jdbc:hsqldb:mem:JPAStorageService"
+       p:username="SA"
+       p:password="" />
+
+    <!-- Postgres configuration -->
+    <bean id="postgresJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="POSTGRESQL" />
+        <property name="generateDdl" value="true" />
+    </bean> 
+    <bean id="postgresDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="org.postgresql.Driver"
+       p:url="jdbc:postgresql://localhost:5432/storageservice"
+       p:username="shib"
+       p:password="p@ssw0rd" />
+
+    <!-- MySQL configuration -->
+    <bean id="mysqlJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL" />
+        <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+        <property name="generateDdl" value="true" />
+    </bean>
+    <bean id="mysqlDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="com.mysql.jdbc.Driver"
+       p:url="jdbc:mysql://localhost:3306/storageservice"
+       p:username="shib"
+       p:password="p@ssw0rd" />
+
+    <!-- Oracle configuration
+    
+        Add this dependency to your pom
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>12.1.0.1</version>
+        </dependency>
+    -->
+    
+    <bean id="oracleJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="ORACLE" />
+        <property name="databasePlatform" value="org.hibernate.dialect.OracleDialect" />
+        <property name="generateDdl" value="true" />
+    </bean> 
+    <bean id="oracleDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true"
+       p:driverClassName="oracle.jdbc.OracleDriver"
+       p:url="jdbc:oracle:thin:@//localhost:1521/PDB1"
+       p:username="pmuser"
+       p:password="oracle" />
+    
+</beans>
