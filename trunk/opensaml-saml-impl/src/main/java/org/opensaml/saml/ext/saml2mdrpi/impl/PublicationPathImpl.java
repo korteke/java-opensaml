@@ -44,17 +44,19 @@ public class PublicationPathImpl extends AbstractSAMLObject implements Publicati
      */
     protected PublicationPathImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        publications = new IndexedXMLObjectChildrenList<Publication>(this);
+        publications = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Publication> getPublications() {
         return publications;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(publications);
         return children;
     }

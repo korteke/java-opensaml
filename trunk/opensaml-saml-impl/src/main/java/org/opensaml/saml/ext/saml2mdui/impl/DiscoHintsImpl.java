@@ -45,37 +45,43 @@ public class DiscoHintsImpl extends AbstractSAMLObject implements DiscoHints {
      */
     protected DiscoHintsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        discoHintsChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        discoHintsChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getXMLObjects() {
         return discoHintsChildren;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getXMLObjects(QName typeOrName) {
         return (List<XMLObject>) discoHintsChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<DomainHint> getDomainHints() {
         return (List<DomainHint>) discoHintsChildren.subList(DomainHint.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<GeolocationHint> getGeolocationHints() {
         return (List<GeolocationHint>) discoHintsChildren.subList(GeolocationHint.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<IPHint> getIPHints() {
         return (List<IPHint>) discoHintsChildren.subList(IPHint.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(discoHintsChildren);
         return children;

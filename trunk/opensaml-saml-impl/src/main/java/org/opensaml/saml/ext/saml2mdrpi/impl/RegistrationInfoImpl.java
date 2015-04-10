@@ -50,37 +50,43 @@ public class RegistrationInfoImpl extends AbstractSAMLObject implements Registra
      */
     protected RegistrationInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        registrationPolicies = new IndexedXMLObjectChildrenList<RegistrationPolicy>(this);
+        registrationPolicies = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getRegistrationAuthority() {
         return registrationAuthority;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRegistrationAuthority(String authority) {
         registrationAuthority = prepareForAssignment(registrationAuthority, authority);
     }
 
     /** {@inheritDoc} */
+    @Override
     public DateTime getRegistrationInstant() {
         return registrationInstant;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setRegistrationInstant(DateTime dateTime) {
         registrationInstant = prepareForAssignment(registrationInstant, dateTime);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<RegistrationPolicy> getRegistrationPolicies() {
         return registrationPolicies;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(registrationPolicies);
         return children;
     }

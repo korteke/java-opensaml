@@ -51,52 +51,61 @@ public class UIInfoImpl extends AbstractSAMLObject implements UIInfo {
     protected UIInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        uiInfoChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        uiInfoChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getXMLObjects() {
         return uiInfoChildren;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getXMLObjects(QName typeOrName) {
         return (List<XMLObject>) uiInfoChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Description> getDescriptions() {
         return (List<Description>) uiInfoChildren.subList(Description.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<DisplayName> getDisplayNames() {
         return (List<DisplayName>) uiInfoChildren.subList(DisplayName.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Keywords> getKeywords() {
         return (List<Keywords>) uiInfoChildren.subList(Keywords.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<InformationURL> getInformationURLs() {
         return (List<InformationURL>) uiInfoChildren.subList(InformationURL.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<Logo> getLogos() {
         return (List<Logo>) uiInfoChildren.subList(Logo.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<PrivacyStatementURL> getPrivacyStatementURLs() {
         return (List<PrivacyStatementURL>) uiInfoChildren.subList(PrivacyStatementURL.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(uiInfoChildren);
         return children;
