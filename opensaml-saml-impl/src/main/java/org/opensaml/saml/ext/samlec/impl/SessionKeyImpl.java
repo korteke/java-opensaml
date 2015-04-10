@@ -62,10 +62,11 @@ public class SessionKeyImpl extends AbstractSAMLObject implements SessionKey {
     protected SessionKeyImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        encTypes = new XMLObjectChildrenList<EncType>(this);
+        encTypes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
+    @Override
     public Boolean isSOAP11MustUnderstand() {
         if (soap11MustUnderstand != null) {
             return soap11MustUnderstand.getValue();
@@ -74,11 +75,13 @@ public class SessionKeyImpl extends AbstractSAMLObject implements SessionKey {
     }
 
     /** {@inheritDoc} */
+    @Override
     public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
         return soap11MustUnderstand;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setSOAP11MustUnderstand(Boolean newMustUnderstand) {
         if (newMustUnderstand != null) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, 
@@ -91,6 +94,7 @@ public class SessionKeyImpl extends AbstractSAMLObject implements SessionKey {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setSOAP11MustUnderstand(XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
             manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
@@ -98,44 +102,52 @@ public class SessionKeyImpl extends AbstractSAMLObject implements SessionKey {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getSOAP11Actor() {
         return soap11Actor;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setSOAP11Actor(String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
         manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
     
     /** {@inheritDoc} */
+    @Override
     public String getAlgorithm() {
         return algorithm;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setAlgorithm(String newAlgorithm) {
         algorithm = prepareForAssignment(algorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<EncType> getEncTypes() {
         return encTypes;
     }
     
     /** {@inheritDoc} */
+    @Override
     public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setKeyInfo(KeyInfo newKeyInfo) {
         keyInfo = prepareForAssignment(keyInfo, newKeyInfo);
     }
     
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(encTypes);
         

@@ -53,47 +53,55 @@ public class PublicationInfoImpl extends AbstractSAMLObject implements Publicati
      */
     protected PublicationInfoImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        usagePolicies = new IndexedXMLObjectChildrenList<UsagePolicy>(this);
+        usagePolicies = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getPublisher() {
         return publisher;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setPublisher(String thePublisher) {
         publisher = prepareForAssignment(publisher, thePublisher);
     }
 
     /** {@inheritDoc} */
+    @Override
     public DateTime getCreationInstant() {
         return creationInstant;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setCreationInstant(DateTime dateTime) {
         creationInstant = prepareForAssignment(creationInstant, dateTime);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getPublicationId() {
         return publicationId;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setPublicationId(String id) {
         publicationId = prepareForAssignment(publicationId, id);
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<UsagePolicy> getUsagePolicies() {
         return usagePolicies;
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(usagePolicies);
         return children;
     }
