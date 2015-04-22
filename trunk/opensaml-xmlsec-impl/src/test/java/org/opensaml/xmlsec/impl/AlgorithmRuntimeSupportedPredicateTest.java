@@ -105,7 +105,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
         
         try {
             
-            if (providerSupport.haveSunEC() || providerSupport.haveBC() || providerSupport.haveJavaGreaterOrEqual(8)) {
+            if (providerSupport.haveSunEC() || providerSupport.haveBC()) {
                 Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
                 Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
                 Assert.assertTrue(predicate.apply(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));

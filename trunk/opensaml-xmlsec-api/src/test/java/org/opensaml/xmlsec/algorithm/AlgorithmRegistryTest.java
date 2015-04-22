@@ -225,7 +225,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             
             // Conditional environment tests
             
-            if (providerSupport.haveSunEC() || providerSupport.haveBC() || providerSupport.haveJavaGreaterOrEqual(8)) {
+            if (providerSupport.haveSunEC() || providerSupport.haveBC()) {
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
