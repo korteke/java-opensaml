@@ -41,20 +41,29 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
 
     private ResourceBackedMetadataResolver metadataProvider;
     
+    private ResourceBackedMetadataResolver singleEntityProvider;
+
     @BeforeMethod
     protected void setUp() throws Exception {
         
         final Resource resource = new ClassPathResource("data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         metadataProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(resource));
-        metadataProvider.setId("test");
+        metadataProvider.setId("multi");
         metadataProvider.setParserPool(parserPool);
-    }
+        
+        final Resource singleResource = new ClassPathResource("data/org/opensaml/saml/saml2/metadata/entitydescriptor-metadata.xml");
+        singleEntityProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(singleResource));
+        singleEntityProvider.setId("single");
+        singleEntityProvider.setParserPool(parserPool);
 
+    }
+    
     @Test
     public void testBlacklist() throws Exception {
         
         final String whitelisted = "urn:mace:incommon:dartmouth.edu";
         final String blacklisted = "urn:mace:incommon:osu.edu";
+        final String osu = "urn:mace:incommon:osu.edu";
 
         final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(blacklisted));
         
@@ -66,6 +75,13 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         
         entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(whitelisted)));
         Assert.assertNotNull(entity);
+        
+        singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
+        singleEntityProvider.initialize();
+        
+        entity = singleEntityProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(osu)));
+        Assert.assertNull(entity);
+        
     }
     
     @Test
@@ -73,6 +89,7 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         
         final String whitelisted = "urn:mace:incommon:dartmouth.edu";
         final String blacklisted = "urn:mace:incommon:osu.edu";
+        final String osu = "urn:mace:incommon:osu.edu";
 
         final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(whitelisted));
         
@@ -84,5 +101,12 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         
         entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(whitelisted)));
         Assert.assertNotNull(entity);
+        
+        singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE,  new EntityIdPredicate(Collections.singletonList(osu))));
+        singleEntityProvider.initialize();
+        
+        entity = singleEntityProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(osu)));
+        Assert.assertNotNull(entity);
+
     }
 }

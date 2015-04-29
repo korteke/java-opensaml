@@ -121,13 +121,20 @@ public class PredicateFilter implements MetadataFilter {
         if (metadata == null) {
             return null;
         }
-
         if (metadata instanceof EntitiesDescriptor) {
             filterEntitiesDescriptor((EntitiesDescriptor) metadata);
             return metadata;
-        } else if (condition.apply((EntityDescriptor) metadata)) {
-            return Direction.INCLUDE.equals(direction) ?  metadata : null;
+        } else if (metadata instanceof EntityDescriptor) {
+            EntityDescriptor entity = (EntityDescriptor) metadata;
+            
+            if (Direction.EXCLUDE.equals(direction) == condition.apply(entity)) {
+                log.trace("Filtering out entity {} ", entity.getEntityID());
+                return null;
+            } else {
+                return metadata;
+            }
         } else {
+            log.error("Unrecognised metadata type {}", metadata.getClass().getSimpleName());
             return null;
         }
     }
