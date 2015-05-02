@@ -116,6 +116,18 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
         } 
     }
     
+    /** {@inheritDoc} */
+    @Override
+    protected void doDestroy() {
+        httpClient = null;
+        pipelineFactory = null;
+        pipelineName = null;
+        credentialsProvider = null;
+        tlsTrustEngine = null;
+        
+        super.doDestroy();
+    }
+
     /**
      * Flag indicating whether presence of a pipeline factory instance is required at init time.
      * 
@@ -131,6 +143,9 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
      * @param flag the flag value
      */
     public void setInitRequiresPipelineFactory(boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         initRequiresPipelineFactory = flag;
     }
     
@@ -144,6 +159,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
      */
     public void setHttpClient(@Nonnull final HttpClient client) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
         httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
     }
@@ -156,6 +172,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     public void setPipelineFactory(
             @Nonnull final HttpClientMessagePipelineFactory<InboundMessageType, OutboundMessageType> factory) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
         pipelineFactory = Constraint.isNotNull(factory, "HttpClientPipelineFactory cannot be null"); 
     }
@@ -171,6 +188,9 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
      * @param name the pipeline name, or null
      */
     public void setPipelineName(@Nullable final String name) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         pipelineName = StringSupport.trimOrNull(name);
     }
     
@@ -187,6 +207,9 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
      * @param engine the trust engine instance to use
      */
     public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         tlsTrustEngine = engine;
     }
     
