@@ -27,6 +27,10 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${httpclient.groupId}</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
         <!-- Provided Dependencies -->
         <dependency>
