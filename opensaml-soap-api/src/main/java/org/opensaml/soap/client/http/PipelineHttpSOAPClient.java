@@ -352,8 +352,10 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
         } catch (IOException e) {
             throw new SOAPException("I/O problem with SOAP message exchange with: " + endpoint, e);
         } finally {
-            pipeline.getEncoder().destroy();
-            pipeline.getDecoder().destroy();
+            if (pipeline != null) {
+                pipeline.getEncoder().destroy();
+                pipeline.getDecoder().destroy();
+            }
         }
     }
     
