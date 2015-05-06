@@ -324,6 +324,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
             // Response decoding
             HttpClientResponseMessageDecoder<InboundMessageType> decoder = pipeline.getDecoder();
             decoder.setHttpResponse(httpResponse);
+            decoder.initialize();
             decoder.decode();
             operationContext.setInboundMessageContext(decoder.getMessageContext());
             
