@@ -439,13 +439,13 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     
     /**
      * Get the {@link HttpClientMessagePipeline} instance to be processed.
-     * @param pipelineName the pipeline name to resolve
+     * @param name the pipeline name to resolve
      * @return the new pipeline instance
      */
     @Nullable protected HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> getPipeline(
-            @Nullable final String pipelineName) {
+            @Nullable final String name) {
         // Note: in a Spring environment, the actual factory impl might be a proxy via ServiceLocatorFactoryBean
-        return pipelineFactory.newInstance(pipelineName);
+        return pipelineFactory.newInstance(name);
     }
     
     /**
