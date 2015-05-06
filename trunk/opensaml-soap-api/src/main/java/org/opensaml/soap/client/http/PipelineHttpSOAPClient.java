@@ -31,7 +31,6 @@ import net.shibboleth.utilities.java.support.component.AbstractInitializableComp
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.apache.http.HttpResponse;
@@ -86,7 +85,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     /** Factory for the client message pipeline. */
     private HttpClientMessagePipelineFactory<InboundMessageType, OutboundMessageType> pipelineFactory;
     
-    /** Strategy function used to resolve the pipeline name to exexute. */
+    /** Strategy function used to resolve the pipeline name to execute. */
     private Function<InOutOperationContext<?, ?>, String> pipelineNameStrategy;
     
     /** Flag indicating whether presence of a pipeline factory instance is required at init time. 
@@ -98,6 +97,9 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     
     /** Optional trust engine used in evaluating server TLS credentials. */
     private TrustEngine<? super X509Credential> tlsTrustEngine;
+    
+    /** Strategy for building the criteria set which is input to the TLS trust engine. */
+    private Function<InOutOperationContext<?, ?>, CriteriaSet> tlsCriteriaSetStrategy;
     
     /** Constructor. */
     public PipelineHttpSOAPClient() {
@@ -211,6 +213,18 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     }
     
     /**
+     * Set the strategy function which builds the criteria set which is input to the TLS TrustEngine.
+     * 
+     * @param function the strategy function, or null
+     */
+    public void setTLSCriteriaSetStrategy(@Nullable final Function<InOutOperationContext<?, ?>, CriteriaSet> function) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
+        tlsCriteriaSetStrategy = function;
+    }
+    
+    /**
      * Set an instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
      * 
      * @param provider the credentials provider
@@ -301,7 +315,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
             }
             
             HttpUriRequest httpRequest = buildHttpRequest(endpoint, operationContext);
-            HttpClientContext httpContext = buildHttpContext(endpoint, operationContext);
+            HttpClientContext httpContext = buildHttpContext(httpRequest, operationContext);
             
             // Request encoding + outbound transport handling
             HttpClientRequestMessageEncoder<OutboundMessageType> encoder = pipeline.getEncoder();
@@ -390,21 +404,21 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     /**
      * Build the {@link HttpClientContext} instance to be used by the HttpClient.
      * 
-     * @param endpoint the endpoint to which the message will be sent
+     * @param request the HTTP client request
      * @param operationContext the current operation context
      * @return the client context instance
      */
-    @Nonnull protected HttpClientContext buildHttpContext(@Nonnull @NotEmpty final String endpoint, 
+    @Nonnull protected HttpClientContext buildHttpContext(@Nonnull final HttpUriRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
         final HttpClientContext context = HttpClientContext.create();
         if (credentialsProvider != null) {
             context.setCredentialsProvider(credentialsProvider);
         }
-        if (tlsTrustEngine != null) {
+        if (tlsTrustEngine != null && "https".equalsIgnoreCase(request.getURI().getScheme())) {
             context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, tlsTrustEngine);
             context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, 
-                    buildTLSCriteriaSet(endpoint, operationContext));
+                    buildTLSCriteriaSet(request, operationContext));
         }
         return context;
     }
@@ -412,17 +426,23 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     /**
      * Build the {@link CriteriaSet} instance to be used for TLS trust evaluation.
      * 
-     * @param endpoint the endpoint to which the message will be sent
+     * @param request the HTTP client request
      * @param operationContext the current operation context
      * @return the new criteria set instance
      */
-    @Nonnull protected CriteriaSet buildTLSCriteriaSet(@Nonnull @NotEmpty final String endpoint, 
+    @Nonnull protected CriteriaSet buildTLSCriteriaSet(@Nonnull final HttpUriRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
         CriteriaSet criteriaSet = new CriteriaSet();
-        criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
-        //TODO need support for other custom criteria, based on e.g. peer entityID
-        //     -- probably support pluggable CriteriaSet builder strategy
+        if (tlsCriteriaSetStrategy != null) {
+            CriteriaSet resolved = tlsCriteriaSetStrategy.apply(operationContext);
+            if (resolved != null) {
+                criteriaSet.addAll(resolved);
+            }
+        }
+        if (!criteriaSet.contains(UsageType.class)) {
+            criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
+        }
         return criteriaSet;
     }
 
