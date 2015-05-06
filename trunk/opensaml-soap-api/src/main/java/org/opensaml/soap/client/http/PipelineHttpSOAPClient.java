@@ -65,6 +65,8 @@ import org.opensaml.soap.common.SOAPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
+
 /**
  * SOAP client that is based on {@link HttpClientMessagePipeline}.
  * 
@@ -84,8 +86,8 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     /** Factory for the client message pipeline. */
     private HttpClientMessagePipelineFactory<InboundMessageType, OutboundMessageType> pipelineFactory;
     
-    /** The name of the specific pipeline to resolve and use. */
-    private String pipelineName;
+    /** Strategy function used to resolve the pipeline name to exexute. */
+    private Function<InOutOperationContext<?, ?>, String> pipelineNameStrategy;
     
     /** Flag indicating whether presence of a pipeline factory instance is required at init time. 
      * Defaults to: <code>true</code>. */
@@ -121,7 +123,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     protected void doDestroy() {
         httpClient = null;
         pipelineFactory = null;
-        pipelineName = null;
+        pipelineNameStrategy = null;
         credentialsProvider = null;
         tlsTrustEngine = null;
         
@@ -178,20 +180,15 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     }
     
     /**
-     * Set the name of the pipeline to use.  Null may be specified.
+     * Set the strategy function used to resolve the name of the pipeline to use.  Null may be specified.
      * 
-     * <p>
-     * The effective pipeline name is resolved via {@link #resolvePipelineName(InOutOperationContext)}.
-     * </p>
-     * 
-     * 
-     * @param name the pipeline name, or null
+     * @param function the strategy function, or null
      */
-    public void setPipelineName(@Nullable final String name) {
+    public void setPipelineNameStrategy(@Nullable final Function<InOutOperationContext<?, ?>, String> function) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
-        pipelineName = StringSupport.trimOrNull(name);
+        pipelineNameStrategy = function;
     }
     
     /**
@@ -457,8 +454,11 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
      * @return the pipeline name, may be null
      */
     @Nullable protected String resolvePipelineName(@Nonnull final InOutOperationContext operationContext) {
-        //TODO support dynamic resolution from operation context data/subcontext, perhaps via pluggable strategy.
-        return pipelineName;
+        if (pipelineNameStrategy != null) {
+            return pipelineNameStrategy.apply(operationContext);
+        } else {
+            return null;
+        }
     }
 
 }
