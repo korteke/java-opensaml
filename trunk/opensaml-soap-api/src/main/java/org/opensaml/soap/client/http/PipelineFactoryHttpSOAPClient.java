@@ -96,7 +96,26 @@ public class PipelineFactoryHttpSOAPClient<OutboundMessageType, InboundMessageTy
         super.doDestroy();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Resolve and return a new instance of the {@link HttpClientMessagePipeline} to be processed.
+     * 
+     * <p>
+     * Each call to this (factory) method MUST produce a new instance of the pipeline.
+     * </p>
+     * 
+     * <p>
+     * The behavior of this subclass specialization is to use a factory strategy using
+     * a configured instance of {@link HttpClientMessagePipeline}.  See
+     * {@link #resolvePipelineName(InOutOperationContext)} and 
+     * {@link #newPipeline(String)}.
+     * </p>
+     * 
+     * @param operationContext the current operation context
+     * 
+     * @return a new pipeline instance
+     * 
+     * @throws SOAPException if there is an error obtaining a new pipeline instance
+     */
     @Nonnull protected HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> 
             resolvePipeline(InOutOperationContext operationContext) throws SOAPException {
         
@@ -119,7 +138,14 @@ public class PipelineFactoryHttpSOAPClient<OutboundMessageType, InboundMessageTy
         }
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * 
+     * <p>
+     * The behavior of this subclass specialization is to use a factory strategy using
+     * a configured instance of {@link HttpClientMessagePipeline}. 
+     * </p>
+     * 
+     */
     @Nonnull protected HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> newPipeline() 
             throws SOAPException {
         // Note: in a Spring environment, the actual factory impl might be a proxy via ServiceLocatorFactoryBean
@@ -131,6 +157,11 @@ public class PipelineFactoryHttpSOAPClient<OutboundMessageType, InboundMessageTy
      * 
      * <p>
      * Each call to this (factory) method MUST produce a new instance of the pipeline.
+     * </p>
+     * 
+     * <p>
+     * The behavior of this subclass specialization is to use a factory strategy using
+     * a configured instance of {@link HttpClientMessagePipeline}. 
      * </p>
      * 
      * @param name the name of pipeline to return
