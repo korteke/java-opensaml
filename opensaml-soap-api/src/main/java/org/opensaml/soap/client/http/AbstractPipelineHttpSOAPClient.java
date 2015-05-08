@@ -50,7 +50,6 @@ import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.messaging.encoder.httpclient.HttpClientRequestMessageEncoder;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.messaging.pipeline.httpclient.HttpClientMessagePipeline;
-import org.opensaml.messaging.pipeline.httpclient.HttpClientMessagePipelineFactory;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
@@ -73,24 +72,14 @@ import com.google.common.base.Function;
  * @param <InboundMessageType> the inbound message type
  */
 @ThreadSafe
-public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> extends AbstractInitializableComponent 
-        implements SOAPClient {
+public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> 
+        extends AbstractInitializableComponent implements SOAPClient {
 
     /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(PipelineHttpSOAPClient.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractPipelineHttpSOAPClient.class);
 
     /** HTTP client used to send requests and receive responses. */
     @NonnullAfterInit private HttpClient httpClient;
-    
-    /** Factory for the client message pipeline. */
-    private HttpClientMessagePipelineFactory<InboundMessageType, OutboundMessageType> pipelineFactory;
-    
-    /** Strategy function used to resolve the pipeline name to execute. */
-    private Function<InOutOperationContext<?, ?>, String> pipelineNameStrategy;
-    
-    /** Flag indicating whether presence of a pipeline factory instance is required at init time. 
-     * Defaults to: <code>true</code>. */
-    private boolean initRequiresPipelineFactory = true;
     
     /** HttpClient credentials provider. */
     private CredentialsProvider credentialsProvider;
@@ -102,7 +91,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
     private Function<InOutOperationContext<?, ?>, CriteriaSet> tlsCriteriaSetStrategy;
     
     /** Constructor. */
-    public PipelineHttpSOAPClient() {
+    public AbstractPipelineHttpSOAPClient() {
 
     }
 
@@ -114,46 +103,19 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
         if (httpClient == null) {
             throw new ComponentInitializationException("HttpClient cannot be null");
         } 
-        
-        if (initRequiresPipelineFactory && pipelineFactory == null) {
-            throw new ComponentInitializationException("HttpClientPipelineFactory cannot be null");
-        } 
     }
     
     /** {@inheritDoc} */
     @Override
     protected void doDestroy() {
         httpClient = null;
-        pipelineFactory = null;
-        pipelineNameStrategy = null;
         credentialsProvider = null;
         tlsTrustEngine = null;
+        tlsCriteriaSetStrategy = null;
         
         super.doDestroy();
     }
 
-    /**
-     * Flag indicating whether presence of a pipeline factory instance is required at init time.
-     * 
-     * <p>
-     * Defaults to: <code>true</code>.
-     * </p>
-     * 
-     * <p>
-     * This check might be disabled if Spring lookup-method injection is being used to supply an 
-     * implementation of {@link #getPipeline()}.
-     * </p>
-     * 
-     * @param flag the flag value
-     */
-    public void setInitRequiresPipelineFactory(boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
-        initRequiresPipelineFactory = flag;
-    }
-    
-    
     /**
      * Set the client used to make outbound HTTP requests.
      * 
@@ -167,32 +129,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
         
         httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
     }
-    
-    /**
-     * Set the message pipeline factory.
-     * 
-     * @param factory the message pipeline factory
-     */
-    public void setPipelineFactory(
-            @Nonnull final HttpClientMessagePipelineFactory<InboundMessageType, OutboundMessageType> factory) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
-        pipelineFactory = Constraint.isNotNull(factory, "HttpClientPipelineFactory cannot be null"); 
-    }
-    
-    /**
-     * Set the strategy function used to resolve the name of the pipeline to use.  Null may be specified.
-     * 
-     * @param function the strategy function, or null
-     */
-    public void setPipelineNameStrategy(@Nullable final Function<InOutOperationContext<?, ?>, String> function) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
-        pipelineNameStrategy = function;
-    }
-    
+
     /**
      * Sets the optional trust engine used in evaluating server TLS credentials.
      * 
@@ -288,7 +225,6 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
 
     }
     
-    
     /** {@inheritDoc} */
     public void send(@Nonnull @NotEmpty final String endpoint, @Nonnull final InOutOperationContext operationContext)
             throws SOAPException, SecurityException {
@@ -298,16 +234,7 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
         HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> pipeline = null;
         try {
             // Pipeline resolution
-            String resolvedPipelineName = resolvePipelineName(operationContext);
-            if (resolvedPipelineName != null) {
-                pipeline = getPipeline(resolvedPipelineName);
-            } else {
-                pipeline = getPipeline();
-            }
-            if (pipeline == null) {
-                throw new SOAPException("Could not resolve SOAP processing pipeline with name: " 
-                        + resolvedPipelineName);
-            }
+            pipeline = resolvePipeline(operationContext);
             
             // Outbound payload handling
             if (pipeline.getOutboundPayloadMessageHandler() != null) {
@@ -369,6 +296,51 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
             }
         }
     }
+    
+    /**
+     * Resolve and return a new instance of the {@link HttpClientMessagePipeline} to be processed.
+     * 
+     * <p>
+     * Each call to this (factory) method MUST produce a new instance of the pipeline.
+     * </p>
+     * 
+     * <p>
+     * The default behavior is to simply call {@link #newPipeline()}.
+     * </p>
+     * 
+     * @param operationContext the current operation context
+     * 
+     * @return a new pipeline instance
+     * 
+     * @throws SOAPException if there is an error obtaining a new pipeline instance
+     */
+    @Nonnull protected HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> 
+            resolvePipeline(@Nonnull final InOutOperationContext operationContext) throws SOAPException {
+        try {
+            return newPipeline();
+        } catch (SOAPException e) {
+            log.warn("Problem resolving pipeline instance", e);
+            throw e;
+        } catch (Exception e) {
+            // This is to handle RuntimeExceptions, for example thrown by Spring dynamic factory approaches
+            log.warn("Problem resolving pipeline instance", e);
+            throw new SOAPException("Could not resolve pipeline", e);
+        }
+    }
+    
+    /**
+     * Get a new instance of the {@link HttpClientMessagePipeline} to be processed.
+     * 
+     * <p>
+     * Each call to this (factory) method MUST produce a new instance of the pipeline.
+     * </p>
+     * 
+     * @return the new pipeline instance
+     * 
+     * @throws SOAPException if there is an error obtaining a new pipeline instance
+     */
+    @Nonnull protected abstract HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> newPipeline() 
+            throws SOAPException;
     
     /**
      * Check that trust engine evaluation of the server TLS credential was actually performed.
@@ -444,41 +416,6 @@ public class PipelineHttpSOAPClient<OutboundMessageType, InboundMessageType> ext
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
         return criteriaSet;
-    }
-
-    /**
-     * Get the {@link HttpClientMessagePipeline} instance to be processed.
-     * @return the new pipeline instance
-     */
-    @Nullable protected HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> getPipeline() {
-        // Note: in a Spring environment, the actual factory impl might be a proxy via ServiceLocatorFactoryBean,
-        // or this entire method might be overridden with lookup-method injection.
-        return pipelineFactory.newInstance();
-    }
-    
-    /**
-     * Get the {@link HttpClientMessagePipeline} instance to be processed.
-     * @param name the pipeline name to resolve
-     * @return the new pipeline instance
-     */
-    @Nullable protected HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> getPipeline(
-            @Nullable final String name) {
-        // Note: in a Spring environment, the actual factory impl might be a proxy via ServiceLocatorFactoryBean
-        return pipelineFactory.newInstance(name);
-    }
-    
-    /**
-     * Resolve the name of the pipeline to use.
-     * 
-     * @param operationContext the current operation context
-     * @return the pipeline name, may be null
-     */
-    @Nullable protected String resolvePipelineName(@Nonnull final InOutOperationContext operationContext) {
-        if (pipelineNameStrategy != null) {
-            return pipelineNameStrategy.apply(operationContext);
-        } else {
-            return null;
-        }
     }
 
 }

@@ -17,6 +17,7 @@
 
 package org.opensaml.messaging.pipeline.httpclient;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
@@ -33,7 +34,7 @@ public interface HttpClientMessagePipelineFactory<InboundMessageType, OutboundMe
      * 
      * @return a new pipeline instance
      */
-    HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> newInstance();
+    @Nonnull HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> newInstance();
     
     /**
      * Return a new instance of {@link HttpClientMessagePipeline}.
@@ -42,6 +43,7 @@ public interface HttpClientMessagePipelineFactory<InboundMessageType, OutboundMe
      * 
      * @return a new pipeline instance
      */
-    HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> newInstance(@Nullable final String pipelineName);
+    @Nonnull HttpClientMessagePipeline<InboundMessageType, OutboundMessageType> newInstance(
+            @Nullable final String pipelineName);
 
 }

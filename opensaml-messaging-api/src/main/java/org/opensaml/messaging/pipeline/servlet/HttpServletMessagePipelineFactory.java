@@ -17,6 +17,7 @@
 
 package org.opensaml.messaging.pipeline.servlet;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
@@ -33,7 +34,7 @@ public interface HttpServletMessagePipelineFactory<InboundMessageType, OutboundM
      * 
      * @return a new pipeline instance
      */
-    HttpServletMessagePipeline<InboundMessageType, OutboundMessageType> newInstance();
+    @Nonnull HttpServletMessagePipeline<InboundMessageType, OutboundMessageType> newInstance();
 
     /**
      * Return a new instance of {@link HttpServletMessagePipelineFactory}.
@@ -42,6 +43,7 @@ public interface HttpServletMessagePipelineFactory<InboundMessageType, OutboundM
      * 
      * @return a new pipeline instance
      */
-    HttpServletMessagePipeline<InboundMessageType, OutboundMessageType> newInstance(@Nullable final String pipelineName);
+    @Nonnull HttpServletMessagePipeline<InboundMessageType, OutboundMessageType> newInstance(
+            @Nullable final String pipelineName);
 
 }
