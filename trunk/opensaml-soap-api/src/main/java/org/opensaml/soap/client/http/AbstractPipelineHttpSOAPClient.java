@@ -469,25 +469,24 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
             }
             
             if (securityParameters != null) {
-                List<String> tlsProtocols = securityParameters.getTLSProtocols();
-                if (tlsProtocols != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS, tlsProtocols);
+                if (securityParameters.getTLSProtocols() != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS, 
+                            securityParameters.getTLSProtocols());
                 }
                 
-                List<String> tlsCipherSuites = securityParameters.getTLSCipherSuites();
-                if (tlsCipherSuites != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES, tlsCipherSuites);
+                if (securityParameters.getTLSCipherSuites() != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES, 
+                            securityParameters.getTLSCipherSuites());
                 }
                 
-                X509HostnameVerifier hostnameVerifier = securityParameters.getHostnameVerifier();
-                if (hostnameVerifier != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER, hostnameVerifier);
+                if (securityParameters.getHostnameVerifier() != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER, 
+                            securityParameters.getHostnameVerifier());
                 }
                 
-                X509Credential clientTLSCredential = securityParameters.getClientTLSCredential();
-                if (clientTLSCredential != null) {
+                if (securityParameters.getClientTLSCredential() != null) {
                     context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, 
-                            clientTLSCredential);
+                            securityParameters.getClientTLSCredential());
                 }
             }
         }
