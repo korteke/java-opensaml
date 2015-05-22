@@ -396,7 +396,7 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
                 .getSubcontext(HttpClientSecurityContext.class, true).getSecurityParameters();
         
         CredentialsProvider credProvider = ObjectSupport.firstNonNull(
-                securityParameters.getCredentialsProvider(), credentialsProvider);
+                securityParameters.getCredentialsProvider(), context.getCredentialsProvider(), credentialsProvider);
         if (credProvider != null) {
             context.setCredentialsProvider(credProvider);
         }
