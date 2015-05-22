@@ -18,7 +18,6 @@
 package org.opensaml.soap.client.http;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,7 +43,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.httpclient.HttpClientRequestContext;
