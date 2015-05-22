@@ -121,6 +121,15 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
         
         super.doDestroy();
     }
+    
+    /**
+     * Get the client used to make outbound HTTP requests.
+     * 
+     * @return the client instance
+     */
+    @Nonnull public HttpClient getHttpClient() {
+        return httpClient;
+    }
 
     /**
      * Set the client used to make outbound HTTP requests.
@@ -134,6 +143,15 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
         httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
+    }
+    
+    /**
+     * Get the optional trust engine used in evaluating server TLS credentials.
+     * 
+     * @return the trust engine instance, or null
+     */
+    @Nullable public TrustEngine<? super X509Credential> getTLSTrustEngine() {
+        return tlsTrustEngine;
     }
 
     /**
@@ -156,6 +174,15 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     }
     
     /**
+     * Get the strategy function which builds the criteria set which is input to the TLS TrustEngine.
+     * 
+     * @return the strategy function, or null
+     */
+    @Nullable public Function<InOutOperationContext<?, ?>, CriteriaSet> getTLSCriteriaSetStrategy() {
+        return tlsCriteriaSetStrategy;
+    }
+    
+    /**
      * Set the strategy function which builds the criteria set which is input to the TLS TrustEngine.
      * 
      * @param function the strategy function, or null
@@ -165,6 +192,15 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
         tlsCriteriaSetStrategy = function;
+    }
+    
+    /**
+     * Get then instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
+     * 
+     * @return the credentials provider, or null
+     */
+    @Nullable public CredentialsProvider getCredentialsProvider() {
+        return credentialsProvider;
     }
     
     /**
@@ -223,10 +259,10 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
             }
             BasicCredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(authScope, credentials);
-            credentialsProvider = provider;
+            setCredentialsProvider(provider);
         } else {
             log.debug("Either username or password were null, disabling basic auth");
-            credentialsProvider = null;
+            setCredentialsProvider(null);
         }
 
     }
@@ -262,7 +298,7 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
             encoder.encode();
             
             // HttpClient execution
-            HttpResponse httpResponse = httpClient.execute(httpRequest, httpContext);
+            HttpResponse httpResponse = getHttpClient().execute(httpRequest, httpContext);
             checkTLSCredentialTrusted(httpContext, httpRequest);
             
             // Response decoding
@@ -390,50 +426,71 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     @Nonnull protected HttpClientContext buildHttpContext(@Nonnull final HttpUriRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
-        HttpClientContext context = resolveHttpContext(operationContext);
+        HttpClientContext httpClientContext = resolveHttpContext(operationContext);
         
         HttpClientSecurityParameters securityParameters = operationContext.getOutboundMessageContext()
                 .getSubcontext(HttpClientSecurityContext.class, true).getSecurityParameters();
         
         CredentialsProvider credProvider = ObjectSupport.firstNonNull(
-                securityParameters.getCredentialsProvider(), context.getCredentialsProvider(), credentialsProvider);
+                securityParameters != null ? securityParameters.getCredentialsProvider() : null, 
+                httpClientContext.getCredentialsProvider(), getCredentialsProvider());
         if (credProvider != null) {
-            context.setCredentialsProvider(credProvider);
+            httpClientContext.setCredentialsProvider(credProvider);
         }
         
+        populateTLSContextParameters(httpClientContext, securityParameters, request, operationContext);
+        
+        return httpClientContext;
+    }
+
+    /**
+     * Populate the various TLS-related parameters into the {@link HttpClientContext}.
+     * 
+     * @param context the context to populate 
+     * @param securityParameters the optional resolved security parameters
+     * @param request the HTTP client request
+     * @param operationContext the current operation context
+     */
+    protected void populateTLSContextParameters(@Nonnull final HttpClientContext context,
+            @Nullable final HttpClientSecurityParameters securityParameters, 
+            @Nonnull final HttpUriRequest request,
+            @Nonnull final InOutOperationContext operationContext) {
+        
         if ("https".equalsIgnoreCase(request.getURI().getScheme())) {
+            
             TrustEngine<? super X509Credential> trustEngine = 
                     ObjectSupport.<TrustEngine<? super X509Credential>>firstNonNull(
-                            securityParameters.getTLSTrustEngine(), tlsTrustEngine);
+                            securityParameters != null ? securityParameters.getTLSTrustEngine() : null,
+                            getTLSTrustEngine());
             if (trustEngine != null) {
                 context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
                 context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, 
                         buildTLSCriteriaSet(request, operationContext));
             }
             
-            List<String> tlsProtocols = securityParameters.getTLSProtocols();
-            if (tlsProtocols != null) {
-                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS, tlsProtocols);
-            }
-            
-            List<String> tlsCipherSuites = securityParameters.getTLSCipherSuites();
-            if (tlsCipherSuites != null) {
-                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES, tlsCipherSuites);
-            }
-            
-            X509HostnameVerifier hostnameVerifier = securityParameters.getHostnameVerifier();
-            if (hostnameVerifier != null) {
-                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER, hostnameVerifier);
-            }
-            
-            X509Credential clientTLSCredential = securityParameters.getClientTLSCredential();
-            if (clientTLSCredential != null) {
-                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, 
-                        clientTLSCredential);
+            if (securityParameters != null) {
+                List<String> tlsProtocols = securityParameters.getTLSProtocols();
+                if (tlsProtocols != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS, tlsProtocols);
+                }
+                
+                List<String> tlsCipherSuites = securityParameters.getTLSCipherSuites();
+                if (tlsCipherSuites != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES, tlsCipherSuites);
+                }
+                
+                X509HostnameVerifier hostnameVerifier = securityParameters.getHostnameVerifier();
+                if (hostnameVerifier != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER, hostnameVerifier);
+                }
+                
+                X509Credential clientTLSCredential = securityParameters.getClientTLSCredential();
+                if (clientTLSCredential != null) {
+                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, 
+                            clientTLSCredential);
+                }
             }
         }
-        
-        return context;
     }
     
     /**
@@ -463,8 +520,8 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
             @Nonnull final InOutOperationContext operationContext) {
         
         CriteriaSet criteriaSet = new CriteriaSet();
-        if (tlsCriteriaSetStrategy != null) {
-            CriteriaSet resolved = tlsCriteriaSetStrategy.apply(operationContext);
+        if (getTLSCriteriaSetStrategy() != null) {
+            CriteriaSet resolved = getTLSCriteriaSetStrategy().apply(operationContext);
             if (resolved != null) {
                 criteriaSet.addAll(resolved);
             }
