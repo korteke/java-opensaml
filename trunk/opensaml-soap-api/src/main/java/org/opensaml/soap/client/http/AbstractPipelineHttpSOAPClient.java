@@ -18,6 +18,7 @@
 package org.opensaml.soap.client.http;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +32,7 @@ import net.shibboleth.utilities.java.support.component.AbstractInitializableComp
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.ObjectSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.apache.http.HttpResponse;
@@ -42,8 +44,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.messaging.context.InOutOperationContext;
+import org.opensaml.messaging.context.httpclient.HttpClientRequestContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.httpclient.HttpClientResponseMessageDecoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
@@ -54,6 +58,8 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
+import org.opensaml.security.httpclient.HttpClientSecurityParameters;
+import org.opensaml.security.messaging.HttpClientSecurityContext;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.soap.client.SOAPClient;
@@ -351,7 +357,8 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
      */
     protected void checkTLSCredentialTrusted(@Nonnull final HttpClientContext context, 
             @Nonnull final HttpUriRequest request) throws SSLPeerUnverifiedException {
-        if (tlsTrustEngine != null && "https".equalsIgnoreCase(request.getURI().getScheme())) {
+        if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE) != null 
+                && "https".equalsIgnoreCase(request.getURI().getScheme())) {
             if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
                 log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
                         + "the appropriate socket factory was likely not configured");
@@ -383,18 +390,68 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     @Nonnull protected HttpClientContext buildHttpContext(@Nonnull final HttpUriRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
-        final HttpClientContext context = HttpClientContext.create();
-        if (credentialsProvider != null) {
-            context.setCredentialsProvider(credentialsProvider);
+        HttpClientContext context = resolveHttpContext(operationContext);
+        
+        HttpClientSecurityParameters securityParameters = operationContext.getOutboundMessageContext()
+                .getSubcontext(HttpClientSecurityContext.class, true).getSecurityParameters();
+        
+        CredentialsProvider credProvider = ObjectSupport.firstNonNull(
+                securityParameters.getCredentialsProvider(), credentialsProvider);
+        if (credProvider != null) {
+            context.setCredentialsProvider(credProvider);
         }
-        if (tlsTrustEngine != null && "https".equalsIgnoreCase(request.getURI().getScheme())) {
-            context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, tlsTrustEngine);
-            context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, 
-                    buildTLSCriteriaSet(request, operationContext));
+        
+        if ("https".equalsIgnoreCase(request.getURI().getScheme())) {
+            TrustEngine<? super X509Credential> trustEngine = 
+                    ObjectSupport.<TrustEngine<? super X509Credential>>firstNonNull(
+                            securityParameters.getTLSTrustEngine(), tlsTrustEngine);
+            if (trustEngine != null) {
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, 
+                        buildTLSCriteriaSet(request, operationContext));
+            }
+            
+            List<String> tlsProtocols = securityParameters.getTLSProtocols();
+            if (tlsProtocols != null) {
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS, tlsProtocols);
+            }
+            
+            List<String> tlsCipherSuites = securityParameters.getTLSCipherSuites();
+            if (tlsCipherSuites != null) {
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES, tlsCipherSuites);
+            }
+            
+            X509HostnameVerifier hostnameVerifier = securityParameters.getHostnameVerifier();
+            if (hostnameVerifier != null) {
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER, hostnameVerifier);
+            }
+            
+            X509Credential clientTLSCredential = securityParameters.getClientTLSCredential();
+            if (clientTLSCredential != null) {
+                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, 
+                        clientTLSCredential);
+            }
         }
+        
         return context;
     }
     
+    /**
+     * Resolve the effective {@link HttpClientContext} instance to use for the current request.
+     * 
+     * @param operationContext the current operation context
+     * @return the effective client context instance to use
+     */
+    @Nonnull protected HttpClientContext resolveHttpContext(InOutOperationContext operationContext) {
+        HttpClientRequestContext requestContext = operationContext.getOutboundMessageContext()
+                .getSubcontext(HttpClientRequestContext.class, false);
+        if (requestContext != null && requestContext.getHttpClientContext() != null) {
+            return requestContext.getHttpClientContext();
+        } else {
+            return HttpClientContext.create();
+        }
+    }
+
     /**
      * Build the {@link CriteriaSet} instance to be used for TLS trust evaluation.
      * 

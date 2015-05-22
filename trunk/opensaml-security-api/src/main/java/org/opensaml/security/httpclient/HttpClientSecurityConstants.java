@@ -17,6 +17,8 @@
 
 package org.opensaml.security.httpclient;
 
+import net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory;
+
 
 /**
  * Security-related constants for use with Apache HttpClient.
@@ -34,7 +36,22 @@ public final class HttpClientSecurityConstants {
     /** Context key for a server TLS credential evaluation result, populated by specialized instances 
      * of HttpClient socket factories. Type will be a {@link Boolean}. */
     public static final String CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED = "opensaml.ServerTLSCredentialTrusted";
-
+    
+    /** HttpContext key for the client TLS credential. 
+     * Must be an instance of {@link org.opensaml.security.x509.X509Credential}. */
+    public static final String CONTEXT_KEY_CLIENT_TLS_CREDENTIAL = "opensaml.ClientTLSCredential";
+    
+    /** HttpContext key for a a list of TLS protocols to enable on the socket.  
+     * Must be an instance of {@link List<String>}. */
+    public static final String CONTEXT_KEY_TLS_PROTOCOLS = TLSSocketFactory.CONTEXT_KEY_TLS_PROTOCOLS;
+    
+    /** HttpContext key for a a list of TLS cipher suites to enable on the socket.  
+     * Must be an instance of {@link List<String>}. */
+    public static final String CONTEXT_KEY_TLS_CIPHER_SUITES = TLSSocketFactory.CONTEXT_KEY_TLS_CIPHER_SUITES;
+    
+    /** HttpContext key for an instance of {@link org.apache.http.conn.ssl.X509HostnameVerifier}. */
+    public static final String CONTEXT_KEY_HOSTNAME_VERIFIER = TLSSocketFactory.CONTEXT_KEY_HOSTNAME_VERIFIER;
+    
     /** Constructor. */
     private HttpClientSecurityConstants() {}
 
