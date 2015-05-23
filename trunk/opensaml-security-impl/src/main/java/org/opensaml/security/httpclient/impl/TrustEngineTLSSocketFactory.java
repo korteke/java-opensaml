@@ -38,7 +38,6 @@ import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.protocol.HttpContext;
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
@@ -105,6 +104,7 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
 
     /** {@inheritDoc} */
     public Socket createSocket(HttpContext context) throws IOException {
+        log.trace("In createSocket");
         return wrappedFactory.createSocket(context);
     }
 
@@ -113,6 +113,7 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
             InetSocketAddress remoteAddress, InetSocketAddress localAddress,
             HttpContext context) throws IOException {
         
+        log.trace("In connectSocket");
         Socket socket = wrappedFactory.connectSocket(connectTimeout, sock, host, remoteAddress, localAddress, context);
         performTrustEval(socket, context);
         performHostnameVerification(socket, host.getHostName(), context);
@@ -122,6 +123,7 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
 
     /** {@inheritDoc} */
     public Socket createLayeredSocket(Socket socket, String target, int port, HttpContext context) throws IOException {
+        log.trace("In createLayeredSocket");
         Socket layeredSocket = wrappedFactory.createLayeredSocket(socket, target, port, context);
         performTrustEval(layeredSocket, context);
         performHostnameVerification(layeredSocket, target, context);
