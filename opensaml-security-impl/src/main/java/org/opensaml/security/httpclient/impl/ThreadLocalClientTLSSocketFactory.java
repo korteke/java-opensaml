@@ -32,6 +32,8 @@ import org.apache.http.protocol.HttpContext;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A wrapper for instances of {@link LayeredConnectionSocketFactory} which loads and clears
@@ -43,6 +45,9 @@ import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
  * 
  */
 public class ThreadLocalClientTLSSocketFactory implements LayeredConnectionSocketFactory {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(ThreadLocalClientTLSSocketFactory.class);
     
     /** The HttpClient socket factory instance wrapped by this implementation. */
     @Nonnull private LayeredConnectionSocketFactory wrappedFactory;
@@ -58,6 +63,7 @@ public class ThreadLocalClientTLSSocketFactory implements LayeredConnectionSocke
     
     /** {@inheritDoc} */
     public Socket createSocket(HttpContext context) throws IOException {
+        log.trace("In createSocket");
         return wrappedFactory.createSocket(context);
     }
     
@@ -65,7 +71,7 @@ public class ThreadLocalClientTLSSocketFactory implements LayeredConnectionSocke
     public Socket connectSocket(int connectTimeout, @Nullable Socket socket, @Nonnull HttpHost host,
             @Nonnull InetSocketAddress remoteAddress, @Nullable InetSocketAddress localAddress,
             @Nullable HttpContext context) throws IOException {
-        
+        log.trace("In connectSocket");
         try {
             setup(context);
             return wrappedFactory.connectSocket(connectTimeout, socket, host, remoteAddress, localAddress, context);
@@ -77,6 +83,7 @@ public class ThreadLocalClientTLSSocketFactory implements LayeredConnectionSocke
     /** {@inheritDoc} */
     public Socket createLayeredSocket(@Nonnull Socket socket, @Nonnull String target, int port,
             @Nullable HttpContext context) throws IOException {
+        log.trace("In createLayeredSocket");
         try {
             setup(context);
             return wrappedFactory.createLayeredSocket(socket, target, port, context);
@@ -92,14 +99,23 @@ public class ThreadLocalClientTLSSocketFactory implements LayeredConnectionSocke
      * @param context the HttpContext instance
      */
     protected void setup(@Nullable final HttpContext context) {
+        log.trace("Attempting to setup thread-local client TLS X509Credential");
         if (context == null) {
+            log.trace("HttpContext was null, skipping thread-local setup");
             return;
         }
-        if (!ThreadLocalX509CredentialContext.haveCurrent() 
-                && context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL) != null) {
-            ThreadLocalX509CredentialContext.loadCurrent(
+        if (!ThreadLocalX509CredentialContext.haveCurrent()) {
+            X509Credential credential = 
                     (X509Credential) context.getAttribute(
-                            HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL));
+                            HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL);
+            if (credential != null) {
+                log.trace("Loading ThreadLocalX509CredentialContext with client TLS credential: {}", credential);
+                ThreadLocalX509CredentialContext.loadCurrent(credential);
+            } else {
+                log.trace("HttpContext did not contain a client TLS credential, nothing to do");
+            }
+        } else {
+            log.trace("ThreadLocalX509CredentialContext was already loaded with client TLS credential, skipping setup");
         }
     }
     
@@ -110,6 +126,7 @@ public class ThreadLocalClientTLSSocketFactory implements LayeredConnectionSocke
      * @param context the HttpContext instance
      */
     protected void teardown(@Nullable final HttpContext context) {
+        log.trace("Clearing thread-local client TLS X509Credential");
         ThreadLocalX509CredentialContext.clearCurrent();
     }
     
