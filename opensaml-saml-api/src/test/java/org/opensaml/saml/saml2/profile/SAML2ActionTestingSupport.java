@@ -235,6 +235,22 @@ public class SAML2ActionTestingSupport {
     }
     
     /**
+     * Builds a {@link Issuer}.
+     * 
+     * @param entityID the entity ID to use in the Issuer
+     * 
+     * @return the built Issuer
+     */
+    @Nonnull public static Issuer buildIssuer(final @Nonnull @NotEmpty String entityID) {
+        final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                        Issuer.DEFAULT_ELEMENT_NAME);
+        final Issuer issuer = issuerBuilder.buildObject();
+        issuer.setValue(entityID);
+        return issuer;
+    }
+    
+    /**
      * Builds an {@link AttributeQuery}. If a {@link Subject} is given, it will be added to the constructed
      * {@link AttributeQuery}.
      * 

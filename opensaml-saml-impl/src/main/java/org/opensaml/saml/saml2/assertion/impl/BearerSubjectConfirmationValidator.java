@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -51,6 +53,12 @@ public class BearerSubjectConfirmationValidator extends AbstractSubjectConfirmat
     @Nonnull protected ValidationResult doValidate(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
                     throws AssertionValidationException {
-        return ValidationResult.VALID;
+        
+        if (Objects.equals(confirmation.getMethod(), SubjectConfirmation.METHOD_BEARER)) {
+            return ValidationResult.VALID;
+        } else {
+            return ValidationResult.INDETERMINATE;
+        }
+            
     }
 }

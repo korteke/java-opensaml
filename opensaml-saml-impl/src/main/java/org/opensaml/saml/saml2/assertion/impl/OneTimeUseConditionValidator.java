@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
@@ -91,7 +93,15 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
     @Nonnull public ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion,
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        if (!replayCache.check(CACHE_CONTEXT, getCacheValue(assertion), replayCacheExpires)) {
+        if (!(condition instanceof OneTimeUse) 
+                && !Objects.equals(condition.getElementQName(), getServicedCondition())) {
+            log.warn("Condition '{}' of type '{}' in assertion '{}' was not an '{}' condition.  Unable to process.",
+                    new Object[] { condition.getElementQName(), condition.getSchemaType(), assertion.getID(),
+                            getServicedCondition(), });
+            return ValidationResult.INDETERMINATE;
+        }
+        
+        if (!replayCache.check(CACHE_CONTEXT, getCacheValue(assertion), getExpires(assertion, context))) {
             context.setValidationFailureMessage(String.format(
                     "Assertion '%s' has a one time use condition and has been used before", assertion.getID()));
             return ValidationResult.INVALID;
@@ -100,6 +110,35 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
         return ValidationResult.VALID;
     }
     
+    /**
+     * Get the configured validator cache expiration interval, in milliseconds.
+     * 
+     * @return the configured cache expiration interval in milliseconds
+     */
+    @Nonnull protected Long getReplayCacheExpires() {
+        return replayCacheExpires;
+    }
+    
+    /**
+     * Get the one-time use expiration time for the assertion being evaluated.
+     * 
+     * <p>
+     * Defaults to <code>System.currentTimeMillis() + getReplayCacheExpires()</code>.
+     * </p>
+     * 
+     * <p>
+     * A subclass might override this to base expiration on data from the assertion or the validation context.
+     * </p>
+     * 
+     * @param assertion the SAML 2 Assertion being evaluated
+     * @param context the current validation context
+     * 
+     * @return the effective one-time use expiration for the assertion being evaluated
+     */
+    protected long getExpires(Assertion assertion, ValidationContext context) {
+        return System.currentTimeMillis() + getReplayCacheExpires();
+    }
+
     /**
      * Get the string value which will be tracked in the cache for purposes of one-time use detection.
      * 

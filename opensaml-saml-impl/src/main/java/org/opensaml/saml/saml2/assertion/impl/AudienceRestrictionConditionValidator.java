@@ -72,7 +72,22 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
     @Nonnull public ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        Set<String> validAudiences =  (Set<String>) context.getStaticParameters().get(VALID_AUDIENCES_PARAM);
+        if (!(condition instanceof AudienceRestriction)) {
+            log.warn("Condition '{}' of type '{}' in assertion '{}' was not an '{}' condition.  Unable to process.",
+                    new Object[] { condition.getElementQName(), condition.getSchemaType(), assertion.getID(),
+                            getServicedCondition(), });
+            return ValidationResult.INDETERMINATE;
+        }
+        
+        Set<String> validAudiences;
+        try {
+            validAudiences = (Set<String>) context.getStaticParameters().get(VALID_AUDIENCES_PARAM);
+        } catch (ClassCastException e) {
+            log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
+                    VALID_AUDIENCES_PARAM);
+            context.setValidationFailureMessage("Unable to determine list of valid audiences");
+            return ValidationResult.INDETERMINATE;
+        }
         if (validAudiences == null || validAudiences.isEmpty()) {
             log.warn("Set of valid audiences was not available from the validation context, " 
                     + "unable to evaluate AudienceRestriction Condition");
@@ -83,12 +98,6 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
                 + "against the list of valid audiences: {}",
                 validAudiences.toString());
 
-        if (!(condition instanceof AudienceRestriction)) {
-            log.warn("Condition '{}' of type '{}' in assertion '{}' was not an '{}' condition.  Unable to process.",
-                    new Object[] { condition.getElementQName(), condition.getSchemaType(), assertion.getID(),
-                            getServicedCondition(), });
-            return ValidationResult.INDETERMINATE;
-        }
         AudienceRestriction audienceRestriction = (AudienceRestriction) condition;
         List<Audience> audiences = audienceRestriction.getAudiences();
         if (audiences == null || audiences.isEmpty()) {

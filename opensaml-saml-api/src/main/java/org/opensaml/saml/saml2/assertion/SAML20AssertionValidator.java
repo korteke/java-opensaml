@@ -68,7 +68,7 @@ public class SAML20AssertionValidator {
             + ".ConfirmedSubjectConfirmation";
     
     /**
-     * The name of the {@link ValidationContext#getDynamicParameters()} carrying the {@link Boolean} flag which 
+     * The name of the {@link ValidationContext#getStaticParameters()} carrying the {@link Boolean} flag which 
      * indicates whether the Assertion is required to be signed.  If not supplied, defaults to 'true'. If an Assertion
      * is signed, the signature is always evaluated and the result factored into the overall validation result, 
      * regardless of the value of this setting.
@@ -77,7 +77,7 @@ public class SAML20AssertionValidator {
             + ".SignatureRequired";
     
     /**
-     * The name of the {@link ValidationContext#getDynamicParameters()} which carries the {@link CriteriaSet}
+     * The name of the {@link ValidationContext#getStaticParameters()} which carries the {@link CriteriaSet}
      * which will be used as the input to the signature trust engine.  If not supplied, a minimal criteria
      * set will be constructed which contains an {@link EntityIDCriteria} containing the Assertion Issuer entityID,
      * and a {@link UsageCriteria} of {@link UsageType#SIGNING}. If it is supplied, but either of those criteria

@@ -34,7 +34,7 @@ public class ValidationContext {
     /** Static parameters used as input to the validation process. */
     private Map<String, Object> staticParameters;
 
-    /** Dynamic parameters used input to, and output from, the validation process. */
+    /** Dynamic parameters used as input to, and output from, the validation process. */
     private Map<String, Object> dynamicParameters;
 
     /** Error messaging describing what validation check an assertion failed. */
