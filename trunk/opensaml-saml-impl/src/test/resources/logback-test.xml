@@ -8,6 +8,14 @@
         </encoder>
     </appender>
     
+    <logger name="org.opensaml.saml.saml2.assertion">
+        <level value="TRACE"/>
+    </logger>
+    
+    <logger name="org.opensaml.storage">
+        <level value="TRACE"/>
+    </logger>
+    
     <logger name="org.opensaml.xmlsec.impl">
         <level value="TRACE"/>
     </logger>

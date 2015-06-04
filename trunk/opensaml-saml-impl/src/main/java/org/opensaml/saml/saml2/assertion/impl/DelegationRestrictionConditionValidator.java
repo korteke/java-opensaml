@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.namespace.QName;
@@ -59,7 +61,13 @@ public class DelegationRestrictionConditionValidator implements ConditionValidat
     /** {@inheritDoc} */
     @Nonnull public ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
-        // Delegation restriction information is a 'condition of use' type condition so we always return valid.
-        return ValidationResult.VALID;
+        
+        if ((condition instanceof DelegationRestrictionType) 
+                || Objects.equals(condition.getSchemaType(), DelegationRestrictionType.TYPE_NAME)) {
+            // Delegation restriction information is a 'condition of use' type condition so we always return valid.
+            return ValidationResult.VALID;
+        } else {
+            return ValidationResult.INDETERMINATE;
+        }
     }
 }

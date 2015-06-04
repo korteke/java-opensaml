@@ -111,6 +111,10 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
                     throws AssertionValidationException {
         
+        if (!Objects.equals(confirmation.getMethod(), SubjectConfirmation.METHOD_HOLDER_OF_KEY)) {
+            return ValidationResult.INDETERMINATE;
+        }
+        
         log.debug("Attempting holder-of-key subject confirmation");
         if (!isValidConfirmationDataType(confirmation)) {
             String msg = String.format(
@@ -129,7 +133,15 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
             return ValidationResult.INVALID;
         }
 
-        Pair<PublicKey, X509Certificate> keyCertPair = getKeyAndCertificate(context);
+        Pair<PublicKey, X509Certificate> keyCertPair = null;
+        try {
+            keyCertPair = getKeyAndCertificate(context);
+        } catch (IllegalArgumentException e) {
+            log.warn("Problem with the validation context presenter key/cert params: {}", e.getMessage());
+            context.setValidationFailureMessage("Unable to obtain presenter key/cert params from validation context");
+            return ValidationResult.INDETERMINATE;
+        }
+        
         if (keyCertPair.getFirst() == null && keyCertPair.getSecond() == null) {
             log.debug("Neither the presenter's certificate nor its public key were provided");
             context.setValidationFailureMessage("Neither the presenter's certificate nor its public key were provided");
@@ -186,7 +198,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      * 
      * @throws AssertionValidationException thrown if there is a problem obtaining the data
      */
-    @Nonnull public Pair<PublicKey, X509Certificate> getKeyAndCertificate(@Nonnull final ValidationContext context) 
+    @Nonnull protected Pair<PublicKey, X509Certificate> getKeyAndCertificate(@Nonnull final ValidationContext context) 
             throws AssertionValidationException {
         PublicKey presenterKey = null;
         try {
@@ -263,6 +275,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
     protected boolean matchesKeyValue(@Nullable final PublicKey key, @Nonnull final KeyInfo keyInfo) 
             throws AssertionValidationException {
         if (key == null) {
+            log.debug("Presenter PublicKey was null, skipping KeyValue match");
             return false;
         }
 
@@ -305,7 +318,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
     protected boolean matchesX509Certificate(@Nullable final X509Certificate cert, @Nonnull final KeyInfo keyInfo) 
             throws AssertionValidationException {
         if (cert == null) {
-            log.debug("X509Certificate was null, skipping certificate match");
+            log.debug("Presenter X509Certificate was null, skipping certificate match");
             return false;
         }
 
