@@ -120,7 +120,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -129,7 +129,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         // This will fail b/c an assertion token with a Subject and SubjectConfirmation must satisfy at least one SubjectConfirmation.
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(SAML20AssertionValidator.CONFIRMED_SUBJECT_CONFIRMATION));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION));
     }
     
     @Test
@@ -139,7 +139,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -148,7 +148,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         // No Subject, so is valid.
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(SAML20AssertionValidator.CONFIRMED_SUBJECT_CONFIRMATION));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION));
     }
     
     @Test
@@ -158,7 +158,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -167,7 +167,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         // No SubjectConfirmations, so is valid.
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(SAML20AssertionValidator.CONFIRMED_SUBJECT_CONFIRMATION));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION));
     }
     
     @Test
@@ -175,7 +175,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -183,7 +183,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
-        Assert.assertSame(validationContext.getDynamicParameters().get(SAML20AssertionValidator.CONFIRMED_SUBJECT_CONFIRMATION),
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
                 assertion.getSubject().getSubjectConfirmations().get(0));
     }
     
@@ -192,7 +192,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -209,7 +209,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -217,7 +217,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
-        Assert.assertSame(validationContext.getDynamicParameters().get(SAML20AssertionValidator.CONFIRMED_SUBJECT_CONFIRMATION),
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
                 assertion.getSubject().getSubjectConfirmations().get(0));
     }
     
@@ -229,7 +229,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -245,7 +245,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signaturePrevalidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -268,7 +268,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, signatureTrustEngine, failingValidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -299,7 +299,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, failingEngine, signaturePrevalidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -315,7 +315,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -323,7 +323,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
-        Assert.assertSame(validationContext.getDynamicParameters().get(SAML20AssertionValidator.CONFIRMED_SUBJECT_CONFIRMATION), 
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION), 
                 assertion.getSubject().getSubjectConfirmations().get(0));
     }
     
@@ -335,7 +335,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -352,7 +352,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -378,7 +378,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -394,7 +394,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -420,7 +420,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -436,7 +436,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validator = getCurrentValidator();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(SAML20AssertionValidator.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         

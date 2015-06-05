@@ -31,6 +31,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.ConditionValidator;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.OneTimeUse;
@@ -42,24 +43,25 @@ import org.slf4j.LoggerFactory;
  * {@link ConditionValidator} used for {@link OneTimeUse} conditions.
  * 
  * <p>
- * This validator supports an optional parameters {@link #ONE_TIME_USE_EXPIRES_PARAM} in the 
- * {@link ValidationContext#getStaticParameters()}. This validator does not expect any parameters 
- * in the or {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#COND_ONE_TIME_USE_EXPIRES}:
+ * Optional. If not supplied, defaults to the validator-wide value supplied at construction, or
+ * the default value, as retrieved via {@link #getReplayCacheExpires()}.
+ * </li>
+ * </ul>
  * </p>
  * 
  * <p>
- * This validator does not populate any parameters in the {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * None.
+ * </ul>
  * </p>
  */
 @ThreadSafe
 public class OneTimeUseConditionValidator implements ConditionValidator {
-    
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying the {@link Long}
-     * per-invocation value for the Assertion replay cache expiration, in milliseconds.
-     */
-    public static final String ONE_TIME_USE_EXPIRES_PARAM = OneTimeUseConditionValidator.class.getName()
-            + ".OneTimeUseExpires";
     
     /** Cache context name. */
     public static final String CACHE_CONTEXT = OneTimeUseConditionValidator.class.getName();
@@ -150,9 +152,10 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
     protected long getExpires(Assertion assertion, ValidationContext context) {
         Long expires = null;
         try {
-            expires = (Long) context.getStaticParameters().get(ONE_TIME_USE_EXPIRES_PARAM);
+            expires = (Long) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.COND_ONE_TIME_USE_EXPIRES);
         } catch (ClassCastException e) {
-            log.warn("Value of param was not a Long: {}", ONE_TIME_USE_EXPIRES_PARAM);
+            log.warn("Value of param was not a Long: {}", SAML2AssertionValidationParameters.COND_ONE_TIME_USE_EXPIRES);
         }
         log.debug("Saw one-time use cache expires context param: {}", expires);
         

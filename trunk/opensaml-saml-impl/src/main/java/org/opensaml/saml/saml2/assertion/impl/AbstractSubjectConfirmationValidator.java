@@ -33,6 +33,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.assertion.SubjectConfirmationValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
@@ -48,30 +49,28 @@ import org.slf4j.LoggerFactory;
  * </p>
  * 
  * <p>
- * This validator expects the {@link ValidationContext#getStaticParameters()} to contain the properties
- * {@link #VALID_ADDRESSES_PARAM} and {@link #VALID_RECIPIENTS_PARAM} to be present during evaluation.
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_VALID_ADDRESSES}:
+ * Required.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_VALID_RECIPIENTS}:
+ * Required.
+ * </li>
+ * </ul>
  * </p>
  * 
  * <p>
- * This validator does not populate any parameters in the {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * None.
+ * </ul>
  * </p>
  */
 @ThreadSafe
 public abstract class AbstractSubjectConfirmationValidator implements SubjectConfirmationValidator {
-
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying a {@link Set<String>} whose values are
-     * the acceptable subject confirmation data recipient endpoints.
-     */
-    public static final String VALID_RECIPIENTS_PARAM = AbstractSubjectConfirmationValidator.class.getName()
-            + ".ValidRecipients";
-
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying a {@link Set<InetAddress>} whose values
-     * are the acceptable subject confirmation data addresses.
-     */
-    public static final String VALID_ADDRESSES_PARAM = AbstractSubjectConfirmationValidator.class.getName()
-            + ".ValidAddresses";
 
     /** Class logger. */
     private Logger log = LoggerFactory.getLogger(AbstractSubjectConfirmationValidator.class);
@@ -193,10 +192,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
 
         Set<String> validRecipients;
         try {
-            validRecipients = (Set<String>) context.getStaticParameters().get(VALID_RECIPIENTS_PARAM);
+            validRecipients = (Set<String>) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS);
         } catch (ClassCastException e) {
             log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
-                    VALID_RECIPIENTS_PARAM);
+                    SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS);
             context.setValidationFailureMessage(
                     "Unable to determine list of valid subject confirmation recipient endpoints");
             return ValidationResult.INDETERMINATE;
@@ -264,10 +264,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
 
         Set<InetAddress> validAddresses;
         try {
-            validAddresses = (Set<InetAddress>) context.getStaticParameters().get(VALID_ADDRESSES_PARAM);
+            validAddresses = (Set<InetAddress>) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.SC_VALID_ADDRESSES);
         } catch (ClassCastException e) {
             log.warn("The value of the static validation parameter '{}' was not java.util.Set<InetAddress>",
-                    VALID_ADDRESSES_PARAM);
+                    SAML2AssertionValidationParameters.SC_VALID_ADDRESSES);
             context.setValidationFailureMessage("Unable to determine list of valid subject confirmation addresses");
             return ValidationResult.INDETERMINATE;
         }

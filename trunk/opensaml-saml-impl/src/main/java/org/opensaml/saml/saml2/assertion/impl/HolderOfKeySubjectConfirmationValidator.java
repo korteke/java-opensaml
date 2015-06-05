@@ -36,6 +36,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
@@ -67,41 +68,40 @@ import org.slf4j.LoggerFactory;
  * In both cases a "match" is determined via Java <code>equals()</code> comparison.
  * </p>
  * 
+ * 
  * <p>
- * This validator requires the {@link ValidationContext#getStaticParameters()} to carry the presenter's certificate or
- * public key. The certificate must be bound to the property {@link #PRESENTER_CERT_PARAM} and the key must be bound to
- * the property {@link #PRESENTER_KEY_PARAM}. If both are present the public key of the given certificate must match the
- * given key.
+ * In addition to parameters defined in {@link AbstractSubjectConfirmationValidator}:
  * </p>
  * 
  * <p>
- * This validator populates the {@link ValidationContext#getDynamicParameters()} property
- * {@link #CONFIRMED_KEY_INFO_PARAM} with the {@link KeyInfo} that confirmed the subject.
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_HOK_PRESENTER_CERT}:
+ * Optional if key is supplied, otherwise required.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_HOK_PRESENTER_KEY}:
+ * Optional if certificate is supplied, otherwise required.
+ * </li>
+ * </ul>
+ * If both key and certificate are supplied, the public key of the supplied certificate must match the
+ * supplied public key, otherwise a evaluation results in {@link ValidationResult#INDETERMINATE}. 
+ * </p>
+ * 
+ * <p>
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_HOK_CONFIRMED_KEYINFO}:
+ * Optional.
+ * Will be present after validation iff Holder of Key subject confirmation was successfully performed.
+ * </li>
+ * </ul>
  * </p>
  */
 @ThreadSafe
 public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConfirmationValidator {
-
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying the {@link PublicKey} used by the
-     * presenter.
-     */
-    public static final String PRESENTER_KEY_PARAM = HolderOfKeySubjectConfirmationValidator.class.getName()
-            + ".PresenterKey";
-
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying the {@link X509Certificate} used by the
-     * presenter.
-     */
-    public static final String PRESENTER_CERT_PARAM = HolderOfKeySubjectConfirmationValidator.class.getName()
-            + ".PresenterCertificate";
-
-    /**
-     * The name of the {@link ValidationContext#getDynamicParameters()} carrying the {@link KeyInfo} that confirmed the
-     * subject.
-     */
-    public static final String CONFIRMED_KEY_INFO_PARAM = HolderOfKeySubjectConfirmationValidator.class.getName()
-            + ".ConfirmedKeyInfo";
 
     /** Class logger. */
     private Logger log = LoggerFactory.getLogger(HolderOfKeySubjectConfirmationValidator.class);
@@ -156,11 +156,13 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         for (KeyInfo keyInfo : possibleKeys) {
             if (matchesKeyValue(keyCertPair.getFirst(), keyInfo)) {
                 log.debug("Successfully matched public key in subject confirmation data to supplied key param");
-                context.getDynamicParameters().put(CONFIRMED_KEY_INFO_PARAM, keyInfo);
+                context.getDynamicParameters().put(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO,
+                        keyInfo);
                 return ValidationResult.VALID;
             } else if (matchesX509Certificate(keyCertPair.getSecond(), keyInfo)) {
                 log.debug("Successfully matched certificate in subject confirmation data to supplied cert param");
-                context.getDynamicParameters().put(CONFIRMED_KEY_INFO_PARAM, keyInfo);
+                context.getDynamicParameters().put(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO,
+                        keyInfo);
                 return ValidationResult.VALID;
             }
         }
@@ -207,16 +209,18 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
             throws AssertionValidationException {
         PublicKey presenterKey = null;
         try {
-            presenterKey = (PublicKey) context.getStaticParameters().get(PRESENTER_KEY_PARAM);
+            presenterKey = (PublicKey) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(String.format(
                     "The value of the static validation parameter '%s' was not of the required type '%s'",
-                    PRESENTER_KEY_PARAM, PublicKey.class.getName()));
+                    SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, PublicKey.class.getName()));
         }
 
         X509Certificate presenterCert = null;
         try {
-            presenterCert = (X509Certificate) context.getStaticParameters().get(PRESENTER_CERT_PARAM);
+            presenterCert = (X509Certificate) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT);
             if (presenterCert != null) {
                 if (presenterKey != null) {
                     if (!presenterKey.equals(presenterCert.getPublicKey())) {
@@ -231,7 +235,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         } catch (ClassCastException e) {
             throw new IllegalArgumentException(String.format(
                     "The value of the static validation parameter '%s' was not of the required type '%s'",
-                    PRESENTER_CERT_PARAM, X509Certificate.class.getName()));
+                    SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, X509Certificate.class.getName()));
         }
 
         return new Pair<PublicKey, X509Certificate>(presenterKey, presenterCert);

@@ -26,6 +26,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.testng.Assert;
@@ -80,7 +81,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     public void testInvalidAddressParamType() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
         // It should be a Set<String>, not a String
-        staticParams.put(AbstractSubjectConfirmationValidator.VALID_ADDRESSES_PARAM, SUBJECT_CONFIRMATION_ADDRESS);
+        staticParams.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, SUBJECT_CONFIRMATION_ADDRESS);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -91,7 +92,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     @Test
     public void testMissingAddressParam() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.remove(AbstractSubjectConfirmationValidator.VALID_ADDRESSES_PARAM);
+        staticParams.remove(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -123,7 +124,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     public void testInvalidRecipientParamType() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
         // It should be a Set<String>, not a String
-        staticParams.put(AbstractSubjectConfirmationValidator.VALID_RECIPIENTS_PARAM, SUBJECT_CONFIRMATION_RECIPIENT);
+        staticParams.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, SUBJECT_CONFIRMATION_RECIPIENT);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -134,7 +135,7 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     @Test
     public void testMissingRecipientParam() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.remove(AbstractSubjectConfirmationValidator.VALID_RECIPIENTS_PARAM);
+        staticParams.remove(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
