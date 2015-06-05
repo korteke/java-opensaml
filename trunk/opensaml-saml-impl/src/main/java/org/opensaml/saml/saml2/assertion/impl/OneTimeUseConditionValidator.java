@@ -89,6 +89,10 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
         replayCacheExpires = expires;
         if (replayCacheExpires == null) {
             replayCacheExpires = DEFAULT_CACHE_EXPIRES;
+        } else if (replayCacheExpires < 0) {
+            log.warn("Supplied value for replay cache expires '{}' was negative, using default expiration", 
+                    replayCacheExpires);
+            replayCacheExpires = DEFAULT_CACHE_EXPIRES;
         }
     }
 
@@ -151,9 +155,15 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
             log.warn("Value of param was not a Long: {}", ONE_TIME_USE_EXPIRES_PARAM);
         }
         log.debug("Saw one-time use cache expires context param: {}", expires);
+        
         if (expires == null) {
             expires = getReplayCacheExpires();
+        } else if (expires < 0) {
+            log.warn("Supplied context param for replay cache expires '{}' was negative, using configured expiration", 
+                    expires);
+            expires = getReplayCacheExpires();
         }
+             
         log.debug("Effective one-time use cache expires of: {}", expires);
         
         long computedExpiration = System.currentTimeMillis() + expires;
