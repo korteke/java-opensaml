@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
+import java.security.PublicKey;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -42,8 +43,9 @@ import org.slf4j.LoggerFactory;
  * {@link ConditionValidator} used for {@link OneTimeUse} conditions.
  * 
  * <p>
- * This validator does not expect any parameters in the {@link ValidationContext#getStaticParameters()} or
- * {@link ValidationContext#getDynamicParameters()}.
+ * This validator supports an optional parameters {@link #ONE_TIME_USE_EXPIRES_PARAM} in the 
+ * {@link ValidationContext#getStaticParameters()}. This validator does not expect any parameters 
+ * in the or {@link ValidationContext#getDynamicParameters()}.
  * </p>
  * 
  * <p>
@@ -52,6 +54,13 @@ import org.slf4j.LoggerFactory;
  */
 @ThreadSafe
 public class OneTimeUseConditionValidator implements ConditionValidator {
+    
+    /**
+     * The name of the {@link ValidationContext#getStaticParameters()} carrying the {@link Long}
+     * per-invocation value for the Assertion replay cache expiration, in milliseconds.
+     */
+    public static final String ONE_TIME_USE_EXPIRES_PARAM = OneTimeUseConditionValidator.class.getName()
+            + ".OneTimeUseExpires";
     
     /** Cache context name. */
     public static final String CACHE_CONTEXT = OneTimeUseConditionValidator.class.getName();
@@ -136,7 +145,21 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
      * @return the effective one-time use expiration for the assertion being evaluated
      */
     protected long getExpires(Assertion assertion, ValidationContext context) {
-        return System.currentTimeMillis() + getReplayCacheExpires();
+        Long expires = null;
+        try {
+            expires = (Long) context.getStaticParameters().get(ONE_TIME_USE_EXPIRES_PARAM);
+        } catch (ClassCastException e) {
+            log.warn("Value of param was not a Long: {}", ONE_TIME_USE_EXPIRES_PARAM);
+        }
+        log.debug("Saw one-time use cache expires context param: {}", expires);
+        if (expires == null) {
+            expires = getReplayCacheExpires();
+        }
+        log.debug("Effective one-time use cache expires of: {}", expires);
+        
+        long computedExpiration = System.currentTimeMillis() + expires;
+        log.debug("Computed one-time use cache effective expiration time of: {}", computedExpiration);
+        return computedExpiration;
     }
 
     /**
