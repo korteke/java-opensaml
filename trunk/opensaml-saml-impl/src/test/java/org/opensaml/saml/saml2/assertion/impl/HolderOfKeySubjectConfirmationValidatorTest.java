@@ -24,6 +24,7 @@ import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Map;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
@@ -78,8 +79,23 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
     }
 
     @Test
-    public void testValidPublicKey() throws AssertionValidationException {
+    public void testValidPublicKeyViaKeyValue() throws AssertionValidationException {
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.VALID);
+        
+        Assert.assertSame(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM), keyInfo);
+    }
+    
+    @Test
+    public void testValidPublicKeyViaDEREncodedKeyValue() throws AssertionValidationException, NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyInfoSupport.addDEREncodedPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
