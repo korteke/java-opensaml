@@ -78,7 +78,7 @@ import org.w3c.dom.Element;
  * <li>
  * {@link SAML2AssertionValidationParameters#CLOCK_SKEW}:
  * Optional.
- * If not present the default clock skew of {@value SAML20AssertionValidator#DEFAULT_CLOCK_SKEW} milliseconds 
+ * If not present the default clock skew of {@link SAML20AssertionValidator#DEFAULT_CLOCK_SKEW} milliseconds 
  * will be used.
  * </li>
  * </ul>

@@ -36,7 +36,7 @@ public final class SAML2AssertionValidationParameters {
     public static final String STMT_INFIX = ".Statement";
     
     /**
-     * Carries a clock skew value in milliseconds as a {@link Long}.
+     * Carries a {@link java.lang.Long} specifying a clock skew value in milliseconds.
      */
     public static final String CLOCK_SKEW = STD_PREFIX + ".ClockSkew";
 
@@ -46,23 +46,25 @@ public final class SAML2AssertionValidationParameters {
     public static final String CONFIRMED_SUBJECT_CONFIRMATION = STD_PREFIX + ".ConfirmedSubjectConfirmation";
 
     /**
-     * Carries a {@link Boolean} flag which indicates whether the Assertion is required to be signed.
+     * Carries a {@link java.lang.Boolean} flag which indicates whether the Assertion is required to be signed.
      */
     public static final String SIGNATURE_REQUIRED = STD_PREFIX + ".SignatureRequired";
 
     /**
      * Carries a {@link net.shibboleth.utilities.java.support.resolver.CriteriaSet} which will be used as the 
-     * input to a signature trust engine.  
+     * input to a {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine}.
      */
     public static final String SIGNATURE_VALIDATION_CRITERIA_SET = STD_PREFIX + ".SignatureValidationCriteriaSet";
 
     /**
-     * Carries a {@link Set<String>} whose values are the acceptable subject confirmation data recipient endpoints.
+     * Carries a {@link java.util.Set<String>} whose values are the acceptable 
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} recipients.
      */
     public static final String SC_VALID_RECIPIENTS = STD_PREFIX + SC_INFIX + ".ValidRecipients";
 
     /**
-     * Carries a {@link Set<InetAddress>} whose values are the acceptable subject confirmation data addresses.
+     * Carries a {@link java.util.Set<InetAddress>} whose values are the acceptable 
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} addresses.
      */
     public static final String SC_VALID_ADDRESSES = STD_PREFIX + SC_INFIX + ".ValidAddresses";
     
@@ -83,14 +85,15 @@ public final class SAML2AssertionValidationParameters {
     public static final String SC_HOK_CONFIRMED_KEYINFO = STD_PREFIX + SC_INFIX + ".HoK.ConfirmedKeyInfo";
 
     /**
-     * Carries a {@link Set<String>} whose values are the acceptable AudienceRestriction Audience values 
-     * for evaluating the Assertion.
+     * Carries a {@link java.util.Set<String>} whose values are the acceptable 
+     * {@link org.opensaml.saml.saml2.core.AudienceRestriction} {@link org.opensaml.saml.saml2.core.Audience}
+     * values for evaluating the Assertion.
      */
     public static final String COND_VALID_AUDIENCES = STD_PREFIX + COND_INFIX + ".ValidAudiences";
 
     /**
-     * Carries a {@link Long} representing the per-invocation value for the Assertion replay cache expiration,
-     * in milliseconds.
+     * Carries a {@link java.lang.Long} representing the per-invocation value for the Assertion 
+     * replay cache expiration, in milliseconds.
      */
     public static final String COND_ONE_TIME_USE_EXPIRES = STD_PREFIX + COND_INFIX + ".OneTimeUseExpires";
     
