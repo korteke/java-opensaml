@@ -27,6 +27,7 @@ import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.OneTimeUse;
@@ -137,7 +138,7 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
         Assert.assertNotNull(StringSupport.trimOrNull(assertion.getID()));
         
         Map<String, Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(OneTimeUseConditionValidator.ONE_TIME_USE_EXPIRES_PARAM, 500L);
+        staticParams.put(SAML2AssertionValidationParameters.COND_ONE_TIME_USE_EXPIRES, 500L);
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(condition, assertion, validationContext), 
@@ -159,7 +160,7 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
         
         Map<String, Object> staticParams = buildBasicStaticParameters();
         // This value is not a Long and so will be effectively ignored
-        staticParams.put(OneTimeUseConditionValidator.ONE_TIME_USE_EXPIRES_PARAM, "500");
+        staticParams.put(SAML2AssertionValidationParameters.COND_ONE_TIME_USE_EXPIRES, "500");
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(condition, assertion, validationContext), 

@@ -31,10 +31,19 @@ import org.opensaml.saml.saml2.core.SubjectConfirmation;
 /**
  * Validates a Sender Vouches subject confirmation.
  * 
- * This validator does not expect any parameters in the {@link ValidationContext#getStaticParameters()} or
- * {@link ValidationContext#getDynamicParameters()}.
+ * <p>
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * None.
+ * </ul>
+ * </p>
  * 
- * This validator does not populate any parameters in the {@link ValidationContext#getDynamicParameters()}.
+ * <p>
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * None.
+ * </ul>
+ * </p>
  */
 @ThreadSafe
 public class SenderVouchersSubjectConfirmationValidator extends AbstractSubjectConfirmationValidator {

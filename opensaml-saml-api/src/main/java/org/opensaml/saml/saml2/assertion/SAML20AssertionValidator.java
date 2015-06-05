@@ -55,41 +55,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
-/** A validator used to evaluate version 2.0 {@link Assertion}s. */
+/** 
+ * A component capable of performing core validation of SAML version 2.0 {@link Assertion} instances.
+ * 
+ * <p>
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SIGNATURE_REQUIRED}:
+ * Optional.
+ * If not supplied, defaults to 'true'. If an Assertion is signed, the signature is always evaluated 
+ * and the result factored into the overall validation result, regardless of the value of this setting.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SIGNATURE_VALIDATION_CRITERIA_SET}:
+ * Optional.
+ * If not supplied, a minimal criteria set will be constructed which contains an {@link EntityIDCriteria} 
+ * containing the Assertion Issuer entityID, and a {@link UsageCriteria} of {@link UsageType#SIGNING}.
+ * If it is supplied, but either of those criteria are absent from the criteria set, they will be added 
+ * with the above values.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#CLOCK_SKEW}:
+ * Optional.
+ * If not present the default clock skew of {@value SAML20AssertionValidator#DEFAULT_CLOCK_SKEW} milliseconds 
+ * will be used.
+ * </li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#CONFIRMED_SUBJECT_CONFIRMATION}:
+ * Optional.
+ * Will be present after validation iff subject confirmation was successfully performed.
+ * </li>
+ * </ul>
+ * </p>
+ * 
+ * */
 public class SAML20AssertionValidator {
-
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying the clock skew, in milliseconds as a
-     * {@link Long}. If not present the default clock skew of {@value #DEFAULT_CLOCK_SKEW} milliseconds will be used.
-     */
-    public static final String CLOCK_SKEW_PARAM = SAML20AssertionValidator.class.getName() + ".ClockSkew";
-
-    /**
-     * The name of the {@link ValidationContext#getDynamicParameters()} carrying the {@link SubjectConfirmation} that
-     * confirmed the subject.
-     */
-    public static final String CONFIRMED_SUBJECT_CONFIRMATION = SAML20AssertionValidator.class.getName()
-            + ".ConfirmedSubjectConfirmation";
-    
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying the {@link Boolean} flag which 
-     * indicates whether the Assertion is required to be signed.  If not supplied, defaults to 'true'. If an Assertion
-     * is signed, the signature is always evaluated and the result factored into the overall validation result, 
-     * regardless of the value of this setting.
-     */
-    public static final String SIGNATURE_REQUIRED = SAML20AssertionValidator.class.getName()
-            + ".SignatureRequired";
-    
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} which carries the {@link CriteriaSet}
-     * which will be used as the input to the signature trust engine.  If not supplied, a minimal criteria
-     * set will be constructed which contains an {@link EntityIDCriteria} containing the Assertion Issuer entityID,
-     * and a {@link UsageCriteria} of {@link UsageType#SIGNING}. If it is supplied, but either of those criteria
-     * are absent from the criteria set, they will be added with the above values.
-     */
-    public static final String SIGNATURE_VALIDATION_CRITERIA_SET =
-        SAML20AssertionValidator.class.getName() + ".SignatureValidationCriteriaSet";
-
 
     /** Default clock skew; {@value} milliseconds. */
     public static final long DEFAULT_CLOCK_SKEW = 5 * 60 * 1000;
@@ -170,9 +177,9 @@ public class SAML20AssertionValidator {
     public static long getClockSkew(@Nonnull final ValidationContext context) {
         long clockSkew = DEFAULT_CLOCK_SKEW;
 
-        if (context.getStaticParameters().containsKey(CLOCK_SKEW_PARAM)) {
+        if (context.getStaticParameters().containsKey(SAML2AssertionValidationParameters.CLOCK_SKEW)) {
             try {
-                clockSkew = (Long) context.getStaticParameters().get(CLOCK_SKEW_PARAM);
+                clockSkew = (Long) context.getStaticParameters().get(SAML2AssertionValidationParameters.CLOCK_SKEW);
                 if (clockSkew < 1) {
                     clockSkew = DEFAULT_CLOCK_SKEW;
                 }
@@ -275,7 +282,8 @@ public class SAML20AssertionValidator {
     @Nonnull protected ValidationResult validateSignature(@Nonnull final Assertion token, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        Boolean signatureRequired = (Boolean) context.getStaticParameters().get(SIGNATURE_REQUIRED);
+        Boolean signatureRequired = (Boolean) context.getStaticParameters().get(
+                SAML2AssertionValidationParameters.SIGNATURE_REQUIRED);
         if (signatureRequired == null) {
             signatureRequired = Boolean.TRUE;
         }
@@ -367,7 +375,8 @@ public class SAML20AssertionValidator {
     @Nonnull protected CriteriaSet getSignatureValidationCriteriaSet(@Nonnull final Assertion token, 
             @Nonnull final ValidationContext context) {
         
-        CriteriaSet criteriaSet = (CriteriaSet) context.getStaticParameters().get(SIGNATURE_VALIDATION_CRITERIA_SET);
+        CriteriaSet criteriaSet = (CriteriaSet) context.getStaticParameters().get(
+                SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_CRITERIA_SET);
         if (criteriaSet == null)  {
             criteriaSet = new CriteriaSet();
         }
@@ -522,7 +531,8 @@ public class SAML20AssertionValidator {
             if (validator != null) {
                 try {
                     if (validator.validate(confirmation, assertion, context) == ValidationResult.VALID) {
-                        context.getDynamicParameters().put(CONFIRMED_SUBJECT_CONFIRMATION, confirmation);
+                        context.getDynamicParameters().put(
+                                SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION, confirmation);
                         return ValidationResult.VALID;
                     }
                 } catch (AssertionValidationException e) {

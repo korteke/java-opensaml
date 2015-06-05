@@ -20,7 +20,6 @@ import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.saml2.assertion.impl.AbstractSubjectConfirmationValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
@@ -105,12 +104,12 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     protected Map<String,Object> buildBasicStaticParameters() {
         HashMap<String,Object> params = new HashMap<>();
         
-        params.put(SAML20AssertionValidator.CLOCK_SKEW_PARAM, CLOCK_SKEW);
+        params.put(SAML2AssertionValidationParameters.CLOCK_SKEW, CLOCK_SKEW);
         
-        params.put(AbstractSubjectConfirmationValidator.VALID_RECIPIENTS_PARAM, 
+        params.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, 
                 Collections.singleton(SUBJECT_CONFIRMATION_RECIPIENT));
         try {
-            params.put(AbstractSubjectConfirmationValidator.VALID_ADDRESSES_PARAM, 
+            params.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, 
                     Collections.singleton(InetAddress.getByName(SUBJECT_CONFIRMATION_ADDRESS)));
         } catch(UnknownHostException e) {
             Assert.fail("Invalid address: " + SUBJECT_CONFIRMATION_ADDRESS);

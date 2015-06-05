@@ -31,6 +31,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
@@ -83,14 +84,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey1);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.VALID);
         
-        Assert.assertSame(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM), keyInfo);
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO), keyInfo);
     }
     
     @Test
@@ -98,14 +99,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         KeyInfoSupport.addDEREncodedPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey1);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.VALID);
         
-        Assert.assertSame(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM), keyInfo);
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO), keyInfo);
     }
     
     @Test
@@ -113,14 +114,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey2);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey2);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INVALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
@@ -128,14 +129,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         KeyInfoSupport.addCertificate(keyInfo, cert1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_CERT_PARAM, cert1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, cert1);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.VALID);
         
-        Assert.assertSame(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM), keyInfo);
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO), keyInfo);
     }
     
     @Test
@@ -145,12 +146,12 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         Map<String,Object> staticParams = buildBasicStaticParameters();
         
         ValidationContext validationContext = new ValidationContext(staticParams);
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_CERT_PARAM, cert2);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, cert2);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INVALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
@@ -158,14 +159,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         subjectConfirmationData.getUnknownXMLObjects().clear();
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey1);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INVALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
@@ -179,33 +180,33 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INDETERMINATE);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
     public void testInvalidPublicKeyParam() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, "foobar");
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, "foobar");
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INDETERMINATE);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
     public void testInvalidCertParam() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_CERT_PARAM, "foobar");
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, "foobar");
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INDETERMINATE);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
@@ -213,15 +214,15 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_CERT_PARAM, cert2);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, cert2);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INDETERMINATE);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
@@ -230,14 +231,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         subjectConfirmation.setSubjectConfirmationData(buildBasicSubjectConfirmationData());
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey1);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INDETERMINATE);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
     @Test
@@ -245,14 +246,14 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         subjectConfirmation.setSubjectConfirmationData(buildBasicSubjectConfirmationData());
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(HolderOfKeySubjectConfirmationValidator.PRESENTER_KEY_PARAM, publicKey1);
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, publicKey1);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INVALID);
         
-        Assert.assertNull(validationContext.getDynamicParameters().get(HolderOfKeySubjectConfirmationValidator.CONFIRMED_KEY_INFO_PARAM));
+        Assert.assertNull(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO));
     }
     
 

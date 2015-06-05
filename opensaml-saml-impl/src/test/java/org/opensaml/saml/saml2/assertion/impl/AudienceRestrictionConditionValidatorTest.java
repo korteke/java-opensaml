@@ -24,6 +24,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
 import org.opensaml.saml.saml2.core.Condition;
@@ -58,7 +59,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
     @Test
     public void testValid() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(AudienceRestrictionConditionValidator.VALID_AUDIENCES_PARAM, Collections.singleton(expectedAudienceURI));
+        staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, Collections.singleton(expectedAudienceURI));
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -70,7 +71,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
     public void testInvalidParamType() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
         // Param should bet a Set<String>, not a String
-        staticParams.put(AudienceRestrictionConditionValidator.VALID_AUDIENCES_PARAM, expectedAudienceURI);
+        staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, expectedAudienceURI);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -92,7 +93,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
     public void testConditionWithNoAudiences() throws AssertionValidationException {
         // This is syntactically invalid per the schema, and should validate as invalid.
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(AudienceRestrictionConditionValidator.VALID_AUDIENCES_PARAM, Collections.singleton(expectedAudienceURI));
+        staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, Collections.singleton(expectedAudienceURI));
         
         ((AudienceRestriction)condition).getAudiences().clear();
         
@@ -108,7 +109,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
         getAssertion().getConditions().getConditions().add(condition);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
-        staticParams.put(AudienceRestrictionConditionValidator.VALID_AUDIENCES_PARAM, Collections.singleton(expectedAudienceURI));
+        staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, Collections.singleton(expectedAudienceURI));
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         

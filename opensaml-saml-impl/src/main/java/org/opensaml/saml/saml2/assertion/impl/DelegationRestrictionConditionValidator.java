@@ -42,12 +42,17 @@ import org.opensaml.saml.saml2.core.Condition;
  * </p>
  * 
  * <p>
- * This validator does not expect any parameters in the {@link ValidationContext#getStaticParameters()} or
- * {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * None.
+ * </ul>
  * </p>
  * 
  * <p>
- * This validator does not populate any parameters in the {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * None.
+ * </ul>
  * </p>
  */
 @ThreadSafe

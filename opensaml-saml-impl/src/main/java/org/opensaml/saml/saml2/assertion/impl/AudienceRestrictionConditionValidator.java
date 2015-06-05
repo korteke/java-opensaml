@@ -30,6 +30,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.ConditionValidator;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
@@ -41,24 +42,25 @@ import org.slf4j.LoggerFactory;
  * {@link ConditionValidator} implementation for {@link AudienceRestriction} conditions.
  * 
  * <p>
- * This validator requires that the {@value #VALID_AUDIENCES_PARAM} parameter by set in the
- * {@link ValidationContext#getStaticParameters()} parameters. It does not require any parameters in
- * {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} static parameters:
+ * <ul>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#COND_VALID_AUDIENCES}:
+ * Required.
+ * </li>
+ * </ul>
  * </p>
  * 
  * <p>
- * This validator does not populate any parameters in the {@link ValidationContext#getDynamicParameters()}.
+ * Supports the following {@link ValidationContext} dynamic parameters:
+ * <ul>
+ * None.
+ * </ul>
  * </p>
+ * 
  */
 @ThreadSafe
 public class AudienceRestrictionConditionValidator implements ConditionValidator {
-
-    /**
-     * The name of the {@link ValidationContext#getStaticParameters()} carrying a {@link Set<String>} whose values are
-     * the acceptable Audience values for evaluating the Assertion.
-     */
-    public static final String VALID_AUDIENCES_PARAM = AudienceRestrictionConditionValidator.class.getName()
-            + ".IntendedAudiences";
 
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AudienceRestrictionConditionValidator.class);
@@ -81,10 +83,11 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
         
         Set<String> validAudiences;
         try {
-            validAudiences = (Set<String>) context.getStaticParameters().get(VALID_AUDIENCES_PARAM);
+            validAudiences = (Set<String>) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.COND_VALID_AUDIENCES);
         } catch (ClassCastException e) {
             log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
-                    VALID_AUDIENCES_PARAM);
+                    SAML2AssertionValidationParameters.COND_VALID_AUDIENCES);
             context.setValidationFailureMessage("Unable to determine list of valid audiences");
             return ValidationResult.INDETERMINATE;
         }
