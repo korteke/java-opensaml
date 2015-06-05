@@ -41,6 +41,7 @@ import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.X509Data;
@@ -54,10 +55,14 @@ import org.slf4j.LoggerFactory;
  * A subject confirmation is considered confirmed if one of the
  * following checks has passed:
  * <ul>
- * <li>the presenter's public key (either given explicitly or extracted from the given certificate) matches a
- * {@link KeyValue} within one of the {@link KeyInfo} entries in the confirmation data</li>
- * <li>the presenter's public cert matches an {@link org.opensaml.xml.signature.X509Certificate} within one of the
- * {@link KeyInfo} entries in the confirmation data</li>
+ * <li>
+ * the presenter's public key (either given explicitly or extracted from the given certificate) matches a
+ * {@link KeyValue} or {@link DEREncodedKeyValue} within one of the {@link KeyInfo} entries in the confirmation data
+ * </li>
+ * <li>
+ * the presenter's public cert matches an {@link org.opensaml.xml.signature.X509Certificate} within one of the
+ * {@link KeyInfo} entries in the confirmation data
+ * </li>
  * </ul>
  * In both cases a "match" is determined via Java <code>equals()</code> comparison.
  * </p>
@@ -262,8 +267,17 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
     }
 
     /**
-     * Checks to see if the DSA or RSA key (depending on what is used in the certificate) matches one of the keys in the
-     * given KeyInfo.
+     * Checks whether the supplied public key matches one of the keys in the given KeyInfo.
+     * 
+     * <p>
+     * Evaluates both {@link KeyValue} and {@link DEREncodedKeyValue} children of the KeyInfo.
+     * </p>
+     * 
+     * 
+     * <p>
+     * Matches are performed using Java <code>equals()</code> against {@link PublicKey}s decoded
+     * from the KeyInfo data.
+     * </p>
      * 
      * @param key public key presenter of the assertion
      * @param keyInfo key info from subject confirmation of the assertion
@@ -274,14 +288,43 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      */
     protected boolean matchesKeyValue(@Nullable final PublicKey key, @Nonnull final KeyInfo keyInfo) 
             throws AssertionValidationException {
+        
         if (key == null) {
             log.debug("Presenter PublicKey was null, skipping KeyValue match");
             return false;
         }
+        
+        if (matchesKeyValue(key, keyInfo.getKeyValues())) {
+            return true;
+        }
+        
+        if (matchesDEREncodedKeyValue(key, keyInfo.getDEREncodedKeyValues())) {
+            return true;
+        }
 
-        List<KeyValue> keyValues = keyInfo.getKeyValues();
+        log.debug("Failed to match either a KeyInfo KeyValue or DEREncodedKeyValue against supplied PublicKey param");
+        return false;
+    }
+    
+    /**
+     * Checks whether the supplied public key matches one of the supplied {@link KeyValue} elements.
+     * 
+     * <p>
+     * Matches are performed using Java <code>equals()</code> against {@link PublicKey}s decoded
+     * from the KeyInfo data.
+     * </p>
+     * 
+     * @param key public key presenter of the assertion
+     * @param keyValues candidate KeyValue elements
+     * 
+     * @return true if the public key in the certificate matches one of the key values, false otherwise
+     * 
+     * @throws AssertionValidationException thrown if there is a problem matching the key value
+     */
+    protected boolean matchesKeyValue(@Nonnull final PublicKey key, @Nullable final List<KeyValue> keyValues)  {
+        
         if (keyValues == null || keyValues.isEmpty()) {
-            log.debug("KeyInfo contained no KeyValue children, skipping KeyValue match");
+            log.debug("KeyInfo contained no KeyValue children");
             return false;
         }
         
@@ -298,14 +341,63 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
                 log.warn("KeyInfo contained KeyValue that can not be parsed", e);
             }
         }
-
-        log.debug("Failed to match a KeyInfo KeyValue against supplied PublicKey param");
+        
+        log.debug("Failed to match any KeyValue");
+        return false;
+    }
+    
+    
+    /**
+     * Checks whether the supplied public key matches one of the supplied {@link DEREncodedKeyValue} elements.
+     * 
+     * <p>
+     * Matches are performed using Java <code>equals()</code> against {@link PublicKey}s decoded
+     * from the KeyInfo data.
+     * </p>
+     * 
+     * @param key public key presenter of the assertion
+     * @param derEncodedKeyValues candidate DEREncodedKeyValue elements
+     * 
+     * @return true if the public key in the certificate matches one of the DER-encoded key values, false otherwise
+     * 
+     * @throws AssertionValidationException thrown if there is a problem matching the key value
+     */
+    protected boolean matchesDEREncodedKeyValue(@Nonnull final PublicKey key, 
+            @Nullable final List<DEREncodedKeyValue> derEncodedKeyValues)  {
+        
+        if (derEncodedKeyValues == null || derEncodedKeyValues.isEmpty()) {
+            log.debug("KeyInfo contained no DEREncodedKeyValue children");
+            return false;
+        }
+        
+        log.debug("Attempting to match KeyInfo DEREncodedKeyValue to supplied PublicKey param of type: {}", 
+                key.getAlgorithm());
+        
+        for (DEREncodedKeyValue derEncodedKeyValue : derEncodedKeyValues) {
+            try {
+                PublicKey kiPublicKey = KeyInfoSupport.getKey(derEncodedKeyValue);
+                if (Objects.equals(key, kiPublicKey)) {
+                    log.debug("Matched DEREncodedKeyValue PublicKey");
+                    return true;
+                }
+            } catch (KeyException e) {
+                log.warn("KeyInfo contained DEREncodedKeyValue that can not be parsed", e);
+            }
+        }
+        
+        log.debug("Failed to match any DEREncodedKeyValue");
         return false;
     }
 
     /**
-     * Checks to see if the presenter's certificate matches a certificate described by the X509Data within the KeyInfo.
-     * Matches are performed via a byte-level comparison.
+     * Checks whether the presenter's certificate matches a certificate described by the X509Data within the KeyInfo.
+     * 
+     * 
+     * 
+     * <p>
+     * Matches are performed using Java <code>equals()</code> against {@link X509Certificate}s decoded
+     * from the KeyInfo data.
+     * </p>
      * 
      * @param cert certificate of the presenter of the assertion
      * @param keyInfo key info from subject confirmation of the assertion
