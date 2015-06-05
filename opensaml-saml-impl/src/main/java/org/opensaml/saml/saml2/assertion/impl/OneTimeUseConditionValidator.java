@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
-import java.security.PublicKey;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
