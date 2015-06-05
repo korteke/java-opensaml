@@ -27,10 +27,13 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.core.criterion.EntityIdCriterion;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
@@ -50,6 +53,7 @@ import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 
 /** A validator used to evaluate version 2.0 {@link Assertion}s. */
 public class SAML20AssertionValidator {
@@ -180,9 +184,20 @@ public class SAML20AssertionValidator {
         return clockSkew;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Validate the supplied SAML 2 {@link Assertion}, using the parameters from the supplied {@link ValidationContext}.
+     * 
+     * @param assertion the assertion being evaluated
+     * @param context the current validation context
+     * 
+     * @return the validation result
+     * 
+     * @throws AssertionValidationException if there is a fatal error evaluating the validity of the assertion
+     */
     @Nonnull public ValidationResult validate(@Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
+        
+        log(assertion, context);
         
         ValidationResult result = validateVersion(assertion, context);
         if (result != ValidationResult.VALID) {
@@ -205,6 +220,25 @@ public class SAML20AssertionValidator {
         }
 
         return validateStatements(assertion, context);
+    }
+
+    /**
+     * Log the Assertion which is being validated, along with the supplied validation context parameters.
+     * 
+     * @param assertion the SAML 2 Assertion being validated
+     * @param context 
+     */
+    protected void log(@Nonnull final Assertion assertion, @Nonnull final ValidationContext context) {
+        if (log.isDebugEnabled()) {
+            try {
+                final Element dom = XMLObjectSupport.marshall(assertion);
+                log.debug("SAML 2 Assertion being validated:\n{}", SerializeSupport.prettyPrintXML(dom));
+            } catch (final MarshallingException e) {
+                log.error("Unable to marshall SAML 2 Assertion for logging purposes", e);
+            }
+            log.debug("SAML 2 Assertion ValidationContext - static parameters: {}", context.getStaticParameters());
+            log.debug("SAML 2 Assertion ValidationContext - dynamic parameters: {}", context.getDynamicParameters());
+        }
     }
 
     /**
@@ -471,13 +505,17 @@ public class SAML20AssertionValidator {
         
         Subject assertionSubject = assertion.getSubject();
         if (assertionSubject == null) {
+            log.debug("Assertion contains no Subject, skipping subject confirmation");
             return ValidationResult.VALID;
         }
 
         List<SubjectConfirmation> confirmations = assertionSubject.getSubjectConfirmations();
         if (confirmations == null || confirmations.isEmpty()) {
+            log.debug("Assertion contains no SubjectConfirmations, skipping subject confirmation");
             return ValidationResult.VALID;
         }
+        
+        log.debug("Assertion contains at least 1 SubjectConfirmation, proceeding with subject confirmation");
 
         for (SubjectConfirmation confirmation : confirmations) {
             SubjectConfirmationValidator validator = subjectConfirmationValidators.get(confirmation.getMethod());

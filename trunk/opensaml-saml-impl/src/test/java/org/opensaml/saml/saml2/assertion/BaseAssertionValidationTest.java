@@ -61,6 +61,7 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUpBasicAssertion() {
         assertion = SAML2ActionTestingSupport.buildAssertion();
+        assertion.setIssueInstant(new DateTime());
         assertion.setIssuer(SAML2ActionTestingSupport.buildIssuer(ISSUER));
         assertion.setSubject(SAML2ActionTestingSupport.buildSubject(PRINCIPAL_NAME));
         assertion.setConditions(buildBasicConditions());
