@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
-import java.io.File;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -34,7 +33,6 @@ import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
 import org.opensaml.saml.saml2.core.KeyInfoConfirmationDataType;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
-import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.testng.Assert;

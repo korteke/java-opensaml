@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
+import java.util.Map;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -108,7 +110,7 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
     }
 
     @Test
-    public void testReplayWithExpiration() throws AssertionValidationException, InterruptedException {
+    public void testReplayWithGlobalExpiration() throws AssertionValidationException, InterruptedException {
         // Set validator expiration to 500ms.
         validator = new OneTimeUseConditionValidator(replayCache, 500L);
         
@@ -127,6 +129,49 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
         
         Assert.assertEquals(validator.validate(condition, assertion, validationContext), 
                 ValidationResult.VALID);
+    }
+    
+    @Test
+    public void testReplayWithExpirationParam() throws AssertionValidationException, InterruptedException {
+        Assertion assertion = getAssertion();
+        Assert.assertNotNull(StringSupport.trimOrNull(assertion.getID()));
+        
+        Map<String, Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(OneTimeUseConditionValidator.ONE_TIME_USE_EXPIRES_PARAM, 500L);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(condition, assertion, validationContext), 
+                ValidationResult.VALID);
+        
+        // Sleep past the expiration
+        Thread.sleep(1000);
+        
+        validationContext = new ValidationContext(buildBasicStaticParameters());
+        
+        Assert.assertEquals(validator.validate(condition, assertion, validationContext), 
+                ValidationResult.VALID);
+    }
+    
+    @Test
+    public void testInvalidExpirationParam() throws AssertionValidationException, InterruptedException {
+        Assertion assertion = getAssertion();
+        Assert.assertNotNull(StringSupport.trimOrNull(assertion.getID()));
+        
+        Map<String, Object> staticParams = buildBasicStaticParameters();
+        // This value is not a Long and so will be effectively ignored
+        staticParams.put(OneTimeUseConditionValidator.ONE_TIME_USE_EXPIRES_PARAM, "500");
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(condition, assertion, validationContext), 
+                ValidationResult.VALID);
+        
+        Thread.sleep(1000);
+        
+        validationContext = new ValidationContext(buildBasicStaticParameters());
+        
+        // Invalid b/c the param was ignored and so global expiration in effect
+        Assert.assertEquals(validator.validate(condition, assertion, validationContext), 
+                ValidationResult.INVALID);
     }
     
     @Test 
