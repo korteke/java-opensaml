@@ -30,9 +30,9 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 import org.opensaml.saml.saml2.ecp.Response;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -66,7 +66,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertTrue(headers.isEmpty());
     }
@@ -90,7 +90,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((ChannelBindings) headers.get(0)).getType(), "foo");

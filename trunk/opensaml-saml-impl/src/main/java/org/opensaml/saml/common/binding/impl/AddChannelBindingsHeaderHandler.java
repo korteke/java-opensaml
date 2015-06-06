@@ -31,6 +31,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
@@ -101,7 +102,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
             SOAPSupport.addSOAP11MustUnderstandAttribute(header, true);
             SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
             try {
-                SOAPSupport.addHeaderBlock(messageContext, header);
+                SOAPMessagingSupport.addHeaderBlock(messageContext, header);
             } catch (final Exception e) {
                 throw new MessageHandlerException(e);
             }

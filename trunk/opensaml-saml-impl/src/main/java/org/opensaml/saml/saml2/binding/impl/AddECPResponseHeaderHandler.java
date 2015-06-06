@@ -30,6 +30,7 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.saml2.ecp.Response;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
@@ -78,7 +79,7 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
         SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
         
         try {
-            SOAPSupport.addHeaderBlock(messageContext, header);
+            SOAPMessagingSupport.addHeaderBlock(messageContext, header);
         } catch (final Exception e) {
             throw new MessageHandlerException(e);
         }

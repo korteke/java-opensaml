@@ -31,9 +31,9 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.ActorBearing;
-import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +85,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
         
         final Collection<ChannelBindings> channelBindings = new ArrayList<>();
         
-        final List<XMLObject> headers = SOAPSupport.getInboundHeaderBlock(messageContext,
+        final List<XMLObject> headers = SOAPMessagingSupport.getInboundHeaderBlock(messageContext,
                 ChannelBindings.DEFAULT_ELEMENT_NAME, null, finalDestination);
         for (final XMLObject header : headers) {
             if (header instanceof ChannelBindings) {

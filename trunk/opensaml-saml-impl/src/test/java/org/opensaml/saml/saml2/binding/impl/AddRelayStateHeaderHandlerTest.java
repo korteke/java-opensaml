@@ -28,6 +28,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.saml2.ecp.RelayState;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.util.SOAPSupport;
@@ -54,7 +55,7 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertTrue(headers.isEmpty());
     }
@@ -80,7 +81,7 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((RelayState) headers.get(0)).getValue(), "foo");

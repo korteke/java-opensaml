@@ -32,9 +32,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ECPContext;
 import org.opensaml.saml.ext.samlec.GeneratedKey;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -58,14 +58,14 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
         
         messageCtx.getSubcontext(ECPContext.class, true);
         
         handler.invoke(messageCtx);
         
-        headers = SOAPSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
+        headers = SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
     }
     
@@ -95,7 +95,7 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((XSBase64Binary) headers.get(0)).getValue(), Base64Support.encode(key, false));
     }

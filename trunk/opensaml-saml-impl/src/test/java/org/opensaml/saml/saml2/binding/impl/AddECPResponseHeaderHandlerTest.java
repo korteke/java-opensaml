@@ -33,9 +33,9 @@ import org.opensaml.saml.saml2.ecp.Response;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -53,7 +53,7 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertTrue(headers.isEmpty());
     }
@@ -99,7 +99,7 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((Response) headers.get(0)).getAssertionConsumerServiceURL(), "foo");
