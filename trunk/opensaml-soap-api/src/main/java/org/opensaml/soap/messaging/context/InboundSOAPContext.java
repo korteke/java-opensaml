@@ -36,7 +36,7 @@ public class InboundSOAPContext extends BaseContext {
     
     /** Flag indicating whether the node is the final destination for the current 
      * message processing context. Defaults to: true*/
-    private boolean finalDestination = true;
+    private boolean finalDestination;
     
     /** The set of headers that have been understood. */
     private LazySet<XMLObject> understoodHeaders;
@@ -46,10 +46,12 @@ public class InboundSOAPContext extends BaseContext {
         super();
         nodeActors = new LazySet<String>();
         understoodHeaders = new LazySet<XMLObject>();
+        finalDestination = true;
     }
     
     /** 
      * Get the (modifiable) set of actor URI's under which this SOAP node is operating.
+     * 
      * @return the set of node actor URI's
      * */
     @Nonnull public Set<String> getNodeActors() {
@@ -58,6 +60,7 @@ public class InboundSOAPContext extends BaseContext {
     
     /** 
      * Get the (modifiable) set of headers which have been understood.
+     * 
      * @return the set of node actor URI's
      * */
     @Nonnull public Set<XMLObject> getUnderstoodHeaders() {
@@ -67,6 +70,11 @@ public class InboundSOAPContext extends BaseContext {
     /**
      * Get the flag indicating whether the node is the final destination for the current 
      * message processing context.
+     * 
+     * <p>
+     * Defaults to: true.
+     * </p>
+     * 
      * @return true if is the final destination, false otherwise
      * 
      */
@@ -77,6 +85,11 @@ public class InboundSOAPContext extends BaseContext {
     /**
      * Set the flag indicating whether the node is the final destination for the current 
      * message processing context.
+     * 
+     * <p>
+     * Defaults to: true.
+     * </p>
+     * 
      * @param newValue the new flag value
      * 
      */
