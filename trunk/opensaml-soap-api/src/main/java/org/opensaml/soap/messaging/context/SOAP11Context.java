@@ -27,8 +27,6 @@ import org.opensaml.soap.soap11.Envelope;
  */
 public class SOAP11Context extends BaseContext {
     
-    //TODO handle storage for understood headers here also?
-
     /** The SAML protocol in use. */
     private Envelope envelope;
     
