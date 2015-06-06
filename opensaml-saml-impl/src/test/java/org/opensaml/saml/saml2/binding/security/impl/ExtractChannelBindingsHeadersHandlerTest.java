@@ -25,9 +25,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
-import org.opensaml.saml.saml2.binding.security.impl.ExtractChannelBindingsHeadersHandler;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.Envelope;
@@ -81,13 +81,13 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setValue("foo");
         SOAPSupport.addSOAP11ActorAttribute(cb, ActorBearing.SOAP11_ACTOR_NEXT);
-        SOAPSupport.addHeaderBlock(messageCtx, cb);
+        SOAPMessagingSupport.addHeaderBlock(messageCtx, cb);
 
         final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
         SOAPSupport.addSOAP11ActorAttribute(cb2, ActorBearing.SOAP11_ACTOR_NEXT);
-        SOAPSupport.addHeaderBlock(messageCtx, cb2);
+        SOAPMessagingSupport.addHeaderBlock(messageCtx, cb2);
 
         final ExtractChannelBindingsHeadersHandler handler = new ExtractChannelBindingsHeadersHandler();
         handler.initialize();
@@ -116,12 +116,12 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setValue("foo");
         SOAPSupport.addSOAP11ActorAttribute(cb, ActorBearing.SOAP11_ACTOR_NEXT);
-        SOAPSupport.addHeaderBlock(messageCtx, cb);
+        SOAPMessagingSupport.addHeaderBlock(messageCtx, cb);
 
         final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
-        SOAPSupport.addHeaderBlock(messageCtx, cb2);
+        SOAPMessagingSupport.addHeaderBlock(messageCtx, cb2);
 
         final ExtractChannelBindingsHeadersHandler handler = new ExtractChannelBindingsHeadersHandler();
         handler.setNextDestination(false);

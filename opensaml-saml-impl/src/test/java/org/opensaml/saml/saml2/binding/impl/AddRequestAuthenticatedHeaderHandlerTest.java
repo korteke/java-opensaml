@@ -28,9 +28,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.ECPContext;
 import org.opensaml.saml.saml2.ecp.RequestAuthenticated;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -47,14 +47,14 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         handler.invoke(messageCtx);
         
         List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
         
         messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(false);
         
         handler.invoke(messageCtx);
         
-        headers = SOAPSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
+        headers = SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
     }
     
@@ -85,7 +85,7 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertEquals(headers.size(), 1);
     }
     

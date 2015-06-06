@@ -27,6 +27,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.saml2.ecp.RelayState;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 
@@ -70,7 +71,7 @@ public class AddRelayStateHeaderHandler extends AbstractMessageHandler {
         SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
         
         try {
-            SOAPSupport.addHeaderBlock(messageContext, header);
+            SOAPMessagingSupport.addHeaderBlock(messageContext, header);
         } catch (final Exception e) {
             throw new MessageHandlerException(e);
         }
