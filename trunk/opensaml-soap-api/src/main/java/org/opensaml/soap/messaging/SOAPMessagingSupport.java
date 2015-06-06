@@ -53,9 +53,9 @@ public final class SOAPMessagingSupport {
      * 
      * @return the current inbound SOAP context. May be null if autoCreate=false, otherwise will be non-null
      */
-    @Nullable public static InboundSOAPContext getInboundSOAPContext(@Nonnull final MessageContext messageContext) {
+    @Nonnull public static InboundSOAPContext getInboundSOAPContext(@Nonnull final MessageContext messageContext) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
-        return messageContext.getSubcontext(InboundSOAPContext.class);
+        return messageContext.getSubcontext(InboundSOAPContext.class, true);
     }
 
     /**
