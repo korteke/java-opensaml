@@ -55,7 +55,7 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertTrue(headers.isEmpty());
     }
@@ -81,7 +81,7 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, RelayState.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((RelayState) headers.get(0)).getValue(), "foo");
