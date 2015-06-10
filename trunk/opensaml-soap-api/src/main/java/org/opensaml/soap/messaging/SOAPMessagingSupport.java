@@ -109,14 +109,13 @@ public final class SOAPMessagingSupport {
     public static boolean isSOAPMessage(@Nonnull final MessageContext<? extends XMLObject> messageContext) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        XMLObject inboundMessage = messageContext.getMessage();
-        if (inboundMessage == null) {
-            return false;
-        }
+        final SOAP11Context soap11 = getSOAP11Context(messageContext, false);
+        
         // SOAP 1.1 Envelope
-        if (inboundMessage instanceof Envelope) {
+        if (soap11 != null && soap11.getEnvelope() != null) {
             return true;
         }
+        
         //TODO SOAP 1.2 support when object providers are implemented
         return false;
     }
