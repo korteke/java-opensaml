@@ -29,7 +29,6 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wsaddressing.Action;
-import org.opensaml.soap.wsaddressing.WSAddressingObjectBuilder;
 import org.opensaml.soap.wsaddressing.messaging.context.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,17 +47,8 @@ public class AddActionHandler extends AbstractMessageHandler {
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AddActionHandler.class);
     
-    /** Builder of Action object. */
-    private WSAddressingObjectBuilder<Action> actionBuilder;
-    
     /** The Action URI value. */
     private String actionURI;
-    
-    /** Constructor. */
-    @SuppressWarnings("unchecked")
-    public AddActionHandler() {
-        actionBuilder = (WSAddressingObjectBuilder<Action>) XMLObjectSupport.getBuilder(Action.ELEMENT_NAME);
-    }
     
     /**
      * Get the Action URI.
@@ -97,7 +87,8 @@ public class AddActionHandler extends AbstractMessageHandler {
 
     /** {@inheritDoc} */
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        Action action = actionBuilder.buildObject();
+        log.debug("Issuing WS-Addressing Action header with URI value: {}", getActionURI());
+        Action action = (Action) XMLObjectSupport.buildXMLObject(Action.ELEMENT_NAME);
         action.setValue(getActionURI());
         SOAPMessagingSupport.addHeaderBlock(messageContext, action);
     }
