@@ -47,14 +47,14 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         handler.invoke(messageCtx);
         
         List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
         
         messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(false);
         
         handler.invoke(messageCtx);
         
-        headers = SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
+        headers = SOAPMessagingSupport.getHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
     }
     
@@ -85,7 +85,7 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertEquals(headers.size(), 1);
     }
     

@@ -85,7 +85,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
         
         final Collection<ChannelBindings> channelBindings = new ArrayList<>();
         
-        final List<XMLObject> headers = SOAPMessagingSupport.getInboundHeaderBlock(messageContext,
+        final List<XMLObject> headers = SOAPMessagingSupport.getHeaderBlock(messageContext,
                 ChannelBindings.DEFAULT_ELEMENT_NAME, null, finalDestination);
         for (final XMLObject header : headers) {
             if (header instanceof ChannelBindings) {

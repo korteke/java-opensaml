@@ -66,7 +66,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertTrue(headers.isEmpty());
     }
@@ -90,7 +90,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, ChannelBindings.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((ChannelBindings) headers.get(0)).getType(), "foo");

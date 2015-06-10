@@ -135,8 +135,23 @@ public final class SOAPMessagingSupport {
             
         final InboundSOAPContext inboundContext = getInboundSOAPContext(messageContext);
         
-        return getInboundHeaderBlock(messageContext, headerName, 
+        return getHeaderBlock(messageContext, headerName, 
                 inboundContext.getNodeActors(), inboundContext.isFinalDestination());
+    }
+    
+    /**
+     * Get a header block from the SOAP envelope contained within the specified message context's
+     * SOAP subcontext.
+     * 
+     * @param messageContext the message context being processed
+     * @param headerName the name of the header block to return 
+     * 
+     * @return the list of matching header blocks
+     */
+    @Nonnull public static List<XMLObject> getOutboundHeaderBlock(
+            @Nonnull final MessageContext<? extends XMLObject> messageContext, @Nonnull final QName headerName) {
+            
+        return getHeaderBlock(messageContext, headerName, null, true);
     }
     
     /**
@@ -151,7 +166,7 @@ public final class SOAPMessagingSupport {
      *          
      * @return the list of matching header blocks
      */
-    @Nonnull public static List<XMLObject> getInboundHeaderBlock(
+    @Nonnull public static List<XMLObject> getHeaderBlock(
             @Nonnull final MessageContext messageContext, @Nonnull final QName headerName,
             @Nullable Set<String> targetNodes, boolean isFinalDestination) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");

@@ -58,14 +58,14 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
         
         messageCtx.getSubcontext(ECPContext.class, true);
         
         handler.invoke(messageCtx);
         
-        headers = SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
+        headers = SOAPMessagingSupport.getHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
     }
     
@@ -95,7 +95,7 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((XSBase64Binary) headers.get(0)).getValue(), Base64Support.encode(key, false));
     }

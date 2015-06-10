@@ -438,7 +438,7 @@ public final class SOAPSupport {
     @Nonnull public static List<XMLObject> getInboundHeaderBlock(
             @Nonnull final MessageContext messageContext, @Nonnull final QName headerName,
             @Nullable Set<String> targetNodes, boolean isFinalDestination) {
-        return SOAPMessagingSupport.getInboundHeaderBlock(messageContext, headerName);
+        return SOAPMessagingSupport.getHeaderBlock(messageContext, headerName, targetNodes, isFinalDestination);
     }
 
     /**

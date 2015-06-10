@@ -53,7 +53,7 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertTrue(headers.isEmpty());
     }
@@ -99,7 +99,7 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
         
         final List<XMLObject> headers =
-                SOAPMessagingSupport.getInboundHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
+                SOAPMessagingSupport.getHeaderBlock(messageCtx, Response.DEFAULT_ELEMENT_NAME, null, true);
         
         Assert.assertEquals(headers.size(), 1);
         Assert.assertEquals(((Response) headers.get(0)).getAssertionConsumerServiceURL(), "foo");
