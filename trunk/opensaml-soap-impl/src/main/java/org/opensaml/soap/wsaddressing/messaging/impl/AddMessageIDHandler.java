@@ -31,7 +31,6 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wsaddressing.MessageID;
-import org.opensaml.soap.wsaddressing.WSAddressingObjectBuilder;
 import org.opensaml.soap.wsaddressing.messaging.context.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,17 +50,8 @@ public class AddMessageIDHandler extends AbstractMessageHandler {
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AddMessageIDHandler.class);
     
-    /** Builder of Action object. */
-    private WSAddressingObjectBuilder<MessageID> messageIDBuilder;
-    
     /** Strategy for generating identifiers. */
     private IdentifierGenerationStrategy identifierGenerationStrategy;
-    
-    /** Constructor. */
-    @SuppressWarnings("unchecked")
-    public AddMessageIDHandler() {
-        messageIDBuilder = (WSAddressingObjectBuilder<MessageID>) XMLObjectSupport.getBuilder(MessageID.ELEMENT_NAME);
-    }
     
     /**
      * Get the identifier generation strategy.
@@ -87,7 +77,7 @@ public class AddMessageIDHandler extends AbstractMessageHandler {
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         String id = getMessageID(messageContext);
         log.debug("Issuing WS-Addressing MessageID: {}", id);
-        MessageID messageID = messageIDBuilder.buildObject();
+        MessageID messageID = (MessageID) XMLObjectSupport.buildXMLObject(MessageID.ELEMENT_NAME);
         messageID.setValue(id);
         SOAPMessagingSupport.addHeaderBlock(messageContext, messageID);
     }
