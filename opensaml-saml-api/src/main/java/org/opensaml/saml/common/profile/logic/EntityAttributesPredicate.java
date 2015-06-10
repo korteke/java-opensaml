@@ -68,6 +68,9 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     /** Whether to trim the values in the metadata before comparison. */
     private final boolean trimTags;
     
+    /** Whether all the candidates must match. */
+    private final boolean matchAll;
+    
     /** Candidates to check for. */
     @Nonnull @NonnullElements private final Collection<Candidate> candidateSet;
     
@@ -85,7 +88,26 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         candidateSet = new ArrayList<>(Collections2.filter(candidates, Predicates.notNull()));
         
         trimTags = trim;
+        matchAll = false;
     }
+    
+    /**
+     * Constructor.
+     * 
+     * @param candidates the {@link Candidate} criteria to check for
+     * @param trim true iff the values found in the metadata should be trimmed before comparison
+     * @param all true iff all the criteria must match to be a successful test
+     */
+    public EntityAttributesPredicate(@Nonnull @NonnullElements final Collection<Candidate> candidates,
+            final boolean trim, final boolean all) {
+        
+        Constraint.isNotNull(candidates, "Attribute collection cannot be null");
+        
+        candidateSet = new ArrayList<>(Collections2.filter(candidates, Predicates.notNull()));
+        
+        trimTags = trim;
+        matchAll = all;
+    }    
     
     /**
      * Get whether to trim tags for comparison.
@@ -149,8 +171,13 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         
         // If we find a matching tag, we win. Each tag is treated in OR fashion.
         final EntityAttributesMatcher matcher = new EntityAttributesMatcher(entityAttributes);
-        if (Iterables.tryFind(candidateSet, matcher).isPresent()) {
-            return true;
+        
+        if (matchAll) {
+            return Iterables.all(candidateSet, matcher);
+        } else {
+            if (Iterables.tryFind(candidateSet, matcher).isPresent()) {
+                return true;
+            }
         }
 
         return false;
