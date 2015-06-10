@@ -34,6 +34,12 @@ public class WSAddressingContext extends BaseContext {
     /** The MessageID URI value. */
     private String messageIDURI;
     
+    /** The RelatesTo URI value. */
+    private String relatesToURI;
+    
+    /** The RelatesTo RelationshipType attribute value. */
+    private String relatesToRelationshipType;
+    
     /**
      * Get the Action URI value.
      * 
@@ -68,6 +74,42 @@ public class WSAddressingContext extends BaseContext {
      */
     public void setMessageIDURI(String uri) {
         messageIDURI = StringSupport.trimOrNull(uri);
+    }
+
+    /**
+     * Get the RelatesTo URI value.
+     * 
+     * @return the RelatesTo URI
+     */
+    public String getRelatesToURI() {
+        return relatesToURI;
+    }
+
+    /**
+     * Set the RelatesTo URI value.
+     * 
+     * @param uri the RelatesTo URI value
+     */
+    public void setRelatesToURI(String uri) {
+        relatesToURI = StringSupport.trimOrNull(uri);
+    }
+
+    /**
+     * Get the RelatesTo RelationshipType attribute value.
+     * 
+     * @return the RelatesTo RelationshipType attribute value
+     */
+    public String getRelatesToRelationshipType() {
+        return relatesToRelationshipType;
+    }
+
+    /**
+     * Get the RelatesTo RelationshipType attribute value.
+     * 
+     * @param value the RelatesTo RelationshipType attribute value
+     */
+    public void setRelatesToRelationshipType(String value) {
+        relatesToRelationshipType = StringSupport.trimOrNull(value);
     }
 
 }
