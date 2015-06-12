@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -65,6 +66,7 @@ import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 
 /**
@@ -86,6 +88,9 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     /** The SAML 2.0 Assertion validator.*/
     private SAML20AssertionValidator assertionValidator;
     
+    /** A function for resolving the signature validation CriteriaSet for a particular function. */
+    private Function<Pair<MessageContext, Assertion>, CriteriaSet> signatureCriteriaSetFunction;
+    
     
     /** Constructor. */
     public WSSecuritySAML20AssertionTokenSecurityHandler() {
@@ -93,6 +98,27 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         setInvalidFatal(true);
     }
     
+    /**
+     * Get the function for resolving the signature validation CriteriaSet for a particular function.
+     * 
+     * @return a criteria set instance, or null
+     */
+    @Nullable public Function<Pair<MessageContext, Assertion>, CriteriaSet> getSignatureCriteriaSetFunction() {
+        return signatureCriteriaSetFunction;
+    }
+
+    /**
+     * Set the function for resolving the signature validation CriteriaSet for a particular function.
+     * 
+     * @param function the resolving function, may be null
+     */
+    public void setSignatureCriteriaSetFunction(
+            @Nullable final Function<Pair<MessageContext, Assertion>, CriteriaSet> function) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        signatureCriteriaSetFunction = function;
+    }
+
     /**
      * Get the HTTP servlet request being processed.
      * 
@@ -193,12 +219,17 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         
         WSSecurityContext wsContext = messageContext.getSubcontext(WSSecurityContext.class, true);
         
+        SAML20AssertionValidator tokenValidator = getTokenValidator(messageContext);
+        if (tokenValidator == null) {
+            log.warn("No SAML20AssertionValidator was available, terminating");
+            throw new MessageHandlerException("No SAML20AssertionValidator was available");
+        }
+        
         for (Assertion assertion : assertions) {
             ValidationContext validationContext = buildValidationContext(messageContext, assertion);
             
             SAML20AssertionToken token = new SAML20AssertionToken(assertion);
             
-            SAML20AssertionValidator tokenValidator = getTokenValidator(messageContext);
             try { 
                 ValidationResult validationResult = tokenValidator.validate(assertion, validationContext);
                 processResult(validationContext, validationResult, token, messageContext);
@@ -288,7 +319,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * 
      * @return the token validator
      */
-    @Nonnull protected SAML20AssertionValidator getTokenValidator(@Nonnull final MessageContext messageContext) {
+    @Nullable protected SAML20AssertionValidator getTokenValidator(@Nonnull final MessageContext messageContext) {
         //TODO support resolution from context, etc.
         return assertionValidator;
     }
@@ -383,16 +414,13 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             @Nonnull final Assertion assertion) {
         CriteriaSet criteriaSet = new CriteriaSet();
         
-        //TODO need to be able to add statically-injected criteria?
-        
-        //TODO
-        /*
-        ShibbolethAssertionValidationContext shibAssertionValidationContext = null;
-        
-        if (shibAssertionValidationContext != null) {
-            criteriaSet.addAll(shibAssertionValidationContext.getSignatureValidationCriteriaSet());
+        if (getSignatureCriteriaSetFunction() != null) {
+            CriteriaSet dynamicCriteria = getSignatureCriteriaSetFunction().apply(
+                    new Pair<MessageContext, Assertion>());
+            if (dynamicCriteria != null) {
+                criteriaSet.addAll(dynamicCriteria);
+            }
         }
-        */
         
         if (!criteriaSet.contains(EntityIdCriterion.class)) {
             String issuer = null;
