@@ -103,9 +103,9 @@ public abstract class AbstractWrappedSingletonFactory<Input, Output>
      *              output instances when garbage collection is desired.
      */
     public AbstractWrappedSingletonFactory(boolean requireExplicitRelease) {
-        map = new WeakHashMap<Input, WeakReference<Output>>();
+        map = new WeakHashMap<>();
         explicitRelease = requireExplicitRelease;
-        outputSet = new HashSet<Output>();
+        outputSet = new HashSet<>();
     }
     
     /**
@@ -201,7 +201,7 @@ public abstract class AbstractWrappedSingletonFactory<Input, Output>
      * </p>
      */
     protected synchronized void put(Input input, Output output) {
-        map.put(input, new WeakReference<Output>(output));
+        map.put(input, new WeakReference<>(output));
     }
 
 }

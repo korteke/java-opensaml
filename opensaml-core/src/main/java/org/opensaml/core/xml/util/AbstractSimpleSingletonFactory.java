@@ -48,7 +48,7 @@ public abstract class AbstractSimpleSingletonFactory<Input, Output>
     
     /** Constructor. */
     public AbstractSimpleSingletonFactory() {
-        map = new WeakHashMap<Input, Output>();
+        map = new WeakHashMap<>();
     }
     
     /** {@inheritDoc} */

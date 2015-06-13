@@ -42,7 +42,7 @@ public class XMLObjectChildrenListTest {
     public void testAdd() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
 
-        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
+        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<>(parentObject);
         Assert.assertEquals(objectList.size(), 0,
                 "XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements");
 
@@ -57,7 +57,7 @@ public class XMLObjectChildrenListTest {
         Assert.assertEquals(child1.getParent(), parentObject, "Child 1 did not have the correct parent object");
 
         // Test adding an collection of children
-        List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
+        List<SimpleXMLObject> childList = new LinkedList<>();
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
         SimpleXMLObject child3 = sxoBuilder.buildObject();
@@ -77,7 +77,7 @@ public class XMLObjectChildrenListTest {
     public void testSet() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
 
-        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
+        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<>(parentObject);
         Assert.assertEquals(objectList.size(), 0,
                 "XMLObject list was supposed to be empty but instead had " + objectList.size() + " elements");
 
@@ -112,7 +112,7 @@ public class XMLObjectChildrenListTest {
     @Test
     public void testRemove() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
+        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<>(parentObject);
 
         // Test removing a single element
         SimpleXMLObject child1 = sxoBuilder.buildObject();
@@ -126,7 +126,7 @@ public class XMLObjectChildrenListTest {
         Assert.assertNull(child1.getParent(), "Child 1 parent was not null");
 
         // Test removing an collection of children
-        List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
+        List<SimpleXMLObject> childList = new LinkedList<>();
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         childList.add(child2);
         SimpleXMLObject child3 = sxoBuilder.buildObject();
@@ -149,7 +149,7 @@ public class XMLObjectChildrenListTest {
     @Test
     public void testIterator() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
+        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<>(parentObject);
         SimpleXMLObject child1 = sxoBuilder.buildObject();
         objectList.add(child1);
         SimpleXMLObject child2 = sxoBuilder.buildObject();
@@ -186,9 +186,9 @@ public class XMLObjectChildrenListTest {
     @Test
     public void testClear() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<SimpleXMLObject>(parentObject);
+        XMLObjectChildrenList<SimpleXMLObject> objectList = new XMLObjectChildrenList<>(parentObject);
 
-        List<SimpleXMLObject> childList = new LinkedList<SimpleXMLObject>();
+        List<SimpleXMLObject> childList = new LinkedList<>();
         SimpleXMLObject child1 = sxoBuilder.buildObject();
         childList.add(child1);
         SimpleXMLObject child2 = sxoBuilder.buildObject();

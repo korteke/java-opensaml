@@ -48,7 +48,7 @@ public class IndexedXMLObjectChildrenListTest {
     @Test
     public void testAdd() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<SimpleXMLObject>(
+        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
                 parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
@@ -73,7 +73,7 @@ public class IndexedXMLObjectChildrenListTest {
     public void testSet() {
         SimpleXMLObjectBuilder sxoBuilder = new SimpleXMLObjectBuilder();
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<SimpleXMLObject>(
+        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
                 parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
@@ -94,7 +94,7 @@ public class IndexedXMLObjectChildrenListTest {
     @Test
     public void testRemove() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<SimpleXMLObject>(
+        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
                 parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
@@ -116,7 +116,7 @@ public class IndexedXMLObjectChildrenListTest {
     @Test
     public void testSublist() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
+        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<>(parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
@@ -181,7 +181,7 @@ public class IndexedXMLObjectChildrenListTest {
      */
     public void testSublistIndexOf() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
+        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<>(parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
@@ -198,7 +198,7 @@ public class IndexedXMLObjectChildrenListTest {
      */
     public void testSublistLastIndexOf() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
+        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<>(parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
@@ -215,7 +215,7 @@ public class IndexedXMLObjectChildrenListTest {
     
     public void testSublistClear() {
         SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<XMLObject>(parentObject);
+        IndexedXMLObjectChildrenList<XMLObject> indexedList = new IndexedXMLObjectChildrenList<>(parentObject);
 
         SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);

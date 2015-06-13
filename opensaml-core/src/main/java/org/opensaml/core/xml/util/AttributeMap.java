@@ -78,9 +78,9 @@ public class AttributeMap implements Map<QName, String> {
         Constraint.isNotNull(newOwner, "Attribute owner XMLObject cannot be null");
 
         attributeOwner = newOwner;
-        attributes = new LazyMap<QName, String>();
-        idAttribNames = new LazySet<QName>();
-        qnameAttribNames = new LazySet<QName>();
+        attributes = new LazyMap<>();
+        idAttribNames = new LazySet<>();
+        qnameAttribNames = new LazySet<>();
     }
 
     /** {@inheritDoc} */
@@ -146,7 +146,7 @@ public class AttributeMap implements Map<QName, String> {
 
     /** {@inheritDoc} */
     public void clear() {
-        LazySet<QName> keys = new LazySet<QName>();
+        LazySet<QName> keys = new LazySet<>();
         keys.addAll(attributes.keySet());
         for (QName attributeName : keys) {
             remove(attributeName);

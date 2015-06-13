@@ -75,8 +75,8 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
     public SimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);
         
-        simpleXMLObjects = new XMLObjectChildrenList<SimpleXMLObject>(this);
-        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        simpleXMLObjects = new XMLObjectChildrenList<>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
     
@@ -138,7 +138,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new LinkedList<XMLObject>();
+        List<XMLObject> children = new LinkedList<>();
         
         children.addAll(simpleXMLObjects);
         children.addAll(unknownXMLObjects);

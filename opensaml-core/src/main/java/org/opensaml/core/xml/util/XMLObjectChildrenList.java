@@ -56,7 +56,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         Constraint.isNotNull(newParent, "Parent cannot be null");
 
         parent = newParent;
-        elements = new LazyList<ElementType>();
+        elements = new LazyList<>();
     }
 
     /**
@@ -75,7 +75,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
         Constraint.isNotNull(newElements, "Initial collection cannot be null");
 
         parent = newParent;
-        elements = new LazyList<ElementType>();
+        elements = new LazyList<>();
 
         // This does call our add, which handles the null case properly, but
         // I didn't want to depend on that implementation. Keeping the fail silently
