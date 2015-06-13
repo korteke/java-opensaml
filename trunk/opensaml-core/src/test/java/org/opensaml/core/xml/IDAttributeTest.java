@@ -283,7 +283,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         epChild0.getUnknownAttributes().remove(idName);
         Assert.assertNull(epParent.resolveID("9999"), "Lookup of non-existent ID mapping didn't return null");
         // putAll
-        Map<QName, String> attribs = new HashMap<QName, String>();
+        Map<QName, String> attribs = new HashMap<>();
         attribs.put(idName, "1967");
         epChild0.getUnknownAttributes().putAll(attribs);
         Assert.assertEquals(epParent.resolveID("1967"), epChild0, "Lookup of ID mapping failed");
