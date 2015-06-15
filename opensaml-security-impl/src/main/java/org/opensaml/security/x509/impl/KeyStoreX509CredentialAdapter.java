@@ -96,7 +96,7 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
         try {
             final Certificate[] certs = keyStore.getCertificateChain(credentialAlias);
             if (certs != null) {
-                certsCollection = new ArrayList<X509Certificate>(certs.length);
+                certsCollection = new ArrayList<>(certs.length);
                 for (final Certificate cert : certs) {
                     certsCollection.add((X509Certificate) cert);
                 }

@@ -71,7 +71,7 @@ public class PolicySetTypeImpl extends AbstractXACMLObject implements PolicySetT
      */
     protected PolicySetTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        choiceGroup = new IndexedXMLObjectChildrenList<XACMLObject>(this);
+        choiceGroup = new IndexedXMLObjectChildrenList<>(this);
         version = DEFAULT_VERSION;
     }
 
@@ -92,7 +92,7 @@ public class PolicySetTypeImpl extends AbstractXACMLObject implements PolicySetT
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (description != null) {
             children.add(description);
         }

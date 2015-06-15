@@ -45,7 +45,7 @@ public class ExtensionsImpl extends AbstractSAMLObject implements Extensions {
      */
     protected ExtensionsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /**

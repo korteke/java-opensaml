@@ -50,7 +50,7 @@ public class ActionMatchTypeImpl extends AbstractXACMLObject implements ActionMa
      */
     public ActionMatchTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributeChoice = new IndexedXMLObjectChildrenList<XACMLObject>(this);
+        attributeChoice = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -117,7 +117,7 @@ public class ActionMatchTypeImpl extends AbstractXACMLObject implements ActionMa
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.add(attributeValue);
         if (!attributeChoice.isEmpty()) {
             children.addAll(attributeChoice);

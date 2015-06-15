@@ -225,7 +225,7 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
         credential.setEntityId(entityID);
         credential.setUsageType(usage);
 
-        ArrayList<X509Certificate> certChain = new ArrayList<X509Certificate>();
+        ArrayList<X509Certificate> certChain = new ArrayList<>();
         certChain.add(cert);
         credential.setEntityCertificateChain(certChain);
 

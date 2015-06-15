@@ -93,7 +93,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference 
      */
     public SAMLObjectContentReference(@Nonnull final SignableSAMLObject newSignableObject) {
         signableObject = newSignableObject;
-        transforms = new LazyList<String>();
+        transforms = new LazyList<>();
         
         // Set defaults
         digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA256;
@@ -163,7 +163,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference 
         // be stripped out by exclusive canonicalization. Need to make sure they aren't by explicitly
         // telling the transformer about them.
         log.debug("Adding list of inclusive namespaces for signature exclusive canonicalization transform");
-        LazySet<String> inclusiveNamespacePrefixes = new LazySet<String>();
+        LazySet<String> inclusiveNamespacePrefixes = new LazySet<>();
         populateNamespacePrefixes(inclusiveNamespacePrefixes, signableObject);
         
         if (inclusiveNamespacePrefixes != null && inclusiveNamespacePrefixes.size() > 0) {

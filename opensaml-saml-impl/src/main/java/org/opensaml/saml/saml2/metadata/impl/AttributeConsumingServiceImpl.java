@@ -63,9 +63,9 @@ public class AttributeConsumingServiceImpl extends AbstractSAMLObject implements
      */
     protected AttributeConsumingServiceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        serviceNames = new XMLObjectChildrenList<ServiceName>(this);
-        serviceDescriptions = new XMLObjectChildrenList<ServiceDescription>(this);
-        requestAttributes = new XMLObjectChildrenList<RequestedAttribute>(this);
+        serviceNames = new XMLObjectChildrenList<>(this);
+        serviceDescriptions = new XMLObjectChildrenList<>(this);
+        requestAttributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -126,7 +126,7 @@ public class AttributeConsumingServiceImpl extends AbstractSAMLObject implements
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(serviceNames);
         children.addAll(serviceDescriptions);

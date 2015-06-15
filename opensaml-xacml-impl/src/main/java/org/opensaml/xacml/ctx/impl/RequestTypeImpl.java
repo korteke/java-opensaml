@@ -54,8 +54,8 @@ public class RequestTypeImpl extends AbstractXACMLObject implements RequestType 
      */
     protected RequestTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        subjects = new XMLObjectChildrenList<SubjectType>(this);
-        resources = new XMLObjectChildrenList<ResourceType>(this);
+        subjects = new XMLObjectChildrenList<>(this);
+        resources = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -90,7 +90,7 @@ public class RequestTypeImpl extends AbstractXACMLObject implements RequestType 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(subjects);
         children.addAll(resources);

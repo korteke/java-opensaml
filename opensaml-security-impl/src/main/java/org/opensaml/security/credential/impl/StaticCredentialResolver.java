@@ -52,7 +52,7 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
     public StaticCredentialResolver(@Nonnull final List<Credential> credentials) {
         Constraint.isNotNull(credentials, "Input credentials list cannot be null");
         
-        creds = new ArrayList<Credential>(credentials);
+        creds = new ArrayList<>(credentials);
     }
     
     /**
@@ -63,7 +63,7 @@ public class StaticCredentialResolver extends AbstractCredentialResolver {
     public StaticCredentialResolver(@Nonnull final Credential credential) {
         Constraint.isNotNull(credential, "Input credential cannot be null");
         
-        creds = new ArrayList<Credential>();
+        creds = new ArrayList<>();
         creds.add(credential);
     }
 

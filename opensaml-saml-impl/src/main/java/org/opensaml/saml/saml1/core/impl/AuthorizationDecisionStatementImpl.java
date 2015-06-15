@@ -54,7 +54,7 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
      */
     protected AuthorizationDecisionStatementImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        actions = new XMLObjectChildrenList<Action>(this);
+        actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> list = new ArrayList<XMLObject>(actions.size() + 2);
+        List<XMLObject> list = new ArrayList<>(actions.size() + 2);
 
         if (super.getOrderedChildren() != null) {
             list.addAll(super.getOrderedChildren());

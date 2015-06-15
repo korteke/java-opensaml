@@ -55,8 +55,8 @@ public class RequestImpl extends RequestAbstractTypeImpl implements Request {
      */
     protected RequestImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        assertionIDReferences = new XMLObjectChildrenList<AssertionIDReference>(this);
-        assertionArtifacts = new XMLObjectChildrenList<AssertionArtifact>(this);
+        assertionIDReferences = new XMLObjectChildrenList<>(this);
+        assertionArtifacts = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -102,7 +102,7 @@ public class RequestImpl extends RequestAbstractTypeImpl implements Request {
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
 
-        List<XMLObject> list = new ArrayList<XMLObject>();
+        List<XMLObject> list = new ArrayList<>();
 
         if (super.getOrderedChildren() != null) {
             list.addAll(super.getOrderedChildren());

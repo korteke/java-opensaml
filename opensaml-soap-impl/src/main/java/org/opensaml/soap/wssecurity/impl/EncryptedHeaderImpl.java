@@ -208,7 +208,7 @@ public class EncryptedHeaderImpl extends AbstractWSSecurityObject implements Enc
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        LazyList<XMLObject> children = new LazyList<XMLObject>();
+        LazyList<XMLObject> children = new LazyList<>();
         if (encryptedData != null) {
             children.add(encryptedData);
         }

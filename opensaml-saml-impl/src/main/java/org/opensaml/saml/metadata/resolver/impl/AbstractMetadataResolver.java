@@ -360,7 +360,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
             @Nonnull @NotEmpty final String entityID) {
         List<EntityDescriptor> descriptors = getBackingStore().getIndexedDescriptors().get(entityID);
         if (descriptors != null) {
-            return new ArrayList<EntityDescriptor>(descriptors);
+            return new ArrayList<>(descriptors);
         } else {
             return Collections.emptyList();
         }
@@ -437,7 +437,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         if (entityID != null) {
             List<EntityDescriptor> entities = backingStore.getIndexedDescriptors().get(entityID);
             if (entities == null) {
-                entities = new ArrayList<EntityDescriptor>();
+                entities = new ArrayList<>();
                 backingStore.getIndexedDescriptors().put(entityID, entities);
             } else if (!entities.isEmpty()) {
                 log.warn("Detected duplicate EntityDescriptor for entityID: {}", entityID);

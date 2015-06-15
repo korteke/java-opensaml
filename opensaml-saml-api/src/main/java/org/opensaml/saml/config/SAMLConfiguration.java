@@ -60,7 +60,7 @@ public class SAMLConfiguration {
      *
      */
     public SAMLConfiguration() {
-        ArrayList<String> schemes = new ArrayList<String>();
+        ArrayList<String> schemes = new ArrayList<>();
         schemes.add("http");
         schemes.add("https");
         setAllowedBindingURLSchemes(schemes);
@@ -154,7 +154,7 @@ public class SAMLConfiguration {
         if (schemes == null || schemes.isEmpty()) {
             allowedBindingURLSchemes = Collections.emptyList();
         } else {
-            allowedBindingURLSchemes = new ArrayList<String>(schemes);
+            allowedBindingURLSchemes = new ArrayList<>(schemes);
         }
     }
 }

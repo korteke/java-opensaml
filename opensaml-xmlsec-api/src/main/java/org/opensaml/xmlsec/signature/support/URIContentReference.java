@@ -61,7 +61,7 @@ public class URIContentReference implements ConfigurableContentReference {
      */
     public URIContentReference(@Nullable final String refID) {
         referenceID = refID;
-        transforms = new LinkedList<String>();
+        transforms = new LinkedList<>();
         
         // Set defaults
         digestAlgorithm = SignatureConstants.ALGO_ID_DIGEST_SHA256;

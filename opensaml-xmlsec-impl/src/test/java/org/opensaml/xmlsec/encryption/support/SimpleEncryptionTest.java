@@ -109,7 +109,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         encParams.setAlgorithm(algoURI);
         encParams.setEncryptionCredential(AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI));
         
-        kekParamsList = new ArrayList<KeyEncryptionParameters>();
+        kekParamsList = new ArrayList<>();
         
         kekParamsAES = new KeyEncryptionParameters();
         kekParamsAES.setAlgorithm(kekURIAES);

@@ -45,9 +45,9 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private static final String DATA_PATH = "/data/org/opensaml/security/x509/impl/";
     
-    private static final Set<X509CRL> EMPTY_CRLS = new HashSet<X509CRL>();
+    private static final Set<X509CRL> EMPTY_CRLS = new HashSet<>();
     
-    private static final Set<X509Certificate> EMPTY_ANCHORS = new HashSet<X509Certificate>();
+    private static final Set<X509Certificate> EMPTY_ANCHORS = new HashSet<>();
     
     private static final Integer MAX_DEPTH  = 10;
     
@@ -437,7 +437,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         
         BasicX509Credential cred = new BasicX509Credential(entityCert);
         
-        HashSet<X509Certificate> certChain = new HashSet<X509Certificate>();
+        HashSet<X509Certificate> certChain = new HashSet<>();
         certChain.add(entityCert);
         
         for (String member: chainMembers) {
@@ -467,7 +467,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     }
     
     private Collection<X509Certificate> getCertificates(String ... certNames) {
-        Set<X509Certificate> certs = new HashSet<X509Certificate>();
+        Set<X509Certificate> certs = new HashSet<>();
         for (String certName : certNames) {
            certs.add( getCertificate(certName) );
         }
@@ -487,7 +487,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     }
     
     private Collection<X509CRL> getCRLS(String ... crlNames) {
-        Set<X509CRL> crls = new HashSet<X509CRL>();
+        Set<X509CRL> crls = new HashSet<>();
         for (String crlName : crlNames) {
            crls.add( getCRL(crlName) );
         }

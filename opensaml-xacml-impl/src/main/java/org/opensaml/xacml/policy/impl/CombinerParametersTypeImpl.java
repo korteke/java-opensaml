@@ -43,7 +43,7 @@ public class CombinerParametersTypeImpl extends AbstractXACMLObject implements C
      */
     protected CombinerParametersTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        combinerParameters = new XMLObjectChildrenList<CombinerParameterType>(this);
+        combinerParameters = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
@@ -53,7 +53,7 @@ public class CombinerParametersTypeImpl extends AbstractXACMLObject implements C
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
+        ArrayList<XMLObject> children = new ArrayList<>();        
         
         children.addAll(combinerParameters);
                        

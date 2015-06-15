@@ -167,7 +167,7 @@ public class RequestImpl extends AbstractSAMLObject implements Request {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (issuer!=null) {
             children.add(issuer);
         }

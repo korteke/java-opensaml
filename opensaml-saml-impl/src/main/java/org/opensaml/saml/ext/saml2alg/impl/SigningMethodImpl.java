@@ -56,7 +56,7 @@ public class SigningMethodImpl extends AbstractSAMLObject implements SigningMeth
     public SigningMethodImpl(@Nullable String namespaceURI, @Nonnull String elementLocalName,
             @Nullable String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */

@@ -51,8 +51,8 @@ public class AdviceImpl extends AbstractSAMLObject implements Advice {
      */
     protected AdviceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        assertionChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        assertionChildren = new IndexedXMLObjectChildrenList<>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
@@ -91,7 +91,7 @@ public class AdviceImpl extends AbstractSAMLObject implements Advice {
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(assertionChildren);
         children.addAll(unknownChildren);

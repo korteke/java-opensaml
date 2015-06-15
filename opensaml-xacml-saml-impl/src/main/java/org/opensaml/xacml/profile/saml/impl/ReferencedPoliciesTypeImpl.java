@@ -48,8 +48,8 @@ public class ReferencedPoliciesTypeImpl extends AbstractSAMLObject implements Re
      */
     protected ReferencedPoliciesTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        policies = new XMLObjectChildrenList<PolicyType>(this);
-        policieSets = new XMLObjectChildrenList<PolicySetType>(this); 
+        policies = new XMLObjectChildrenList<>(this);
+        policieSets = new XMLObjectChildrenList<>(this); 
     }
     
     /** {@inheritDoc} */
@@ -64,7 +64,7 @@ public class ReferencedPoliciesTypeImpl extends AbstractSAMLObject implements Re
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if(!policies.isEmpty()) {
             children.addAll(policies);

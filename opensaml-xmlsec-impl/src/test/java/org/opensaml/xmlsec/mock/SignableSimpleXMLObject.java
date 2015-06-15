@@ -83,8 +83,8 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     public SignableSimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);
         
-        simpleXMLObjects = new XMLObjectChildrenList<SignableSimpleXMLObject>(this);
-        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        simpleXMLObjects = new XMLObjectChildrenList<>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
     
@@ -164,7 +164,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new LinkedList<XMLObject>();
+        List<XMLObject> children = new LinkedList<>();
         
         children.addAll(simpleXMLObjects);
         if (encryptedData != null) {

@@ -42,7 +42,7 @@ public class ObligationsTypeImpl extends AbstractXACMLObject implements Obligati
      */
     protected ObligationsTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        obligations = new XMLObjectChildrenList<ObligationType>(this);
+        obligations = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -52,7 +52,7 @@ public class ObligationsTypeImpl extends AbstractXACMLObject implements Obligati
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(obligations);
 

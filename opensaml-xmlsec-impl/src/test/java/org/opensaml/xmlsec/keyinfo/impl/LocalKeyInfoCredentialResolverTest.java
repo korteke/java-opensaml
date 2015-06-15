@@ -65,7 +65,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         localCredResolver = new CollectionCredentialResolver();
         localCredResolver.getCollection().add(localCred);
         
-        ArrayList<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        ArrayList<KeyInfoProvider> providers = new ArrayList<>();
         providers.add( new RSAKeyValueProvider() );
         keyInfoResolver = new LocalKeyInfoCredentialResolver(providers, localCredResolver);
         

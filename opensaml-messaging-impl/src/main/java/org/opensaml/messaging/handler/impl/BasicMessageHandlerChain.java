@@ -72,7 +72,7 @@ public class BasicMessageHandlerChain<MessageType> extends AbstractMessageHandle
      */
     public void setHandlers(@Nullable @NonnullElements final List<MessageHandler<MessageType>> handlers) {
         if (handlers != null) {
-            ArrayList<MessageHandler<MessageType>> newMembers = new ArrayList<MessageHandler<MessageType>>();
+            ArrayList<MessageHandler<MessageType>> newMembers = new ArrayList<>();
             newMembers.addAll(Collections2.filter(handlers, Predicates.notNull()));
             members = newMembers;
         } else {

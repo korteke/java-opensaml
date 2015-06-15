@@ -56,7 +56,7 @@ public class AuthnContextDeclImpl extends AbstractSAMLObject implements AuthnCon
     protected AuthnContextDeclImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
-        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 

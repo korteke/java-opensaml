@@ -89,9 +89,9 @@ public class EntityDescriptorImpl extends AbstractSignableSAMLObject implements 
      */
     protected EntityDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        roleDescriptors = new IndexedXMLObjectChildrenList<RoleDescriptor>(this);
-        contactPersons = new XMLObjectChildrenList<ContactPerson>(this);
-        additionalMetadata = new XMLObjectChildrenList<AdditionalMetadataLocation>(this);
+        roleDescriptors = new IndexedXMLObjectChildrenList<>(this);
+        contactPersons = new XMLObjectChildrenList<>(this);
+        additionalMetadata = new XMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -172,7 +172,7 @@ public class EntityDescriptorImpl extends AbstractSignableSAMLObject implements 
 
     /** {@inheritDoc} */
     public List<RoleDescriptor> getRoleDescriptors(QName type, String supportedProtocol) {
-        ArrayList<RoleDescriptor> supportingRoleDescriptors = new ArrayList<RoleDescriptor>();
+        ArrayList<RoleDescriptor> supportingRoleDescriptors = new ArrayList<>();
         for (RoleDescriptor descriptor : roleDescriptors.subList(type)) {
             if (descriptor.isSupportedProtocol(supportedProtocol)) {
                 supportingRoleDescriptors.add(descriptor);
@@ -278,7 +278,7 @@ public class EntityDescriptorImpl extends AbstractSignableSAMLObject implements 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (getSignature() != null) {
             children.add(getSignature());

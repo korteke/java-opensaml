@@ -52,7 +52,7 @@ public class IDPListImpl extends AbstractSAMLObject implements IDPList {
      */
     protected IDPListImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        idpEntries = new XMLObjectChildrenList<IDPEntry>(this);
+        idpEntries = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -72,7 +72,7 @@ public class IDPListImpl extends AbstractSAMLObject implements IDPList {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(idpEntries);
         children.add(getComplete);
         if (children.size() > 0) {

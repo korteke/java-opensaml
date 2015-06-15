@@ -168,7 +168,7 @@ public final class EvaluableCredentialCriteriaRegistry {
             return;
         }
 
-        registry = new HashMap<Class<? extends Criterion>, Class<? extends EvaluableCredentialCriterion>>();
+        registry = new HashMap<>();
 
         loadDefaultMappings();
 

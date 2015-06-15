@@ -73,7 +73,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        MessageContext<SAMLObject> messageContext = new MessageContext<>();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)

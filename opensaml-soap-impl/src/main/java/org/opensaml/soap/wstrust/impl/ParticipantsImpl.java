@@ -53,8 +53,8 @@ public class ParticipantsImpl extends AbstractWSTrustObject implements Participa
      */
     public ParticipantsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        participants = new ArrayList<Participant>();
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        participants = new ArrayList<>();
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class ParticipantsImpl extends AbstractWSTrustObject implements Participa
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         if (primary != null) {
             children.add(primary);
         }

@@ -43,7 +43,7 @@ public class AttributeStatementImpl extends SubjectStatementImpl implements Attr
      */
     protected AttributeStatementImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = new XMLObjectChildrenList<Attribute>(this);
+        attributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -53,7 +53,7 @@ public class AttributeStatementImpl extends SubjectStatementImpl implements Attr
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> list = new ArrayList<XMLObject>(attributes.size() + 1);
+        List<XMLObject> list = new ArrayList<>(attributes.size() + 1);
 
         if (super.getOrderedChildren() != null) {
             list.addAll(super.getOrderedChildren());

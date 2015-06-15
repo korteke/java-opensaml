@@ -95,7 +95,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         kekParamsRSA.setAlgorithm(kekURIRSA);
         kekParamsRSA.setEncryptionCredential(kekCredRSA);
         
-        kekParamsList = new ArrayList<KeyEncryptionParameters>();
+        kekParamsList = new ArrayList<>();
         
         keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         kekKeyInfoRSA = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);

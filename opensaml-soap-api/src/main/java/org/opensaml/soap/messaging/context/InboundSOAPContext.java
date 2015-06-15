@@ -44,8 +44,8 @@ public class InboundSOAPContext extends BaseContext {
     /** Constructor. */
     public InboundSOAPContext() {
         super();
-        nodeActors = new LazySet<String>();
-        understoodHeaders = new LazySet<XMLObject>();
+        nodeActors = new LazySet<>();
+        understoodHeaders = new LazySet<>();
         finalDestination = true;
     }
     

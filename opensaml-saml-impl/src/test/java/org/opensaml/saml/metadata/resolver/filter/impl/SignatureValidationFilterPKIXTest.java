@@ -151,7 +151,7 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
         
         BasicX509Credential cred = new BasicX509Credential(entityCert, privateKey);
         
-        HashSet<X509Certificate> certChain = new HashSet<X509Certificate>();
+        HashSet<X509Certificate> certChain = new HashSet<>();
         certChain.add(entityCert);
         
         for (String member: chainMembers) {
@@ -176,7 +176,7 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
     }
 
     private Collection<X509Certificate> getCertificates(String ... certNames) {
-        Set<X509Certificate> certs = new HashSet<X509Certificate>();
+        Set<X509Certificate> certs = new HashSet<>();
         for (String certName : certNames) {
            certs.add( getCertificate(certName) );
         }

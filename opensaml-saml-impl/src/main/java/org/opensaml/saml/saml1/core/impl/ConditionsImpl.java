@@ -56,7 +56,7 @@ public class ConditionsImpl extends AbstractSAMLObject implements Conditions {
      */
     protected ConditionsImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        conditions = new IndexedXMLObjectChildrenList<Condition>(this);
+        conditions = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -106,7 +106,7 @@ public class ConditionsImpl extends AbstractSAMLObject implements Conditions {
         if (conditions.size() == 0) {
             return null;
         }
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(conditions);
         return Collections.unmodifiableList(children);
     }

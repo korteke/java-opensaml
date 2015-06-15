@@ -141,7 +141,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
 
         final String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            queryParams.add(new Pair<String, String>("TARGET", relayState));
+            queryParams.add(new Pair<>("TARGET", relayState));
         }
 
         final SAML1ArtifactBuilder artifactBuilder;
@@ -174,7 +174,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
                 throw new MessageEncodingException("Unable to store assertion mapping for artifact", e);
             }
             final String artifactString = artifact.base64Encode();
-            queryParams.add(new Pair<String, String>("SAMLart", artifactString));
+            queryParams.add(new Pair<>("SAMLart", artifactString));
         }
 
         final String encodedEndpoint = urlBuilder.buildURL();

@@ -50,7 +50,7 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder<SAM
 
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
-        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        MessageContext<SAMLObject> messageContext = new MessageContext<>();
         HttpServletRequest request = getHttpServletRequest();
 
         if (!"POST".equalsIgnoreCase(request.getMethod())) {

@@ -65,8 +65,8 @@ public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl imp
     protected XACMLAuthzDecisionQueryTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         setElementNamespacePrefix(namespacePrefix);
-        policies = new XMLObjectChildrenList<PolicyType>(this);
-        policySets = new XMLObjectChildrenList<PolicySetType>(this);
+        policies = new XMLObjectChildrenList<>(this);
+        policySets = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -81,7 +81,7 @@ public class XACMLAuthzDecisionQueryTypeImpl extends RequestAbstractTypeImpl imp
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (super.getOrderedChildren() != null) {
             children.addAll(super.getOrderedChildren());

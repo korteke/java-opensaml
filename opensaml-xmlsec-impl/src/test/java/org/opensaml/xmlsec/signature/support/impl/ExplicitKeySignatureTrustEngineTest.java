@@ -168,7 +168,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
         otherCred1.setEntityId("other-1");
         
-        trustedCredentials = new ArrayList<Credential>();
+        trustedCredentials = new ArrayList<>();
         trustedCredentials.add(otherCred1);
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);

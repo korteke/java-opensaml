@@ -146,7 +146,7 @@ public class ExplicitKeyTrustEngineTest {
         BasicX509Credential otherCred2 = new BasicX509Credential(otherCert2);
         otherCred2.setEntityId("other-2");
         
-        credentials = new ArrayList<Credential>();
+        credentials = new ArrayList<>();
         credentials.add(otherCred1);
         credentials.add(otherCred2);
         

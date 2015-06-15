@@ -42,7 +42,7 @@ public class EnvironmentTypeImpl extends AbstractXACMLObject implements Environm
      */
     protected EnvironmentTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = new XMLObjectChildrenList<AttributeType>(this);
+        attributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -52,7 +52,7 @@ public class EnvironmentTypeImpl extends AbstractXACMLObject implements Environm
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(attributes);
         

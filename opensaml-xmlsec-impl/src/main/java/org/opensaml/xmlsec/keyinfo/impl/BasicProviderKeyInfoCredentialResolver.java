@@ -122,7 +122,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
     public BasicProviderKeyInfoCredentialResolver(@Nonnull final List<KeyInfoProvider> keyInfoProviders) {
         super();
 
-        providers = new ArrayList<KeyInfoProvider>();
+        providers = new ArrayList<>();
         providers.addAll(keyInfoProviders);
     }
 
@@ -152,7 +152,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
         KeyInfo keyInfo = kiCriteria.getKeyInfo();
 
         // This will be the list of credentials to return.
-        List<Credential> credentials = new ArrayList<Credential>();
+        List<Credential> credentials = new ArrayList<>();
 
         KeyInfoResolutionContext kiContext = new KeyInfoResolutionContext(credentials);
 
@@ -197,7 +197,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
         // Store these off so we later use the original values,
         // unmodified by other providers which later run.
         Key keyValueKey = kiContext.getKey();
-        HashSet<String> keyNames = new HashSet<String>();
+        HashSet<String> keyNames = new HashSet<>();
         keyNames.addAll(kiContext.getKeyNames());
 
         // Now process all (non-KeyValue) children

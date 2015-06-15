@@ -60,7 +60,7 @@ public abstract class AbstractCredential implements Credential {
      */
     public AbstractCredential() {
         credentialContextSet = new CredentialContextSet(); 
-        keyNames = new LazySet<String>();
+        keyNames = new LazySet<>();
         setUsageType(UsageType.UNSPECIFIED);
     }
     

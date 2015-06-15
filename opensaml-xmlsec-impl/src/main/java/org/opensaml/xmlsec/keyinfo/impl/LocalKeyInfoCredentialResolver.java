@@ -102,7 +102,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
             @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
                     throws ResolverException {
         
-        ArrayList<Credential> localCreds = new ArrayList<Credential>();
+        ArrayList<Credential> localCreds = new ArrayList<>();
         
         for (Credential cred : credentials) {
             if (isLocalCredential(cred)) {
@@ -143,7 +143,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      */
     @Nonnull protected Collection<? extends Credential> resolveByKeyName(@Nonnull final String keyName)
             throws ResolverException {
-        ArrayList<Credential> localCreds = new ArrayList<Credential>();
+        ArrayList<Credential> localCreds = new ArrayList<>();
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyNameCriterion(keyName) );
         for (Credential cred : getLocalCredentialResolver().resolve(criteriaSet)) {
@@ -166,7 +166,7 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
      */
     @Nonnull protected Collection<? extends Credential> resolveByPublicKey(@Nonnull final PublicKey publicKey)
             throws ResolverException {
-        ArrayList<Credential> localCreds = new ArrayList<Credential>();
+        ArrayList<Credential> localCreds = new ArrayList<>();
         
         CriteriaSet criteriaSet = new CriteriaSet( new PublicKeyCriterion(publicKey) );
         for (Credential cred : getLocalCredentialResolver().resolve(criteriaSet)) {

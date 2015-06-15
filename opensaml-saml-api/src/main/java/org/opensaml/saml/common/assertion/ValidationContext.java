@@ -56,7 +56,7 @@ public class ValidationContext {
         } else {
             staticParameters = Collections.unmodifiableMap(newStaticParameters);
         }
-        dynamicParameters = new LazyMap<String, Object>();
+        dynamicParameters = new LazyMap<>();
     }
 
     /**

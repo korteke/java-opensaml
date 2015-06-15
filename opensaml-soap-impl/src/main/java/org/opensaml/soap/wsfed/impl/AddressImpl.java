@@ -54,6 +54,6 @@ public class AddressImpl extends AbstractXMLObject implements Address {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new ArrayList<XMLObject>();
+        return new ArrayList<>();
     }
 }

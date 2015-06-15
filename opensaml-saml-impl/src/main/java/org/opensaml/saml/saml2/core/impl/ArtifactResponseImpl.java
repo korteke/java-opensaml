@@ -62,7 +62,7 @@ public class ArtifactResponseImpl extends StatusResponseTypeImpl implements Arti
      * {@inheritDoc}
      */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.add(protocolMessage);

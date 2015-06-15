@@ -85,7 +85,7 @@ public class StatusImpl extends AbstractSAMLObject implements Status {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(3);
+        ArrayList<XMLObject> children = new ArrayList<>(3);
 
         if (statusCode != null) {
             children.add(statusCode);

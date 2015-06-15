@@ -55,7 +55,7 @@ public class ScopingImpl extends AbstractSAMLObject implements Scoping {
      */
     protected ScopingImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        requesterIDs = new XMLObjectChildrenList<RequesterID>(this);
+        requesterIDs = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -86,7 +86,7 @@ public class ScopingImpl extends AbstractSAMLObject implements Scoping {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (idpList != null) {
             children.add(idpList);

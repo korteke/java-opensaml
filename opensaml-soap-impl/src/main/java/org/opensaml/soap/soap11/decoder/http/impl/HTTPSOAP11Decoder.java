@@ -80,7 +80,7 @@ public class HTTPSOAP11Decoder<MessageType extends XMLObject>
     /** {@inheritDoc} */
     @Override
     protected void doDecode() throws MessageDecodingException {
-        MessageContext<MessageType> messageContext = new MessageContext<MessageType>();
+        MessageContext<MessageType> messageContext = new MessageContext<>();
         HttpServletRequest request = getHttpServletRequest();
 
         if (!"POST".equalsIgnoreCase(request.getMethod())) {

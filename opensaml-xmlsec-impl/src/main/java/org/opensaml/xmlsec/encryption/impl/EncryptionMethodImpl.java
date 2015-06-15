@@ -57,7 +57,7 @@ public class EncryptionMethodImpl extends AbstractXMLObject implements Encryptio
     protected EncryptionMethodImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -101,7 +101,7 @@ public class EncryptionMethodImpl extends AbstractXMLObject implements Encryptio
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (keySize != null) {
             children.add(keySize);

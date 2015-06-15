@@ -64,7 +64,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      */
     protected SignatureImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        contentReferences = new LinkedList<ContentReference>();
+        contentReferences = new LinkedList<>();
     }
 
     /** {@inheritDoc} */

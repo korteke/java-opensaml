@@ -61,7 +61,7 @@ public abstract class SubjectQueryImpl extends AbstractSAMLObject implements Sub
             return null;
         }
         
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         children.add(subject);
         return Collections.unmodifiableList(children);
     }

@@ -44,7 +44,7 @@ public class DelegationRestrictionTypeImpl extends AbstractSAMLObject implements
      */
     protected DelegationRestrictionTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        delegates = new XMLObjectChildrenList<Delegate>(this);
+        delegates = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -54,7 +54,7 @@ public class DelegationRestrictionTypeImpl extends AbstractSAMLObject implements
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(delegates);
         return Collections.unmodifiableList(children);
     }

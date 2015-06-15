@@ -159,7 +159,7 @@ public class Encrypter {
      */
     @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
             @Nonnull final DataEncryptionParameters encParams) throws EncryptionException {
-        List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
+        List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, false);
     }
 
@@ -177,7 +177,7 @@ public class Encrypter {
     @Nonnull public EncryptedData encryptElement(@Nonnull final XMLObject xmlObject,
             @Nonnull final DataEncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
                     throws EncryptionException {
-        List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
+        List<KeyEncryptionParameters> kekParamsList = new ArrayList<>();
         kekParamsList.add(kekParams);
         return encryptElement(xmlObject, encParams, kekParamsList, false);
     }
@@ -210,7 +210,7 @@ public class Encrypter {
      */
     @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
             @Nonnull final DataEncryptionParameters encParams) throws EncryptionException {
-        List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<KeyEncryptionParameters>();
+        List<KeyEncryptionParameters> emptyKEKParamsList = new ArrayList<>();
         return encryptElement(xmlObject, encParams, emptyKEKParamsList, true);
     }
 
@@ -228,7 +228,7 @@ public class Encrypter {
     @Nonnull public EncryptedData encryptElementContent(@Nonnull final XMLObject xmlObject,
             @Nonnull final DataEncryptionParameters encParams, @Nonnull final KeyEncryptionParameters kekParams)
                     throws EncryptionException {
-        List<KeyEncryptionParameters> kekParamsList = new ArrayList<KeyEncryptionParameters>();
+        List<KeyEncryptionParameters> kekParamsList = new ArrayList<>();
         kekParamsList.add(kekParams);
         return encryptElement(xmlObject, encParams, kekParamsList, true);
     }
@@ -268,7 +268,7 @@ public class Encrypter {
 
         checkParams(kekParamsList, false);
 
-        List<EncryptedKey> encKeys = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> encKeys = new ArrayList<>();
 
         for (KeyEncryptionParameters kekParam : kekParamsList) {
             encKeys.add(encryptKey(key, kekParam, containingDocument));

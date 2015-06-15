@@ -52,7 +52,7 @@ public class EvidenceImpl extends AbstractSAMLObject implements Evidence {
      */
     protected EvidenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        evidence = new IndexedXMLObjectChildrenList<Evidentiary>(this);
+        evidence = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class EvidenceImpl extends AbstractSAMLObject implements Evidence {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (evidence.size() == 0) {
             return null;

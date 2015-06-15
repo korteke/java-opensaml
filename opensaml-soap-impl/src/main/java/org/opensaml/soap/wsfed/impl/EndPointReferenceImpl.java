@@ -56,7 +56,7 @@ public class EndPointReferenceImpl extends AbstractXMLObject implements EndPoint
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.add(address);
 

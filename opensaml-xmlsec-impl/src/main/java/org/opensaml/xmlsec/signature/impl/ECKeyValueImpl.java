@@ -99,7 +99,7 @@ public class ECKeyValueImpl extends AbstractXMLObject implements ECKeyValue {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (ecParams != null) {
             children.add(ecParams);

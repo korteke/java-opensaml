@@ -63,10 +63,10 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
      */
     protected SSODescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        artifactResolutionServices = new XMLObjectChildrenList<ArtifactResolutionService>(this);
-        singleLogoutServices = new XMLObjectChildrenList<SingleLogoutService>(this);
-        manageNameIDServices = new XMLObjectChildrenList<ManageNameIDService>(this);
-        nameIDFormats = new XMLObjectChildrenList<NameIDFormat>(this);
+        artifactResolutionServices = new XMLObjectChildrenList<>(this);
+        singleLogoutServices = new XMLObjectChildrenList<>(this);
+        manageNameIDServices = new XMLObjectChildrenList<>(this);
+        nameIDFormats = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -96,7 +96,7 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        List<Endpoint> endpoints = new ArrayList<Endpoint>();
+        List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(artifactResolutionServices);
         endpoints.addAll(singleLogoutServices);
         endpoints.addAll(manageNameIDServices);
@@ -118,7 +118,7 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(super.getOrderedChildren());
         children.addAll(artifactResolutionServices);

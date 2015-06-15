@@ -55,7 +55,7 @@ public class AppliesToImpl extends AbstractXMLObject implements AppliesTo {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.add(endPointReference);
 

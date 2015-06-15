@@ -119,7 +119,7 @@ public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObjec
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         
         if(getSignature() != null){
             children.add(getSignature());

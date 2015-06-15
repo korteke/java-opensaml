@@ -56,7 +56,7 @@ public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject
     protected RequestAbstractTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         version = SAMLVersion.VERSION_11;
-        respondWiths = new XMLObjectChildrenList<RespondWith>(this);
+        respondWiths = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -103,7 +103,7 @@ public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
 
         children.addAll(respondWiths);
         

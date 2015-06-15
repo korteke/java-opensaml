@@ -71,7 +71,7 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (created != null) {
             children.add(created);
         }

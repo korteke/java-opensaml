@@ -41,7 +41,7 @@ public class RequestedSecurityTokenImpl extends AbstractXMLObject implements Req
      */
     public RequestedSecurityTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        tokens = new XMLObjectChildrenList<XMLObject>(this);
+        tokens = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -51,7 +51,7 @@ public class RequestedSecurityTokenImpl extends AbstractXMLObject implements Req
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(1 + tokens.size());
+        ArrayList<XMLObject> children = new ArrayList<>(1 + tokens.size());
 
         children.addAll(tokens);
 

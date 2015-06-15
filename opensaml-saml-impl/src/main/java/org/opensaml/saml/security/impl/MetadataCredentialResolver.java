@@ -258,7 +258,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         
         log.debug("Resolving credentials from supplied RoleDescriptor using usage: {}.  Effective entityID was: {}", 
                 usage, entityID);
-        HashSet<Credential> credentials = new HashSet<Credential>(3);
+        HashSet<Credential> credentials = new HashSet<>(3);
         
         processRoleDescriptor(credentials, roleDescriptor, entityID, usage);
         
@@ -285,7 +285,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
         log.debug("Resolving credentials from metadata using entityID: {}, role: {}, protocol: {}, usage: {}", 
                 entityID, role, protocol, usage);
-        HashSet<Credential> credentials = new HashSet<Credential>(3);
+        HashSet<Credential> credentials = new HashSet<>(3);
 
         Iterable<RoleDescriptor> roleDescriptors = getRoleDescriptors(criteriaSet, entityID, role, protocol);
             

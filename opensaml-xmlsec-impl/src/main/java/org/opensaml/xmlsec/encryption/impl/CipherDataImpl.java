@@ -71,7 +71,7 @@ public class CipherDataImpl extends AbstractXMLObject implements CipherData {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (cipherValue != null) {
             children.add(cipherValue);

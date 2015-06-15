@@ -19,7 +19,6 @@ package org.opensaml.security.httpclient.impl;
 
 import java.security.Principal;
 import java.security.cert.Certificate;
-import java.util.Collections;
 import java.util.List;
 
 import javax.net.ssl.SSLPeerUnverifiedException;

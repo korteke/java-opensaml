@@ -52,7 +52,7 @@ public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements 
     protected AuthorizationDecisionQueryImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         setElementNamespacePrefix(SAMLConstants.SAML1P_PREFIX);
-        actions = new XMLObjectChildrenList<Action>(this);
+        actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> list = new ArrayList<XMLObject>(actions.size() + 2);
+        List<XMLObject> list = new ArrayList<>(actions.size() + 2);
         
         if (super.getOrderedChildren() != null) {
             list.addAll(super.getOrderedChildren());

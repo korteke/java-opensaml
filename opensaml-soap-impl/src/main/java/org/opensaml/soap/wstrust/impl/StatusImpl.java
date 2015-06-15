@@ -71,7 +71,7 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (code != null) {
             children.add(code);
         }

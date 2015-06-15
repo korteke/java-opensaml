@@ -49,7 +49,7 @@ public class AttributeStatementImpl extends AbstractSAMLObject implements Attrib
      */
     protected AttributeStatementImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        indexedChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -65,7 +65,7 @@ public class AttributeStatementImpl extends AbstractSAMLObject implements Attrib
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(indexedChildren);
         

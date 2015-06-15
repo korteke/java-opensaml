@@ -163,9 +163,9 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
         SAMLObject outboundMessage = messageContext.getMessage();
 
         if (outboundMessage instanceof RequestAbstractType) {
-            queryParams.add(new Pair<String, String>("SAMLRequest", message));
+            queryParams.add(new Pair<>("SAMLRequest", message));
         } else if (outboundMessage instanceof StatusResponseType) {
-            queryParams.add(new Pair<String, String>("SAMLResponse", message));
+            queryParams.add(new Pair<>("SAMLResponse", message));
         } else {
             throw new MessageEncodingException(
                     "SAML message is neither a SAML RequestAbstractType or StatusResponseType");
@@ -173,18 +173,18 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
 
         String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            queryParams.add(new Pair<String, String>("RelayState", relayState));
+            queryParams.add(new Pair<>("RelayState", relayState));
         }
 
         SignatureSigningParameters signingParameters = 
                 SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
         if (signingParameters != null && signingParameters.getSigningCredential() != null) {
             String sigAlgURI =  getSignatureAlgorithmURI(signingParameters);
-            Pair<String, String> sigAlg = new Pair<String, String>("SigAlg", sigAlgURI);
+            Pair<String, String> sigAlg = new Pair<>("SigAlg", sigAlgURI);
             queryParams.add(sigAlg);
             String sigMaterial = urlBuilder.buildQueryString();
 
-            queryParams.add(new Pair<String, String>("Signature", generateSignature(
+            queryParams.add(new Pair<>("Signature", generateSignature(
                     signingParameters.getSigningCredential(), sigAlgURI, sigMaterial)));
         } else {
             log.debug("No signing credential was supplied, skipping HTTP-Redirect DEFLATE signing");

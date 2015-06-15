@@ -54,7 +54,7 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
      */
     protected AuthenticationStatementImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        authorityBindings = new XMLObjectChildrenList<AuthorityBinding>(this);
+        authorityBindings = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -98,7 +98,7 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> list = new ArrayList<XMLObject>(authorityBindings.size() + 2);
+        List<XMLObject> list = new ArrayList<>(authorityBindings.size() + 2);
 
         if (super.getOrderedChildren() != null) {
             list.addAll(super.getOrderedChildren());

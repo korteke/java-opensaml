@@ -176,12 +176,12 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         credential.getKeyNames().add(keyNameFoo);
         credential.getKeyNames().add(keyNameBar);
 
-        List<X509Certificate> chain = new ArrayList<X509Certificate>();
+        List<X509Certificate> chain = new ArrayList<>();
         chain.add(entityCert);
         chain.add(caCert);
         credential.setEntityCertificateChain(chain);
 
-        List<X509CRL> crls = new ArrayList<X509CRL>();
+        List<X509CRL> crls = new ArrayList<>();
         crls.add(caCRL);
         credential.setCRLs(crls);
     }

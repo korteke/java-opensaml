@@ -48,7 +48,7 @@ public class AudienceRestrictionImpl extends AbstractSAMLObject implements Audie
      */
     protected AudienceRestrictionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        audience = new XMLObjectChildrenList<Audience>(this);
+        audience = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -58,7 +58,7 @@ public class AudienceRestrictionImpl extends AbstractSAMLObject implements Audie
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(audience);
 

@@ -62,11 +62,11 @@ public class AttributeAuthorityDescriptorImpl extends RoleDescriptorImpl impleme
      */
     protected AttributeAuthorityDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributeServices = new XMLObjectChildrenList<AttributeService>(this);
-        assertionIDRequestServices = new XMLObjectChildrenList<AssertionIDRequestService>(this);
-        attributeProfiles = new XMLObjectChildrenList<AttributeProfile>(this);
-        nameFormats = new XMLObjectChildrenList<NameIDFormat>(this);
-        attributes = new XMLObjectChildrenList<Attribute>(this);
+        attributeServices = new XMLObjectChildrenList<>(this);
+        assertionIDRequestServices = new XMLObjectChildrenList<>(this);
+        attributeProfiles = new XMLObjectChildrenList<>(this);
+        nameFormats = new XMLObjectChildrenList<>(this);
+        attributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -96,7 +96,7 @@ public class AttributeAuthorityDescriptorImpl extends RoleDescriptorImpl impleme
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        List<Endpoint> endpoints = new ArrayList<Endpoint>();
+        List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(attributeServices);
         endpoints.addAll(assertionIDRequestServices);
         return Collections.unmodifiableList(endpoints);
@@ -115,7 +115,7 @@ public class AttributeAuthorityDescriptorImpl extends RoleDescriptorImpl impleme
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.addAll(attributeServices);

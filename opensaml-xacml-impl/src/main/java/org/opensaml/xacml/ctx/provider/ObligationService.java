@@ -45,7 +45,7 @@ public class ObligationService {
     /** Constructor. */
     public ObligationService() {
         rwLock = new ReentrantReadWriteLock(true);
-        obligationHandlers = new TreeSet<BaseObligationHandler>(new ObligationHandlerComparator());
+        obligationHandlers = new TreeSet<>(new ObligationHandlerComparator());
     }
 
     /**
@@ -158,7 +158,7 @@ public class ObligationService {
      * @return preprocessed obligations
      */
     protected Map<String, ObligationType> preprocessObligations(ObligationProcessingContext context) {
-        HashMap<String, ObligationType> effectiveObligations = new HashMap<String, ObligationType>();
+        HashMap<String, ObligationType> effectiveObligations = new HashMap<>();
 
         ObligationsType obligations = context.getAuthorizationDecisionResult().getObligations();
         if (obligations == null || obligations.getObligations() == null) {

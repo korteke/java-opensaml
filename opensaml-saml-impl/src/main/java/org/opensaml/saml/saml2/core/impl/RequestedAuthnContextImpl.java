@@ -56,8 +56,8 @@ public class RequestedAuthnContextImpl extends AbstractSAMLObject implements Req
      */
     protected RequestedAuthnContextImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        authnContextClassRefs = new XMLObjectChildrenList<AuthnContextClassRef>(this);
-        authnContextDeclRefs = new XMLObjectChildrenList<AuthnContextDeclRef>(this);
+        authnContextClassRefs = new XMLObjectChildrenList<>(this);
+        authnContextDeclRefs = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class RequestedAuthnContextImpl extends AbstractSAMLObject implements Req
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(authnContextClassRefs);
         children.addAll(authnContextDeclRefs);

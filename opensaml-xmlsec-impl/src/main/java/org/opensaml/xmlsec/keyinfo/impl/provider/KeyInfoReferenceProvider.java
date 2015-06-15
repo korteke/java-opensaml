@@ -93,7 +93,7 @@ public class KeyInfoReferenceProvider extends AbstractKeyInfoProvider {
         try {
             Iterable<Credential> creds = resolver.resolve(newCriteria);
             if (creds != null) {
-                Collection<Credential> result = new ArrayList<Credential>();
+                Collection<Credential> result = new ArrayList<>();
                 for (Credential c : creds) {
                     result.add(c);
                 }

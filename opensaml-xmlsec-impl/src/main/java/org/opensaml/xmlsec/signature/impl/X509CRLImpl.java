@@ -31,7 +31,7 @@ import org.opensaml.xmlsec.signature.X509CRL;
 public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
 
     /** Class-level index of Base64 encoded CRL values. */
-    private static final IndexingObjectStore<String> B64_CRL_STORE = new IndexingObjectStore<String>();
+    private static final IndexingObjectStore<String> B64_CRL_STORE = new IndexingObjectStore<>();
 
     /** Index to a stored Base64 encoded CRL. */
     private String b64CRLIndex;

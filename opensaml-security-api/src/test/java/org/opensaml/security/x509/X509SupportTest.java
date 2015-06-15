@@ -363,7 +363,7 @@ public class X509SupportTest {
      */
     @Test
     public void testDetermineEntityCertificate() throws Exception {
-        ArrayList<X509Certificate> certs = new ArrayList<X509Certificate>();
+        ArrayList<X509Certificate> certs = new ArrayList<>();
         certs.add(entityCert3AltNamesDNS_URL_IP);
         certs.add(entityCert1AltNameDNS);
         certs.add(entityCert);
@@ -385,7 +385,7 @@ public class X509SupportTest {
         Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
         Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
-        Set<Integer> nameTypes = new HashSet<Integer>();
+        Set<Integer> nameTypes = new HashSet<>();
         nameTypes.add(altNameTypeDNS);
 
         List altNames = getAltNames(cert, nameTypes);
@@ -408,7 +408,7 @@ public class X509SupportTest {
         Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
         Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
-        Set<Integer> nameTypes = new HashSet<Integer>();
+        Set<Integer> nameTypes = new HashSet<>();
         nameTypes.add(altNameTypeURI);
 
         List altNames = getAltNames(cert, nameTypes);
@@ -431,7 +431,7 @@ public class X509SupportTest {
         Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
         Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
-        Set<Integer> nameTypes = new HashSet<Integer>();
+        Set<Integer> nameTypes = new HashSet<>();
         nameTypes.add(altNameTypeURI);
 
         List altNames = getAltNames(cert, nameTypes);
@@ -454,7 +454,7 @@ public class X509SupportTest {
         Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
         Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
-        Set<Integer> nameTypes = new HashSet<Integer>();
+        Set<Integer> nameTypes = new HashSet<>();
         nameTypes.add(altNameTypeIP);
 
         List altNames = getAltNames(cert, nameTypes);
@@ -477,7 +477,7 @@ public class X509SupportTest {
         Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
         Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
-        Set<Integer> nameTypes = new HashSet<Integer>();
+        Set<Integer> nameTypes = new HashSet<>();
         nameTypes.add(altNameTypeDNS);
         nameTypes.add(altNameTypeURI);
         nameTypes.add(altNameTypeIP);
@@ -504,7 +504,7 @@ public class X509SupportTest {
         Assert.assertNotNull(extensionValue, "Entity cert's Java native getExtensionValue() was null");
         Assert.assertTrue(extensionValue.length > 0, "Entity cert's extension value was empty");
 
-        Set<Integer> nameTypes = new HashSet<Integer>();
+        Set<Integer> nameTypes = new HashSet<>();
         nameTypes.add(altNameTypeDNS);
         nameTypes.add(altNameTypeURI);
         nameTypes.add(altNameTypeIP);

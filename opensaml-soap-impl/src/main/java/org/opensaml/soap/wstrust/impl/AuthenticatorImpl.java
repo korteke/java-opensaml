@@ -49,7 +49,7 @@ public class AuthenticatorImpl extends AbstractWSTrustObject implements Authenti
      */
     public AuthenticatorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -74,7 +74,7 @@ public class AuthenticatorImpl extends AbstractWSTrustObject implements Authenti
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (combinedHash != null) {
             children.add(combinedHash);
         }

@@ -57,8 +57,8 @@ public class PolicyAttachmentImpl extends AbstractWSPolicyObject implements Poli
      */
     public PolicyAttachmentImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        policiesAndReferences = new IndexedXMLObjectChildrenList<XMLObject>(this);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        policiesAndReferences = new IndexedXMLObjectChildrenList<>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -99,7 +99,7 @@ public class PolicyAttachmentImpl extends AbstractWSPolicyObject implements Poli
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (appliesTo != null) {
             children.add(appliesTo);
         }

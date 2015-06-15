@@ -75,8 +75,8 @@ public class KeyInfoResolutionContext {
      */
     public KeyInfoResolutionContext(@Nonnull final Collection<Credential> credentials) {
         resolvedCredentials = Collections.unmodifiableCollection(credentials);
-        properties = new LazyMap<String, Object>();
-        keyNames = new LazySet<String>();
+        properties = new LazyMap<>();
+        keyNames = new LazySet<>();
     }
     
     /**

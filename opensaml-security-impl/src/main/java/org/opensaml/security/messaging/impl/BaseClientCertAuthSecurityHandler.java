@@ -528,7 +528,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
         log.debug("{} Extracting alt names from certificate of type: {}", getLogPrefix(), altNameType.toString());
         Integer[] nameTypes = new Integer[] {altNameType};
         List altNames = X509Support.getAltNames(cert, nameTypes);
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (Object altNameValue : altNames) {
             if (!(altNameValue instanceof String)) {
                 log.debug("{} Skipping non-String certificate alt name value", getLogPrefix());

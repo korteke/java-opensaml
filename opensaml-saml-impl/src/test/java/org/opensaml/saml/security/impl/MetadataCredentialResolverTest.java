@@ -198,7 +198,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNoProtocolNoUsage() throws SecurityException, ResolverException {
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -238,7 +238,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testNoProtocolUsageEncryption() throws SecurityException, ResolverException {
         criteriaSet.add( new UsageCriterion(UsageType.ENCRYPTION) );
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -277,7 +277,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testNoProtocolUsageSigning() throws SecurityException, ResolverException {
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -315,7 +315,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testProtocolFOONoUsage() throws SecurityException, ResolverException {
         criteriaSet.add(new ProtocolCriterion(protocolFoo));
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -355,7 +355,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         criteriaSet.add(new ProtocolCriterion(protocolFoo));
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -393,7 +393,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         criteriaSet.add(new ProtocolCriterion(protocolFoo));
         criteriaSet.add( new UsageCriterion(UsageType.ENCRYPTION) );
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -430,7 +430,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     public void testProtocolBARNoUsage() throws SecurityException, ResolverException {
         criteriaSet.add(new ProtocolCriterion(protocolBar));
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -468,7 +468,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         criteriaSet.add(new ProtocolCriterion(protocolBar));
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -506,7 +506,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         criteriaSet.add(new ProtocolCriterion(protocolBar));
         criteriaSet.add( new UsageCriterion(UsageType.ENCRYPTION) );
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved.add(credential);
            checkContextAndID(credential, idpEntityID, idpRole, true);
@@ -540,12 +540,12 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testCaching() throws SecurityException, ResolverException {
-        HashSet<Credential> resolved1 = new HashSet<Credential>();
+        HashSet<Credential> resolved1 = new HashSet<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved1.add(credential);
         }
         
-        HashSet<Credential> resolved2 = new HashSet<Credential>();
+        HashSet<Credential> resolved2 = new HashSet<>();
         for (Credential credential : mdCredResolver.resolve(criteriaSet)) {
            resolved2.add(credential);
         }
@@ -598,7 +598,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         RoleDescriptorCriterion roleDescCriterion = new RoleDescriptorCriterion(idpSSODesc);
         CriteriaSet criteria =  new CriteriaSet(roleDescCriterion);
         
-        List<Credential> resolved = new ArrayList<Credential>();
+        List<Credential> resolved = new ArrayList<>();
         for (Credential credential : mdCredResolver.resolve(criteria)) {
             resolved.add(credential);
             checkContextAndID(credential, idpEntityID, idpRole, false);

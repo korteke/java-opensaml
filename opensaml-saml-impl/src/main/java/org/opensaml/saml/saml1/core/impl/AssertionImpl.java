@@ -73,7 +73,7 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
      */
     protected AssertionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        statements = new IndexedXMLObjectChildrenList<Statement>(this);
+        statements = new IndexedXMLObjectChildrenList<>(this);
         version = SAMLVersion.VERSION_11;
     }
     
@@ -187,7 +187,7 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
 
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (conditions != null) {
             children.add(conditions);

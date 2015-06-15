@@ -52,7 +52,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
         spssoDescriptor = buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         spssoDescriptor.setAuthnRequestsSigned(false);
         
-        messageContext = new MessageContext<SAMLObject>();
+        messageContext = new MessageContext<>();
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
             .getSubcontext(SAMLMetadataContext.class, true).setRoleDescriptor(spssoDescriptor);

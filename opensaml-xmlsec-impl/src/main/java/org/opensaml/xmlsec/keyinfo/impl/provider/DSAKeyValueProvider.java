@@ -93,7 +93,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
         }
         
         log.debug("Credential successfully extracted from DSAKeyValue");
-        LazySet<Credential> credentialSet = new LazySet<Credential>();
+        LazySet<Credential> credentialSet = new LazySet<>();
         credentialSet.add(cred);
         return credentialSet;
     }

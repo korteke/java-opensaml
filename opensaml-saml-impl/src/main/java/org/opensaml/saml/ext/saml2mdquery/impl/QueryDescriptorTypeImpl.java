@@ -49,7 +49,7 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     protected QueryDescriptorTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
-        nameIDFormats = new XMLObjectChildrenList<NameIDFormat>(this);
+        nameIDFormats = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
@@ -93,7 +93,7 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(super.getOrderedChildren());
         children.addAll(nameIDFormats);

@@ -32,7 +32,7 @@ public class SAML1ArtifactBuilderFactory {
 
     /** Constructor. */
     public SAML1ArtifactBuilderFactory() {
-        artifactBuilders = new HashMap<String, SAML1ArtifactBuilder>(2);
+        artifactBuilders = new HashMap<>(2);
         artifactBuilders.put(new String(SAML1ArtifactType0001.TYPE_CODE), new SAML1ArtifactType0001Builder());
         artifactBuilders.put(new String(SAML1ArtifactType0002.TYPE_CODE), new SAML1ArtifactType0002Builder());
     }

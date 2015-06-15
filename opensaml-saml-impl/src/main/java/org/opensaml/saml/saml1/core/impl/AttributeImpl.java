@@ -41,7 +41,7 @@ public class AttributeImpl extends AttributeDesignatorImpl implements Attribute 
      */
     protected AttributeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributeValues = new XMLObjectChildrenList<XMLObject>(this);
+        attributeValues = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */

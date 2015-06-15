@@ -54,7 +54,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     public void setUp() throws MessageException, ComponentInitializationException {
-        messageContext = new MessageContext<SAMLObject>();
+        messageContext = new MessageContext<>();
         messageContext.setMessage((SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml"));
         
         httpRequest = new MockHttpServletRequest();

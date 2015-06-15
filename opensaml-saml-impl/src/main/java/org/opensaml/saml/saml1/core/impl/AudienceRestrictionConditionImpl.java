@@ -44,7 +44,7 @@ public class AudienceRestrictionConditionImpl extends AbstractSAMLObject impleme
      */
     protected AudienceRestrictionConditionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        audiences = new XMLObjectChildrenList<Audience>(this);
+        audiences = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -58,7 +58,8 @@ public class AudienceRestrictionConditionImpl extends AbstractSAMLObject impleme
         if (audiences.size() == 0) {
             return null;
         }
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(audiences);
+        ArrayList<XMLObject> children = new ArrayList<>();
+        children.addAll(audiences);
         return Collections.unmodifiableList(children);
     }
 }

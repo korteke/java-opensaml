@@ -83,7 +83,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     @BeforeMethod protected void setUp() throws Exception {
-        expectedSupportedProtocol = new ArrayList<String>();
+        expectedSupportedProtocol = new ArrayList<>();
         expectedSupportedProtocol.add("urn:foo:bar");
         expectedSupportedProtocol.add("urn:fooz:baz");
 

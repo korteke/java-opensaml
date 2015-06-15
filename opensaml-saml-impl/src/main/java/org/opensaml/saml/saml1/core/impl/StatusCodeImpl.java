@@ -72,7 +72,7 @@ public class StatusCodeImpl extends AbstractSAMLObject implements StatusCode {
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         if (childStatusCode != null) {
-            ArrayList<XMLObject> contents = new ArrayList<XMLObject>(1);
+            ArrayList<XMLObject> contents = new ArrayList<>(1);
             contents.add(childStatusCode);
             return Collections.unmodifiableList(contents);
         } else {

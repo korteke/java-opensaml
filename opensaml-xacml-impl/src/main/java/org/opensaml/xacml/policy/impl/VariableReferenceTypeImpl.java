@@ -46,7 +46,7 @@ public class VariableReferenceTypeImpl extends AbstractXACMLObject implements Va
      */
     protected VariableReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        expressions = new XMLObjectChildrenList<ExpressionType>(this);
+        expressions = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
@@ -66,7 +66,7 @@ public class VariableReferenceTypeImpl extends AbstractXACMLObject implements Va
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if(!expressions.isEmpty()){
             children.addAll(expressions);

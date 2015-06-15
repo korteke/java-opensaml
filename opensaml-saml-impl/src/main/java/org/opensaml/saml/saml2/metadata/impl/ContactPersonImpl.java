@@ -76,8 +76,8 @@ public class ContactPersonImpl extends AbstractSAMLObject implements ContactPers
     protected ContactPersonImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
-        emailAddresses = new XMLObjectChildrenList<EmailAddress>(this);
-        telephoneNumbers = new XMLObjectChildrenList<TelephoneNumber>(this);
+        emailAddresses = new XMLObjectChildrenList<>(this);
+        telephoneNumbers = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -161,7 +161,7 @@ public class ContactPersonImpl extends AbstractSAMLObject implements ContactPers
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.add(extensions);
         children.add(company);
