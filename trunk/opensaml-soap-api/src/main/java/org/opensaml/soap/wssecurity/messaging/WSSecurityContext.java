@@ -46,7 +46,7 @@ public class WSSecurityContext extends BaseContext {
     /** Constructor. */
     public WSSecurityContext() {
         super();
-        tokens = new LazyList<Token>();
+        tokens = new LazyList<>();
     }
     
     /**
