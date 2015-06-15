@@ -48,7 +48,7 @@ public class ReferenceTypeImpl extends AbstractXMLObject implements ReferenceTyp
      */
     protected ReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        xmlChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        xmlChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -73,7 +73,7 @@ public class ReferenceTypeImpl extends AbstractXMLObject implements ReferenceTyp
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(xmlChildren);
         

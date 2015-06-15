@@ -45,7 +45,7 @@ public class OnBehalfOfImpl extends AbstractWSTrustObject implements OnBehalfOf 
      */
     public OnBehalfOfImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class OnBehalfOfImpl extends AbstractWSTrustObject implements OnBehalfOf 
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         children.addAll(unknownChildren);
         return Collections.unmodifiableList(children);
     }

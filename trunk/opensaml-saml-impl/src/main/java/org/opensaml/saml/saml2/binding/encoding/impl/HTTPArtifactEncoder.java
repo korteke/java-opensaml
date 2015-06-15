@@ -287,11 +287,11 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             log.error("Unable to build artifact for message to relying party");
             throw new MessageEncodingException("Unable to build artifact for message to relying party");
         }
-        queryParams.add(new Pair<String, String>("SAMLart", artifact.base64Encode()));
+        queryParams.add(new Pair<>("SAMLart", artifact.base64Encode()));
 
         final String relayState = SAMLBindingSupport.getRelayState(messageContext);
         if (SAMLBindingSupport.checkRelayState(relayState)) {
-            queryParams.add(new Pair<String, String>("RelayState", relayState));
+            queryParams.add(new Pair<>("RelayState", relayState));
         }
 
         final HttpServletResponse response = getHttpServletResponse();

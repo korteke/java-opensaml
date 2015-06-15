@@ -48,7 +48,7 @@ public class ResponseImpl extends StatusResponseTypeImpl implements Response {
      */
     protected ResponseImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        indexedChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -63,7 +63,7 @@ public class ResponseImpl extends StatusResponseTypeImpl implements Response {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (super.getOrderedChildren() != null) {
             children.addAll(super.getOrderedChildren());

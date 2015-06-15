@@ -61,7 +61,7 @@ public class EndpointReferenceTypeImpl extends AbstractWSAddressingObject implem
      */
     public EndpointReferenceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -112,7 +112,7 @@ public class EndpointReferenceTypeImpl extends AbstractWSAddressingObject implem
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (address != null) {
             children.add(address);
         }

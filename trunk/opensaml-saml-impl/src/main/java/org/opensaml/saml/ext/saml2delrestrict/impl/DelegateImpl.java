@@ -112,7 +112,7 @@ public class DelegateImpl extends AbstractSAMLObject implements Delegate {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (baseID != null) {
             children.add(baseID);

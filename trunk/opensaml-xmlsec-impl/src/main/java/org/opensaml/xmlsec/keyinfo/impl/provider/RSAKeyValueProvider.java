@@ -91,7 +91,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
         }
 
         log.debug("Credential successfully extracted from RSAKeyValue");
-        LazySet<Credential> credentialSet = new LazySet<Credential>();
+        LazySet<Credential> credentialSet = new LazySet<>();
         credentialSet.add(cred);
         return credentialSet;
     }

@@ -49,7 +49,7 @@ public class TransformImpl extends AbstractXMLObject implements Transform {
      */
     protected TransformImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        indexedChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -79,7 +79,7 @@ public class TransformImpl extends AbstractXMLObject implements Transform {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll((List<XMLObject>) indexedChildren);
         

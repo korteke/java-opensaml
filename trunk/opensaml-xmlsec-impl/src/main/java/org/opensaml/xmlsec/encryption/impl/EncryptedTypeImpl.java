@@ -153,7 +153,7 @@ public abstract class EncryptedTypeImpl extends AbstractXMLObject implements Enc
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (encryptionMethod != null) {
             children.add(encryptionMethod);

@@ -104,7 +104,7 @@ public class AttributeSelectorTypeImpl extends AbstractXACMLObject implements At
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new LazyList<XMLObject>();
+        return new LazyList<>();
     }
 
 }

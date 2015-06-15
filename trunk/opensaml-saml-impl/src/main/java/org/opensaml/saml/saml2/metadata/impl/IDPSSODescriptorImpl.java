@@ -70,11 +70,11 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
      */
     protected IDPSSODescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        singleSignOnServices = new XMLObjectChildrenList<SingleSignOnService>(this);
-        nameIDMappingServices = new XMLObjectChildrenList<NameIDMappingService>(this);
-        assertionIDRequestServices = new XMLObjectChildrenList<AssertionIDRequestService>(this);
-        attributeProfiles = new XMLObjectChildrenList<AttributeProfile>(this);
-        attributes = new XMLObjectChildrenList<Attribute>(this);
+        singleSignOnServices = new XMLObjectChildrenList<>(this);
+        nameIDMappingServices = new XMLObjectChildrenList<>(this);
+        assertionIDRequestServices = new XMLObjectChildrenList<>(this);
+        attributeProfiles = new XMLObjectChildrenList<>(this);
+        attributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -133,7 +133,7 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
 
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        List<Endpoint> endpoints = new ArrayList<Endpoint>();
+        List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(super.getEndpoints());
         endpoints.addAll(singleSignOnServices);
         endpoints.addAll(nameIDMappingServices);
@@ -156,7 +156,7 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.addAll(singleSignOnServices);

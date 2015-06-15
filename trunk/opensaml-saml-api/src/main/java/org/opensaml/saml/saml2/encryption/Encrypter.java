@@ -171,7 +171,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     public Encrypter(DataEncryptionParameters dataEncParams, KeyEncryptionParameters keyEncParam) {
         super();
 
-        List<KeyEncryptionParameters> keks = new ArrayList<KeyEncryptionParameters>();
+        List<KeyEncryptionParameters> keks = new ArrayList<>();
         keks.add(keyEncParam);
 
         this.encParams = dataEncParams;
@@ -188,7 +188,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     public Encrypter(DataEncryptionParameters dataEncParams) {
         super();
 
-        List<KeyEncryptionParameters> keks = new ArrayList<KeyEncryptionParameters>();
+        List<KeyEncryptionParameters> keks = new ArrayList<>();
 
         this.encParams = dataEncParams;
         this.kekParamsList = keks;
@@ -372,7 +372,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
             }
         }
 
-        List<EncryptedKey> encryptedKeys = new ArrayList<EncryptedKey>();
+        List<EncryptedKey> encryptedKeys = new ArrayList<>();
         if (kekParamsList != null && !kekParamsList.isEmpty()) {
             encryptedKeys.addAll(encryptKey(encryptionKey, kekParamsList, ownerDocument));
         }

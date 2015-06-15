@@ -112,7 +112,7 @@ public class RuleTypeImpl extends AbstractXACMLObject implements RuleType {
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
+        ArrayList<XMLObject> children = new ArrayList<>();        
         
         if(description != null){
             children.add(description);

@@ -56,7 +56,7 @@ public class ConditionTypeImpl extends AbstractXACMLObject implements ConditionT
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
                
         if(expression != null){
             children.add(expression);

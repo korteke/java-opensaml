@@ -51,7 +51,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testWhiteListSPRole() throws Exception {
-        ArrayList<QName> retainedRoles = new ArrayList<QName>();
+        ArrayList<QName> retainedRoles = new ArrayList<>();
         retainedRoles.add(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
         HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
@@ -63,7 +63,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testWhiteListIdPRoles() throws Exception {
-        ArrayList<QName> retainedRoles = new ArrayList<QName>();
+        ArrayList<QName> retainedRoles = new ArrayList<>();
         retainedRoles.add(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         retainedRoles.add(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME);
 
@@ -76,7 +76,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testWhiteListNoRole() throws Exception {
-        ArrayList<QName> retainedRoles = new ArrayList<QName>();
+        ArrayList<QName> retainedRoles = new ArrayList<>();
 
         HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
         metadataProvider.setParserPool(parserPool);

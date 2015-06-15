@@ -52,7 +52,7 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      */
     public CollectionCredentialResolver() {
         super();
-        collection = new ArrayList<Credential>();
+        collection = new ArrayList<>();
     }
     
     /**

@@ -119,7 +119,7 @@ public class AttributeDesignatorTypeImpl extends AbstractXACMLObject implements 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new LazyList<XMLObject>();
+        return new LazyList<>();
     }
 
 }

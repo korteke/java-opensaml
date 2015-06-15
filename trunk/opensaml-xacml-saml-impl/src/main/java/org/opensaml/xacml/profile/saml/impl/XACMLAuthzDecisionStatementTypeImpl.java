@@ -70,7 +70,7 @@ public class XACMLAuthzDecisionStatementTypeImpl extends AbstractSAMLObject impl
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (request != null) {
             children.add(request);

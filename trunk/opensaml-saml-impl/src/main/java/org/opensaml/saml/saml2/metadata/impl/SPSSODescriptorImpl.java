@@ -63,8 +63,8 @@ public class SPSSODescriptorImpl extends SSODescriptorImpl implements SPSSODescr
      */
     protected SPSSODescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        assertionConsumerServices = new XMLObjectChildrenList<AssertionConsumerService>(this);
-        attributeConsumingServices = new XMLObjectChildrenList<AttributeConsumingService>(this);
+        assertionConsumerServices = new XMLObjectChildrenList<>(this);
+        attributeConsumingServices = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
@@ -145,7 +145,7 @@ public class SPSSODescriptorImpl extends SSODescriptorImpl implements SPSSODescr
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        List<Endpoint> endpoints = new ArrayList<Endpoint>();
+        List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(super.getEndpoints());
         endpoints.addAll(assertionConsumerServices);
         return Collections.unmodifiableList(endpoints);
@@ -162,7 +162,7 @@ public class SPSSODescriptorImpl extends SSODescriptorImpl implements SPSSODescr
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.addAll(assertionConsumerServices);

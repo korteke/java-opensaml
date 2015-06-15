@@ -63,9 +63,9 @@ public class OrganizationImpl extends AbstractSAMLObject implements Organization
      */
     protected OrganizationImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        names = new XMLObjectChildrenList<OrganizationName>(this);
-        displayNames = new XMLObjectChildrenList<OrganizationDisplayName>(this);
-        urls = new XMLObjectChildrenList<OrganizationURL>(this);
+        names = new XMLObjectChildrenList<>(this);
+        displayNames = new XMLObjectChildrenList<>(this);
+        urls = new XMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
@@ -108,7 +108,7 @@ public class OrganizationImpl extends AbstractSAMLObject implements Organization
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.add(extensions);
         children.addAll(names);

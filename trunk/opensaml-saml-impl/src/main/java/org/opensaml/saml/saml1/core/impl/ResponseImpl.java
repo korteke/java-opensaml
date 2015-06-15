@@ -47,7 +47,7 @@ public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
      */
     protected ResponseImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        assertions = new XMLObjectChildrenList<Assertion>(this);
+        assertions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -67,7 +67,7 @@ public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>(1 + assertions.size());
+        ArrayList<XMLObject> children = new ArrayList<>(1 + assertions.size());
 
         if (super.getOrderedChildren() != null) {
             children.addAll(super.getOrderedChildren());

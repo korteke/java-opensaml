@@ -56,7 +56,7 @@ public class EncryptionImpl extends AbstractWSTrustObject implements Encryption 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (unknownChild != null) {
             children.add(unknownChild);
         }

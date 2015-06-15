@@ -44,7 +44,7 @@ public class KeyExchangeTokenImpl extends AbstractWSTrustObject implements KeyEx
      */
     public KeyExchangeTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */

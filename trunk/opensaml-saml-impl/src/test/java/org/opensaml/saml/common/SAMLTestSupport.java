@@ -42,7 +42,7 @@ public final class SAMLTestSupport {
      * @return a new KeyInfoCredentialResolver instance
      */
     public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
-        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        List<KeyInfoProvider> providers = new ArrayList<>();
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
         providers.add( new InlineX509DataProvider() );

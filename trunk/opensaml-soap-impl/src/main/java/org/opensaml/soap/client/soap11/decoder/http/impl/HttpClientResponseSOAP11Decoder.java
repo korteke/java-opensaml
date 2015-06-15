@@ -85,7 +85,7 @@ public class HttpClientResponseSOAP11Decoder<MessageType extends XMLObject>
 
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
-        MessageContext<MessageType> messageContext = new MessageContext<MessageType>();
+        MessageContext<MessageType> messageContext = new MessageContext<>();
         HttpResponse response = getHttpResponse();
         
         log.debug("Unmarshalling SOAP message");

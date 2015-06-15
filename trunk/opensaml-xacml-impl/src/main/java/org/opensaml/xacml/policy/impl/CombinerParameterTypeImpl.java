@@ -69,7 +69,7 @@ public class CombinerParameterTypeImpl extends AbstractXACMLObject implements Co
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
+        ArrayList<XMLObject> children = new ArrayList<>();        
         
         if(value != null){
             children.add(value);

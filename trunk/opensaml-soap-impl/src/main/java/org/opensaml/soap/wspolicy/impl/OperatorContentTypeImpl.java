@@ -48,7 +48,7 @@ public class OperatorContentTypeImpl extends AbstractWSPolicyObject implements O
      */
     public OperatorContentTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        xmlObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        xmlObjects = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -83,7 +83,7 @@ public class OperatorContentTypeImpl extends AbstractWSPolicyObject implements O
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         children.addAll(xmlObjects);
         return Collections.unmodifiableList(children);
     }

@@ -270,7 +270,7 @@ public class PKIXSignatureTrustEngine extends
             throw new SecurityException("Error resolving trusted PKIX validation information", e);
         }
 
-        return new Pair<Set<String>, Iterable<PKIXValidationInformation>>(trustedNames, validationInfoSet);
+        return new Pair<>(trustedNames, validationInfoSet);
     }
 
     /**

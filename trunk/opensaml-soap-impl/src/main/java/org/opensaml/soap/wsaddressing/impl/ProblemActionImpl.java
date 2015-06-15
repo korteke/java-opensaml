@@ -80,7 +80,7 @@ public class ProblemActionImpl extends AbstractWSAddressingObject implements Pro
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (action != null) {
             children.add(action);
         }

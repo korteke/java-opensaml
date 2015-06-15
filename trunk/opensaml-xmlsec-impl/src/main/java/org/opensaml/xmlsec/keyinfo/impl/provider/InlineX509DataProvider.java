@@ -150,7 +150,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             cred.getCredentialContextSet().add(credContext);
         }
 
-        final LazySet<Credential> credentialSet = new LazySet<Credential>();
+        final LazySet<Credential> credentialSet = new LazySet<>();
         credentialSet.add(cred);
         return credentialSet;
     }

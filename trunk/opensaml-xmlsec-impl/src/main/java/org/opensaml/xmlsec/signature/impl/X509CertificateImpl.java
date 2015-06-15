@@ -31,7 +31,7 @@ import org.opensaml.xmlsec.signature.X509Certificate;
 public class X509CertificateImpl extends AbstractXMLObject implements X509Certificate {
 
     /** Class-level index of Base64 encoded cert values. */
-    private static final IndexingObjectStore<String> B64_CERT_STORE = new IndexingObjectStore<String>();
+    private static final IndexingObjectStore<String> B64_CERT_STORE = new IndexingObjectStore<>();
 
     /** Index to a stored Base64 encoded cert. */
     private String b64CertIndex;

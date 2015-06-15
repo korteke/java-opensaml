@@ -447,7 +447,7 @@ public class Decrypter {
      */
     @Nonnull public List<XMLObject> decryptDataToList(@Nonnull final EncryptedData encryptedData,
             boolean rootInNewDocument) throws DecryptionException {
-        List<XMLObject> xmlObjects = new LinkedList<XMLObject>();
+        List<XMLObject> xmlObjects = new LinkedList<>();
 
         DocumentFragment docFragment = decryptDataToDOM(encryptedData);
 
@@ -875,7 +875,7 @@ public class Decrypter {
             return null;
         }
 
-        Set<Criterion> critSet = new HashSet<Criterion>(2);
+        Set<Criterion> critSet = new HashSet<>(2);
 
         KeyAlgorithmCriterion algoCrit = buildKeyAlgorithmCriteria(encAlgorithmURI);
         if (algoCrit != null) {
@@ -980,7 +980,7 @@ public class Decrypter {
      */
     protected ParserPool buildParserPool() {
         BasicParserPool pp = new BasicParserPool();
-        HashMap<String, Boolean> features = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> features = new HashMap<>();
         
         pp.setNamespaceAware(true);
         

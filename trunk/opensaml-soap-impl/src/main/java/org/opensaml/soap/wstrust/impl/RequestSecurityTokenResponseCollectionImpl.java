@@ -51,7 +51,7 @@ public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustO
             String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
-        requestSecurityTokenResponses = new ArrayList<RequestSecurityTokenResponse>();
+        requestSecurityTokenResponses = new ArrayList<>();
     }
     
     /** {@inheritDoc} */
@@ -66,7 +66,7 @@ public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustO
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         children.addAll(requestSecurityTokenResponses);
         return Collections.unmodifiableList(children);
     }

@@ -55,12 +55,12 @@ public abstract class AbstractExtensibleSOAPObject extends AbstractXMLObject imp
             @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
-        unknownXMLObjects = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownXMLObjects = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
     @Nullable public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(unknownXMLObjects);
 

@@ -141,7 +141,7 @@ public class KeyInfoImpl extends AbstractXMLObject implements KeyInfo {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(indexedChildren);
         

@@ -238,7 +238,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
                     SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, X509Certificate.class.getName()));
         }
 
-        return new Pair<PublicKey, X509Certificate>(presenterKey, presenterCert);
+        return new Pair<>(presenterKey, presenterCert);
     }
 
     /**
@@ -259,7 +259,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         
         SubjectConfirmationData confirmationData = confirmation.getSubjectConfirmationData();
 
-        List<KeyInfo> keyInfos = new LazyList<KeyInfo>();
+        List<KeyInfo> keyInfos = new LazyList<>();
         for (XMLObject object : confirmationData.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME)) {
             if (object != null) {
                 keyInfos.add((KeyInfo) object);

@@ -44,7 +44,7 @@ public class StatusDetailImpl extends AbstractSAMLObject implements StatusDetail
      */
     protected StatusDetailImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /**

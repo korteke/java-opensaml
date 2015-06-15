@@ -63,7 +63,7 @@ public class LogoutRequestImpl extends RequestAbstractTypeImpl implements Logout
      */
     protected LogoutRequestImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        sessionIndexes = new XMLObjectChildrenList<SessionIndex>(this);
+        sessionIndexes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -123,7 +123,7 @@ public class LogoutRequestImpl extends RequestAbstractTypeImpl implements Logout
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (super.getOrderedChildren() != null) {
             children.addAll(super.getOrderedChildren());

@@ -62,7 +62,7 @@ public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implement
      */
     protected EntitiesDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        orderedDescriptors = new IndexedXMLObjectChildrenList<SAMLObject>(this);
+        orderedDescriptors = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -144,7 +144,7 @@ public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implement
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if(getSignature() != null){
             children.add(getSignature());

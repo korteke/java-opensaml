@@ -201,7 +201,7 @@ public final class SOAPMessagingSupport {
             return Collections.emptyList();
         }
         
-        LazyList<XMLObject> headers = new LazyList<XMLObject>();
+        LazyList<XMLObject> headers = new LazyList<>();
         for (XMLObject header : envelopeHeader.getUnknownXMLObjects(headerName)) {
             if (isSOAP11HeaderTargetedToNode(header, targetNodes, isFinalDestination)) {
                 headers.add(header);

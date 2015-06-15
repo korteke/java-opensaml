@@ -37,7 +37,7 @@ import org.joda.time.ReadableInstant;
 public final class AnnotationSupport {
 
     /** Simple cache of fields we have seen. */
-    private static final Map<String, Field> FIELD_CACHE = new ConcurrentHashMap<String, Field>();
+    private static final Map<String, Field> FIELD_CACHE = new ConcurrentHashMap<>();
     
     /** Private constructor of utility class. */
     private AnnotationSupport() {

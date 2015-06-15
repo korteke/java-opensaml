@@ -189,7 +189,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     protected void setUp() throws Exception {
         // Trust engine setup
         
-        trustedCredentials = new ArrayList<Credential>();
+        trustedCredentials = new ArrayList<>();
         trustedCredentials.add(otherCred1);
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
@@ -204,7 +204,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         handler.setHttpServletRequest(buildServletRequest());
         handler.initialize();
         
-        messageContext = new MessageContext<SAMLObject>();
+        messageContext = new MessageContext<>();
         messageContext.setMessage(buildInboundSAMLMessage());
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -304,7 +304,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        final MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        final MessageContext<SAMLObject> messageContext = new MessageContext<>();
         messageContext.setMessage(buildInboundSAMLMessage());
         SAMLBindingSupport.setRelayState(messageContext, expectedRelayValue);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true)

@@ -50,7 +50,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
 
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
-        MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
+        MessageContext<SAMLObject> messageContext = new MessageContext<>();
         HttpServletRequest request = getHttpServletRequest();
         
         decodeTarget(messageContext, request);

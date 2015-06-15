@@ -54,9 +54,9 @@ public class AuthnAuthorityDescriptorImpl extends RoleDescriptorImpl implements 
      */
     protected AuthnAuthorityDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        authnQueryServices = new XMLObjectChildrenList<AuthnQueryService>(this);
-        assertionIDRequestServices = new XMLObjectChildrenList<AssertionIDRequestService>(this);
-        nameIDFormats = new XMLObjectChildrenList<NameIDFormat>(this);
+        authnQueryServices = new XMLObjectChildrenList<>(this);
+        assertionIDRequestServices = new XMLObjectChildrenList<>(this);
+        nameIDFormats = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -76,7 +76,7 @@ public class AuthnAuthorityDescriptorImpl extends RoleDescriptorImpl implements 
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        List<Endpoint> endpoints = new ArrayList<Endpoint>();
+        List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(authnQueryServices);
         endpoints.addAll(assertionIDRequestServices);
         return Collections.unmodifiableList(endpoints);
@@ -95,7 +95,7 @@ public class AuthnAuthorityDescriptorImpl extends RoleDescriptorImpl implements 
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.addAll(authnQueryServices);

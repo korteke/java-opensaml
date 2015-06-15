@@ -63,7 +63,7 @@ public class StatusTypeImpl extends AbstractXACMLObject implements StatusType {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (statusCode != null) {
             children.add(statusCode);

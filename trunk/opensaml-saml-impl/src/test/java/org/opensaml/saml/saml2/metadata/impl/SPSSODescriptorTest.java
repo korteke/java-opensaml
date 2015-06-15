@@ -79,7 +79,7 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         expectedAuthnRequestSigned = new XSBooleanValue(Boolean.TRUE, false);
         expectedWantAssertionsSigned = new XSBooleanValue(Boolean.TRUE, false);
 
-        expectedSupportedProtocol = new ArrayList<String>();
+        expectedSupportedProtocol = new ArrayList<>();
         expectedSupportedProtocol.add("urn:foo:bar");
         expectedSupportedProtocol.add("urn:fooz:baz");
 

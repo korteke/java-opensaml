@@ -51,7 +51,7 @@ public class ProxyRestrictionImpl extends AbstractSAMLObject implements ProxyRes
      */
     protected ProxyRestrictionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        audiences = new XMLObjectChildrenList<Audience>(this);
+        audiences = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -75,7 +75,7 @@ public class ProxyRestrictionImpl extends AbstractSAMLObject implements ProxyRes
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(audiences);
         return Collections.unmodifiableList(children);

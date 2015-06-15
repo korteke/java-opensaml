@@ -60,7 +60,7 @@ public class DEREncodedKeyValueTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        List<KeyInfoProvider> providers = new ArrayList<KeyInfoProvider>();
+        List<KeyInfoProvider> providers = new ArrayList<>();
         providers.add(new DEREncodedKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
         keyInfoFile = "/data/org/opensaml/xmlsec/keyinfo/impl/DEREncodedKeyValue.xml";

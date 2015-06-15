@@ -76,7 +76,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(attributeStatement
                 .getAttributes().size(), 4, "count of <AttributeStatement> elements after single remove");
 
-        ArrayList<Attribute> list = new ArrayList<Attribute>(2);
+        ArrayList<Attribute> list = new ArrayList<>(2);
 
         list.add(attributeStatement.getAttributes().get(0));
         list.add(attributeStatement.getAttributes().get(2));

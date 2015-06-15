@@ -118,7 +118,7 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
         if (criteriaSet == null) {
             return Collections.emptySet();
         }
-        Set<Predicate<Credential>> predicates = new HashSet<Predicate<Credential>>(criteriaSet.size());
+        Set<Predicate<Credential>> predicates = new HashSet<>(criteriaSet.size());
         for (Criterion criteria : criteriaSet) {
             if (criteria instanceof EvaluableCredentialCriterion) {
                 predicates.add((EvaluableCredentialCriterion) criteria);

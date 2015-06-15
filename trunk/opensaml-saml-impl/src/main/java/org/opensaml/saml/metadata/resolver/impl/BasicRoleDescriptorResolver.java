@@ -201,7 +201,7 @@ public class BasicRoleDescriptorResolver extends AbstractIdentifiedInitializable
 
         List<RoleDescriptor> descriptors = entity.getRoleDescriptors(roleName);
         if (descriptors != null && !descriptors.isEmpty()) {
-            return new ArrayList<RoleDescriptor>(descriptors);
+            return new ArrayList<>(descriptors);
         }
 
         return Collections.emptyList();

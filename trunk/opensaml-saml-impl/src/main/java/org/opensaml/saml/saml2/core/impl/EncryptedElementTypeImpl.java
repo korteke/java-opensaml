@@ -48,7 +48,7 @@ public class EncryptedElementTypeImpl extends AbstractSAMLObject implements Encr
      */
     protected EncryptedElementTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        encryptedKeys = new XMLObjectChildrenList<EncryptedKey>(this);
+        encryptedKeys = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -68,7 +68,7 @@ public class EncryptedElementTypeImpl extends AbstractSAMLObject implements Encr
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (encryptedData != null) {
             children.add(encryptedData);

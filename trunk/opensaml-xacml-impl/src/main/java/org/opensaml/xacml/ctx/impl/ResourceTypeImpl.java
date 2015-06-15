@@ -46,7 +46,7 @@ public class ResourceTypeImpl extends AbstractXACMLObject implements ResourceTyp
      */
     protected ResourceTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributes = new XMLObjectChildrenList<AttributeType>(this);
+        attributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -56,7 +56,7 @@ public class ResourceTypeImpl extends AbstractXACMLObject implements ResourceTyp
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (resourceContent != null) {
             children.add(resourceContent);
         }

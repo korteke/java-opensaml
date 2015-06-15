@@ -56,7 +56,7 @@ public class CancelTargetImpl extends AbstractWSTrustObject implements CancelTar
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (unknownChild != null) {
             children.add(unknownChild);
         }

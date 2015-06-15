@@ -141,7 +141,7 @@ public class DSAKeyValueImpl extends AbstractXMLObject implements DSAKeyValue {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (p != null) {
             children.add(p);

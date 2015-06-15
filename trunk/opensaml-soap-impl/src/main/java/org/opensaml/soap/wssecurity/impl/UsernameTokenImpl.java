@@ -57,7 +57,7 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
     public UsernameTokenImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
  
     /** {@inheritDoc} */
@@ -100,7 +100,7 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         if (username != null) {
             children.add(username);
         }

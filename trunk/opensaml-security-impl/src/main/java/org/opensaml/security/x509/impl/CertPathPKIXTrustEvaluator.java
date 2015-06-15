@@ -284,7 +284,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         }
 
         log.trace("Constructing trust anchors for PKIX validation");
-        Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
+        Set<TrustAnchor> trustAnchors = new HashSet<>();
         for (X509Certificate cert : validationCertificates) {
             trustAnchors.add(buildTrustAnchor(cert));
         }

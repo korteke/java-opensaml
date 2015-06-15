@@ -56,7 +56,7 @@ public class DefaultsTypeImpl extends AbstractXACMLObject implements DefaultsTyp
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (xPathVersion != null) {
             children.add(xPathVersion);

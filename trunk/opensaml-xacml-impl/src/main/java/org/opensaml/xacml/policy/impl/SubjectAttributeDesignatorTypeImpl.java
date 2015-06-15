@@ -59,7 +59,7 @@ public class SubjectAttributeDesignatorTypeImpl extends AttributeDesignatorTypeI
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new LazyList<XMLObject>();
+        return new LazyList<>();
     }
 
 }

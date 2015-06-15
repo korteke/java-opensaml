@@ -57,7 +57,7 @@ public class RequestedReferenceTypeImpl extends AbstractWSTrustObject implements
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         if (securityTokenReference != null) {
             children.add(securityTokenReference);
         }

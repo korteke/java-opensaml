@@ -66,7 +66,7 @@ public class SPKIDataImpl extends AbstractXMLObject implements SPKIData {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll((List<XMLObject>) indexedChildren);
         

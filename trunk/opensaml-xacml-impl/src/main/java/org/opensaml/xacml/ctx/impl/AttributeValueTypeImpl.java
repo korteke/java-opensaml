@@ -51,12 +51,12 @@ public class AttributeValueTypeImpl extends AbstractXACMLObject implements Attri
     protected AttributeValueTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
-        unknownElements = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownElements = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (textContent == null) {
             children.addAll(unknownElements);

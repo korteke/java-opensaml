@@ -135,7 +135,7 @@ public class SAML20AssertionValidator {
             @Nullable final SignatureTrustEngine newTrustEngine,
             @Nullable final SignaturePrevalidator newSignaturePrevalidator) {
         
-        conditionValidators = new LazyMap<QName, ConditionValidator>();
+        conditionValidators = new LazyMap<>();
         if (newConditionValidators != null) {
             for (ConditionValidator validator : newConditionValidators) {
                 if (validator != null) {
@@ -144,7 +144,7 @@ public class SAML20AssertionValidator {
             }
         }
 
-        subjectConfirmationValidators = new LazyMap<String, SubjectConfirmationValidator>();
+        subjectConfirmationValidators = new LazyMap<>();
         if (newConfirmationValidators != null) {
             for (SubjectConfirmationValidator validator : newConfirmationValidators) {
                 if (validator != null) {
@@ -153,7 +153,7 @@ public class SAML20AssertionValidator {
             }
         }
 
-        statementValidators = new LazyMap<QName, StatementValidator>();
+        statementValidators = new LazyMap<>();
         if (newStatementValidators != null) {
             for (StatementValidator validator : newStatementValidators) {
                 if (validator != null) {

@@ -48,7 +48,7 @@ public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
         samlEndpoint.setLocation("http://example.org");
         
         handler = new SAMLOutboundDestinationHandler();
-        messageContext = new MessageContext<SAMLObject>();
+        messageContext = new MessageContext<>();
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).
             getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
     }

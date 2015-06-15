@@ -32,7 +32,7 @@ public class SAML2ArtifactBuilderFactory {
 
     /** Constructor. */
     public SAML2ArtifactBuilderFactory() {
-        artifactBuilders = new LazyMap<String, SAML2ArtifactBuilder>();
+        artifactBuilders = new LazyMap<>();
         artifactBuilders.put(new String(SAML2ArtifactType0004.TYPE_CODE), new SAML2ArtifactType0004Builder());
     }
 

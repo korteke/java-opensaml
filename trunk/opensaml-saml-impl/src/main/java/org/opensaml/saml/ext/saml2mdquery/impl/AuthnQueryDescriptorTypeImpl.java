@@ -43,7 +43,7 @@ public class AuthnQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl implem
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        return new ArrayList<Endpoint>();
+        return new ArrayList<>();
     }
     
     /** {@inheritDoc} */

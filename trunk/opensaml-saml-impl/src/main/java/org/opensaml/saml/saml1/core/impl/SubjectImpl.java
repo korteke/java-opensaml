@@ -72,7 +72,7 @@ public class SubjectImpl extends AbstractSAMLObject implements Subject {
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
 
-        List<XMLObject> list = new ArrayList<XMLObject>(2);
+        List<XMLObject> list = new ArrayList<>(2);
 
         if (nameIdentifier != null) {
             list.add(nameIdentifier);

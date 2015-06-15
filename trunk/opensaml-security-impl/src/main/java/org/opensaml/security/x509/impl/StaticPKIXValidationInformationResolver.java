@@ -75,13 +75,13 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     public StaticPKIXValidationInformationResolver(@Nullable final List<PKIXValidationInformation> info,
             @Nullable final Set<String> names, boolean supportDynamicNames) {
         if (info != null) {
-            pkixInfo = new ArrayList<PKIXValidationInformation>(info);
+            pkixInfo = new ArrayList<>(info);
         } else {
             pkixInfo = Collections.EMPTY_LIST;
         }
 
         if (names != null) {
-            trustedNames = new HashSet<String>(names);
+            trustedNames = new HashSet<>(names);
         } else {
             trustedNames = Collections.EMPTY_SET;
         }
@@ -95,7 +95,7 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
             return ImmutableSet.copyOf(trustedNames);
         }
         
-        HashSet<String> temp = new HashSet<String>(trustedNames);
+        HashSet<String> temp = new HashSet<>(trustedNames);
         EntityIdCriterion entityIDCriterion = criteriaSet.get(EntityIdCriterion.class);
         if (entityIDCriterion != null) {
             temp.add(entityIDCriterion.getEntityId());

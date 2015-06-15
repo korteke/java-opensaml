@@ -51,7 +51,7 @@ public class AttributeTypeImpl extends AbstractXACMLObject implements AttributeT
      */
     protected AttributeTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        attributeValues = new XMLObjectChildrenList<AttributeValueType>(this);
+        attributeValues = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -86,7 +86,7 @@ public class AttributeTypeImpl extends AbstractXACMLObject implements AttributeT
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(attributeValues);
 

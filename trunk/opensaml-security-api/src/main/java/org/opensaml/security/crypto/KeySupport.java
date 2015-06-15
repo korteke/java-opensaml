@@ -476,7 +476,7 @@ public final class KeySupport {
     }
 
     static {
-        keyMatchAlgorithms = new LazyMap<String, String>();
+        keyMatchAlgorithms = new LazyMap<>();
         keyMatchAlgorithms.put(JCAConstants.KEY_ALGO_RSA, JCAConstants.SIGNATURE_RSA_SHA1);
         keyMatchAlgorithms.put(JCAConstants.KEY_ALGO_DSA, JCAConstants.SIGNATURE_DSA_SHA1);
         keyMatchAlgorithms.put(JCAConstants.KEY_ALGO_EC, JCAConstants.SIGNATURE_ECDSA_SHA1);

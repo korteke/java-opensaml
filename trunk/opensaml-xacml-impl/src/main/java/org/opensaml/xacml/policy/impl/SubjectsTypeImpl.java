@@ -43,7 +43,7 @@ public class SubjectsTypeImpl extends AbstractXACMLObject implements SubjectsTyp
      */
     protected SubjectsTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        subject = new XMLObjectChildrenList<SubjectType>(this);
+        subject = new XMLObjectChildrenList<>(this);
     }
     /** {@inheritDoc} */
     public List<SubjectType> getSubjects() {
@@ -53,7 +53,7 @@ public class SubjectsTypeImpl extends AbstractXACMLObject implements SubjectsTyp
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
+        ArrayList<XMLObject> children = new ArrayList<>();        
         
         children.addAll(subject);      
                 

@@ -43,7 +43,7 @@ public class DecisionTypeImpl extends AbstractXACMLObject implements DecisionTyp
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return new ArrayList<XMLObject>();
+        return new ArrayList<>();
     }
 
     /** {@inheritDoc} */

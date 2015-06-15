@@ -122,7 +122,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     /** {@inheritDoc} */
     @Nonnull public Collection<X509Certificate> getEntityCertificateChain() {
         if (entityCertChain == null) {
-            LazySet<X509Certificate> constructedChain = new LazySet<X509Certificate>();
+            LazySet<X509Certificate> constructedChain = new LazySet<>();
             constructedChain.add(entityCert);
             return constructedChain;
         } else {
@@ -139,7 +139,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     public void setEntityCertificateChain(@Nonnull final Collection<X509Certificate> newCertificateChain) {
         Constraint.isNotNull(newCertificateChain, "Certificate chain collection cannot be null");
         Constraint.isNotEmpty(newCertificateChain, "Certificate chain collection cannot be empty");
-        entityCertChain = new ArrayList<X509Certificate>(newCertificateChain);
+        entityCertChain = new ArrayList<>(newCertificateChain);
     }
     
     /**

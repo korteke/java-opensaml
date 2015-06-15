@@ -49,7 +49,7 @@ public class AuthzDecisionQueryDescriptorTypeImpl extends QueryDescriptorTypeImp
             String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
-        actionNamespaces = new XMLObjectChildrenList<ActionNamespace>(this);
+        actionNamespaces = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -61,7 +61,7 @@ public class AuthzDecisionQueryDescriptorTypeImpl extends QueryDescriptorTypeImp
     /** {@inheritDoc} */
     @Override
     public List<Endpoint> getEndpoints() {
-        return new ArrayList<Endpoint>();
+        return new ArrayList<>();
     }
     
     /** {@inheritDoc} */
@@ -73,7 +73,7 @@ public class AuthzDecisionQueryDescriptorTypeImpl extends QueryDescriptorTypeImp
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(super.getOrderedChildren());
         children.addAll(actionNamespaces);

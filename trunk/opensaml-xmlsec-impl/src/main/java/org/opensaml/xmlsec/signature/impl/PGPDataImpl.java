@@ -87,7 +87,7 @@ public class PGPDataImpl extends AbstractXMLObject implements PGPData {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if (pgpKeyID != null) {
             children.add(pgpKeyID);

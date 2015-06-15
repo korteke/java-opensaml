@@ -54,7 +54,7 @@ public class AuthzDecisionQueryImpl extends SubjectQueryImpl implements AuthzDec
      */
     protected AuthzDecisionQueryImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        actions = new XMLObjectChildrenList<Action>(this);
+        actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class AuthzDecisionQueryImpl extends SubjectQueryImpl implements AuthzDec
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (super.getOrderedChildren() != null) {
             children.addAll(super.getOrderedChildren());

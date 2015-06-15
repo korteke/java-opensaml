@@ -44,7 +44,7 @@ public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject
      */
     public RequestSecurityTokenCollectionImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        requestSecurityTokens = new ArrayList<RequestSecurityToken>();
+        requestSecurityTokens = new ArrayList<>();
     }
 
     /** {@inheritDoc} */
@@ -54,7 +54,7 @@ public class RequestSecurityTokenCollectionImpl extends AbstractWSTrustObject
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         children.addAll(requestSecurityTokens);
         return Collections.unmodifiableList(children);
     }

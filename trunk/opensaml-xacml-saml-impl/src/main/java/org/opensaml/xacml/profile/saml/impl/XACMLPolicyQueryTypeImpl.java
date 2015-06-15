@@ -45,7 +45,7 @@ public class XACMLPolicyQueryTypeImpl extends RequestAbstractTypeImpl implements
     public XACMLPolicyQueryTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         setElementNamespacePrefix(namespacePrefix);
-        choiceGroup = new IndexedXMLObjectChildrenList<XACMLObject>(this);
+        choiceGroup = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -66,7 +66,7 @@ public class XACMLPolicyQueryTypeImpl extends RequestAbstractTypeImpl implements
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
                     
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
         
         if(super.getOrderedChildren() != null){
             children.addAll(super.getOrderedChildren());

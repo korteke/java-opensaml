@@ -161,7 +161,7 @@ public final class SOAPSupport {
             EncodingStyleBearing esb = (EncodingStyleBearing) soapObject;
             List<String> list = esb.getSOAP11EncodingStyles();
             if (list == null) {
-                list = new LazyList<String>();
+                list = new LazyList<>();
                 esb.setSOAP11EncodingStyles(list);
             }
             list.add(value);

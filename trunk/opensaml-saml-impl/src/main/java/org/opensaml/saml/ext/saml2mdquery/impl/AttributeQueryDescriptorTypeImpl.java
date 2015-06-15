@@ -47,7 +47,7 @@ public class AttributeQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl im
     protected AttributeQueryDescriptorTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
-        attributeConsumingServices = new XMLObjectChildrenList<AttributeConsumingService>(this);
+        attributeConsumingServices = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -57,7 +57,7 @@ public class AttributeQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl im
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        return new ArrayList<Endpoint>();
+        return new ArrayList<>();
     }
     
     /** {@inheritDoc} */
@@ -67,7 +67,7 @@ public class AttributeQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl im
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.addAll(attributeConsumingServices);

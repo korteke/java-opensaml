@@ -133,7 +133,7 @@ public final class WSSecuritySupport {
             UsageBearing usageBearing = (UsageBearing) soapObject;
             List<String> list = usageBearing.getWSSEUsages();
             if (list == null) {
-                list = new LazyList<String>();
+                list = new LazyList<>();
                 usageBearing.setWSSEUsages(list);
             }
             list.add(usage);

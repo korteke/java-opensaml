@@ -131,7 +131,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         final BasicX509Credential otherCred1 = new BasicX509Credential(otherCert1);
         otherCred1.setEntityId("other-1");
         
-        trustedCredentials = new ArrayList<Credential>();
+        trustedCredentials = new ArrayList<>();
         trustedCredentials.add(otherCred1);
         
         credResolver = new CollectionCredentialResolver(trustedCredentials);
@@ -147,7 +147,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         handler = new SAMLProtocolMessageXMLSignatureSecurityHandler();
         handler.initialize();
         
-        messageContext = new MessageContext<SAMLObject>();
+        messageContext = new MessageContext<>();
         messageContext.setMessage(buildInboundSAMLMessage());
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
         messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);

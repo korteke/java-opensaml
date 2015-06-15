@@ -57,9 +57,9 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
      */
     public SecurityTokenReferenceImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        usages = new ArrayList<String>();
+        usages = new ArrayList<>();
         unknownAttributes = new AttributeMap(this);
-        unknownChildren = new IndexedXMLObjectChildrenList<XMLObject>(this);
+        unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
 
@@ -105,7 +105,7 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
 
         if (!getUnknownXMLObjects().isEmpty()) {
             children.addAll(getUnknownXMLObjects());

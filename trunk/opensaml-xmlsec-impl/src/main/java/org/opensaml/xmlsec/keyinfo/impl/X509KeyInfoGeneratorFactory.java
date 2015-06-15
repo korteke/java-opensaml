@@ -791,7 +791,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        /** Constructor. */
        protected X509Options() {
            x509DigestAlgorithmURI = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
-           subjectAltNames = new LazySet<Integer>();
+           subjectAltNames = new LazySet<>();
            x500DNHandler = new InternalX500DNHandler();
            x500SubjectDNFormat = X500DNHandler.FORMAT_RFC2253;
            x500IssuerDNFormat = X500DNHandler.FORMAT_RFC2253;
@@ -801,7 +801,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
        protected X509Options clone() {
            X509Options clonedOptions = (X509Options) super.clone();
            
-           clonedOptions.subjectAltNames = new LazySet<Integer>();
+           clonedOptions.subjectAltNames = new LazySet<>();
            clonedOptions.subjectAltNames.addAll(subjectAltNames);
            
            clonedOptions.x500DNHandler = x500DNHandler.clone();

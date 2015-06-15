@@ -79,9 +79,9 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     protected RoleDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
-        supportedProtocols = new LazyList<String>();
-        contactPersons = new XMLObjectChildrenList<ContactPerson>(this);
-        keyDescriptors = new XMLObjectChildrenList<KeyDescriptor>(this);
+        supportedProtocols = new LazyList<>();
+        contactPersons = new XMLObjectChildrenList<>(this);
+        keyDescriptors = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -243,7 +243,7 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if (getSignature() != null) {
             children.add(getSignature());

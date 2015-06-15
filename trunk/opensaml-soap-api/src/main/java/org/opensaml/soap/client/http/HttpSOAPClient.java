@@ -98,9 +98,9 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
     /** Constructor. */
     public HttpSOAPClient() {
         soapClientContextLookupStrategy =
-                new ChildContextLookup<MessageContext, SOAPClientContext>(SOAPClientContext.class, false);
+                new ChildContextLookup<>(SOAPClientContext.class, false);
         soap11ContextLookupStrategy =
-                new ChildContextLookup<MessageContext, SOAP11Context>(SOAP11Context.class, false);
+                new ChildContextLookup<>(SOAP11Context.class, false);
     }
 
     /** {@inheritDoc} */

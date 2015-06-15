@@ -61,7 +61,7 @@ public abstract class SubjectStatementImpl extends AbstractSAMLObject implements
             return null;
         }
 
-        List<XMLObject> children = new ArrayList<XMLObject>();
+        List<XMLObject> children = new ArrayList<>();
         children.add(subject);
         return Collections.unmodifiableList(children);
     }

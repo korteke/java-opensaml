@@ -99,7 +99,7 @@ public class FaultImpl extends AbstractXMLObject implements Fault {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.add(faultCode);
         children.add(message);

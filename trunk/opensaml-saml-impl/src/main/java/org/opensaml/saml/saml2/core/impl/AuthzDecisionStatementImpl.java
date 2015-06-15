@@ -59,7 +59,7 @@ public class AuthzDecisionStatementImpl extends AbstractSAMLObject implements Au
      */
     protected AuthzDecisionStatementImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        actions = new XMLObjectChildrenList<Action>(this);
+        actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -99,7 +99,7 @@ public class AuthzDecisionStatementImpl extends AbstractSAMLObject implements Au
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(actions);
         children.add(evidence);

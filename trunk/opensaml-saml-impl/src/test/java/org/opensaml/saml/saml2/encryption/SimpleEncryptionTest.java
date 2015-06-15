@@ -82,7 +82,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         kekParamsRSA.setAlgorithm(kekURIRSA);
         kekParamsRSA.setEncryptionCredential(AlgorithmSupport.generateKeyPairAndCredential(kekURIRSA, 1024, false));
         
-        kekParamsList = new ArrayList<KeyEncryptionParameters>();
+        kekParamsList = new ArrayList<>();
         
         keyInfo = (KeyInfo) buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
     }

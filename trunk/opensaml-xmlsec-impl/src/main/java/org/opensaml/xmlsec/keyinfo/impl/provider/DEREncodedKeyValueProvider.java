@@ -92,7 +92,7 @@ public class DEREncodedKeyValueProvider extends AbstractKeyInfoProvider {
         }
 
         log.debug("Credential successfully extracted from DEREncodedKeyValue");
-        LazySet<Credential> credentialSet = new LazySet<Credential>();
+        LazySet<Credential> credentialSet = new LazySet<>();
         credentialSet.add(cred);
         return credentialSet;
     }

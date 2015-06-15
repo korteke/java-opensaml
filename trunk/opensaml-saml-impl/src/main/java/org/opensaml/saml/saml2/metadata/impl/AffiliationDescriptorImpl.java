@@ -74,8 +74,8 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     protected AffiliationDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
-        members = new XMLObjectChildrenList<AffiliateMember>(this);
-        keyDescriptors = new XMLObjectChildrenList<KeyDescriptor>(this);
+        members = new XMLObjectChildrenList<>(this);
+        keyDescriptors = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -181,7 +181,7 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     /** {@inheritDoc} */
     @Override
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         if(getSignature() != null){
             children.add(getSignature());

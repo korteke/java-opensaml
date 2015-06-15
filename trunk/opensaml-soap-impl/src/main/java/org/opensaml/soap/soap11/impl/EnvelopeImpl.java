@@ -71,7 +71,7 @@ public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelo
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.add(header);
         children.add(body);

@@ -51,7 +51,7 @@ public class SubjectConfirmationImpl extends AbstractSAMLObject implements Subje
      */
     protected SubjectConfirmationImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        confirmationMethods = new XMLObjectChildrenList<ConfirmationMethod>(this);
+        confirmationMethods = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -82,7 +82,7 @@ public class SubjectConfirmationImpl extends AbstractSAMLObject implements Subje
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
 
-        List<XMLObject> list = new ArrayList<XMLObject>(confirmationMethods.size() + 1);
+        List<XMLObject> list = new ArrayList<>(confirmationMethods.size() + 1);
 
         list.addAll(confirmationMethods);
 

@@ -58,9 +58,9 @@ public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescript
      */
     protected PDPDescriptorImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        authzServices = new XMLObjectChildrenList<AuthzService>(this);
-        assertionIDRequestServices = new XMLObjectChildrenList<AssertionIDRequestService>(this);
-        nameIDFormats = new XMLObjectChildrenList<NameIDFormat>(this);
+        authzServices = new XMLObjectChildrenList<>(this);
+        assertionIDRequestServices = new XMLObjectChildrenList<>(this);
+        nameIDFormats = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescript
     
     /** {@inheritDoc} */
     public List<Endpoint> getEndpoints() {
-        List<Endpoint> endpoints = new ArrayList<Endpoint>();
+        List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(authzServices);
         endpoints.addAll(assertionIDRequestServices);
         return Collections.unmodifiableList(endpoints);
@@ -99,7 +99,7 @@ public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescript
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();
+        ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(super.getOrderedChildren());
         children.addAll(authzServices);

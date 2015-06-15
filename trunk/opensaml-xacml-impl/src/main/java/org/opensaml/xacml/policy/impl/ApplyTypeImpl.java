@@ -47,7 +47,7 @@ public class ApplyTypeImpl extends AbstractXACMLObject implements ApplyType {
      */
     protected ApplyTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);     
-        expressions = new XMLObjectChildrenList<ExpressionType>(this);
+        expressions = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
@@ -67,7 +67,7 @@ public class ApplyTypeImpl extends AbstractXACMLObject implements ApplyType {
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren(){   
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
+        ArrayList<XMLObject> children = new ArrayList<>();        
             
         if(!expressions.isEmpty()){
             children.addAll(expressions);
@@ -76,5 +76,3 @@ public class ApplyTypeImpl extends AbstractXACMLObject implements ApplyType {
         return Collections.unmodifiableList(children);
     }
 }
-
-

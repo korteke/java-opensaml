@@ -43,7 +43,7 @@ public class ActionsTypeImpl extends AbstractXACMLObject implements ActionsType 
      */
     protected ActionsTypeImpl(String namespaceURI, String elementLocalName, String namespacePrefix){
         super(namespaceURI,elementLocalName,namespacePrefix);
-        action = new XMLObjectChildrenList<ActionType>(this);
+        action = new XMLObjectChildrenList<>(this);
     }
     /** {@inheritDoc} */
     public List<ActionType> getActions() {
@@ -53,7 +53,7 @@ public class ActionsTypeImpl extends AbstractXACMLObject implements ActionsType 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         
-        ArrayList<XMLObject> children = new ArrayList<XMLObject>();        
+        ArrayList<XMLObject> children = new ArrayList<>();        
         
         children.addAll(action);      
                 

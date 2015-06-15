@@ -82,7 +82,7 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
     }
 
     @BeforeMethod protected void setUp() throws Exception {
-        expectedSupportedProtocols = new ArrayList<String>();
+        expectedSupportedProtocols = new ArrayList<>();
         expectedSupportedProtocols.add(SAMLConstants.SAML20P_NS);
         expectedCacheDuration = 90000;
         expectedValidUntil = new DateTime(2005, 12, 7, 10, 21, 0, 0, ISOChronology.getInstanceUTC());
