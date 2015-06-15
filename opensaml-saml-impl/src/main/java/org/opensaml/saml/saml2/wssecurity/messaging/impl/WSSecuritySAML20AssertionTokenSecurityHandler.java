@@ -334,7 +334,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      */
     @Nonnull protected ValidationContext buildValidationContext(@Nonnull final MessageContext messageContext, 
             @Nonnull final Assertion assertion) {
-        HashMap<String, Object> staticParams = new HashMap<String, Object>();
+        HashMap<String, Object> staticParams = new HashMap<>();
         
         //For signature validation
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, Boolean.TRUE);
@@ -346,7 +346,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
                 getAttesterCertificate(messageContext));
         
         // For SubjectConfirmationData
-        HashSet<String> validRecipients = new HashSet<String>();
+        HashSet<String> validRecipients = new HashSet<>();
         validRecipients.addAll(getValidRecipients(messageContext));
         staticParams.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, validRecipients);
         
@@ -355,7 +355,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             String attesterIPAddress = getAttesterIPAddress(messageContext);
             if (attesterIPAddress != null) {
                 addresses = InetAddress.getAllByName(getAttesterIPAddress(messageContext));
-                HashSet<InetAddress> validAddresses = new HashSet<InetAddress>();
+                HashSet<InetAddress> validAddresses = new HashSet<>();
                 validAddresses.addAll(Arrays.asList(addresses));
                 staticParams.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, validAddresses);
             } else {
@@ -366,7 +366,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         }
         
         // For Audience Condition
-        HashSet<String> validAudiences = new HashSet<String>();
+        HashSet<String> validAudiences = new HashSet<>();
         validAudiences.addAll(getValidAudiences(messageContext));
         staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, validAudiences);
         
@@ -449,7 +449,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @return set of recipient endpoint URI's
      */
     @Nonnull protected Set<String> getValidRecipients(@Nonnull final MessageContext messageContext) {
-        LazySet<String> validRecipients = new LazySet<String>();
+        LazySet<String> validRecipients = new LazySet<>();
         String endpoint = getHttpServletRequest().getRequestURL().toString();
         validRecipients.add(endpoint);
         return validRecipients;
@@ -463,7 +463,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @return set of audience URI's
      */
     @Nonnull protected Set<String> getValidAudiences(@Nonnull final MessageContext messageContext) {
-        LazySet<String> validAudiences = new LazySet<String>();
+        LazySet<String> validAudiences = new LazySet<>();
         
         //TODO for future library inclusion this probably needs to be more generalized and/or pluggable
         
@@ -501,7 +501,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             return Collections.emptyList();
         }
         
-        LazyList<Assertion> assertions = new LazyList<Assertion>();
+        LazyList<Assertion> assertions = new LazyList<>();
         
         // There could be multiple Security headers targeted to this node, so process all of them
         for (XMLObject header : securityHeaders) {
