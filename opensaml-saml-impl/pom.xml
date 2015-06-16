@@ -134,7 +134,6 @@
             <groupId>net.shibboleth.ext</groupId>
             <artifactId>spring-extensions</artifactId>
             <scope>test</scope>
-            <version>${spring-extensions.version}</version>
         </dependency>
         
     </dependencies>
