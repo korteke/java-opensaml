@@ -17,14 +17,18 @@
 
 package org.opensaml.core.xml.util;
 
+import javax.xml.namespace.QName;
+
 import org.testng.annotations.Test;
 import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 
 /**
@@ -108,5 +112,33 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
                 "Cloned object was not the new Document root");
     }
     
+    @Test
+    public void testBuildXMLObject() {
+        try {
+            XMLObjectSupport.buildXMLObject(simpleXMLObjectQName);
+        } catch (Exception e) {
+            Assert.fail("Expected XMLObject could not be built");
+        }
+        
+        try {
+            XMLObjectSupport.buildXMLObject(simpleXMLObjectQName, XSString.TYPE_NAME);
+        } catch (Exception e) {
+            Assert.fail("Expected XMLObject could not be built");
+        }
+        
+        try {
+            XMLObjectSupport.buildXMLObject(new QName("urn:test:bogus", "foo"));
+            Assert.fail("buildXMLObject did not throw as expected");
+        } catch (XMLRuntimeException e) {
+            // expected
+        }
+        
+        try {
+            XMLObjectSupport.buildXMLObject(new QName("urn:test:bogus", "foo"), XSString.TYPE_NAME);
+            Assert.fail("buildXMLObject did not throw as expected");
+        } catch (XMLRuntimeException e) {
+            // expected
+        }
+    }
 
 }

@@ -402,15 +402,12 @@ public final class XMLObjectSupport {
      * Build an XMLObject based on the element name.
      * 
      * @param elementName the element name
-     * @return an XMLObject, or null if no provider registered
+     * @return an XMLObject
+     * @throws XMLRuntimeException if the required builder can not be obtained
      */
     public static XMLObject buildXMLObject(QName elementName) {
-        XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
-        if (builder != null) {
-            return builder.buildObject(elementName);
-        } else {
-            return null;
-        }
+        XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
+        return builder.buildObject(elementName);
     }
     
     /**
@@ -418,15 +415,12 @@ public final class XMLObjectSupport {
      * 
      * @param elementName the element name
      * @param typeName the xsi:type
-     * @return an XMLObject, or null if no provider registered
+     * @return an XMLObject
+     * @throws XMLRuntimeException if the required builder can not be obtained
      */
     public static XMLObject buildXMLObject(QName elementName, QName typeName) {
-        XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilder(elementName);
-        if (builder != null) {
-            return builder.buildObject(elementName, typeName);
-        } else {
-            return null;
-        }
+        XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
+        return builder.buildObject(elementName, typeName);
     }
     
     /**
@@ -483,8 +477,13 @@ public final class XMLObjectSupport {
      * Obtain the XMLObject provider registry.
      * 
      * @return the configured XMLObject provider registry
+     * @throws XMLRuntimeException if the registry is not available
      */
     private static XMLObjectProviderRegistry getProviderRegistry() {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class);
+        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        if (registry == null) {
+            throw new XMLRuntimeException("XMLObjectProviderRegistry was not available from the ConfigurationService");
+        }
+        return registry;
     }
 }
