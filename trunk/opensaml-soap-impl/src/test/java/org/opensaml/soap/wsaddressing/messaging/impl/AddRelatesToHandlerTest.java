@@ -49,7 +49,7 @@ public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertTrue(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
+        Assert.assertTrue(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
     }
 
     @Test
@@ -60,8 +60,8 @@ public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
-        RelatesTo relatesTo = (RelatesTo) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
+        RelatesTo relatesTo = (RelatesTo) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).get(0);
         Assert.assertEquals(relatesTo.getValue(), "urn:test:abc123");
         Assert.assertEquals(relatesTo.getRelationshipType(), RelatesTo.RELATIONSHIP_TYPE_REPLY);
     }
@@ -78,8 +78,8 @@ public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
-        RelatesTo relatesTo = (RelatesTo) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
+        RelatesTo relatesTo = (RelatesTo) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).get(0);
         Assert.assertEquals(relatesTo.getValue(), "urn:test:def456");
         Assert.assertEquals(relatesTo.getRelationshipType(), "urn:test:foo");
     }
