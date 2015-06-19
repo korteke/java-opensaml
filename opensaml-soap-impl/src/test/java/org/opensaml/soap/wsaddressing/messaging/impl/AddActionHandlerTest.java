@@ -45,7 +45,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertTrue(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Assert.assertTrue(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
     }
     
     @Test
@@ -55,8 +55,8 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
-        Action action = (Action) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
         Assert.assertEquals(action.getValue(), "urn:test:action1");
     }
 
@@ -67,8 +67,8 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
-        Action action = (Action) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
         Assert.assertEquals(action.getValue(), "urn:test:action1");
     }
 
@@ -80,8 +80,8 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
-        Action action = (Action) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
         Assert.assertEquals(action.getValue(), "urn:test:action2");
     }
 

@@ -48,8 +48,8 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
-        MessageID messageID = (MessageID) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
+        MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
         Assert.assertTrue(messageID.getValue().startsWith("urn:uuid:"));
     }
 
@@ -71,8 +71,8 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
-        MessageID messageID = (MessageID) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
+        MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
         Assert.assertEquals(messageID.getValue(), "urn:test:abc123");
     }
     
@@ -83,8 +83,8 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
-        MessageID messageID = (MessageID) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
+        MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
         Assert.assertEquals(messageID.getValue(), "urn:test:abc123");
     }
 
@@ -108,8 +108,8 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertFalse(SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
-        MessageID messageID = (MessageID) SOAPMessagingSupport.getInboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
+        MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
         Assert.assertEquals(messageID.getValue(), "urn:test:def456");
     }
 
