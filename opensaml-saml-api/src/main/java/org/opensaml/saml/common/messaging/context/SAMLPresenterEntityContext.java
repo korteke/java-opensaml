@@ -19,12 +19,13 @@ package org.opensaml.saml.common.messaging.context;
 
 
 /**
- * Subcontext that carries information about the SAML "self" entity.
+ * Subcontext that carries information about the SAML "presenter" entity, as defined in 
+ * SAML Core, section 3.4.
  * 
  * <p>
- * This context will often contain subcontexts, whose data is construed to be scoped to that self entity.
+ * This context will often contain subcontexts, whose data is construed to be scoped to that presenter entity.
  * </p>
  */
-public class SAMLSelfEntityContext extends AbstractSAMLEntityContext {
+public class SAMLPresenterEntityContext extends AbstractAuthenticatableSAMLEntityContext {
 
 }

@@ -22,11 +22,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLPresenterEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeQuery;
@@ -181,6 +184,34 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
                 "Unexpected value for Issuer found");
         //TODO this may change
         Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+                "Unexpected value for context authentication state");
+    }
+    
+    /**
+     * Test context issuer set, with non-default entity context class, request with trusted credential.
+     * @throws MessageHandlerException 
+     * @throws ComponentInitializationException 
+     */
+    @Test
+    public void testSuccessNonDefaultEntityContextClass() throws MessageHandlerException, ComponentInitializationException {
+        trustedCredentials.add(validX509Cred);
+        
+        handler = new SAMLMDClientCertAuthSecurityHandler();
+        handler.setEntityContextClass(SAMLPresenterEntityContext.class);
+        handler.setHttpServletRequest(request);
+        handler.initialize();
+        
+        messageContext.removeSubcontext(SAMLPeerEntityContext.class);
+        Assert.assertNull(messageContext.getSubcontext(SAMLPeerEntityContext.class));
+        messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).setEntityId(issuer);
+        messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        
+        handler.invoke(messageContext);
+        
+        Assert.assertEquals(messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).getEntityId(), issuer, 
+                "Unexpected value for Issuer found");
+        //TODO this may change
+        Assert.assertTrue(messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
