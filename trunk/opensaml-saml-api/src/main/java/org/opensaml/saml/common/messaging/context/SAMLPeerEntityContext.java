@@ -37,8 +37,11 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Subcontext that carries information about a SAML peer entity.  This context will often
- * contain subcontexts, whose data is construed to be scoped to that peer entity.
+ * Subcontext that carries information about a SAML peer entity.
+ * 
+ * <p>
+ * This context will often contain subcontexts, whose data is construed to be scoped to that peer entity.
+ * </p>
  * 
  * <p>
  * The method {@link #getEntityId()} will attempt to dynamically resolve the appropriate data 
