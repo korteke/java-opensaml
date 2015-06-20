@@ -36,6 +36,7 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
@@ -269,7 +270,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void testFault() throws ComponentInitializationException, MessageEncodingException, XMLParserException, UnmarshallingException {
+    public void testFaultAsMessage() throws ComponentInitializationException, MessageEncodingException, XMLParserException, UnmarshallingException {
         Fault fault = buildXMLObject(Fault.DEFAULT_ELEMENT_NAME);
         
         FaultCode faultCode = buildXMLObject(FaultCode.DEFAULT_ELEMENT_NAME);
@@ -282,6 +283,57 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
        
         MessageContext<XMLObject> messageContext = new MessageContext<>();
         messageContext.setMessage(fault);
+        
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        
+        HTTPSOAP11Encoder<XMLObject> encoder = new HTTPSOAP11Encoder<>();
+        encoder.setMessageContext(messageContext);
+        encoder.setHttpServletResponse(response);
+        
+        encoder.initialize();
+        encoder.prepareContext();
+        encoder.encode();
+        
+        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
+        Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
+        Assert.assertEquals(response.getStatus(), 500);
+        
+        Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
+        
+        Assert.assertNotNull(encodedEnv);
+        Assert.assertNotNull(encodedEnv.getBody());
+        Body encodedBody = encodedEnv.getBody();
+        List<XMLObject> faults = encodedBody.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+        Assert.assertEquals(faults.size(), 1);
+        Fault encodedFault = (Fault) faults.get(0);
+        Assert.assertEquals(encodedFault.getCode().getValue(), FaultCode.SERVER);
+        Assert.assertEquals(encodedFault.getMessage().getValue(), "Something bad happened");
+    }
+    
+    @Test
+    public void testFaultFromContextSignal() throws ComponentInitializationException, MessageEncodingException, XMLParserException, UnmarshallingException {
+        Fault fault = buildXMLObject(Fault.DEFAULT_ELEMENT_NAME);
+        
+        FaultCode faultCode = buildXMLObject(FaultCode.DEFAULT_ELEMENT_NAME);
+        faultCode.setValue(FaultCode.SERVER);
+        fault.setCode(faultCode);
+        
+        FaultString faultString = buildXMLObject(FaultString.DEFAULT_ELEMENT_NAME);
+        faultString.setValue("Something bad happened");
+        fault.setMessage(faultString);
+        
+        XMLObjectBuilder<XSAny> xsAnyBuilder = getBuilder(XSAny.TYPE_NAME);
+        XSAny payload =  xsAnyBuilder.buildObject("http://example.org/soap/ns/message", "GetLastTradePriceResponse", "m");
+        
+        XSAny price =  xsAnyBuilder.buildObject("http://example.org/soap/ns/message", "Price", "m");
+        price.setTextContent("34.5");
+        
+        payload.getUnknownXMLObjects().add(price);
+       
+        MessageContext<XMLObject> messageContext = new MessageContext<>();
+        messageContext.setMessage(payload);
+        SOAPMessagingSupport.registerSOAP11Fault(messageContext, fault);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         
