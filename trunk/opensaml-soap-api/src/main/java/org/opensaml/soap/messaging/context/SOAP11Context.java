@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.Fault;
 
 /**
  * Subcontext that carries information about the SOAP 1.1 message transport.
@@ -29,6 +30,9 @@ public class SOAP11Context extends BaseContext {
     
     /** The SAML protocol in use. */
     private Envelope envelope;
+    
+    /** SOAP 1.1 Fault related to the current message processing context. */
+    private Fault fault;
     
     /** The HTTP response status code to return. */
     private Integer httpResponseStatus;
@@ -50,6 +54,24 @@ public class SOAP11Context extends BaseContext {
     public void setEnvelope(@Nullable final Envelope newEnvelope) {
         envelope = newEnvelope;
     }
+    
+    /**
+     * Get the current SOAP 1.1 Fault related to the current message processing context.
+     * 
+     * @return the current SOAP 1.1 Fault, may be null
+     */
+    @Nullable public Fault getFault() {
+        return fault;
+    }
+
+    /**
+     * Set the current SOAP 1.1 Fault related to the current message processing context.
+     * 
+     * @param newFault the new Fault
+     */
+    public void setFault(@Nullable final Fault newFault) {
+        fault = newFault;
+    }
 
     /**
      * Get the optional HTTP response status code to return.
@@ -68,7 +90,5 @@ public class SOAP11Context extends BaseContext {
     public void setHTTPResponseStatus(@Nullable final Integer status) {
         httpResponseStatus = status;
     }
-    
-    
     
 }

@@ -19,6 +19,7 @@ package org.opensaml.soap.messaging;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -35,6 +36,7 @@ import org.opensaml.soap.messaging.context.InboundSOAPContext;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.util.SOAPSupport;
 
@@ -276,6 +278,66 @@ public final class SOAPMessagingSupport {
         }
         
         envelopeHeader.getUnknownXMLObjects().add(headerBlock);
+    }
+    
+    /**
+     * Register a SOAP 1.1. fault based on its constituent information items.
+     * 
+     * @param messageContext the current message context
+     * @param faultCode the fault code QName (required)
+     * @param faultString the fault message string value (required)
+     * @param faultActor the fault actor value (may be null)
+     * @param detailChildren the detail child elements
+     * @param detailAttributes the detail element attributes
+     */
+    // Checkstyle: ParameterNumber OFF -- fault just has that many constituent parts
+    public static void registerSOAP11Fault(@Nonnull final MessageContext messageContext, 
+            @Nonnull final QName faultCode, @Nonnull final String faultString, @Nullable final String faultActor, 
+            @Nullable final List<XMLObject> detailChildren, @Nullable final Map<QName, String> detailAttributes) {
+        
+        registerSOAP11Fault(messageContext, 
+                SOAPSupport.buildSOAP11Fault(faultCode, faultString, faultActor, detailChildren, detailAttributes));
+    }
+    // Checkstyle: ParameterNumber
+    
+    /**
+     * Register a SOAP 1.1 fault.
+     * 
+     * @param messageContext the current message context
+     * @param fault the fault to register
+     */
+    public static void registerSOAP11Fault(@Nonnull final MessageContext messageContext, @Nullable final Fault fault) {
+        SOAP11Context soap11Context = getSOAP11Context(messageContext, true);
+        
+        soap11Context.setFault(fault);
+    }
+    
+    /**
+     * Get the registered SOAP 1.1 fault, if any.
+     * 
+     * @param messageContext the current message context
+     * @return the registered fault, or null
+     */
+    public static Fault getSOAP11Fault(@Nonnull final MessageContext messageContext) {
+        SOAP11Context soap11Context = getSOAP11Context(messageContext, false);
+        if (soap11Context != null) {
+            return soap11Context.getFault();
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Clear the currently registered SOAP fault, if any.
+     * 
+     * @param messageContext the current message context
+     */
+    public static void clearFault(@Nonnull final MessageContext messageContext) {
+        SOAP11Context soap11Context = getSOAP11Context(messageContext, false);
+        if (soap11Context != null) {
+            soap11Context.setFault(null);
+        }
+        //TODO SOAP 1.2
     }
     
 }
