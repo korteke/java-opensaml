@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -70,8 +71,11 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
     
-    /** The SAML 2.0 Assertion validator.*/
+    /** The SAML 2.0 Assertion validator, may be null.*/
     private SAML20AssertionValidator assertionValidator;
+    
+    /** The SAML 2.0 Assertion validator lookup function, may be null.*/
+    private Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
     
     /** Function that builds a {@link ValidationContext} instance based on a 
      * {@link SAML20AssertionTokenValidationInput} instance. */
@@ -183,6 +187,27 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         assertionValidator = validator;
     }
+    
+    /**
+     * Get the Assertion validator lookup function.
+     * 
+     * @return the Assertion validator lookup function, or null
+     */
+    @Nullable public Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> getAssertionValidatorLookup() {
+        return assertionValidatorLookup;
+    }
+
+    /**
+     * Set the Assertion validator lookup function.
+     * 
+     * @param function the Assertion validator lookup function, may be null
+     */
+    public void setAssertionValidatorLookup(
+            @Nullable final Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> function) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        assertionValidatorLookup = function;
+    }
 
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
@@ -197,7 +222,11 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         }
         
         if (getAssertionValidator() == null) {
-            log.info("Assertion validator is null, must be resovleable from the MessageContext");
+            if (getAssertionValidatorLookup() == null) {
+                throw new ComponentInitializationException("Both Assertion validator and lookup function were null");
+            } else {
+                log.info("Assertion validator is null, must be resovleable via the lookup function");
+            }
         }
     }
 
@@ -223,13 +252,13 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         
         WSSecurityContext wsContext = messageContext.getSubcontext(WSSecurityContext.class, true);
         
-        SAML20AssertionValidator validator = getTokenValidator(messageContext);
-        if (validator == null) {
-            log.warn("No SAML20AssertionValidator was available, terminating");
-            throw new MessageHandlerException("No SAML20AssertionValidator was available");
-        }
-        
         for (Assertion assertion : assertions) {
+            SAML20AssertionValidator validator = resolveValidator(messageContext, assertion);
+            if (validator == null) {
+                log.warn("No SAML20AssertionValidator was available, terminating");
+                throw new MessageHandlerException("No SAML20AssertionValidator was available");
+            }
+        
             ValidationContext validationContext = buildValidationContext(messageContext, assertion);
             
             try { 
@@ -268,8 +297,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             validationMsg  = "unspecified";
         }
                     
-        // TODO re fault reporting: per WS-S spec there are various codes for more specific processing failures.
-        // We would need the Assertion validator to report that more specific error in some fashion
         switch (validationResult) {
             case VALID:
                 token.setValidationStatus(ValidationStatus.VALID);
@@ -311,15 +338,33 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     }
 
     /**
-     * Get the Assertion token validator.
+     * Resolve the Assertion token validator to use with the specified Assertion.
      * 
      * @param messageContext the current message context
+     * @param assertion the assertion being evaluated
      * 
      * @return the token validator
      */
-    @Nullable protected SAML20AssertionValidator getTokenValidator(@Nonnull final MessageContext messageContext) {
-        //TODO support resolution from context?
-        return assertionValidator;
+    @Nullable protected SAML20AssertionValidator resolveValidator(@Nonnull final MessageContext messageContext, 
+            @Nonnull final Assertion assertion) {
+        
+        if (getAssertionValidatorLookup() != null) {
+            log.debug("Attempting to resolve SAML 2 Assertion validator via lookup function");
+            SAML20AssertionValidator validator = getAssertionValidatorLookup().apply(
+                    new Pair<>(messageContext, assertion));
+            if (validator != null) {
+                log.debug("Resolved SAML 2 Assertion validator via lookup function");
+                return validator;
+            }
+        }
+        
+        if (getAssertionValidator() != null) {
+            log.debug("Resolved locally configured SAML 2 Assertion validator");
+            return getAssertionValidator();
+        }
+        
+        log.debug("No SAML 2 Assertion validator could be resolved");
+        return null;
     }
 
     /**
