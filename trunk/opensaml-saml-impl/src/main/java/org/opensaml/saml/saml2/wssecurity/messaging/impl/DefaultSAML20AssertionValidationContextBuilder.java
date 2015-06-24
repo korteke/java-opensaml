@@ -267,8 +267,15 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * Get the valid recipient endpoints for attestation.
      * 
      * <p>
-     * This implementation returns a set containing the single value 
-     * from {@link javax.servlet.http.HttpServletRequest#getRequestURL()}.
+     * This implementation returns a set containing the 2 values;
+     * <ol>
+     * <li>
+     * {@link javax.servlet.http.HttpServletRequest#getRequestURL()}
+     * </li>
+     * <li>
+     * if present, {@link SAMLSelfEntityContext#getEntityId()}
+     * </li>
+     * </ol>
      * </p>
      * 
      * @param input the assertion validation input
@@ -277,8 +284,15 @@ public class DefaultSAML20AssertionValidationContextBuilder
      */
     @Nonnull protected Set<String> getValidRecipients(@Nonnull final SAML20AssertionTokenValidationInput input) {
         LazySet<String> validRecipients = new LazySet<>();
+        
         String endpoint = input.getHttpServletRequest().getRequestURL().toString();
         validRecipients.add(endpoint);
+        
+        SAMLSelfEntityContext selfContext = input.getMessageContext().getSubcontext(SAMLSelfEntityContext.class);
+        if (selfContext != null && selfContext.getEntityId() != null) {
+            validRecipients.add(selfContext.getEntityId());
+        }
+        
         log.debug("Resolved valid subject confirmation recipients set: {}", validRecipients);
         return validRecipients;
     }
