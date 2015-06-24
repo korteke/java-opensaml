@@ -72,14 +72,14 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     private boolean invalidFatal;
     
     /** The SAML 2.0 Assertion validator, may be null.*/
-    private SAML20AssertionValidator assertionValidator;
+    @Nullable private SAML20AssertionValidator assertionValidator;
     
     /** The SAML 2.0 Assertion validator lookup function, may be null.*/
-    private Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
+    @Nullable private Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
     
     /** Function that builds a {@link ValidationContext} instance based on a 
      * {@link SAML20AssertionTokenValidationInput} instance. */
-    private Function<SAML20AssertionTokenValidationInput, ValidationContext> validationContextBuilder;
+    @NonnullAfterInit private Function<SAML20AssertionTokenValidationInput, ValidationContext> validationContextBuilder;
     
     
     /** Constructor. */
@@ -99,7 +99,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * 
      * @return the builder function
      */
-    @Nonnull public Function<SAML20AssertionTokenValidationInput, ValidationContext> getValidationContextBuilder() {
+    @NonnullAfterInit public Function<SAML20AssertionTokenValidationInput, ValidationContext> getValidationContextBuilder() {
         return validationContextBuilder;
     }
 
