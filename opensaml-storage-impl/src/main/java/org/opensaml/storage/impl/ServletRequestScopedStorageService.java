@@ -56,7 +56,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -218,44 +217,6 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         } else if (dataSealer == null || cookieManager == null) {
             throw new ComponentInitializationException("DataSealer and CookieManager must be set");
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean create(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value, @Nullable final Long expiration) throws IOException {
-        
-        if (super.create(context, key, value, expiration)) {
-            setDirty(true);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
-            throws IOException {
-        super.updateContextExpiration(context, expiration);
-        
-        setDirty(true);
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
-        super.deleteContext(context);
-        
-        setDirty(true);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void reap(@Nonnull @NotEmpty final String context) throws IOException {
-        super.reap(context);
-        
-        setDirty(true);
     }
 
     /** {@inheritDoc} */
@@ -464,18 +425,6 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
 
     /** {@inheritDoc} */
     @Override
-    protected boolean deleteImpl(@Nullable @Positive final Long version, @Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
-        if (super.deleteImpl(version, context, key)) {
-            setDirty(true);
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    /** {@inheritDoc} */
-    @Override
     @Nullable protected TimerTask getCleanupTask() {
         return null;
     }
@@ -508,6 +457,12 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     @Override
     @Nonnull protected ReadWriteLock getLock() {
         return DUMMY_LOCK;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public void setDirty() {
+        setDirty(true);
     }
     
     /**

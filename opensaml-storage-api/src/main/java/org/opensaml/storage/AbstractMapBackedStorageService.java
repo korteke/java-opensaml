@@ -93,6 +93,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             log.trace("Inserted record '{}' in context '{}' with expiration '{}'",
                     new Object[] { key, context, expiration });
             
+            setDirty();
             return true;
             
         } finally {
@@ -219,6 +220,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             final Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
             if (dataMap != null) {
                 if (reapWithLock(dataMap, System.currentTimeMillis())) {
+                    setDirty();
                     if (dataMap.isEmpty()) {
                         contextMap.remove(context);
                     }
@@ -231,18 +233,29 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     }
 
     /**
-     * Get the map of contexts to manipulate during operations.
-     * 
-     * @return map of contexts to manipulate
-     */
-    @Nonnull @NonnullElements @Live protected abstract Map<String, Map<String, MutableStorageRecord>> getContextMap();
-    
-    /**
      * Get the shared lock to synchronize access.
      * 
      * @return shared lock
      */
     @Nonnull protected abstract ReadWriteLock getLock();
+
+    /**
+     * Get the map of contexts to manipulate during operations.
+     * 
+     * <p>This method is guaranteed to be called under cover the lock returned by {{@link #getLock()}.</p>
+     * 
+     * @return map of contexts to manipulate
+     */
+    @Nonnull @NonnullElements @Live protected abstract Map<String, Map<String, MutableStorageRecord>> getContextMap();
+
+    /**
+     * A callback to indicate that data has been modified.
+     * 
+     * <p>This method is guaranteed to be called under cover the lock returned by {{@link #getLock()}.</p>
+     */
+    protected void setDirty() {
+        
+    }
     
     /**
      * Internal method to implement read functions.
@@ -340,6 +353,8 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 throw new VersionMismatchException();
             }
     
+            setDirty();
+            
             if (value != null) {
                 record.setValue(value);
                 record.incrementVersion();
@@ -391,6 +406,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
             } else if (version != null && record.getVersion() != version) {
                 throw new VersionMismatchException();
             } else {
+                setDirty();
                 dataMap.remove(key);
                 log.trace("Deleted record '{}' in context '{}'", key, context);
                 return true;
