@@ -33,6 +33,8 @@ import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SAML specialization of {@link BaseClientCertAuthSecurityHandler} which provides support for X509Credential 
@@ -44,6 +46,9 @@ import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
  * </p>
  */
 public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecurityHandler {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(SAMLMDClientCertAuthSecurityHandler.class);
     
     /** The actual context class holding the authenticatable SAML entity. */
     private Class<? extends AbstractAuthenticatableSAMLEntityContext> entityContextClass;
@@ -88,11 +93,13 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
         final CriteriaSet criteriaSet = super.buildCriteriaSet(entityID, messageContext);
         
         try {
+            log.trace("Attempting to build criteria based on contents of entity contxt class of type: {}", 
+                    entityContextClass.getName());
             final AbstractAuthenticatableSAMLEntityContext entityContext = 
                     messageContext.getSubcontext(entityContextClass);
             Constraint.isNotNull(entityContext, "Required authenticatable SAML entity context was not present "
                     + "in message context: " +  entityContextClass.getName());
-            Constraint.isNotNull(entityContext.getRole(), "SAML peer role was null");
+            Constraint.isNotNull(entityContext.getRole(), "SAML entity role was null");
             criteriaSet.add(new EntityRoleCriterion(entityContext.getRole()));
             
             final SAMLProtocolContext protocolContext = messageContext.getSubcontext(SAMLProtocolContext.class);
@@ -111,8 +118,10 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
     @Nullable protected String getCertificatePresenterEntityID(@Nonnull final MessageContext messageContext) {
         AbstractAuthenticatableSAMLEntityContext entityContext = messageContext.getSubcontext(entityContextClass);
         if (entityContext != null) {
+            log.trace("Found authenticatable entityID '{}' from context: {}", entityContext.getEntityId(), entityContext.getClass().getName());
             return entityContext.getEntityId();
         } else {
+            log.trace("Authenticatable entityID context was not present: {}", entityContext.getClass().getName());
             return null;
         }
     }
@@ -121,13 +130,14 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
     @Override
     protected void setAuthenticatedCertificatePresenterEntityID(@Nonnull final MessageContext messageContext,
             @Nullable final String entityID) {
+        log.trace("Storing authenticatable entityID '{}' in context: {}", entityID, entityContextClass);
         messageContext.getSubcontext(entityContextClass, true).setEntityId(entityID);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setAuthenticatedState(@Nonnull final MessageContext messageContext, final boolean authenticated) {
-        //TODO this may change
+        log.trace("Storing authenticated entity state '{}' in context: {}", authenticated, entityContextClass);
         messageContext.getSubcontext(entityContextClass, true).setAuthenticated(authenticated);
     }
     
