@@ -67,7 +67,7 @@ public class PopulateClientStorageLoadContextTest {
         action.initialize();
         
         action.execute(prc);
-        ActionTestingSupport.assertProceedEvent(prc);
+        ActionTestingSupport.assertEvent(prc, PopulateClientStorageLoadContext.LOAD_NOT_NEEDED);
         Assert.assertNull(prc.getSubcontext(ClientStorageLoadContext.class));
     }
  
@@ -95,11 +95,10 @@ public class PopulateClientStorageLoadContextTest {
                 ClientStorageService.STORAGE_ATTRIBUTE + ".foo", new ClientStorageServiceStore());
         
         action.execute(prc);
-        ActionTestingSupport.assertProceedEvent(prc);
+        ActionTestingSupport.assertEvent(prc, PopulateClientStorageLoadContext.LOAD_NOT_NEEDED);
         
         final ClientStorageLoadContext ctx = prc.getSubcontext(ClientStorageLoadContext.class);
-        Assert.assertNotNull(ctx);
-        Assert.assertTrue(ctx.getStorageKeys().isEmpty());
+        Assert.assertNull(ctx);
     }
 
     private ClientStorageService getStorageService() throws ComponentInitializationException {
