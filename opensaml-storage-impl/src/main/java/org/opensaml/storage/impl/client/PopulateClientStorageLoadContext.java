@@ -24,6 +24,7 @@ import java.util.Collections;
 import javax.annotation.Nonnull;
 
 import org.opensaml.profile.action.AbstractProfileAction;
+import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -39,7 +41,11 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
  * An action that creates and populates a {@link ClientStorageLoadContext} with any storage keys identified
  * as missing from the current session and in need of loading.
  * 
+ * <p>The action will signal the {@link #LOAD_NOT_NEEDED} event if it is unnecessary to proceed with the
+ * load operation.</p>
+ * 
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
+ * @event {@link #LOAD_NOT_NEEDED}
  * @post <pre>ProfileRequestContext.getSubcontext(ClientStorageLoadContext.class) != null</pre>
  * 
  * @param <InboundMessageType>
@@ -48,6 +54,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessageType>
         extends AbstractProfileAction<InboundMessageType, OutboundMessageType> {
 
+    /** Event signaling that no load step is necessary. */
+    @Nonnull @NotEmpty public static final String LOAD_NOT_NEEDED = "LoadNotNeeded";
+    
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(PopulateClientStorageLoadContext.class);
 
@@ -76,11 +85,13 @@ public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessag
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
         
         if (!super.doPreExecute(profileRequestContext)) {
+            ActionSupport.buildEvent(profileRequestContext, LOAD_NOT_NEEDED);
             return false;
         }
         
         if (storageServices.isEmpty()) {
             log.debug("{} No ClientStorageServices supplied, nothing to do", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, LOAD_NOT_NEEDED);
             return false;
         }
         
@@ -92,13 +103,18 @@ public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessag
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
         
         final ClientStorageLoadContext loadCtx = new ClientStorageLoadContext();
-        profileRequestContext.addSubcontext(loadCtx, true);
         
         for (final ClientStorageService service : storageServices) {
             
             if (!service.isLoaded()) {
                 loadCtx.getStorageKeys().add(service.getStorageName());
             }
+        }
+        
+        if (loadCtx.getStorageKeys().isEmpty()) {
+            ActionSupport.buildEvent(profileRequestContext, LOAD_NOT_NEEDED);
+        } else {
+            profileRequestContext.addSubcontext(loadCtx, true);
         }
     }
 
