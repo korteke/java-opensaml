@@ -38,7 +38,6 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.security.DataExpiredException;
 import net.shibboleth.utilities.java.support.security.DataSealer;
@@ -79,9 +78,6 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
     /** Servlet request. */
     @NonnullAfterInit private HttpServletRequest httpServletRequest;
     
-    /** Manages creation of cookies if supported/needed. */
-    @NonnullAfterInit private CookieManager cookieManager;
-    
     /** Label used to track storage. */
     @Nonnull @NotEmpty private String storageName;
     
@@ -112,17 +108,6 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
-    }
-    
-    /**
-     * Set the {@link CookieManager} to use.
-     * 
-     * @param manager the CookieManager to use.
-     */
-    public void setCookieManager(@Nonnull final CookieManager manager) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        cookieManager = Constraint.isNotNull(manager, "CookieManager cannot be null");
     }
 
     /**
@@ -167,28 +152,27 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
         keyStrategy = strategy;
     }
 
-    /**
-     * Check whether data from the client has been loaded into the current session.
-     * 
-     * <p>This method should <strong>not</strong> be called while holding the session lock
-     * returned by {@link #getLock()}.</p>
-     *  
-     * @return true iff the {@link HttpSession} contains a storage object
-     */
-    public boolean isLoaded() {
-       final Lock lock = getLock().readLock();
-       try {
-           final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
-                   "HttpSession cannot be null");
-           return session.getAttribute(STORAGE_ATTRIBUTE + '.' + storageName) instanceof ClientStorageServiceStore;
-       } finally {
-           lock.unlock();
-       }
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (httpServletRequest == null) {
+            throw new ComponentInitializationException("HttpServletRequest must be set");
+        } else if (dataSealer == null) {
+            throw new ComponentInitializationException("DataSealer must be set");
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull public ReadWriteLock getLock() {
+    @Nullable protected TimerTask getCleanupTask() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Nonnull protected ReadWriteLock getLock() {
         final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(), "HttpSession cannot be null");
         
         // Uses a lock bound to the session, creating one if this is the first attempt.
@@ -206,24 +190,6 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
         }
         
         return (ReadWriteLock) lock;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (httpServletRequest == null) {
-            throw new ComponentInitializationException("HttpServletRequest must be set");
-        } else if (dataSealer == null || cookieManager == null) {
-            throw new ComponentInitializationException("DataSealer and CookieManager must be set");
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Nullable protected TimerTask getCleanupTask() {
-        return null;
     }
 
     /** {@inheritDoc} */
@@ -248,6 +214,27 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
     }
 
     /**
+     * Check whether data from the client has been loaded into the current session.
+     * 
+     * <p>This method should <strong>not</strong> be called while holding the session lock
+     * returned by {@link #getLock()}.</p>
+     *  
+     * @return true iff the {@link HttpSession} contains a storage object
+     */
+    boolean isLoaded() {
+       final Lock lock = getLock().readLock();
+       try {
+           lock.lock();
+           
+           final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
+                   "HttpSession cannot be null");
+           return session.getAttribute(STORAGE_ATTRIBUTE + '.' + storageName) instanceof ClientStorageServiceStore;
+       } finally {
+           lock.unlock();
+       }
+    }
+
+    /**
      * Reconstitute stored data and inject it into the session.
      * 
      * <p>This method should <strong>not</strong> be called while holding the session lock
@@ -257,7 +244,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
      * 
      * @throws IOException  if an error occurs reconstituting the data
      */
-    protected void load(@Nonnull @NotEmpty final String raw) throws IOException {
+    void load(@Nonnull @NotEmpty final String raw) throws IOException {
 
         log.trace("Loading storage state from client into session");
         final ClientStorageServiceStore storageObject = new ClientStorageServiceStore();
@@ -294,6 +281,8 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
         
         final Lock lock = getLock().writeLock();
         try {
+            lock.lock();
+            
             final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
                     "HttpSession cannot be null");
             session.setAttribute(STORAGE_ATTRIBUTE + '.' + storageName, storageObject);
@@ -312,12 +301,14 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
      * 
      * @throws IOException  if an error occurs preserving the data
      */
-    @Nullable protected Optional<String> save() throws IOException {
+    @Nullable Optional<String> save() throws IOException {
         
         log.trace("Preserving storage state from session for client");
         
         final Lock lock = getLock().writeLock();
         try {
+            lock.lock();
+            
             final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
                     "HttpSession cannot be null");
             
