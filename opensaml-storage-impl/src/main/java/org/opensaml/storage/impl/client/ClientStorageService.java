@@ -27,6 +27,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -56,21 +62,34 @@ import com.google.common.base.Optional;
  * 
  * <p>The data for this service is managed in a {@link ClientStorageServiceStore} object, which must
  * be created by some operation within the container for this implementation to function. Actual
- * load/store of the data to/from that object is driven via companion classes, but the serialization
- * of data via JSON is implemented here.</p>
+ * load/store of the data to/from that object is driven via companion classes. The serialization
+ * of data via JSON is inside the storage object class, but the encryption/decryption is here.</p>
  */
-public class ClientStorageService extends AbstractMapBackedStorageService {
+public class ClientStorageService extends AbstractMapBackedStorageService implements Filter {
 
     /** Name of session attribute for session lock. */
     @Nonnull protected static final String LOCK_ATTRIBUTE =
             "org.opensaml.storage.impl.client.ClientStorageService.lock";
+    
+    /** Name of session attribute for tracking source of data. */
+    @Nonnull protected static final String SOURCE_ATTRIBUTE =
+            "org.opensaml.storage.impl.client.ClientStorageService.source";
 
-    /** Name of session attribute for context map. */
+    /** Name of session attribute for storage object. */
     @Nonnull protected static final String STORAGE_ATTRIBUTE = 
             "org.opensaml.storage.impl.client.ClientStorageService.store";
+    
+    /** Enumeration of possible sources for the data. */
+    public enum ClientStorageSource {
+        /** Source was a cookie. */
+        COOKIE,
+        
+        /** Source was HTML Local Storage. */
+        HTML_LOCAL_STORAGE,
+    }
 
     /** Default label for storage tracking. */
-    @Nonnull @NotEmpty private static final String DEFAULT_STORAGE_NAME = "shib_idp_req_ss";
+    @Nonnull @NotEmpty private static final String DEFAULT_STORAGE_NAME = "shib_idp_client_ss";
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ClientStorageService.class);
@@ -154,6 +173,21 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
 
     /** {@inheritDoc} */
     @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
+        // This is just a no-op available to preserve compatibility with web.xml references to the
+        // older storage plugin that saved modified data back to a cookie on every response.
+        chain.doFilter(request, response);
+    }
+    
+    /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
@@ -233,47 +267,51 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
            lock.unlock();
        }
     }
-
+    
     /**
      * Reconstitute stored data and inject it into the session.
      * 
      * <p>This method should <strong>not</strong> be called while holding the session lock
      * returned by {@link #getLock()}.</p>
      * 
-     * @param raw encrypted data to load as storage contents
-     * 
-     * @throws IOException  if an error occurs reconstituting the data
+     * @param raw encrypted data to load as storage contents, or null if none
+     * @param source indicates source of the data for later use
      */
-    void load(@Nonnull @NotEmpty final String raw) throws IOException {
+    void load(@Nullable @NotEmpty final String raw, @Nonnull final ClientStorageSource source) {
 
-        log.trace("Loading storage state from client into session");
         final ClientStorageServiceStore storageObject = new ClientStorageServiceStore();
         
-        try {
-            final StringBuffer keyAliasUsed = new StringBuffer();
-            final String decrypted = dataSealer.unwrap(raw, keyAliasUsed);
-            
-            log.trace("Data after decryption: {}", decrypted);
-            
-            storageObject.load(decrypted);
-            
-            if (keyStrategy != null) {
-                try {
-                    if (!keyStrategy.getDefaultKey().getFirst().equals(keyAliasUsed.toString())) {
-                        storageObject.setDirty(true);
+        if (raw != null) {
+            log.trace("{} Loading storage state into session", getLogPrefix());
+            try {
+                final StringBuffer keyAliasUsed = new StringBuffer();
+                final String decrypted = dataSealer.unwrap(raw, keyAliasUsed);
+                
+                log.trace("{} Data after decryption: {}", getLogPrefix(), decrypted);
+                
+                storageObject.load(decrypted);
+                
+                if (keyStrategy != null) {
+                    try {
+                        if (!keyStrategy.getDefaultKey().getFirst().equals(keyAliasUsed.toString())) {
+                            storageObject.setDirty(true);
+                        }
+                    } catch (final KeyException e) {
+                        log.error("{} Exception while accessing default key during stale key detection",
+                                getLogPrefix(), e);
                     }
-                } catch (final KeyException e) {
-                    log.error("Exception while accessing default key during stale key detection", e);
                 }
+                
+                log.debug("{} Successfully decrypted and loaded storage state from client", getLogPrefix());
+            } catch (final DataExpiredException e) {
+                log.debug("{} Secured data or key has expired", getLogPrefix());
+            } catch (final DataSealerException e) {
+                log.error("{} Exception unwrapping secured data", getLogPrefix(), e);
+            } catch (final IOException e) {
+                log.error("{} Error while loading serialized storage data", getLogPrefix(), e);
             }
-            
-            log.debug("Successfully decrypted and loaded storage state from client");
-        } catch (final DataExpiredException e) {
-            log.debug("Secured data or key has expired");
-        } catch (final DataSealerException e) {
-            log.error("Exception unwrapping secured data", e);
-        } catch (final IOException e) {
-            log.error("Error while loading serialized storage data", e);
+        } else {
+            log.trace("{} Initializing empty storage state into session", getLogPrefix());
         }
         
         // The object should be loaded, and marked "clean", or in the event of just about any failure
@@ -286,6 +324,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
             final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
                     "HttpSession cannot be null");
             session.setAttribute(STORAGE_ATTRIBUTE + '.' + storageName, storageObject);
+            session.setAttribute(SOURCE_ATTRIBUTE + '.' + storageName, source);
         } finally {
             lock.unlock();
         }
@@ -298,12 +337,10 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
      * returned by {@link #getLock()}.</p>
      * 
      * @return if dirty, the serialized data (or null if no data exists), if not dirty, an absent value  
-     * 
-     * @throws IOException  if an error occurs preserving the data
      */
-    @Nullable Optional<String> save() throws IOException {
+    @Nonnull Optional<String> save() {
         
-        log.trace("Preserving storage state from session for client");
+        log.trace("{} Preserving storage state from session", getLogPrefix());
         
         final Lock lock = getLock().writeLock();
         try {
@@ -314,27 +351,27 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
             
             final Object object = session.getAttribute(STORAGE_ATTRIBUTE + '.' + storageName);
             if (object == null || !(object instanceof ClientStorageServiceStore)) {
-                log.error("No storage object found in session");
+                log.error("{} No storage object found in session", getLogPrefix());
                 return Optional.absent();
             }
             
             final ClientStorageServiceStore storageObject = (ClientStorageServiceStore) object;
             if (!storageObject.isDirty()) {
-                log.trace("Storage state has not been modified, save operation skipped");
+                log.trace("{} Storage state has not been modified, save operation skipped", getLogPrefix());
                 return Optional.absent();
             }
             
-            log.trace("Saving updated storage data to a string");
+            log.trace("{} Saving updated storage data to a string", getLogPrefix());
             try {
                 final Pair<String,Long> toEncrypt = storageObject.save();
-                log.trace("Size of data before encryption is {}", toEncrypt.getFirst().length());
-                log.trace("Data before encryption is {}", toEncrypt.getFirst());
+                log.trace("{} Size of data before encryption is {}", getLogPrefix(), toEncrypt.getFirst().length());
+                log.trace("{} Data before encryption is {}", getLogPrefix(), toEncrypt.getFirst());
                 
                 try {
                     final String wrapped = dataSealer.wrap(toEncrypt.getFirst(),
                             toEncrypt.getSecond() > 0 ? toEncrypt.getSecond()
                                     : System.currentTimeMillis() + 24 * 60 * 60 * 1000);
-                    log.trace("Size of data after encryption is {}", wrapped.length());
+                    log.trace("{} Size of data after encryption is {}", getLogPrefix(), wrapped.length());
                     storageObject.setDirty(false);
                     return Optional.of(wrapped);
                 } catch (final DataSealerException e) {
@@ -342,7 +379,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
                 }
                 
             } catch (final IOException e) {
-                log.error("Error while serializing storage data", e);
+                log.error("{} Error while serializing storage data", getLogPrefix(), e);
                 return Optional.absent();
             }
             
@@ -351,4 +388,13 @@ public class ClientStorageService extends AbstractMapBackedStorageService {
         }
     }
 
+    /**
+     * Get a prefix for log messages.
+     * 
+     * @return  logging prefix
+     */
+    @Nonnull @NotEmpty private String getLogPrefix() {
+        return "StorageService " + getId() + ":";
+    }
+    
 }
