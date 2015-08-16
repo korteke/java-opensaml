@@ -55,7 +55,7 @@ public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessag
         extends AbstractProfileAction<InboundMessageType, OutboundMessageType> {
 
     /** Event signaling that no load step is necessary. */
-    @Nonnull @NotEmpty public static final String LOAD_NOT_NEEDED = "LoadNotNeeded";
+    @Nonnull @NotEmpty public static final String LOAD_NOT_NEEDED = "NoLoadNeeded";
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(PopulateClientStorageLoadContext.class);
@@ -112,8 +112,10 @@ public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessag
         }
         
         if (loadCtx.getStorageKeys().isEmpty()) {
+            log.debug("{} No ClientStorageServices require loading, nothing to do", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, LOAD_NOT_NEEDED);
         } else {
+            log.debug("{} ClientStorageServices requiring load: {}", getLogPrefix(), loadCtx.getStorageKeys());
             profileRequestContext.addSubcontext(loadCtx, true);
         }
     }
