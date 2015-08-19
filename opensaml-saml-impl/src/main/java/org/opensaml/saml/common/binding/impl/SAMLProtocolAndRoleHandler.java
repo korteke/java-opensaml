@@ -23,19 +23,22 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.messaging.context.AbstractSAMLEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 
 /**
  * SAML {@link org.opensaml.messaging.handler.MessageHandler} that attaches protocol
  * and role information to a message context via {@link SAMLProtocolContext} and
- * {@link SAMLPeerEntityContext} objects.
+ * an instance of {@link AbstractSAMLEntityContext} objects. The entity context class
+ * is configurable and defaults to {@link SAMLPeerEntityContext}.
  * 
  * <p>A profile flow would typically run this handler after message decoding occurs,
  * to bootstrap subsequent handlers.</p>
@@ -47,6 +50,23 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
 
     /** Role type to add to context. */
     @NonnullAfterInit private QName peerRole;
+    
+    /** The context class representing the SAML entity for whom data is to be attached. 
+     * Defaults to: {@link SAMLPeerEntityContext}. */
+    @Nonnull private Class<? extends AbstractSAMLEntityContext> entityContextClass = SAMLPeerEntityContext.class;
+    
+    /**
+     * Set the class type holding the SAML entity data.
+     * 
+     * <p>Defaults to: {@link SAMLPeerEntityContext}.</p>
+     * 
+     * @param clazz the entity context class type
+     */
+    public void setEntityContextClass(@Nonnull final Class<? extends AbstractSAMLEntityContext> clazz) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        entityContextClass = Constraint.isNotNull(clazz, "SAML entity context class may not be null");
+    }
 
     /**
      * Set the protocol constant to attach.
@@ -80,7 +100,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
     @Override
     protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
         messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(samlProtocol);
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(peerRole);
+        messageContext.getSubcontext(entityContextClass, true).setRole(peerRole);
     }
     
 }

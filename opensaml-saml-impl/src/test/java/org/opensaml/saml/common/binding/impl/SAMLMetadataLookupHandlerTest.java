@@ -31,6 +31,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
+import org.opensaml.saml.common.messaging.context.SAMLPresenterEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.metadata.resolver.impl.BasicRoleDescriptorResolver;
@@ -38,8 +39,10 @@ import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -172,6 +175,29 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         handler.invoke(messageContext);
         
         SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+    }
+    
+    @Test
+    public void testSuccessWithContextClass() throws ComponentInitializationException, MessageHandlerException {
+        handler.setEntityContextClass(SAMLPresenterEntityContext.class);
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.initialize();
+        
+        SAMLPresenterEntityContext presenterContext = messageContext.getSubcontext(SAMLPresenterEntityContext.class, true);
+        presenterContext.setEntityId("https://carmenwiki.osu.edu/shibboleth");
+        presenterContext.setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
+        
+        AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
+        authnRequest.getIssuer().setValue("https://carmenwiki.osu.edu/shibboleth");
+        messageContext.setMessage(authnRequest);
+
+        handler.invoke(messageContext);
+        
+        SAMLMetadataContext mdCtx = presenterContext.getSubcontext(SAMLMetadataContext.class, false);
         Assert.assertNotNull(mdCtx);
         Assert.assertNotNull(mdCtx.getRoleDescriptor());
         Assert.assertNotNull(mdCtx.getEntityDescriptor());

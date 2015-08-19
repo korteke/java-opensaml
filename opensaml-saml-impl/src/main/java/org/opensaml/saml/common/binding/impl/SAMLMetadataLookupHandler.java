@@ -30,6 +30,7 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.messaging.context.AbstractSAMLEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
@@ -43,11 +44,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Handler for inbound SAML protocol messages that attempts to locate SAML metadata for
- * the message issuer, and attaches it with a {@link SAMLMetadataContext} as a child of the
- * pre-existing {@link SAMLPeerEntityContext}.
+ * a SAML entity, and attaches it with a {@link SAMLMetadataContext} as a child of a 
+ * pre-existing concrete instance of {@link AbstractSAMLEntityContext}. The entity context class is configurable
+ * and defaults to {@link SAMLPeerEntityContext}.
  * 
- * <p>The handler will no-op in the absence of a populated {@link SAMLPeerEntityContext} for
- * the message with an entityID and role to look up. A protocol from a {@link SAMLProtocolContext}
+ * <p>The handler will no-op in the absence of a populated {@link AbstractSAMLEntityContext} instance 
+ * with an entityID and role to look up. A protocol from a {@link SAMLProtocolContext}
  * will be added to the lookup, if available.</p>
  */
 public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
@@ -58,6 +60,23 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     /** Resolver used to look up SAML metadata. */
     @NonnullAfterInit private RoleDescriptorResolver metadataResolver;
     
+    /** The context class representing the SAML entity whose data is to be resolved. 
+     * Defaults to: {@link SAMLPeerEntityContext}. */
+    @Nonnull private Class<? extends AbstractSAMLEntityContext> entityContextClass = SAMLPeerEntityContext.class;
+    
+    /**
+     * Set the class type holding the SAML entity data.
+     * 
+     * <p>Defaults to: {@link SAMLPeerEntityContext}.</p>
+     * 
+     * @param clazz the entity context class type
+     */
+    public void setEntityContextClass(@Nonnull final Class<? extends AbstractSAMLEntityContext> clazz) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        entityContextClass = Constraint.isNotNull(clazz, "SAML entity context class may not be null");
+    }
+
     /**
      * Set the {@link RoleDescriptorResolver} to use.
      * 
@@ -84,16 +103,17 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
-        final SAMLPeerEntityContext peerCtx = messageContext.getSubcontext(SAMLPeerEntityContext.class);
+        final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
         final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class);
      
-        if (peerCtx == null || peerCtx.getEntityId() == null || peerCtx.getRole() == null) {
-            log.info("{} SAMLPeerEntityContext missing or did not contain an entityID or role", getLogPrefix());
+        if (entityCtx == null || entityCtx.getEntityId() == null || entityCtx.getRole() == null) {
+            log.info("{} SAML entity context class '{}' missing or did not contain an entityID or role", getLogPrefix(),
+                    entityContextClass.getName());
             return;
         }
         
-        final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(peerCtx.getEntityId());
-        final EntityRoleCriterion roleCriterion = new EntityRoleCriterion(peerCtx.getRole());
+        final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(entityCtx.getEntityId());
+        final EntityRoleCriterion roleCriterion = new EntityRoleCriterion(entityCtx.getRole());
         
         ProtocolCriterion protocolCriterion = null;
         if (protocolCtx != null && protocolCtx.getProtocol() != null) {
@@ -106,11 +126,11 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             if (roleMetadata == null) {
                 if (protocolCriterion != null) {
                     log.info("{} No metadata returned for {} in role {} with protocol {}",
-                            new Object[]{getLogPrefix(), peerCtx.getEntityId(), peerCtx.getRole(),
+                            new Object[]{getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),
                                 protocolCriterion.getProtocol(),});
                 } else {
                     log.info("{} No metadata returned for {} in role {}",
-                            new Object[]{getLogPrefix(), peerCtx.getEntityId(), peerCtx.getRole(),});
+                            new Object[]{getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),});
                 }
                 return;
             }
@@ -119,9 +139,10 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             metadataCtx.setEntityDescriptor((EntityDescriptor) roleMetadata.getParent());
             metadataCtx.setRoleDescriptor(roleMetadata);
 
-            peerCtx.addSubcontext(metadataCtx);
+            entityCtx.addSubcontext(metadataCtx);
 
-            log.debug("{} {} added to MessageContext", getLogPrefix(), SAMLMetadataContext.class.getName());
+            log.debug("{} {} added to MessageContext as child of {}", getLogPrefix(), 
+                    SAMLMetadataContext.class.getName(), entityContextClass.getName());
         } catch (final ResolverException e) {
             log.error("{} ResolverException thrown during metadata lookup", getLogPrefix(), e);
         }
