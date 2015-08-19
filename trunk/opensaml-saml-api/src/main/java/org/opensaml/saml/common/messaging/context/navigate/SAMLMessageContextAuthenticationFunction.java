@@ -17,26 +17,46 @@
 
 package org.opensaml.saml.common.messaging.context.navigate;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.logic.Constraint;
+
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.saml.common.messaging.context.AbstractAuthenticatableSAMLEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 
 import com.google.common.base.Function;
 
 /**
- * Function that returns the authenticated state of a {@link SAMLPeerEntityContext}.
+ * Function that returns the authenticated state of a configured {@link AbstractAuthenticatableSAMLEntityContext},
+ * defaulting to {@link SAMLPeerEntityContext}.
  */
 public class SAMLMessageContextAuthenticationFunction implements Function<MessageContext,Boolean> {
+    
+    /** The context class representing the authenticatable SAML entity. Defaults to: {@link SAMLPeerEntityContext}. */
+    @Nonnull private Class<? extends AbstractAuthenticatableSAMLEntityContext> entityContextClass = 
+            SAMLPeerEntityContext.class;
+    
+    /**
+     * Set the class type holding the authenticatable SAML entity data.
+     * 
+     * <p>Defaults to: {@link SAMLPeerEntityContext}.</p>
+     * 
+     * @param clazz the entity context class type
+     */
+    public void setEntityContextClass(@Nonnull final Class<? extends AbstractAuthenticatableSAMLEntityContext> clazz) {
+        entityContextClass = Constraint.isNotNull(clazz, "The SAML entity context class may not be null");
+    }
 
     /** {@inheritDoc} */
     @Override
     @Nullable public Boolean apply(@Nullable final MessageContext input) {
         
         if (input != null) {
-            final SAMLPeerEntityContext peerCtx = input.getSubcontext(SAMLPeerEntityContext.class);
-            if (peerCtx != null) {
-                return peerCtx.isAuthenticated();
+            final AbstractAuthenticatableSAMLEntityContext entityCtx = input.getSubcontext(entityContextClass);
+            if (entityCtx != null) {
+                return entityCtx.isAuthenticated();
             }
         }
         
