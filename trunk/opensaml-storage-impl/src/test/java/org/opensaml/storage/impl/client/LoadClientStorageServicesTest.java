@@ -40,6 +40,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Optional;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
@@ -127,6 +128,7 @@ public class LoadClientStorageServicesTest {
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
+        Assert.assertNull(loadCtx.getParent());
         
         try {
             lock.lock();
@@ -146,6 +148,7 @@ public class LoadClientStorageServicesTest {
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
+        Assert.assertNull(loadCtx.getParent());
         
         final Lock lock = ss.getLock().readLock();
         try {
@@ -163,14 +166,14 @@ public class LoadClientStorageServicesTest {
         ss.create("context1", "key2", "value2", null);
         ss.create("context2", "key", "value", null);
         
-        final Optional<String> saved = ss.save();
+        final Optional<Pair<ClientStorageSource,String>> saved = ss.save();
         Assert.assertTrue(saved.isPresent());
 
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
 
         Assert.assertFalse(ss.isLoaded());
         
-        final Cookie cookie = new Cookie("foo", URISupport.doURLEncode(saved.get()));
+        final Cookie cookie = new Cookie("foo", URISupport.doURLEncode(saved.get().getSecond()));
         ((MockHttpServletRequest) HttpServletRequestResponseContext.getRequest()).setCookies(cookie);
 
         action.setUseLocalStorage(true);
@@ -190,7 +193,7 @@ public class LoadClientStorageServicesTest {
         ss.create("context1", "key2", "value2", null);
         ss.create("context2", "key", "value", null);
         
-        final Optional<String> saved = ss.save();
+        final Optional<Pair<ClientStorageSource,String>> saved = ss.save();
         Assert.assertTrue(saved.isPresent());
 
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -200,7 +203,7 @@ public class LoadClientStorageServicesTest {
         final MockHttpServletRequest request = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
         request.setParameter(LoadClientStorageServices.SUPPORT_FORM_FIELD, "true");
         request.setParameter(LoadClientStorageServices.SUCCESS_FORM_FIELD + '.' + ss.getStorageName(), "true");
-        request.setParameter(LoadClientStorageServices.VALUE_FORM_FIELD + '.' + ss.getStorageName(), saved.get());
+        request.setParameter(LoadClientStorageServices.VALUE_FORM_FIELD + '.' + ss.getStorageName(), saved.get().getSecond());
 
         action.setUseLocalStorage(true);
         action.setStorageServices(Collections.singletonList(ss));
@@ -213,6 +216,8 @@ public class LoadClientStorageServicesTest {
     }
 
     private void checkStorageContent(final StorageService ss) throws IOException {
+        Assert.assertNull(loadCtx.getParent());
+
         StorageRecord record = ss.read("context1", "key1");
         Assert.assertNotNull(record);
         Assert.assertEquals(record.getValue(), "value1");

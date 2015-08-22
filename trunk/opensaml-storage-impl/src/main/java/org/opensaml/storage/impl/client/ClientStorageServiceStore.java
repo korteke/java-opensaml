@@ -54,7 +54,6 @@ public class ClientStorageServiceStore {
     /** Constructor. */
     public ClientStorageServiceStore() {
         contextMap = new HashMap<>();
-        dirty = true;
     }
     
     /**

@@ -338,7 +338,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @return if dirty, the serialized data (or null if no data exists), if not dirty, an absent value  
      */
-    @Nonnull Optional<String> save() {
+    @Nonnull Optional<Pair<ClientStorageSource, String>> save() {
         
         log.trace("{} Preserving storage state from session", getLogPrefix());
         
@@ -364,16 +364,25 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
             log.trace("{} Saving updated storage data to a string", getLogPrefix());
             try {
                 final Pair<String,Long> toEncrypt = storageObject.save();
+                if (toEncrypt.getFirst() == null) {
+                    log.trace("{} Data is empty", getLogPrefix());
+                    storageObject.setDirty(false);
+                    return Optional.<Pair<ClientStorageSource,String>>of(
+                            new Pair((ClientStorageSource) session.getAttribute(SOURCE_ATTRIBUTE + '.' + storageName),
+                                    null));
+                }
+                
                 log.trace("{} Size of data before encryption is {}", getLogPrefix(), toEncrypt.getFirst().length());
                 log.trace("{} Data before encryption is {}", getLogPrefix(), toEncrypt.getFirst());
-                
                 try {
                     final String wrapped = dataSealer.wrap(toEncrypt.getFirst(),
                             toEncrypt.getSecond() > 0 ? toEncrypt.getSecond()
                                     : System.currentTimeMillis() + 24 * 60 * 60 * 1000);
                     log.trace("{} Size of data after encryption is {}", getLogPrefix(), wrapped.length());
                     storageObject.setDirty(false);
-                    return Optional.of(wrapped);
+                    return Optional.<Pair<ClientStorageSource,String>>of(
+                            new Pair((ClientStorageSource) session.getAttribute(SOURCE_ATTRIBUTE + '.' + storageName),
+                                    wrapped));
                 } catch (final DataSealerException e) {
                     throw new IOException(e);
                 }

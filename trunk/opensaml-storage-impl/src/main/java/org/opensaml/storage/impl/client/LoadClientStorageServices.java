@@ -174,6 +174,8 @@ public class LoadClientStorageServices<InboundMessageType, OutboundMessageType>
                 loadFromCookie(storageService);
             }
         }
+        
+        profileRequestContext.removeSubcontext(clientStorageLoadCtx);
     }
 
     /**
