@@ -44,6 +44,7 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.security.DataExpiredException;
 import net.shibboleth.utilities.java.support.security.DataSealer;
@@ -97,6 +98,9 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     /** Servlet request. */
     @NonnullAfterInit private HttpServletRequest httpServletRequest;
     
+    /** Manages creation of cookies. */
+    @NonnullAfterInit private CookieManager cookieManager;
+    
     /** Label used to track storage. */
     @Nonnull @NotEmpty private String storageName;
     
@@ -128,6 +132,26 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
         
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
+    
+    /**
+     * Get the {@link CookieManager} to use.
+     * 
+     * @return the CookieManager to use
+     */
+    @NonnullAfterInit public CookieManager getCookieManager() {
+        return cookieManager;
+    }
+    
+    /**
+     * Set the {@link CookieManager} to use.
+     * 
+     * @param manager the CookieManager to use.
+     */
+    public void setCookieManager(@Nonnull final CookieManager manager) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        cookieManager = Constraint.isNotNull(manager, "CookieManager cannot be null");
+    }
 
     /**
      * Get the label to use for storage tracking.
@@ -137,7 +161,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     @Nonnull @NotEmpty public String getStorageName() {
         return storageName;
     }
-
+    
     /**
      * Set the label to use for storage tracking.
      * 
@@ -193,8 +217,8 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
         
         if (httpServletRequest == null) {
             throw new ComponentInitializationException("HttpServletRequest must be set");
-        } else if (dataSealer == null) {
-            throw new ComponentInitializationException("DataSealer must be set");
+        } else if (dataSealer == null || cookieManager == null) {
+            throw new ComponentInitializationException("DataSealer and CookieManager must be set");
         }
     }
 

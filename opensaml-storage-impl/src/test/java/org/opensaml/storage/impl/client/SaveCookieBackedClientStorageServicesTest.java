@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.storage.impl.client.ClientStorageSaveContext.StorageOperation;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
@@ -35,12 +36,14 @@ import org.testng.annotations.Test;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
 
-/** Unit test for {@link PopulateClientStorageSaveContext}. */
-public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStorageServiceTest {
+/** Unit test for {@link SaveCookieBackedClientStorageServices}. */
+public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
+
+    private ClientStorageSaveContext saveCtx;
     
-    private PopulateClientStorageSaveContext action;
+    private SaveCookieBackedClientStorageServices action;
 
     @BeforeClass public void setUpClass() throws ComponentInitializationException {
         init();
@@ -48,66 +51,60 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
 
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        action = new PopulateClientStorageSaveContext();
+        saveCtx = new ClientStorageSaveContext();
+        prc.addSubcontext(saveCtx);
+        action = new SaveCookieBackedClientStorageServices();
     }
         
     @Test public void testNoServices() throws ComponentInitializationException {
         action.initialize();
         
         action.execute(prc);
-        ActionTestingSupport.assertEvent(prc, PopulateClientStorageSaveContext.SAVE_NOT_NEEDED);
-        Assert.assertNull(prc.getSubcontext(ClientStorageSaveContext.class));
+        ActionTestingSupport.assertProceedEvent(prc);
     }
- 
-    @Test public void testUnloaded() throws ComponentInitializationException {
+
+    @Test public void testNoContext() throws ComponentInitializationException {
         action.setStorageServices(Collections.singletonList(getStorageService()));
         action.initialize();
         
-        HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
-
-        action.execute(prc);
-        ActionTestingSupport.assertEvent(prc, PopulateClientStorageSaveContext.SAVE_NOT_NEEDED);
+        prc.removeSubcontext(saveCtx);
         
-        Assert.assertNull(prc.getSubcontext(ClientStorageSaveContext.class));
+        action.execute(prc);
+        ActionTestingSupport.assertEvent(prc, EventIds.INVALID_PROFILE_CTX);
     }
-
-    @Test public void testClean() throws ComponentInitializationException {
+    
+    @Test public void testNoCookieSources() throws ComponentInitializationException {
         final ClientStorageService ss = getStorageService();
         action.setStorageServices(Collections.singletonList(ss));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
-
-        ss.load(null, ClientStorageSource.HTML_LOCAL_STORAGE);
         
-        action.execute(prc);
-        ActionTestingSupport.assertEvent(prc, PopulateClientStorageSaveContext.SAVE_NOT_NEEDED);
-        
-        Assert.assertNull(prc.getSubcontext(ClientStorageSaveContext.class));
-    }
-
-    @Test public void testDirty() throws ComponentInitializationException, IOException {
-        final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
-        action.initialize();
-        
-        HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
-
-        ss.load(null, ClientStorageSource.HTML_LOCAL_STORAGE);
-        ss.create("context", "key", "value", null);
+        saveCtx.getStorageOperations().add(
+                new StorageOperation(ss.getId(), ss.getStorageName(), "value", ClientStorageSource.HTML_LOCAL_STORAGE));
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        
-        final ClientStorageSaveContext saveCtx = prc.getSubcontext(ClientStorageSaveContext.class); 
-        Assert.assertNotNull(saveCtx);
-        Assert.assertTrue(saveCtx.isSourceRequired(ClientStorageSource.HTML_LOCAL_STORAGE));
-        Assert.assertEquals(saveCtx.getStorageOperations().size(), 1);
-        
-        final StorageOperation op = saveCtx.getStorageOperations().iterator().next();
-        Assert.assertEquals(op.getStorageServiceID(), ss.getId());
-        Assert.assertEquals(op.getStorageKey(), ss.getStorageName());
-        Assert.assertEquals(op.getStorageSource(), ClientStorageSource.HTML_LOCAL_STORAGE);
+        Assert.assertEquals(((MockHttpServletResponse) HttpServletRequestResponseContext.getResponse()).getCookies().length, 0);
     }
-   
+    
+    @Test public void testSave() throws ComponentInitializationException, IOException {
+        final ClientStorageService ss = getStorageService();
+        action.setStorageServices(Collections.singletonList(ss));
+        action.initialize();
+        
+        HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
+
+        saveCtx.getStorageOperations().add(
+                new StorageOperation(ss.getId(), ss.getStorageName(), "the value", ClientStorageSource.COOKIE));
+
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        final MockHttpServletResponse response = (MockHttpServletResponse) HttpServletRequestResponseContext.getResponse();
+        Assert.assertEquals(response.getCookies().length, 1);
+        Assert.assertEquals(response.getCookies()[0].getName(), ss.getStorageName());
+        Assert.assertEquals(response.getCookies()[0].getValue(), "the+value");
+    }
+    
 }

@@ -30,7 +30,6 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
@@ -46,16 +45,9 @@ import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
 import net.shibboleth.utilities.java.support.net.URISupport;
-import net.shibboleth.utilities.java.support.resource.Resource;
-import net.shibboleth.utilities.java.support.resource.TestResourceConverter;
-import net.shibboleth.utilities.java.support.security.BasicKeystoreKeyStrategy;
-import net.shibboleth.utilities.java.support.security.DataSealer;
 
 /** Unit test for {@link LoadClientStorageServices}. */
-public class LoadClientStorageServicesTest {
-
-    private Resource keystoreResource;
-    private Resource versionResource;
+public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
     private ClientStorageLoadContext loadCtx;
@@ -63,19 +55,13 @@ public class LoadClientStorageServicesTest {
     private LoadClientStorageServices action;
 
     @BeforeClass public void setUpClass() throws ComponentInitializationException {
-        ClassPathResource resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.jks");
-        Assert.assertTrue(resource.exists());
-        keystoreResource = TestResourceConverter.of(resource);
-
-        resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.kver");
-        Assert.assertTrue(resource.exists());
-        versionResource = TestResourceConverter.of(resource);
+        init();
     }
 
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
         loadCtx = prc.getSubcontext(ClientStorageLoadContext.class, true);
-        loadCtx.getStorageKeys().add("foo");
+        loadCtx.getStorageKeys().add(STORAGE_NAME);
         
         action = new LoadClientStorageServices();
         action.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
@@ -143,7 +129,7 @@ public class LoadClientStorageServicesTest {
         action.setStorageServices(Collections.singletonList(ss));
         action.initialize();
 
-        final Cookie cookie = new Cookie("foo", "error");
+        final Cookie cookie = new Cookie(STORAGE_NAME, "error");
         ((MockHttpServletRequest) HttpServletRequestResponseContext.getRequest()).setCookies(cookie);
         
         action.execute(prc);
@@ -232,37 +218,6 @@ public class LoadClientStorageServicesTest {
         Assert.assertNotNull(record);
         Assert.assertEquals(record.getValue(), "value");
         Assert.assertNull(record.getExpiration());
-    }
-    
-    private ClientStorageService getStorageService() throws ComponentInitializationException {
-        final ClientStorageService ss = new ClientStorageService();
-        ss.setId("test");
-        ss.setStorageName("foo");
-
-        final BasicKeystoreKeyStrategy strategy = new BasicKeystoreKeyStrategy();
-        
-        strategy.setKeyAlias("secret");
-        strategy.setKeyPassword("kpassword");
-        strategy.setKeystorePassword("password");
-        strategy.setKeystoreResource(keystoreResource);
-        strategy.setKeyVersionResource(versionResource);
-
-        final DataSealer sealer = new DataSealer();
-        sealer.setKeyStrategy(strategy);
-
-        try {
-            strategy.initialize();
-            sealer.initialize();
-        } catch (ComponentInitializationException e) {
-            Assert.fail(e.getMessage());
-        }
-
-        ss.setDataSealer(sealer);
-        
-        ss.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
-        ss.initialize();
-        
-        return ss;
     }
     
 }

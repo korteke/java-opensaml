@@ -171,7 +171,7 @@ public class LoadClientStorageServices<InboundMessageType, OutboundMessageType>
             if (useLS) {
                 loadFromLocalStorage(storageService);
             } else {
-                loadFromCookie(storageService);
+                loadFromCookie(storageService, ClientStorageSource.COOKIE);
             }
         }
         
@@ -182,8 +182,10 @@ public class LoadClientStorageServices<InboundMessageType, OutboundMessageType>
      * Load the specified storage service from a cookie.
      * 
      * @param storageService service to load
+     * @param source source to apply to load operation
      */
-    private void loadFromCookie(@Nonnull final ClientStorageService storageService) {
+    private void loadFromCookie(@Nonnull final ClientStorageService storageService,
+            @Nonnull final ClientStorageSource source) {
         
         Optional<Cookie> cookie = Optional.absent();
         
@@ -200,10 +202,10 @@ public class LoadClientStorageServices<InboundMessageType, OutboundMessageType>
         if (!cookie.isPresent() || cookie.get().getValue() == null || cookie.get().getValue().isEmpty()) {
             log.debug("{} No cookie data present, initializing StorageService '{}' to empty state", getLogPrefix(),
                     storageService.getId());
-            storageService.load(null, ClientStorageSource.COOKIE);
+            storageService.load(null, source);
         } else {
             log.debug("{} Initializing StorageService '{}' from cookie", getLogPrefix(), storageService.getId());
-            storageService.load(URISupport.doURLDecode(cookie.get().getValue()), ClientStorageSource.COOKIE);
+            storageService.load(URISupport.doURLDecode(cookie.get().getValue()), source);
         }
     }
  
@@ -227,9 +229,9 @@ public class LoadClientStorageServices<InboundMessageType, OutboundMessageType>
         
         param = request.getParameter(VALUE_FORM_FIELD + '.' + storageService.getStorageName());
         if (param == null || param.isEmpty()) {
-            log.debug("{} No local storage data present, initializing StorageService '{}' to empty state",
+            log.debug("{} No local storage data present, checking for a cookie set by older storage implementation",
                     getLogPrefix(), storageService.getId());
-            storageService.load(null, ClientStorageSource.HTML_LOCAL_STORAGE);
+            loadFromCookie(storageService, ClientStorageSource.HTML_LOCAL_STORAGE);
         } else {
             log.debug("{} Initializing StorageService '{}' from local storage data", getLogPrefix(),
                     storageService.getId());
