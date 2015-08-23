@@ -23,7 +23,6 @@ import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
@@ -33,30 +32,16 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
-import net.shibboleth.utilities.java.support.resource.Resource;
-import net.shibboleth.utilities.java.support.resource.TestResourceConverter;
-import net.shibboleth.utilities.java.support.security.BasicKeystoreKeyStrategy;
-import net.shibboleth.utilities.java.support.security.DataSealer;
 
 /** Unit test for {@link PopulateClientStorageLoadContext}. */
-public class PopulateClientStorageLoadContextTest {
-
-    private Resource keystoreResource;
-    private Resource versionResource;
+public class PopulateClientStorageLoadContextTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
     
     private PopulateClientStorageLoadContext action;
 
     @BeforeClass public void setUpClass() throws ComponentInitializationException {
-        ClassPathResource resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.jks");
-        Assert.assertTrue(resource.exists());
-        keystoreResource = TestResourceConverter.of(resource);
-
-        resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.kver");
-        Assert.assertTrue(resource.exists());
-        versionResource = TestResourceConverter.of(resource);
+        init();
     }
 
     @BeforeMethod public void setUp() {
@@ -84,7 +69,7 @@ public class PopulateClientStorageLoadContextTest {
         final ClientStorageLoadContext ctx = prc.getSubcontext(ClientStorageLoadContext.class);
         Assert.assertNotNull(ctx);
         Assert.assertEquals(ctx.getStorageKeys().size(), 1);
-        Assert.assertTrue(ctx.getStorageKeys().contains("foo"));
+        Assert.assertTrue(ctx.getStorageKeys().contains(STORAGE_NAME));
     }
 
     @Test public void testLoaded() throws ComponentInitializationException {
@@ -101,37 +86,6 @@ public class PopulateClientStorageLoadContextTest {
         
         final ClientStorageLoadContext ctx = prc.getSubcontext(ClientStorageLoadContext.class);
         Assert.assertNull(ctx);
-    }
-
-    private ClientStorageService getStorageService() throws ComponentInitializationException {
-        final ClientStorageService ss = new ClientStorageService();
-        ss.setId("test");
-        ss.setStorageName("foo");
-
-        final BasicKeystoreKeyStrategy strategy = new BasicKeystoreKeyStrategy();
-        
-        strategy.setKeyAlias("secret");
-        strategy.setKeyPassword("kpassword");
-        strategy.setKeystorePassword("password");
-        strategy.setKeystoreResource(keystoreResource);
-        strategy.setKeyVersionResource(versionResource);
-
-        final DataSealer sealer = new DataSealer();
-        sealer.setKeyStrategy(strategy);
-
-        try {
-            strategy.initialize();
-            sealer.initialize();
-        } catch (ComponentInitializationException e) {
-            Assert.fail(e.getMessage());
-        }
-
-        ss.setDataSealer(sealer);
-        
-        ss.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
-        ss.initialize();
-        
-        return ss;
     }
     
 }
