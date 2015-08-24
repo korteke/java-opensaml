@@ -176,6 +176,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
 
             final Map<String, MutableStorageRecord> dataMap = contextMap.get(context);
             if (dataMap != null) {    
+                setDirty();
                 Long now = System.currentTimeMillis();
                 for (MutableStorageRecord record : dataMap.values()) {
                     final Long exp = record.getExpiration();
@@ -198,6 +199,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
         
         try {
             writeLock.lock();
+            setDirty();
             getContextMap().remove(context);
         } finally {
             writeLock.unlock();
