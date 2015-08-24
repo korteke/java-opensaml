@@ -46,8 +46,11 @@ import net.shibboleth.utilities.java.support.net.URISupport;
  * An action that performs any number of {@link ClientStorageOperation} instances sourced from
  * cookies by issuing the necessary Set-Cookie headers.
  * 
+ * <p>The {@link ClientStorageSaveContext} is also removed.</p>
+ * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_PROFILE_CTX}
+ * @post ProfileRequestContext.getSubcontext(ClientStorageSaveContext.class) == null
  * 
  * @param <InboundMessageType>
  * @param <OutboundMessageType>
@@ -106,6 +109,7 @@ public class SaveCookieBackedClientStorageServices<InboundMessageType, OutboundM
         
         if (!clientStorageSaveCtx.isSourceRequired(ClientStorageSource.COOKIE)) {
             log.debug("{} No cookie operations required", getLogPrefix());
+            profileRequestContext.removeSubcontext(clientStorageSaveCtx);
             return false;
         }
         
@@ -135,6 +139,8 @@ public class SaveCookieBackedClientStorageServices<InboundMessageType, OutboundM
                 storageService.getCookieManager().unsetCookie(operation.getStorageKey());
             }
         }
+        
+        profileRequestContext.removeSubcontext(clientStorageSaveCtx);
     }
 
 }
