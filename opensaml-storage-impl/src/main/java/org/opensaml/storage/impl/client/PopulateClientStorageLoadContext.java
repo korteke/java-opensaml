@@ -103,10 +103,13 @@ public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessag
         
         final ClientStorageLoadContext loadCtx = new ClientStorageLoadContext();
         
+        final Collection<String> ids = new ArrayList<>();
+        
         for (final ClientStorageService service : storageServices) {
             
             if (!service.isLoaded()) {
                 loadCtx.getStorageKeys().add(service.getStorageName());
+                ids.add(service.getId());
             }
         }
         
@@ -114,7 +117,7 @@ public class PopulateClientStorageLoadContext<InboundMessageType, OutboundMessag
             log.debug("{} No ClientStorageServices require loading, nothing to do", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, LOAD_NOT_NEEDED);
         } else {
-            log.debug("{} ClientStorageServices requiring load: {}", getLogPrefix(), loadCtx.getStorageKeys());
+            log.debug("{} ClientStorageServices requiring load: {}", getLogPrefix(), ids);
             profileRequestContext.addSubcontext(loadCtx, true);
         }
     }
