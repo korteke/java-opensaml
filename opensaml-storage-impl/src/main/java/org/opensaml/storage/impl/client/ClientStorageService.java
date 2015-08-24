@@ -329,17 +329,20 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 log.debug("{} Successfully decrypted and loaded storage state from client", getLogPrefix());
             } catch (final DataExpiredException e) {
                 log.debug("{} Secured data or key has expired", getLogPrefix());
+                storageObject.setDirty(true);
             } catch (final DataSealerException e) {
                 log.error("{} Exception unwrapping secured data", getLogPrefix(), e);
+                storageObject.setDirty(true);
             } catch (final IOException e) {
                 log.error("{} Error while loading serialized storage data", getLogPrefix(), e);
+                storageObject.setDirty(true);
             }
         } else {
             log.trace("{} Initializing empty storage state into session", getLogPrefix());
         }
         
         // The object should be loaded, and marked "clean", or in the event of just about any failure
-        // it should be empty and marked "dirty" to force an overwrite of the corrupted data.
+        // it should be empty and marked "dirty" to force an overwrite of the expired or corrupted data.
         
         final Lock lock = getLock().writeLock();
         try {
