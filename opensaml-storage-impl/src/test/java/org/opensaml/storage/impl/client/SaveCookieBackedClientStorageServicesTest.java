@@ -85,6 +85,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
+        Assert.assertNull(saveCtx.getParent());
         Assert.assertEquals(((MockHttpServletResponse) HttpServletRequestResponseContext.getResponse()).getCookies().length, 0);
     }
     
@@ -100,6 +101,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
+        Assert.assertNull(saveCtx.getParent());
         
         final MockHttpServletResponse response = (MockHttpServletResponse) HttpServletRequestResponseContext.getResponse();
         Assert.assertEquals(response.getCookies().length, 1);
