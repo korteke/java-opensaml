@@ -23,7 +23,6 @@ import java.util.Collections;
 import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.storage.impl.client.ClientStorageSaveContext.StorageOperation;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -104,9 +103,9 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
         Assert.assertTrue(saveCtx.isSourceRequired(ClientStorageSource.HTML_LOCAL_STORAGE));
         Assert.assertEquals(saveCtx.getStorageOperations().size(), 1);
         
-        final StorageOperation op = saveCtx.getStorageOperations().iterator().next();
+        final ClientStorageServiceOperation op = saveCtx.getStorageOperations().iterator().next();
         Assert.assertEquals(op.getStorageServiceID(), ss.getId());
-        Assert.assertEquals(op.getStorageKey(), ss.getStorageName());
+        Assert.assertEquals(op.getKey(), ss.getStorageName());
         Assert.assertEquals(op.getStorageSource(), ClientStorageSource.HTML_LOCAL_STORAGE);
     }
    

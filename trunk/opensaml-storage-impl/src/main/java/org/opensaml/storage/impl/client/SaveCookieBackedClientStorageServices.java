@@ -29,7 +29,6 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.storage.impl.client.ClientStorageSaveContext.StorageOperation;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,7 +119,7 @@ public class SaveCookieBackedClientStorageServices<InboundMessageType, OutboundM
     @Override protected void doExecute(
             @Nonnull final ProfileRequestContext<InboundMessageType, OutboundMessageType> profileRequestContext) {
         
-        for (final StorageOperation operation : clientStorageSaveCtx.getStorageOperations()) {
+        for (final ClientStorageServiceOperation operation : clientStorageSaveCtx.getStorageOperations()) {
             
             final ClientStorageService storageService = storageServices.get(operation.getStorageServiceID());
             if (storageService == null) {
@@ -128,15 +127,15 @@ public class SaveCookieBackedClientStorageServices<InboundMessageType, OutboundM
                         operation.getStorageServiceID());
                 continue;
             }
-            if (operation.getStorageValue() != null) {
+            if (operation.getValue() != null) {
                 log.debug("{} Saving data for ClientStorageService '{}' to cookie named '{}'", getLogPrefix(),
-                        operation.getStorageServiceID(), operation.getStorageKey());
-                storageService.getCookieManager().addCookie(operation.getStorageKey(),
-                        URISupport.doURLEncode(operation.getStorageValue()));
+                        operation.getStorageServiceID(), operation.getKey());
+                storageService.getCookieManager().addCookie(operation.getKey(),
+                        URISupport.doURLEncode(operation.getValue()));
             } else {
                 log.debug("{} Clearing data for ClientStorageService '{}' from cookie named '{}'", getLogPrefix(),
-                        operation.getStorageServiceID(), operation.getStorageKey());
-                storageService.getCookieManager().unsetCookie(operation.getStorageKey());
+                        operation.getStorageServiceID(), operation.getKey());
+                storageService.getCookieManager().unsetCookie(operation.getKey());
             }
         }
         

@@ -26,19 +26,15 @@ import javax.annotation.Nonnull;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.storage.impl.client.ClientStorageSaveContext.StorageOperation;
-import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -109,11 +105,9 @@ public class PopulateClientStorageSaveContext<InboundMessageType, OutboundMessag
         final ClientStorageSaveContext saveCtx = new ClientStorageSaveContext();
         
         for (final ClientStorageService service : storageServices) {
-            final Optional<Pair<ClientStorageSource,String>> saved = service.save();
-            if (saved.isPresent()) {
-                saveCtx.getStorageOperations().add(
-                        new StorageOperation(service.getId(), service.getStorageName(), saved.get().getSecond(),
-                                saved.get().getFirst()));
+            final ClientStorageServiceOperation operation = service.save();
+            if (operation != null) {
+                saveCtx.getStorageOperations().add(operation);
             }
         }
         
@@ -121,9 +115,9 @@ public class PopulateClientStorageSaveContext<InboundMessageType, OutboundMessag
             log.debug("{} No ClientStorageServices require saving, nothing to do", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, SAVE_NOT_NEEDED);
         } else {
-            final Collection<String> ids =
-                    Collections2.transform(saveCtx.getStorageOperations(), new Function<StorageOperation,String>() {
-                public String apply(StorageOperation input) {
+            final Collection<String> ids = Collections2.transform(saveCtx.getStorageOperations(),
+                    new Function<ClientStorageServiceOperation,String>() {
+                public String apply(ClientStorageServiceOperation input) {
                     return input.getStorageServiceID();
                 }
             });

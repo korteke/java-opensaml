@@ -18,7 +18,10 @@
 package org.opensaml.storage.impl.client;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.security.KeyException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.locks.Lock;
@@ -27,6 +30,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.json.Json;
+import javax.json.JsonException;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonStructure;
+import javax.json.JsonValue;
+import javax.json.stream.JsonGenerator;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -40,7 +50,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -56,8 +65,6 @@ import org.opensaml.storage.MutableStorageRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-
 /**
  * Implementation of {@link StorageService} that stores data in-memory in a shared session attribute.
  * 
@@ -71,10 +78,6 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     /** Name of session attribute for session lock. */
     @Nonnull protected static final String LOCK_ATTRIBUTE =
             "org.opensaml.storage.impl.client.ClientStorageService.lock";
-    
-    /** Name of session attribute for tracking source of data. */
-    @Nonnull protected static final String SOURCE_ATTRIBUTE =
-            "org.opensaml.storage.impl.client.ClientStorageService.source";
 
     /** Name of session attribute for storage object. */
     @Nonnull protected static final String STORAGE_ATTRIBUTE = 
@@ -303,7 +306,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      */
     void load(@Nullable @NotEmpty final String raw, @Nonnull final ClientStorageSource source) {
 
-        final ClientStorageServiceStore storageObject = new ClientStorageServiceStore();
+        ClientStorageServiceStore storageObject;
         
         if (raw != null) {
             log.trace("{} Loading storage state into session", getLogPrefix());
@@ -313,7 +316,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 
                 log.trace("{} Data after decryption: {}", getLogPrefix(), decrypted);
                 
-                storageObject.load(decrypted);
+                storageObject = new ClientStorageServiceStore(decrypted, source);
                 
                 if (keyStrategy != null) {
                     try {
@@ -329,16 +332,16 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 log.debug("{} Successfully decrypted and loaded storage state from client", getLogPrefix());
             } catch (final DataExpiredException e) {
                 log.debug("{} Secured data or key has expired", getLogPrefix());
+                storageObject = new ClientStorageServiceStore(null, source);
                 storageObject.setDirty(true);
             } catch (final DataSealerException e) {
                 log.error("{} Exception unwrapping secured data", getLogPrefix(), e);
-                storageObject.setDirty(true);
-            } catch (final IOException e) {
-                log.error("{} Error while loading serialized storage data", getLogPrefix(), e);
+                storageObject = new ClientStorageServiceStore(null, source);
                 storageObject.setDirty(true);
             }
         } else {
             log.trace("{} Initializing empty storage state into session", getLogPrefix());
+            storageObject = new ClientStorageServiceStore(null, source);
         }
         
         // The object should be loaded, and marked "clean", or in the event of just about any failure
@@ -351,7 +354,6 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
             final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
                     "HttpSession cannot be null");
             session.setAttribute(STORAGE_ATTRIBUTE + '.' + storageName, storageObject);
-            session.setAttribute(SOURCE_ATTRIBUTE + '.' + storageName, source);
         } finally {
             lock.unlock();
         }
@@ -363,9 +365,9 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * <p>This method should <strong>not</strong> be called while holding the session lock
      * returned by {@link #getLock()}.</p>
      * 
-     * @return if dirty, the serialized data (or null if no data exists), if not dirty, an absent value  
+     * @return if dirty, the operation to perform, if not dirty, a null value  
      */
-    @Nonnull Optional<Pair<ClientStorageSource, String>> save() {
+    @Nullable ClientStorageServiceOperation save() {
         
         log.trace("{} Preserving storage state from session", getLogPrefix());
         
@@ -379,46 +381,15 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
             final Object object = session.getAttribute(STORAGE_ATTRIBUTE + '.' + storageName);
             if (object == null || !(object instanceof ClientStorageServiceStore)) {
                 log.error("{} No storage object found in session", getLogPrefix());
-                return Optional.absent();
+                return null;
             }
-            
-            final ClientStorageServiceStore storageObject = (ClientStorageServiceStore) object;
-            if (!storageObject.isDirty()) {
-                log.trace("{} Storage state has not been modified, save operation skipped", getLogPrefix());
-                return Optional.absent();
-            }
-            
-            log.trace("{} Saving updated storage data to a string", getLogPrefix());
+
             try {
-                final Pair<String,Long> toEncrypt = storageObject.save();
-                if (toEncrypt.getFirst() == null) {
-                    log.trace("{} Data is empty", getLogPrefix());
-                    storageObject.setDirty(false);
-                    return Optional.<Pair<ClientStorageSource,String>>of(
-                            new Pair((ClientStorageSource) session.getAttribute(SOURCE_ATTRIBUTE + '.' + storageName),
-                                    null));
-                }
-                
-                log.trace("{} Size of data before encryption is {}", getLogPrefix(), toEncrypt.getFirst().length());
-                log.trace("{} Data before encryption is {}", getLogPrefix(), toEncrypt.getFirst());
-                try {
-                    final String wrapped = dataSealer.wrap(toEncrypt.getFirst(),
-                            toEncrypt.getSecond() > 0 ? toEncrypt.getSecond()
-                                    : System.currentTimeMillis() + 24 * 60 * 60 * 1000);
-                    log.trace("{} Size of data after encryption is {}", getLogPrefix(), wrapped.length());
-                    storageObject.setDirty(false);
-                    return Optional.<Pair<ClientStorageSource,String>>of(
-                            new Pair((ClientStorageSource) session.getAttribute(SOURCE_ATTRIBUTE + '.' + storageName),
-                                    wrapped));
-                } catch (final DataSealerException e) {
-                    throw new IOException(e);
-                }
-                
+                return ((ClientStorageServiceStore) object).save();
             } catch (final IOException e) {
                 log.error("{} Error while serializing storage data", getLogPrefix(), e);
-                return Optional.absent();
+                return null;
             }
-            
         } finally {
             lock.unlock();
         }
@@ -432,5 +403,187 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     @Nonnull @NotEmpty private String getLogPrefix() {
         return "StorageService " + getId() + ":";
     }
+    
+    /**
+     * Implements a session-bound backing store and locking mechanism for the {@link ClientStorageService}.
+     */
+    public class ClientStorageServiceStore {
+        
+        /** The underlying map of data records. */
+        @Nonnull @NonnullElements private final Map<String, Map<String, MutableStorageRecord>> contextMap;
+        
+        /** Data source. */
+        @Nonnull private final ClientStorageSource source; 
+        
+        /** Dirty bit. */
+        private boolean dirty;
+        
+        /**
+         * Reconstitute stored data.
+         * 
+         * <p>The dirty bit is set based on the result. If successful, the bit is cleared,
+         * but if an error occurs, it will be set.</p>
+         * 
+         * @param raw serialized data to load
+         * @param src data source
+         */
+        ClientStorageServiceStore(@Nullable @NotEmpty final String raw, @Nonnull final ClientStorageSource src) {
+            contextMap = new HashMap<>();
+            source = Constraint.isNotNull(src, "Data source cannot be null");
+            
+            if (raw == null) {
+                return;
+            }
+            
+            try {
+                final JsonReader reader = Json.createReader(new StringReader(raw));
+                final JsonStructure st = reader.read();
+                if (!(st instanceof JsonObject)) {
+                    throw new JsonException("Found invalid data structure while parsing context map");
+                }
+                final JsonObject obj = (JsonObject) st;
+                
+                for (final Map.Entry<String,JsonValue> context : obj.entrySet()) {
+                    if (context.getValue().getValueType() != JsonValue.ValueType.OBJECT) {
+                        throw new JsonException("Found invalid data structure while parsing context map");
+                    }
+                    
+                    // Create new context if necessary.
+                    Map<String,MutableStorageRecord> dataMap = contextMap.get(context);
+                    if (dataMap == null) {
+                        dataMap = new HashMap<>();
+                        contextMap.put(context.getKey(), dataMap);
+                    }
+                    
+                    final JsonObject contextRecords = (JsonObject) context.getValue();
+                    for (Map.Entry<String,JsonValue> record : contextRecords.entrySet()) {
+                    
+                        final JsonObject fields = (JsonObject) record.getValue();
+                        Long exp = null;
+                        if (fields.containsKey("x")) {
+                            exp = fields.getJsonNumber("x").longValueExact();
+                        }
+                        
+                        dataMap.put(record.getKey(), new MutableStorageRecord(fields.getString("v"), exp));
+                    }
+                }
+                setDirty(false);
+            } catch (final NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
+                contextMap.clear();
+                // Setting this should force corrupt data in the client to be overwritten.
+                setDirty(true);
+                log.error("{} Found invalid data structure while parsing context map", getLogPrefix(), e);
+            }
+        }
+
+        /**
+         * Get the map of contexts to manipulate during operations.
+         * 
+         * @return map of contexts to manipulate
+         */
+        @Nonnull @NonnullElements @Live Map<String, Map<String, MutableStorageRecord>> getContextMap() {
+            return contextMap;
+        }
+        
+        /**
+         * Get the data source.
+         * 
+         * @return data source
+         */
+        @Nonnull public ClientStorageSource getSource() {
+            return source;
+        }
+
+        /**
+         * Get the dirty bit for the current data.
+         * 
+         * @return  status of dirty bit
+         */
+        boolean isDirty() {
+            return dirty;
+        }
+        
+        /**
+         * Set the dirty bit for the current data.
+         * 
+         * @param flag  dirty bit to set
+         */
+        void setDirty(final boolean flag) {
+            dirty = flag;
+        }
+
+// Checkstyle: CyclomaticComplexity OFF        
+        /**
+         * Serialize current state of stored data into a storage operation.
+         * 
+         * @return the operation, or a null if the data has not been modified since loading or saving
+         * 
+         * @throws IOException if an error occurs
+         */
+        @Nullable ClientStorageServiceOperation save() throws IOException {
+            
+            if (!isDirty()) {
+                log.trace("{} Storage state has not been modified, save operation skipped", getLogPrefix());
+                return null;
+            }
+            
+            if (contextMap.isEmpty()) {
+                log.trace("{} Data is empty", getLogPrefix());
+                return new ClientStorageServiceOperation(getId(), getStorageName(), null, source);
+            }
+
+            long exp = 0L;
+            final long now = System.currentTimeMillis();
+            boolean empty = true;
+
+            try {
+                final StringWriter sink = new StringWriter(128);
+                final JsonGenerator gen = Json.createGenerator(sink);
+                
+                gen.writeStartObject();
+                for (final Map.Entry<String,Map<String, MutableStorageRecord>> context : contextMap.entrySet()) {
+                    gen.writeStartObject(context.getKey());
+                    for (Map.Entry<String,MutableStorageRecord> entry : context.getValue().entrySet()) {
+                        final MutableStorageRecord record = entry.getValue();
+                        final Long recexp = record.getExpiration();
+                        if (recexp == null || recexp > now) {
+                            empty = false;
+                            gen.writeStartObject(entry.getKey())
+                                .write("v", record.getValue());
+                            if (recexp != null) {
+                                gen.write("x", record.getExpiration());
+                                exp = Math.max(exp, recexp);
+                            }
+                            gen.writeEnd();
+                        }
+                    }
+                    gen.writeEnd();
+                }
+                gen.writeEnd().close();
+
+                if (empty) {
+                    log.trace("{} Data is empty", getLogPrefix());
+                    return new ClientStorageServiceOperation(getId(), getStorageName(), null, source);
+                }
+                
+                final String raw = sink.toString();
+                
+                log.trace("{} Size of data before encryption is {}", getLogPrefix(), raw.length());
+                log.trace("{} Data before encryption is {}", getLogPrefix(), raw);
+                try {
+                    final String wrapped = dataSealer.wrap(raw,
+                            exp > 0 ? exp : System.currentTimeMillis() + 24 * 60 * 60 * 1000);
+                    log.trace("{} Size of data after encryption is {}", getLogPrefix(), wrapped.length());
+                    setDirty(false);
+                    return new ClientStorageServiceOperation(getId(), getStorageName(), wrapped, source);
+                } catch (final DataSealerException e) {
+                    throw new IOException(e);
+                }
+            } catch (final JsonException e) {
+                throw new IOException(e);
+            }
+        }
+    }
+// Checkstyle: CyclomaticComplexity ON
     
 }
