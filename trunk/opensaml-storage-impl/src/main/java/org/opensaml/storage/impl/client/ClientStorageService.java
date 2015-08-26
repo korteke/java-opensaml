@@ -98,6 +98,9 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ClientStorageService.class);
 
+    /** Sizes to report for context, key, and value limits when particular sources are used. */
+    @Nonnull @NotEmpty private Map<ClientStorageSource,Integer> capabilityMap; 
+
     /** Servlet request. */
     @NonnullAfterInit private HttpServletRequest httpServletRequest;
     
@@ -116,6 +119,9 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     /** Constructor. */
     public ClientStorageService() {
         storageName = DEFAULT_STORAGE_NAME;
+        capabilityMap = new HashMap<>(2);
+        capabilityMap.put(ClientStorageSource.COOKIE, 4096);
+        capabilityMap.put(ClientStorageSource.HTML_LOCAL_STORAGE, 1024 * 1024);
     }
 
     /** {@inheritDoc} */
@@ -123,6 +129,25 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     public synchronized void setCleanupInterval(final long interval) {
         // Don't allow a cleanup task.
         super.setCleanupInterval(0);
+    }
+    
+    /**
+     * Set the map of storage sources to capability/size limits.
+     * 
+     * <p>The defaults include 4192 characters for cookies and 1024^2 characters
+     * for local storage.</p>
+     * 
+     * @param map capability map
+     */
+    public void setCapabilityMap(@Nonnull @NonnullElements final Map<ClientStorageSource,Integer> map) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        Constraint.isNotNull(map, "Capability map cannot be null");
+        
+        for (final Map.Entry<ClientStorageSource,Integer> entry : map.entrySet()) {
+            if (entry.getKey() != null && entry.getValue() != null) {
+                capabilityMap.put(entry.getKey(), entry.getValue());
+            }
+        }
     }
     
     /**
@@ -215,6 +240,24 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     
     /** {@inheritDoc} */
     @Override
+    public int getContextSize() {
+        return capabilityMap.get(getSource());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int getKeySize() {
+        return capabilityMap.get(getSource());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getValueSize() {
+        return capabilityMap.get(getSource());
+    }
+
+    /** {@inheritDoc} */
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
@@ -272,6 +315,31 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
         if (store != null && store instanceof ClientStorageServiceStore) {
             ((ClientStorageServiceStore) store).setDirty(true);
         }
+    }
+    
+    /**
+     * Get the backing source of the loaded data.
+     * 
+     * <p>This method should <strong>not</strong> be called while holding the session lock
+     * returned by {@link #getLock()}.</p>
+     *  
+     * @return the source of the loaded data
+     */
+    @Nonnull ClientStorageSource getSource() {
+       final Lock lock = getLock().readLock();
+       try {
+           lock.lock();
+           
+           final HttpSession session = Constraint.isNotNull(httpServletRequest.getSession(),
+                   "HttpSession cannot be null");
+           final Object object = session.getAttribute(STORAGE_ATTRIBUTE + '.' + storageName);
+           if (object != null && object instanceof ClientStorageServiceStore) {
+               return ((ClientStorageServiceStore) object).getSource();
+           }
+           return ClientStorageSource.COOKIE;
+       } finally {
+           lock.unlock();
+       }
     }
 
     /**

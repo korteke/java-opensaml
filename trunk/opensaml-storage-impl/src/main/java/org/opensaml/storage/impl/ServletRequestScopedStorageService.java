@@ -102,6 +102,9 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ServletRequestScopedStorageService.class);
 
+    /** Size to report for context, key, and value limits. */
+    private int capabilitySize;
+    
     /** Servlet request. */
     @NonnullAfterInit private HttpServletRequest httpServletRequest;
 
@@ -123,6 +126,7 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     /** Constructor. */
     public ServletRequestScopedStorageService() {
         cookieName = DEFAULT_COOKIE_NAME;
+        capabilitySize = 4096;
     }
 
     /** {@inheritDoc} */
@@ -130,6 +134,20 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
     public synchronized void setCleanupInterval(final long interval) {
         // Don't allow a cleanup task.
         super.setCleanupInterval(0);
+    }
+    
+    /**
+     * Set the size to report via the {@link org.opensaml.storage.StorageCapabilities} interface for
+     * context, key, and value maximums.
+     * 
+     * <p>Defaults to 4096 to reflect the limitations of cookies on Safari.</p>
+     * 
+     * @param size size in characters to report
+     */
+    public void setCapabilitySize(final int size) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        capabilitySize = size;
     }
     
     /**
@@ -217,6 +235,10 @@ public class ServletRequestScopedStorageService extends AbstractMapBackedStorage
         } else if (dataSealer == null || cookieManager == null) {
             throw new ComponentInitializationException("DataSealer and CookieManager must be set");
         }
+        
+        setContextSize(capabilitySize);
+        setKeySize(capabilitySize);
+        setValueSize(capabilitySize);
     }
 
     /** {@inheritDoc} */

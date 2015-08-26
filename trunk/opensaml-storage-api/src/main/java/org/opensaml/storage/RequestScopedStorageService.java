@@ -30,6 +30,7 @@ import javax.annotation.concurrent.ThreadSafe;
  * state.</p> 
  */
 @ThreadSafe
+@Deprecated
 public interface RequestScopedStorageService extends StorageService {
 
 }
