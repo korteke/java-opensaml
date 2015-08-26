@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.storage.impl.client.ClientStorageSaveContext.StorageOperation;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,15 +79,15 @@ public class LogLocalStorageSaveResults<InboundMessageType, OutboundMessageType>
         
         final HttpServletRequest request = getHttpServletRequest();
 
-        for (final StorageOperation operation : clientStorageSaveCtx.getStorageOperations()) {
+        for (final ClientStorageServiceOperation operation : clientStorageSaveCtx.getStorageOperations()) {
             if (operation.getStorageSource() == ClientStorageSource.HTML_LOCAL_STORAGE) {
                 String param = request.getParameter(
-                        LoadClientStorageServices.SUCCESS_FORM_FIELD + '.' + operation.getStorageKey());
+                        LoadClientStorageServices.SUCCESS_FORM_FIELD + '.' + operation.getKey());
                 if (param != null || Boolean.valueOf(param)) {
                     log.debug("{} Save to local storage for StorageService '{}' succeeded", getLogPrefix(),
                             operation.getStorageServiceID());
                 } else {
-                    param = request.getParameter(EXCEPTION_FORM_FIELD + '.' + operation.getStorageKey());
+                    param = request.getParameter(EXCEPTION_FORM_FIELD + '.' + operation.getKey());
                     log.warn("{} Save to local storage for StorageService '{}' failed: {}",
                             getLogPrefix(), operation.getStorageServiceID(), param);
                 }

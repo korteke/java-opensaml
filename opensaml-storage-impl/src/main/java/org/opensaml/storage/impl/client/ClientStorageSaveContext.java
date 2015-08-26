@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
@@ -31,8 +30,6 @@ import com.google.common.collect.Iterables;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A subcontext for driving the saving of data to a client from one or more
@@ -41,7 +38,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 public class ClientStorageSaveContext extends BaseContext {
 
     /** Storage operations to perform. */
-    @Nonnull @NonnullElements private Collection<StorageOperation> storageOperations;
+    @Nonnull @NonnullElements private Collection<ClientStorageServiceOperation> storageOperations;
     
     /** Constructor. */
     public ClientStorageSaveContext() {
@@ -53,7 +50,7 @@ public class ClientStorageSaveContext extends BaseContext {
      * 
      * @return modifiable collection of storage operations
      */
-    @Nonnull @NonnullElements @Live public Collection<StorageOperation> getStorageOperations() {
+    @Nonnull @NonnullElements @Live public Collection<ClientStorageServiceOperation> getStorageOperations() {
         return storageOperations;
     }
     
@@ -64,81 +61,11 @@ public class ClientStorageSaveContext extends BaseContext {
      * @return true iff the operations include at least one against the specified source
      */
     public boolean isSourceRequired(@Nonnull final ClientStorageSource source) {
-        return Iterables.any(storageOperations, new Predicate<StorageOperation>() {
-            public boolean apply(StorageOperation input) {
+        return Iterables.any(storageOperations, new Predicate<ClientStorageServiceOperation>() {
+            public boolean apply(ClientStorageServiceOperation input) {
                 return input.getStorageSource() == source;
             }
         });
-    }
-
-    /**
-     * A wrapper for a storage operation.
-     */
-    public static class StorageOperation {
-        
-        /** ID of storage service for tracking/logging. */
-        @Nonnull @NotEmpty private final String storageServiceId;
-        
-        /** Storage key. */
-        @Nonnull @NotEmpty private final String storageKey;
-        
-        /** Storage value. */
-        @Nullable @NotEmpty private final String storageValue;
-        
-        /** Storage source. */
-        @Nonnull private final ClientStorageSource storageSource;
-        
-        /**
-         * Constructor.
-         *
-         * @param id storage service ID
-         * @param key storage key to update
-         * @param value storage value
-         * @param source storage source
-         */
-        public StorageOperation(@Nonnull @NotEmpty final String id, @Nonnull @NotEmpty final String key,
-                @Nullable final String value, @Nonnull final ClientStorageSource source) {
-            storageServiceId = Constraint.isNotEmpty(id, "StorageService ID cannot be null or empty");
-            storageKey = Constraint.isNotEmpty(key, "Key cannot be null or empty");
-            storageValue = value;
-            storageSource = Constraint.isNotNull(source, "Storage source cannot be null");
-        }
-        
-        /**
-         * Get Storage Service ID.
-         * 
-         * @return  storage service ID
-         */
-        @Nonnull @NotEmpty public String getStorageServiceID() {
-            return storageServiceId;
-        }
-
-        /**
-         * Get storage key to update.
-         * 
-         * @return  storage key
-         */
-        @Nonnull @NotEmpty public String getStorageKey() {
-            return storageKey;
-        }
-
-        /**
-         * Get new storage value.
-         * 
-         * @return  storage value
-         */
-        @Nullable @NotEmpty public String getStorageValue() {
-            return storageValue;
-        }
-        
-        /**
-         * Get storage source.
-         * 
-         * @return storage source
-         */
-        @Nonnull public ClientStorageSource getStorageSource() {
-            return storageSource;
-        }
     }
     
 }

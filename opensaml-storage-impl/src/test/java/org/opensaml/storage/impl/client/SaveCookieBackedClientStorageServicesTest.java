@@ -24,7 +24,6 @@ import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.storage.impl.client.ClientStorageSaveContext.StorageOperation;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -81,7 +80,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
         
         saveCtx.getStorageOperations().add(
-                new StorageOperation(ss.getId(), ss.getStorageName(), "value", ClientStorageSource.HTML_LOCAL_STORAGE));
+                new ClientStorageServiceOperation(ss.getId(), ss.getStorageName(), "value", ClientStorageSource.HTML_LOCAL_STORAGE));
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -97,7 +96,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
 
         saveCtx.getStorageOperations().add(
-                new StorageOperation(ss.getId(), ss.getStorageName(), "the value", ClientStorageSource.COOKIE));
+                new ClientStorageServiceOperation(ss.getId(), ss.getStorageName(), "the value", ClientStorageSource.COOKIE));
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);

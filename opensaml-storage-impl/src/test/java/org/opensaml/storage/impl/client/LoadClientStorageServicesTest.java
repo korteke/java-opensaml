@@ -37,9 +37,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Optional;
-
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
@@ -152,14 +149,14 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         ss.create("context1", "key2", "value2", null);
         ss.create("context2", "key", "value", null);
         
-        final Optional<Pair<ClientStorageSource,String>> saved = ss.save();
-        Assert.assertTrue(saved.isPresent());
+        final ClientStorageServiceOperation saved = ss.save();
+        Assert.assertNotNull(saved);
 
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
 
         Assert.assertFalse(ss.isLoaded());
         
-        final Cookie cookie = new Cookie("foo", URISupport.doURLEncode(saved.get().getSecond()));
+        final Cookie cookie = new Cookie("foo", URISupport.doURLEncode(saved.getValue()));
         ((MockHttpServletRequest) HttpServletRequestResponseContext.getRequest()).setCookies(cookie);
 
         action.setUseLocalStorage(true);
@@ -179,8 +176,8 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         ss.create("context1", "key2", "value2", null);
         ss.create("context2", "key", "value", null);
         
-        final Optional<Pair<ClientStorageSource,String>> saved = ss.save();
-        Assert.assertTrue(saved.isPresent());
+        final ClientStorageServiceOperation saved = ss.save();
+        Assert.assertNotNull(saved);
 
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
 
@@ -189,7 +186,7 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         final MockHttpServletRequest request = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
         request.setParameter(LoadClientStorageServices.SUPPORT_FORM_FIELD, "true");
         request.setParameter(LoadClientStorageServices.SUCCESS_FORM_FIELD + '.' + ss.getStorageName(), "true");
-        request.setParameter(LoadClientStorageServices.VALUE_FORM_FIELD + '.' + ss.getStorageName(), saved.get().getSecond());
+        request.setParameter(LoadClientStorageServices.VALUE_FORM_FIELD + '.' + ss.getStorageName(), saved.getValue());
 
         action.setUseLocalStorage(true);
         action.setStorageServices(Collections.singletonList(ss));
