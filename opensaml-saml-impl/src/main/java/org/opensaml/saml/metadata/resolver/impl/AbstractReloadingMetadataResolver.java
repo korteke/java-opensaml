@@ -291,7 +291,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 processNewMetadata(mdId, now, mdBytes);
             }
         } catch (Throwable t) {
-            log.debug("Error occurred while attempting to refresh metadata from '" + mdId + "'", t);
+            log.error("Error occurred while attempting to refresh metadata from '" + mdId + "'", t);
             nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(minRefreshDelay);
             if (t instanceof Exception) {
                 throw new ResolverException((Exception) t);
