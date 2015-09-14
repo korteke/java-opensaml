@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.metadata.resolver.filter.impl;
+package org.opensaml.saml.metadata.resolver.filter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,8 +29,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
