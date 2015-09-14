@@ -53,6 +53,9 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
     /** The script we care about. */
     @Nonnull private final EvaluableScript script;
 
+    /** The custom object we can get inject into all scripts. */
+    @Nullable private Object customObject;
+
     /** Debugging info. */
     @Nullable private final String logPrefix;
 
@@ -77,11 +80,28 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
         script = Constraint.isNotNull(theScript, "Supplied script should not be null");
         logPrefix = "Anonymous Scripted Function :";
     }
+    
+    /**
+     * Return the custom (externally provided) object.
+     * @return the custom object
+     */
+    @Nullable public Object getCustomObject() {
+        return customObject;
+    }
+
+    /**
+     * Set the custom (externally provided) object.
+     * @param object the custom object
+     */
+    @Nullable public void setCustomObject(Object object) {
+        customObject = object;
+    }
 
     /** {@inheritDoc} */
     @Override public Set<String> apply(@Nullable final XMLObject context) {
 
         final SimpleScriptContext scriptContext = new SimpleScriptContext();
+        scriptContext.setAttribute("custom", getCustomObject(), ScriptContext.ENGINE_SCOPE);
         scriptContext.setAttribute("profileContext", context, ScriptContext.ENGINE_SCOPE);
 
         try {
