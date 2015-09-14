@@ -291,10 +291,11 @@ public class SignatureValidationFilter implements MetadataFilter {
      *                          on the root EntitiesDescriptor specified
      */
     protected void processEntityGroup(@Nonnull final EntitiesDescriptor entitiesDescriptor) throws FilterException {
-        log.trace("Processing EntitiesDescriptor group: {}", entitiesDescriptor.getName());
+        final String name = getGroupName(entitiesDescriptor);
+        log.trace("Processing EntitiesDescriptor group: {}", name);
         
         if (entitiesDescriptor.isSigned()) {
-            verifySignature(entitiesDescriptor, entitiesDescriptor.getName(), true);
+            verifySignature(entitiesDescriptor, name, true);
         }
         
         // Can't use IndexedXMLObjectChildrenList sublist iterator remove() to remove members,
@@ -329,12 +330,13 @@ public class SignatureValidationFilter implements MetadataFilter {
         final Iterator<EntitiesDescriptor> entitiesIter = entitiesDescriptor.getEntitiesDescriptors().iterator();
         while(entitiesIter.hasNext()) {
             final EntitiesDescriptor entitiesChild = entitiesIter.next();
-            log.trace("Processing EntitiesDescriptor member: {}", entitiesChild.getName());
+            final String childName = getGroupName(entitiesChild);
+            log.trace("Processing EntitiesDescriptor member: {}", childName);
             try {
                 processEntityGroup(entitiesChild);
             } catch (final FilterException e) {
                log.error("EntitiesDescriptor '{}' failed signature verification, removing from metadata provider", 
-                       entitiesChild.getName()); 
+                       childName); 
                toRemove.add(entitiesChild);
             }
         }
@@ -343,7 +345,7 @@ public class SignatureValidationFilter implements MetadataFilter {
             entitiesDescriptor.getEntitiesDescriptors().removeAll(toRemove);
         }
     }
-
+    
     /**
      * Evaluate the signature on the signed metadata instance.
      * 
@@ -463,6 +465,25 @@ public class SignatureValidationFilter implements MetadataFilter {
     protected String getRoleIDToken(@Nonnull @NotEmpty final String entityID, @Nonnull final RoleDescriptor role) {
         final String roleName = role.getElementQName().getLocalPart();
         return "[Role: " + entityID + "::" + roleName + "]";
+    }
+
+    /**
+     * Get the group's name, or a suitable facsimile if not named.
+     * 
+     * @param group the {@link EntitiesDescriptor}
+     * 
+     * @return a suitable name to use for logging
+     */
+    @Nonnull @NotEmpty protected String getGroupName(@Nonnull final EntitiesDescriptor group) {
+        String name = group.getName();
+        if (name != null) {
+            return name;
+        }
+        name = group.getID();
+        if (name != null) {
+            return name;
+        }
+        return "(unnamed)";
     }
     
 }
