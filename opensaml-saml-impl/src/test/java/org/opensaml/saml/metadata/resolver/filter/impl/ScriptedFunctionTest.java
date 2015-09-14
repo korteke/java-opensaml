@@ -18,6 +18,7 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.script.ScriptException;
@@ -83,4 +84,14 @@ public class ScriptedFunctionTest {
         Assert.assertEquals(result.size(), 1);
         Assert.assertTrue(result.contains("String"));
     }
+    
+    @Test public void customScript() throws ScriptException {
+        
+        final ScriptedTrustedNamesFunction what = ScriptedTrustedNamesFunction.inlineScript("custom;");
+        what.setCustomObject(Collections.singleton("String"));
+        
+        final Set<String> s = what.apply(makeObject());
+        Assert.assertEquals(s.size(), 1);
+        Assert.assertTrue(s.contains("String"));
+   }
 }
