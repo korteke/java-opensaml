@@ -73,7 +73,22 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     
     /** Candidates to check for. */
     @Nonnull @NonnullElements private final Collection<Candidate> candidateSet;
-    
+
+    /**
+     * Constructor.
+     * 
+     * @param candidates the {@link Candidate} criteria to check for
+     */
+    public EntityAttributesPredicate(@Nonnull @NonnullElements final Collection<Candidate> candidates) {
+        
+        Constraint.isNotNull(candidates, "Attribute collection cannot be null");
+        
+        candidateSet = new ArrayList<>(Collections2.filter(candidates, Predicates.notNull()));
+        
+        trimTags = true;
+        matchAll = false;
+    }
+
     /**
      * Constructor.
      * 
