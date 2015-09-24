@@ -215,7 +215,20 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         
         /** Regular expressions that must be satisfied. */
         @Nonnull @NonnullElements private List<Pattern> regexps;
-        
+
+        /**
+         * Constructor.
+         *
+         * @param name   Attribute Name to match
+         */
+        public Candidate(@Nonnull @NotEmpty final String name) {
+            nam = Constraint.isNotNull(StringSupport.trimOrNull(name), "Attribute Name cannot be null or empty");
+            nameFormat = null;
+            
+            values = Collections.emptyList();
+            regexps = Collections.emptyList(); 
+        }
+
         /**
          * Constructor.
          *
