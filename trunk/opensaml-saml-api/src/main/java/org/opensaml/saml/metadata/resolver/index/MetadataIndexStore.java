@@ -21,14 +21,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
-import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -39,7 +38,6 @@ import com.google.common.collect.ImmutableSet;
  * Component which stores indexed instances of {@link EntityDescriptor} under one or more instances
  * of {@link MetadataIndexKey}.
  */
-@NotThreadSafe
 public class MetadataIndexStore {
     
     /** The indexed storage of entity descriptors. */
@@ -49,7 +47,7 @@ public class MetadataIndexStore {
      * Constructor.
      */
     public MetadataIndexStore() {
-        index = new LazyMap<>();
+        index = new ConcurrentHashMap<>();
     }
     
     /**
