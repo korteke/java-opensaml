@@ -28,7 +28,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
-import org.opensaml.saml.metadata.resolver.index.MetadataIndexStore;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
@@ -36,7 +35,7 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.impl.RoleDescriptorImpl;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
@@ -47,16 +46,12 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
     
     private RoleMetadataIndex metadataIndex;
     
-    private MetadataIndexStore store;
-    private Set<EntityDescriptor> result;
-    
     private EntityDescriptor idp, sp, idpAndSp, custom;
     private MetadataIndexKey keyIDP, keySP, keyCustom;
     
-    @BeforeMethod
+    @BeforeClass
     protected void setUp() {
         metadataIndex = new RoleMetadataIndex();
-        store = new MetadataIndexStore();
         
         keyIDP = new RoleMetadataIndex.RoleMetadataIndexKey(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         keySP = new RoleMetadataIndex.RoleMetadataIndexKey(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
@@ -85,45 +80,25 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void testIndex() {
-        Assert.assertTrue(store.getKeys().isEmpty());
+    public void testGenerateKeysFromDescriptor() {
+        Set<MetadataIndexKey> keys = null;
         
-        metadataIndex.index(idp, store);
+        keys = metadataIndex.generateKeys(idp);
+        Assert.assertEquals(keys.size(), 1);
+        Assert.assertTrue(keys.contains(keyIDP));
         
-        Assert.assertEquals(store.getKeys().size(), 1);
-        Assert.assertTrue(store.getKeys().contains(keyIDP));
+        keys = metadataIndex.generateKeys(sp);
+        Assert.assertEquals(keys.size(), 1);
+        Assert.assertTrue(keys.contains(keySP));
         
-        result = store.lookup(keyIDP);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(idp));
+        keys = metadataIndex.generateKeys(idpAndSp);
+        Assert.assertEquals(keys.size(), 2);
+        Assert.assertTrue(keys.contains(keyIDP));
+        Assert.assertTrue(keys.contains(keySP));
         
-        metadataIndex.index(sp, store);
-        metadataIndex.index(idpAndSp, store);
-        
-        Assert.assertEquals(store.getKeys().size(), 2);
-        Assert.assertTrue(store.getKeys().contains(keyIDP));
-        Assert.assertTrue(store.getKeys().contains(keySP));
-        
-        result = store.lookup(keyIDP);
-        Assert.assertEquals(result.size(), 2);
-        Assert.assertTrue(result.contains(idp));
-        Assert.assertTrue(result.contains(idpAndSp));
-        
-        result = store.lookup(keySP);
-        Assert.assertEquals(result.size(), 2);
-        Assert.assertTrue(result.contains(sp));
-        Assert.assertTrue(result.contains(idpAndSp));
-        
-        metadataIndex.index(custom, store);
-        
-        Assert.assertEquals(store.getKeys().size(), 3);
-        Assert.assertTrue(store.getKeys().contains(keyIDP));
-        Assert.assertTrue(store.getKeys().contains(keySP));
-        Assert.assertTrue(store.getKeys().contains(keyCustom));
-        
-        result = store.lookup(keyCustom);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(custom));
+        keys = metadataIndex.generateKeys(custom);
+        Assert.assertEquals(keys.size(), 1);
+        Assert.assertTrue(keys.contains(keyCustom));
     }
     
     @Test

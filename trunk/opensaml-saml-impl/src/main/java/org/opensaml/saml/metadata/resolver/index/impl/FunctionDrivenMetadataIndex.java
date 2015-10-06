@@ -22,19 +22,22 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
+import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import com.google.common.base.Function;
 
 /**
- * Implementation of {@link org.opensaml.saml.metadata.resolver.index.MetadataIndex} 
- * which is based on injected strategy functions.
+ * Implementation of {@link MetadataIndex} which is based on injected strategy functions.
  */
-public class FunctionDrivenMetadataIndex extends AbstractMetadataIndex {
+public class FunctionDrivenMetadataIndex implements MetadataIndex {
     
     /** Function for producing index keys from a CriteriaSet. */
     @Nonnull private Function<CriteriaSet, Set<MetadataIndexKey>> criteriaStrategy;
@@ -55,13 +58,15 @@ public class FunctionDrivenMetadataIndex extends AbstractMetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
+    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
         Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
         return criteriaStrategy.apply(criteriaSet);
     }
 
     /** {@inheritDoc} */
-    @Nullable protected Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor) {
+    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "EntityDescriptor was null");
         return descriptorStrategy.apply(descriptor);
     }

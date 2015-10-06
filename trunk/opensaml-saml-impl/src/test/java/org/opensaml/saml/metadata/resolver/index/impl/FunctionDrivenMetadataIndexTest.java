@@ -19,17 +19,15 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.util.Set;
 
-
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
-import org.opensaml.saml.metadata.resolver.index.MetadataIndexStore;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
@@ -40,62 +38,32 @@ public class FunctionDrivenMetadataIndexTest extends OpenSAMLInitBaseTestCase {
     
     private FunctionDrivenMetadataIndex metadataIndex;
     
-    private MetadataIndexStore store;
-    private Set<EntityDescriptor> result;
-    
     private EntityDescriptor a, b, c;
     private MetadataIndexKey keyA, keyB, keyC;
     
-    @BeforeMethod
+    @BeforeClass
     protected void setUp() {
         metadataIndex = new FunctionDrivenMetadataIndex(new UppercaseEntityIdDescriptorFunction(), new SimpleStringCriteriaFunction());
-        store = new MetadataIndexStore();
         
         a = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         a.setEntityID("urn:test:a");
-        keyA = new SimpleStringMetadataIndexKey("URN:TEST:A");
+        keyA = new SimpleStringMetadataIndexKey(a.getEntityID().toUpperCase());
         
         b = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         b.setEntityID("urn:test:b");
-        keyB = new SimpleStringMetadataIndexKey("URN:TEST:B");
+        keyB = new SimpleStringMetadataIndexKey(b.getEntityID().toUpperCase());
         
         c = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         c.setEntityID("urn:test:c");
-        keyC = new SimpleStringMetadataIndexKey("URN:TEST:C");
+        keyC = new SimpleStringMetadataIndexKey(c.getEntityID().toUpperCase());
     }
     
     @Test
-    public void testIndex() {
-        Assert.assertTrue(store.getKeys().isEmpty());
+    public void testGenerateKeysFromDescriptor() {
+        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(a);
         
-        metadataIndex.index(a, store);
-        
-        Assert.assertEquals(store.getKeys().size(), 1);
-        Assert.assertTrue(store.getKeys().contains(keyA));
-        
-        result = store.lookup(keyA);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(a));
-        
-        metadataIndex.index(b, store);
-        metadataIndex.index(c, store);
-        
-        Assert.assertEquals(store.getKeys().size(), 3);
-        Assert.assertTrue(store.getKeys().contains(keyA));
-        Assert.assertTrue(store.getKeys().contains(keyB));
-        Assert.assertTrue(store.getKeys().contains(keyC));
-        
-        result = store.lookup(keyA);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(a));
-        
-        result = store.lookup(keyB);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(b));
-        
-        result = store.lookup(keyC);
-        Assert.assertEquals(result.size(), 1);
-        Assert.assertTrue(result.contains(c));
+        Assert.assertEquals(keys.size(), 1);
+        Assert.assertTrue(keys.contains(keyA));
     }
     
     @Test

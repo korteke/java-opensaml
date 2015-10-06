@@ -24,10 +24,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.saml.criterion.EntityRoleCriterion;
+import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -35,13 +39,13 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import com.google.common.base.MoreObjects;
 
 /**
- * An implementation of {@link org.opensaml.saml.metadata.resolver.index.MetadataIndex} 
- * which indexes entities by their roles.
+ * An implementation of {@link MetadataIndex} which indexes entities by their roles.
  */
-public class RoleMetadataIndex extends AbstractMetadataIndex {
+public class RoleMetadataIndex implements MetadataIndex {
 
     /** {@inheritDoc} */
-    @Nullable public Set<MetadataIndexKey> generateKeys(@Nonnull CriteriaSet criteriaSet) {
+    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    public Set<MetadataIndexKey> generateKeys(@Nonnull CriteriaSet criteriaSet) {
         Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
         EntityRoleCriterion roleCrit = criteriaSet.get(EntityRoleCriterion.class);
         if (roleCrit != null) {
@@ -54,7 +58,8 @@ public class RoleMetadataIndex extends AbstractMetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable protected Set<MetadataIndexKey> generateKeys(@Nonnull EntityDescriptor descriptor) {
+    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    public Set<MetadataIndexKey> generateKeys(@Nonnull EntityDescriptor descriptor) {
         Constraint.isNotNull(descriptor, "EntityDescriptor was null");
         HashSet<MetadataIndexKey> result = new HashSet<>();
         for (RoleDescriptor role : descriptor.getRoleDescriptors()) {
