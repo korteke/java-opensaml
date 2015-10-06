@@ -30,31 +30,35 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
- * A component which is capable of indexing an {@link EntityDescriptor}, using one or more implementation-specific
- * instances of {@link MetadataIndexKey} and stored in a {@link MetadataIndexStore}.
+ * A component which defines and supports indexing an {@link EntityDescriptor}, and corresponding lookup 
+ * via a {@link CriteriaSet}, using one or more (possibly implementation-specific)
+ * instances of {@link MetadataIndexKey}.
  */
 public interface MetadataIndex {
     
     /**
-     * Index the supplied {@link EntityDescriptor} into the supplied {@link MetadataIndexStore}.
+     * Generate a set of one or more {@link MetadataIndexKey} instances based on the input {@link EntityDescriptor}.
      * 
      * <p>
-     * An implementation typically will simply generate one or more instances of {@link MetadataIndexKey}
-     * based on the descriptor, and use those to store the descriptor in the {@link MetadataIndexStore}.
+     * These index key instances reflect the type of indexing performed and "understood" by the implementation,
+     * and as such should complement the {@link MetadataIndexKey} types generated for descriptor
+     * lookup via {@link #generateKeys(CriteriaSet)}.
      * </p>
      * 
-     * @param descriptor the descriptor to index
-     * @param store the store for the indexed data
+     * @param descriptor the entity descriptor set to process
+     * @return the set of index keys generated from the criteria.  May be null or empty, 
+     *         but will not contain null elements.
      */
-    public void index(@Nonnull final EntityDescriptor descriptor, @Nonnull final MetadataIndexStore store);
+    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor);
     
     /**
      * Generate a set of one or more {@link MetadataIndexKey} instances based on the input {@link CriteriaSet}.
      * 
      * <p>
-     * These index key instances reflect the type of indexing performed by and "understood" by the implementation,
-     * and as such should correspond directly to the {@link MetadataIndexKey} types generated during descriptor
-     * indexing via {@link #index(EntityDescriptor, MetadataIndexStore)}.
+     * These index key instances reflect the type of indexing performed and "understood" by the implementation,
+     * and as such should complement the {@link MetadataIndexKey} types generated for descriptor
+     * indexing via {@link #generateKeys(EntityDescriptor)}.
      * </p>
      * 
      * @param criteriaSet the criteria set to process

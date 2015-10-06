@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -30,7 +29,6 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -41,9 +39,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.IterableMetadataSource;
 import org.opensaml.saml.metadata.resolver.BatchMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
-import org.opensaml.saml.metadata.resolver.index.MetadataIndexStore;
+import org.opensaml.saml.metadata.resolver.index.impl.MetadataIndexManager;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
@@ -152,18 +149,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * 
      * @return descriptors resolved via indexes, and based on the input criteria set. May be empty.
      */
-    @Nonnull @NonnullElements protected Set<EntityDescriptor>  lookupByIndexes(@Nonnull final CriteriaSet criteria) {
-        HashSet<EntityDescriptor> descriptors = new HashSet<>();
-        for (MetadataIndex index : getIndexes()) {
-            Set<MetadataIndexKey> keys = index.generateKeys(criteria);
-            if (keys != null) {
-                MetadataIndexStore indexStore = getBackingStore().getSecondaryIndexes().get(index);
-                for (MetadataIndexKey key : keys) {
-                    descriptors.addAll(indexStore.lookup(key));
-                }
-            }
-        }
-        return descriptors;
+    @Nonnull @NonnullElements 
+    protected Set<EntityDescriptor> lookupByIndexes(@Nonnull final CriteriaSet criteria) {
+        return getBackingStore().getSecondaryIndexManager().lookupEntityDescriptors(criteria);
     }
     
     /** {@inheritDoc} */
@@ -172,11 +160,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
             @Nonnull final EntityBackingStore backingStore) {
         super.indexEntityDescriptor(entityDescriptor, backingStore);
         
-        for (MetadataIndex index : getIndexes()) {
-            MetadataIndexStore indexStore = ((BatchEntityBackingStore)backingStore).getSecondaryIndexes().get(index);
-            index.index(entityDescriptor, indexStore);
-        }
-        
+        ((BatchEntityBackingStore)backingStore).getSecondaryIndexManager().indexEntityDescriptor(entityDescriptor);
     }
 
     /** {@inheritDoc} */
@@ -287,14 +271,8 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         /** The cached original source metadata document. */
         private XMLObject cachedFilteredMetadata;
         
-        /** Storage for secondary indexes. */
-        private Map<MetadataIndex, MetadataIndexStore> secondaryIndexes;
-        
-        /** Constructor. */
-        protected BatchEntityBackingStore() {
-            super();
-            secondaryIndexes = new LazyMap<>();
-        }
+        /** Manager for secondary indexes. */
+        private MetadataIndexManager secondaryIndexManager;
         
         /**
          * Constructor.
@@ -302,13 +280,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          * @param initIndexes secondary indexes for which to initialize storage
          */
         protected BatchEntityBackingStore(
-                @Nullable @NonnullElements @Unmodifiable @NotLive Collection<MetadataIndex> initIndexes) {
-            this();
-            if (initIndexes != null) {
-                for (MetadataIndex index : initIndexes) {
-                    secondaryIndexes.put(index, new MetadataIndexStore());
-                }
-            }
+                @Nullable @NonnullElements @Unmodifiable @NotLive Set<MetadataIndex> initIndexes) {
+            super();
+            secondaryIndexManager = new MetadataIndexManager(initIndexes);
         }
 
         /**
@@ -348,12 +322,12 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         }
         
         /**
-         * Get the map holding the secondary index data.
+         * Get the secondary index manager.
          * 
-         * @return the map of secondary indexes
+         * @return the manager for secondary indexes
          */
-        public Map<MetadataIndex, MetadataIndexStore> getSecondaryIndexes() {
-            return secondaryIndexes;
+        public MetadataIndexManager getSecondaryIndexManager() {
+            return secondaryIndexManager;
         }
         
     }

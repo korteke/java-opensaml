@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.metadata.resolver.index;
+package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,6 +30,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
+import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import com.google.common.collect.ImmutableSet;
