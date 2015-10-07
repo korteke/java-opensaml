@@ -19,12 +19,14 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.io.File;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.HashSet;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.saml.criterion.ArtifactSourceIDCriterion;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.metadata.resolver.impl.AbstractBatchMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
@@ -33,6 +35,7 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.security.crypto.JCAConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -48,6 +51,7 @@ public class MetadataIndexingTest extends XMLObjectBaseTestCase {
     private File mdFile;
 
     private String entityID;
+    private byte[] artifactSourceID, otherSourceID;
 
     private CriteriaSet criteriaSet;
     
@@ -55,9 +59,15 @@ public class MetadataIndexingTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";
         
+        MessageDigest sha1Digester = MessageDigest.getInstance(JCAConstants.DIGEST_SHA1);
+        artifactSourceID = sha1Digester.digest(entityID.getBytes("UTF-8"));
+        sha1Digester.reset();
+        otherSourceID = sha1Digester.digest("foobar".getBytes("UTF-8"));
+        
         HashSet<MetadataIndex> indexes = new HashSet<>();
         indexes.add(new FunctionDrivenMetadataIndex(new UppercaseEntityIdDescriptorFunction(), new SimpleStringCriteriaFunction()));
         indexes.add(new RoleMetadataIndex());
+        indexes.add(new ArtifactSourceIDMetadataIndex());
 
         URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
@@ -70,6 +80,27 @@ public class MetadataIndexingTest extends XMLObjectBaseTestCase {
         metadataProvider.initialize();
         
         criteriaSet = new CriteriaSet();
+    }
+    
+    @Test
+    public void testResolveByArtifactSourceID() throws ResolverException {
+        //Empty criteria set.  Not an error, just no result.
+        criteriaSet.clear();
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor);
+        
+        //Criteria with non-matching criterion value. Not an error, just no result.
+        criteriaSet.clear();
+        criteriaSet.add(new ArtifactSourceIDCriterion(otherSourceID));
+        descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor);
+        
+        //Criteria with matching criterion value. This should be resolved from the index.
+        criteriaSet.clear();
+        criteriaSet.add(new ArtifactSourceIDCriterion(artifactSourceID));
+        descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
     @Test
