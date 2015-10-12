@@ -90,7 +90,7 @@ public class MetadataIndexManager {
     }
     
     /**
-     * Resolve the set up descriptors based on the indexes currently held.
+     * Resolve the set of descriptors based on the indexes currently held.
      * 
      * @param criteria the criteria set to process
      * 

@@ -62,7 +62,7 @@ public class MetadataIndexStore {
     }
     
     /**
-     * Look the instances of {@link EntityDescriptor} indexed under the supplied {@link MetadataIndexKey}.
+     * Lookup the instances of {@link EntityDescriptor} indexed under the supplied {@link MetadataIndexKey}.
      * 
      * @param key the index key to lookup
      * @return the set of descriptors indexed under that key
