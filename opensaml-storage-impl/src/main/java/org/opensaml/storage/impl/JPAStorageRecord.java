@@ -47,8 +47,15 @@ import org.opensaml.storage.MutableStorageRecord;
             query = "SELECT distinct r.context FROM JPAStorageRecord r"),
     @NamedQuery(name = "JPAStorageRecord.findByContext",
             query = "SELECT r FROM JPAStorageRecord r WHERE r.context = :context"),
-    @NamedQuery(name = "JPAStorageRecord.findActiveByContext",
-            query = "SELECT r FROM JPAStorageRecord r WHERE r.context = :context AND r.expiration >= :now")})
+    @NamedQuery(name = "JPAStorageRecord.updateExpirationByContext",
+            query =
+              "UPDATE JPAStorageRecord r SET r.expiration = :exp WHERE r.context = :context AND r.expiration >= :now"),
+    @NamedQuery(name = "JPAStorageRecord.deleteByContext",
+            query = "DELETE FROM JPAStorageRecord r WHERE r.context = :context"),
+    @NamedQuery(name = "JPAStorageRecord.deleteByContextAndExpiration",
+            query = "DELETE FROM JPAStorageRecord r WHERE r.context = :context AND r.expiration <= :exp"),
+    @NamedQuery(name = "JPAStorageRecord.deleteByExpiration",
+            query = "DELETE FROM JPAStorageRecord r WHERE r.expiration <= :exp")})
 @IdClass(JPAStorageRecord.RecordId.class)
 public class JPAStorageRecord extends MutableStorageRecord {
 

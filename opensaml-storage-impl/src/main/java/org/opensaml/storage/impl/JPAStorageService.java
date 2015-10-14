@@ -581,19 +581,14 @@ public class JPAStorageService extends AbstractStorageService {
                     manager = entityManagerFactory.createEntityManager();
                     transaction = manager.getTransaction();
                     transaction.begin();
-                    final Query queryResults =
-                            manager.createNamedQuery("JPAStorageRecord.findActiveByContext", JPAStorageRecord.class);
-                    queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+                    // cannot set lock mode on a non-select query
+                    final Query queryResults = manager.createNamedQuery("JPAStorageRecord.updateExpirationByContext");
                     queryResults.setParameter("context", context);
                     queryResults.setParameter("now", System.currentTimeMillis());
-                    final List<JPAStorageRecord> entities = queryResults.getResultList();
-                    if (!entities.isEmpty()) {
-                        for (final JPAStorageRecord entity : entities) {
-                            entity.setExpiration(expiration);
-                        }
-                        transaction.commit();
-                        log.debug("Updated expiration of valid records in context '{}' to '{}'", context, expiration);
-                    }
+                    queryResults.setParameter("exp", expiration);
+                    final int count = queryResults.executeUpdate();
+                    transaction.commit();
+                    log.debug("Updated expiration of {} record(s) in context '{}' to '{}'", count, context, expiration);
                     return;
                 } catch (final RollbackException e) {
                     lastThrown = e;
@@ -666,29 +661,87 @@ public class JPAStorageService extends AbstractStorageService {
                     manager = entityManagerFactory.createEntityManager();
                     transaction = manager.getTransaction();
                     transaction.begin();
-                    final Query queryResults =
-                            manager.createNamedQuery("JPAStorageRecord.findByContext", JPAStorageRecord.class);
-                    queryResults.setParameter("context", context);
-                    queryResults.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-                    final List<JPAStorageRecord> entities = queryResults.getResultList();
-
-                    if (!entities.isEmpty()) {
-                        for (final JPAStorageRecord entity : entities) {
-                            if (expiration == null
-                                    || (entity.getExpiration() != null && entity.getExpiration() <= expiration)) {
-                                manager.remove(entity);
-                            }
-                        }
-                        transaction.commit();
-                        log.debug("Deleted records '{}' in context '{}' with expiration '{}'", entities, context,
-                                expiration);
+                    // cannot set lock mode on a non-select query
+                    Query queryResults;
+                    if (expiration == null) {
+                        queryResults = manager.createNamedQuery("JPAStorageRecord.deleteByContext");
+                    } else {
+                        queryResults = manager.createNamedQuery("JPAStorageRecord.deleteByContextAndExpiration");
+                        queryResults.setParameter("exp", expiration);
                     }
+                    queryResults.setParameter("context", context);
+                    final int count = queryResults.executeUpdate();
+                    transaction.commit();
+                    log.debug("Deleted {} record(s) in context '{}' with expiration '{}'", count, context, expiration);
                     return;
                 } catch (final RollbackException e) {
                     lastThrown = e;
                     retry++;
                 } catch (final Exception e) {
                     log.error("Error deleting context '{}'", context, e);
+                    if (transaction != null && transaction.isActive()) {
+                        try {
+                            transaction.rollback();
+                        } catch (Exception ex) {
+                            log.error("Error rolling back transaction", e);
+                        }
+                    }
+                    throw new IOException(e);
+                } finally {
+                    if (transaction != null && transaction.isActive() && !transaction.getRollbackOnly()) {
+                        try {
+                            transaction.commit();
+                        } catch (Exception e) {
+                            log.error("Error committing transaction", e);
+                        }
+                    }
+                }
+            } while (retry < transactionRetry);
+            throw lastThrown;
+        } finally {
+            if (manager != null && manager.isOpen()) {
+                try {
+                    manager.close();
+                } catch (Exception e) {
+                    log.error("Error closing entity manager", e);
+                }
+            }
+        }
+    }
+
+    // Checkstyle: CyclomaticComplexity ON
+
+    // Checkstyle: CyclomaticComplexity OFF
+    /**
+     * Deletes every record with an expiration before the supplied expiration.
+     * 
+     * @param expiration of records to delete
+     * 
+     * @throws IOException if errors occur in the cleanup process
+     */
+    protected void deleteImpl(@Nonnull final Long expiration) throws IOException {
+        EntityManager manager = null;
+        try {
+            int retry = -1;
+            RollbackException lastThrown = null;
+            do {
+                EntityTransaction transaction = null;
+                try {
+                    manager = entityManagerFactory.createEntityManager();
+                    transaction = manager.getTransaction();
+                    transaction.begin();
+                    // cannot set lock mode on a non-select query
+                    final Query queryResults = manager.createNamedQuery("JPAStorageRecord.deleteByExpiration");
+                    queryResults.setParameter("exp", expiration);
+                    final int count = queryResults.executeUpdate();
+                    transaction.commit();
+                    log.debug("Deleted {} record(s) with expiration '{}'", count, expiration);
+                    return;
+                } catch (final RollbackException e) {
+                    lastThrown = e;
+                    retry++;
+                } catch (final Exception e) {
+                    log.error("Error deleting with expiration '{}'", expiration, e);
                     if (transaction != null && transaction.isActive()) {
                         try {
                             transaction.rollback();
@@ -783,24 +836,12 @@ public class JPAStorageService extends AbstractStorageService {
             @Override public void run() {
                 final Long now = System.currentTimeMillis();
                 log.debug("Running cleanup task at {}", now);
-                List<String> contexts = null;
                 try {
-                    contexts = readContexts();
-                    log.debug("Cleanup read contexts {}", contexts);
+                    deleteImpl(now);
                 } catch (final IOException e) {
-                    log.error("Error reading contexts", e);
+                    log.error("Error running cleanup task for {}", now, e);
                 }
-                if (contexts != null && !contexts.isEmpty()) {
-                    for (final String context : contexts) {
-                        try {
-                            deleteContextImpl(context, now);
-                            log.debug("Cleanup removed expired records in context {}", context);
-                        } catch (final IOException e) {
-                            log.error("Error deleting records in context '{}' for timestamp '{}'", context, now, e);
-                        }
-                    }
-                }
-                log.debug("Finished cleanup task");
+                log.debug("Finished cleanup task for {}", now);
             }
         };
     }
