@@ -49,6 +49,7 @@
         <svn.relative.location>java-opensaml</svn.relative.location>
         <java-support.version>7.2.0-SNAPSHOT</java-support.version>
         <spring-extensions.version>5.2.0-SNAPSHOT</spring-extensions.version>
+        <checkstyle.configLocation>${project.parent.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
     <repositories>
