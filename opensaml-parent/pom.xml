@@ -39,7 +39,7 @@
         <module>../opensaml-messaging-impl</module>
         <module>../opensaml-soap-impl</module>
         <module>../opensaml-saml-impl</module>
-        <module>../opensaml-xacml-impl</module>        
+        <module>../opensaml-xacml-impl</module>
         <module>../opensaml-xacml-saml-impl</module>
         <module>../opensaml-profile-api</module>
         <module>../opensaml-profile-impl</module>
@@ -49,7 +49,7 @@
         <svn.relative.location>java-opensaml</svn.relative.location>
         <java-support.version>7.2.0-SNAPSHOT</java-support.version>
         <spring-extensions.version>5.2.0-SNAPSHOT</spring-extensions.version>
-        <checkstyle.configLocation>${project.parent.basedir}/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
+        <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
     <repositories>
