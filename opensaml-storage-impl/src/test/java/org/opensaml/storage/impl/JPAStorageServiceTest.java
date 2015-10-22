@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManagerFactory;
@@ -141,5 +142,18 @@ public class JPAStorageServiceTest extends StorageServiceTest {
         Assert.assertNotNull(rec);
         boolean result = shared.create(context, "mt", "qux", null);
         Assert.assertFalse(result, "createString should have failed");
+    }
+
+    @Test(enabled = false)
+    public void largeValue() throws IOException {
+        // hsqldb defaults LOB length to 255 chars; disabled for now
+        StringBuilder sb = new StringBuilder(1000 * 36);
+        for (int i = 0; i < 1000; i++) {
+            sb.append(UUID.randomUUID());
+        }
+        shared.create("unit_test", "large", sb.toString(), System.currentTimeMillis() + 300000);
+        StorageRecord rec = shared.read("unit_test", "large");
+        Assert.assertNotNull(rec);
+        Assert.assertEquals(sb.toString(), rec.getValue());
     }
 }
