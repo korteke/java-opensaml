@@ -223,5 +223,10 @@ public class JPAStorageRecord extends MutableStorageRecord {
         public boolean equals(final Object o) {
             return o != null && (this == o || getClass() == o.getClass() && hashCode() == o.hashCode());
         }
+
+        /** {@inheritDoc} */
+        @Override public String toString() {
+            return String.format("%s:%s", context, key);
+        }
     }
 }
