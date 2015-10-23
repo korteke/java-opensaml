@@ -19,7 +19,12 @@ package org.opensaml.saml.saml2.profile.impl;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.Collections;
+import java.util.List;
 
+import javax.annotation.Nullable;
+
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
@@ -41,12 +46,15 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
-/** Unit test for {@link EncryptNameIDs}. */
-public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
+/** Unit test for self-encryption support in {@link AbstractEncryptAction} (using {@link EncryptNameIDs} as the concrete impl.) */
+public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
     
-    private EncryptionParameters encParams;
+    private EncryptionParameters encParams, encParamsSelf1, encParamsSelf2;
     
     private ProfileRequestContext<Object,Response> prc;
     
@@ -66,6 +74,22 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
                 AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 1024, false));
         encParams.setKeyTransportKeyInfoGenerator(generator.newInstance());
         
+        encParamsSelf1 = new EncryptionParameters();
+        encParamsSelf1.setDataEncryptionAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        encParamsSelf1.setDataKeyInfoGenerator(generator.newInstance());
+        encParamsSelf1.setKeyTransportEncryptionAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        encParamsSelf1.setKeyTransportEncryptionCredential(
+                AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 1024, false));
+        encParamsSelf1.setKeyTransportKeyInfoGenerator(generator.newInstance());
+        
+        encParamsSelf2 = new EncryptionParameters();
+        encParamsSelf2.setDataEncryptionAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+        encParamsSelf2.setDataKeyInfoGenerator(generator.newInstance());
+        encParamsSelf2.setKeyTransportEncryptionAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
+        encParamsSelf2.setKeyTransportEncryptionCredential(
+                AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 1024, false));
+        encParamsSelf2.setKeyTransportKeyInfoGenerator(generator.newInstance());
+        
         prc = new RequestContextBuilder().buildProfileRequestContext();
         prc.getOutboundMessageContext().getSubcontext(EncryptionContext.class, true).setIdentifierEncryptionParameters(encParams);
         
@@ -73,23 +97,24 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
-    public void testEmptyMessage() throws ComponentInitializationException {
-        action.initialize();
-        
-        action.execute(prc);
-        ActionTestingSupport.assertProceedEvent(prc);
-        
-        prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
-        action.execute(prc);
-        ActionTestingSupport.assertProceedEvent(prc);
-    }
-        
-    @Test
-    public void testEncryptedNameID() throws EncryptionException, ComponentInitializationException, MarshallingException {
+    public void testSelfEncryption() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         prc.getOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
+        
+        action.setEncryptToSelf(Predicates.<ProfileRequestContext>alwaysTrue());
+        action.setEncryptToSelfParametersStrategy(new Function<Pair<ProfileRequestContext,EncryptionParameters>, List<EncryptionParameters>>() {
+            public List<EncryptionParameters> apply(@Nullable Pair<ProfileRequestContext, EncryptionParameters> input) {
+                return Lists.newArrayList(encParamsSelf1, encParamsSelf2);
+            }
+        });
+        action.setSelfRecipientLookupStrategy(new Function<ProfileRequestContext, String>() {
+            public String apply(@Nullable ProfileRequestContext input) {
+                return "https://idp.example.org";
+            }
+        });
+        
         action.initialize();
         
         action.execute(prc);
@@ -105,22 +130,32 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(),
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, "Algorithm attribute");
         Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 1, 
+        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 3, 
                 "Number of EncryptedKeys");
         Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
                 "EncryptedData ID attribute was empty");
     }
     
     @Test
-    public void testFailure() throws EncryptionException, ComponentInitializationException, MarshallingException {
+    public void testFailureNoSelfEncryptionCreds() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         prc.getOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
         
-        action.initialize();
+        action.setEncryptToSelf(Predicates.<ProfileRequestContext>alwaysTrue());
+        action.setEncryptToSelfParametersStrategy(new Function<Pair<ProfileRequestContext,EncryptionParameters>, List<EncryptionParameters>>() {
+            public List<EncryptionParameters> apply(@Nullable Pair<ProfileRequestContext, EncryptionParameters> input) {
+                return Collections.emptyList();
+            }
+        });
+        action.setSelfRecipientLookupStrategy(new Function<ProfileRequestContext, String>() {
+            public String apply(@Nullable ProfileRequestContext input) {
+                return "https://idp.example.org";
+            }
+        });
         
-        encParams.setKeyTransportEncryptionCredential(null);
+        action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.UNABLE_TO_ENCRYPT);

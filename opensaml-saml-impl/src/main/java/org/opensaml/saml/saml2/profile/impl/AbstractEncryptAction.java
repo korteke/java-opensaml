@@ -17,15 +17,21 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
+import org.opensaml.profile.action.ActionSupport;
+import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 import org.opensaml.saml.saml2.encryption.Encrypter;
@@ -39,6 +45,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 /**
  * Abstract base class for actions that perform simple unicast SAML encryption to a single
@@ -63,6 +71,16 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     /** Strategy used to determine encrypted key placement. */
     @Nonnull private Function<ProfileRequestContext,Encrypter.KeyPlacement> keyPlacementLookupStrategy;
     
+    /** Predicate used to determine whether to perform encrypt-to-self. */
+    @Nonnull private Predicate<ProfileRequestContext> encryptToSelf;
+    
+    /** Strategy used to resolve the encrypt-to-self parameters. */
+    @Nullable private Function<Pair<ProfileRequestContext, EncryptionParameters>, 
+        List<EncryptionParameters>> encryptToSelfParametersStrategy;
+    
+    /** Strategy used to obtain the self recipient value. */
+    @Nullable private Function<ProfileRequestContext, String> selfRecipientLookupStrategy;
+    
     /** The encryption object. */
     @Nullable private Encrypter encrypter;
     
@@ -71,6 +89,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
         encryptionCtxLookupStrategy = Functions.compose(new ChildContextLookup<>(EncryptionContext.class),
                 new OutboundMessageContextLookup());
         keyPlacementLookupStrategy = FunctionSupport.<ProfileRequestContext,KeyPlacement>constant(KeyPlacement.INLINE);
+        encryptToSelf = Predicates.alwaysFalse();
     }
     
     /**
@@ -110,6 +129,38 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     }
     
     /**
+     * Set the predicate used to determine whether to perform encrypt-to-self.
+     * 
+     * @param predicate the encrypt-to-self predicate
+     */
+    public void setEncryptToSelf(@Nonnull final Predicate<ProfileRequestContext> predicate) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        encryptToSelf = Constraint.isNotNull(predicate, "Encrypt-to-self predicate cannot be null");
+    }
+    
+    /**
+     * Set the strategy used to resolve the encrypt-to-self parameters. 
+     * 
+     * @param strategy the encrypt-to-self predicate
+     */
+    public void setEncryptToSelfParametersStrategy(
+            @Nullable Function<Pair<ProfileRequestContext, EncryptionParameters>, 
+            List<EncryptionParameters>> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        encryptToSelfParametersStrategy = strategy;
+    }
+    
+    /**
+     * Set the strategy used to locate the self identity value to use.
+     * 
+     * @param strategy lookup strategy
+     */
+    public void setSelfRecipientLookupStrategy(@Nullable final Function<ProfileRequestContext, String> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        selfRecipientLookupStrategy = strategy;
+    }
+    
+    /**
      * Get the encrypter.
      * 
      * @return  the encrypter
@@ -122,6 +173,10 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         final EncryptionParameters params =
                 getApplicableParameters(encryptionCtxLookupStrategy.apply(profileRequestContext));
         if (params == null) {
@@ -132,12 +187,42 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
         final String recipient = recipientLookupStrategy != null
                 ? recipientLookupStrategy.apply(profileRequestContext) : null; 
         final DataEncryptionParameters dataParams = new DataEncryptionParameters(params);
-        final KeyEncryptionParameters keyParams = new KeyEncryptionParameters(params, recipient);
+        final List<KeyEncryptionParameters> keyParams = new ArrayList<>();
+        keyParams.add(new KeyEncryptionParameters(params, recipient));
+        
+        if (encryptToSelf.apply(profileRequestContext)) {
+            log.debug("{} Encryption to self was indicated", getLogPrefix());
+            String selfRecipient = null;
+            if (selfRecipientLookupStrategy != null) {
+                selfRecipient = selfRecipientLookupStrategy.apply(profileRequestContext);
+                log.debug("{} Resolved self-encryption recipient value: {}", getLogPrefix(), selfRecipient);
+            }
+            if (encryptToSelfParametersStrategy != null) {
+                List<EncryptionParameters> selfParams = encryptToSelfParametersStrategy.apply(
+                        new Pair<ProfileRequestContext, EncryptionParameters>(profileRequestContext, params));
+                if (selfParams != null && !selfParams.isEmpty()) {
+                    log.debug("{} Saw {} self-encryption parameters", getLogPrefix(), selfParams.size());
+                    for (EncryptionParameters selfParam : selfParams) {
+                        keyParams.add(new KeyEncryptionParameters(selfParam, selfRecipient));
+                    }
+                } else {
+                    log.error("{} Self-encryption self was indicated, but no parameters were resolved",
+                            getLogPrefix());
+                    ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCRYPT);
+                    return false;
+                }
+            } else {
+                log.error("{} Self-encryption was indicated, but no parameters strategy was supplied", 
+                        getLogPrefix());
+                ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCRYPT);
+                return false;
+            }
+        }
         
         encrypter = new Encrypter(dataParams, keyParams);
         encrypter.setKeyPlacement(keyPlacementLookupStrategy.apply(profileRequestContext));
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /**
