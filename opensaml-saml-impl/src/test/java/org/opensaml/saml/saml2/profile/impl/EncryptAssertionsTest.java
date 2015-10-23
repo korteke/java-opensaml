@@ -17,10 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
@@ -41,7 +37,9 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.google.common.base.Strings;
 
@@ -65,7 +63,7 @@ public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
         encParams.setDataKeyInfoGenerator(generator.newInstance());
         encParams.setKeyTransportEncryptionAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         encParams.setKeyTransportEncryptionCredential(
-                AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, 1024, false));
+                AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 1024, false));
         encParams.setKeyTransportKeyInfoGenerator(generator.newInstance());
         
         prc = new RequestContextBuilder().buildProfileRequestContext();
