@@ -171,7 +171,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
         // For Audience Condition
         staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, getValidAudiences(input));
         
-        log.debug("Built static parameters map: {}", staticParams);
+        log.trace("Built static parameters map: {}", staticParams);
         
         return staticParams;
     }

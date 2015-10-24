@@ -236,15 +236,15 @@ public class SAML20AssertionValidator {
      * @param context 
      */
     protected void log(@Nonnull final Assertion assertion, @Nonnull final ValidationContext context) {
-        if (log.isDebugEnabled()) {
+        if (log.isTraceEnabled()) {
             try {
                 final Element dom = XMLObjectSupport.marshall(assertion);
-                log.debug("SAML 2 Assertion being validated:\n{}", SerializeSupport.prettyPrintXML(dom));
+                log.trace("SAML 2 Assertion being validated:\n{}", SerializeSupport.prettyPrintXML(dom));
             } catch (final MarshallingException e) {
                 log.error("Unable to marshall SAML 2 Assertion for logging purposes", e);
             }
-            log.debug("SAML 2 Assertion ValidationContext - static parameters: {}", context.getStaticParameters());
-            log.debug("SAML 2 Assertion ValidationContext - dynamic parameters: {}", context.getDynamicParameters());
+            log.trace("SAML 2 Assertion ValidationContext - static parameters: {}", context.getStaticParameters());
+            log.trace("SAML 2 Assertion ValidationContext - dynamic parameters: {}", context.getDynamicParameters());
         }
     }
 
