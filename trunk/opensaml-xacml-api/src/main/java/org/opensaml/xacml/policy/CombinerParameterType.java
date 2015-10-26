@@ -64,7 +64,7 @@ public interface CombinerParameterType extends XACMLObject {
     public String getParameterName();
 
     /**
-     * Sets the the parameter name.
+     * Sets the parameter name.
      * 
      * @param name the parameter name
      */

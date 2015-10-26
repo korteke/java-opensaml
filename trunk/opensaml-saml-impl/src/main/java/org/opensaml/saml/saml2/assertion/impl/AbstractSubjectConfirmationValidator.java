@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * A base class for {@link SubjectConfirmationValidator} implementations. 
  * 
  * <p>
- * This class takes care of processing the the <code>NotBefore</code>, <code>NotOnOrAfter</code>, 
+ * This class takes care of processing the <code>NotBefore</code>, <code>NotOnOrAfter</code>, 
  * <code>Recipient</code>, and <code>Address</code> checks.
  * </p>
  * 

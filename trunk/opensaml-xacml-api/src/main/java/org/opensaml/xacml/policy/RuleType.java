@@ -81,7 +81,7 @@ public interface RuleType extends XACMLObject {
     public ConditionType getCondition();
 
     /**
-     * Sets the the condition for this rule.
+     * Sets the condition for this rule.
      * 
      * @param condition the condition for this rule
      */

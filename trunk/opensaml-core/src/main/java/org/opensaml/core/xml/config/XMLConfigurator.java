@@ -264,7 +264,7 @@ public class XMLConfigurator {
      * 
      * @param idAttributesElement the IDAttributes element from the configuration file
      * 
-     * @throws XMLConfigurationException thrown if there is a problem with a parsing or registering the the ID attribute
+     * @throws XMLConfigurationException thrown if there is a problem with a parsing or registering the ID attribute
      */
     protected void initializeIDAttributes(Element idAttributesElement) throws XMLConfigurationException {
         Element idAttributeElement;
@@ -292,7 +292,7 @@ public class XMLConfigurator {
      * 
      * @return an instance of the given class
      * 
-     * @throws XMLConfigurationException thrown if the class can not be instaniated
+     * @throws XMLConfigurationException thrown if the class can not be instantiated
      */
     protected Object createClassInstance(Element configuration) throws XMLConfigurationException {
         final String className = StringSupport.trimOrNull(configuration.getAttributeNS(null, "className"));

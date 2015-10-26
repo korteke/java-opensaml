@@ -43,14 +43,14 @@ public interface CipherData extends XMLObject {
             EncryptionConstants.XMLENC_PREFIX);
 
     /**
-     * Get the base64-encoded data representing the the encrypted form of the plaintext data.
+     * Get the base64-encoded data representing the encrypted form of the plaintext data.
      * 
      * @return base64-encoded encrypted value
      */
     @Nullable public CipherValue getCipherValue();
 
     /**
-     * Set the base64-encoded data representing the the encrypted form of the plaintext data.
+     * Set the base64-encoded data representing the encrypted form of the plaintext data.
      * 
      * @param newCipherValue the new base64-encoded encrypted data
      */
