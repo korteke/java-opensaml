@@ -33,7 +33,7 @@ import com.google.common.base.Function;
 //TODO reference to protocol spec pending in Javadoc.
 
 /**
- * Function which produces a URL according the the Metadata Query Protocol specification.
+ * Function which produces a URL according to the Metadata Query Protocol specification.
  */
 public class MetadataQueryProtocolRequestURLBuilder implements Function<String, String> {
     

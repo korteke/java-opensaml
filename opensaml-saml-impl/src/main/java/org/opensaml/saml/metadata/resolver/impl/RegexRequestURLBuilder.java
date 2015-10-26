@@ -85,7 +85,7 @@ public class RegexRequestURLBuilder implements Function<String, String> {
      * Constructor.
      *
      * @param regex the regular expression against which to evaluate the entity ID
-     * @param replacement the the replacement template string.
+     * @param replacement the replacement template string.
      */
     public RegexRequestURLBuilder(@Nonnull @NotEmpty final String regex, @Nonnull @NotEmpty final String replacement) {
         String regexTemp = Constraint.isNotNull(StringSupport.trimOrNull(regex), "Regex was null or empty");

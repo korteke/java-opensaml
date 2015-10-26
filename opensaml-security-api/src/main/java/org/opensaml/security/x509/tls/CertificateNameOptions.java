@@ -151,7 +151,7 @@ public class CertificateNameOptions implements Cloneable {
     }
     
     /**
-     * Get the the format specifier for serializaing X.500 subject names to strings.
+     * Get the format specifier for serializing X.500 subject names to strings.
      * 
      * @return Returns the x500SubjectDNFormat.
      */
@@ -160,7 +160,7 @@ public class CertificateNameOptions implements Cloneable {
     }
 
     /**
-     * Set the the format specifier for serializaing X.500 subject names to strings.
+     * Set the format specifier for serializing X.500 subject names to strings.
      * 
      * @param format the new x500SubjectDNFormat value.
      */
