@@ -144,7 +144,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy the encrypt-to-self predicate
      */
     public void setEncryptToSelfParametersStrategy(
-            @Nullable Function<Pair<ProfileRequestContext, EncryptionParameters>, 
+            @Nullable final Function<Pair<ProfileRequestContext, EncryptionParameters>, 
             List<EncryptionParameters>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         encryptToSelfParametersStrategy = strategy;
