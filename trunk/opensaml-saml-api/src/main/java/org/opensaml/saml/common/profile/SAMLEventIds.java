@@ -47,7 +47,10 @@ public final class SAMLEventIds {
 
     /** ID of event returned if the requested {@link org.opensaml.saml.saml2.core.NameIDPolicy} can't be satisfied. */
     @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "InvalidNameIDPolicy";
-    
+
+    /** ID of event returned upon an inability to locate any matching session for a LogoutRequest. */
+    @Nonnull @NotEmpty public static final String SESSION_NOT_FOUND = "SessionNotFound";
+
     /** ID of event returned if a SAML artifact cannot be resolved. */
     @Nonnull @NotEmpty public static final String UNABLE_RESOLVE_ARTIFACT = "UnableToResolveArtifact";
     
