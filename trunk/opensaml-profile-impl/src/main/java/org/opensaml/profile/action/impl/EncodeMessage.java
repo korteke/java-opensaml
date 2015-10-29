@@ -147,8 +147,13 @@ public class EncodeMessage extends AbstractProfileAction {
             
             encoder.encode();
             
-            log.debug("{} Outbound message encoded from a message of type {}", getLogPrefix(),
-                    msgContext.getMessage().getClass().getName());
+            if (msgContext.getMessage() != null) {
+                log.debug("{} Outbound message encoded from a message of type {}", getLogPrefix(),
+                        msgContext.getMessage().getClass().getName());
+            } else {
+                log.debug("{} Outbound message was encoded from protocol-specific data " 
+                        + "rather than MessageContext#getMessage()", getLogPrefix());
+            }
             
         } catch (final MessageEncodingException | ComponentInitializationException | MessageHandlerException e) {
             log.error("{} Unable to encode outbound response", getLogPrefix(), e);

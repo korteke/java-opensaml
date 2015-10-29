@@ -24,14 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import org.opensaml.profile.action.AbstractProfileAction;
-import org.opensaml.profile.context.EventContext;
-import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
-import org.opensaml.soap.soap11.Fault;
-import org.opensaml.soap.soap11.FaultCode;
-import org.opensaml.soap.soap11.FaultString;
-
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -41,6 +33,14 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.profile.action.AbstractProfileAction;
+import org.opensaml.profile.context.EventContext;
+import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
+import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,10 +49,19 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 /**
- * Action that builds a SOAP 1.1 {@link Fault} object in the outbound message context.
+ * Action that resolves or builds a SOAP 1.1 {@link Fault} object, and stores it in the outbound message context.
  * 
- * <p>Options allow for the creation of a {@link FaultString} either explicitly,
- * or via lookup strategy.</p>
+ * <p>
+ * An attempt will first be made to resolve a pre-existing fault instance from the {@link ProfileRequestContext}, via
+ * an optionally configured lookup strategy. This is to accommodate SOAP-aware components which may choose to 
+ * emit a specific, locally determined fault. The default strategy is {@link MessageContextFaultStrategy}. 
+ * </p>
+ * 
+ * <p>
+ * If no context fault instance is resolved, a new instance will be built using strategy functions which lookup 
+ * the {@link FaultCode} {@link QName} and the {@link FaultString} {@link String} values. If no value is produced,
+ * the former defaults to {@link FaultCode#SERVER}. The latter defaults to <code>null</code>.
+ * </p>
  * 
  * @event {@link org.opensaml.profile.action.EventIds#PROCEED_EVENT_ID}
  */
@@ -61,6 +70,9 @@ public class AddSOAPFault extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AddSOAPFault.class);
     
+    /** Strategy for resolving a fault instance directly from the request context. */
+    @Nullable private Function<ProfileRequestContext,Fault> contextFaultStrategy;
+
     /** Predicate determining whether detailed error information is permitted. */
     @Nonnull private Predicate<ProfileRequestContext> detailedErrorsCondition;
 
@@ -79,11 +91,39 @@ public class AddSOAPFault extends AbstractProfileAction {
     /** Whether to include detailed status information. */
     private boolean detailedErrors;
     
+    /** Whether to set the outbound message context's message property to null. */
+    private boolean nullifyOutboundMessage;
+    
     /** Constructor. */
     public AddSOAPFault() {
         detailedErrorsCondition = Predicates.alwaysFalse();
         defaultFaultCode = FaultCode.SERVER;
         detailedErrors = false;
+        contextFaultStrategy = new MessageContextFaultStrategy();
+        nullifyOutboundMessage = true;
+    }
+    
+    /**
+     * Set the flag indicating whether to set the outbound message context's message property to null.
+     * 
+     * <p>Default is: <code>true</code></p>
+     * 
+     * @param flag true if should nullify, false if not
+     */
+    public void setNullifyOutboundMessage(boolean flag) {
+        nullifyOutboundMessage = flag;
+    }
+    
+    /**
+     * Set the optional strategy used to resolve a {@link Fault} instance directly
+     * from the request context.
+     * 
+     * @param strategy strategy used to resolve the fault instance
+     */
+    public void setContextFaultStrategy(@Nullable final Function<ProfileRequestContext,Fault> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        contextFaultStrategy = strategy;
     }
 
     /**
@@ -151,10 +191,10 @@ public class AddSOAPFault extends AbstractProfileAction {
         
         log.debug("{} Detailed errors are {}", getLogPrefix(), detailedErrors ? "enabled" : "disabled");
 
-        if (profileRequestContext.getOutboundMessageContext() != null) {
+        if (profileRequestContext.getOutboundMessageContext() != null && nullifyOutboundMessage) {
             profileRequestContext.getOutboundMessageContext().setMessage(null);
         } else {
-            profileRequestContext.setOutboundMessageContext(new MessageContext<Fault>());
+            profileRequestContext.setOutboundMessageContext(new MessageContext<Object>());
         }
         
         return super.doPreExecute(profileRequestContext);
@@ -163,7 +203,64 @@ public class AddSOAPFault extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        Fault fault = resolveContextFault(profileRequestContext);
+        
+        if (fault == null) {
+            fault = buildNewMappedFault(profileRequestContext);
+        }
+        
+        SOAPMessagingSupport.registerSOAP11Fault(profileRequestContext.getOutboundMessageContext(), fault);
+    }
 
+    /**
+     * Resolve a {@link Fault} instance stored in the {@link ProfileRequestContext}.
+     * 
+     * @param profileRequestContext the current request context
+     * 
+     * @return the fault instance resolved from the request context, or null
+     */
+    @Nullable private Fault resolveContextFault(final ProfileRequestContext profileRequestContext) {
+        if (contextFaultStrategy == null) {
+            return null;
+        }
+        
+        Fault fault = contextFaultStrategy.apply(profileRequestContext);
+        
+        if (fault != null) {
+            log.debug("{} Resolved Fault instance via context strategy", getLogPrefix());
+            if (fault.getCode() == null) {
+                log.debug("{} Resolved Fault contained no FaultCode, using configured default", getLogPrefix());
+                final XMLObjectBuilder<FaultCode> faultCodeBuilder =
+                        XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultCode>getBuilderOrThrow(
+                                FaultCode.DEFAULT_ELEMENT_NAME);
+                final FaultCode code = faultCodeBuilder.buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
+                code.setValue(defaultFaultCode);
+                fault.setCode(code);
+            }
+            if (!detailedErrors) {
+                log.debug("{} Removing any detailed error info from context Fault instance", getLogPrefix());
+                if (faultString != null) {
+                    buildFaultString(fault, faultString);
+                } else {
+                    fault.setMessage(null);
+                }
+                fault.setDetail(null);
+                fault.setActor(null);
+            }
+        } else {
+            log.debug("{} Failed to resolve any Fault instance via context strategy", getLogPrefix());
+        }
+        return fault;
+    }
+
+    /**
+     * Build and return a new {@link Fault} based on configured mapping strategy.
+     * 
+     * @param profileRequestContext the current request context
+     * 
+     * @return the new fault
+     */
+    @Nonnull private Fault buildNewMappedFault(final ProfileRequestContext profileRequestContext) {
         final XMLObjectBuilder<Fault> faultBuilder =
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Fault>getBuilderOrThrow(
                         Fault.DEFAULT_ELEMENT_NAME);
@@ -172,7 +269,6 @@ public class AddSOAPFault extends AbstractProfileAction {
                         FaultCode.DEFAULT_ELEMENT_NAME);
         
         final Fault fault = faultBuilder.buildObject(Fault.DEFAULT_ELEMENT_NAME);
-        profileRequestContext.getOutboundMessageContext().setMessage(fault);
        
         final FaultCode code = faultCodeBuilder.buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
         if (faultCodeLookupStrategy != null) {
@@ -205,6 +301,8 @@ public class AddSOAPFault extends AbstractProfileAction {
                 buildFaultString(fault, faultString);
             }
         }
+        
+        return fault;
     }
     
     /**
@@ -270,6 +368,45 @@ public class AddSOAPFault extends AbstractProfileAction {
             }
             return null;
         }
+    }
+    
+    /**
+     * Default strategy which returns a {@link Fault} instance already registered in the current request context.
+     * 
+     * <p>
+     * The outbound message context is checked first, followed by the inbound message context.  Evaluation
+     * is performed using {@link SOAPMessagingSupport#getSOAP11Fault(MessageContext)}.
+     * </p>
+     */
+    public static class MessageContextFaultStrategy implements Function<ProfileRequestContext, Fault> {
+        
+        /** Logger. */
+        private Logger log = LoggerFactory.getLogger(MessageContextFaultStrategy.class);
+
+        /** {@inheritDoc} */
+        @Nullable
+        public Fault apply(@Nullable ProfileRequestContext input) {
+            if (input == null) {
+                return null;
+            }
+            Fault fault = null;
+            if (input.getOutboundMessageContext() != null) {
+                fault = SOAPMessagingSupport.getSOAP11Fault(input.getOutboundMessageContext());
+                if (fault != null) {
+                    log.debug("Found registered SOAP fault in outbound message context");
+                    return fault;
+                }
+            }
+            if (input.getInboundMessageContext() != null) {
+                fault = SOAPMessagingSupport.getSOAP11Fault(input.getInboundMessageContext());
+                if (fault != null) {
+                    log.debug("Found registered SOAP fault in inbound message context");
+                    return fault;
+                }
+            }
+            return null;
+        }
+        
     }
     
 }
