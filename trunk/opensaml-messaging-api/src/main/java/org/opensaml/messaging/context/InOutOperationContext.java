@@ -49,8 +49,8 @@ public class InOutOperationContext<InboundMessageType, OutboundMessageType> exte
             MessageContext<OutboundMessageType> outbound) {
         this();
 
-        inboundContext = inbound;
-        outboundContext = outbound;
+        setInboundMessageContext(inbound);
+        setOutboundMessageContext(outbound);
 
     }
 
@@ -69,7 +69,17 @@ public class InOutOperationContext<InboundMessageType, OutboundMessageType> exte
      * @param context inbound message context, may be null
      */
     public void setInboundMessageContext(MessageContext<InboundMessageType> context) {
+        // Unlink the old context from this parent
+        if (inboundContext != null) {
+            inboundContext.setParent(null);
+        }
+        
         inboundContext = context;
+        
+        // Link the new context to this parent
+        if (inboundContext != null) {
+            inboundContext.setParent(this);
+        }
     }
 
     /**
@@ -87,7 +97,17 @@ public class InOutOperationContext<InboundMessageType, OutboundMessageType> exte
      * @param context outbound message context, may be null
      */
     public void setOutboundMessageContext(MessageContext<OutboundMessageType> context) {
+        // Unlink the old context from this parent
+        if (outboundContext != null) {
+            outboundContext.setParent(null);
+        }
+        
         outboundContext = context;
+        
+        // Link the new context to this parent
+        if (outboundContext != null) {
+            outboundContext.setParent(this);
+        }
     }
 
 }
