@@ -25,7 +25,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.messaging.context.BaseContext;
 
 /**
- * A {@link ContextDataLookupFunction} that gets the parent of a given context.
+ * A {@link ContextDataLookupFunction} that recurses up the parent chain of the input via 
+ * {@link BaseContext#getParent()}, and returns the first parent context that is an instance 
+ * of the specified type.
  * 
  * @param <StartContext> type of starting context
  * @param <ParentContext> type of the parent context
