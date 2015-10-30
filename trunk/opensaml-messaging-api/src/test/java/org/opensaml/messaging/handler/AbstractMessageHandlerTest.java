@@ -19,9 +19,12 @@ package org.opensaml.messaging.handler;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.google.common.base.Predicates;
 
 /** Unit test for {@link AbstractMessageHandler}. */
 public class AbstractMessageHandlerTest {
@@ -105,6 +108,31 @@ public class AbstractMessageHandlerTest {
             Assert.assertFalse(handler.didPost);
         }
     }
+    
+    @Test
+    public void testTrueActivationCondition() throws Exception {
+        final MockMutatingHandler handler = new MockMutatingHandler();
+        handler.setActivationCondition(Predicates.alwaysTrue());
+        handler.initialize();
+        
+        MessageContext messageContext = new MessageContext<>();
+        handler.invoke(messageContext);
+        
+        Assert.assertTrue(messageContext.containsSubcontext(MockContext.class));
+        Assert.assertEquals(messageContext.getSubcontext(MockContext.class).value, "hello");
+    }
+
+    @Test
+    public void testFalseActivationCondition() throws Exception {
+        final MockMutatingHandler handler = new MockMutatingHandler();
+        handler.setActivationCondition(Predicates.alwaysFalse());
+        handler.initialize();
+        
+        MessageContext messageContext = new MessageContext<>();
+        handler.invoke(messageContext);
+        
+        Assert.assertFalse(messageContext.containsSubcontext(MockContext.class));
+    }
 
     private class BaseMessageHandler extends AbstractMessageHandler {
         private boolean didPre = false;
@@ -159,6 +187,17 @@ public class AbstractMessageHandlerTest {
         protected void doPostInvoke(@Nonnull final MessageContext mc) {
             throw new NullPointerException();
         }
+    }
+    
+    private class MockMutatingHandler extends AbstractMessageHandler {
+
+        protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
+            messageContext.getSubcontext(MockContext.class, true).value = "hello";
+        }
+    }
+    
+    public static class MockContext extends BaseContext {
+        public String value;
     }
 
 }

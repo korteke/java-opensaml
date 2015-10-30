@@ -75,6 +75,10 @@ public class ValidateActionHandler extends AbstractMessageHandler {
 
     /** {@inheritDoc} */
     protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
         // A non-null subcontext value will override what is statically configured
         WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class, false);
         if (addressing != null && addressing.getActionURI() != null) {
@@ -83,9 +87,8 @@ public class ValidateActionHandler extends AbstractMessageHandler {
         if (expectedActionURI == null) {
             log.debug("No expected WS-Addressing Action URI found locally or in message context, skipping evaluation");
             return false;
-        } else {
-            return super.doPreInvoke(messageContext);
         }
+        return true;
     }
 
     /** {@inheritDoc} */

@@ -60,6 +60,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
      * Constructor.
      */
     public SAMLAddAttributeConsumingServiceHandler() {
+        super();
         metadataContextLookupStrategy =
                 Functions.compose(
                         new ChildContextLookup<SAMLPeerEntityContext,SAMLMetadataContext>(SAMLMetadataContext.class),

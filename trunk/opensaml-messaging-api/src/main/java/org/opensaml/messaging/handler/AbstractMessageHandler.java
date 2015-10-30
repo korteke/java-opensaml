@@ -22,10 +22,15 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 /**
  * A base abstract implementation of {@link MessageHandler}.
@@ -35,6 +40,45 @@ import org.slf4j.LoggerFactory;
 @Prototype
 public abstract class AbstractMessageHandler<MessageType> extends AbstractInitializableComponent implements
         MessageHandler<MessageType> {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(AbstractMessageHandler.class);
+    
+    /** Condition dictating whether to run or not. */
+    @Nonnull private Predicate<MessageContext> activationCondition;
+    
+    /** Constructor. */
+    public AbstractMessageHandler() {
+        activationCondition = Predicates.alwaysTrue();
+    }
+    
+    /**
+     * Get activation condition indicating whether the handler should be invoked.
+     * 
+     * <p>
+     * Defaults to a predicate which always returns <code>true</code>.
+     * </p>
+     * 
+     * @return  activation condition
+     */
+    @Nonnull public Predicate<MessageContext> getActivationCondition() {
+        return activationCondition;
+    }
+
+    /**
+     * Set activation condition indicating whether the handler should be invoked.
+     * 
+     * <p>
+     * Defaults to a predicate which always returns <code>true</code>.
+     * </p>
+     * 
+     * @param condition predicate to apply
+     */
+    public void setActivationCondition(@Nonnull final Predicate<MessageContext> condition) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
+    }
 
     /** {@inheritDoc} */
     @Override public void invoke(@Nonnull final MessageContext<MessageType> messageContext)
@@ -53,9 +97,8 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractInitia
                 try {
                     doPostInvoke(messageContext, e);
                 } catch (Throwable t) {
-                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(
-                            "{} Unchecked exception/error thrown by doPostInvoke, "
-                                    + "superseding a MessageHandlerException ", getLogPrefix(), e);
+                    log.warn("{} Unchecked exception/error thrown by doPostInvoke, "
+                            + "superseding a MessageHandlerException ", getLogPrefix(), e);
                     t.addSuppressed(e);
                     throw t;
                 }
@@ -64,9 +107,8 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractInitia
                 try {
                     doPostInvoke(messageContext);
                 } catch (Throwable t2) {
-                    LoggerFactory.getLogger(AbstractMessageHandler.class).warn(
-                            "{} Unchecked exception/error thrown by doPostInvoke, "
-                                    + "superseding an unchecked exception/error ", getLogPrefix(), t);
+                    log.warn("{} Unchecked exception/error thrown by doPostInvoke, "
+                            + "superseding an unchecked exception/error ", getLogPrefix(), t);
                     t2.addSuppressed(t);
                     throw t2;
                 }
@@ -81,11 +123,18 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractInitia
      * Called prior to execution, handlers may override this method to perform pre-processing for a request.
      * 
      * <p>
+     * The default impl applies the {@link Predicate} set via the {@link #setActivationCondition(Predicate)}.
+     * </p>
+     * 
+     * <p>
      * If false is returned, execution will not proceed.
      * </p>
      * 
      * <p>
-     * If returning successfully, the last step should be to return the result of the superclass version of this method.
+     * Subclasses which override this method should generally invoke the super version of this method first,
+     * so that the activation condition will be applied up front, and immediately return false if the super version
+     * returns false.  This avoids unnecessary execution of the remaining pre-invocation code if the handler
+     * ultimately will not execute.
      * </p>
      * 
      * @param messageContext the message context on which to invoke the handler
@@ -95,7 +144,13 @@ public abstract class AbstractMessageHandler<MessageType> extends AbstractInitia
      */
     protected boolean doPreInvoke(@Nonnull final MessageContext<MessageType> messageContext)
             throws MessageHandlerException {
-        return true;
+        if (activationCondition.apply(messageContext)) {
+            log.debug("{} Activation condition for handler returned true", getLogPrefix());
+            return true;
+        } else {
+            log.debug("{} Activation condition for handler returned false", getLogPrefix());
+            return false;
+        }
     }
 
     /**

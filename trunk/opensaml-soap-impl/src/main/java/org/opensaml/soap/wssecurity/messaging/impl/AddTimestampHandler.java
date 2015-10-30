@@ -155,14 +155,17 @@ public class AddTimestampHandler extends AbstractMessageHandler {
 
     /** {@inheritDoc} */
     protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
         createdValue = getCreatedValue(messageContext);
         expiresValue = getExpiresValue(messageContext, createdValue);
         if (createdValue == null && expiresValue == null) {
             log.debug("No WS-Security Timestamp Created or Expires values available, skipping further processing");
             return false;
-        } else {
-            return super.doPreInvoke(messageContext);
         }
+        return true;
     }
 
     /** {@inheritDoc} */

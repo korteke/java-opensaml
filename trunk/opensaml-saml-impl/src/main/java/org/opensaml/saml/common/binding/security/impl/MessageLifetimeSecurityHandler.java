@@ -54,6 +54,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
 
     /** Constructor. */
     public MessageLifetimeSecurityHandler() {
+        super();
         clockSkew = 60 * 3 * 1000;
         messageLifetime = 180 * 1000;
         requiredRule = true;

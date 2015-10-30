@@ -56,6 +56,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
+        super();
         uriComparator = new BasicURLComparator();
     }
 

@@ -55,6 +55,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
     
     /** Constructor. */
     public AddChannelBindingsHeaderHandler() {
+        super();
         channelBindingsContextLookupStrategy = new ChildContextLookup<>(ChannelBindingsContext.class);
     }
     
