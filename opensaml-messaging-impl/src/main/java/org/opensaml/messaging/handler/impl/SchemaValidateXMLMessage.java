@@ -55,6 +55,7 @@ public class SchemaValidateXMLMessage<MessageType extends XMLObject> extends Abs
      * @param schema schema used to validate incoming messages
      */
     public SchemaValidateXMLMessage(@Nonnull final Schema schema) {
+        super();
         validationSchema = Constraint.isNotNull(schema, "Schema cannot be null");
     }
 
@@ -71,6 +72,10 @@ public class SchemaValidateXMLMessage<MessageType extends XMLObject> extends Abs
     protected boolean doPreInvoke(@Nonnull final MessageContext<MessageType> messageContext)
             throws MessageHandlerException {
         
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
         if (messageContext.getMessage() == null) {
             
             log.debug("{} Message context did not contain a message, unable to proceed", getLogPrefix());
@@ -82,7 +87,7 @@ public class SchemaValidateXMLMessage<MessageType extends XMLObject> extends Abs
             throw new MessageHandlerException("Message doesn't contain a DOM, unable to proceed.");
         }
         
-        return super.doPreInvoke(messageContext);
+        return true;
     }
     
     /** {@inheritDoc} */

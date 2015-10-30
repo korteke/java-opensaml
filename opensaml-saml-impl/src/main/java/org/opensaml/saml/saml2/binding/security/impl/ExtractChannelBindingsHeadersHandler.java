@@ -54,6 +54,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
     
     /** Constructor. */
     public ExtractChannelBindingsHeadersHandler() {
+        super();
         nextDestination = true;
     }
     

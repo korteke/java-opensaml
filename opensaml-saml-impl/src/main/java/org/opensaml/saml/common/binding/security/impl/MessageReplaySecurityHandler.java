@@ -56,6 +56,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
 
     /** Constructor. */
     public MessageReplaySecurityHandler() {
+        super();
         requiredRule = true;
         expires = 180 * 1000;
     }

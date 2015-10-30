@@ -92,6 +92,10 @@ public class AddRelatesToHandler extends AbstractMessageHandler {
 
     /** {@inheritDoc} */
     protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        if (!super.doPreInvoke(messageContext)) {
+            return false;
+        }
+        
         WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class, false);
         if (addressing != null) {
             relatesToURI = addressing.getRelatesToURI();
@@ -107,9 +111,8 @@ public class AddRelatesToHandler extends AbstractMessageHandler {
         if (relatesToURI == null) {
             log.debug("No WS-Addressing RelatesTo value found in message context, skipping further processing");
             return false;
-        } else {
-            return super.doPreInvoke(messageContext);
         }
+        return true;
     }
 
     /** {@inheritDoc} */

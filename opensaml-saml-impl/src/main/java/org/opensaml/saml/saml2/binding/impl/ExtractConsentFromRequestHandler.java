@@ -40,6 +40,7 @@ public class ExtractConsentFromRequestHandler extends AbstractMessageHandler {
 
     /** Constructor. */
     public ExtractConsentFromRequestHandler() {
+        super();
         consentContextStrategy = new ChildContextLookup<>(SAMLConsentContext.class, true);
     }
     

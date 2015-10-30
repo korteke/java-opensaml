@@ -40,6 +40,7 @@ public class AddConsentToResponseHandler extends AbstractMessageHandler {
 
     /** Constructor. */
     public AddConsentToResponseHandler() {
+        super();
         consentContextStrategy = new ChildContextLookup<>(SAMLConsentContext.class);
     }
     
