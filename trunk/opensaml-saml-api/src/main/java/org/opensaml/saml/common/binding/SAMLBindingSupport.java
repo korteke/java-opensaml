@@ -188,7 +188,6 @@ public final class SAMLBindingSupport {
      * {@link SAMLBindingContext#hasBindingSignature()}.
      * </p>
      * 
-     * 
      * @param messageContext current message context
      * @return true if the message is considered to be digitally signed, false otherwise
      */
@@ -206,7 +205,28 @@ public final class SAMLBindingSupport {
             }
         }
     }
-    
+
+    /**
+     * Determine whether the SAML binding to be used by the message context supports signatures
+     * at the binding layer.
+     * 
+     * <p>
+     * The capability of the binding is determined by extracting a {@link BindingDescriptor} from a
+     * {@link SAMLBindingContext}.
+     * </p>
+     * 
+     * @param messageContext current message context
+     * @return true if the message is considered to be digitally signed, false otherwise
+     */
+    public static boolean isSigningCapableBinding(@Nonnull final MessageContext<SAMLObject> messageContext) {
+        final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);
+        if (bindingContext != null && bindingContext.getBindingDescriptor() != null) {
+            return bindingContext.getBindingDescriptor().isSignatureCapable();
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Determine whether the binding in use requires the presence within the message 
      * of information indicating the intended message destination endpoint URI.

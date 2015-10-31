@@ -65,10 +65,14 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** Identifies a binding that relies on SAML artifacts. */
     private boolean artifact;
     
+    /** Indicates whether the binding provides a built-in signing mechanism. */
+    private boolean signatureCapable;
+    
     /** Constructor. */
     public BindingDescriptor() {
         synchronous = false;
         artifact = false;
+        signatureCapable = false;
         activationCondition = Predicates.alwaysTrue();
     }
     
@@ -117,6 +121,24 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     public void setArtifact(final boolean flag) {
         artifact = flag;
     }
+    
+    /**
+     * Get whether the binding provides a message signature capability.
+     * 
+     * @return true iff the binding provides a message signature capability
+     */
+    public boolean isSignatureCapable() {
+        return signatureCapable;
+    }
+    
+    /**
+     * Set whether the binding provides a message signature capability.
+     * 
+     * @param flag flag to set
+     */
+    public void setSignatureCapable(final boolean flag) {
+        signatureCapable = flag;
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -154,6 +176,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
         return MoreObjects.toStringHelper(this).add("bindingId", getId())
                 .add("synchronous", synchronous)
                 .add("artifact", artifact)
+                .add("signatureCapable", signatureCapable)
                 .toString();
     }
 
