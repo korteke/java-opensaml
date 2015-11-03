@@ -15,5 +15,7 @@
  * limitations under the License.
  */
 
-/** WS-Addressing messaging support components. */
-package org.opensaml.soap.wsaddressing.messaging;
+/**
+ * SOAP 1.1 client message encoding support implementations.
+ */
+package org.opensaml.soap.client.soap11.encoder.http.impl;
