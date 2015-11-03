@@ -16,4 +16,4 @@
  */
 
 /** WS-Addressing messaging context components. */
-package org.opensaml.soap.wsaddressing.messaging.context;
+package org.opensaml.soap.wsaddressing.messaging;

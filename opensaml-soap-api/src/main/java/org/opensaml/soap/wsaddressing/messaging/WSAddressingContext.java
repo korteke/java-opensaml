@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.wsaddressing.messaging.context;
+package org.opensaml.soap.wsaddressing.messaging;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
