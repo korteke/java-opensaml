@@ -118,7 +118,8 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
     @Nullable protected String getCertificatePresenterEntityID(@Nonnull final MessageContext messageContext) {
         AbstractAuthenticatableSAMLEntityContext entityContext = messageContext.getSubcontext(entityContextClass);
         if (entityContext != null) {
-            log.trace("Found authenticatable entityID '{}' from context: {}", entityContext.getEntityId(), entityContext.getClass().getName());
+            log.trace("Found authenticatable entityID '{}' from context: {}", 
+                    entityContext.getEntityId(), entityContext.getClass().getName());
             return entityContext.getEntityId();
         } else {
             log.trace("Authenticatable entityID context was not present: {}", entityContext.getClass().getName());
