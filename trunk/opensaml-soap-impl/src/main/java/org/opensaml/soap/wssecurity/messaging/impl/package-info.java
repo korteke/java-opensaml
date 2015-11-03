@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-/** WS-Addressing messaging support components. */
-package org.opensaml.soap.wsaddressing.messaging;
+/** WS-Security message handling components. */
+package org.opensaml.soap.wssecurity.messaging.impl;
