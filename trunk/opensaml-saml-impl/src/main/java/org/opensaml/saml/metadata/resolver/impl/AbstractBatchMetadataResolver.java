@@ -18,16 +18,11 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
-import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -38,16 +33,12 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.IterableMetadataSource;
 import org.opensaml.saml.metadata.resolver.BatchMetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
-import org.opensaml.saml.metadata.resolver.index.impl.MetadataIndexManager;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Strings;
 
 /**
  * Abstract subclass for metadata resolvers that process and resolve metadata at a given point 
@@ -62,14 +53,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     /** Flag indicating whether to cache the original source metadata document. */
     private boolean cacheSourceMetadata;
     
-    /** The set of indexes configured. */
-    private Set<MetadataIndex> indexes;
-    
     /** Constructor. */
     public AbstractBatchMetadataResolver() {
         super();
-        
-        indexes = Collections.emptySet();
         
         setCacheSourceMetadata(true);
     }
@@ -101,29 +87,6 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         cacheSourceMetadata = flag; 
     }
     
-    /**
-     * Get the configured indexes.
-     * 
-     * @return the set of configured indexes
-     */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
-        return ImmutableSet.copyOf(indexes);
-    }
-
-    /**
-     * Set the configured indexes.
-     * 
-     * @param newIndexes the new indexes to set
-     */
-    public void setIndexes(@Nullable final Set<MetadataIndex> newIndexes) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        if (newIndexes == null) {
-            indexes = Collections.emptySet();
-        } else {
-            indexes = new HashSet<>(Collections2.filter(newIndexes, Predicates.notNull()));
-        }
-    }
-
     /** {@inheritDoc} */
     @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
@@ -131,41 +94,21 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         
         //TODO add filtering for entity role, protocol? maybe
         //TODO add filtering for binding? probably not, belongs better in RoleDescriptorResolver
+        //TODO this needs to change substantially if we support queries *without* an EntityIdCriterion
         
         EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
-        if (entityIdCriterion != null) {
-            return lookupEntityID(entityIdCriterion.getEntityId());
-        } else {
-            return lookupByIndexes(criteria);
+        if (entityIdCriterion == null || Strings.isNullOrEmpty(entityIdCriterion.getEntityId())) {
+            //TODO throw or just log?
+            throw new ResolverException("Entity Id was not supplied in criteria set");
         }
         
+        return lookupEntityID(entityIdCriterion.getEntityId());
     }
     
-    /**
-     * Resolve the set up descriptors based on the indexes currently held.
-     * 
-     * @param criteria the criteria set to process
-     * 
-     * @return descriptors resolved via indexes, and based on the input criteria set. May be empty.
-     */
-    @Nonnull @NonnullElements 
-    protected Set<EntityDescriptor> lookupByIndexes(@Nonnull final CriteriaSet criteria) {
-        return getBackingStore().getSecondaryIndexManager().lookupEntityDescriptors(criteria);
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    protected void indexEntityDescriptor(@Nonnull final EntityDescriptor entityDescriptor, 
-            @Nonnull final EntityBackingStore backingStore) {
-        super.indexEntityDescriptor(entityDescriptor, backingStore);
-        
-        ((BatchEntityBackingStore)backingStore).getSecondaryIndexManager().indexEntityDescriptor(entityDescriptor);
-    }
-
     /** {@inheritDoc} */
     @Override
     @Nonnull protected BatchEntityBackingStore createNewBackingStore() {
-        return new BatchEntityBackingStore(getIndexes());
+        return new BatchEntityBackingStore();
     }
     
     /** {@inheritDoc} */
@@ -211,7 +154,6 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     @Nullable protected XMLObject getCachedFilteredMetadata() {
        return getBackingStore().getCachedFilteredMetadata(); 
     }
-
     /**
      * Process the specified new metadata document, including metadata filtering 
      * and return its data in a new entity backing store instance.
@@ -252,15 +194,8 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
 
     /**
-     * Specialized entity backing store implementation for batch metadata resolvers.
-     * 
-     * <p>
-     * Adds the following to parent impl:
-     * <ol>
-     * <li>capable of storing the original metadata document on which the backing store is based</li>
-     * <li>stores data for any secondary indexes defined</li>
-     * </ol>
-     * </p>
+     * Specialized entity backing store implementation which is capable of storing the original metadata 
+     * document on which the backing store is based.
      */
     protected class BatchEntityBackingStore extends EntityBackingStore {
         
@@ -270,18 +205,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         /** The cached original source metadata document. */
         private XMLObject cachedFilteredMetadata;
         
-        /** Manager for secondary indexes. */
-        private MetadataIndexManager secondaryIndexManager;
-        
-        /**
-         * Constructor.
-         *
-         * @param initIndexes secondary indexes for which to initialize storage
-         */
-        protected BatchEntityBackingStore(
-                @Nullable @NonnullElements @Unmodifiable @NotLive Set<MetadataIndex> initIndexes) {
+        /** Constructor. */
+        protected BatchEntityBackingStore() {
             super();
-            secondaryIndexManager = new MetadataIndexManager(initIndexes);
         }
 
         /**
@@ -318,15 +244,6 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
          */
         public void setCachedFilteredMetadata(XMLObject metadata) {
             cachedFilteredMetadata = metadata;
-        }
-        
-        /**
-         * Get the secondary index manager.
-         * 
-         * @return the manager for secondary indexes
-         */
-        public MetadataIndexManager getSecondaryIndexManager() {
-            return secondaryIndexManager;
         }
         
     }
