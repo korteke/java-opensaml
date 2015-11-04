@@ -116,6 +116,18 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
     /**
      * Constructor. 
      * 
+     * <p>No hostname verifier is configured in this implementation. (Does not affect whether hostname 
+     * is or is not evaluated by the wrapped socket factory).</p>
+     * 
+     * @param factory the underlying HttpClient socket factory wrapped by this implementation.
+     */
+    public SecurityEnhancedTLSSocketFactory(LayeredConnectionSocketFactory factory) {
+        this(factory, null);
+    }
+
+    /**
+     * Constructor. 
+     * 
      * @param factory the underlying HttpClient socket factory wrapped by this implementation.
      * @param verifier the hostname verifier evaluated by this implementation
      */
