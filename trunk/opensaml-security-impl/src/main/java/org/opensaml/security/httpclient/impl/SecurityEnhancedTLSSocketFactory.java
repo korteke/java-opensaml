@@ -121,7 +121,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
      * 
      * @param factory the underlying HttpClient socket factory wrapped by this implementation.
      */
-    public SecurityEnhancedTLSSocketFactory(LayeredConnectionSocketFactory factory) {
+    public SecurityEnhancedTLSSocketFactory(@Nonnull final LayeredConnectionSocketFactory factory) {
         this(factory, null);
     }
 
@@ -131,7 +131,8 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
      * @param factory the underlying HttpClient socket factory wrapped by this implementation.
      * @param verifier the hostname verifier evaluated by this implementation
      */
-    public SecurityEnhancedTLSSocketFactory(LayeredConnectionSocketFactory factory, X509HostnameVerifier verifier) {
+    public SecurityEnhancedTLSSocketFactory(@Nonnull final LayeredConnectionSocketFactory factory, 
+            @Nullable final X509HostnameVerifier verifier) {
         wrappedFactory = Constraint.isNotNull(factory, "Socket factory was null");
         hostnameVerifier = verifier;
     }
