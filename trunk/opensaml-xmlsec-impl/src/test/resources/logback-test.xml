@@ -8,6 +8,12 @@
         </encoder>
     </appender>
     
+    <logger name="org.apache.xml.security.encryption.XMLCipher">
+        <level value="TRACE"/>
+    </logger>
+    <logger name="org.apache.xml.security.encryption.XMLCipherUtil">
+        <level value="TRACE"/>
+    </logger>
     <logger name="org.opensaml.xmlsec.encryption.support">
         <level value="TRACE"/>
     </logger>
