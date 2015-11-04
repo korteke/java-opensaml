@@ -44,13 +44,22 @@ import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An implementation of HttpClient's {@link LayeredConnectionSocketFactory}, which supports
- * verifying the server TLS certificate and chain via a {@link TrustEngine<Credential>}
- * and {@link CriteriaSet} supplied by the HttpClient caller via the {@link HttpContext}.
+ * An security-enhanced implementation of HttpClient's TLS-capable {@link LayeredConnectionSocketFactory}.
+ * 
+ * <p>
+ * This implementation wraps an existing TLS socket factory instance, decorating it with additional support for:
+ * <ul>
+ *     <li>Verifying the server TLS certificate and chain via a {@link TrustEngine<Credential>}
+ *         and {@link CriteriaSet} supplied by the HttpClient caller via the {@link HttpContext}.</li>
+ *         
+ *     <li>Loading and clearing a thread-local instance of {@link X509Credential} used for client TLS.</li>
+ * </ul>
+ * </p>
  * 
  * <p>
  * The context keys used by this component are as follows, defined in {@link HttpClientSecurityConstants}:
@@ -64,6 +73,8 @@ import org.slf4j.LoggerFactory;
  *       where <code>true</code> means the server TLS was evaluated as trusted, <code>false</code> means 
  *       the credential was evaluated as untrusted.  A null or missing value means that trust engine 
  *       evaluation was not performed.</li>
+ *   <li>{@link HttpClientSecurityConstants#CONTEXT_KEY_CLIENT_TLS_CREDENTIAL}: The client TLS credential used.
+ *        Supplied by the HttpClient caller. Must be an instance of {@link X509Credential}.</li>
  * </ul>
  * </p>
  * 
@@ -80,13 +91,21 @@ import org.slf4j.LoggerFactory;
  * {@link X509HostnameVerifier#verify(String, SSLSocket)}.
  * </p>
  * 
- * @deprecated use instead {@link SecurityEnhancedTLSSocketFactory}.
+ * <p>
+ * If the client TLS context attribute is not populated by the caller, then client TLS is not attempted.
+ * </p>
+ * 
+ * <p>
+ * Client TLS support requires use of a compatible {@link java.net.ssl.KeyManager} implementation configured in the 
+ * {@link java.net.ssl.SSLContext} of the wrapped {@link LayeredConnectionSocketFactory}, such as
+ * {@link org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialKeyManager}.
+ * </p>
+ * 
  */
-@Deprecated
-public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFactory {
+public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocketFactory {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(TrustEngineTLSSocketFactory.class);
+    private final Logger log = LoggerFactory.getLogger(SecurityEnhancedTLSSocketFactory.class);
     
     /** The HttpClient socket factory instance wrapped by this implementation. */
     @Nonnull private LayeredConnectionSocketFactory wrappedFactory;
@@ -100,7 +119,7 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
      * @param factory the underlying HttpClient socket factory wrapped by this implementation.
      * @param verifier the hostname verifier evaluated by this implementation
      */
-    public TrustEngineTLSSocketFactory(LayeredConnectionSocketFactory factory, X509HostnameVerifier verifier) {
+    public SecurityEnhancedTLSSocketFactory(LayeredConnectionSocketFactory factory, X509HostnameVerifier verifier) {
         wrappedFactory = Constraint.isNotNull(factory, "Socket factory was null");
         hostnameVerifier = verifier;
     }
@@ -117,20 +136,30 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
             HttpContext context) throws IOException {
         
         log.trace("In connectSocket");
-        Socket socket = wrappedFactory.connectSocket(connectTimeout, sock, host, remoteAddress, localAddress, context);
-        performTrustEval(socket, context);
-        performHostnameVerification(socket, host.getHostName(), context);
-        return socket;
-        
+        try {
+            setup(context);
+            Socket socket = 
+                    wrappedFactory.connectSocket(connectTimeout, sock, host, remoteAddress, localAddress, context);
+            performTrustEval(socket, context);
+            performHostnameVerification(socket, host.getHostName(), context);
+            return socket;
+        } finally {
+            teardown(context);
+        }
     }
 
     /** {@inheritDoc} */
     public Socket createLayeredSocket(Socket socket, String target, int port, HttpContext context) throws IOException {
         log.trace("In createLayeredSocket");
-        Socket layeredSocket = wrappedFactory.createLayeredSocket(socket, target, port, context);
-        performTrustEval(layeredSocket, context);
-        performHostnameVerification(layeredSocket, target, context);
-        return layeredSocket;
+        try {
+            setup(context);
+            Socket layeredSocket = wrappedFactory.createLayeredSocket(socket, target, port, context);
+            performTrustEval(layeredSocket, context);
+            performHostnameVerification(layeredSocket, target, context);
+            return layeredSocket;
+        } finally {
+            teardown(context);
+        }
     }
     
     /**
@@ -233,6 +262,44 @@ public class TrustEngineTLSSocketFactory implements LayeredConnectionSocketFacto
         if (hostnameVerifier != null && socket instanceof SSLSocket) {
             hostnameVerifier.verify(hostname, (SSLSocket) socket);
         }
+    }
+    
+    /**
+     * Load the {@link ThreadLocalX509CredentialContext} with the client TLS credential obtained from 
+     * the {@link HttpContext}.
+     * 
+     * @param context the HttpContext instance
+     */
+    protected void setup(@Nullable final HttpContext context) {
+        log.trace("Attempting to setup thread-local client TLS X509Credential");
+        if (context == null) {
+            log.trace("HttpContext was null, skipping thread-local setup");
+            return;
+        }
+        if (!ThreadLocalX509CredentialContext.haveCurrent()) {
+            X509Credential credential = 
+                    (X509Credential) context.getAttribute(
+                            HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL);
+            if (credential != null) {
+                log.trace("Loading ThreadLocalX509CredentialContext with client TLS credential: {}", credential);
+                ThreadLocalX509CredentialContext.loadCurrent(credential);
+            } else {
+                log.trace("HttpContext did not contain a client TLS credential, nothing to do");
+            }
+        } else {
+            log.trace("ThreadLocalX509CredentialContext was already loaded with client TLS credential, skipping setup");
+        }
+    }
+    
+    /**
+     * Clear the {@link ThreadLocalX509CredentialContext} of the client TLS credential obtained from 
+     * the {@link HttpContext}.
+     * 
+     * @param context the HttpContext instance
+     */
+    protected void teardown(@Nullable final HttpContext context) {
+        log.trace("Clearing thread-local client TLS X509Credential");
+        ThreadLocalX509CredentialContext.clearCurrent();
     }
 
 }
