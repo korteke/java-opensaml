@@ -292,7 +292,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private LayeredConnectionSocketFactory buildTrustEngineSocketFactory() {
         return new TrustEngineTLSSocketFactory(
-                HttpClientSupport.buildNoTrustSSLConnectionSocketFactory(),
+                HttpClientSupport.buildNoTrustTLSSocketFactory(),
                 SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER
                 );
     }

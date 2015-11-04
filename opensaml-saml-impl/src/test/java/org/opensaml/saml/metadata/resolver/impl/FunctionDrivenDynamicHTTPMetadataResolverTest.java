@@ -519,7 +519,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     private LayeredConnectionSocketFactory buildTrustEngineSocketFactory() {
         return new TrustEngineTLSSocketFactory(
-                HttpClientSupport.buildNoTrustSSLConnectionSocketFactory(),
+                HttpClientSupport.buildNoTrustTLSSocketFactory(),
                 SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER
                 );
     }
