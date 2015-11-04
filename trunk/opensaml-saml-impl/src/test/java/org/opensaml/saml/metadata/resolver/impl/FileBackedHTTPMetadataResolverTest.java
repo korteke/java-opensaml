@@ -36,7 +36,7 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
-import org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory;
+import org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
@@ -382,7 +382,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     // Helpers
     
     private LayeredConnectionSocketFactory buildTrustEngineSocketFactory() {
-        return new TrustEngineTLSSocketFactory(
+        return new SecurityEnhancedTLSSocketFactory(
                 HttpClientSupport.buildNoTrustTLSSocketFactory(),
                 SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER
                 );

@@ -123,8 +123,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * Sets the optional trust engine used in evaluating server TLS credentials.
      * 
      * <p>
-     * Must be used in conjunction with an HttpClient instance which is configured with a 
-     * {@link org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory}. If this socket
+     * Must be used in conjunction with an HttpClient instance which is configured with either a 
+     * {@link org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory} or the (deprecated)
+     * {@link org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory}. If such a socket
      * factory is not configured, then this will result in no TLS trust evaluation being performed
      * and a {@link ResolverException} will ultimately be thrown.
      * </p>
