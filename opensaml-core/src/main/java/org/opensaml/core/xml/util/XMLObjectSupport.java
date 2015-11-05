@@ -69,8 +69,8 @@ public final class XMLObjectSupport {
         RootDOMInNewDocument,
         
         /** The cloned XMLObject's DOM will be owned by the same {@link Document} as the input object
-         * (the latter possibly newly created by marshalling internally), but will not be disconnected
-         * and not be connected to the node tree associated with the {@link Document#getDocumentElement()}.*/
+         * (the latter possibly newly created by marshalling internally), but will not be connected 
+         * to the node tree associated with the {@link Document#getDocumentElement()}.*/
         UnrootedDOM,
     }
     
