@@ -139,7 +139,11 @@ public class EntityAttributesFilter implements MetadataFilter {
                     try {
                         log.info("Adding EntityAttribute ({}) to EntityDescriptor ({})", attribute.getName(),
                                 descriptor.getEntityID());
-                        entityAttributes.getAttributes().add(XMLObjectSupport.cloneXMLObject(attribute));
+                        final Attribute copy = XMLObjectSupport.cloneXMLObject(attribute);
+                        // Drop the cloned DOM in case the lack of a parent node matters.
+                        copy.releaseDOM();
+                        copy.releaseChildrenDOM(true);
+                        entityAttributes.getAttributes().add(copy);
                     } catch (final MarshallingException | UnmarshallingException e) {
                         log.error("Error cloning Attribute", e);
                     }
