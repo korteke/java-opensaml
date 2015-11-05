@@ -165,9 +165,11 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * Add a subcontext to the current context.
      * 
      * @param subContext the subcontext to add
+     * 
+     * @return the context added
      */
-    public void addSubcontext(@Nonnull final BaseContext subContext) {
-        addSubcontext(subContext, false);
+    @Nonnull public BaseContext addSubcontext(@Nonnull final BaseContext subContext) {
+        return addSubcontext(subContext, false);
     }
     
     /**
@@ -176,14 +178,15 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param subcontext the subcontext to add
      * @param replace flag indicating whether to replace the existing instance of the subcontext if present
      * 
+     * @return the context added
      */
-    public void addSubcontext(@Nonnull final BaseContext subcontext, final boolean replace) {
+    @Nonnull public BaseContext addSubcontext(@Nonnull final BaseContext subcontext, final boolean replace) {
         Constraint.isNotNull(subcontext, "Subcontext cannot be null");
         
         final BaseContext existing = subcontexts.get(subcontext.getClass());
         if (existing == subcontext) {
             log.trace("Subcontext to add is already a child of the current context, skipping");
-            return;
+            return subcontext;
         }
         
         // Note: This will throw if replace == false and existing != null.
@@ -215,6 +218,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
             existing.setParent(null);
         }
         
+        return subcontext;
     }
     
     /**
