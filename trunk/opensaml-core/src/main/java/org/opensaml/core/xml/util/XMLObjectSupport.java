@@ -58,6 +58,22 @@ import org.w3c.dom.Element;
  */
 public final class XMLObjectSupport {
     
+    /** Options for handling output of XMLObject cloning. */
+    public enum CloneOutputOption {
+        
+        /** Completely and recursively drop the DOM from the cloned object and its children. */
+        DropDOM,
+        
+        /** The cloned XMLObject's DOM will be the root document element of a new {@link Document},
+         * that is it will be the {@link Element} returned by {@link Document#getDocumentElement()}. */
+        RootDOMInNewDocument,
+        
+        /** The cloned XMLObject's DOM will be owned by the same {@link Document} as the input object
+         * (the latter possibly newly created by marshalling internally), but will not be disconnected
+         * and not be connected to the node tree associated with the {@link Document#getDocumentElement()}.*/
+        UnrootedDOM,
+    }
+    
     /** Constructor. */
     private XMLObjectSupport() { }
     
@@ -71,7 +87,8 @@ public final class XMLObjectSupport {
      * </p>
      * 
      * <p>
-     * This method variant is equivalent to <code>cloneXMLObject(originalXMLObject, false).</code>
+     * This method variant is equivalent to 
+     * <code>cloneXMLObject(originalXMLObject, CloneOutputOption.DropDOM).</code>
      * </p>
      * 
      * 
@@ -85,7 +102,7 @@ public final class XMLObjectSupport {
      */
     public static <T extends XMLObject> T cloneXMLObject(T originalXMLObject)
             throws MarshallingException, UnmarshallingException {
-        return cloneXMLObject(originalXMLObject, false);
+        return cloneXMLObject(originalXMLObject, CloneOutputOption.DropDOM);
     }
     
     /**
@@ -95,6 +112,14 @@ public final class XMLObjectSupport {
      * 1) Marshall the original object if necessary
      * 2) Clone the resulting DOM Element
      * 3) Unmarshall a new XMLObject tree around it.
+     * </p>
+     * 
+     * <p>
+     * This method variant is equivalent to 
+     * <code>cloneXMLObject(originalXMLObject, CloneOutputOption.RootDOMInNewDocument)</code>
+     * or
+     * <code>cloneXMLObject(originalXMLObject, CloneOutputOption.UnrootedDOM)</code>,
+     * depending on the value of <code>rootInNewDocument</code>
      * </p>
      * 
      * @param originalXMLObject the object to be cloned
@@ -107,9 +132,39 @@ public final class XMLObjectSupport {
      * @throws UnmarshallingException if cloned object tree can not be unmarshalled
      * 
      * @param <T> the type of object being cloned
+     * 
+     * @deprecated use instead {@link #cloneXMLObject(XMLObject, CloneOutputOption)}.
      */
+    @Deprecated
     @Nullable public static <T extends XMLObject> T cloneXMLObject(@Nullable T originalXMLObject,
             boolean rootInNewDocument) throws MarshallingException, UnmarshallingException {
+        if (rootInNewDocument) {
+            return cloneXMLObject(originalXMLObject, CloneOutputOption.RootDOMInNewDocument);
+        } else {
+            return cloneXMLObject(originalXMLObject, CloneOutputOption.UnrootedDOM);
+        }
+    }
+    
+    /**
+     * Clone an XMLObject by brute force:
+     * 
+     * <p>
+     * 1) Marshall the original object if necessary
+     * 2) Clone the resulting DOM Element
+     * 3) Unmarshall a new XMLObject tree around it.
+     * </p>
+     * 
+     * @param originalXMLObject the object to be cloned
+     * @param cloneOutputOption  the option for handling the cloned object output
+     * @return a clone of the original object
+     * 
+     * @throws MarshallingException if original object can not be marshalled
+     * @throws UnmarshallingException if cloned object tree can not be unmarshalled
+     * 
+     * @param <T> the type of object being cloned
+     */
+    @Nullable public static <T extends XMLObject> T cloneXMLObject(@Nullable T originalXMLObject,
+            @Nonnull final CloneOutputOption cloneOutputOption) throws MarshallingException, UnmarshallingException {
         
         if (originalXMLObject == null) {
             return null;
@@ -124,17 +179,23 @@ public final class XMLObjectSupport {
         
         Element clonedElement = null;
         
-        if (rootInNewDocument) {
-            try {
-                Document newDocument = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
-                // Note: importNode copies the node tree and does not modify the source document
-                clonedElement = (Element) newDocument.importNode(origElement, true);
-                newDocument.appendChild(clonedElement);
-            } catch (XMLParserException e) {
-                throw new XMLRuntimeException("Error obtaining new Document from parser pool", e);
-            }
-        } else {
-            clonedElement = (Element) origElement.cloneNode(true);
+        switch (cloneOutputOption) {
+            case RootDOMInNewDocument:
+                try {
+                    Document newDocument = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
+                    // Note: importNode copies the node tree and does not modify the source document
+                    clonedElement = (Element) newDocument.importNode(origElement, true);
+                    newDocument.appendChild(clonedElement);
+                } catch (XMLParserException e) {
+                    throw new XMLRuntimeException("Error obtaining new Document from parser pool", e);
+                }
+                break;
+            case UnrootedDOM:
+            case DropDOM:
+                clonedElement = (Element) origElement.cloneNode(true);
+                break;
+            default:
+                throw new XMLRuntimeException("Saw unsupported value for CloneOutputOption enum: " + cloneOutputOption);
         }
         
         final Unmarshaller unmarshaller = getUnmarshaller(clonedElement);
@@ -143,7 +204,12 @@ public final class XMLObjectSupport {
                     + QNameSupport.getNodeQName(clonedElement));
         }
         
-        return (T) unmarshaller.unmarshall(clonedElement);
+        T clonedXMLObject = (T) unmarshaller.unmarshall(clonedElement);
+        if (CloneOutputOption.DropDOM.equals(cloneOutputOption)) {
+            clonedXMLObject.releaseDOM();
+            clonedXMLObject.releaseChildrenDOM(true);
+        }
+        return clonedXMLObject;
     }
     
     /**
