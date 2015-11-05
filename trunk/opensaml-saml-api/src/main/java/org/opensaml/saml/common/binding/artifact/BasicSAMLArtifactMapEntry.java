@@ -24,6 +24,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.core.xml.util.XMLObjectSupport.CloneOutputOption;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 
@@ -61,7 +62,7 @@ public class BasicSAMLArtifactMapEntry implements SAMLArtifactMapEntry {
         if (!samlMessage.hasParent()) {
             message = samlMessage;
         } else {
-            message = XMLObjectSupport.cloneXMLObject(samlMessage, true);
+            message = XMLObjectSupport.cloneXMLObject(samlMessage, CloneOutputOption.RootDOMInNewDocument);
         }
     }
 
