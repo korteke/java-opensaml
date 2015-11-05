@@ -49,8 +49,8 @@ public class EntitiesDescriptorNameProcessor implements MetadataNodeProcessor {
                 if (currentParent instanceof EntitiesDescriptor) {
                     String name = StringSupport.trimOrNull(((EntitiesDescriptor)currentParent).getName());
                     if (name != null) {
-                        if (log.isDebugEnabled()) {
-                            log.debug("Attaching EntityGroupName '{}' to EntityDescriptor: {}", 
+                        if (log.isTraceEnabled()) {
+                            log.trace("Attaching EntityGroupName '{}' to EntityDescriptor: {}", 
                                     name, ((EntityDescriptor)metadataNode).getEntityID());
                         }
                         metadataNode.getObjectMetadata().put(new EntityGroupName(name));
