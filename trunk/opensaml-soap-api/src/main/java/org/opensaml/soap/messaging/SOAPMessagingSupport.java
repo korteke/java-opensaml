@@ -114,12 +114,8 @@ public final class SOAPMessagingSupport {
     public static boolean isSOAPMessage(@Nonnull final MessageContext<? extends XMLObject> messageContext) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        if (isSOAP11Message(messageContext)) {
-            return true;
-        }
-        
-        //TODO SOAP 1.2 support when object providers are implemented
-        return false;
+        SOAPVersion version = getSOAPVersion(messageContext);
+        return version != null;
     }
     
     /**
@@ -137,15 +133,14 @@ public final class SOAPMessagingSupport {
             return true;
         }
         
-        //TODO SOAP 1.2 support when object providers are implemented
         return false;
     }
     
     /**
-     * Determine whether the SOAP version of the message represented by the message context.
+     * Determine the SOAP version of the message represented by the message context.
      * 
      * @param messageContext the current message context
-     * @return the SOAP version.  May be null if the version could not be determined
+     * @return the SOAP version.  May be null if the version could not be determined.
      */
     @Nullable public static SOAPVersion getSOAPVersion(
             @Nonnull final MessageContext<? extends XMLObject> messageContext) {
