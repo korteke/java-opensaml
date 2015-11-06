@@ -31,6 +31,9 @@ public class WSAddressingContext extends BaseContext {
     /** The Action URI value. */
     private String actionURI;
     
+    /** The Fault Action URI value. */
+    private String faultActionURI;
+    
     /** The MessageID URI value. */
     private String messageIDURI;
     
@@ -56,6 +59,24 @@ public class WSAddressingContext extends BaseContext {
      */
     public void setActionURI(String uri) {
         actionURI = StringSupport.trimOrNull(uri);
+    }
+    
+    /**
+     * Get the Fault Action URI value.
+     * 
+     * @return the fault action URI.
+     */
+    public String getFaultActionURI() {
+        return faultActionURI;
+    }
+
+    /**
+     * Set the Fault Action URI value.
+     * 
+     * @param uri the new Fault Action URI value
+     */
+    public void setFaultActionURI(String uri) {
+        faultActionURI = StringSupport.trimOrNull(uri);
     }
     
     /**
