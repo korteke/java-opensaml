@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -42,6 +43,9 @@ public class HttpClientSecurityParameters {
     
     /** Optional trust engine used in evaluating server TLS credentials. */
     private TrustEngine<? super X509Credential> tlsTrustEngine;
+    
+    /** Optional criteria set used in evaluating server TLS credentials. */
+    private CriteriaSet tlsCriteriaSet;
     
     /** TLS Protocols. */
     private List<String> tlsProtocols;
@@ -71,6 +75,23 @@ public class HttpClientSecurityParameters {
      */
     public void setCredentialsProvider(@Nullable final CredentialsProvider provider) {
         credentialsProvider = provider;
+    }
+    
+    /**
+     * A convenience method to set a (single) username and password used for BASIC authentication.
+     * To disable BASIC authentication pass null for the credentials instance.
+     * 
+     * <p>
+     * An {@link AuthScope} will be generated which specifies any host, port, scheme and realm.
+     * </p>
+     * 
+     * <p>To specify multiple usernames and passwords for multiple host, port, scheme, and realm combinations, instead 
+     * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
+     * 
+     * @param credentials the username and password credentials
+     */
+    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
+        setBasicCredentialsWithScope(credentials, null);
     }
     
     /**
@@ -121,6 +142,24 @@ public class HttpClientSecurityParameters {
      */
     public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
         tlsTrustEngine = engine;
+    }
+
+    /**
+     * Get the optional criteria set used in evaluating server TLS credentials.
+     * 
+     * @return the criteria set instance to use
+     */
+    @Nullable public CriteriaSet getTLSCriteriaSet() {
+        return tlsCriteriaSet;
+    }
+
+    /**
+     * Set the optional criteria set used in evaluating server TLS credentials.
+     * 
+     * @param criteriaSet the new criteria set instance to use
+     */
+    public void setTLSCriteriaSet(@Nullable final CriteriaSet criteriaSet) {
+        tlsCriteriaSet = criteriaSet;
     }
 
     /**
