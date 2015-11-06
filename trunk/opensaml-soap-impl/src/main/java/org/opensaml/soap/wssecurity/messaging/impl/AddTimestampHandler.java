@@ -17,26 +17,22 @@
 
 package org.opensaml.soap.wssecurity.messaging.impl;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.joda.time.DateTime;
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.messaging.impl.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.wssecurity.Created;
 import org.opensaml.soap.wssecurity.Expires;
-import org.opensaml.soap.wssecurity.Security;
 import org.opensaml.soap.wssecurity.Timestamp;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;
+import org.opensaml.soap.wssecurity.messaging.WSSecurityMessagingSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * Handler implementation that adds a wsse:Timestamp header to the wsse:Security header
  *  of the outbound SOAP envelope.
  */
-public class AddTimestampHandler extends AbstractMessageHandler {
+public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AddTimestampHandler.class);
@@ -187,16 +183,8 @@ public class AddTimestampHandler extends AbstractMessageHandler {
             timestamp.setExpires(expires);
         }
         
-        Security security = getSecurityHeader(messageContext);
-        if (security == null) {
-            log.debug("Security header was null, building");
-            security = (Security) XMLObjectSupport.buildXMLObject(Security.ELEMENT_NAME);
-            //TODO probably should add Security/@mustUnderstand=1,
-            // but need helper and/or other config (e.g. core SOAP processing context) to know SOAP version
-            SOAPMessagingSupport.addHeaderBlock(messageContext, security);
-        }
-        security.getUnknownXMLObjects().add(timestamp);
-        
+        WSSecurityMessagingSupport.addSecurityHeaderBlock(messageContext, timestamp, isEffectiveMustUnderstand(),
+                getEffectiveTargetNode(), true);
     }
     
     /**
@@ -251,22 +239,6 @@ public class AddTimestampHandler extends AbstractMessageHandler {
             }
         }
         return value;
-    }
-
-    /**
-     * Get the Security header block.
-     * 
-     * @param messageContext  the current message context
-     * 
-     * @return the Security header block if present, or null
-     */
-    protected Security getSecurityHeader(@Nonnull final MessageContext messageContext) {
-        List<XMLObject> securityHeaders = SOAPMessagingSupport.getOutboundHeaderBlock(messageContext, 
-                Security.ELEMENT_NAME);
-        if (securityHeaders != null && !securityHeaders.isEmpty()) {
-            return (Security) securityHeaders.get(0);
-        }
-        return null; 
     }
 
 }

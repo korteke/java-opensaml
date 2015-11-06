@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.messaging;
 
+import static org.opensaml.soap.util.SOAPVersion.SOAP_1_1;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.util.SOAPSupport;
+import org.opensaml.soap.util.SOAPVersion;
 
 /**
  * Support class for SOAP messaging.
@@ -111,15 +114,142 @@ public final class SOAPMessagingSupport {
     public static boolean isSOAPMessage(@Nonnull final MessageContext<? extends XMLObject> messageContext) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        final SOAP11Context soap11 = getSOAP11Context(messageContext, false);
-        
-        // SOAP 1.1 Envelope
-        if (soap11 != null && soap11.getEnvelope() != null) {
+        if (isSOAP11Message(messageContext)) {
             return true;
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
         return false;
+    }
+    
+    /**
+     * Determine whether the message represented by the message context 
+     * contains a SOAP 1.1. Envelope.
+     * 
+     * @param messageContext the current message context
+     * @return true iff the message context contains a SOAP 1.1 Envelope
+     */
+    public static boolean isSOAP11Message(@Nonnull final MessageContext<? extends XMLObject> messageContext) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        
+        SOAPVersion version = getSOAPVersion(messageContext);
+        if (version != null && SOAP_1_1.equals(version)) {
+            return true;
+        }
+        
+        //TODO SOAP 1.2 support when object providers are implemented
+        return false;
+    }
+    
+    /**
+     * Determine whether the SOAP version of the message represented by the message context.
+     * 
+     * @param messageContext the current message context
+     * @return the SOAP version.  May be null if the version could not be determined
+     */
+    @Nullable public static SOAPVersion getSOAPVersion(
+            @Nonnull final MessageContext<? extends XMLObject> messageContext) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        
+        final SOAP11Context soap11 = getSOAP11Context(messageContext, false);
+        
+        // SOAP 1.1 Envelope
+        if (soap11 != null && soap11.getEnvelope() != null) {
+            return SOAP_1_1;
+        }
+        
+        //TODO SOAP 1.2 support when object providers are implemented
+        
+        return null;
+    }
+    
+    /**
+     * Check whether the specified header block is indicated as mustUnderstand == true.
+     * 
+     * @param messageContext the message context being processed
+     * @param headerBlock the header block to check
+     * @return true if header is indicated as mustUnderstand==true, false if not
+     */
+    public static boolean isMustUnderstand(@Nonnull final MessageContext messageContext,
+            @Nonnull final XMLObject headerBlock) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        Constraint.isNotNull(headerBlock, "Header block context cannot be null");
+        
+        SOAPVersion soapVersion = SOAPMessagingSupport.getSOAPVersion(messageContext);
+        if (soapVersion == null) {
+            throw new IllegalArgumentException("Could not determine SOAP version for message context");
+        }
+        
+        switch(soapVersion) {
+            case SOAP_1_1:
+                return SOAPSupport.getSOAP11MustUnderstandAttribute(headerBlock);
+            case SOAP_1_2:
+                return SOAPSupport.getSOAP12MustUnderstandAttribute(headerBlock);
+            default:
+                throw new IllegalArgumentException("Saw unsupported SOAP version: " + soapVersion);
+        }
+    }
+    
+    /**
+     * Add whether the specified header block is indicated as mustUnderstand.
+     * 
+     * @param messageContext the message context being processed
+     * @param headerBlock the header block to check
+     * @param mustUnderstand true if header must be understood, false if not
+     */
+    public static void addMustUnderstand(@Nonnull final MessageContext messageContext,
+            @Nonnull final XMLObject headerBlock, boolean mustUnderstand) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        Constraint.isNotNull(headerBlock, "Header block context cannot be null");
+        
+        SOAPVersion soapVersion = SOAPMessagingSupport.getSOAPVersion(messageContext);
+        if (soapVersion == null) {
+            throw new IllegalArgumentException("Could not determine SOAP version for message context");
+        }
+        
+        switch(soapVersion) {
+            case SOAP_1_1:
+                SOAPSupport.addSOAP11MustUnderstandAttribute(headerBlock, mustUnderstand);
+                break;
+            case SOAP_1_2:
+                SOAPSupport.addSOAP12MustUnderstandAttribute(headerBlock, mustUnderstand);
+                break;
+            default:
+                throw new IllegalArgumentException("Saw unsupported SOAP version: " + soapVersion);
+        }
+    }
+    
+    /**
+     * Add the target node info to the header block, either <code>soap11:actor</code>,
+     * or <code>soap12:role</code>.
+     * 
+     * @param messageContext the message context being processed
+     * @param headerBlock the header block to check
+     * @param mustUnderstand true if header must be understood, false if not
+     */
+    public static void addTargetNode(@Nonnull final MessageContext messageContext,
+            @Nonnull final XMLObject headerBlock, @Nullable String targetNode) {
+        if (targetNode == null) {
+            return;
+        }
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        Constraint.isNotNull(headerBlock, "Header block context cannot be null");
+        
+        SOAPVersion soapVersion = SOAPMessagingSupport.getSOAPVersion(messageContext);
+        if (soapVersion == null) {
+            throw new IllegalArgumentException("Could not determine SOAP version for message context");
+        }
+        
+        switch(soapVersion) {
+            case SOAP_1_1:
+                SOAPSupport.addSOAP11ActorAttribute(headerBlock, targetNode);
+                break;
+            case SOAP_1_2:
+                SOAPSupport.addSOAP12RoleAttribute(headerBlock, targetNode);
+                break;
+            default:
+                throw new IllegalArgumentException("Saw unsupported SOAP version: " + soapVersion);
+        }
     }
     
     /**

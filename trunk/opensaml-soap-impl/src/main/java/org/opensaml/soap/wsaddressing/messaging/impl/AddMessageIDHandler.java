@@ -27,9 +27,9 @@ import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrate
 
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.messaging.impl.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.wsaddressing.MessageID;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  * generated internally using {@link UUID}.
  * </p>
  */
-public class AddMessageIDHandler extends AbstractMessageHandler {
+public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AddMessageIDHandler.class);
@@ -79,6 +79,7 @@ public class AddMessageIDHandler extends AbstractMessageHandler {
         log.debug("Issuing WS-Addressing MessageID: {}", id);
         MessageID messageID = (MessageID) XMLObjectSupport.buildXMLObject(MessageID.ELEMENT_NAME);
         messageID.setValue(id);
+        decorateGeneratedHeader(messageContext, messageID);
         SOAPMessagingSupport.addHeaderBlock(messageContext, messageID);
     }
 
