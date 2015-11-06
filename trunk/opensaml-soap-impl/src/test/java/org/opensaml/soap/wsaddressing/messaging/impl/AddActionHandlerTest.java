@@ -22,7 +22,11 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.SOAPMessagingBaseTestCase;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.util.SOAPSupport;
 import org.opensaml.soap.wsaddressing.Action;
+import org.opensaml.soap.wsaddressing.WSAddressingConstants;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -83,6 +87,78 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
         Assert.assertEquals(action.getValue(), "urn:test:action2");
+    }
+    
+    @Test
+    public void testFaultLocal() throws ComponentInitializationException, MessageHandlerException {
+        Fault fault = SOAPSupport.buildSOAP11Fault(FaultCode.SERVER, "MyFault", null, null, null);
+        SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
+        
+        handler.setFaultActionURI("urn:test:action1");
+        
+        handler.initialize();
+        handler.invoke(getMessageContext());
+        
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertEquals(action.getValue(), "urn:test:action1");
+    }
+
+    @Test
+    public void testFaultContext() throws ComponentInitializationException, MessageHandlerException {
+        Fault fault = SOAPSupport.buildSOAP11Fault(FaultCode.SERVER, "MyFault", null, null, null);
+        SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
+        
+        getMessageContext().getSubcontext(WSAddressingContext.class, true).setFaultActionURI("urn:test:action1");
+        
+        handler.initialize();
+        handler.invoke(getMessageContext());
+        
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertEquals(action.getValue(), "urn:test:action1");
+    }
+
+    @Test
+    public void testFaultContextOverride() throws ComponentInitializationException, MessageHandlerException {
+        Fault fault = SOAPSupport.buildSOAP11Fault(FaultCode.SERVER, "MyFault", null, null, null);
+        SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
+        
+        handler.setFaultActionURI("urn:test:action1");
+        getMessageContext().getSubcontext(WSAddressingContext.class, true).setFaultActionURI("urn:test:action2");
+        
+        handler.initialize();
+        handler.invoke(getMessageContext());
+        
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertEquals(action.getValue(), "urn:test:action2");
+    }
+
+    @Test
+    public void testFaultDefaultForNonWSAddressing() throws ComponentInitializationException, MessageHandlerException {
+        Fault fault = SOAPSupport.buildSOAP11Fault(FaultCode.SERVER, "MyFault", null, null, null);
+        SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
+        
+        handler.initialize();
+        handler.invoke(getMessageContext());
+        
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertEquals(action.getValue(), WSAddressingConstants.ACTION_URI_SOAP_FAULT);
+    }
+
+    @Test
+    public void testFaultDefaultForWSAddressing() throws ComponentInitializationException, MessageHandlerException {
+        Fault fault = SOAPSupport.buildSOAP11Fault(WSAddressingConstants.SOAP_FAULT_ACTION_NOT_SUPPORTED, "MyFault", null, null, null);
+        SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
+        
+        handler.initialize();
+        handler.invoke(getMessageContext());
+        
+        Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
+        Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
+        Assert.assertEquals(action.getValue(), WSAddressingConstants.ACTION_URI_FAULT);
     }
 
 }

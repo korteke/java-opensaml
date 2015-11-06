@@ -17,7 +17,11 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import java.util.Set;
+
 import javax.xml.namespace.QName;
+
+import com.google.common.collect.Sets;
 
 /**
  * WS-Addressing 1.0 constants.
@@ -78,6 +82,31 @@ public final class WSAddressingConstants {
     /** WS-Addressing SOAP fault code: "wsa:EndpointUnavailable". */
     public static final QName SOAP_FAULT_ENDPOINT_UNAVAILABLE =
         new QName(WSA_NS, "EndpointUnavailable", WSA_PREFIX);
+    
+    /** Set of all WS-Addressing SOAP fault codes. */
+    public static final Set<QName> WS_ADDRESSING_FAULTS = Sets.<QName>newHashSet(
+            SOAP_FAULT_INVALID_ADDRESSING_HEADER, 
+            SOAP_FAULT_INVALID_ADDRESS,
+            SOAP_FAULT_INVALID_EPR,
+            SOAP_FAULT_INVALID_CARDINALITY,
+            SOAP_FAULT_MISSING_ADDRESS_IN_EPR,
+            SOAP_FAULT_DUPLICATE_MESSAGE_ID,
+            SOAP_FAULT_ACTION_MISMATCH,
+            SOAP_FAULT_MESSAGE_ADDRESSING_HEADER_REQUIRED,
+            SOAP_FAULT_DESTINATION_UNREACHABLE,
+            SOAP_FAULT_ACTION_NOT_SUPPORTED,
+            SOAP_FAULT_ENDPOINT_UNAVAILABLE
+            );
+    
+    
+    // Fault Action URIs
+    
+    /** WS-Addressing Action URI for messages carrying WS-Addressing Faults ONLY. */
+    public static final String ACTION_URI_FAULT = "http://www.w3.org/2005/08/addressing/fault";
+    
+    /** WS-Addressing Action URI for messages carrying non-WS-Addressing Faults. */
+    public static final String ACTION_URI_SOAP_FAULT = "http://www.w3.org/2005/08/addressing/soap/fault";
+    
     
     /** Prevent instantiation. */
     private WSAddressingConstants() {
