@@ -32,6 +32,7 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wsaddressing.Action;
+import org.opensaml.soap.wsaddressing.WSAddressingConstants;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +103,9 @@ public class ValidateActionHandler extends AbstractMessageHandler {
         } else {
             log.warn("Inbound WS-Addressing Action URI '{}' did not match the expected value '{}'", headerValue, 
                     getExpectedActionURI());
+            SOAPMessagingSupport.registerSOAP11Fault(messageContext, 
+                    WSAddressingConstants.SOAP_FAULT_ACTION_NOT_SUPPORTED,
+                    "Action URI not supported: " + headerValue, null, null, null);
             throw new MessageHandlerException("Inbound WS-Addressing Action URI did not match the expected value");
         }
     }
