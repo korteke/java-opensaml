@@ -27,7 +27,7 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.soap.messaging.impl.AbstractHeaderGeneratingMessageHandler;
+import org.opensaml.soap.messaging.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.wssecurity.Created;
 import org.opensaml.soap.wssecurity.Expires;
 import org.opensaml.soap.wssecurity.Timestamp;

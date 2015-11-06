@@ -28,8 +28,8 @@ import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrate
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.soap.messaging.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
-import org.opensaml.soap.messaging.impl.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.wsaddressing.MessageID;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
