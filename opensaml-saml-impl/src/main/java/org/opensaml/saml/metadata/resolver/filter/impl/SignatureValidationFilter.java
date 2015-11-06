@@ -204,16 +204,24 @@ public class SignatureValidationFilter implements MetadataFilter {
 
         if (!signableMetadata.isSigned()){
             if (getRequireSignature()) {
-                throw new FilterException("Metadata root element was unsigned and signatures are required.");
+                log.warn("Metadata root element was unsigned and signatures are required, " 
+                        + "metadata will be filtered out.");
+                return null;
             }
         }
         
-        if (signableMetadata instanceof EntityDescriptor) {
-            processEntityDescriptor((EntityDescriptor) signableMetadata);
-        } else if (signableMetadata instanceof EntitiesDescriptor) {
-            processEntityGroup((EntitiesDescriptor) signableMetadata);
-        } else {
-            log.error("Internal error, metadata object was of an unsupported type: {}", metadata.getClass().getName());
+        try {
+            if (signableMetadata instanceof EntityDescriptor) {
+                processEntityDescriptor((EntityDescriptor) signableMetadata);
+            } else if (signableMetadata instanceof EntitiesDescriptor) {
+                processEntityGroup((EntitiesDescriptor) signableMetadata);
+            } else {
+                log.error("Internal error, metadata object was of an unsupported type: {}", 
+                        metadata.getClass().getName());
+            }
+        } catch (Throwable t) {
+            log.warn("Saw fatal error validating metadata signature(s), metadata will be filtered out", t);
+            return null;
         }
         
         return metadata;
