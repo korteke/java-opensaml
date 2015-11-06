@@ -61,8 +61,8 @@ public class SignatureValidationFilter implements MetadataFilter {
     /** Trust engine used to validate a signature. */
     @Nonnull private SignatureTrustEngine signatureTrustEngine;
 
-    /** Indicates whether signed metadata is required. */
-    private boolean requireSignature;
+    /** Indicates whether the metadata root element is required to be signed. */
+    private boolean requireSignedRoot;
     
     /** Set of externally specified default criteria for input to the trust engine. */
     @Nullable private CriteriaSet defaultCriteria;
@@ -89,7 +89,7 @@ public class SignatureValidationFilter implements MetadataFilter {
     public SignatureValidationFilter(@Nonnull final SignatureTrustEngine engine) {
         Constraint.isNotNull(engine, "SignatureTrustEngine cannot be null");
         
-        requireSignature = true;
+        requireSignedRoot = true;
 
         signatureTrustEngine = engine;
         signaturePrevalidator = new SAMLSignatureProfileValidator();
@@ -156,8 +156,8 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return whether incoming metadata is required to be signed
      */
-    public boolean getRequireSignature() {
-        return requireSignature;
+    public boolean getRequireSignedRoot() {
+        return requireSignedRoot;
     }
 
     /**
@@ -167,8 +167,36 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @param require whether incoming metadata is required to be signed
      */
+    public void setRequireSignedRoot(final boolean require) {
+        requireSignedRoot = require;
+    }
+    
+    /**
+     * Get whether incoming metadata's root element is required to be signed.
+     * 
+     * <p>Defaults to <code>true</code>.</p>
+     * 
+     * @return whether incoming metadata is required to be signed
+     * 
+     * @deprecated use instead {@link #getRequireSignedRoot()}
+     */
+    @Deprecated
+    public boolean getRequireSignature() {
+        return getRequireSignedRoot();
+    }
+
+    /**
+     * Set whether incoming metadata's root element is required to be signed.
+     * 
+     * <p>Defaults to <code>true</code>.</p>
+     * 
+     * @param require whether incoming metadata is required to be signed
+     * 
+     * @deprecated use instead {@link #setRequireSignedRoot(boolean)}
+     */
+    @Deprecated
     public void setRequireSignature(final boolean require) {
-        requireSignature = require;
+        setRequireSignedRoot(require);
     }
  
     /**
@@ -203,7 +231,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         final SignableXMLObject signableMetadata = (SignableXMLObject) metadata;
 
         if (!signableMetadata.isSigned()){
-            if (getRequireSignature()) {
+            if (getRequireSignedRoot()) {
                 log.warn("Metadata root element was unsigned and signatures are required, " 
                         + "metadata will be filtered out.");
                 return null;
