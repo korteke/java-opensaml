@@ -25,9 +25,9 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.messaging.impl.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.wsaddressing.RelatesTo;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Handler implementation that adds a wsa:RelatesTo header to the outbound SOAP envelope.
  */
-public class AddRelatesToHandler extends AbstractMessageHandler {
+public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AddRelatesToHandler.class);
@@ -122,6 +122,7 @@ public class AddRelatesToHandler extends AbstractMessageHandler {
         RelatesTo relatesTo = (RelatesTo) XMLObjectSupport.buildXMLObject(RelatesTo.ELEMENT_NAME);
         relatesTo.setValue(relatesToURI);
         relatesTo.setRelationshipType(relationshipType);
+        decorateGeneratedHeader(messageContext, relatesTo);
         SOAPMessagingSupport.addHeaderBlock(messageContext, relatesTo);
     }
 

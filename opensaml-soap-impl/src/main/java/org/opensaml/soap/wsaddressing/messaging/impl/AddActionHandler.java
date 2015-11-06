@@ -26,9 +26,9 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.messaging.impl.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.WSAddressingConstants;
@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  * no header will be added.
  * </p>
  */
-public class AddActionHandler extends AbstractMessageHandler {
+public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(AddActionHandler.class);
@@ -164,6 +164,7 @@ public class AddActionHandler extends AbstractMessageHandler {
         log.debug("Issuing WS-Addressing Action header with URI value: {}", sendURI);
         Action action = (Action) XMLObjectSupport.buildXMLObject(Action.ELEMENT_NAME);
         action.setValue(sendURI);
+        decorateGeneratedHeader(messageContext, action);
         SOAPMessagingSupport.addHeaderBlock(messageContext, action);
     }
 
