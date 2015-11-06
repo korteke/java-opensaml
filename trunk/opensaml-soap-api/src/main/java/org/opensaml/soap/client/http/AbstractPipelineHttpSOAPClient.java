@@ -17,6 +17,10 @@
 
 package org.opensaml.soap.client.http;
 
+import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET;
+import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED;
+import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE;
+
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
@@ -31,19 +35,14 @@ import net.shibboleth.utilities.java.support.component.AbstractInitializableComp
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.ObjectSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.httpclient.HttpClientRequestContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -55,11 +54,9 @@ import org.opensaml.messaging.pipeline.httpclient.HttpClientMessagePipeline;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
+import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.opensaml.security.messaging.HttpClientSecurityContext;
-import org.opensaml.security.trust.TrustEngine;
-import org.opensaml.security.x509.X509Credential;
 import org.opensaml.soap.client.SOAPClient;
 import org.opensaml.soap.client.SOAPFaultException;
 import org.opensaml.soap.common.SOAP11FaultDecodingException;
@@ -85,18 +82,15 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     /** HTTP client used to send requests and receive responses. */
     @NonnullAfterInit private HttpClient httpClient;
     
-    /** HttpClient credentials provider. */
-    private CredentialsProvider credentialsProvider;
-    
-    /** Optional trust engine used in evaluating server TLS credentials. */
-    private TrustEngine<? super X509Credential> tlsTrustEngine;
+    /** HTTP client security parameters. */
+    @Nullable private HttpClientSecurityParameters httpClientSecurityParameters;
     
     /** Strategy for building the criteria set which is input to the TLS trust engine. */
-    private Function<InOutOperationContext<?, ?>, CriteriaSet> tlsCriteriaSetStrategy;
+    @Nullable private Function<InOutOperationContext<?, ?>, CriteriaSet> tlsCriteriaSetStrategy;
     
     /** Constructor. */
     public AbstractPipelineHttpSOAPClient() {
-
+        super();
     }
 
     /** {@inheritDoc} */
@@ -113,8 +107,7 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     @Override
     protected void doDestroy() {
         httpClient = null;
-        credentialsProvider = null;
-        tlsTrustEngine = null;
+        httpClientSecurityParameters = null;
         tlsCriteriaSetStrategy = null;
         
         super.doDestroy();
@@ -144,35 +137,30 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     }
     
     /**
-     * Get the optional trust engine used in evaluating server TLS credentials.
+     * Get the optional client security parameters.
      * 
-     * @return the trust engine instance, or null
+     * @return the client security parameters, or null
      */
-    @Nullable public TrustEngine<? super X509Credential> getTLSTrustEngine() {
-        return tlsTrustEngine;
+    @Nullable public HttpClientSecurityParameters getHttpClientSecurityParameters() {
+        return httpClientSecurityParameters;
     }
 
     /**
-     * Sets the optional trust engine used in evaluating server TLS credentials.
+     * Set the optional client security parameters.
      * 
-     * <p>
-     * Must be used in conjunction with an HttpClient instance which is configured with a 
-     * {@link org.opensaml.security.httpclient.impl.TrustEngineTLSSocketFactory}. If this socket
-     * factory is not configured, then this will result in no TLS trust evaluation being performed
-     * and a {@link SSLPeerUnverifiedException} will ultimately be thrown.
-     * </p>
-     * 
-     * @param engine the trust engine instance to use
+     * @param params the new client security parameters
      */
-    public void setTLSTrustEngine(@Nullable final TrustEngine<? super X509Credential> engine) {
+    public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         
-        tlsTrustEngine = engine;
+        httpClientSecurityParameters = params;
     }
     
     /**
-     * Get the strategy function which builds the criteria set which is input to the TLS TrustEngine.
+     * Get the strategy function which builds the dynamically-populated criteria set which is 
+     * input to the TLS TrustEngine, if no static criteria set is supplied either via context 
+     * or locally-configured {@link HttpClientSecurityParameters}.
      * 
      * @return the strategy function, or null
      */
@@ -181,7 +169,9 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     }
     
     /**
-     * Set the strategy function which builds the criteria set which is input to the TLS TrustEngine.
+     * Set the strategy function which builds the dynamically-populated criteria set which is 
+     * input to the TLS TrustEngine, if no static criteria set is supplied either via context
+     * or locally-configured {@link HttpClientSecurityParameters}.
      * 
      * @param function the strategy function, or null
      */
@@ -192,80 +182,8 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
         tlsCriteriaSetStrategy = function;
     }
     
-    /**
-     * Get then instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
-     * 
-     * @return the credentials provider, or null
-     */
-    @Nullable public CredentialsProvider getCredentialsProvider() {
-        return credentialsProvider;
-    }
-    
-    /**
-     * Set an instance of {@link CredentialsProvider} used for authentication by the HttpClient instance.
-     * 
-     * @param provider the credentials provider
-     */
-    public void setCredentialsProvider(@Nullable final CredentialsProvider provider) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
-        credentialsProvider = provider;
-    }
-    
-    /**
-     * A convenience method to set a (single) username and password used for BASIC authentication.
-     * To disable BASIC authentication pass null for the credentials instance.
-     * 
-     * <p>
-     * An {@link AuthScope} will be generated which specifies any host, port, scheme and realm.
-     * </p>
-     * 
-     * <p>To specify multiple usernames and passwords for multiple host, port, scheme, and realm combinations, instead 
-     * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
-     * 
-     * @param credentials the username and password credentials
-     */
-    public void setBasicCredentials(@Nullable final UsernamePasswordCredentials credentials) {
-        setBasicCredentialsWithScope(credentials, null);
-    }
-
-    /**
-     * A convenience method to set a (single) username and password used for BASIC authentication.
-     * To disable BASIC authentication pass null for the credentials instance.
-     * 
-     * <p>
-     * If the <code>authScope</code> is null, an {@link AuthScope} will be generated which specifies
-     * any host, port, scheme and realm.
-     * </p>
-     * 
-     * <p>To specify multiple usernames and passwords for multiple host, port, scheme, and realm combinations, instead 
-     * provide an instance of {@link CredentialsProvider} via {@link #setCredentialsProvider(CredentialsProvider)}.</p>
-     * 
-     * @param credentials the username and password credentials
-     * @param scope the HTTP client auth scope with which to scope the credentials, may be null
-     */
-    public void setBasicCredentialsWithScope(@Nullable final UsernamePasswordCredentials credentials,
-            @Nullable final AuthScope scope) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
-        if (credentials != null) {
-            AuthScope authScope = scope;
-            if (authScope == null) {
-                authScope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT);
-            }
-            BasicCredentialsProvider provider = new BasicCredentialsProvider();
-            provider.setCredentials(authScope, credentials);
-            setCredentialsProvider(provider);
-        } else {
-            log.debug("Either username or password were null, disabling basic auth");
-            setCredentialsProvider(null);
-        }
-
-    }
-    
     /** {@inheritDoc} */
+    // Checkstyle: CyclomaticComplexity OFF
     public void send(@Nonnull @NotEmpty final String endpoint, @Nonnull final InOutOperationContext operationContext)
             throws SOAPException, SecurityException {
         Constraint.isNotNull(endpoint, "Endpoint cannot be null");
@@ -336,6 +254,7 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
             }
         }
     }
+    // Checkstyle: CyclomaticComplexity ON
     
     /**
      * Resolve and return a new instance of the {@link HttpClientMessagePipeline} to be processed.
@@ -391,9 +310,9 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
      */
     protected void checkTLSCredentialTrusted(@Nonnull final HttpClientContext context, 
             @Nonnull final HttpUriRequest request) throws SSLPeerUnverifiedException {
-        if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE) != null 
+        if (context.getAttribute(CONTEXT_KEY_TRUST_ENGINE) != null 
                 && "https".equalsIgnoreCase(request.getURI().getScheme())) {
-            if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
+            if (context.getAttribute(CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
                 log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
                         + "the appropriate socket factory was likely not configured");
                 throw new SSLPeerUnverifiedException(
@@ -424,81 +343,73 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     @Nonnull protected HttpClientContext buildHttpContext(@Nonnull final HttpUriRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
-        HttpClientContext httpClientContext = resolveHttpContext(operationContext);
+        HttpClientContext clientContext = resolveClientContext(operationContext);
         
-        HttpClientSecurityParameters securityParameters = operationContext.getOutboundMessageContext()
-                .getSubcontext(HttpClientSecurityContext.class, true).getSecurityParameters();
+        HttpClientSecurityParameters contextSecurityParameters = resolveContextSecurityParameters(operationContext);
         
-        CredentialsProvider credProvider = ObjectSupport.firstNonNull(
-                securityParameters != null ? securityParameters.getCredentialsProvider() : null, 
-                httpClientContext.getCredentialsProvider(), getCredentialsProvider());
-        if (credProvider != null) {
-            httpClientContext.setCredentialsProvider(credProvider);
-        }
+        HttpClientSecuritySupport.marshalSecurityParameters(clientContext, contextSecurityParameters, false);
         
-        populateTLSContextParameters(httpClientContext, securityParameters, request, operationContext);
-        
-        return httpClientContext;
-    }
-
-    /**
-     * Populate the various TLS-related parameters into the {@link HttpClientContext}.
-     * 
-     * @param context the context to populate 
-     * @param securityParameters the optional resolved security parameters
-     * @param request the HTTP client request
-     * @param operationContext the current operation context
-     */
-    protected void populateTLSContextParameters(@Nonnull final HttpClientContext context,
-            @Nullable final HttpClientSecurityParameters securityParameters, 
-            @Nonnull final HttpUriRequest request,
-            @Nonnull final InOutOperationContext operationContext) {
+        HttpClientSecuritySupport.marshalSecurityParameters(clientContext, getHttpClientSecurityParameters(), false);
         
         if ("https".equalsIgnoreCase(request.getURI().getScheme())) {
-            
-            TrustEngine<? super X509Credential> trustEngine = 
-                    ObjectSupport.<TrustEngine<? super X509Credential>>firstNonNull(
-                            securityParameters != null ? securityParameters.getTLSTrustEngine() : null,
-                            getTLSTrustEngine());
-            if (trustEngine != null) {
-                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-                context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, 
+            if (clientContext.getAttribute(CONTEXT_KEY_TRUST_ENGINE) != null
+                    && clientContext.getAttribute(CONTEXT_KEY_CRITERIA_SET) == null) {
+                clientContext.setAttribute(CONTEXT_KEY_CRITERIA_SET, 
                         buildTLSCriteriaSet(request, operationContext));
             }
-            
-            if (securityParameters != null) {
-                if (securityParameters.getTLSProtocols() != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS, 
-                            securityParameters.getTLSProtocols());
-                }
-                
-                if (securityParameters.getTLSCipherSuites() != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES, 
-                            securityParameters.getTLSCipherSuites());
-                }
-                
-                if (securityParameters.getHostnameVerifier() != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER, 
-                            securityParameters.getHostnameVerifier());
-                }
-                
-                if (securityParameters.getClientTLSCredential() != null) {
-                    context.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, 
-                            securityParameters.getClientTLSCredential());
-                }
-            }
         }
+        
+        return clientContext;
     }
     
     /**
+     * Resolve the {@link HttpClientSecurityParameters} instance present in the current operation context.
+     * 
+     * <p>
+     * The default implementation returns the outbound subcontext value 
+     * {@link HttpClientSecurityContext#getSecurityParameters()}.
+     * </p>
+     * 
+     * <p>
+     * Note that any values supplied via this instance will override those supplied locally via
+     * {@link #setHttpClientSecurityParameters(HttpClientSecurityParameters)}.
+     * </p>
+     * 
+     * @param operationContext the current operation context
+     * @return the client security parameters resolved from the current operation context, or null
+     */
+    protected HttpClientSecurityParameters resolveContextSecurityParameters(
+            @Nonnull final InOutOperationContext operationContext) {
+        HttpClientSecurityContext securityContext = 
+                operationContext.getOutboundMessageContext().getSubcontext(HttpClientSecurityContext.class);
+        if (securityContext != null) {
+            return securityContext.getSecurityParameters();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Resolve the effective {@link HttpClientContext} instance to use for the current request.
+     * 
+     * <p>
+     * The default implementation first attempts to resolve the outbound subcontext value
+     * {@link HttpClientRequestContext#getHttpClientContext()}. If no context value is present,
+     * a new empty context instance will be returned via {@link HttpClientContext#create()}.
+     * </p>
+     * 
+     * <p>
+     * Note that any security-related attributes supplied directly the client context returned here
+     * will override the corresponding values supplied via both operation context and locally-configured
+     * instances of {@link HttpClientSecurityParameters}.
+     * </p>
      * 
      * @param operationContext the current operation context
      * @return the effective client context instance to use
      */
-    @Nonnull protected HttpClientContext resolveHttpContext(InOutOperationContext operationContext) {
-        HttpClientRequestContext requestContext = operationContext.getOutboundMessageContext()
-                .getSubcontext(HttpClientRequestContext.class, false);
+    @Nonnull protected HttpClientContext resolveClientContext(@Nonnull final InOutOperationContext operationContext) {
+        HttpClientRequestContext requestContext = 
+                operationContext.getOutboundMessageContext().getSubcontext(HttpClientRequestContext.class);
         if (requestContext != null && requestContext.getHttpClientContext() != null) {
             return requestContext.getHttpClientContext();
         } else {
@@ -507,7 +418,7 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
     }
 
     /**
-     * Build the {@link CriteriaSet} instance to be used for TLS trust evaluation.
+     * Build the dynamic {@link CriteriaSet} instance to be used for TLS trust evaluation.
      * 
      * @param request the HTTP client request
      * @param operationContext the current operation context
