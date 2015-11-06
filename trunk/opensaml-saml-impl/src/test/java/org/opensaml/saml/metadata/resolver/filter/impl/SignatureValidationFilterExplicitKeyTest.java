@@ -124,7 +124,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         }
     }
     
-    @Test(expectedExceptions=FilterException.class)
+    @Test
     public void testSWITCHStandaloneBlacklistedSignatureAlgorithm() throws UnmarshallingException, FilterException {
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentValid
                 .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
@@ -136,21 +136,18 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         CriteriaSet defaultCriteriaSet = new CriteriaSet(new SignatureValidationParametersCriterion(sigParams));
         filter.setDefaultCriteria(defaultCriteriaSet);
         
-        filter.filter(xmlObject);
+        XMLObject filtered = filter.filter(xmlObject);
+        Assert.assertNull(filtered);
     }
     
     @Test
-    public void testInvalidSWITCHStandalone() throws UnmarshallingException {
+    public void testInvalidSWITCHStandalone() throws UnmarshallingException, FilterException {
         XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentInvalid
                 .getDocumentElement()).unmarshall(switchMDDocumentInvalid.getDocumentElement());
         
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
-        try {
-            filter.filter(xmlObject);
-            Assert.fail("Filter passed validation, should have failed");
-        } catch (FilterException e) {
-            // do nothing, should fail
-        }
+        XMLObject filtered = filter.filter(xmlObject);
+        Assert.assertNull(filtered);
     }
     
     @Test
@@ -177,7 +174,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
     }
     
     @Test
-    public void testEntityDescriptorInvalid() throws UnmarshallingException, CertificateException, XMLParserException {
+    public void testEntityDescriptorInvalid() throws UnmarshallingException, CertificateException, XMLParserException, FilterException {
         X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
         X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
@@ -192,12 +189,8 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         Assert.assertNotNull(ed.getSignature(), "Signature was null");
         
         SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
-        try {
-            filter.filter(xmlObject);
-            Assert.fail("Filter passed validation, should have failed");
-        } catch (FilterException e) {
-            // do nothing, should fail
-        }
+        XMLObject filtered = filter.filter(xmlObject);
+        Assert.assertNull(filtered);
     }
     
     @Test
@@ -225,7 +218,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
     }
     
     @Test
-    public void testInvalidEntityDescriptorWithProvider() throws CertificateException, XMLParserException, UnmarshallingException {
+    public void testInvalidEntityDescriptorWithProvider() throws CertificateException, XMLParserException, UnmarshallingException, ComponentInitializationException {
         X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
         X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
         StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
@@ -241,12 +234,9 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         mdProvider.setId("test");
         mdProvider.setMetadataFilter(filter);
         
-        try {
-            mdProvider.initialize();
-            Assert.fail("Metadata signature was invalid, provider initialization should have failed");
-        } catch (ComponentInitializationException e) {
-            // do nothing, failure expected
-        }
+        mdProvider.initialize();
+        
+        Assert.assertFalse(mdProvider.iterator().hasNext());
     }
 
 }
