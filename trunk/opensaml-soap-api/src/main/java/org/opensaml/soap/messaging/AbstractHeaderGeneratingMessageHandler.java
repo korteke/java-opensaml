@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.messaging.impl;
+package org.opensaml.soap.messaging;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +27,6 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.soap.messaging.SOAPMessagingSupport;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
