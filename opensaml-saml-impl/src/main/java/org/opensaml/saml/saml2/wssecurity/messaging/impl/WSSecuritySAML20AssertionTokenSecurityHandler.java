@@ -99,7 +99,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * 
      * @return the builder function
      */
-    @NonnullAfterInit public Function<SAML20AssertionTokenValidationInput, ValidationContext> getValidationContextBuilder() {
+    @NonnullAfterInit
+    public Function<SAML20AssertionTokenValidationInput, ValidationContext> getValidationContextBuilder() {
         return validationContextBuilder;
     }
 
