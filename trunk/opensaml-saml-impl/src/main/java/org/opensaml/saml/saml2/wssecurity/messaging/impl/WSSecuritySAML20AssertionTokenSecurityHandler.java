@@ -257,6 +257,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             SAML20AssertionValidator validator = resolveValidator(messageContext, assertion);
             if (validator == null) {
                 log.warn("No SAML20AssertionValidator was available, terminating");
+                SOAPMessagingSupport.registerSOAP11Fault(messageContext, FaultCode.SERVER, 
+                        "Internal processing error", null, null, null);
                 throw new MessageHandlerException("No SAML20AssertionValidator was available");
             }
         
@@ -332,6 +334,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
                 break;
             default:
                 log.warn("Assertion validation result indicated an unknown value: {}", validationResult);
+                SOAPMessagingSupport.registerSOAP11Fault(messageContext, FaultCode.SERVER, 
+                        "Internal processing error", null, null, null);
                 throw new IllegalArgumentException("Assertion validation result indicated an unknown value: "
                         + validationResult);
         }
@@ -386,6 +390,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         
         if (validationContext == null) {
             log.warn("ValidationContext produced was null");
+            SOAPMessagingSupport.registerSOAP11Fault(messageContext, FaultCode.SERVER, 
+                    "Internal processing error", null, null, null);
             throw new MessageHandlerException("No ValidationContext was produced");
         }
         
