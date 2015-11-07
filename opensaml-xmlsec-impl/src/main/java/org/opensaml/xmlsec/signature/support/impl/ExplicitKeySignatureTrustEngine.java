@@ -149,6 +149,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
 
         // First try the optional supplied candidate credential
         if (candidateCredential != null) {
+            log.debug("Attempting to verify raw signature using supplied candidate credential");
             try {
                 if (XMLSigningUtil.verifyWithURI(candidateCredential, algorithmURI, signature, content)) {
                     log.debug("Successfully verified signature using supplied candidate credential");
@@ -162,7 +163,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                 }
             } catch (SecurityException e) {
                 // Java 7 now throws this exception under conditions such as mismatched key sizes.
-                // Swallow this, it's logged by the verifyWithURI method already.
+                log.debug("Saw fatal error attempting to verify raw signature with supplied candidate credential", e);
             }
         }
 
@@ -179,7 +180,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
                 }
             } catch (SecurityException e) {
                 // Java 7 now throws this exception under conditions such as mismatched key sizes.
-                // Swallow this, it's logged by the verifyWithURI method already.
+                log.debug("Saw fatal error attempting to verify raw signature with trusted credential", e);
             }
         }
         log.debug("Failed to verify signature using either supplied candidate credential"
