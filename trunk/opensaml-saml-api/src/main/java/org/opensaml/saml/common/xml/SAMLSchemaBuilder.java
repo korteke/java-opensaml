@@ -44,12 +44,6 @@ import org.xml.sax.SAXException;
 @ThreadSafe
 public class SAMLSchemaBuilder {
     
-    /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SAMLSchemaBuilder.class);
-    
-    /** Flag indicating whether the failure to resolve a schema resource should be considered fatal. */
-    private boolean unresolvedSchemaFatal;
-
     /** Classpath relative location of basic XML schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] baseXMLSchemas = {
         SAMLConstants.XML_SCHEMA_LOCATION,
@@ -128,6 +122,13 @@ public class SAMLSchemaBuilder {
         SAMLConstants.SAML20PASLO_SCHEMA_LOCATION,
         SAMLConstants.SAMLEC_GSS_SCHEMA_LOCATION,
         };
+    
+      
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(SAMLSchemaBuilder.class);
+    
+    /** Flag indicating whether the failure to resolve a schema resource should be considered fatal. */
+    private boolean unresolvedSchemaFatal;
 
     /** Cached copy of the schema produced by the builder. */
     @Nullable private Schema cachedSchema;
