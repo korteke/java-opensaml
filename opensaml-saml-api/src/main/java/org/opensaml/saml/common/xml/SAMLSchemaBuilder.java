@@ -163,9 +163,6 @@ public class SAMLSchemaBuilder {
         } else {
             saml1xSchemas = saml10Schemas;
         }
-        schemaBuilder = new SchemaBuilder();
-        schemaBuilder.setResourceResolver(new ClasspathResolver());
-        configureBuilder();
     }
     
     /**
@@ -199,10 +196,16 @@ public class SAMLSchemaBuilder {
      */
     @Nonnull public synchronized Schema getSAMLSchema() throws SAXException {
         if (cachedSchema == null) {
+            if (schemaBuilder == null) {
+                schemaBuilder = new SchemaBuilder();
+                schemaBuilder.setResourceResolver(new ClasspathResolver());
+                configureBuilder();
+            }
             cachedSchema = schemaBuilder.buildSchema();
+            return cachedSchema;
+        } else {
+            return cachedSchema;
         }
-
-        return cachedSchema;
     }
 
     /**
