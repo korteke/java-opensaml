@@ -184,8 +184,8 @@ public class SAMLSchemaBuilder {
      */
     public synchronized void setSchemaBuilder(@Nonnull final SchemaBuilder builder) {
         schemaBuilder = Constraint.isNotNull(builder, "SchemaBuilder cannot be null");
-        configureBuilder();
         cachedSchema = null;
+        configureBuilder();
     }
 
     /**
@@ -198,9 +198,14 @@ public class SAMLSchemaBuilder {
     @Nonnull public synchronized Schema getSAMLSchema() throws SAXException {
         if (cachedSchema == null) {
             if (schemaBuilder == null) {
-                schemaBuilder = new SchemaBuilder();
-                schemaBuilder.setResourceResolver(new ClasspathResolver());
-                configureBuilder();
+                try {
+                    schemaBuilder = new SchemaBuilder();
+                    schemaBuilder.setResourceResolver(new ClasspathResolver());
+                    configureBuilder();
+                } catch (RuntimeException e) {
+                    schemaBuilder = null;
+                    throw e;
+                }
             }
             cachedSchema = schemaBuilder.buildSchema();
             return cachedSchema;
