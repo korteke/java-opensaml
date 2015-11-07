@@ -242,7 +242,7 @@ public class SAMLSchemaBuilder {
         if (stream != null) {
             schemaBuilder.addSchema(stream);
         } else {
-            log.warn("Failed to locate schema resource: {}", source);
+            log.error("Failed to locate schema resource: {}", source);
             if (unresolvedSchemaFatal) {
                 throw new XMLRuntimeException("Failed to locate schema resource: " + source);
             }
