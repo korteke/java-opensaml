@@ -21,6 +21,8 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+
 import org.opensaml.saml.common.binding.AbstractEndpointResolver;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
@@ -28,8 +30,6 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * Default implementation that performs additional endpoint validation.
@@ -83,7 +83,7 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         
         if (endpoint.getBinding() != null) {
             if (!bindings.getBindings().contains(endpoint.getBinding())) {
-                log.debug("{} Candidate endpoint binding {} not permitted by input criteria", getLogPrefix(),
+                log.debug("{} Candidate endpoint binding '{}' not permitted by input criteria", getLogPrefix(),
                         endpoint.getBinding());
                 return false;
             }
@@ -114,8 +114,8 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         // Check binding.
         if (comparisonEndpoint.getBinding() != null &&
                 !Objects.equals(comparisonEndpoint.getBinding(), endpoint.getBinding())) {
-            log.debug("{} Candidate endpoint binding did not match {}", getLogPrefix(),
-                    comparisonEndpoint.getBinding());
+            log.debug("{} Candidate endpoint binding '{}' did not match '{}'", getLogPrefix(),
+                    endpoint.getBinding(), comparisonEndpoint.getBinding());
             return false;
         }
         
@@ -123,7 +123,8 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
         if (comparisonEndpoint.getLocation() != null) {
             if (!Objects.equals(comparisonEndpoint.getLocation(), endpoint.getLocation())
                     && !Objects.equals(comparisonEndpoint.getLocation(), endpoint.getResponseLocation())) {
-                log.debug("{} Candidate endpoint location did not match {}", getLogPrefix(),
+                log.debug("{} Neither candidate endpoint location '{}' nor response location '{}' matched '{}' ",
+                        getLogPrefix(), endpoint.getLocation(), endpoint.getResponseLocation(), 
                         comparisonEndpoint.getLocation());
                 return false;
             }
@@ -137,7 +138,8 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
                 return false;
             } else if (!Objects.equals(((IndexedEndpoint) comparisonEndpoint).getIndex(),
                     ((IndexedEndpoint) endpoint).getIndex())) {
-                log.debug("{} Candidate endpoint index did not match {}", getLogPrefix(),
+                log.debug("{} Candidate endpoint index {} did not match {}", getLogPrefix(),
+                        ((IndexedEndpoint) endpoint).getIndex(),
                         ((IndexedEndpoint) comparisonEndpoint).getIndex());
                 return false;
             }
