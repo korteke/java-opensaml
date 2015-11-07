@@ -30,6 +30,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.ClasspathResolver;
 import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
 
+import org.opensaml.core.xml.XMLRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -40,6 +43,12 @@ import org.xml.sax.SAXException;
  */
 @ThreadSafe
 public class SAMLSchemaBuilder {
+    
+    /** Logger. */
+    private Logger log = LoggerFactory.getLogger(SAMLSchemaBuilder.class);
+    
+    /** Flag indicating whether the failure to resolve a schema resource should be considered fatal. */
+    private boolean unresolvedSchemaFatal;
 
     /** Classpath relative location of basic XML schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] baseXMLSchemas = {
@@ -148,6 +157,7 @@ public class SAMLSchemaBuilder {
      * @param ver   the SAML 1.x version to use
      */
     public SAMLSchemaBuilder(@Nonnull final SAML1Version ver) {
+        unresolvedSchemaFatal = true;
         if (ver == SAML1Version.SAML_11) {
             saml1xSchemas = saml11Schemas;
         } else {
@@ -156,6 +166,17 @@ public class SAMLSchemaBuilder {
         schemaBuilder = new SchemaBuilder();
         schemaBuilder.setResourceResolver(new ClasspathResolver());
         configureBuilder();
+    }
+    
+    /**
+     * Set the flag indicating whether the failure to resolve a schema resource should be considered fatal.
+     * 
+     * <p>Default value: true.</p>
+     * 
+     * @param flag true if should be fatal, false if not
+     */
+    public void setUnresolvedSchemaFatal(boolean flag) {
+        unresolvedSchemaFatal = flag;
     }
     
     /**
@@ -184,49 +205,48 @@ public class SAMLSchemaBuilder {
         return cachedSchema;
     }
 
-// Checkstyle: CyclomaticComplexity OFF
     /**
      * Configure the appropriate {@link SchemaBuilder} with the right set of schemas.
      */
     @Nonnull private void configureBuilder() {
-        
-        final Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
-        
         for (final String source : baseXMLSchemas) {
-            final InputStream stream = clazz.getResourceAsStream(source);
-            if (stream != null) {
-                schemaBuilder.addSchema(stream);
-            }
+            addSchemaToBuilder(source);
         }
 
         for (final String source : soapSchemas) {
-            final InputStream stream = clazz.getResourceAsStream(source);
-            if (stream != null) {
-                schemaBuilder.addSchema(stream);
-            }
+            addSchemaToBuilder(source);
         }
 
         for (final String source : saml1xSchemas) {
-            final InputStream stream = clazz.getResourceAsStream(source);
-            if (stream != null) {
-                schemaBuilder.addSchema(stream);
-            }
+            addSchemaToBuilder(source);
         }
 
         for (final String source : saml20Schemas) {
-            final InputStream stream = clazz.getResourceAsStream(source);
-            if (stream != null) {
-                schemaBuilder.addSchema(stream);
-            }
+            addSchemaToBuilder(source);
         }
 
         for (final String source : baseExtSchemas) {
-            final InputStream stream = clazz.getResourceAsStream(source);
-            if (stream != null) {
-                schemaBuilder.addSchema(stream);
+            addSchemaToBuilder(source);
+        }
+    }
+    
+    /**
+     * Load the schema from the specified source and add it to the internal {@link SchemaBuilder}.
+     * 
+     * @param source the schema resource path
+     */
+    private void addSchemaToBuilder(@Nonnull final String source) {
+        final Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
+        
+        final InputStream stream = clazz.getResourceAsStream(source);
+        if (stream != null) {
+            schemaBuilder.addSchema(stream);
+        } else {
+            log.warn("Failed to locate schema resource: {}", source);
+            if (unresolvedSchemaFatal) {
+                throw new XMLRuntimeException("Failed to locate schema resource: " + source);
             }
         }
     }
-// Checkstyle: CyclomaticComplexity ON
 
 }
