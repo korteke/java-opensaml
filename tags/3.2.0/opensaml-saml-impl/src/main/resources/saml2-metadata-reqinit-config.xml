@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" xmlns="http://www.opensaml.org/xmltooling-config" xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd">
+
+	<!-- SAML 2.0 Metadata SSO Service Provider Request Initiation Extension. -->
+	<ObjectProviders>
+
+		<!-- RequestInitiator provider -->
+		<ObjectProvider qualifiedName="init:RequestInitiator">
+			<BuilderClass className="org.opensaml.saml.ext.saml2mdreqinit.impl.RequestInitiatorBuilder"/>
+			<MarshallingClass className="org.opensaml.saml.ext.saml2mdreqinit.impl.RequestInitiatorMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.ext.saml2mdreqinit.impl.RequestInitiatorUnmarshaller"/>
+		</ObjectProvider>
+
+	</ObjectProviders>
+</XMLTooling>

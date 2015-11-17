@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc:KeyReference xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" URI="urn:string:foo">
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+    <test:SimpleElement xmlns:test="http://www.example.org/testObjects"/>
+</xenc:KeyReference>

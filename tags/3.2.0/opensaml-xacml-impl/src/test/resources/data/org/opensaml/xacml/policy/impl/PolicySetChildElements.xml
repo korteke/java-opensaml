@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:PolicySet xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" 
+	             Version="8.7.6" 
+	             PolicySetId="https://example.org/Policy/Set/Policy/Set/Id" 
+	             PolicyCombiningAlgId="https://example.org/Policy/Set/Policy/Combining/Alg/Id">
+	
+	<xacml:Description >This is a Description</xacml:Description>
+	<xacml:PolicySetDefaults />
+	<xacml:Target />
+	
+	<xacml:PolicySet xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" 
+		             Version="8.7.6" 
+	    	         PolicySetId="https://example.org/Policy/Set/Policy/Set/Id" 
+	        	     PolicyCombiningAlgId="https://example.org/Policy/Set/Policy/Combining/Alg/Id"/>
+	<xacml:PolicySet xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" 
+		             Version="8.7.6" 
+		             PolicySetId="https://example.org/Policy/Set/Policy/Set/Id" 
+	    	         PolicyCombiningAlgId="https://example.org/Policy/Set/Policy/Combining/Alg/Id"/>
+	             
+	<xacml:Policy Version="8.7.6" PolicyId="https://example.org/Policy/Policy/Id" RuleCombiningAlgId="https://example.org/Policy/Rule/Combining/Alg" />
+	<xacml:Policy Version="8.7.6" PolicyId="https://example.org/Policy/Policy/Id" RuleCombiningAlgId="https://example.org/Policy/Rule/Combining/Alg" />
+	
+	<xacml:PolicySetIdReference >https://example.org/Policy/Set/Policy/Set/Id/Ref</xacml:PolicySetIdReference>
+	<xacml:PolicySetIdReference >https://example.org/Policy/Set/Policy/Set/Id/Ref</xacml:PolicySetIdReference>
+	<xacml:PolicySetIdReference >https://example.org/Policy/Set/Policy/Set/Id/Ref</xacml:PolicySetIdReference>
+
+	<xacml:PolicyIdReference>https://example.org/Policy/Set/Policy/Id/Ref</xacml:PolicyIdReference>
+	<xacml:PolicyIdReference>https://example.org/Policy/Set/Policy/Id/Ref</xacml:PolicyIdReference>
+	<xacml:PolicyIdReference>https://example.org/Policy/Set/Policy/Id/Ref</xacml:PolicyIdReference>
+	<xacml:PolicyIdReference>https://example.org/Policy/Set/Policy/Id/Ref</xacml:PolicyIdReference>
+
+	<xacml:CombinerParameters />
+
+	<xacml:PolicyCombinerParameters PolicyIdRef="https://example.org/Policy/Set/Policy/Id/Ref" />
+	<xacml:PolicyCombinerParameters PolicyIdRef="https://example.org/Policy/Set/Policy/Id/Ref" />
+	<xacml:PolicyCombinerParameters PolicyIdRef="https://example.org/Policy/Set/Policy/Id/Ref" />
+
+	<xacml:PolicySetCombinerParameters PolicySetIdRef="https://example.org/Policy/Set/Policy/Set/Id/Ref" />
+	<xacml:PolicySetCombinerParameters PolicySetIdRef="https://example.org/Policy/Set/Policy/Set/Id/Ref" />
+	
+	<xacml:Obligations/>
+</xacml:PolicySet>

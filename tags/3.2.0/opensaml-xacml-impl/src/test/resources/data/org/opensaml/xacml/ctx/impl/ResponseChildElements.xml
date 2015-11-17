@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml-context:Response xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+	<xacml-context:Result />
+	<xacml-context:Result />
+	<xacml-context:Result />
+	<xacml-context:Result />
+	<xacml-context:Result />
+	<xacml-context:Result />
+</xacml-context:Response>
+	
+	
+

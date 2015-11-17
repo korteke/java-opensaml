@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Version="2.0"><saml2:Issuer/><saml2:Subject/><saml2:Conditions/><saml2:Advice/><saml2:AuthnStatement/><saml2:AuthnStatement/><saml2:AuthzDecisionStatement/><saml2:AuthzDecisionStatement/><saml2:AttributeStatement/><saml2:AttributeStatement/><saml2:AttributeStatement/></saml2:Assertion>

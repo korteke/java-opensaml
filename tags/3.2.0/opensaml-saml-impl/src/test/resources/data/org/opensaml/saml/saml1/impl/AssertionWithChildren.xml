@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml1:Assertion xmlns:saml1="urn:oasis:names:tc:SAML:1.0:assertion" MajorVersion="1" MinorVersion="1"><saml1:Conditions/><saml1:Advice/><saml1:AuthenticationStatement/><saml1:AuthorizationDecisionStatement/><saml1:AttributeStatement/><saml1:AuthenticationStatement/><saml1:AuthorizationDecisionStatement/><saml1:AttributeStatement/><saml1:AuthorizationDecisionStatement/><saml1:AttributeStatement/></saml1:Assertion>

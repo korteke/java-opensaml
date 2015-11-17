@@ -1,0 +1,49 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_a3623fbbcb6af813c50b67a828668b1e55ae2c0f" entityID="https://www.example.org/sp">
+
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:1.0:protocol">
+    <md:Extensions>
+      <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://www.example.org/Shibboleth.sso/Login"/>
+      <idpdisc:DiscoveryResponse xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Location="https://www.example.org/Shibboleth.sso/Login" index="1"/>
+    </md:Extensions>
+    <md:KeyDescriptor>
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>https://www.example.org/shibboleth</ds:KeyName>
+        <ds:KeyName>www.example.org</ds:KeyName>
+        <ds:X509Data>
+          <ds:X509SubjectName>CN=www.example.org</ds:X509SubjectName>
+          <ds:X509Certificate>MIIDRDCCAiygAwIBAgIJAIc3DausM4oaMA0GCSqGSIb3DQEBBQUAMCUxIzAhBgNV
+BAMTGnd3dy5saWJyYXJ5Lmdlb3JnZXRvd24uZWR1MB4XDTEyMDgwOTIxMjIwNFoX
+DTMyMDgwNDIxMjIwNFowJTEjMCEGA1UEAxMad3d3LmxpYnJhcnkuZ2VvcmdldG93
+bi5lZHUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDkc0sA/9cehYrs
+AR8nT0Me8JcKIFeFZlAi9jp0vhvsF8tbbhq9diZjaCeww93yfeDPC9u9wi6ya40x
+gkLHLeBinYJlDruk84QLrRImQ1di4rJQgBBt/wLr+wZQgeuo/P+es0ox9VU+fBqr
+xQRHvenkw/LKPuCz7mkhotZt/zy0UnNcq5o5t6tsZLU+BbSUWoBoB3MQXzN/PjMq
+ROks9/v90HtUCiF9J7hPDpxLLJ7qkvJ+YpfuBcQB5NevoDv423cwwfkJGBJAu3Do
+Qs2vWOfS3AwDh8Cee43wjZB5eD44y+cVIeed16WehDKnXQ+DEcKnHzxF6IRMU+d1
+4kLs+QZHAgMBAAGjdzB1MFQGA1UdEQRNMEuCGnd3dy5saWJyYXJ5Lmdlb3JnZXRv
+d24uZWR1hi1odHRwczovL3d3dy5saWJyYXJ5Lmdlb3JnZXRvd24uZWR1L3NoaWJi
+b2xldGgwHQYDVR0OBBYEFO1vnaFkb0y5fLvOjUVlqDwIOWphMA0GCSqGSIb3DQEB
+BQUAA4IBAQDBEJbbxyd3IH5Kc6ZPNEJmSNEau5AeTeU3YNv5+I7OhpWbVjxtITTy
++IOnd8s8+1YbcwFJRsPQXc+uboTiVF9B+CHlJQ+mwgUH1ePBVG9PUwaRrX0my88c
+XEQptBIVdUqaNwuBBMQzUr2/UZK6EaStRor/yRrEgZNnPUFWtsW+sCG406gGbcxU
+93RurxLa4Cv0sE+SEFMkQnnmAN7odx6qM/1I1TCQPN0t4JfWjmhj8Iez0lnGMQPh
+NWevYWCdgIDPlYhhvJ9gnHu8JOfFRlZCXpc2p+x7Nsrudb+5Hhs7x93xciVyrttQ
+Iul4vX+c2dQrUz0m7rJ8tdZDwyQvUvwd
+</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://www.example.org/Shibboleth.sso/Artifact/SOAP" index="0"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://www.example.org/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://www.example.org/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://www.example.org/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://www.example.org/Shibboleth.sso/SLO/Artifact"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://www.example.org/Shibboleth.sso/SAML2/POST" index="0"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://www.example.org/Shibboleth.sso/SAML2/POST-SimpleSign" index="1"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://www.example.org/Shibboleth.sso/SAML2/Artifact" index="2"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://www.example.org/Shibboleth.sso/SAML2/ECP" index="3"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://www.example.org/Shibboleth.sso/SAML/POST" index="4"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="https://www.example.org/Shibboleth.sso/SAML/Artifact" index="5"/>
+  </md:SPSSODescriptor>
+
+</md:EntityDescriptor>

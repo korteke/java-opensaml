@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%-5level %logger{0} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    
+    <logger name="org.apache.xml.security.encryption.XMLCipher">
+        <level value="TRACE"/>
+    </logger>
+    <logger name="org.apache.xml.security.encryption.XMLCipherUtil">
+        <level value="TRACE"/>
+    </logger>
+    <logger name="org.opensaml.xmlsec.encryption.support">
+        <level value="TRACE"/>
+    </logger>
+    
+    <logger name="org.opensaml.xmlsec.impl">
+        <level value="TRACE"/>
+    </logger>
+    
+    <logger name="org.opensaml">
+        <level value="WARN"/>
+    </logger>
+    
+    <root>
+        <appender-ref ref="STDOUT"/>
+        <level value="WARN"/>
+    </root>
+    
+</configuration>

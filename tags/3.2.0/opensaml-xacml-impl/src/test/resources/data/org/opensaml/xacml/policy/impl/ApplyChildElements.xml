@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xacml:Apply xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" FunctionId="http://example.org">
+    <xacml:Function/>
+    <xacml:AttributeValue/>
+    <xacml:Condition/>
+    <xacml:AttributeValue/>
+    <xacml:VariableReference/>
+	<xacml:ActionAttributeDesignator xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" MustBePresent="false"/>
+	<xacml:AttributeSelector xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os"  MustBePresent="false"/>
+    <xacml:Function/>
+	<xacml:Apply xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" FunctionId="http://example.org"/>
+</xacml:Apply>
