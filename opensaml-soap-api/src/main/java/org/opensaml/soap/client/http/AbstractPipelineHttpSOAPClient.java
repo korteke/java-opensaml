@@ -18,7 +18,6 @@
 package org.opensaml.soap.client.http;
 
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET;
-import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE;
 
 import java.io.IOException;
@@ -215,7 +214,7 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
             
             // HttpClient execution
             HttpResponse httpResponse = getHttpClient().execute(httpRequest, httpContext);
-            checkTLSCredentialTrusted(httpContext, httpRequest);
+            HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getURI().getScheme());
             
             // Response decoding
             HttpClientResponseMessageDecoder<InboundMessageType> decoder = pipeline.getDecoder();
@@ -307,18 +306,13 @@ public abstract class AbstractPipelineHttpSOAPClient<OutboundMessageType, Inboun
      * @param context the current HTTP context instance in use
      * @param request the HTTP URI request
      * @throws SSLPeerUnverifiedException thrown if the TLS credential was not actually evaluated by the trust engine
+     * 
+     * @deprecated use {@link HttpClientSecuritySupport#checkTLSCredentialEvaluated(HttpClientContext, String)}
      */
+    @Deprecated
     protected void checkTLSCredentialTrusted(@Nonnull final HttpClientContext context, 
             @Nonnull final HttpUriRequest request) throws SSLPeerUnverifiedException {
-        if (context.getAttribute(CONTEXT_KEY_TRUST_ENGINE) != null 
-                && "https".equalsIgnoreCase(request.getURI().getScheme())) {
-            if (context.getAttribute(CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
-                log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
-                        + "the appropriate socket factory was likely not configured");
-                throw new SSLPeerUnverifiedException(
-                        "Evaluation of server TLS credential with configured TrustEngine was not performed");
-            }
-        }
+        HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
     }
     
     /**

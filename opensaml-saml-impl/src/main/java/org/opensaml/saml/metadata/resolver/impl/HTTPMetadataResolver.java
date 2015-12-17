@@ -41,6 +41,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.util.EntityUtils;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
+import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -225,7 +226,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         try {
             log.debug("Attempting to fetch metadata document from '{}'", metadataURI);
             response = httpClient.execute(httpGet, context);
-            checkTLSCredentialTrusted(context);
+            HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, metadataURI.getScheme());
             final int httpStatusCode = response.getStatusLine().getStatusCode();
 
             if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
@@ -266,16 +267,12 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @param context the current HTTP context instance in use
      * @throws SSLPeerUnverifiedException thrown if the TLS credential was not actually evaluated by the trust engine
+     * 
+     * @deprecated use {@link HttpClientSecuritySupport#checkTLSCredentialEvaluated(HttpClientContext, String)}
      */
+    @Deprecated
     protected void checkTLSCredentialTrusted(HttpClientContext context) throws SSLPeerUnverifiedException {
-        if (tlsTrustEngine != null && "https".equalsIgnoreCase(metadataURI.getScheme())) {
-            if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
-                log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
-                        + "the appropriate socket factory was likely not configured");
-                throw new SSLPeerUnverifiedException(
-                        "Evaluation of server TLS credential with configured TrustEngine was not performed");
-            }
-        }
+        HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, metadataURI.getScheme());
     }
 
     /**

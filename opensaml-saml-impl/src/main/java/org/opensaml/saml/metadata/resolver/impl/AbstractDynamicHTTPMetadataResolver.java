@@ -54,6 +54,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
+import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
@@ -273,7 +274,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         HttpClientContext context = buildHttpClientContext();
         
         XMLObject result = httpClient.execute(request, responseHandler, context);
-        checkTLSCredentialTrusted(context, request);
+        HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
         return result;
     }
     
@@ -283,17 +284,13 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param context the current HTTP context instance in use
      * @param request the HTTP URI request
      * @throws SSLPeerUnverifiedException thrown if the TLS credential was not actually evaluated by the trust engine
+     * 
+     * @deprecated use {@link HttpClientSecuritySupport#checkTLSCredentialEvaluated(HttpClientContext, String)}
      */
+    @Deprecated
     protected void checkTLSCredentialTrusted(HttpClientContext context, HttpUriRequest request) 
             throws SSLPeerUnverifiedException {
-        if (tlsTrustEngine != null && "https".equalsIgnoreCase(request.getURI().getScheme())) {
-            if (context.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
-                log.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
-                        + "the appropriate socket factory was likely not configured");
-                throw new SSLPeerUnverifiedException(
-                        "Evaluation of server TLS credential with configured TrustEngine was not performed");
-            }
-        }
+        HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
     }
     
     /**
