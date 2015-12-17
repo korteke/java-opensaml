@@ -20,24 +20,52 @@ package org.opensaml.security.httpclient;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER;
+import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.http.client.protocol.HttpClientContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Support class for working with {@link org.apache.http.client.HttpClient} security features.
  */
 public final class HttpClientSecuritySupport {
     
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(HttpClientSecuritySupport.class);
+    
     /** Constructor. */
     private HttpClientSecuritySupport() {}
+    
+    /**
+     * Check that trust engine evaluation of the server TLS credential was actually performed when the 
+     * scheme is HTTPS.
+     * 
+     * @param context the current HTTP context instance in use
+     * @param scheme the HTTP request scheme
+     * @throws SSLPeerUnverifiedException thrown if the TLS credential was not actually evaluated by the trust engine
+     */
+    public static void checkTLSCredentialEvaluated(@Nonnull final HttpClientContext context, 
+            @Nonnull final String scheme) throws SSLPeerUnverifiedException {
+        if (context.getAttribute(CONTEXT_KEY_TRUST_ENGINE) != null 
+                && "https".equalsIgnoreCase(scheme)) {
+            if (context.getAttribute(CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED) == null) {
+                LOG.warn("Configured TLS trust engine was not used to verify server TLS credential, " 
+                        + "the appropriate socket factory was likely not configured");
+                throw new SSLPeerUnverifiedException(
+                        "Evaluation of server TLS credential with configured TrustEngine was not performed");
+            }
+        }
+    }
     
     /**
      * Marshal the supplied {@link HttpClientSecurityParameters} to the supplied {@link HttpClientContext}.

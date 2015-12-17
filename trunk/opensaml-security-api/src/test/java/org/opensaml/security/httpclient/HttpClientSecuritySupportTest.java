@@ -20,6 +20,7 @@ package org.opensaml.security.httpclient;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_HOSTNAME_VERIFIER;
+import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TLS_CIPHER_SUITES;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TLS_PROTOCOLS;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE;
@@ -33,6 +34,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -48,6 +50,7 @@ import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.Lists;
@@ -236,6 +239,50 @@ public class HttpClientSecuritySupportTest {
         
     }
     
+    @DataProvider
+    private Object[][] tlsCredentialEvaluatedData() {
+        MockTrustEngine trustEngine = new MockTrustEngine();
+        return new Object[][] {
+                // "Standard" HTTPS pass cases
+                new Object[] { trustEngine, "https", Boolean.TRUE, true },
+                new Object[] { trustEngine, "https", Boolean.FALSE, true },
+                
+                // HTTPS, no trust engine: pass
+                new Object[] { null, "https", null, true },
+                new Object[] { null, "https", Boolean.TRUE, true },
+                new Object[] { null, "https", Boolean.FALSE, true },
+                
+                // Non-HTTPS: pass
+                new Object[] { trustEngine, "http", null, true },
+                new Object[] { trustEngine, "http", Boolean.TRUE, true },
+                new Object[] { trustEngine, "http", Boolean.FALSE, true },
+                
+                // No pass
+                new Object[] { trustEngine, "https", null, false},
+        };
+    }
+    
+    @Test(dataProvider="tlsCredentialEvaluatedData")
+    public void testCheckTLSCredentialEvaluated(MockTrustEngine trustEngine, String scheme, Boolean trusted, boolean shouldPass) {
+        HttpClientContext context = new HttpClientContext();
+        context.setAttribute(CONTEXT_KEY_TRUST_ENGINE, trustEngine);
+        context.setAttribute(CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED, trusted);
+        
+        if (shouldPass) {
+            try {
+                HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, scheme);
+            } catch (SSLPeerUnverifiedException e) {
+                Assert.fail("Exception thrown unexpectedly");
+            }
+        } else {
+            try {
+                HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, scheme);
+                Assert.fail("Exception was expected but not seen");
+            } catch (SSLPeerUnverifiedException e) {
+                // expected
+            }
+        }
+    }
     
     
     // Helpers
