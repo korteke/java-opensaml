@@ -120,10 +120,10 @@ public class KeySupportTest {
      * @throws SecurityException */
     @Test
     public void testKeyPairMatching() throws NoSuchAlgorithmException, NoSuchProviderException, SecurityException {
-        KeyPair kp1rsa = KeySupport.generateKeyPair("RSA", 1024, null);
-        KeyPair kp2rsa = KeySupport.generateKeyPair("RSA", 1024, null);
-        KeyPair kp1dsa = KeySupport.generateKeyPair("DSA", 1024, null);
-        KeyPair kp2dsa = KeySupport.generateKeyPair("DSA", 1024, null);
+        final KeyPair kp1rsa = KeySupport.generateKeyPair("RSA", 1024, null);
+        final KeyPair kp2rsa = KeySupport.generateKeyPair("RSA", 1024, null);
+        final KeyPair kp1dsa = KeySupport.generateKeyPair("DSA", 1024, null);
+        final KeyPair kp2dsa = KeySupport.generateKeyPair("DSA", 1024, null);
         
         Assert.assertTrue(KeySupport.matchKeyPair(kp1rsa.getPublic(), kp1rsa.getPrivate()));
         Assert.assertTrue(KeySupport.matchKeyPair(kp2rsa.getPublic(), kp2rsa.getPrivate()));
@@ -139,7 +139,7 @@ public class KeySupportTest {
             // key algorithm type mismatch, should be an error
             Assert.assertFalse(KeySupport.matchKeyPair(kp1rsa.getPublic(), kp2dsa.getPrivate()));
             Assert.fail("Key algorithm mismatch should have caused evaluation failure");
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
            // expected 
         }
         
@@ -147,14 +147,14 @@ public class KeySupportTest {
             // null key, should be an error
             Assert.assertFalse(KeySupport.matchKeyPair(kp1rsa.getPublic(), null));
             Assert.fail("Null key should have caused failure");
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
            // expected 
         }
         try {
             // null key, should be an error
             Assert.assertFalse(KeySupport.matchKeyPair(null, kp1rsa.getPrivate()));
             Assert.fail("Key algorithm mismatch should have caused evaluation failure");
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             // expected
         }
     }
@@ -198,7 +198,7 @@ public class KeySupportTest {
             kp = KeySupport.generateKeyPair("EC", 571, null);
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), new Integer(571));
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), new Integer(571));
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
             // Just ignore unsupported algorithm failures here for now.
         }
@@ -231,24 +231,28 @@ public class KeySupportTest {
     }
     
     @Test(dataProvider="decodeSecretKeyData")
-    public void testDecodeSecretKey(Integer keyLengthBits, String algorithm) throws NoSuchAlgorithmException, KeyException {
+    public void testDecodeSecretKey(final Integer keyLengthBits, final String algorithm) throws NoSuchAlgorithmException, KeyException {
         // This is just for testing, not real.
-        byte[] key = new byte[keyLengthBits/8];
+        final byte[] key = new byte[keyLengthBits/8];
         SecureRandom.getInstance("SHA1PRNG").nextBytes(key);
-        SecretKey secretKey = KeySupport.decodeSecretKey(key, algorithm);
+        final SecretKey secretKey = KeySupport.decodeSecretKey(key, algorithm);
         Assert.assertNotNull(secretKey);
         Assert.assertEquals(secretKey.getAlgorithm(), algorithm);
         Assert.assertEquals(secretKey.getEncoded(), key);
     }
 
     /** Generic key testing. */
-    protected PrivateKey testPrivKey(String keyFile, char[] password, String algo) throws Exception {
-        InputStream keyInS = KeySupportTest.class.getResourceAsStream(keyFile);
+    protected PrivateKey testPrivKey(final String keyFile, final char[] password, final String algo) throws Exception {
+        final InputStream keyInS = KeySupportTest.class.getResourceAsStream(keyFile);
 
-        byte[] keyBytes = new byte[keyInS.available()];
+        final byte[] keyBytes = new byte[keyInS.available()];
         keyInS.read(keyBytes);
 
         PrivateKey key = KeySupport.decodePrivateKey(keyBytes, password);
+        Assert.assertNotNull(key);
+        Assert.assertEquals(key.getAlgorithm(), algo);
+        
+        key = KeySupport.decodePrivateKey(KeySupportTest.class.getResourceAsStream(keyFile), password);
         Assert.assertNotNull(key);
         Assert.assertEquals(key.getAlgorithm(), algo);
         

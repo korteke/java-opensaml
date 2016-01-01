@@ -18,6 +18,7 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -94,7 +95,7 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      * 
      * @param object the custom object
      */
-    @Nullable public void setCustomObject(Object object) {
+    @Nullable public void setCustomObject(final Object object) {
         customObject = object;
     }
 
@@ -106,7 +107,7 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
         scriptContext.setAttribute("profileContext", context, ScriptContext.ENGINE_SCOPE);
 
         try {
-            Object output = script.eval(scriptContext);
+            final Object output = script.eval(scriptContext);
             return (Set<String>) output;
 
         } catch (final ScriptException e) {
@@ -127,8 +128,10 @@ public class ScriptedTrustedNamesFunction implements Function<XMLObject, Set<Str
      */
     @Nonnull static ScriptedTrustedNamesFunction resourceScript(@Nonnull @NotEmpty final String engineName,
             @Nonnull final Resource resource) throws ScriptException, IOException {
-        final EvaluableScript script = new EvaluableScript(engineName, resource.getFile());
-        return new ScriptedTrustedNamesFunction(script, resource.getDescription());
+        try (final InputStream is = resource.getInputStream()) {
+            final EvaluableScript script = new EvaluableScript(engineName, is);
+            return new ScriptedTrustedNamesFunction(script, resource.getDescription());
+        }
     }
 
     /**
