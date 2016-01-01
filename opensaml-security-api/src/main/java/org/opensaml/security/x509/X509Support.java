@@ -20,6 +20,7 @@ package org.opensaml.security.x509;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
@@ -64,6 +65,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.google.common.net.InetAddresses;
 
@@ -130,12 +132,12 @@ public class X509Support {
             return null;
         }
 
-        for (X509Certificate certificate : certs) {
+        for (final X509Certificate certificate : certs) {
             try {
                 if (KeySupport.matchKeyPair(certificate.getPublicKey(), privateKey)) {
                     return certificate;
                 }
-            } catch (SecurityException e) {
+            } catch (final SecurityException e) {
                 // An exception here is just a false match.
                 // Java 7 apparently throws in this case.
             }
@@ -162,7 +164,7 @@ public class X509Support {
             return null;
         }
 
-        Logger log = getLogger();
+        final Logger log = getLogger();
         log.debug("Extracting CNs from the following DN: {}", dn.toString());
         final RDNSequence attrs = NameReader.readX500Principal(dn);
         // Have to copy because list returned from Attributes is unmodifiable, so can't reverse it.
@@ -196,7 +198,7 @@ public class X509Support {
         }
         final GeneralNames names = CertUtil.subjectAltNames(certificate, types);
         if (names != null) {
-            for (GeneralName name : names.getNames()) {
+            for (final GeneralName name : names.getNames()) {
                 altNames.add(convertAltNameType(name.getTagNo(), name.getName().toASN1Primitive()));
             }
         }
@@ -213,14 +215,14 @@ public class X509Support {
      */
     @Nullable public static List getSubjectNames(@Nullable final X509Certificate certificate,
             @Nullable final Integer[] altNameTypes) {
-        List issuerNames = new LinkedList();
+        final List issuerNames = new LinkedList();
         
         if (certificate != null) {
-            List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
+            final List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
             if (entityCertCNs != null && !entityCertCNs.isEmpty()) {
                 issuerNames.add(entityCertCNs.get(0));
             }
-            List<String> entityAltNames = X509Support.getAltNames(certificate, altNameTypes);
+            final List<String> entityAltNames = X509Support.getAltNames(certificate, altNameTypes);
             if (entityAltNames != null) {
                 issuerNames.addAll(entityAltNames);
             }
@@ -238,7 +240,7 @@ public class X509Support {
      *         does not contain the extension
      */
     @Nullable public static byte[] getSubjectKeyIdentifier(@Nonnull final X509Certificate certificate) {
-        byte[] derValue = certificate.getExtensionValue(SKI_OID);
+        final byte[] derValue = certificate.getExtensionValue(SKI_OID);
         if (derValue == null || derValue.length == 0) {
             return null;
         }
@@ -246,7 +248,7 @@ public class X509Support {
         try {
             final ASN1Primitive ski = X509ExtensionUtil.fromExtensionValue(derValue);
             return ((DEROctetString) ski).getOctets();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             getLogger().error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
             return null;
         }
@@ -263,12 +265,12 @@ public class X509Support {
     @Nonnull public static byte[] getX509Digest(@Nonnull final X509Certificate certificate,
             @Nonnull final String jcaAlgorithm) throws SecurityException {
         try {
-            MessageDigest hasher = MessageDigest.getInstance(jcaAlgorithm);
+            final MessageDigest hasher = MessageDigest.getInstance(jcaAlgorithm);
             return hasher.digest(certificate.getEncoded());
-        } catch (CertificateEncodingException e) {
+        } catch (final CertificateEncodingException e) {
             getLogger().error("Unable to encode certificate for digest operation", e);
             throw new SecurityException("Unable to encode certificate for digest operation", e);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             getLogger().error("Algorithm {} is unsupported", jcaAlgorithm);
             throw new SecurityException("Algorithm " + jcaAlgorithm + " is unsupported", e);
         }
@@ -296,10 +298,34 @@ public class X509Support {
         
         try {
             return decodeCertificates(Files.toByteArray(certs));
-        } catch(IOException e) {
+        } catch(final IOException e) {
             throw new CertificateException("Error reading certificate file " + certs.getAbsolutePath(), e);
         }
     }
+    
+    /**
+     * Decodes X.509 certificates in DER or PEM format. Note this does <strong>not</strong> close the inout handle
+     * 
+     * @param certs encoded certs
+     * 
+     * @return decoded certs
+     * 
+     * @throws CertificateException thrown if the certificates cannot be decoded
+     * 
+     * @since 1.2
+     */
+    @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final InputStream certs)
+            throws CertificateException {
+        Constraint.isNotNull(certs, "Input Stream cannot be null");
+        
+        try {
+            return decodeCertificates(ByteStreams.toByteArray(certs));
+        } catch(final IOException e) {
+            throw new CertificateException("Error reading certificate file", e);
+        }
+    }
+
+
 
     /**
      * Decodes X.509 certificates in DER or PEM format.
@@ -336,7 +362,7 @@ public class X509Support {
         
         try {
             return decodeCertificate(Files.toByteArray(cert));
-        } catch(IOException e) {
+        } catch(final IOException e) {
             throw new CertificateException("Error reading certificate file " + cert.getAbsolutePath(), e);
         }
     }
@@ -392,10 +418,33 @@ public class X509Support {
         
         try {
             return decodeCRLs(Files.toByteArray(crls));
-        } catch(IOException e) {
+        } catch(final IOException e) {
             throw new CRLException("Error reading CRL file " + crls.getAbsolutePath(), e);
         }
     }
+    
+    /**
+     * Decodes CRLs in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decoded; the rest of the content is
+     * ignored. Note, this does <strong>not</strong> close the inout stream
+     * 
+     * @param crls encoded CRLs
+     * 
+     * @return decoded CRLs
+     * 
+     * @throws CRLException thrown if the CRLs can not be decoded
+     * 
+     * @since 1.2
+     */
+    @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final InputStream crls) throws CRLException{
+        Constraint.isNotNull(crls, "Input stream cannot be null");
+        
+        try {
+            return decodeCRLs(ByteStreams.toByteArray(crls));
+        } catch(final IOException e) {
+            throw new CRLException("Error reading CRL", e);
+        }
+    }
+
 
     /**
      * Decodes CRLs in DER or PKCS#7 format. If in PKCS#7 format only the CRLs are decoded; the rest of the content is
@@ -409,9 +458,9 @@ public class X509Support {
      */
     @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final byte[] crls) throws CRLException {
         try {
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            final CertificateFactory cf = CertificateFactory.getInstance("X.509");
             return (Collection<X509CRL>) cf.generateCRLs(new ByteArrayInputStream(crls));
-        } catch (GeneralSecurityException e) {
+        } catch (final GeneralSecurityException e) {
             throw new CRLException("Unable to decode X.509 certificates");
         }
     }
@@ -426,8 +475,8 @@ public class X509Support {
      */
     @Nullable public static X509CRL decodeCRL(@Nonnull final String base64CRL)
             throws CertificateException, CRLException {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64CRL));
+        final CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        final ByteArrayInputStream input = new ByteArrayInputStream(Base64Support.decode(base64CRL));
         return (java.security.cert.X509CRL) cf.generateCRL(input);
     }
 
@@ -459,8 +508,8 @@ public class X509Support {
         } else {
             x500DNHandler = new InternalX500DNHandler();
         }
-        X500Principal x500Principal = credential.getEntityCertificate().getSubjectX500Principal();
-        StringBuilder builder = new StringBuilder();
+        final X500Principal x500Principal = credential.getEntityCertificate().getSubjectX500Principal();
+        final StringBuilder builder = new StringBuilder();
         builder.append('[');
         builder.append(String.format("subjectName='%s'", x500DNHandler.getName(x500Principal)));
         if (!Strings.isNullOrEmpty(credential.getEntityId())) {
@@ -482,7 +531,7 @@ public class X509Support {
      */
     @Nullable private static Object convertAltNameType(@Nonnull final Integer nameType,
             @Nonnull final ASN1Primitive nameValue) {
-        Logger log = getLogger();
+        final Logger log = getLogger();
         
         if (DIRECTORY_ALT_NAME.equals(nameType) || DNS_ALT_NAME.equals(nameType) || RFC822_ALT_NAME.equals(nameType)
                 || URI_ALT_NAME.equals(nameType) || REGISTERED_ID_ALT_NAME.equals(nameType)) {
@@ -491,10 +540,10 @@ public class X509Support {
             return nameValue.toString();
         } else if (IP_ADDRESS_ALT_NAME.equals(nameType)) {
             // this is a byte[], IP addr in network byte order
-            byte [] nameValueBytes = ((DEROctetString) nameValue).getOctets();
+            final byte [] nameValueBytes = ((DEROctetString) nameValue).getOctets();
             try {
                 return InetAddresses.toAddrString(InetAddress.getByAddress(nameValueBytes));
-            } catch (UnknownHostException e) {
+            } catch (final UnknownHostException e) {
                 log.warn("Was unable to convert IP address alt name byte[] to string: " +
                         CodecUtil.hex(nameValueBytes, true), e);
                 return null;
