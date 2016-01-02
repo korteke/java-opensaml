@@ -18,6 +18,7 @@
 package org.opensaml.security.crypto;
 
 import java.io.InputStream;
+import java.security.InvalidParameterException;
 import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -29,6 +30,8 @@ import java.security.SecureRandom;
 import javax.crypto.SecretKey;
 
 import org.opensaml.security.SecurityException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -37,6 +40,8 @@ import org.testng.annotations.Test;
  * Unit test for {@link KeySupport}.
  */
 public class KeySupportTest {
+    
+    private final Logger log = LoggerFactory.getLogger(KeySupportTest.class);
 
     /** Location of non-encrypted, PEM formatted, RSA private key. */
     private String rsaPrivKeyPEMNoEncrypt = "/data/rsa-privkey-nopass.pem";
@@ -191,16 +196,29 @@ public class KeySupportTest {
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), new Integer(112));
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), new Integer(112));
         
+        } catch (final NoSuchAlgorithmException| InvalidParameterException e) {
+            // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
+            // Just ignore unsupported algorithm abd InvalidParameter failures here for now.
+            log.warn("EC-112 failed", e);
+        }
+        try {
             kp = KeySupport.generateKeyPair("EC", 256, null);
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), new Integer(256));
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), new Integer(256));
         
+        } catch (final NoSuchAlgorithmException| InvalidParameterException e) {
+            // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
+            // Just ignore unsupported algorithm abd InvalidParameter failures here for now.
+            log.warn("EC-256 failed", e);
+        }
+        try {
             kp = KeySupport.generateKeyPair("EC", 571, null);
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), new Integer(571));
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), new Integer(571));
-        } catch (final NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException| InvalidParameterException e) {
             // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
-            // Just ignore unsupported algorithm failures here for now.
+            // Just ignore unsupported algorithm abd InvalidParameter failures here for now.
+            log.warn("EC-571 failed", e);
         }
         
         // Symmetric: AES
