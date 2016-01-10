@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.Duration;
+import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
@@ -50,7 +51,7 @@ public class RequiredValidUntilFilter implements MetadataFilter {
 
     /** Constructor. */
     public RequiredValidUntilFilter() {
-        maxValidityInterval = 0;
+        this(0);
     }
 
     /**
@@ -99,8 +100,9 @@ public class RequiredValidUntilFilter implements MetadataFilter {
         if (maxValidityInterval > 0 && validUntil.isAfter(now)) {
             final long validityInterval = validUntil.getMillis() - now.getMillis();
             if (validityInterval > maxValidityInterval) {
-                throw new FilterException("Metadata's validity interval, " + validityInterval
-                        + "ms, is larger than is allowed, " + maxValidityInterval + "ms.");
+                throw new FilterException(String.format("Metadata's validity interval %s is larger than is allowed %s", 
+                        DOMTypeSupport.longToDuration(validityInterval),
+                        DOMTypeSupport.longToDuration(maxValidityInterval)));
             }
         }
         
