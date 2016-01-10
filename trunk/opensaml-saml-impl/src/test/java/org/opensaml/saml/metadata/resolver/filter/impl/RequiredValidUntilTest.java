@@ -67,6 +67,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
         FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(metadataFile);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
         metadataProvider.setMetadataFilter(filter);
 
         try {
@@ -85,6 +86,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
         FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(metadataFile);
         metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
         metadataProvider.setMetadataFilter(filter);
 
         try {
