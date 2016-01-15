@@ -17,9 +17,6 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
@@ -28,6 +25,9 @@ import org.opensaml.saml.saml2.core.Action;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
 import org.opensaml.saml.saml2.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml2.core.Evidence;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -124,4 +124,19 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
         
         assertXMLEquals(expectedChildElementsDOM, authzDecisionStatement);
     }
+    
+    public void testResource() {
+        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(AuthzDecisionStatement.DEFAULT_ELEMENT_NAME);
+        
+        authzDecisionStatement.setResource("urn:test:foo");
+        Assert.assertEquals(authzDecisionStatement.getResource(), "urn:test:foo");
+        
+        authzDecisionStatement.setResource("");
+        Assert.assertEquals(authzDecisionStatement.getResource(), "");
+        
+        // 3 spaces
+        authzDecisionStatement.setResource("   ");
+        Assert.assertEquals(authzDecisionStatement.getResource(), "   ");
+    }
+    
 }
