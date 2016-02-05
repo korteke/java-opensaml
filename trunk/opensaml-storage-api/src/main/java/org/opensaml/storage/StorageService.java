@@ -42,7 +42,11 @@ import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
  * by the implementation to callers, but MUST be at least 255 characters.</p>
  * 
  * <p>Expiration is expressed in milliseconds since the beginning of the epoch,
- * or a null can be used to signify no expiration.</p>
+ * or a null can be used to signify no expiration. Implementations <strong>MUST</strong>
+ * persist the expiration in a manner that allows the exact value supplied to be
+ * recovered. It is not sufficient to ensure that records expire; the actual
+ * value is used in many cases as part of the data set being stored and cannot be
+ * perturbed.</p>
  */
 @ThreadSafeAfterInit
 public interface StorageService extends IdentifiedComponent {
