@@ -20,15 +20,34 @@ package org.opensaml.saml.common.messaging.context.navigate;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
+import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 
 /** {@link ContextDataLookupFunction} that returns the SAML binding from a {@link SAMLBindingContext}. */
 public class SAMLBindingContextBindingFunction implements ContextDataLookupFunction<SAMLBindingContext,String> {
 
+    /** Whether to extract the "short" name for the binding, if possible. */
+    private boolean useShortName;
+    
+    /**
+     * Set whether to extract the short name for binding, if available.
+     * 
+     * @param flag flag to set
+     */
+    public void setUseShortName(final boolean flag) {
+        useShortName = flag;
+    }
+    
     /** {@inheritDoc} */
     @Override
     @Nullable public String apply(@Nullable final SAMLBindingContext input) {
         if (input != null) {
+            if (useShortName) {
+                final BindingDescriptor descriptor = input.getBindingDescriptor();
+                if (descriptor != null && descriptor.getShortName() != null) {
+                    return descriptor.getShortName();
+                }
+            }
             return input.getBindingUri();
         } else {
             return null;
