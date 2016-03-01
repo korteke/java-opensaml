@@ -146,6 +146,15 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     }
     
     /**
+     * Get a short/concise name for the binding.
+     * 
+     * @return the short name
+     */
+    @Nullable @NotEmpty public String getShortName() {
+        return shortName;
+    }
+    
+    /**
      * Set a short/concise name for the binding.
      * 
      * @param name name to set
