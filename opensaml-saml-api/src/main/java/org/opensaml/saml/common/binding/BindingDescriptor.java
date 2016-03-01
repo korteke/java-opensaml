@@ -37,8 +37,10 @@ package org.opensaml.saml.common.binding;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
@@ -67,6 +69,9 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     
     /** Indicates whether the binding provides a built-in signing mechanism. */
     private boolean signatureCapable;
+    
+    /** A short name for the binding. */
+    @Nullable @NotEmpty private String shortName;
     
     /** Constructor. */
     public BindingDescriptor() {
@@ -139,6 +144,15 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     public void setSignatureCapable(final boolean flag) {
         signatureCapable = flag;
     }
+    
+    /**
+     * Set a short/concise name for the binding.
+     * 
+     * @param name name to set
+     */
+    public void setShortName(@Nullable @NotEmpty final String name) {
+        shortName = StringSupport.trimOrNull(name);
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -174,6 +188,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("bindingId", getId())
+                .add("shortName", shortName)
                 .add("synchronous", synchronous)
                 .add("artifact", artifact)
                 .add("signatureCapable", signatureCapable)
