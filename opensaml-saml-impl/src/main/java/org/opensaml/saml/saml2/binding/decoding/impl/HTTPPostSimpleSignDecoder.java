@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -25,11 +27,13 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign binding. */
 public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
 
     /** {@inheritDoc} */
-    public String getBindingURI() {
+    @Nonnull @NotEmpty public String getBindingURI() {
         return SAMLConstants.SAML2_POST_SIMPLE_SIGN_BINDING_URI;
     }
     
@@ -41,6 +45,7 @@ public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {
     protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
         SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
         bindingContext.setBindingUri(getBindingURI());
+        bindingContext.setBindingDescriptor(getBindingDescriptor());
         bindingContext.setHasBindingSignature(
                 !Strings.isNullOrEmpty(getHttpServletRequest().getParameter("Signature")));
         bindingContext.setIntendedDestinationEndpointURIRequired(SAMLBindingSupport.isMessageSigned(messageContext));
