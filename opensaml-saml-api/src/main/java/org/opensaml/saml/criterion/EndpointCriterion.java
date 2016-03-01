@@ -86,7 +86,7 @@ public final class EndpointCriterion<EndpointType extends Endpoint> implements C
             builder.append(", ResponseLocation=")
                 .append(endpoint.getResponseLocation());
         }
-        builder.append("trusted=").append(trusted)
+        builder.append(", trusted=").append(trusted)
             .append(']');
         return builder.toString();
     }
