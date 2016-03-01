@@ -17,14 +17,18 @@
 
 package org.opensaml.saml.saml1.binding.decoding.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.servlet.BaseHttpServletRequestXMLMessageDecoder;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
@@ -41,11 +45,32 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
         implements SAMLMessageDecoder {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPArtifactDecoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPArtifactDecoder.class);
 
+    /** Optional {@link BindingDescriptor} to inject into {@link SAMLBindingContext} created. */
+    @Nullable private BindingDescriptor bindingDescriptor;
+    
     /** {@inheritDoc} */
-    public String getBindingURI() {
+    @Nonnull @NotEmpty public String getBindingURI() {
         return SAMLConstants.SAML1_ARTIFACT_BINDING_URI;
+    }
+    
+    /**
+     * Get an optional {@link BindingDescriptor} to inject into {@link SAMLBindingContext} created.
+     * 
+     * @return binding descriptor
+     */
+    @Nullable public BindingDescriptor getBindingDescriptor() {
+        return bindingDescriptor;
+    }
+    
+    /**
+     * Set an optional {@link BindingDescriptor} to inject into {@link SAMLBindingContext} created.
+     * 
+     * @param descriptor a binding descriptor
+     */
+    public void setBindingDescriptor(@Nullable final BindingDescriptor descriptor) {
+        bindingDescriptor = descriptor;
     }
 
     /** {@inheritDoc} */
@@ -109,6 +134,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
     protected void populateBindingContext(MessageContext<SAMLObject> messageContext) {
         SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
         bindingContext.setBindingUri(getBindingURI());
+        bindingContext.setBindingDescriptor(bindingDescriptor);
         bindingContext.setHasBindingSignature(false);
         bindingContext.setIntendedDestinationEndpointURIRequired(false);
     }
