@@ -51,7 +51,7 @@ public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
 
         URL mdURL = FilesystemMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         mdFile = new File(mdURL.toURI());
 
         metadataProvider = new FilesystemMetadataResolver(mdFile);

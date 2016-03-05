@@ -38,8 +38,8 @@ public class RuleTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public RuleTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Rule.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/RuleChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Rule.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/RuleChildElements.xml";
 
         expectedRuleId = "RuleRuleId";
         expectedDescription = "This is a Description";

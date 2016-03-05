@@ -36,7 +36,7 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AttributeProfileTest(){
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeProfile.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeProfile.xml";
     }
     
     @BeforeMethod

@@ -44,7 +44,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     @Test
     public void testSingleEKNoRecipient() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -69,7 +69,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
     /** One recipient specified to resolver, one EncryptedKey in instance. */
     @Test
     public void testSingleEKWithRecipient() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -94,7 +94,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
     /** One recipient specified to resolver, three EncryptedKeys in instance, two KeyInfoReference references. */
     @Test
     public void testMultiEKWithOneRecipient() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -122,7 +122,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
      */
     @Test
     public void testMultiEKWithTwoRecipients() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));

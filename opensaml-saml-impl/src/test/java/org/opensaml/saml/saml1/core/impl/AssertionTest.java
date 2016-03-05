@@ -67,9 +67,9 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
         //
         expectedIssueInstant = new DateTime(1970, 1, 2, 1, 1, 2, 100, ISOChronology.getInstanceUTC());
 
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAssertion.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleAssertionAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/AssertionWithChildren.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleAssertion.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml1/impl/singleAssertionAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/AssertionWithChildren.xml";
         qname = Assertion.DEFAULT_ELEMENT_NAME;
     }
 
@@ -187,7 +187,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     
     @Test
     public void testSignatureUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
         
         Assert.assertNotNull(assertion, "Assertion was null");
         Assert.assertNotNull(assertion.getSignature(), "Signature was null");
@@ -196,7 +196,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     
     @Test
     public void testDOMIDResolutionUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
         
         Assert.assertNotNull(assertion, "Assertion was null");
         Assert.assertNotNull(assertion.getSignature(), "Signature was null");

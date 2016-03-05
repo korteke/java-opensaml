@@ -37,7 +37,7 @@ public class AuthenticatingAuthorityTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AuthenticatingAuthorityTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthenticatingAuthority.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AuthenticatingAuthority.xml";
     }
 
     @BeforeMethod

@@ -50,7 +50,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
     @Test
     public void testUnmarshallingWithAttributes() throws XMLParserException, UnmarshallingException {
         String expectedId = "Firefly";
-        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
+        String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
@@ -68,7 +68,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshallingWithElementContent() throws XMLParserException, UnmarshallingException {
-        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
+        String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
@@ -103,7 +103,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshallingWithChildElements() throws XMLParserException, UnmarshallingException {
-        String documentLocation = "/data/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
+        String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());

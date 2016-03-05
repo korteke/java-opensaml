@@ -44,7 +44,7 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception{
-        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsQName.xml";
+        testDocumentLocation = "/org/opensaml/core/xml/schema/xsQName.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = new QName("urn:example.org:baz", "SomeValue", "baz");
     }

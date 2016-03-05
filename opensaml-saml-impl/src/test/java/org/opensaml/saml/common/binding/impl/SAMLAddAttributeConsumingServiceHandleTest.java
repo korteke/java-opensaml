@@ -58,8 +58,8 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
     
     @BeforeClass
     public void classSetUp() throws ComponentInitializationException {
-        withACS = unmarshallElement("/data/org/opensaml/saml/common/binding/SPSSOwithACS.xml");
-        noACS = unmarshallElement("/data/org/opensaml/saml/common/binding/SPSSOnoACS.xml");
+        withACS = unmarshallElement("/org/opensaml/saml/common/binding/SPSSOwithACS.xml");
+        noACS = unmarshallElement("/org/opensaml/saml/common/binding/SPSSOnoACS.xml");
     }
 
     @Test public void noMetadataDataContext() throws MessageHandlerException, ComponentInitializationException {

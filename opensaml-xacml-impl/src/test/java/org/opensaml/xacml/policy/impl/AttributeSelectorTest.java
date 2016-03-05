@@ -35,8 +35,8 @@ public class AttributeSelectorTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AttributeSelectorTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/AttributeSelector.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/policy/impl/AttributeSelectorOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/AttributeSelector.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/policy/impl/AttributeSelectorOptionalAttributes.xml";
 
         expectedDataType = "https://example.org/Data/Attribute/Selector";
         expectedRequestContextPath = "ConextPathAttrSelect";

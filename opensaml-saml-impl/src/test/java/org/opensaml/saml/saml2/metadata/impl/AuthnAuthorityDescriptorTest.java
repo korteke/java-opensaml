@@ -75,10 +75,10 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
      * Constructor
      */
     public AuthnAuthorityDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptor.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptor.xml";
         singleElementOptionalAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptorChildElements.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptorOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/AuthnAuthorityDescriptorChildElements.xml";
     }
 
     @BeforeMethod protected void setUp() throws Exception {

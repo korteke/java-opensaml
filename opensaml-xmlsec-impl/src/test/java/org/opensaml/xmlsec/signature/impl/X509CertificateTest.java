@@ -36,7 +36,7 @@ public class X509CertificateTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509CertificateTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509Certificate.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/X509Certificate.xml";
     }
 
     @BeforeMethod

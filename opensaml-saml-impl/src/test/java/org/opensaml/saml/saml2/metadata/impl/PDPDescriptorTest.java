@@ -60,10 +60,10 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public PDPDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptor.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/PDPDescriptor.xml";
         singleElementOptionalAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorChildElements.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/PDPDescriptorChildElements.xml";
     }
 
     @BeforeMethod protected void setUp() throws Exception {

@@ -44,8 +44,8 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public IDPListTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/IDPList.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/IDPListChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/IDPList.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/IDPListChildElements.xml";
     }
     
     @BeforeMethod

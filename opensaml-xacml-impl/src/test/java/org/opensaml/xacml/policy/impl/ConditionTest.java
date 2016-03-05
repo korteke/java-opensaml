@@ -35,8 +35,8 @@ public class ConditionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ConditionTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Condition.xml";
-        childElementsFile = "/data/org/opensaml/xacml/policy/impl/ConditionChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Condition.xml";
+        childElementsFile = "/org/opensaml/xacml/policy/impl/ConditionChildElements.xml";
         
         expectedFunctionId = "https://example.org/Condition/Function/Id";
     }

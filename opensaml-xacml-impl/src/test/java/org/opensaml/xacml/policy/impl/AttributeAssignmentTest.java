@@ -37,7 +37,7 @@ public class AttributeAssignmentTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AttributeAssignmentTest() {
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/AttributeAssignment.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/AttributeAssignment.xml";
 
         expectedDataType = "https://example.org/Data/Type";
         expectedAttributeId = "https://example.org/Attribute/Id";

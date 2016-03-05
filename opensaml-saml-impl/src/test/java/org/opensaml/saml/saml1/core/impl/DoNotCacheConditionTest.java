@@ -37,7 +37,7 @@ public class DoNotCacheConditionTest extends XMLObjectProviderBaseTestCase {
      */
     public DoNotCacheConditionTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleDoNotCacheCondition.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleDoNotCacheCondition.xml";
     }
 
     /** {@inheritDoc} */

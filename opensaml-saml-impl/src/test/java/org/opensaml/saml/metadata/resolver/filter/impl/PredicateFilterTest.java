@@ -46,12 +46,12 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         
-        final Resource resource = new ClassPathResource("data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+        final Resource resource = new ClassPathResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         metadataProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(resource));
         metadataProvider.setId("multi");
         metadataProvider.setParserPool(parserPool);
         
-        final Resource singleResource = new ClassPathResource("data/org/opensaml/saml/saml2/metadata/entitydescriptor-metadata.xml");
+        final Resource singleResource = new ClassPathResource("/org/opensaml/saml/saml2/metadata/entitydescriptor-metadata.xml");
         singleEntityProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(singleResource));
         singleEntityProvider.setId("single");
         singleEntityProvider.setParserPool(parserPool);

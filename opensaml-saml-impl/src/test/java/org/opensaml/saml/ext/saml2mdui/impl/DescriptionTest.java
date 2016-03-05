@@ -41,7 +41,7 @@ public class DescriptionTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public DescriptionTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/Description.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/Description.xml";
     }
     
 

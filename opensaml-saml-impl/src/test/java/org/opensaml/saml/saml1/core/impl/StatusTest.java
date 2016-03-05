@@ -43,8 +43,8 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public StatusTest() {
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/FullStatus.xml";
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleStatus.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/FullStatus.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleStatus.xml";
 
         qname = new QName(SAMLConstants.SAML10P_NS, Status.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     }

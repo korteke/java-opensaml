@@ -44,7 +44,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception{
-        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsInteger.xml";
+        testDocumentLocation = "/org/opensaml/core/xml/schema/xsInteger.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = 1967;
     }

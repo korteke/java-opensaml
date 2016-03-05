@@ -40,7 +40,7 @@ public class DomainHintTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public DomainHintTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/DomainHint.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/DomainHint.xml";
     }
     
     @BeforeMethod

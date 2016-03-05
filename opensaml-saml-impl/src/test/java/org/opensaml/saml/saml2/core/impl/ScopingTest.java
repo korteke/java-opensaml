@@ -48,9 +48,9 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ScopingTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Scoping.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ScopingOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ScopingChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Scoping.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/ScopingOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/ScopingChildElements.xml";
     }
     
     @BeforeMethod

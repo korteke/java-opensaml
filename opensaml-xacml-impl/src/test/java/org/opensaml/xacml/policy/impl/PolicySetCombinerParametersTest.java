@@ -33,7 +33,7 @@ public class PolicySetCombinerParametersTest extends XMLObjectProviderBaseTestCa
      * Constructor
      */
     public PolicySetCombinerParametersTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/PolicySetCombinerParameters.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/PolicySetCombinerParameters.xml";
         
         expectedPolicySetIdRef = "https://example.org/Policy/Set/Id/Ref";
     }

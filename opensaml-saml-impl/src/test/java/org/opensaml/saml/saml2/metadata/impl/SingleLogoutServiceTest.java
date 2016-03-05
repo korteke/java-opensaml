@@ -50,10 +50,10 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SingleLogoutServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutService.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceChildElements.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceOptionalAttributes.xml";
-        singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceUnknownAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/SingleLogoutService.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceChildElements.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceOptionalAttributes.xml";
+        singleElementUnknownAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/SingleLogoutServiceUnknownAttributes.xml";
     }
     
     @BeforeMethod

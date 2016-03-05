@@ -41,7 +41,7 @@ public class DisplayNameTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public DisplayNameTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/DisplayName.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/DisplayName.xml";
     }
     
     /** {@inheritDoc} */

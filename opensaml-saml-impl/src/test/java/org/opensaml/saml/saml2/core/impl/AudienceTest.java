@@ -36,7 +36,7 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AudienceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Audience.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Audience.xml";
     }
 
     @BeforeMethod

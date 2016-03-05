@@ -37,8 +37,8 @@ public class SubjectAttributeDesignatorTest extends XMLObjectProviderBaseTestCas
      * Constructor
      */
     public SubjectAttributeDesignatorTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/SubjectAttributeDesignator.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/policy/impl/SubjectAttributeDesignatorOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/SubjectAttributeDesignator.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/policy/impl/SubjectAttributeDesignatorOptionalAttributes.xml";
 
         expectedDataType = "https://example.org/Data/Type/Subject";
         expectedAttributeId = "https://example.org/Attribute/Id/Subject";

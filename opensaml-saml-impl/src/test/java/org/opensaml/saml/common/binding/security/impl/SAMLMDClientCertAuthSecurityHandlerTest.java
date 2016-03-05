@@ -306,7 +306,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     }
 
     protected AuthnRequest buildInboundSAMLMessage() {
-        return unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
+        return unmarshallElement("/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
     }
 
 }

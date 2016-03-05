@@ -42,7 +42,7 @@ public class ResponseTest extends XMLObjectBaseTestCase {
      * Constructor
      */
     public ResponseTest(){
-        fullResponsePath = "/data/org/opensaml/saml/saml1/core/FullResponse.xml";
+        fullResponsePath = "/org/opensaml/saml/saml1/core/FullResponse.xml";
     }
     
     /**

@@ -51,7 +51,7 @@ public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
+        samlObject = (SAMLObject) unmarshallElement("/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
         origDocument = samlObject.getDOM().getOwnerDocument();
         // Drop the DOM for a more realistic test, usually the artifact SAMLObject will be built, not unmarshalled
         samlObject.releaseChildrenDOM(true);

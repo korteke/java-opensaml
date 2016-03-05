@@ -60,9 +60,9 @@ public class SOAPTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        soapMessage = "/data/org/opensaml/soap/soap11/SOAP.xml";
-        soapFault = "/data/org/opensaml/soap/soap11/SOAPFault.xml";
-        soapFaultMarshall = "/data/org/opensaml/soap/soap11/SOAPFaultMarshall.xml";
+        soapMessage = "/org/opensaml/soap/soap11/SOAP.xml";
+        soapFault = "/org/opensaml/soap/soap11/SOAPFault.xml";
+        soapFaultMarshall = "/org/opensaml/soap/soap11/SOAPFaultMarshall.xml";
         
         expectedFaultCode = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
         expectedFaultString = "Server Error";

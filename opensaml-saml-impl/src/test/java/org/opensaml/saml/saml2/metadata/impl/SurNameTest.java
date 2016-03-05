@@ -39,7 +39,7 @@ public class SurNameTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SurNameTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/SurName.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/SurName.xml";
     }
     
     @BeforeMethod

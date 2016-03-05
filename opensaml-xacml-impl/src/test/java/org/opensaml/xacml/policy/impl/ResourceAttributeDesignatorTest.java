@@ -36,8 +36,8 @@ public class ResourceAttributeDesignatorTest extends XMLObjectProviderBaseTestCa
      * Constructor
      */
     public ResourceAttributeDesignatorTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/ResourceAttributeDesignator.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/policy/impl/ResourceAttributeDesignatorOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/ResourceAttributeDesignator.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/policy/impl/ResourceAttributeDesignatorOptionalAttributes.xml";
 
         expectedDataType = "https://example.org/Data/Type/Resource";
         expectedAttributeId = "https://example.org/Attribute/Id/Resource";

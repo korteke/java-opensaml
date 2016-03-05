@@ -38,8 +38,8 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeyReferenceTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/KeyReference.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/KeyReferenceChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/KeyReference.xml";
+        childElementsFile = "/org/opensaml/xmlsec/encryption/impl/KeyReferenceChildElements.xml";
     }
 
     @BeforeMethod

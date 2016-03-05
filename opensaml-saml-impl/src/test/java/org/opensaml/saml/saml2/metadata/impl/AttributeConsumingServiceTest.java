@@ -43,9 +43,9 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
      * Constructor
      */
     public AttributeConsumingServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingServiceOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingServiceChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingService.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingServiceOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeConsumingServiceChildElements.xml";
     }
     
     @BeforeMethod

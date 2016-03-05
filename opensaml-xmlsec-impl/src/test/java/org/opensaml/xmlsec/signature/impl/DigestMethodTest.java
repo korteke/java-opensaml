@@ -35,8 +35,8 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public DigestMethodTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/DigestMethod.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/DigestMethodChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/DigestMethod.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/DigestMethodChildElements.xml";
     }
 
     @BeforeMethod

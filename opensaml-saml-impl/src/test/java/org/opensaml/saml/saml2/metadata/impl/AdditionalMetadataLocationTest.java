@@ -39,7 +39,7 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
      * Constructor
      */
     public AdditionalMetadataLocationTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AdditionalMetadataLocation.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AdditionalMetadataLocation.xml";
     }
 
     @BeforeMethod

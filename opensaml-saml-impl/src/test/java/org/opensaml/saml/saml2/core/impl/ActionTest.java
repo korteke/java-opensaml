@@ -39,8 +39,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public ActionTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Action.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ActionOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Action.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/ActionOptionalAttributes.xml";
     }
 
     @BeforeMethod

@@ -34,8 +34,8 @@ public class EncryptedAttributeTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public EncryptedAttributeTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedAttribute.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedAttributeChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/EncryptedAttribute.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/EncryptedAttributeChildElements.xml";
     }
 
     /** {@inheritDoc} */

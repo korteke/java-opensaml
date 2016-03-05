@@ -133,7 +133,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 
-        String incommonMetadata = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-xmlsec-impl/src/test/resources/data/org/opensaml/xmlsec/signature/support/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
+        String incommonMetadata = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-xmlsec-impl/src/test/resources/org/opensaml/xmlsec/signature/support/InCommon-metadata.xml?content-type=text%2Fplain&view=co";
         URIContentReference contentReference = new URIContentReference(incommonMetadata);
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);

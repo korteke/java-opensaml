@@ -51,8 +51,8 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public SubjectConfirmationDataTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmationData.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectConfirmationDataOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/SubjectConfirmationData.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/SubjectConfirmationDataOptionalAttributes.xml";
     }
 
     @BeforeMethod

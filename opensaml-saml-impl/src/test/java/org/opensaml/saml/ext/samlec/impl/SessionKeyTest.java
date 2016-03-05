@@ -37,8 +37,8 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     private Boolean expectedSOAP11MustUnderstand;
     
     public SessionKeyTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/samlec/impl/SessionKey.xml";
-        childElementsFile = "/data/org/opensaml/saml/ext/samlec/impl/SessionKeyChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/ext/samlec/impl/SessionKey.xml";
+        childElementsFile = "/org/opensaml/saml/ext/samlec/impl/SessionKeyChildElements.xml";
     }
  
     @BeforeMethod

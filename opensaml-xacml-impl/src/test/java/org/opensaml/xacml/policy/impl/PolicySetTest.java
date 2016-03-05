@@ -69,9 +69,9 @@ public class PolicySetTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public PolicySetTest() {
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/PolicySet.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/policy/impl/PolicySetOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xacml/policy/impl/PolicySetChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/PolicySet.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/policy/impl/PolicySetOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xacml/policy/impl/PolicySetChildElements.xml";
 
         expectedVersion = "8.7.6";
         expectedPolicySetId = "https://example.org/Policy/Set/Policy/Set/Id";

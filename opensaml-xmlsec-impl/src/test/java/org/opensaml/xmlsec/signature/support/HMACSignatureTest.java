@@ -174,7 +174,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshallNoOutputLength() throws XMLParserException, UnmarshallingException {
-        String envelopedSignatureFile = "/data/org/opensaml/xmlsec/signature/support/HMACSignatureNoOutputLength.xml";
+        String envelopedSignatureFile = "/org/opensaml/xmlsec/signature/support/HMACSignatureNoOutputLength.xml";
         InputStream ins = HMACSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
@@ -206,7 +206,7 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshallWithOutputLength() throws XMLParserException, UnmarshallingException {
-        String envelopedSignatureFile = "/data/org/opensaml/xmlsec/signature/support/HMACSignatureWithOutputLength.xml";
+        String envelopedSignatureFile = "/org/opensaml/xmlsec/signature/support/HMACSignatureWithOutputLength.xml";
         InputStream ins = HMACSignatureTest.class.getResourceAsStream(envelopedSignatureFile);
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();

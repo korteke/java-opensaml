@@ -33,7 +33,7 @@ public class RuleCombinerParametersTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public RuleCombinerParametersTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/RuleCombinerParameters.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/RuleCombinerParameters.xml";
         
         expectedRuleIdRef = "https://example.org/Rule/Id/Ref";
     }

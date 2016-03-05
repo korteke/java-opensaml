@@ -52,7 +52,7 @@ public class StorageServiceSAMLArtifactMapEntryFactoryTest extends XMLObjectBase
     protected void setUp() throws Exception {
         factory = new StorageServiceSAMLArtifactMapEntryFactory();
         
-        samlObject = (SAMLObject) unmarshallElement("/data/org/opensaml/saml/saml1/core/SignedAssertion.xml");
+        samlObject = (SAMLObject) unmarshallElement("/org/opensaml/saml/saml1/core/SignedAssertion.xml");
     }
 
     @Test

@@ -43,7 +43,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** No recipients specified to resolver, one inline EncryptedKey in instance. */
     @Test
     public void  testSingleEKNoRecipients() {
-        String filename = "/data/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
+        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
         EncryptedData encData = (EncryptedData) unmarshallElement(filename);
         
         Assert.assertNotNull(encData);
@@ -62,7 +62,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, one matching inline EncryptedKey in instance. */
     @Test
     public void  testSingleEKOneRecipientWithMatch() {
-        String filename = "/data/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
+        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
         EncryptedData encData = (EncryptedData) unmarshallElement(filename);
         
         Assert.assertNotNull(encData);
@@ -81,7 +81,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, zero matching inline EncryptedKey in instance. */
     @Test
     public void  testSingleEKOneRecipientNoMatch() {
-        String filename = "/data/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
+        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
         EncryptedData encData = (EncryptedData) unmarshallElement(filename);
         
         Assert.assertNotNull(encData);
@@ -98,7 +98,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** No recipients specified to resolver. */
     @Test
     public void  testMultiEKNoRecipients() {
-        String filename = "/data/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
         EncryptedData encData = (EncryptedData) unmarshallElement(filename);
         
         Assert.assertNotNull(encData);
@@ -121,7 +121,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      *  inline EncryptedKey in instance. */
     @Test
     public void  testMultiEKOneRecipientWithMatch() {
-        String filename = "/data/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
         EncryptedData encData = (EncryptedData) unmarshallElement(filename);
         
         Assert.assertNotNull(encData);
@@ -141,7 +141,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** Multi recipient specified to resolver, several matching inline EncryptedKey in instance. */
     @Test
     public void  testMultiEKOneRecipientWithMatches() {
-        String filename = "/data/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
         EncryptedData encData = (EncryptedData) unmarshallElement(filename);
         
         Assert.assertNotNull(encData);

@@ -35,8 +35,8 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public RSAKeyValueTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/RSAKeyValue.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/RSAKeyValueChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/RSAKeyValue.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/RSAKeyValueChildElements.xml";
     }
 
     /** {@inheritDoc} */

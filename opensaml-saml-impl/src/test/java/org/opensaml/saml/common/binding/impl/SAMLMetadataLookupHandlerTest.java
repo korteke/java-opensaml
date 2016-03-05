@@ -60,7 +60,7 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
     @BeforeClass
     public void classSetUp() throws ResolverException, URISyntaxException, ComponentInitializationException {
         final URL mdURL = SAMLMetadataLookupHandlerTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         final File mdFile = new File(mdURL.toURI());
 
         final FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(mdFile);

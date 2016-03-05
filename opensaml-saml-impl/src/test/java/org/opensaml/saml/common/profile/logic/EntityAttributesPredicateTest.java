@@ -46,7 +46,7 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         
         final Resource resource =
-                new ClassPathResource("data/org/opensaml/saml/metadata/resolver/filter/impl/EntitiesDescriptor-Name-metadata.xml");
+                new ClassPathResource("/org/opensaml/saml/metadata/resolver/filter/impl/EntitiesDescriptor-Name-metadata.xml");
         metadataProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(resource));
         metadataProvider.setId("test");
         metadataProvider.setParserPool(parserPool);

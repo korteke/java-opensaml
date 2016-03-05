@@ -53,8 +53,8 @@ import org.w3c.dom.Document;
  */
 public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestCase {
     
-    private final String switchMDFileValid = "/data/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.xml";
-    private final String switchMDFileInvalid = "/data/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.invalid.xml";
+    private final String switchMDFileValid = "/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.xml";
+    private final String switchMDFileInvalid = "/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.invalid.xml";
     
     private Document switchMDDocumentValid;
     private Document switchMDDocumentInvalid;
@@ -76,8 +76,8 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         "y0AbpCphUDDmIh9A85ye8DrVaBHQrj5b/JEjCvkY0zhLJzgDzZ6btT40TuCnk2GpdAClu5SyCTiy" +
         "56+zDYqPqg==";
     
-    private final String openIDFileValid = "/data/org/opensaml/saml/saml2/metadata/provider/openid-metadata.xml";
-    private final String openIDFileInvalid = "/data/org/opensaml/saml/saml2/metadata/provider/openid-metadata-invalid.xml";
+    private final String openIDFileValid = "/org/opensaml/saml/saml2/metadata/provider/openid-metadata.xml";
+    private final String openIDFileInvalid = "/org/opensaml/saml/saml2/metadata/provider/openid-metadata-invalid.xml";
     
     private String openIDCertBase64 = 
         "MIICfTCCAeagAwIBAgIGAReueFpXMA0GCSqGSIb3DQEBBQUAMIGBMQswCQYDVQQGEwJVUzELMAkG" +

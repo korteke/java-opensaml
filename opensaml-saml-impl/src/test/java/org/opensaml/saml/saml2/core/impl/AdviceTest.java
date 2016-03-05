@@ -45,8 +45,8 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AdviceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Advice.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AdviceChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Advice.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/AdviceChildElements.xml";
     }
 
     /** {@inheritDoc} */

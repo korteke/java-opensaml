@@ -48,8 +48,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     public SubjectLocalityTest() {
         expectedIPAddress = "207.75.164.30";
         expectedDNSAddress = "shibboleth.internet2.edu";
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectLocality.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectLocalityAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleSubjectLocality.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml1/impl/singleSubjectLocalityAttributes.xml";
         qname = new QName(SAMLConstants.SAML1_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 

@@ -40,8 +40,8 @@ public class ResourceMatchTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ResourceMatchTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/ResourceMatch.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/ResourceMatchChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/ResourceMatch.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/ResourceMatchChildElements.xml";
 
         expectedMatchId = "http://example.org/Resource/Match/Match/Id";
         expectedDataType="https://example.org/Resource/Match/Data/Type";

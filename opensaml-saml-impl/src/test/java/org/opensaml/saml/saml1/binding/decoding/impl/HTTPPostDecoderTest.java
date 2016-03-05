@@ -60,7 +60,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     /** Test decoding message. */
     @Test
     public void testDecode() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/data/org/opensaml/saml/saml1/binding/Response.xml");
+        Response samlResponse = (Response) unmarshallElement("/org/opensaml/saml/saml1/binding/Response.xml");
 
         String deliveredEndpointURL = samlResponse.getRecipient();
 

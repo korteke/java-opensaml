@@ -52,8 +52,8 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public DiscoHintsTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/DiscoHints.xml";
-        childElementsFile = "/data/org/opensaml/saml/ext/saml2mdui/DiscoHintsChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/DiscoHints.xml";
+        childElementsFile = "/org/opensaml/saml/ext/saml2mdui/DiscoHintsChildElements.xml";
     }
     
     /** {@inheritDoc} */

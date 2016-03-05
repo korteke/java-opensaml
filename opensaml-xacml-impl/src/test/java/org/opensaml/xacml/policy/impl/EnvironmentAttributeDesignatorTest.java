@@ -36,8 +36,8 @@ public class EnvironmentAttributeDesignatorTest extends XMLObjectProviderBaseTes
      * Constructor
      */
     public EnvironmentAttributeDesignatorTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentAttributeDesignator.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentAttributeDesignatorOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/EnvironmentAttributeDesignator.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/policy/impl/EnvironmentAttributeDesignatorOptionalAttributes.xml";
 
         expectedDataType = "https://example.org/Data/Type/Environment";
         expectedAttributeId = "https://example.org/Attribute/Id/Environment";

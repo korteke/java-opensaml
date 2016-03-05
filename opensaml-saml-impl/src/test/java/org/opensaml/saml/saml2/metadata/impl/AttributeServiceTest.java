@@ -43,8 +43,8 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AttributeServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeServiceOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeService.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeServiceOptionalAttributes.xml";
     }
     
     @BeforeMethod

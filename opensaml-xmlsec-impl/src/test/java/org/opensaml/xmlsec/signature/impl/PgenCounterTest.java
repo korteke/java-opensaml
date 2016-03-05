@@ -36,7 +36,7 @@ public class PgenCounterTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PgenCounterTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/PgenCounter.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/PgenCounter.xml";
         
     }
 

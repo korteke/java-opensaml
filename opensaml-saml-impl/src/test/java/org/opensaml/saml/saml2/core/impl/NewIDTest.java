@@ -40,7 +40,7 @@ public class NewIDTest extends XMLObjectProviderBaseTestCase {
      */
     public NewIDTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NewID.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/NewID.xml";
     }
 
     @BeforeMethod

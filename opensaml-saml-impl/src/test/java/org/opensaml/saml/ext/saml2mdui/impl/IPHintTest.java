@@ -40,7 +40,7 @@ public class IPHintTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public IPHintTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/IPHint.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/IPHint.xml";
     }
     
     @BeforeMethod

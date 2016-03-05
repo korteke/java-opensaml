@@ -29,9 +29,9 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public SigningMethodTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2alg/impl/SigningMethod.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/saml2alg/impl/SigningMethodOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/ext/saml2alg/impl/SigningMethodChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2alg/impl/SigningMethod.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/ext/saml2alg/impl/SigningMethodOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/ext/saml2alg/impl/SigningMethodChildElements.xml";
     }
 
     /** {@inheritDoc} */

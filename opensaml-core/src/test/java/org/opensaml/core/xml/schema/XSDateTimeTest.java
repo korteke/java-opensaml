@@ -57,7 +57,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-basic.xml";
+        String testDocumentLocation = "/org/opensaml/core/xml/schema/xsDateTime-basic.xml";
         
         XSDateTimeBuilder xsdtBuilder = (XSDateTimeBuilder) builderFactory.getBuilder(XSDateTime.TYPE_NAME);
         XSDateTime xsDateTime = xsdtBuilder.buildObject(expectedXMLObjectQName, XSDateTime.TYPE_NAME);
@@ -78,7 +78,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
-        String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-basic.xml";
+        String testDocumentLocation = "/org/opensaml/core/xml/schema/xsDateTime-basic.xml";
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
 
@@ -100,7 +100,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshallCanonical() throws XMLParserException, UnmarshallingException{
-        String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-canonical.xml";
+        String testDocumentLocation = "/org/opensaml/core/xml/schema/xsDateTime-canonical.xml";
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
 
@@ -122,7 +122,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUnmarshallNoFractional() throws XMLParserException, UnmarshallingException{
-        String testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsDateTime-nofractional.xml";
+        String testDocumentLocation = "/org/opensaml/core/xml/schema/xsDateTime-nofractional.xml";
         expectedValue = expectedValue.withMillisOfSecond(0);
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));

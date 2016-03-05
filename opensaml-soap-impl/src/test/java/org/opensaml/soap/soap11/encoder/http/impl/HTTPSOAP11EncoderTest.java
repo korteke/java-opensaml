@@ -98,7 +98,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
-        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
+        String soapMessage = "/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
         XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
@@ -151,7 +151,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
-        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
+        String soapMessage = "/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
         XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
@@ -209,7 +209,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
-        String soapMessage = "/data/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
+        String soapMessage = "/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
         XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);

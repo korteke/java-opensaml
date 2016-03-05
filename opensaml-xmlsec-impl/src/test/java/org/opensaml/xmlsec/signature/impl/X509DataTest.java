@@ -39,8 +39,8 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509DataTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509Data.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/X509DataChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/X509Data.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/X509DataChildElements.xml";
     }
 
     /** {@inheritDoc} */

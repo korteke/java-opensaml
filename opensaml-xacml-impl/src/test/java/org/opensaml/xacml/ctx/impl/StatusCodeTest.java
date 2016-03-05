@@ -34,8 +34,8 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public StatusCodeTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/StatusCode.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/StatusCodeChildElements.xml"; 
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/StatusCode.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/StatusCodeChildElements.xml"; 
 
         expectedValue = "https://example.org/Status/Code";
         expectedMinorValue = "https://example.org/Status/Code/Minor";

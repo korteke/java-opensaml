@@ -33,7 +33,7 @@ public class VariableReferenceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public VariableReferenceTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/VariableReference.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/VariableReference.xml";
 
         expectedVariableId = "VariableReferenceId";
     }

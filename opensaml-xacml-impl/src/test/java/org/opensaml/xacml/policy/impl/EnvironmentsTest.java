@@ -35,8 +35,8 @@ public class EnvironmentsTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public EnvironmentsTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Environments.xml";
-        childElementsFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentsChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Environments.xml";
+        childElementsFile = "/org/opensaml/xacml/policy/impl/EnvironmentsChildElements.xml";
         
         expectedNumChildren = 4;
     }

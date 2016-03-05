@@ -58,9 +58,9 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ContactPersonTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPerson.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPersonChildElements.xml";
-        singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ContactPersonUnknownAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/ContactPerson.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/ContactPersonChildElements.xml";
+        singleElementUnknownAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/ContactPersonUnknownAttributes.xml";
     }
     
     @BeforeMethod

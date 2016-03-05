@@ -46,8 +46,8 @@ public class NameIDPolicyTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public NameIDPolicyTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDPolicy.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDPolicyOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/NameIDPolicy.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/NameIDPolicyOptionalAttributes.xml";
     }
 
     @BeforeMethod

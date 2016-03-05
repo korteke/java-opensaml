@@ -40,7 +40,7 @@ public class EncryptionClonedContentTest extends XMLObjectBaseTestCase {
     public EncryptionClonedContentTest() {
         super();
         
-        targetFile = "/data/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
+        targetFile = "/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
     }
 
     @Test

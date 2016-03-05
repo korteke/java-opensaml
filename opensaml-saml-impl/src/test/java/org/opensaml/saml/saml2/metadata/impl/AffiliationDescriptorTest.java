@@ -60,10 +60,10 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AffiliationDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptor.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorChildElements.xml";
-        singleElementUnknownAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorUnknownAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptor.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorChildElements.xml";
+        singleElementUnknownAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AffiliationDescriptorUnknownAttributes.xml";
     }
 
     @BeforeMethod

@@ -330,7 +330,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         rst.getUnknownXMLObjects().add(timestamp);
         marshallAndUnmarshall(rst);
 
-        rst= unmarshallElement("/data/org/opensaml/soap/wstrust/impl/RequestSecurityToken.xml");
+        rst= unmarshallElement("/org/opensaml/soap/wstrust/impl/RequestSecurityToken.xml");
         rst.releaseDOM();
         marshallAndUnmarshall(rst);
     }

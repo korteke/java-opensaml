@@ -40,8 +40,8 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public DHKeyValueTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/DHKeyValue.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/DHKeyValueChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/DHKeyValue.xml";
+        childElementsFile = "/org/opensaml/xmlsec/encryption/impl/DHKeyValueChildElements.xml";
     }
 
     @BeforeMethod

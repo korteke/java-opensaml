@@ -65,7 +65,7 @@ public class RSAKeyValueTest extends XMLObjectBaseTestCase {
         List<KeyInfoProvider> providers = new ArrayList<>();
         providers.add(new RSAKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
-        keyInfoFile = "/data/org/opensaml/xmlsec/keyinfo/impl/RSAKeyValue.xml";
+        keyInfoFile = "/org/opensaml/xmlsec/keyinfo/impl/RSAKeyValue.xml";
         pubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
     }
     

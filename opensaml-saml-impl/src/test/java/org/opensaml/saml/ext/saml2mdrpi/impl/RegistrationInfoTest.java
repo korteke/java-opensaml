@@ -39,9 +39,9 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
      */
     public RegistrationInfoTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdrpi/RegistrationInfo.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/saml2mdrpi/RegistrationInfoOptionalAttr.xml";
-        childElementsFile = "/data/org/opensaml/saml/ext/saml2mdrpi/RegistrationInfoChildren.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/RegistrationInfo.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/ext/saml2mdrpi/RegistrationInfoOptionalAttr.xml";
+        childElementsFile = "/org/opensaml/saml/ext/saml2mdrpi/RegistrationInfoChildren.xml";
     }
 
     /** {@inheritDoc} */

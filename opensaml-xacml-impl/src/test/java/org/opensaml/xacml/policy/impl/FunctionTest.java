@@ -33,7 +33,7 @@ public class FunctionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public FunctionTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Function.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Function.xml";
         expectedFunctionId="https://example.org/Function/Id";
     }
     

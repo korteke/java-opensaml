@@ -46,9 +46,9 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AuthzDecisionStatementTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatement.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatement.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementChildElements.xml";
     }
 
     @BeforeMethod

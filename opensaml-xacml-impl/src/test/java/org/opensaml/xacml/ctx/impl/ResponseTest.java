@@ -34,8 +34,8 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ResponseTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Response.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/ResponseChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Response.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/ResponseChildElements.xml";
         
         expectedNumResults = 6;
     }

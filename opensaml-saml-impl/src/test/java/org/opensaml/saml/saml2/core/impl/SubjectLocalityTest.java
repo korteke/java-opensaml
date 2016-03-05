@@ -39,8 +39,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public SubjectLocalityTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectLocality.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectLocalityOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/SubjectLocality.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/SubjectLocalityOptionalAttributes.xml";
     }
 
     @BeforeMethod

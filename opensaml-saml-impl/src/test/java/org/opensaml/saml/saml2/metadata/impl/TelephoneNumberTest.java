@@ -39,7 +39,7 @@ public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public TelephoneNumberTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/TelephoneNumber.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/TelephoneNumber.xml";
     }
     
     @BeforeMethod

@@ -41,8 +41,8 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public RequestTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Request.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/RequestChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Request.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/RequestChildElements.xml";
 
         expectedNumSubjects = 3;
         expectedNumResources = 2;

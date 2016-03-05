@@ -106,7 +106,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSingleKEKInline() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyNameRSA);
@@ -162,7 +162,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSingleKEKPeer() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyNameRSA);
@@ -226,7 +226,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     /** Test encryption with multicast key encryption keys with key placement as peer. */
     @Test
     public void testMulticastKEKPeer() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         String multicastKeyNameValue = "MulticastDataEncryptionKeyName";
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
@@ -315,7 +315,7 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that reuse is allowed with same key encryption parameters. */
     @Test
     public void testReuse() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         Attribute target2 = assertion.getAttributeStatements().get(0).getAttributes().get(1);

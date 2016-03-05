@@ -61,10 +61,10 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
      */
     public AuthorizationDecisionStatementTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAuthorizationDecisionStatement.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleAuthorizationDecisionStatementAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/AuthorizationDecisionStatementWithChildren.xml";
-        illegalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleAuthorizationDecisionStatementAttributesInvalid.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleAuthorizationDecisionStatement.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml1/impl/singleAuthorizationDecisionStatementAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/AuthorizationDecisionStatementWithChildren.xml";
+        illegalAttributesFile = "/org/opensaml/saml/saml1/impl/singleAuthorizationDecisionStatementAttributesInvalid.xml";
         
         qname = new QName(SAMLConstants.SAML1_NS, AuthorizationDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }

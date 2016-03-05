@@ -27,7 +27,7 @@ public class UsagePolicyTest extends XMLObjectProviderBaseTestCase {
      */
     public UsagePolicyTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdrpi/UsagePolicy.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/UsagePolicy.xml";
     }
 
     /** {@inheritDoc} */

@@ -101,7 +101,7 @@ public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
     @Test
     public void testCredResolution() throws ResolverException {
         KeyInfo keyInfo = 
-            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/SingleX509Certificate.xml");
+            (KeyInfo) unmarshallElement("/org/opensaml/xmlsec/keyinfo/impl/SingleX509Certificate.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         

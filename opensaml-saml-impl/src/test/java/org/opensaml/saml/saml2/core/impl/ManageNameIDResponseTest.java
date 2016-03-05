@@ -38,9 +38,9 @@ public class ManageNameIDResponseTest extends StatusResponseTestBase {
      */
     public ManageNameIDResponseTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/ManageNameIDResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ManageNameIDResponseOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ManageNameIDResponseChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/ManageNameIDResponse.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/ManageNameIDResponseOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/ManageNameIDResponseChildElements.xml";
     }
     
     @BeforeMethod

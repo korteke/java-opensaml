@@ -37,8 +37,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public SubjectTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Subject.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/SubjectChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Subject.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/SubjectChildElements.xml";
     }
 
     /** {@inheritDoc} */

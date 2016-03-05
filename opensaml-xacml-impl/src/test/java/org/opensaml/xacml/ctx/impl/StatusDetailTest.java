@@ -35,8 +35,8 @@ public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public StatusDetailTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/StatusDetail.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/StatusDetailChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/StatusDetail.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/StatusDetailChildElements.xml";
         
         expectedFunctionId = "http://example.org";
 

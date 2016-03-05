@@ -37,8 +37,8 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PGPDataTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/PGPData.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/PGPDataChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/PGPData.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/PGPDataChildElements.xml";
     }
 
     /** {@inheritDoc} */

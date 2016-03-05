@@ -42,8 +42,8 @@ public class EnvironmentMatchTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public EnvironmentMatchTest() {
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentMatch.xml";
-        childElementsFile = "/data/org/opensaml/xacml/policy/impl/EnvironmentMatchChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/EnvironmentMatch.xml";
+        childElementsFile = "/org/opensaml/xacml/policy/impl/EnvironmentMatchChildElements.xml";
 
         expectedMatchId = "https://example.org/Environment/Match/Id";
         expectedDataType = "https://example.org/Environment/Match/Data/Type";

@@ -36,7 +36,7 @@ public class IssuerTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public IssuerTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Issuer.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Issuer.xml";
     }
 
     @BeforeMethod

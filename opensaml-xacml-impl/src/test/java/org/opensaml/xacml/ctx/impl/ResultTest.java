@@ -37,8 +37,8 @@ public class ResultTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ResultTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Result.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/ResultChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Result.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/ResultChildElements.xml";
         
         expectedDecision = DECISION.NotApplicable;
     }

@@ -40,8 +40,8 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AuthnQueryServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthnQueryService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthnQueryServiceOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AuthnQueryService.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AuthnQueryServiceOptionalAttributes.xml";
     }
     
     @BeforeMethod

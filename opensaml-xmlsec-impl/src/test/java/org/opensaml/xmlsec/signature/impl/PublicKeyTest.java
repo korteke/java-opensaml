@@ -36,7 +36,7 @@ public class PublicKeyTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PublicKeyTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/PublicKey.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/PublicKey.xml";
     }
 
     @BeforeMethod

@@ -38,8 +38,8 @@ public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ExtensionsTest() {
-       singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/Extensions.xml";
-       childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/ExtensionsChildElements.xml";
+       singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/Extensions.xml";
+       childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/ExtensionsChildElements.xml";
     }
     
     /** {@inheritDoc} */

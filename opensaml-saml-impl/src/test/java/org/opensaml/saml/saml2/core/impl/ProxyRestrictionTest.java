@@ -39,8 +39,8 @@ public class ProxyRestrictionTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public ProxyRestrictionTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/ProxyRestriction.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ProxyRestrictionChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/ProxyRestriction.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/ProxyRestrictionChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -63,7 +63,7 @@ public class DEREncodedKeyValueTest extends XMLObjectBaseTestCase {
         List<KeyInfoProvider> providers = new ArrayList<>();
         providers.add(new DEREncodedKeyValueProvider());
         resolver = new BasicProviderKeyInfoCredentialResolver(providers);
-        keyInfoFile = "/data/org/opensaml/xmlsec/keyinfo/impl/DEREncodedKeyValue.xml";
+        keyInfoFile = "/org/opensaml/xmlsec/keyinfo/impl/DEREncodedKeyValue.xml";
         pubKey = KeySupport.buildJavaRSAPublicKey(rsaBase64);
     }
     

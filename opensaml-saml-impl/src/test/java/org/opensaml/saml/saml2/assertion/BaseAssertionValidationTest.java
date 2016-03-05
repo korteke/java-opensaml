@@ -118,12 +118,12 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     }
     
     protected X509Certificate getCertificate(String name) throws CertificateException, URISyntaxException {
-        File certFile = new File(this.getClass().getResource("/data/org/opensaml/saml/saml2/assertion/" + name).toURI());
+        File certFile = new File(this.getClass().getResource("/org/opensaml/saml/saml2/assertion/" + name).toURI());
         return X509Support.decodeCertificate(certFile);
     }
     
     protected PrivateKey getPrivateKey(String name) throws KeyException, URISyntaxException {
-        File keyFile = new File(this.getClass().getResource("/data/org/opensaml/saml/saml2/assertion/" + name).toURI());
+        File keyFile = new File(this.getClass().getResource("/org/opensaml/saml/saml2/assertion/" + name).toURI());
         return KeySupport.decodePrivateKey(keyFile, null);
     }
     

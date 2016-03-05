@@ -48,7 +48,7 @@ import org.testng.annotations.Test;
 
 public class SecurityEnhancedTLSSocketFactoryTest {
     
-    private static final String DATA_PATH = "/data/org/opensaml/security/x509/impl/";
+    private static final String DATA_PATH = "/org/opensaml/security/x509/impl/";
     
     private SecurityEnhancedTLSSocketFactory securityEnhancedSocketFactory;
     

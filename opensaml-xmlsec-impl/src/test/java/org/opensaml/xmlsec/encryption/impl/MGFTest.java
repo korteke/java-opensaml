@@ -41,8 +41,8 @@ public class MGFTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public MGFTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/MGF.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/MGFChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/MGF.xml";
+        childElementsFile = "/org/opensaml/xmlsec/encryption/impl/MGFChildElements.xml";
     }
 
     @BeforeMethod

@@ -36,7 +36,7 @@ public class XPathTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public XPathTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/XPath.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/XPath.xml";
         
     }
 

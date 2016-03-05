@@ -162,7 +162,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     @Test
     public void testResolutionWithKeyValue() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
-            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithKeyValue.xml");
+            (KeyInfo) unmarshallElement("/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithKeyValue.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
@@ -184,7 +184,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     @Test
     public void testResolutionWithSubjectName() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
-            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithSubjectName.xml");
+            (KeyInfo) unmarshallElement("/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithSubjectName.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
@@ -206,7 +206,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     @Test
     public void testResolutionWithIssuerSerial() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
-            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithIssuerSerial.xml");
+            (KeyInfo) unmarshallElement("/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithIssuerSerial.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
@@ -228,7 +228,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     @Test
     public void testResolutionWithSubjectKeyIdentifier() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
-            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithSKI.xml");
+            (KeyInfo) unmarshallElement("/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithSKI.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         
@@ -251,7 +251,7 @@ public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     @Test
     public void testResolutionWithDigest() throws SecurityException, ResolverException {
         KeyInfo keyInfo = 
-            (KeyInfo) unmarshallElement("/data/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithDigest.xml");
+            (KeyInfo) unmarshallElement("/org/opensaml/xmlsec/keyinfo/impl/X509CertificatesWithDigest.xml");
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
         Iterator<Credential> iter = resolver.resolve(criteriaSet).iterator();
         

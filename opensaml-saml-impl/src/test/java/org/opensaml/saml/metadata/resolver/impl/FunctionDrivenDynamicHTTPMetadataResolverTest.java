@@ -57,7 +57,7 @@ import org.testng.annotations.Test;
 
 public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/data/org/opensaml/saml/metadata/resolver/impl/";
+    private static final String DATA_PATH = "/org/opensaml/saml/metadata/resolver/impl/";
     
     private FunctionDrivenDynamicHTTPMetadataResolver resolver;
     
@@ -78,7 +78,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     @Test
     public void testTemplateFromRepoDefaultContentTypes() throws Exception {
         // Repo should return 'text/xml', which is supported by default.
-        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -104,7 +104,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     @Test
     public void testTemplateFromRepoWithExplicitContentType() throws Exception {
         // Explicitly request 'text/plain', and then configure it below to be supported.  Also test case-insensitivity.
-        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?content-type=text%2Fplain&view=co";
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?content-type=text%2Fplain&view=co";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -131,7 +131,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     @Test
     public void testTemplateFromRepoUnsupportedContentType() throws Exception {
         // Repo should return 'text/plain', which is not supported by default.
-        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?content-type=text%2Fplain&view=co";
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?content-type=text%2Fplain&view=co";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -241,7 +241,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception {
-        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -268,7 +268,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
-        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
+        String template = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml?view=co";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -296,7 +296,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSNoTrustEngine() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -323,7 +323,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineExplicitKey() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -351,7 +351,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineInvalidKey()  throws Exception {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -378,7 +378,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -406,7 +406,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -434,7 +434,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -461,7 +461,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -488,7 +488,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSTrustEngineWrongSocketFactory() throws Exception  {
-        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
+        String template = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml";
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.

@@ -42,8 +42,8 @@ public class ApplyTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ApplyTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Apply.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/ApplyChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Apply.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/ApplyChildElements.xml";
 
         expectedFunctionId = "http://example.org";
     }

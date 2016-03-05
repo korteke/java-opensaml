@@ -34,8 +34,8 @@ public class EncryptedAssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public EncryptedAssertionTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedAssertion.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedAssertionChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/EncryptedAssertion.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/EncryptedAssertionChildElements.xml";
     }
 
     /** {@inheritDoc} */

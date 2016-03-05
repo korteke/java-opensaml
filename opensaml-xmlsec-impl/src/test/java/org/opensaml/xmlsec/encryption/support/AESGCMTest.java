@@ -52,7 +52,7 @@ public class AESGCMTest extends XMLObjectBaseTestCase {
         
         providerSupport = new SecurityProviderTestSupport();
         
-        targetFile = "/data/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
+        targetFile = "/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
     }
     
     @DataProvider

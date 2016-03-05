@@ -60,7 +60,7 @@ public class ConfigurationTest {
         XMLConfigurator configurator = new XMLConfigurator();
         try {
             InputStream sxConfig = XMLObjectProviderRegistrySupport.class
-                    .getResourceAsStream("/data/org/opensaml/core/xml/config/InvalidConfiguration.xml");
+                    .getResourceAsStream("/org/opensaml/core/xml/config/InvalidConfiguration.xml");
             configurator.load(sxConfig);
         } catch (XMLConfigurationException e) {
             return;
@@ -78,7 +78,7 @@ public class ConfigurationTest {
 
         // Test loading the SimpleXMLObject configuration where builder contains additional children
         InputStream sxConfig = ConfigurationTest.class
-                .getResourceAsStream("/data/org/opensaml/core/xml/config/SimpleXMLObjectConfiguration.xml");
+                .getResourceAsStream("/org/opensaml/core/xml/config/SimpleXMLObjectConfiguration.xml");
         configurator.load(sxConfig);
 
         XMLObjectBuilder sxBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(simpleXMLObjectQName);
@@ -92,7 +92,7 @@ public class ConfigurationTest {
 
         // Test loading a configuration with bogus classes
         InputStream nonConfig = XMLObjectProviderRegistrySupport.class
-                .getResourceAsStream("/data/org/opensaml/core/xml/config/NonexistantClassConfiguration.xml");
+                .getResourceAsStream("/org/opensaml/core/xml/config/NonexistantClassConfiguration.xml");
         try {
             configurator.load(nonConfig);
             Assert.fail("Configuration loaded file that contained invalid classes");
@@ -137,7 +137,7 @@ public class ConfigurationTest {
         QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");
 
         InputStream idAttributeConfig = XMLObjectProviderRegistrySupport.class
-                .getResourceAsStream("/data/org/opensaml/core/xml/config/IDAttributeConfiguration.xml");
+                .getResourceAsStream("/org/opensaml/core/xml/config/IDAttributeConfiguration.xml");
         configurator.load(idAttributeConfig);
 
         Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(fooQName), "Registered ID attribute check returned false");

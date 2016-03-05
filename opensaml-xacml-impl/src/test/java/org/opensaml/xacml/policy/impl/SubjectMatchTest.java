@@ -40,8 +40,8 @@ public class SubjectMatchTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectMatchTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/SubjectMatch.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/SubjectMatchChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/SubjectMatch.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/SubjectMatchChildElements.xml";
 
         expectedMatchId = "http://example.org/Subject/Match/Match/Id";
         expectedDataType="https://example.org/Subject/Match/Data/Type";

@@ -49,10 +49,10 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public OrganizationTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/Organization.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/Organization.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/OrganizationChildElements.xml";
         singleElementUnknownAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationUnknownAttributes.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/OrganizationUnknownAttributes.xml";
     }
 
     /** {@inheritDoc} */

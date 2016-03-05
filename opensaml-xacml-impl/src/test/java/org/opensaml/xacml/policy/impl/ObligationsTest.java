@@ -38,8 +38,8 @@ public class ObligationsTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ObligationsTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Obligations.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/ObligationsChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Obligations.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/ObligationsChildElements.xml";
         
         expectedObligationId = "http://example.org/Obligations/Id";
         expectedFulFillOn = EffectType.Permit;

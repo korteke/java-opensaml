@@ -35,7 +35,7 @@ public class DecisionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public DecisionTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Decision.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Decision.xml";
 
         expectedDecision = DECISION.Indeterminate;
     }

@@ -93,7 +93,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAssertion() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
@@ -135,7 +135,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAssertionAsID() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
@@ -177,7 +177,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNameID() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         NameID target = assertion.getSubject().getNameID();
         
         KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
@@ -220,7 +220,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAttribute() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         
         
@@ -305,7 +305,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that reuse of the encrypter with the same encryption and key encryption parameters is allowed. */
     @Test
     public void testReuse() {
-        Assertion assertion = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         Attribute target2 = assertion.getAttributeStatements().get(0).getAttributes().get(1);
@@ -343,7 +343,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that a data encryption key is auto-generated if it is not supplied. */
     @Test
     public void testAutoKeyGen() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         encParams.setEncryptionCredential(null);
         
@@ -366,7 +366,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that an error is thrown if the no data encryption credential is supplied and no KEK is specified. */
     @Test
     public void testAutoKeyGenNoKEK() {
-        Assertion target = (Assertion) unmarshallElement("/data/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         encParams.setEncryptionCredential(null);
         

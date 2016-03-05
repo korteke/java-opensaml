@@ -36,7 +36,7 @@ public class KeySizeTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeySizeTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/KeySize.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/KeySize.xml";
         
     }
 

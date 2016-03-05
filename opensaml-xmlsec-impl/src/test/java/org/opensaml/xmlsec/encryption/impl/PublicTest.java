@@ -36,7 +36,7 @@ public class PublicTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PublicTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/Public.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/Public.xml";
         
     }
 

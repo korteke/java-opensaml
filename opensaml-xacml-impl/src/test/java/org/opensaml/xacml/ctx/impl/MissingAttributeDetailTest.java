@@ -40,9 +40,9 @@ public class MissingAttributeDetailTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public MissingAttributeDetailTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/MissingAttributeDetail.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/ctx/impl/MissingAttributeDetailOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/MissingAttributeDetailChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/MissingAttributeDetail.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/ctx/impl/MissingAttributeDetailOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/MissingAttributeDetailChildElements.xml";
 
         expectedAttributeId = "https://example.org/Missing/Attribute/Detail/Attribute/Id";
         expectedDataType = "https://example.org/Missing/Attribute/Detail/Data/Type";

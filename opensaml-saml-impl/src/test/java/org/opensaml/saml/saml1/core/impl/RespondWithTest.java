@@ -42,7 +42,7 @@ public class RespondWithTest extends XMLObjectProviderBaseTestCase {
      */
     public RespondWithTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/RespondWith.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/RespondWith.xml";
         
         expectedQName = AttributeStatement.DEFAULT_ELEMENT_NAME;
     }

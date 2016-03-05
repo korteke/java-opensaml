@@ -60,9 +60,9 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
 
     /** Constructor. */
     public KeyInfoConfirmationDataTypeTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataType.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataType.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/KeyInfoConfirmationDataTypeChildElements.xml";
     }
 
     @BeforeMethod
