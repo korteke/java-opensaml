@@ -38,9 +38,9 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public RetrievalMethodTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/RetrievalMethod.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/RetrievalMethodChildElements.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/signature/impl/RetrievalMethodOptionalAttributes.xml"; 
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/RetrievalMethod.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/RetrievalMethodChildElements.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xmlsec/signature/impl/RetrievalMethodOptionalAttributes.xml"; 
     }
 
     @BeforeMethod

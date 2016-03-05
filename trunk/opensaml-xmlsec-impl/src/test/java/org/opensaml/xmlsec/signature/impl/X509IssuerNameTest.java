@@ -36,7 +36,7 @@ public class X509IssuerNameTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509IssuerNameTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509IssuerName.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/X509IssuerName.xml";
         
     }
 

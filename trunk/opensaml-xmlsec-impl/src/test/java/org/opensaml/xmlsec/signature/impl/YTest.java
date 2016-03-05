@@ -36,7 +36,7 @@ public class YTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public YTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Y.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/Y.xml";
         
     }
 

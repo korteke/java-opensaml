@@ -39,7 +39,7 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public EmailAddressTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/EmailAddress.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/EmailAddress.xml";
     }
     
     @BeforeMethod

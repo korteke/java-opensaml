@@ -51,9 +51,9 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectConfirmationTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectConfirmation.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleSubjectConfirmation.xml";
-        fullElementsFile = "/data/org/opensaml/saml/saml1/impl/SubjectConfirmationWithChildren.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleSubjectConfirmation.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml1/impl/singleSubjectConfirmation.xml";
+        fullElementsFile = "/org/opensaml/saml/saml1/impl/SubjectConfirmationWithChildren.xml";
         qname = new QName(SAMLConstants.SAML1_NS, SubjectConfirmation.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 

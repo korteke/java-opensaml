@@ -39,7 +39,7 @@ public class ArtifactTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ArtifactTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Artifact.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Artifact.xml";
     }
 
     @BeforeMethod

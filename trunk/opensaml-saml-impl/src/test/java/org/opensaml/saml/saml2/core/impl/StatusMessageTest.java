@@ -37,7 +37,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public StatusMessageTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/StatusMessage.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/StatusMessage.xml";
     }
 
     @BeforeMethod

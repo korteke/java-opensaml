@@ -39,8 +39,8 @@ public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AuthnContextTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnContext.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnContextChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AuthnContext.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/AuthnContextChildElements.xml";
     }
 
     /** {@inheritDoc} */

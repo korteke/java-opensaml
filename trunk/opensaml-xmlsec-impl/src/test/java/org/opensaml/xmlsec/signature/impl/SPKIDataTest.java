@@ -35,8 +35,8 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public SPKIDataTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/SPKIData.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/SPKIDataChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/SPKIData.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/SPKIDataChildElements.xml";
     }
 
     /** {@inheritDoc} */

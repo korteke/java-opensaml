@@ -36,7 +36,7 @@ public class X509DigestTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public X509DigestTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/X509Digest.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/X509Digest.xml";
     }
 
     @BeforeMethod

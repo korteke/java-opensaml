@@ -69,7 +69,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testDecodeToEnvelope() throws ComponentInitializationException, MessageDecodingException, IOException {
-        httpRequest.setContent(getServletRequestContent("/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
+        httpRequest.setContent(getServletRequestContent("/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
         
         decoder.setBodyHandler(new TestEnvelopeBodyHandler());
         decoder.initialize();
@@ -93,7 +93,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testDecodeToPayload() throws ComponentInitializationException, MessageDecodingException, IOException {
-        httpRequest.setContent(getServletRequestContent("/data/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
+        httpRequest.setContent(getServletRequestContent("/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
         
         decoder.setBodyHandler(new TestPayloadBodyHandler());
         decoder.initialize();

@@ -36,7 +36,7 @@ public class JTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public JTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/J.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/J.xml";
         
     }
 

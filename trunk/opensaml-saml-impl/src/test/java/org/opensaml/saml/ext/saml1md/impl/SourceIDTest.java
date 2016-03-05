@@ -35,7 +35,7 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public SourceIDTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml1md/impl/SourceID.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml1md/impl/SourceID.xml";
     }
 
     @BeforeMethod

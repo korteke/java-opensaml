@@ -60,7 +60,7 @@ import org.w3c.dom.Element;
 
 public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/data/org/opensaml/saml/metadata/resolver/filter/impl/";
+    private static final String DATA_PATH = "/org/opensaml/saml/metadata/resolver/filter/impl/";
     
     private SignatureValidationFilter filter;
     

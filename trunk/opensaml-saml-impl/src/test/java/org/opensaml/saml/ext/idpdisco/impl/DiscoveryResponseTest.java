@@ -44,8 +44,8 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public DiscoveryResponseTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/idpdisco/DiscoveryResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/idpdisco/DiscoveryResponseOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/ext/idpdisco/DiscoveryResponse.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/ext/idpdisco/DiscoveryResponseOptionalAttributes.xml";
     }
 
     @BeforeMethod

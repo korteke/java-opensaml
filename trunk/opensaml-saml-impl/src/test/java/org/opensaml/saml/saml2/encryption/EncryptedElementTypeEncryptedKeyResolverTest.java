@@ -45,7 +45,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     @Test
     public void  testSingleEKNoRecipients() {
         String filename = 
-            "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleNoRecipient.xml";
+            "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleNoRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());
@@ -66,7 +66,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     @Test
     public void  testSingleEKMultiRecipientWithImplicitMatch() {
         String filename = 
-            "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleNoRecipient.xml";
+            "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleNoRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());
@@ -87,7 +87,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     @Test
     public void  testSingleEKOneRecipientWithMatch() {
         String filename = 
-            "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleWithRecipient.xml";
+            "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleWithRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());
@@ -108,7 +108,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     @Test
     public void  testSingleEKOneRecipientNoMatch() {
         String filename = 
-            "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleWithRecipient.xml";
+            "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverSingleWithRecipient.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());
@@ -126,7 +126,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     /** No recipients specified to resolver. */
     @Test
     public void  testMultiEKNoRecipients() {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());
@@ -150,7 +150,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
      *  EncryptedKey in instance. */
     @Test
     public void  testMultiEKOneRecipientWithMatch() {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());
@@ -171,7 +171,7 @@ public class EncryptedElementTypeEncryptedKeyResolverTest extends XMLObjectBaseT
     /** Multi recipient specified to resolver, several matching EncryptedKey in instance. */
     @Test
     public void  testMultiEKOneRecipientWithMatches() {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/EncryptedElementTypeEncryptedKeyResolverMultiple.xml";
         EncryptedAssertion encAssertion = (EncryptedAssertion) unmarshallElement(filename);
         
         Assert.assertNotNull(encAssertion.getEncryptedData());

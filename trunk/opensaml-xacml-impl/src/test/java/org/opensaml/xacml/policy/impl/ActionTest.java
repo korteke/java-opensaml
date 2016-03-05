@@ -33,8 +33,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ActionTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Action.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/ActionChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Action.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/ActionChildElements.xml";
     }
 
     /** {@inheritDoc} */

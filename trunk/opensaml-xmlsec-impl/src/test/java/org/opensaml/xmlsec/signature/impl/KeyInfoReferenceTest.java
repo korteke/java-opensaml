@@ -36,8 +36,8 @@ public class KeyInfoReferenceTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeyInfoReferenceTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/KeyInfoReference.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/signature/impl/KeyInfoReferenceOptionalAttributes.xml"; 
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/KeyInfoReference.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xmlsec/signature/impl/KeyInfoReferenceOptionalAttributes.xml"; 
     }
 
     @BeforeMethod

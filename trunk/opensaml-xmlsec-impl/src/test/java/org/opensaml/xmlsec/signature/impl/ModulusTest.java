@@ -36,7 +36,7 @@ public class ModulusTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ModulusTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Modulus.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/Modulus.xml";
         
     }
 

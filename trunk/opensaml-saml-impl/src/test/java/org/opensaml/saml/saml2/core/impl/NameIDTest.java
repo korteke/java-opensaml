@@ -48,8 +48,8 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public NameIDTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NameID.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/NameID.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/NameIDOptionalAttributes.xml";
     }
 
     @BeforeMethod

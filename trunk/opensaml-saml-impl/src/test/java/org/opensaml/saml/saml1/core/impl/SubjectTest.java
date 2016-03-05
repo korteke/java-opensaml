@@ -43,8 +43,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleSubject.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/SubjectWithChildren.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleSubject.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/SubjectWithChildren.xml";
         qname = new QName(SAMLConstants.SAML1_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 

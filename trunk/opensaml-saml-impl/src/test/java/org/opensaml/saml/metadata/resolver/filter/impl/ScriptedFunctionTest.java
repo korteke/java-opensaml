@@ -40,8 +40,8 @@ public class ScriptedFunctionTest {
     
     static final String SCRIPT_7 = "s = new java.lang.String(\"String\");set = new java.util.HashSet();set.add(s);set";
     static final String SCRIPT_8 = "JavaString=Java.type(\"java.lang.String\"); JavaSet = Java.type(\"java.util.HashSet\");set = new JavaSet();set.add(new JavaString(\"String\"));set";
-    static final String FILE_7 = "/data/org/opensaml/saml/metadata/resolver/filter/impl/script.js";
-    static final String FILE_8 = "data/org/opensaml/saml/metadata/resolver/filter/impl/script8.js";
+    static final String FILE_7 = "/org/opensaml/saml/metadata/resolver/filter/impl/script.js";
+    static final String FILE_8 = "/org/opensaml/saml/metadata/resolver/filter/impl/script8.js";
     
     private final SAMLObjectBuilder builder = new EntityDescriptorBuilder();
     

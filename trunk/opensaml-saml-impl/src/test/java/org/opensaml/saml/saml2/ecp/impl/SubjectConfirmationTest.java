@@ -37,8 +37,8 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     /** Constructor */
     public SubjectConfirmationTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/SubjectConfirmation.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/ecp/impl/SubjectConfirmationChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/SubjectConfirmation.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/ecp/impl/SubjectConfirmationChildElements.xml";
     }
 
     @BeforeMethod

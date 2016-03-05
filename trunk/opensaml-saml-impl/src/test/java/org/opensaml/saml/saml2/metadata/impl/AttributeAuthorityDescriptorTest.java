@@ -38,8 +38,8 @@ public class AttributeAuthorityDescriptorTest extends XMLObjectProviderBaseTestC
      * Constructor
      */
     public AttributeAuthorityDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeAuthorityDescriptor.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/AttributeAuthorityDescriptorChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeAuthorityDescriptor.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/AttributeAuthorityDescriptorChildElements.xml";
     }
 
 

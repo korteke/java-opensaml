@@ -36,7 +36,7 @@ public class AuthnContextClassRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AuthnContextClassRefTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnContextClassRef.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AuthnContextClassRef.xml";
     }
 
     @BeforeMethod

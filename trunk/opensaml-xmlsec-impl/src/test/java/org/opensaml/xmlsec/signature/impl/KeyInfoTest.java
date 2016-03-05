@@ -44,9 +44,9 @@ public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeyInfoTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/KeyInfo.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/signature/impl/KeyInfoOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/KeyInfoChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/KeyInfo.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xmlsec/signature/impl/KeyInfoOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/KeyInfoChildElements.xml";
     }
 
     @BeforeMethod

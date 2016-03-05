@@ -43,7 +43,7 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception{
-        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsBoolean.xml";
+        testDocumentLocation = "/org/opensaml/core/xml/schema/xsBoolean.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = "true";
     }

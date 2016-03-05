@@ -45,10 +45,10 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public KeyDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptor.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/KeyDescriptor.xml";
         singleElementOptionalAttributesFile = 
-                "/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorChildElements.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorChildElements.xml";
     }
 
     @BeforeMethod
@@ -79,12 +79,12 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementBadAttributesUnmarshall() {
         try {
-            unmarshallElement("/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorBadAttributes1.xml");
+            unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorBadAttributes1.xml");
             Assert.fail();
         } catch (AssertionError e) {
         }
         try {
-            unmarshallElement("/data/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorBadAttributes2.xml");
+            unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorBadAttributes2.xml");
             Assert.fail();
         } catch (AssertionError e) {
         }

@@ -49,7 +49,7 @@ public class EntitiesDescriptorNameProcessorTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         URL mdURL = FilesystemMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/metadata/resolver/filter/impl/EntitiesDescriptor-Name-metadata.xml");
+                .getResource("/org/opensaml/saml/metadata/resolver/filter/impl/EntitiesDescriptor-Name-metadata.xml");
         mdFile = new File(mdURL.toURI());
 
         processors = new ArrayList<>();

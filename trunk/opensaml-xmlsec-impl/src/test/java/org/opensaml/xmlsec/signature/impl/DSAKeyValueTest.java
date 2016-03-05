@@ -40,8 +40,8 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public DSAKeyValueTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/DSAKeyValue.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/DSAKeyValueChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/DSAKeyValue.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/DSAKeyValueChildElements.xml";
     }
 
     /** {@inheritDoc} */

@@ -38,8 +38,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ActionTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Action.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/ActionChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Action.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/ActionChildElements.xml";
 
         expectedNumAttributes = 5;
         expectedAttributeId = "https://example.org/Action/Attribute/Attribute/Id";

@@ -40,9 +40,9 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AttributeTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Attribute.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/ctx/impl/AttributeOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/AttributeChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Attribute.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/ctx/impl/AttributeOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/AttributeChildElements.xml";
 
         expectedAttributeId = "https://example.org/Attribute/Attribute/Id";
         expectedDataType = "https://example.org/Attribute/Data/Type";

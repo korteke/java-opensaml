@@ -41,7 +41,7 @@ public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     public RequesterIDTest() {
         super();
         
-       singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/RequesterID.xml";
+       singleElementFile = "/org/opensaml/saml/saml2/core/impl/RequesterID.xml";
     }
 
     @BeforeMethod

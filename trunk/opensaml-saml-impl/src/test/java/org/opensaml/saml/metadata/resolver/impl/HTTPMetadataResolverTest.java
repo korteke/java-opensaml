@@ -57,7 +57,7 @@ import org.testng.annotations.Test;
  */
 public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/data/org/opensaml/saml/metadata/resolver/impl/";
+    private static final String DATA_PATH = "/org/opensaml/saml/metadata/resolver/impl/";
     
     private HttpClientBuilder httpClientBuilder;
 
@@ -72,8 +72,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     protected void setUp() throws Exception {
         httpClientBuilder = new HttpClientBuilder();
         
-        httpsMDURL = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/08ced64cddc9f1578598b2cf71ae747b11d11472.xml";
-        httpMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/data/org/opensaml/saml/metadata/resolver/impl/08ced64cddc9f1578598b2cf71ae747b11d11472.xml?view=co";
+        httpsMDURL = "https://svn.shibboleth.net/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/08ced64cddc9f1578598b2cf71ae747b11d11472.xml";
+        httpMDURL = "http://svn.shibboleth.net/view/java-opensaml/trunk/opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/08ced64cddc9f1578598b2cf71ae747b11d11472.xml?view=co";
         
         badMDURL = "http://www.google.com/";
         entityID = "https://www.example.org/sp";

@@ -40,9 +40,9 @@ public class PolicySetIdReferenceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public PolicySetIdReferenceTest() {
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/PolicySetIdReference.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/PolicySetIdReference.xml";
         singleElementOptionalAttributesFile =
-                "/data/org/opensaml/xacml/policy/impl/PolicySetIdReferenceOptionalAttributes.xml";
+                "/org/opensaml/xacml/policy/impl/PolicySetIdReferenceOptionalAttributes.xml";
 
         expectedReference = "https://example.org/Policy/Set/Id/Reference";
         expectedVersion = "1.2.*";

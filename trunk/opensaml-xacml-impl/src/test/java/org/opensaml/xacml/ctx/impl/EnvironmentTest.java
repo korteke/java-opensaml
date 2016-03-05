@@ -38,8 +38,8 @@ public class EnvironmentTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public EnvironmentTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Environment.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/EnvironmentChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Environment.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/EnvironmentChildElements.xml";
 
         expectedNumResults = 4;
         expectedAttributeId = "https://example.org/Environment/Attribute/Attribute/Id";

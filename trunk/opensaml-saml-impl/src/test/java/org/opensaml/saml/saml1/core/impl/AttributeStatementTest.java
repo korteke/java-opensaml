@@ -46,8 +46,8 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
      */
     public AttributeStatementTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAttributeStatement.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/AttributeStatementWithChildren.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleAttributeStatement.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/AttributeStatementWithChildren.xml";
         qname = new QName(SAMLConstants.SAML1_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 

@@ -41,9 +41,9 @@ public class NameIDMappingRequestTest extends RequestTestBase {
      */
     public NameIDMappingRequestTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDMappingRequest.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDMappingRequestOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/NameIDMappingRequestChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/NameIDMappingRequest.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/NameIDMappingRequestOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/NameIDMappingRequestChildElements.xml";
     }    
     
     @BeforeMethod

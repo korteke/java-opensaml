@@ -36,7 +36,7 @@ public class GTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public GTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/G.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/G.xml";
         
     }
 

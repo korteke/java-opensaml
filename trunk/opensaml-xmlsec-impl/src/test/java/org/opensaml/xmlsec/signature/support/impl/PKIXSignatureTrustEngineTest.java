@@ -69,7 +69,7 @@ import org.w3c.dom.Text;
  */
 public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/data/org/opensaml/xmlsec/signature/support/";
+    private static final String DATA_PATH = "/org/opensaml/xmlsec/signature/support/";
     
     private static final Set<X509CRL> EMPTY_CRLS = new HashSet<>();
     

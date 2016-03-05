@@ -45,7 +45,7 @@ public class OrganizationNameTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public OrganizationNameTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/OrganizationName.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/OrganizationName.xml";
     }
     
     @BeforeMethod

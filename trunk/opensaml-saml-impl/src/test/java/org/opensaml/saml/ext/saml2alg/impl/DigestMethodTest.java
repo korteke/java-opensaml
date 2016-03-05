@@ -29,8 +29,8 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public DigestMethodTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2alg/impl/DigestMethod.xml";
-        childElementsFile = "/data/org/opensaml/saml/ext/saml2alg/impl/DigestMethodChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2alg/impl/DigestMethod.xml";
+        childElementsFile = "/org/opensaml/saml/ext/saml2alg/impl/DigestMethodChildElements.xml";
     }
 
     /** {@inheritDoc} */

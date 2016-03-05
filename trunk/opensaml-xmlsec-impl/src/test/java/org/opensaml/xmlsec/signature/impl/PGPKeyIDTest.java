@@ -36,7 +36,7 @@ public class PGPKeyIDTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public PGPKeyIDTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/PGPKeyID.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/PGPKeyID.xml";
         
     }
 

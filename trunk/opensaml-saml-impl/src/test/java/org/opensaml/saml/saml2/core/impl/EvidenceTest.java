@@ -46,8 +46,8 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public EvidenceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Evidence.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/EvidenceChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Evidence.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/EvidenceChildElements.xml";
     }
 
     /** {@inheritDoc} */

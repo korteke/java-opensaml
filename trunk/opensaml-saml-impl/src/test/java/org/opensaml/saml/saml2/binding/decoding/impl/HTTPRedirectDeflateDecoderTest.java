@@ -86,7 +86,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
     @Test
     public void testRequestDecoding() throws MessageDecodingException, MessageEncodingException, MarshallingException {
         AuthnRequest samlRequest =
-                (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+                (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
 
         httpRequest.setParameter("SAMLRequest", encodeMessage(samlRequest));

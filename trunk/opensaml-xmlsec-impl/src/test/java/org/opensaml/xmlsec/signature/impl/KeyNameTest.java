@@ -36,7 +36,7 @@ public class KeyNameTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public KeyNameTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/KeyName.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/KeyName.xml";
         
     }
 

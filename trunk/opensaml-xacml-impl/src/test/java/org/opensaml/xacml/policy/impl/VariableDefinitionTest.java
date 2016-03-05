@@ -37,8 +37,8 @@ public class VariableDefinitionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public VariableDefinitionTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/VariableDefinition.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/VariableDefinitionChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/VariableDefinition.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/VariableDefinitionChildElements.xml";
 
         expectedVariableDefinitionId = "VariableDefinitionId";
         expectedVariableReferenceId = "VariableReferenceId";

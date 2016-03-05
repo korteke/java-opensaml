@@ -38,8 +38,8 @@ public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public DEREncodedKeyValueTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/DEREncodedKeyValue.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/signature/impl/DEREncodedKeyValueOptionalAttributes.xml"; 
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/DEREncodedKeyValue.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xmlsec/signature/impl/DEREncodedKeyValueOptionalAttributes.xml"; 
     }
 
     @BeforeMethod

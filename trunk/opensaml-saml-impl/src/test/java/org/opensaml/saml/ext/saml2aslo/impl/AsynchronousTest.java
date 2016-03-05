@@ -34,7 +34,7 @@ public class AsynchronousTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public AsynchronousTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2aslo/impl/Asynchronous.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2aslo/impl/Asynchronous.xml";
     }
 
     /** {@inheritDoc} */

@@ -204,7 +204,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         trustedCredentials.add(signingX509Cred);
         
         AuthnRequest request  = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest-InvalidSignature.xml"); 
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/common/binding/security/Signed-AuthnRequest-InvalidSignature.xml"); 
         messageContext.setMessage(request);
         
         handler.invoke(messageContext);
@@ -234,7 +234,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
 
     protected AuthnRequest buildInboundSAMLMessage() {
         AuthnRequest request = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/common/binding/security/Signed-AuthnRequest.xml");
         
         return request;
         

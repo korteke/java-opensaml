@@ -32,8 +32,8 @@ public class PublicationPathTest extends XMLObjectProviderBaseTestCase {
      */
     public PublicationPathTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdrpi/PublicationPath.xml";
-        childElementsFile = "/data/org/opensaml/saml/ext/saml2mdrpi/PublicationPathChildren.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/PublicationPath.xml";
+        childElementsFile = "/org/opensaml/saml/ext/saml2mdrpi/PublicationPathChildren.xml";
     }
 
     /** {@inheritDoc} */

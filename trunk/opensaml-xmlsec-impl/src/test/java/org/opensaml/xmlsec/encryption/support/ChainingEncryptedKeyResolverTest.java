@@ -58,7 +58,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** Test error case of empty resolver chain. */
     @Test(expectedExceptions=IllegalStateException.class)
     public void testEmptyChain() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -81,7 +81,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, EncryptedKey in instance inline. */
     @Test
     public void testSingleEKInline() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -109,7 +109,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, EncryptedKey in instance via RetrievalMethod . */
     @Test
     public void testSingleEKRetrievalMethod() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleRetrievalMethod.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleRetrievalMethod.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -137,7 +137,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, EncryptedKeys in instance inline and via RetrievalMethod . */
     @Test
     public void testMultiEKWithOneRecipient() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -166,7 +166,7 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** Two recipients specified to resolver, EncryptedKeys in instance inline and via RetrievalMethod . */
     @Test
     public void testMultiEKWithTwoRecipients() {
-        String filename =  "/data/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));

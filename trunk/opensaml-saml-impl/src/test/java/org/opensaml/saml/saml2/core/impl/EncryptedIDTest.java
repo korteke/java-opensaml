@@ -34,8 +34,8 @@ public class EncryptedIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public EncryptedIDTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedID.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/EncryptedIDChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/EncryptedID.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/EncryptedIDChildElements.xml";
     }
 
     /** {@inheritDoc} */

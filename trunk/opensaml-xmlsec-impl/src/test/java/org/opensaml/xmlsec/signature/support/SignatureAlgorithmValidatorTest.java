@@ -49,7 +49,7 @@ public class SignatureAlgorithmValidatorTest extends XMLObjectBaseTestCase {
     public void setUp() {
         whitelist = new HashSet<>();
         blacklist = new HashSet<>();
-        SignableSimpleXMLObject ssxo = unmarshallElement("/data/org/opensaml/xmlsec/signature/support/envelopedSignature.xml");
+        SignableSimpleXMLObject ssxo = unmarshallElement("/org/opensaml/xmlsec/signature/support/envelopedSignature.xml");
         signature = ssxo.getSignature();
     }
     

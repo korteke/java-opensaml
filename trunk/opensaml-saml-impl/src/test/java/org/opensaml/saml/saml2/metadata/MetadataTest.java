@@ -51,7 +51,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testInCommonUnmarshall() throws XMLParserException, UnmarshallingException {
-        String inCommonMDFile = "/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml";
+        String inCommonMDFile = "/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml";
 
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(inCommonMDFile);
@@ -78,7 +78,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSWITCHUnmarshall() {
-        String switchMDFile = "/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml";
+        String switchMDFile = "/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml";
 
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
@@ -105,7 +105,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUKFedUnmarshall() {
-        String switchMDFile = "/data/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml";
+        String switchMDFile = "/org/opensaml/saml/saml2/metadata/ukfederation-metadata.xml";
 
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);

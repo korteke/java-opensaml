@@ -48,7 +48,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
         entityID = "urn:mace:incommon:washington.edu";
 
         URL mdURL = ResourceBackedMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         Resource mdResource = ResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
 
         metadataProvider = new ResourceBackedMetadataResolver(new Timer(true), mdResource);

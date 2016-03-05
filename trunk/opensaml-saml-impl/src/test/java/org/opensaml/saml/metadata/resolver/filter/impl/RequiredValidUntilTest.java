@@ -42,7 +42,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         URL mdURL = FilesystemMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/simple-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/simple-metadata.xml");
         metadataFile = new File(mdURL.toURI());
     }
 

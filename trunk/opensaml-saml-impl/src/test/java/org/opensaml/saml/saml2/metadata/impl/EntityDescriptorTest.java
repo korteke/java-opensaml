@@ -70,12 +70,12 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public EntityDescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptor.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/EntityDescriptor.xml";
         singleElementOptionalAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorChildElements.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorChildElements.xml";
         singleElementUnknownAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorUnknownAttributes.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/EntityDescriptorUnknownAttributes.xml";
 
     }
 

@@ -38,9 +38,9 @@ public class LogoutResponseTest extends StatusResponseTestBase {
      */
     public LogoutResponseTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutResponseOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/LogoutResponseChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/LogoutResponse.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/LogoutResponseOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/LogoutResponseChildElements.xml";
     }
     
     @BeforeMethod

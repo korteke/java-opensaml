@@ -35,8 +35,8 @@ public class CombinerParameterTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public CombinerParameterTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/CombinerParameter.xml";
-        childElementsFile = "/data/org/opensaml/xacml/policy/impl/CombinerParameterChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/CombinerParameter.xml";
+        childElementsFile = "/org/opensaml/xacml/policy/impl/CombinerParameterChildElements.xml";
 
         expectedDataType = "https://example.org/Combiner/Parameter/Type";
         expectedParameterName = "nameParameter";

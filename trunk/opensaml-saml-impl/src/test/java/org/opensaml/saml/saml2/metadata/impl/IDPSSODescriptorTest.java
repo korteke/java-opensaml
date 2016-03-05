@@ -74,12 +74,12 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public IDPSSODescriptorTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptor.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptor.xml";
         singleElementOptionalAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorChildElements.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorChildElements.xml";
         singleElementUnknownAttributesFile =
-                "/data/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorUnknownAttributes.xml";
+                "/org/opensaml/saml/saml2/metadata/impl/IDPSSODescriptorUnknownAttributes.xml";
     }
 
     @BeforeMethod protected void setUp() throws Exception {

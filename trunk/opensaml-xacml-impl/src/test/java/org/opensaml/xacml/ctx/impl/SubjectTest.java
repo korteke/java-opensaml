@@ -40,8 +40,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Subject.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/SubjectChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Subject.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/SubjectChildElements.xml";
 
         expectedSubjectCategory="https://example.org/Subject/Subject/Category";
         expectedAttributeId = "https://example.org/Subject/Attribute/Attribute/Id";

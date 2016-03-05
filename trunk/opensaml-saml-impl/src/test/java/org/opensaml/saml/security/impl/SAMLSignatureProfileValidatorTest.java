@@ -42,62 +42,62 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testValid() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-Valid.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-Valid.xml");
         assertValidationPass("Valid signature", sig);
     }
     
     @Test
     public void testInvalidNoXMLSignature() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-Valid.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-Valid.xml");
         ((SignatureImpl)sig).setXMLSignature(null);
         assertValidationFail("Invalid signature - no XMLSignature", sig);
     }
     
     @Test
     public void testInvalidTooManyReferences() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-TooManyReferences.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-TooManyReferences.xml");
         assertValidationFail("Invalid signature - too many References", sig);
     }
     
     @Test
     public void testInvalidNonLocalURI() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-NonLocalURI.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-NonLocalURI.xml");
         assertValidationFail("Invalid signature - non-local Reference URI", sig);
     }
     
     @Test
     public void testInvalidMissingID() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-MissingID.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-MissingID.xml");
         assertValidationFail("Invalid signature - missing ID on parent object", sig);
     }
     
     @Test
     public void testInvalidBadURIValue() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-BadURIValue.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-BadURIValue.xml");
         assertValidationFail("Invalid signature - bad URI value", sig);
     }
     
     @Test
     public void testInvalidTooManyTransforms() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-TooManyTransforms.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-TooManyTransforms.xml");
         assertValidationFail("Invalid signature - too many Transforms", sig);
     }
     
     @Test
     public void testInvalidBadTransform() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-BadTransform.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-BadTransform.xml");
         assertValidationFail("Invalid signature - bad Transform", sig);
     }
     
     @Test
     public void testInvalidMissingEnvelopedTransform() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-MissingEnvelopedTransform.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-MissingEnvelopedTransform.xml");
         assertValidationFail("Invalid signature - missing Enveloped Transform", sig);
     }
 
     @Test
     public void testInvalidDuplicateIDs() {
-        Signature sig = getSignature("/data/org/opensaml/saml/security/Signed-AuthnRequest-DuplicateIDs.xml");
+        Signature sig = getSignature("/org/opensaml/saml/security/Signed-AuthnRequest-DuplicateIDs.xml");
         assertValidationFail("Invalid signature - duplicate IDs", sig);
     }    
     

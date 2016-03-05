@@ -59,9 +59,9 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
         //
         expectedAuthenticationInstant = new DateTime(1970, 1, 2, 1, 1, 2, 123, ISOChronology.getInstanceUTC());
 
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAuthenticationStatement.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml1/impl/singleAuthenticationStatementAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/AuthenticationStatementWithChildren.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleAuthenticationStatement.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml1/impl/singleAuthenticationStatementAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/AuthenticationStatementWithChildren.xml";
         
         qname = new QName(SAMLConstants.SAML1_NS, AuthenticationStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }

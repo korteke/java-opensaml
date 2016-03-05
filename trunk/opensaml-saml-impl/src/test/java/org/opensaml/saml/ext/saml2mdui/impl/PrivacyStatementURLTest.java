@@ -41,7 +41,7 @@ public class PrivacyStatementURLTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public PrivacyStatementURLTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/PrivacyStatementURL.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/PrivacyStatementURL.xml";
     }
     
 

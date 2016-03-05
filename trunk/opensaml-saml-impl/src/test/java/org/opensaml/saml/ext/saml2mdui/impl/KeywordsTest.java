@@ -43,7 +43,7 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
      * Constructor.
      */
     public KeywordsTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdui/Keywords.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdui/Keywords.xml";
         String[] contents = {"This", "is", "a", "six", "element", "keyword"}; 
         expectedWords = new ArrayList(contents.length);
         for (String s : contents) {

@@ -39,8 +39,8 @@ public class ResourceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ResourceTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/Resource.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/ResourceChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/Resource.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/ResourceChildElements.xml";
 
         expectedNumAttributes = 3;
         expectedAttributeId = "https://example.org/Resource/Attribute/Attribute/Id";

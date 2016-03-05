@@ -33,7 +33,7 @@ public class DescriptionTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public DescriptionTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Description.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Description.xml";
 
         expectedDescription = "This is a Description";    
     }

@@ -37,9 +37,9 @@ public class ArtifactResponseTest extends StatusResponseTestBase {
      *
      */
     public ArtifactResponseTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/ArtifactResponse.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/ArtifactResponseOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/ArtifactResponseChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/ArtifactResponse.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/ArtifactResponseOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/ArtifactResponseChildElements.xml";
     }
     
     @BeforeMethod

@@ -35,7 +35,7 @@ public class RequestAuthenticatedTest extends XMLObjectProviderBaseTestCase {
     
     public RequestAuthenticatedTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/RequestAuthenticated.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/RequestAuthenticated.xml";
     }
  
     @BeforeMethod

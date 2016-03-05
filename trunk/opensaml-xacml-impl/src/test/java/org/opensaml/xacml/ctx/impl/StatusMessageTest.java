@@ -34,7 +34,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public StatusMessageTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/StatusMessage.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/StatusMessage.xml";
 
         expectedMessage = "StatusMessageTextstatusCode";
     }

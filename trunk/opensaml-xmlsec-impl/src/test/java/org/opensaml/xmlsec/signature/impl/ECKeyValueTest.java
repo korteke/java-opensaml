@@ -38,9 +38,9 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public ECKeyValueTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/ECKeyValue.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/signature/impl/ECKeyValueOptionalAttributes.xml"; 
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/ECKeyValueChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/ECKeyValue.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xmlsec/signature/impl/ECKeyValueOptionalAttributes.xml"; 
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/ECKeyValueChildElements.xml";
     }
 
     @BeforeMethod

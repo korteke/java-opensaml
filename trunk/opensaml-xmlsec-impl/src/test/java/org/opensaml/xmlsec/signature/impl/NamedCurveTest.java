@@ -33,7 +33,7 @@ public class NamedCurveTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public NamedCurveTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/NamedCurve.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/NamedCurve.xml";
     }
 
     @BeforeMethod

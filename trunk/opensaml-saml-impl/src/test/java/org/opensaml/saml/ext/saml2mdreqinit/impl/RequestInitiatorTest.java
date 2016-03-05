@@ -42,7 +42,7 @@ public class RequestInitiatorTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public RequestInitiatorTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdreqinit/impl/RequestInitiator.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdreqinit/impl/RequestInitiator.xml";
     }
 
     @BeforeMethod protected void setUp() throws Exception {

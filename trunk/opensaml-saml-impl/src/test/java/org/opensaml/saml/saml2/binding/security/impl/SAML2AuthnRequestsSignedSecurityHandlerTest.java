@@ -65,7 +65,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     @Test
     public void testNotSignedAndNotRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         messageContext.setMessage(authnRequest);
         
         handler.invoke(messageContext);
@@ -79,7 +79,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNotSignedAndRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         messageContext.setMessage(authnRequest);
         
         spssoDescriptor.setAuthnRequestsSigned(true);
@@ -94,7 +94,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     @Test
     public void testSignedAndNotRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
         messageContext.setMessage(authnRequest);
         
         handler.invoke(messageContext);
@@ -107,7 +107,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     @Test
     public void testSignedAndRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest-Signed.xml");
         messageContext.setMessage(authnRequest);
         
         spssoDescriptor.setAuthnRequestsSigned(true);
@@ -122,7 +122,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     @Test
     public void testSimpleSignedAndRequired() throws MessageHandlerException {
         AuthnRequest authnRequest = 
-            (AuthnRequest) unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+            (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         messageContext.setMessage(authnRequest);
         
         spssoDescriptor.setAuthnRequestsSigned(true);

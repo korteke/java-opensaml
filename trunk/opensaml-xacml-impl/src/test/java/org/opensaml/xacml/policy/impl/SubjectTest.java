@@ -36,8 +36,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public SubjectTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Subject.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/SubjectChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Subject.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/SubjectChildElements.xml";
 
         expectedMatchId = "http://example.org/Subject/Match/Id";
         expectedResourceMatches = 2;

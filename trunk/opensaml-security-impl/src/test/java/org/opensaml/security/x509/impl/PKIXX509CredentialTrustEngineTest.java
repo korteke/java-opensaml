@@ -44,7 +44,7 @@ import org.testng.annotations.Test;
  */
 public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/data/org/opensaml/security/x509/impl/";
+    private static final String DATA_PATH = "/org/opensaml/security/x509/impl/";
     
     private static final Set<X509CRL> EMPTY_CRLS = new HashSet<>();
     

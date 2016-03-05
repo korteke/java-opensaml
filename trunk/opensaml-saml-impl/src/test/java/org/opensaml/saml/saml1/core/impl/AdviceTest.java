@@ -43,8 +43,8 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AdviceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml1/impl/singleAdvice.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml1/impl/AdviceWithChildren.xml";
+        singleElementFile = "/org/opensaml/saml/saml1/impl/singleAdvice.xml";
+        childElementsFile = "/org/opensaml/saml/saml1/impl/AdviceWithChildren.xml";
         qname = new QName(SAMLConstants.SAML1_NS, Advice.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 

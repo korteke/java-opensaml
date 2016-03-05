@@ -30,7 +30,7 @@ public class RegistrationPolicyTest extends XMLObjectProviderBaseTestCase {
      */
     public RegistrationPolicyTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdrpi/RegistrationPolicy.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/RegistrationPolicy.xml";
     }
 
     /** {@inheritDoc} */

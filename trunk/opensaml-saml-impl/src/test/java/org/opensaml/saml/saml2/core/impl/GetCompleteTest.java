@@ -41,7 +41,7 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     public GetCompleteTest() {
         super();
         
-       singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/GetComplete.xml";
+       singleElementFile = "/org/opensaml/saml/saml2/core/impl/GetComplete.xml";
     }
 
     @BeforeMethod

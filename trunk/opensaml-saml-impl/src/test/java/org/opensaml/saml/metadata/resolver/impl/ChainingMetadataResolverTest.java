@@ -54,7 +54,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         ArrayList<MetadataResolver> resolvers = new ArrayList<>();
 
         URL mdURL = ChainingMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         File mdFile = new File(mdURL.toURI());
         FilesystemMetadataResolver fileProvider = new FilesystemMetadataResolver(mdFile);
         fileProvider.setParserPool(parserPool);
@@ -64,7 +64,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         resolvers.add(fileProvider);
 
         URL mdURL2 = ChainingMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/metadata.switchaai_signed.xml");
         File mdFile2 = new File(mdURL2.toURI());
         FilesystemMetadataResolver fileProvider2 = new FilesystemMetadataResolver(mdFile2);
         fileProvider2.setParserPool(parserPool);

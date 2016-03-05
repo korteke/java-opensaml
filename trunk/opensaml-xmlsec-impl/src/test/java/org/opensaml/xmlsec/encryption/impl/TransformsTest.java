@@ -37,8 +37,8 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public TransformsTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/Transforms.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/TransformsChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/Transforms.xml";
+        childElementsFile = "/org/opensaml/xmlsec/encryption/impl/TransformsChildElements.xml";
     }
 
     @BeforeMethod

@@ -75,7 +75,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
     @BeforeClass
     public void classSetUp() throws ResolverException, URISyntaxException, ComponentInitializationException {
         final URL mdURL = SAMLMetadataLookupHandlerTest.class
-                .getResource("/data/org/opensaml/saml/saml2/profile/impl/affiliation-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/profile/impl/affiliation-metadata.xml");
         final File mdFile = new File(mdURL.toURI());
 
         metadataResolver = new FilesystemMetadataResolver(mdFile);

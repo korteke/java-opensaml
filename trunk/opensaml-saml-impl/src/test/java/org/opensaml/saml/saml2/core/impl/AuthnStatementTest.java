@@ -43,9 +43,9 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AuthnStatementTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnStatement.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnStatementOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AuthnStatementChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AuthnStatement.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/AuthnStatementOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/AuthnStatementChildElements.xml";
     }
 
     @BeforeMethod

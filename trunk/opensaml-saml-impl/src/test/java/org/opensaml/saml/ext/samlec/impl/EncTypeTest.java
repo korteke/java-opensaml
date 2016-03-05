@@ -34,7 +34,7 @@ public class EncTypeTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public EncTypeTest() {
-        singleElementFile = "/data/org/opensaml/saml/ext/samlec/impl/EncType.xml";
+        singleElementFile = "/org/opensaml/saml/ext/samlec/impl/EncType.xml";
     }
 
     @BeforeMethod

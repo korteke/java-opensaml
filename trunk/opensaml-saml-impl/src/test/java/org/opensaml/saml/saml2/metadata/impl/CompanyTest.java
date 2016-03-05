@@ -39,7 +39,7 @@ public class CompanyTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public CompanyTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/Company.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/Company.xml";
     }
     
     @BeforeMethod

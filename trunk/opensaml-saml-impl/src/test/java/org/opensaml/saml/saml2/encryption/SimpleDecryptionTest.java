@@ -94,7 +94,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptedAssertion() throws XMLParserException, EncryptionException {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
         
         Assertion target = (Assertion) unmarshallElement(filename);
@@ -123,7 +123,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptedAssertionAsID() throws XMLParserException, EncryptionException {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
         
         Assertion target = (Assertion) unmarshallElement(filename);
@@ -152,7 +152,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptedNameID() throws XMLParserException, EncryptionException {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/NameID.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/NameID.xml";
         Document targetDOM = getDOM(filename);
         
         NameID target = (NameID) unmarshallElement(filename);
@@ -181,7 +181,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptedNewID() throws XMLParserException, EncryptionException {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/NewID.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/NewID.xml";
         Document targetDOM = getDOM(filename);
         
         NewID target = (NewID) unmarshallElement(filename);
@@ -210,7 +210,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptedAttribute() throws XMLParserException, EncryptionException {
-        String filename = "/data/org/opensaml/saml/saml2/encryption/Attribute.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/Attribute.xml";
         Document targetDOM = getDOM(filename);
         
         Attribute target = (Attribute) unmarshallElement(filename);
@@ -248,7 +248,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         BasicCredential encCred = new BasicCredential((SecretKey) badKey);
         KeyInfoCredentialResolver badEncResolver = new StaticKeyInfoCredentialResolver(encCred);
         
-        String filename = "/data/org/opensaml/saml/saml2/encryption/Assertion.xml";
+        String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         
         Assertion target = (Assertion) unmarshallElement(filename);
         EncryptedAssertion encryptedTarget = encrypter.encrypt(target);

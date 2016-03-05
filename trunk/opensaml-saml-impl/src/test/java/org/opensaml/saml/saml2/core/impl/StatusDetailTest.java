@@ -38,8 +38,8 @@ public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public StatusDetailTest() {
-       singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/StatusDetail.xml";
-       childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/StatusDetailChildElements.xml";
+       singleElementFile = "/org/opensaml/saml/saml2/core/impl/StatusDetail.xml";
+       childElementsFile = "/org/opensaml/saml/saml2/core/impl/StatusDetailChildElements.xml";
     }
     
     /** {@inheritDoc} */

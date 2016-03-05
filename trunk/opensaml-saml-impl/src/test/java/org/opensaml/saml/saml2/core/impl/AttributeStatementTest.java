@@ -38,8 +38,8 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor. */
     public AttributeStatementTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeStatement.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/core/impl/AttributeStatementChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AttributeStatement.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/core/impl/AttributeStatementChildElements.xml";
     }
 
     /** {@inheritDoc} */

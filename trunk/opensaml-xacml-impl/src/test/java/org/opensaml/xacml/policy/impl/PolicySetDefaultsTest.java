@@ -36,8 +36,8 @@ public class PolicySetDefaultsTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public PolicySetDefaultsTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/PolicySetDefaults.xml";
-        childElementsFile = "/data/org/opensaml/xacml/policy/impl/PolicySetDefaultsChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/PolicySetDefaults.xml";
+        childElementsFile = "/org/opensaml/xacml/policy/impl/PolicySetDefaultsChildElements.xml";
     }
     
     /** {@inheritDoc} */

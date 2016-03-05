@@ -291,7 +291,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     }
 
     protected AuthnRequest buildInboundSAMLMessage() {
-        return unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+        return unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
     }
     
     protected MockHttpServletRequest buildServletRequest() {

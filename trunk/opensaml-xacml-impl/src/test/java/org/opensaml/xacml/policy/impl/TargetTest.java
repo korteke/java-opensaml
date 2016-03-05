@@ -32,8 +32,8 @@ public class TargetTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public TargetTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/Target.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/TargetChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/Target.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/TargetChildElements.xml";
     }
 
     /** {@inheritDoc} */

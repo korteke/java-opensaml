@@ -384,7 +384,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      */
     protected SignableXMLObject getValidSignedObject() {
         //return buildSignedObject();
-        return (SignableSimpleXMLObject) unmarshallElement("/data/org/opensaml/xmlsec/signature/support/Signed-SimpleObject.xml");
+        return (SignableSimpleXMLObject) unmarshallElement("/org/opensaml/xmlsec/signature/support/Signed-SimpleObject.xml");
     }
 
     /**
@@ -395,7 +395,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      */
     protected SignableXMLObject getInvalidSignedObject() {
         //return buildSignedObject();
-        return (SignableSimpleXMLObject) unmarshallElement("/data/org/opensaml/xmlsec/signature/support/Signed-SimpleObject-InvalidSignature.xml");
+        return (SignableSimpleXMLObject) unmarshallElement("/org/opensaml/xmlsec/signature/support/Signed-SimpleObject-InvalidSignature.xml");
     }
     
     /**

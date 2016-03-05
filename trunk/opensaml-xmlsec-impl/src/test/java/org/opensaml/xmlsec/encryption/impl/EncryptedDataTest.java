@@ -46,9 +46,9 @@ public class EncryptedDataTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public EncryptedDataTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedData.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedDataOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/encryption/impl/EncryptedDataChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/EncryptedData.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xmlsec/encryption/impl/EncryptedDataOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xmlsec/encryption/impl/EncryptedDataChildElements.xml";
         
     }
 

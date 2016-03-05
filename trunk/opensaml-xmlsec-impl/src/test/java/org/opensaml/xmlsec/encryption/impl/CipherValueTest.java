@@ -36,7 +36,7 @@ public class CipherValueTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public CipherValueTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/encryption/impl/CipherValue.xml";
+        singleElementFile = "/org/opensaml/xmlsec/encryption/impl/CipherValue.xml";
         
     }
 

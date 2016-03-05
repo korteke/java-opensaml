@@ -50,7 +50,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         entityID = "urn:mace:incommon:washington.edu";
 
         URL mdURL = FilesystemMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         mdFile = new File(mdURL.toURI());
 
         metadataProvider = new FilesystemMetadataResolver(mdFile);
@@ -217,7 +217,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testExpiredMetadataWithValidRequiredAndNoFailFast() throws URISyntaxException, ResolverException {
         URL mdURL = FilesystemMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/simple-metadata-expired.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/simple-metadata-expired.xml");
         File targetFile = new File(mdURL.toURI());
         
         try {

@@ -53,7 +53,7 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        mdFileName = "/data/org/opensaml/saml/saml2/metadata/support/metadata-AttributeConsumingService.xml";
+        mdFileName = "/org/opensaml/saml/saml2/metadata/support/metadata-AttributeConsumingService.xml";
         
         URL mdURL = AttributeConsumingServiceSelectorTest.class.getResource(mdFileName);
         File mdFile = new File(mdURL.toURI());

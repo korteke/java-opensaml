@@ -36,7 +36,7 @@ public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */
     public AssertionURIRefTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/AssertionURIRef.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/AssertionURIRef.xml";
     }
 
     @BeforeMethod

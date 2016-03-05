@@ -33,8 +33,8 @@ public class PublicationTest extends XMLObjectProviderBaseTestCase {
      */
     public PublicationTest() {
         super();
-        singleElementFile = "/data/org/opensaml/saml/ext/saml2mdrpi/Publication.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/ext/saml2mdrpi/PublicationOptionalAttr.xml";
+        singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/Publication.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/ext/saml2mdrpi/PublicationOptionalAttr.xml";
     }
 
     /** {@inheritDoc} */

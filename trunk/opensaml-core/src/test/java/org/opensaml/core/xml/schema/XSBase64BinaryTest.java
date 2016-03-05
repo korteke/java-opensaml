@@ -44,7 +44,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     protected void setUp() throws Exception{
-        testDocumentLocation = "/data/org/opensaml/core/xml/schema/xsBase64Binary.xml";
+        testDocumentLocation = "/org/opensaml/core/xml/schema/xsBase64Binary.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
         expectedValue = "abcdABCDE===";
     }

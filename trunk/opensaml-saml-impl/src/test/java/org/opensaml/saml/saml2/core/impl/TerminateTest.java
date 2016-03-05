@@ -35,7 +35,7 @@ public class TerminateTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public TerminateTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/core/impl/Terminate.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/core/impl/Terminate.xml";
     }
 
     /** {@inheritDoc} */

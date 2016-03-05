@@ -52,7 +52,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSimpleUnmarshall() {
-        SimpleXMLObject sxObject =  (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttribute.xml");
+        SimpleXMLObject sxObject =  (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttribute.xml");
 
         Assert.assertEquals(sxObject.resolveID("IDLevel1"), sxObject, "ID lookup failed");
         Assert.assertEquals(sxObject.resolveIDFromRoot("IDLevel1"), sxObject, "ID lookup failed");
@@ -70,7 +70,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     @Test
     public void testComplexUnmarshallInList() {
         SimpleXMLObject sxObject = 
-            (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
+            (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
         
         Assert.assertNull(sxObject.resolveID("NonExistent"), "Lookup of non-existent ID didn't return null");
         Assert.assertNull(sxObject.resolveIDFromRoot("NonExistent"), "Lookup of non-existent ID didn't return null");
@@ -124,7 +124,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     @Test
     public void testChangePropagationInList() {
         SimpleXMLObject sxObject =  
-            (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
+            (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
         
         // Test propagation of attribute value change up the tree 
         sxObject.getSimpleXMLObjects().get(1).setId("NewIDLevel2B");
@@ -161,7 +161,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     public void testListOpChangePropagation() {
         
         SimpleXMLObject sxObject =  
-            (SimpleXMLObject) unmarshallElement("/data/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
+            (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
         
         SimpleXMLObject targetIDLevel3B = sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2);
         Assert.assertEquals(sxObject.resolveID("IDLevel3B"), targetIDLevel3B, "ID lookup failed");
@@ -211,7 +211,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAttributeMap() throws XMLParserException, UnmarshallingException{
-        String documentLocation = "/data/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
+        String documentLocation = "/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
@@ -256,7 +256,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAttributeMapOps() throws XMLParserException, UnmarshallingException{
-        String documentLocation = "/data/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
+        String documentLocation = "/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
 
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
@@ -308,7 +308,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         XMLObject xmlObject;
         QName attribQName = new QName("http://www.example.org", "id", "test");
         
-        String documentLocation = "/data/org/opensaml/core/xml/IDAttributeGlobal.xml";
+        String documentLocation = "/org/opensaml/core/xml/IDAttributeGlobal.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         

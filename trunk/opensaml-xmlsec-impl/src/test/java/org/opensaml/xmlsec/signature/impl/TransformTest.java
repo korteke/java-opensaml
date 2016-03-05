@@ -40,8 +40,8 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
      *
      */
     public TransformTest() {
-        singleElementFile = "/data/org/opensaml/xmlsec/signature/impl/Transform.xml";
-        childElementsFile = "/data/org/opensaml/xmlsec/signature/impl/TransformChildElements.xml";
+        singleElementFile = "/org/opensaml/xmlsec/signature/impl/Transform.xml";
+        childElementsFile = "/org/opensaml/xmlsec/signature/impl/TransformChildElements.xml";
     }
 
     @BeforeMethod

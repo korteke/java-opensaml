@@ -40,8 +40,8 @@ public class AuthzServiceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AuthzServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthzService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AuthzServiceOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AuthzService.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AuthzServiceOptionalAttributes.xml";
     }
     
     @BeforeMethod

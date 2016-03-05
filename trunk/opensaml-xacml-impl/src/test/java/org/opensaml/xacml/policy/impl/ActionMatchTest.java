@@ -38,8 +38,8 @@ public class ActionMatchTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ActionMatchTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/ActionMatch.xml";
-        childElementsFile  = "/data/org/opensaml/xacml/policy/impl/ActionMatchChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/ActionMatch.xml";
+        childElementsFile  = "/org/opensaml/xacml/policy/impl/ActionMatchChildElements.xml";
 
         expectedMatchId = "http://example.org";
     }

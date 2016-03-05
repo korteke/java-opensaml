@@ -40,8 +40,8 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ManageNameIDServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/ManageNameIDService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/ManageNameIDServiceOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/ManageNameIDService.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/ManageNameIDServiceOptionalAttributes.xml";
     }
     
     @BeforeMethod

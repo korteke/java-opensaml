@@ -109,7 +109,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testNoEndpoints() throws UnmarshallingException, ResolverException {
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPNoEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPNoEndpoints.xml"));
         final AssertionConsumerService ep = resolver.resolveSingle(new CriteriaSet(endpointCrit, roleCrit));
         Assert.assertNull(ep);
     }
@@ -118,7 +118,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testBadLocation() throws UnmarshallingException, ResolverException {
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
@@ -130,7 +130,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         endpointCrit.getEndpoint().setLocation(LOCATION_POST);
         endpointCrit.getEndpoint().setBinding(SAMLConstants.SAML2_SOAP11_BINDING_URI);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
@@ -141,7 +141,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     public void testUnsupportedBinding() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(LOCATION_POST);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
                 new BindingCriterion(Collections.singletonList(SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
@@ -155,7 +155,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         endpointCrit.getEndpoint().setBinding(null);
         endpointCrit.getEndpoint().setIndex(5);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
@@ -166,7 +166,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     public void testInMetadata() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(LOCATION_POST);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNotNull(ep);
@@ -181,7 +181,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         endpointCrit.getEndpoint().setLocation(null);
         endpointCrit.getEndpoint().setBinding(null);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNotNull(ep);
@@ -196,7 +196,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         endpointCrit.getEndpoint().setLocation(null);
         endpointCrit.getEndpoint().setBinding(null);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
                 new BindingCriterion(Collections.singletonList(SAMLConstants.SAML2_POST_BINDING_URI)));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
@@ -212,7 +212,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         endpointCrit.getEndpoint().setLocation(null);
         endpointCrit.getEndpoint().setBinding(null);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final List<AssertionConsumerService> eps = new ArrayList<>();
         for (final AssertionConsumerService ep : resolver.resolve(crits)) {
@@ -226,7 +226,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     public void testMultipleWithBinding() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(null);
         final RoleDescriptorCriterion roleCrit =
-                new RoleDescriptorCriterion(loadMetadata("/data/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final List<AssertionConsumerService> eps = new ArrayList<>();
         for (final AssertionConsumerService ep : resolver.resolve(crits)) {

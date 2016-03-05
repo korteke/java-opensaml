@@ -146,7 +146,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private String idpEntityID = "http://idp.example.org/shibboleth";
     
-    private String mdFileName = "/data/org/opensaml/saml/security/test1-metadata.xml";
+    private String mdFileName = "/org/opensaml/saml/security/test1-metadata.xml";
     
     private BasicRoleDescriptorResolver roleResolver;
     

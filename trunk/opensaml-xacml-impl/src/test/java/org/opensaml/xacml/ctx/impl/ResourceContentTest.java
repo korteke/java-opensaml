@@ -46,9 +46,9 @@ public class ResourceContentTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public ResourceContentTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/ResourceContent.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/ctx/impl/ResourceContentOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/ResourceContentChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/ResourceContent.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/ctx/impl/ResourceContentOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/ResourceContentChildElements.xml";
 
         expectedFunctionId = "http://example.org/Resource/Content/Apply/Function/Id";
         expectedContent = "ResourceContentText";

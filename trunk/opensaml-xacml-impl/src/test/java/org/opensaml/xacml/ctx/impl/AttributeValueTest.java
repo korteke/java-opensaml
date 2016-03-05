@@ -45,9 +45,9 @@ public class AttributeValueTest extends XMLObjectProviderBaseTestCase {
      * Constructor
      */
     public AttributeValueTest() {
-        singleElementFile = "/data/org/opensaml/xacml/ctx/impl/AttributeValue.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/ctx/impl/AttributeValueOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/xacml/ctx/impl/AttributeValueChildElements.xml";
+        singleElementFile = "/org/opensaml/xacml/ctx/impl/AttributeValue.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/ctx/impl/AttributeValueOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/xacml/ctx/impl/AttributeValueChildElements.xml";
 
         expectedFunctionId = "http://example.org";
         expectedTextContent = "AttributeValueText";

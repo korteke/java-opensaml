@@ -36,8 +36,8 @@ public class ActionAttributeDesignatorTest extends XMLObjectProviderBaseTestCase
      * Constructor
      */
     public ActionAttributeDesignatorTest(){
-        singleElementFile = "/data/org/opensaml/xacml/policy/impl/ActionAttributeDesignator.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/xacml/policy/impl/ActionAttributeDesignatorOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/xacml/policy/impl/ActionAttributeDesignator.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/xacml/policy/impl/ActionAttributeDesignatorOptionalAttributes.xml";
 
         expectedDataType = "https://example.org/Data/Type/Action";
         expectedAttributeId = "https://example.org/Attribute/Id/Action";

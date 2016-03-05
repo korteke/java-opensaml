@@ -40,8 +40,8 @@ public class AssertionIDRequestServiceTest extends XMLObjectProviderBaseTestCase
      * Constructor
      */
     public AssertionIDRequestServiceTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/metadata/impl/AssertionIDRequestService.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/metadata/impl/AssertionIDRequestServiceOptionalAttributes.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/metadata/impl/AssertionIDRequestService.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/metadata/impl/AssertionIDRequestServiceOptionalAttributes.xml";
     }
     
     @BeforeMethod

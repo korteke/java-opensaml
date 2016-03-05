@@ -39,9 +39,9 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     private Boolean expectedSOAP11MustUnderstand;
     
     public RequestTest() {
-        singleElementFile = "/data/org/opensaml/saml/saml2/ecp/impl/Request.xml";
-        singleElementOptionalAttributesFile = "/data/org/opensaml/saml/saml2/ecp/impl/RequestOptionalAttributes.xml";
-        childElementsFile = "/data/org/opensaml/saml/saml2/ecp/impl/RequestChildElements.xml";
+        singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/Request.xml";
+        singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/ecp/impl/RequestOptionalAttributes.xml";
+        childElementsFile = "/org/opensaml/saml/saml2/ecp/impl/RequestChildElements.xml";
     }
  
     @BeforeMethod

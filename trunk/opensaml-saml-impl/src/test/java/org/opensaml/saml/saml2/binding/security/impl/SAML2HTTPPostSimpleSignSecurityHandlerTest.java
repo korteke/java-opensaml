@@ -340,7 +340,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     }
 
     protected AuthnRequest buildInboundSAMLMessage() {
-        return unmarshallElement("/data/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
+        return unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
     }
 
     protected MockHttpServletRequest buildServletRequest() {

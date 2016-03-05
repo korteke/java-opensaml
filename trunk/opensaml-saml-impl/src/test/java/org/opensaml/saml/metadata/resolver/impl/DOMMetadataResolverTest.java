@@ -51,7 +51,7 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
         entityID = "urn:mace:incommon:washington.edu";
 
         URL mdURL = DOMMetadataResolverTest.class
-                .getResource("/data/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         mdFile = new File(mdURL.toURI());
         FileInputStream fis = new FileInputStream(mdFile);
         Document document = parserPool.parse(fis);
