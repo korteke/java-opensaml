@@ -217,7 +217,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @param strategy {@link DataSealerKeyStrategy} to use for stale key detection
      */
-    public void setKeyStrategy(@Nonnull final DataSealerKeyStrategy strategy) {
+    public void setKeyStrategy(@Nullable final DataSealerKeyStrategy strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         keyStrategy = strategy;
