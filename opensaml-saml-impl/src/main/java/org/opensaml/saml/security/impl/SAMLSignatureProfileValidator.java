@@ -44,6 +44,7 @@ import com.google.common.base.Strings;
  * A validator for instances of {@link Signature}, which validates that the signature meets security-related
  * requirements indicated by the SAML profile of XML Signature.
  */
+@SuppressWarnings("deprecation")
 public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
 
     /** Class logger. */

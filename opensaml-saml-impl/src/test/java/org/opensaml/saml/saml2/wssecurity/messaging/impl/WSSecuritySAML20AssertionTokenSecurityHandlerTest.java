@@ -75,7 +75,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
     
     private String issuerEntityID = "https://idp.example.org";
     private String rpEntityID = "https://rp.example.com";
-    private String requestURL = "https://rp.example.com/wss/saml";
     private String remoteAddr = "10.1.2.3";
     
     @BeforeMethod

@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 /**
  * Unit tests for {@link EntityRoleFilter}.
  */
+@SuppressWarnings("deprecation")
 public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     
     private DefaultHttpClient httpClient;

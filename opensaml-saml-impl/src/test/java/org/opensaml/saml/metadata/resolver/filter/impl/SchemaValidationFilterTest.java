@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 /**
  * Unit tests for {@link SchemaValidationFilter}.
  */
+@SuppressWarnings("deprecation")
 public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     
     private DefaultHttpClient httpClient;

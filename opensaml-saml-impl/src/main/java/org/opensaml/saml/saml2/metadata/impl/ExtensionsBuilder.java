@@ -22,7 +22,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.Extensions;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ExtensionsImpl} objects.
+ * Builder of {@link ExtensionsImpl} objects.
  */
 public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
 
@@ -30,7 +30,8 @@ public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
      * {@inheritDoc}
      */
     public Extensions buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20MD_PREFIX);
     }
 
     /**

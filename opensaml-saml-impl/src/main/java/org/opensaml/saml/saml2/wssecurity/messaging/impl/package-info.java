@@ -15,29 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.core.impl;
-
-import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
-import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.core.Extensions;
-
 /**
- * Builder of {@link org.opensaml.saml.saml2.core.impl.ExtensionsImpl} objects.
+ * Implementation of SAML WS-Security message handler functionality.
  */
-public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
-
-    /**
-     * {@inheritDoc}
-     */
-    public Extensions buildObject() {
-        return buildObject(SAMLConstants.SAML20P_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20P_PREFIX);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Extensions buildObject(String namespaceURI, String localName, String namespacePrefix) {
-        return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
-    }
-}
+package org.opensaml.saml.saml2.wssecurity.messaging.impl;
