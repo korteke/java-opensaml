@@ -31,7 +31,6 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.KeySupport;

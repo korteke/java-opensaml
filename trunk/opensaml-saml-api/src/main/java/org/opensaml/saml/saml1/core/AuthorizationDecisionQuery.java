@@ -27,37 +27,59 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * Description of the behaviour of the <code> AuthorizationDecisionQuery </code> element
+ * Description of the behaviour of the <code> AuthorizationDecisionQuery </code> element.
  */
 public interface AuthorizationDecisionQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    public final static String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionQuery";
+    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionQuery";
     
-    /** Default element name */
-    public final static QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** Default element name. */
+    public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** Local name of the XSI type */
-    public final static String TYPE_LOCAL_NAME = "AuthorizationDecisionQueryType"; 
+    /** Local name of the XSI type. */
+    public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionQueryType"; 
         
-    /** QName of the XSI type */
-    public final static QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
+    /** QName of the XSI type. */
+    public static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
-    /** AuthenticationMethod attribute name */
-    public final static String RESOURCE_ATTRIB_NAME = "Resource"; 
+    /** AuthenticationMethod attribute name. */
+    public static final String RESOURCE_ATTRIB_NAME = "Resource"; 
 
-    /** Get Resource attribute */
+    /** 
+     * Get Resource attribute.
+     * 
+     * @return Resource attribute
+     */
     public String getResource();
     
-    /** Set Resource attribute */
+    /**
+     * Set Resource attribute.
+     * 
+     * @param resource Resource attribute to set
+     */
     public void setResource(String resource);
 
-    /** Get list of Action child elements */
+    /**
+     * Get list of Action child elements.
+     * 
+     * @return Action list
+     */
     public List<Action> getActions();
     
-    /** Get the Evidence child element */
+    /**
+     * Get the Evidence child element.
+     * 
+     * @return Evidence child element
+     */
     public Evidence getEvidence();
 
-    /** Set the Evidence child element */
+    /**
+     * Set the Evidence child element.
+     * 
+     * @param evidence child element to set
+     */
     public void setEvidence(Evidence evidence);
 }

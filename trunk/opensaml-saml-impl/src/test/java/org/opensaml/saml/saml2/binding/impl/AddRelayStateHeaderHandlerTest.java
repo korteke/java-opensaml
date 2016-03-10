@@ -31,7 +31,6 @@ import org.opensaml.saml.saml2.ecp.RelayState;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
-import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

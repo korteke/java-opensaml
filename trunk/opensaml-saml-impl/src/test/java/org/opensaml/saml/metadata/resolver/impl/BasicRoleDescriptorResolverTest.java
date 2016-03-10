@@ -66,18 +66,6 @@ public class BasicRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
                 return Collections.singletonList(entityDescriptor);
             }
 
-            public boolean isInitialized() {
-                return true;
-            }
-
-            public void initialize() throws ComponentInitializationException { }
-
-            public boolean isDestroyed() {
-                return false;
-            }
-
-            public void destroy() { }
-
             public boolean isRequireValidMetadata() {
                 return false;
             }

@@ -43,7 +43,8 @@ public class ConditionsMarshaller extends AbstractSAMLObjectMarshaller {
         }
 
         if (conditions.getNotOnOrAfter() != null) {
-            String notOnOrAfterStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(conditions.getNotOnOrAfter());
+            String notOnOrAfterStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(
+                    conditions.getNotOnOrAfter());
             domElement.setAttributeNS(null, Conditions.NOT_ON_OR_AFTER_ATTRIB_NAME, notOnOrAfterStr);
         }
     }

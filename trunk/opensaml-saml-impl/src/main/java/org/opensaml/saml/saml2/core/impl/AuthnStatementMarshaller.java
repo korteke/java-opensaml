@@ -38,7 +38,8 @@ public class AuthnStatementMarshaller extends AbstractSAMLObjectMarshaller {
         AuthnStatement authnStatement = (AuthnStatement) samlObject;
 
         if (authnStatement.getAuthnInstant() != null) {
-            String authnInstantStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(authnStatement.getAuthnInstant());
+            String authnInstantStr = SAMLConfigurationSupport.getSAMLDateFormatter().print(
+                    authnStatement.getAuthnInstant());
             domElement.setAttributeNS(null, AuthnStatement.AUTHN_INSTANT_ATTRIB_NAME, authnInstantStr);
         }
 
