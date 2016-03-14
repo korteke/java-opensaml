@@ -88,7 +88,7 @@ public final class SAMLBindingSupport {
     public static boolean checkRelayState(@Nullable final String relayState) {
         if (!Strings.isNullOrEmpty(relayState)) {
             if (relayState.getBytes().length > 80) {
-                LOG.warn("Relay state exceeds 80 bytes, some peers may not support this.");
+                LOG.warn("Relay state exceeds 80 bytes: {}", relayState);
             }
 
             return true;
