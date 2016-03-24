@@ -25,6 +25,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -51,10 +52,9 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
     
     /** Whether this rule is required to be met. */
     private boolean requiredRule;
-
+    
     /** Constructor. */
     public MessageLifetimeSecurityHandler() {
-        super();
         clockSkew = 60 * 3 * 1000;
         messageLifetime = 180 * 1000;
         requiredRule = true;
@@ -136,7 +136,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
         }
 
         final DateTime issueInstant = msgInfoContext.getMessageIssueInstant();
-        final DateTime now = new DateTime();
+        final DateTime now = new DateTime(DateTimeZone.UTC);
         final DateTime latestValid = now.plus(getClockSkew());
         final DateTime expiration = issueInstant.plus(getClockSkew() + getMessageLifetime());
 
@@ -144,13 +144,13 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
         if (issueInstant.isAfter(latestValid)) {
             log.warn("{} Message was not yet valid: message time was {}, latest valid is: {}", getLogPrefix(),
                     issueInstant, latestValid);
-            throw new MessageHandlerException("Message was rejected because was issued in the future");
+            throw new MessageHandlerException("Message was rejected because it was issued in the future");
         }
 
         // Check message has not expired
         if (expiration.isBefore(now)) {
             log.warn(
-                    "{} Message was expired: message issue time was '{}', message expired at: '{}', current time: '{}'",
+                    "{} Message was expired: message time was '{}', message expired at: '{}', current time: '{}'",
                     getLogPrefix(), issueInstant, expiration, now);
             throw new MessageHandlerException("Message was rejected due to issue instant expiration");
         }

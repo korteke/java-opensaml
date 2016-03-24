@@ -18,6 +18,7 @@
 package org.opensaml.saml.common.binding.security.impl;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -43,7 +44,7 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        now = new DateTime();
+        now = new DateTime(DateTimeZone.UTC);
         clockSkew = 60*5*1000;
         messageLifetime = 60*10*1000;
         
