@@ -610,22 +610,24 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 
                 gen.writeStartObject();
                 for (final Map.Entry<String,Map<String, MutableStorageRecord>> context : contextMap.entrySet()) {
-                    gen.writeStartObject(context.getKey());
-                    for (Map.Entry<String,MutableStorageRecord> entry : context.getValue().entrySet()) {
-                        final MutableStorageRecord record = entry.getValue();
-                        final Long recexp = record.getExpiration();
-                        if (recexp == null || recexp > now) {
-                            empty = false;
-                            gen.writeStartObject(entry.getKey())
-                                .write("v", record.getValue());
-                            if (recexp != null) {
-                                gen.write("x", record.getExpiration());
-                                exp = Math.max(exp, recexp);
+                    if (!context.getValue().isEmpty()) {
+                        gen.writeStartObject(context.getKey());
+                        for (final Map.Entry<String,MutableStorageRecord> entry : context.getValue().entrySet()) {
+                            final MutableStorageRecord record = entry.getValue();
+                            final Long recexp = record.getExpiration();
+                            if (recexp == null || recexp > now) {
+                                empty = false;
+                                gen.writeStartObject(entry.getKey())
+                                    .write("v", record.getValue());
+                                if (recexp != null) {
+                                    gen.write("x", record.getExpiration());
+                                    exp = Math.max(exp, recexp);
+                                }
+                                gen.writeEnd();
                             }
-                            gen.writeEnd();
                         }
+                        gen.writeEnd();
                     }
-                    gen.writeEnd();
                 }
                 gen.writeEnd().close();
 
