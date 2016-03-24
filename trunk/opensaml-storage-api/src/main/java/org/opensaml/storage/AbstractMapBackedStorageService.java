@@ -411,6 +411,9 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
                 setDirty();
                 dataMap.remove(key);
                 log.trace("Deleted record '{}' in context '{}'", key, context);
+                if (dataMap.isEmpty()) {
+                    contextMap.remove(context);
+                }
                 return true;
             }
         } finally {
