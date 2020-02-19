@@ -50,6 +50,7 @@
         <java-support.version>7.3.0-SNAPSHOT</java-support.version>
         <spring-extensions.version>5.3.0-SNAPSHOT</spring-extensions.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
+        <cryptacular.version>1.2.4</cryptacular.version>
     </properties>
 
     <repositories>
@@ -118,7 +119,11 @@
               <artifactId>spymemcached</artifactId>
               <version>2.11.4</version>
           </dependency>
-
+          <dependency>
+              <groupId>org.cryptacular</groupId>
+              <artifactId>cryptacular</artifactId>
+              <version>${cryptacular.version}</version>
+          </dependency>
             <!-- Provided Dependencies -->
 
             <!-- Runtime Dependencies -->
